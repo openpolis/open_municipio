@@ -1,0 +1,31 @@
+<html>
+  <head>
+    <title>
+      Search
+    </title>
+  </head>
+  <body>
+    <form method="get" action="/search/"> 
+      <p><input type="text" name="q" id="id_q" /> 
+         <input type="submit" value="Cerca" /></p>
+    </form>
+
+    {% if results %}
+      <p>
+        Hai ricercato "{{ query }}"; qui sotto l'elenco dei risultati:
+      </p>
+    
+      <ul>
+        {% for page in results %}
+        <li>
+          <a href="{{ page.get_absolute_url }}">{{ page.title }}</a>
+        </li>
+        {% endfor %}
+      </ul>      
+    {% else %}
+      <p>
+        Inserisci una parola o una frase da ricercare e premi Cerca!
+      </p>    
+    {% endif %}
+  </body>
+</html>

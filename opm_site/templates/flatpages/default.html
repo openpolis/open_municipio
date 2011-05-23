@@ -1,0 +1,19 @@
+<html>
+  <head>
+    <title>
+      {{ flatpage.title }}
+    </title>
+  </head>
+  <body>
+    <h1>
+      {{ flatpage.title }}
+    </h1>
+    <form method="get" action="/search/"> 
+      <p><input type="text" name="q" id="id_q" /> 
+         <input type="submit" value="Cerca" /></p>
+    </form>
+    <p>
+      {{ flatpage.content }}
+    </p>
+  </body>
+</html>

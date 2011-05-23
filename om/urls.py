@@ -1,0 +1,1 @@
+(r'', include('django.contrib.flatpages.urls')),
