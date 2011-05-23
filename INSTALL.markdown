@@ -30,7 +30,7 @@ Poi, in `~/.virtualenvs/open_municipio/bin/`, modificare `postactivate` e `postd
 Si tratta di script che vengono lanciati dopo l'attivazione del virtualenv (`workon open_municipio`) o dopo 
 la disattivazione. Vengono settate alcune variabili di environment per poter lavorare sul progetto comodamente.
 
-''postactivate''
+**postactivate**
 
     #!/bin/bash
     # This hook is run after this virtualenv is activated.
@@ -39,7 +39,7 @@ la disattivazione. Vengono settate alcune variabili di environment per poter lav
     export PYTHONPATH=/home/open_municipio:$PYTHONPATH
     export DJANGO_SETTINGS_MODULE=opm_site.settings
 
-''postdeactivate''
+**postdeactivate**
 
     #!/bin/bash
     # This hook is run after this virtualenv is deactivated.
