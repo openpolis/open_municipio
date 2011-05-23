@@ -20,7 +20,6 @@ urlpatterns = patterns('',
     { 'document_root': '/Users/guglielmo/Workspace/open_municipio/opm_site/templates/fonts'}),
 
 
-  (r'^search/$', 'opm_site.search.views.search'),
   (r'', include('django.contrib.flatpages.urls')),
 
 )
