@@ -16,9 +16,9 @@ class Act(TimeStampedModel):
   The default Manager is the model_utils.managers.InheritanceManager (https://bitbucket.org/carljm/django-model-utils/src),
   that enables the select_subclasses() method, allowing the retrieval of subclasses, when needed.
   '''
-  idnum = models.CharField(max_length=128, blank=True, help_text="A string representing the identification number or sequence, used internally by the administration.")
-  title = models.CharField(max_length=196, blank=True)
-  adj_title = models.CharField(max_length=196, blank=True, help_text="An adjoint title, added to further explain an otherwise cryptic title")
+  idnum = models.CharField(max_length=64, blank=True, help_text="A string representing the identification number or sequence, used internally by the administration.")
+  title = models.CharField(max_length=255, blank=True)
+  adj_title = models.CharField(max_length=255, blank=True, help_text="An adjoint title, added to further explain an otherwise cryptic title")
   presentation_date = models.DateField(null=True, help_text="Date of publication, as stated in the act")
   text = models.TextField(blank=True)
   process_steps = models.ManyToManyField('Process', through='ProcessStep')
@@ -67,7 +67,7 @@ class Interrogation(Act):
     ('w', _('Written')),
     ('v', _('Verbal')),
   )
-  answer_type = models.CharField(max_length=3, choices=ANSWER_TYPES)
+  answer_type = models.CharField(max_length=1, choices=ANSWER_TYPES)
   question_motivation = models.TextField(blank=True)
   answer_text = models.TextField(blank=True)
   reply_text = models.TextField(blank=True)
@@ -115,6 +115,9 @@ class Process(models.Model):
   
   def __unicode__(self):
     return u'%s' % self.name
+    
+  class Meta:
+    verbose_name_plural = u'Processes'
   
 class ProcessStep(models.Model):
   process = models.ForeignKey(Process)
@@ -141,7 +144,6 @@ class Charge(models.Model):
   Inheritance here is done through Abstract Classes, since there is no apparent need to browse all 
   '''
   person = models.ForeignKey('Person')
-  charge_type = models.ForeignKey('ChargeType')
   start_date = models.DateField()
   end_date = models.DateField()
   end_reason = models.CharField(blank=True, max_length=255)
@@ -153,15 +155,32 @@ class InstitutionCharge(Charge):
   '''
   this is a charge in the institution (city council, city government, mayor)
   '''
+  CHARGE_DETAILS = Choices(
+    ('may', _('Mayor')),    
+    ('cgm', _('City government member')),
+    ('cpr', _('Counsil president')),
+    ('cvp', _('Counselor')),
+    ('com', _('Committee member')),
+  )
   substitutes = models.OneToOneField('InstitutionCharge', blank=True, null=True, related_name='reverse_substitutes')
   substituted_by = models.OneToOneField('InstitutionCharge', blank=True, null=True, related_name='reverse_substituted_by')
+  institution = models.ForeignKey('Institution')
+  charge_detail = models.CharField(max_length=3, choices=CHARGE_DETAILS)
+  
   class Meta(Charge.Meta):
     db_table = u'om_institution_charge'
 
-class OrganizationCharge(Charge):
+class CompanyCharge(Charge):
   '''
-  this is a charge in a company or organization controlled by the municipality (partecipate)
+  this is a charge in a company controlled by the municipality (it: partecipate)
   '''  
+  CHARGE_DETAILS = Choices(
+    ('pre', _('President')),    
+    ('ceo', _('Chief Executive Officer')),
+    ('dir', _('Member of the board')),
+  )
+  company = models.ForeignKey('Company')
+  charge_detail = models.CharField(max_length=3, choices=CHARGE_DETAILS)
   class Meta(Charge.Meta):
     db_table = u'om_organization_charge'
 
@@ -169,24 +188,17 @@ class AdministrationCharge(Charge):
   '''
   this is a charge in the internal municipality administration
   '''
+  CHARGE_DETAILS = Choices(
+    ('dir', _('Director')),    
+    ('exe', _('Executive')),
+  )
+  office = models.ForeignKey('Office')
+  charge_detail = models.CharField(max_length=3, choices=CHARGE_DETAILS)
   class Meta(Charge.Meta):
     db_table = u'om_administration_charge'
 
 
   
-class ChargeType(models.Model):
-  '''
-  this maps the different charges, within each macro-category
-  i.e. mayor, council president, councelor, city government member, ... for institution charges
-  president, administrator, director, for organization charges
-  director, officer, for administration charges
-  '''
-  name = models.CharField(max_length=255)
-  is_elected = models.BooleanField(default=False)
-  class Meta:
-    db_table = u'om_charge_type'
-
-
 class Group(models.Model):
   '''
   the class maps the groups of counselors
@@ -196,12 +208,82 @@ class Group(models.Model):
   counselors = models.ManyToManyField('InstitutionCharge', through='GroupHasCharge')
   
 class GroupHasCharge(models.Model):
+  '''
+  maps the historical composition of council groups, this is only valid for InstitutionCharges
+  
+  '''
   group = models.ForeignKey('Group')
   charge = models.ForeignKey('InstitutionCharge')
-  charge_type = models.CharField(blank=True, max_length=255)
+  charge_description = models.CharField(blank=True, max_length=255)
   start_date = models.DateField()
   end_date = models.DateField()
 
   class Meta:
     db_table = u'om_group_has_charge'
+
+
+class Body(models.Model):
+  '''
+  base class for the body, uses the Abstract Class inheritance model
+  '''
+  name = models.CharField(max_length=255)
+
+  class Meta:
+    abstract = True
+    verbose_name_plural = u'Bodies'
   
+class Institution(Body):
+  '''
+  institutional bodies can be of different types and the types are mapped in institution_type
+  it has a relation with itself, in order to map hierarchical bodies (joint committee, ...)
+  '''
+  INSTITUTION_TYPES = Choices(
+    ('may', _('Mayor')),    
+    ('cou', _('Standard')),
+    ('cig', _('City government')),
+    ('com', _('Committee')),
+    ('jco', _('Joint committee')),
+  )
+  parent = models.ForeignKey('Institution', related_name='sub_bodies_set')
+  institution_type = models.CharField(max_length=3, choices=INSTITUTION_TYPES)
+
+class Company(Body):
+  '''
+  company owned by the municipality, whose executives are nominated politically
+  '''
+  class Meta(Body.Meta):
+    verbose_name_plural = u'Companies'
+  
+class Office(Body):
+  '''
+  internal municipality office, that plays a role in the administration of the municipalities
+  '''
+  pass
+
+
+class Sitting(models.Model):
+  idnum = models.CharField(blank=True, max_length=64)
+  sitting_date = models.DateField()
+  institution = models.ForeignKey('Institution')
+  
+  
+class Minute(TimeStampedModel):
+  title = models.CharField(max_length=255)
+  sitting = models.ForeignKey('Sitting')
+  minute_date = models.DateField(null=True, blank=True)
+  text = models.TextField(blank=True)
+  text_url = models.CharField(max_length=255, blank=True)
+  pdf_file = models.FileField(upload_to="minutes/%Y%d%m", blank=True)
+  pdf_url = models.CharField(max_length=255, blank=True)
+
+  def __unicode__(self):
+    return u'%s' % self.title
+
+class Outcome(models.Model):
+  sitting = models.ForeignKey('Sitting')
+  act = models.OneToOneField('Act')  
+
+class Decision(models.Model):
+  ofice = models.ForeignKey('Office')
+  act = models.OneToOneField('Act')  
+    
