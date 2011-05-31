@@ -1,3 +1,4 @@
 om.db
 opm_site/settings.py
+om/migrations/*
 uploads/attached_documents/*
