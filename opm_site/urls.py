@@ -5,9 +5,7 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-  # (r'^/', include('om.urls')),
-
-  # Uncomment the next line to enable the admin:
+  (r'^admin/doc/', include('django.contrib.admindocs.urls')),
   (r'^admin/', include(admin.site.urls)),
 
   (r'^js/(?P<path>.*)$', 'django.views.static.serve',

@@ -99,11 +99,10 @@ nel caso si utilizzi sqlite3, si può lasciar fare a Django.
 Per modificare lo schema del DB in modo agile, evitando la rimozione dei dati già inseriti
 (alter invece di drop + create) si può usare `south` (http://south.aeracode.org/).
 
-Per creare la prima migrazione e allineare il modello al db, senza invocare realmente le istruzioni che creerebbero
-delle tabelle già create:
+Per creare la prima migrazione e allineare il modello al db:
 
     django-admin.py schemamigration om --initial
-    django-admin.py migrate om --fake
+    django-admin.py migrate om
 
 
 

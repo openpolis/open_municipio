@@ -1,295 +1,207 @@
 from django.db import models
+from django.utils.translation import ugettext as _
+from model_utils import Choices
+from model_utils.models import TimeStampedModel, StatusModel, TimeFramedModel
+from model_utils.managers import InheritanceManager
 
-class Atto(models.Model):
-    INIZIATIVA_CHOICES = (
-        ('con', 'Consigliere'),
-        ('pre', 'Presidente'),
-        ('ass', 'Assessore'),
-        ('giu', 'Giunta'),
-        ('sin', 'Sindaco'),
-    )
-    idnum = models.CharField(max_length=128, blank=True)
-    tipo_atto = models.ForeignKey('TipoAtto')
-    data_presentazione = models.DateField(null=True)
-    data_aggiornamento = models.DateField(null=True, blank=True)
-    data_approvazione = models.DateField(null=True, blank=True)
-    data_pubblicazione = models.DateField(null=True, blank=True)
-    data_esecuzione = models.DateField(null=True, blank=True)
-    titolo = models.CharField(max_length=196, blank=True)
-    titolo_aggiuntivo = models.CharField(max_length=196, blank=True)
-    iniziativa = models.CharField(max_length=3, choices=INIZIATIVA_CHOICES)
-    testo = models.TextField(blank=True)
-    verbale = models.TextField(blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
 
-    def __unicode__(self):
-      uc = u'%s: %s' % (self.tipo_atto, self.titolo)
-      if self.idnum:
-        uc = u'%s - %s' % (self.idnum, uc)
-      if self.titolo_aggiuntivo:
-        uc = u'%s (%s)' % (uc, self.titolo_aggiuntivo)
-      return uc
+class Act(TimeStampedModel):
+  '''
+  This is the base class for all the different act types: it contains the common fields for
+  deliberations, interrogations, interpellations, motions, agendas and emendations
+  
+  It is a TimeStampedModel, so it tracks creation and modification timestamps for each record.
+  
+  Inheritance is done through multi-table inheritance, since browsing the whole set of acts may be useful.
+  The default Manager is the model_utils.managers.InheritanceManager (https://bitbucket.org/carljm/django-model-utils/src),
+  that enables the select_subclasses() method, allowing the retrieval of subclasses, when needed.
+  '''
+  idnum = models.CharField(max_length=128, blank=True, help_text="A string representing the identification number or sequence, used internally by the administration.")
+  title = models.CharField(max_length=196, blank=True)
+  adj_title = models.CharField(max_length=196, blank=True, help_text="An adjoint title, added to further explain an otherwise cryptic title")
+  presentation_date = models.DateField(null=True, help_text="Date of publication, as stated in the act")
+  text = models.TextField(blank=True)
+  process_steps = models.ManyToManyField('Process', through='ProcessStep')
+  presenters = models.ManyToManyField('InstitutionCharge', db_table='om_act_presenter', related_name='act_presentations')
+  recipients = models.ManyToManyField('InstitutionCharge', db_table='om_act_recipient', related_name='act_destinations')
+
+  objects = InheritanceManager()
+
+  def __unicode__(self):
+    uc = u'%s' % (self.title)
+    if self.idnum:
+      uc = u'%s - %s' % (self.idnum, uc)
+    if self.adj_title:
+      uc = u'%s (%s)' % (uc, self.adj_title)
+    return uc
       
-    class Meta:
-        db_table = u'om_atto'
-        verbose_name_plural = u'atti'
+class ActSection(models.Model):
+  act = models.ForeignKey('Act')
+  parent_section = models.ForeignKey('ActSection')  
+  title = models.CharField(max_length=128, blank=True)
+  text = models.TextField(blank=True)
+  def __unicode__(self):
+    return u'%s' % self.title
 
-class TipoAtto(models.Model):
-    denominazione = models.CharField(max_length=128, unique=True)
-    slug = models.CharField(max_length=128, unique=True)
-
-    def __unicode__(self):
-      return u'%s' % self.denominazione
-      
-    class Meta:
-        db_table = u'om_tipo_atto'
-        verbose_name_plural = u'tipi atto'
+  class Meta:
+    db_table = u'om_act_section'
 
 
-class Allegato(models.Model):
-    titolo = models.CharField(max_length=255)
-    atto = models.ForeignKey('Atto')
-    data = models.DateField(null=True, blank=True)
-    testo = models.TextField(blank=True)
-    file_pdf = models.FileField(upload_to="allegati/%Y%d%m", blank=True)
-    url_testo = models.CharField(max_length=255, blank=True)
-    url_pdf = models.CharField(max_length=255, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def __unicode__(self):
-      return u'%s' % self.titolo
-
-    class Meta:
-        db_table = u'om_allegato'
-        verbose_name_plural = u'allegati'
-
-'''
+class Deliberation(Act):
+  INIZIATIVE_CHOICES = (
+      ('cou', _('Counselor')),
+      ('pre', _('President')),
+      ('cgm', _('City Government Member')),
+      ('cgo', _('City Government')),
+      ('may', _('Mayor')),
+  )
+  approval_date = models.DateField(null=True, blank=True)
+  publication_date = models.DateField(null=True, blank=True)
+  execution_date = models.DateField(null=True, blank=True)
+  initiative = models.CharField(max_length=3, choices=INIZIATIVE_CHOICES)
+  minute = models.TextField(blank=True)
 
 
-
-class AttoHasIter(models.Model):
-    atto = models.ForeignKey('Atto')
-    aiter = models.ForeignKey('Iter')
-    data = models.DateField(null=True, blank=True)
-    created_at = models.DateTimeField(null=True, blank=True)
-    class Meta:
-        db_table = u'opm_atto_has_iter'
-
-class Iter(models.Model):
-    fase = models.CharField(max_length=765, blank=True)
-    concluso = models.IntegerField(null=True, blank=True)
-    cache_cod = models.CharField(max_length=6, blank=True)
-    class Meta:
-        db_table = u'opm_iter'
+class Interrogation(Act):
+  ANSWER_TYPES = Choices(
+    ('w', _('Written')),
+    ('v', _('Verbal')),
+  )
+  answer_type = models.CharField(max_length=3, choices=ANSWER_TYPES)
+  question_motivation = models.TextField(blank=True)
+  answer_text = models.TextField(blank=True)
+  reply_text = models.TextField(blank=True)
 
 
-class AttoHasSede(models.Model):
-    atto = models.ForeignKey('Atto')
-    sede = models.ForeignKey('Sede')
-    tipo = models.CharField(max_length=765, blank=True)
-    created_at = models.DateTimeField(null=True, blank=True)
-    class Meta:
-        db_table = u'opm_atto_has_sede'
-
-class Sede(models.Model):
-    codice = models.CharField(max_length=765, blank=True)
-    ramo = models.CharField(max_length=765, blank=True)
-    denominazione = models.CharField(max_length=765, blank=True)
-    legislatura = models.IntegerField(null=True, blank=True)
-    tipologia = models.CharField(max_length=765, blank=True)
-    class Meta:
-        db_table = u'opm_sede'
-
-class EsitoSeduta(models.Model):
-    atto = models.ForeignKey('Atto')
-    sede = models.ForeignKey('Sede')
-    data = models.DateField(null=True, blank=True)
-    url = models.TextField()
-    esito = models.TextField(blank=True)
-    tipologia = models.CharField(max_length=765, blank=True)
-    created_at = models.DateTimeField(null=True, blank=True)
-    class Meta:
-        db_table = u'opm_esito_seduta'
-
-class Resoconto(models.Model):
-    sede = models.ForeignKey('Sede')
-    data = models.DateField(null=True, blank=True)
-    comunicato = models.TextField(blank=True)
-    sommario = models.TextField(blank=True)
-    stenografico = models.TextField(blank=True)
-    num_seduta = models.IntegerField(null=True, blank=True)
-    legislatura = models.IntegerField()
-    nota = models.TextField(blank=True)
-    url_sommario = models.CharField(max_length=765, blank=True)
-    url_stenografico = models.CharField(max_length=765, blank=True)
-    created_at = models.DateTimeField(null=True, blank=True)
-    url_comunicato = models.CharField(max_length=765, blank=True)
-    class Meta:
-        db_table = u'opm_resoconto'
+class Interpellation(Act):
+  ANSWER_TYPES = Choices(
+    ('w', _('Written')),
+    ('v', _('Verbal')),
+  )
+  answer_type = models.CharField(max_length=3, choices=ANSWER_TYPES)
+  question_motivation = models.TextField(blank=True)
+  answer_text = models.TextField(blank=True)
 
 
+class Motion(Act):
+  pass
 
-class Politico(models.Model):
-    nome = models.CharField(max_length=90, blank=True)
-    cognome = models.CharField(max_length=90, blank=True)
-    n_monitoring_users = models.IntegerField()
-    sesso = models.CharField(max_length=3, blank=True)
-    class Meta:
-        db_table = u'opm_politico'
+class Agenda(Act):
+  pass
 
+class Emendation(Act):
+  act = models.ForeignKey('Act', related_name="%(app_label)s_%(class)s_related")
+  act_section = models.ForeignKey('ActSection', null=True, blank=True)
 
-class Carica(models.Model):
-    politico = models.ForeignKey('Politico')
-    tipo_carica = models.ForeignKey('TipoCarica')
-    carica = models.CharField(max_length=90, blank=True)
-    data_inizio = models.DateField(null=True, blank=True)
-    data_fine = models.DateField(null=True, blank=True)
-    legislatura = models.IntegerField(null=True, blank=True)
-    circoscrizione = models.CharField(max_length=180, blank=True)
-    presenze = models.IntegerField(null=True, blank=True)
-    assenze = models.IntegerField(null=True, blank=True)
-    missioni = models.IntegerField(null=True, blank=True)
-    parliament_id = models.IntegerField(null=True, blank=True)
-    indice = models.FloatField(null=True, blank=True)
-    scaglione = models.IntegerField(null=True, blank=True)
-    posizione = models.IntegerField(null=True, blank=True)
-    media = models.FloatField(null=True, blank=True)
-    created_at = models.DateTimeField(null=True, blank=True)
-    ribelle = models.IntegerField(null=True, blank=True)
-    class Meta:
-        db_table = u'opm_carica'
+class AttachedDocument(TimeStampedModel):
+  title = models.CharField(max_length=255)
+  act = models.ForeignKey('Act')
+  document_date = models.DateField(null=True, blank=True)
+  text = models.TextField(blank=True)
+  text_url = models.CharField(max_length=255, blank=True)
+  pdf_file = models.FileField(upload_to="attached_documents/%Y%d%m", blank=True)
+  pdf_url = models.CharField(max_length=255, blank=True)
 
-class CaricaInterna(models.Model):
-    id = models.IntegerField(primary_key=True)
-    carica = models.ForeignKey('Carica')
-    tipo_carica = models.ForeignKey('TipoCarica')
-    sede = models.ForeignKey(Sede)
-    data_inizio = models.DateField(null=True, blank=True)
-    data_fine = models.DateField(null=True, blank=True)
-    descrizione = models.CharField(max_length=765, blank=True)
-    created_at = models.DateTimeField(null=True, blank=True)
-    class Meta:
-        db_table = u'opm_carica_interna'
+  def __unicode__(self):
+    return u'%s' % self.title
 
-class TipoCarica(models.Model):
-    id = models.IntegerField(primary_key=True)
-    nome = models.CharField(max_length=765, blank=True)
-    class Meta:
-        db_table = u'opm_tipo_carica'
+  class Meta:
+    db_table = u'om_attached_document'
 
 
+class Process(models.Model):
+  name = models.CharField(max_length=128)
+  slug = models.CharField(max_length=128)
+  
+  def __unicode__(self):
+    return u'%s' % self.name
+  
+class ProcessStep(models.Model):
+  process = models.ForeignKey(Process)
+  act = models.ForeignKey(Act)
+  transition_date = models.DateField()
 
-class CaricaHasAtto(models.Model):
-    atto = models.ForeignKey('Atto')
-    carica = models.ForeignKey('Carica')
-    tipo = models.CharField(max_length=765)
-    data = models.DateField(null=True, blank=True)
-    url = models.TextField(blank=True)
-    created_at = models.DateTimeField(null=True, blank=True)
-    delete_at = models.DateField(null=True, blank=True)
-    class Meta:
-        db_table = u'opm_carica_has_atto'
-
-
-class Gruppo(models.Model):
-    id = models.IntegerField(primary_key=True)
-    nome = models.CharField(max_length=765, blank=True)
-    acronimo = models.CharField(max_length=240, blank=True)
-    class Meta:
-        db_table = u'opm_gruppo'
-
-class GruppoIsMaggioranza(models.Model):
-    id = models.IntegerField(primary_key=True)
-    gruppo = models.ForeignKey('Gruppo')
-    data_inizio = models.DateField()
-    data_fine = models.DateField(null=True, blank=True)
-    maggioranza = models.IntegerField(null=True, blank=True)
-    class Meta:
-        db_table = u'opm_gruppo_is_maggioranza'
+  class Meta:
+    db_table = u'om_process_step'
 
 
-class CaricaHasGruppo(models.Model):
-    carica = models.ForeignKey('Carica')
-    gruppo = models.ForeignKey('Gruppo')
-    data_inizio = models.DateField(primary_key=True)
-    data_fine = models.DateField(null=True, blank=True)
-    ribelle = models.IntegerField(null=True, blank=True)
-    created_at = models.DateTimeField(null=True, blank=True)
-    presenze = models.IntegerField(null=True, blank=True)
-    class Meta:
-        db_table = u'opm_carica_has_gruppo'
+class Person(models.Model):
+  first_name = models.CharField(max_length=128)
+  last_name = models.CharField(max_length=128)
+  birth_date = models.DateField()
+  birth_location = models.CharField(blank=True, max_length=128)
+  op_politician_id = models.IntegerField(blank=True, null=True)
+  def __unicode__(self):
+    return u'%s %s' % (self.first_name, self.last_name)
 
 
-class Seduta(models.Model):
-    data = models.DateField(null=True, blank=True)
-    numero = models.IntegerField()
-    ramo = models.CharField(max_length=3)
-    legislatura = models.IntegerField()
-    url = models.TextField(blank=True)
-    is_imported = models.IntegerField()
-    class Meta:
-        db_table = u'opm_seduta'
+class Charge(models.Model):
+  '''
+  This is the base class for the different macro-types of charges (institution, organization, administration).
+  Inheritance here is done through Abstract Classes, since there is no apparent need to browse all 
+  '''
+  person = models.ForeignKey('Person')
+  charge_type = models.ForeignKey('ChargeType')
+  start_date = models.DateField()
+  end_date = models.DateField()
+  end_reason = models.CharField(blank=True, max_length=255)
 
-class Intervento(models.Model):
-    atto = models.ForeignKey('Atto')
-    carica = models.ForeignKey('Carica')
-    tipologia = models.CharField(max_length=765, blank=True)
-    url = models.TextField(blank=True)
-    data = models.DateField(null=True, blank=True)
-    sede = models.ForeignKey(Sede)
-    numero = models.IntegerField(null=True, blank=True)
-    ap = models.IntegerField(null=True, blank=True)
-    created_at = models.DateTimeField(null=True, blank=True)
-    ut_fav = models.IntegerField()
-    ut_contr = models.IntegerField()
-    class Meta:
-        db_table = u'opm_intervento'
+  class Meta:
+    abstract = True
 
-class Votazione(models.Model):
-    seduta = models.ForeignKey('Seduta')
-    numero_votazione = models.IntegerField()
-    titolo = models.TextField(blank=True)
-    presenti = models.IntegerField(null=True, blank=True)
-    votanti = models.IntegerField(null=True, blank=True)
-    maggioranza = models.IntegerField(null=True, blank=True)
-    astenuti = models.IntegerField(null=True, blank=True)
-    favorevoli = models.IntegerField(null=True, blank=True)
-    contrari = models.IntegerField(null=True, blank=True)
-    esito = models.CharField(max_length=60, blank=True)
-    ribelli = models.IntegerField(null=True, blank=True)
-    margine = models.IntegerField(null=True, blank=True)
-    tipologia = models.CharField(max_length=60, blank=True)
-    descrizione = models.TextField(blank=True)
-    url = models.CharField(max_length=765, blank=True)
-    finale = models.IntegerField()
-    nb_commenti = models.IntegerField()
-    is_imported = models.IntegerField()
-    titolo_aggiuntivo = models.TextField(blank=True)
-    ut_fav = models.IntegerField()
-    ut_contr = models.IntegerField()
-    class Meta:
-        db_table = u'opm_votazione'
+class InstitutionCharge(Charge):
+  '''
+  this is a charge in the institution (city council, city government, mayor)
+  '''
+  substitutes = models.OneToOneField('InstitutionCharge', blank=True, null=True, related_name='reverse_substitutes')
+  substituted_by = models.OneToOneField('InstitutionCharge', blank=True, null=True, related_name='reverse_substituted_by')
+  class Meta(Charge.Meta):
+    db_table = u'om_institution_charge'
 
-class VotazioneHasAtto(models.Model):
-    votazione = models.ForeignKey('Votazione')
-    atto = models.ForeignKey('Atto')
-    created_at = models.DateTimeField(null=True, blank=True)
-    class Meta:
-        db_table = u'opm_votazione_has_atto'
+class OrganizationCharge(Charge):
+  '''
+  this is a charge in a company or organization controlled by the municipality (partecipate)
+  '''  
+  class Meta(Charge.Meta):
+    db_table = u'om_organization_charge'
 
-class VotazioneHasCarica(models.Model):
-    votazione = models.ForeignKey('Votazione')
-    carica = models.ForeignKey('Carica')
-    voto = models.CharField(max_length=120, blank=True)
-    ribelle = models.IntegerField()
-    class Meta:
-        db_table = u'opm_votazione_has_carica'
+class AdministrationCharge(Charge):
+  '''
+  this is a charge in the internal municipality administration
+  '''
+  class Meta(Charge.Meta):
+    db_table = u'om_administration_charge'
 
-class VotazioneHasGruppo(models.Model):
-    votazione = models.ForeignKey('Votazione')
-    gruppo = models.ForeignKey('Gruppo')
-    voto = models.CharField(max_length=120, blank=True)
-    class Meta:
-        db_table = u'opm_votazione_has_gruppo'
-'''        
+
+  
+class ChargeType(models.Model):
+  '''
+  this maps the different charges, within each macro-category
+  i.e. mayor, council president, councelor, city government member, ... for institution charges
+  president, administrator, director, for organization charges
+  director, officer, for administration charges
+  '''
+  name = models.CharField(max_length=255)
+  is_elected = models.BooleanField(default=False)
+  class Meta:
+    db_table = u'om_charge_type'
+
+
+class Group(models.Model):
+  '''
+  the class maps the groups of counselors
+  '''
+  name = models.CharField(max_length=100)
+  acronym = models.CharField(blank=True, max_length=16)
+  counselors = models.ManyToManyField('InstitutionCharge', through='GroupHasCharge')
+  
+class GroupHasCharge(models.Model):
+  group = models.ForeignKey('Group')
+  charge = models.ForeignKey('InstitutionCharge')
+  charge_type = models.CharField(blank=True, max_length=255)
+  start_date = models.DateField()
+  end_date = models.DateField()
+
+  class Meta:
+    db_table = u'om_group_has_charge'
+  
