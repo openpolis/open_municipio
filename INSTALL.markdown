@@ -55,6 +55,7 @@ Installare, nel virtualenv, i pacchetti software che saranno utilizzati.
     pip install south - applicazione django per gestire le migrazioni del DB
     pip install django-piston - per costruire le API REST dal modello (opzionale)
     pip install docutils - per i doc admin autogenerati
+	pip install django-tagging - per il tagging di contenuti traminte generic relation
     pip install MySQL-python - driver mysql (opzionale)
 
 Dopo la generazione dell'ambiente virtualenv, per accedervi e lavorare:

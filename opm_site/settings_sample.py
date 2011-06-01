@@ -93,5 +93,5 @@ INSTALLED_APPS = (
     'south',
     'om',
     'django.contrib.admindocs',
-    
+    'tagging',
 )

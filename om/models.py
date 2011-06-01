@@ -3,7 +3,7 @@ from django.utils.translation import ugettext as _
 from model_utils import Choices
 from model_utils.models import TimeStampedModel, StatusModel, TimeFramedModel
 from model_utils.managers import InheritanceManager
-
+from tagging.fields import TagField
 
 class Act(TimeStampedModel):
   '''
@@ -22,9 +22,10 @@ class Act(TimeStampedModel):
   presentation_date = models.DateField(null=True, help_text="Date of publication, as stated in the act")
   text = models.TextField(blank=True)
   process_steps = models.ManyToManyField('Process', through='ProcessStep')
-  presenters = models.ManyToManyField('InstitutionCharge', db_table='om_act_presenter', related_name='act_presentations')
-  recipients = models.ManyToManyField('InstitutionCharge', db_table='om_act_recipient', related_name='act_destinations')
-
+  presenters = models.ManyToManyField('InstitutionCharge', blank=True, null=True, db_table='om_act_presenter', related_name='act_presentations')
+  recipients = models.ManyToManyField('InstitutionCharge', blank=True, null=True, db_table='om_act_recipient', related_name='act_destinations')
+  tags = TagField()
+	
   objects = InheritanceManager()
 
   def __unicode__(self):
