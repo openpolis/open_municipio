@@ -60,6 +60,7 @@ Installare, nel virtualenv, i pacchetti software che saranno utilizzati.
     pip install docutils - per i doc admin autogenerati
     pip install django-tagging - per il tagging di contenuti traminte generic relation
     pip install MySQL-python - driver mysql (opzionale)
+    pip install django-debug-toolbar (opzionale)
 
 Dopo la generazione dell'ambiente virtualenv, per accedervi e lavorare:
 

@@ -1,6 +1,5 @@
 from piston.handler import AnonymousBaseHandler, BaseHandler
 from piston.utils import rc, throttle, validate
-from urlparse import parse_qs
 from om.models import Person, Institution, InstitutionCharge
 import logging
 
