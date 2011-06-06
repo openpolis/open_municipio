@@ -53,9 +53,12 @@ Installare, nel virtualenv, i pacchetti software che saranno utilizzati.
     pip install django-extensions - estensioni al framework utili per stare più comodi
     pip install django-model-utils - per semplificare la scrittura del modello
     pip install south - applicazione django per gestire le migrazioni del DB
-    pip install django-piston - per costruire le API REST dal modello (opzionale)
+    # pip install django-piston - per costruire le API REST dal modello (opzionale)
+    pip install https://bitbucket.org/brodie/django-piston/get/c4e6eb8f7eb5.tar.gz (versione corretta di django-piston)
+    # pip install piston_mini_client - per costruire il client per le API (deps: httplib2 oauth simplejson)
+    pip install https://github.com/openpolis/piston_mini_client/tarball/master (versione corretta di piston_mini_client)
     pip install docutils - per i doc admin autogenerati
-	pip install django-tagging - per il tagging di contenuti traminte generic relation
+    pip install django-tagging - per il tagging di contenuti traminte generic relation
     pip install MySQL-python - driver mysql (opzionale)
 
 Dopo la generazione dell'ambiente virtualenv, per accedervi e lavorare:

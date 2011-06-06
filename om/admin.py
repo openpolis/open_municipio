@@ -1,4 +1,5 @@
 from django.contrib import admin 
+from django.utils.translation import ugettext_lazy as _
 from om.models import *
 
 class AttachInline(admin.StackedInline): 
@@ -41,7 +42,83 @@ class GroupAdminWithCharges(admin.ModelAdmin):
   inlines = [GroupChargeInline]
 
 
+class ChargeInline(admin.StackedInline):
+  raw_id_fields = ('person', )
+  fieldsets = (
+    (None, {
+      'fields': (('person', 'charge_type', 'start_date', 'end_date'), )
+    }),
+    (_('Advanced options'), {
+      'classes': ('collapse',),
+      'fields': ('description', 'end_reason')
+    })
+  )
+  extra = 1
+  
+class CompanyChargeInline(ChargeInline):
+  model = CompanyCharge
+class AdministrationChargeInline(ChargeInline):
+  model = AdministrationCharge
+class InstitutionChargeInline(ChargeInline):
+  model = InstitutionCharge
+  raw_id_fields = ('person', 'substitutes', 'substituted_by')
+  fieldsets = (
+    (None, {
+      'fields': (('person', 'charge_type', 'op_charge_id', 'start_date', 'end_date'), )
+    }),
+    (_('Advanced options'), {
+      'classes': ('collapse',),
+      'fields': ('description', 'end_reason', ('substitutes', 'substituted_by'))
+    })
+  )
 
+
+
+class ChargeAdmin(admin.ModelAdmin):
+  pass
+  
+class CompanyChargeAdmin(ChargeAdmin):
+  model = CompanyCharge
+  raw_id_fields = ('person', 'company')
+  fieldsets = (
+    (None, {
+      'fields': (('person', 'charge_type', 'company'), 
+                 ('start_date', 'end_date', 'end_reason'), 
+                 'description')
+    }),
+  )
+class AdministrationChargeAdmin(ChargeAdmin):
+  model = AdministrationCharge
+  raw_id_fields = ('person', 'office')
+  fieldsets = (
+    (None, {
+      'fields': (('person', 'charge_type', 'office'), 
+                 ('start_date', 'end_date', 'end_reason'), 
+                 'description')
+    }),
+  )
+class InstitutionChargeAdmin(ChargeAdmin):
+  model = InstitutionCharge
+  raw_id_fields = ('person', 'substitutes', 'substituted_by', 'institution')
+  fieldsets = (
+    (None, {
+      'fields': (('person', 'charge_type', 'op_charge_id', 'institution'), 
+                 ('start_date', 'end_date', 'end_reason'), 
+                 'description',
+                 ('substitutes', 'substituted_by'))
+    }),
+  )
+
+class CompanyAdmin(admin.ModelAdmin):
+  inlines = [CompanyChargeInline]
+class OfficeAdmin(admin.ModelAdmin):
+  inlines = [AdministrationChargeInline]
+class InstitutionAdmin(admin.ModelAdmin):
+  inlines = [InstitutionChargeInline]
+  
+  
+  
+  
 class GroupVoteInline(admin.TabularInline):
   model = GroupVote
   extra = 1
@@ -54,6 +131,16 @@ class ChargeVoteInline(admin.TabularInline):
 class VotationAdminWithGroupsAndChargesVotes(admin.ModelAdmin):
   inlines = [GroupVoteInline, ChargeVoteInline] 
   
+admin.site.register(Person, PersonAdmin)
+admin.site.register(Group, GroupAdminWithCharges)
+admin.site.register(InstitutionCharge, InstitutionChargeAdmin)
+admin.site.register(CompanyCharge, CompanyChargeAdmin)
+admin.site.register(AdministrationCharge, AdministrationChargeAdmin)
+admin.site.register(Institution, InstitutionAdmin)
+admin.site.register(Company, CompanyAdmin)
+admin.site.register(Office, OfficeAdmin)
+
+'''
 admin.site.register(Deliberation, ActAdminWithAttachesAndEmendations)
 admin.site.register(Interrogation)
 admin.site.register(Interpellation)
@@ -62,15 +149,8 @@ admin.site.register(Agenda, ActAdminWithEmendations)
 admin.site.register(Emendation, ActAdminWithAttaches)
 admin.site.register(Attach)
 admin.site.register(Process, ProcessAdmin)
-admin.site.register(Person, PersonAdmin)
-admin.site.register(InstitutionCharge, ChargeAdmin)
-admin.site.register(CompanyCharge, ChargeAdmin)
-admin.site.register(AdministrationCharge, ChargeAdmin)
-admin.site.register(Group, GroupAdminWithCharges)
-admin.site.register(Institution)
-admin.site.register(Company)
-admin.site.register(Office)
 admin.site.register(Decision)
 admin.site.register(Votation, VotationAdminWithGroupsAndChargesVotes)
 admin.site.register(GroupVote)
 admin.site.register(ChargeVote)
+'''

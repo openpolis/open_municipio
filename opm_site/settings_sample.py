@@ -1,5 +1,27 @@
 # Django settings for opm_site project.
 
+OAUTH_AUTH_VIEW = "piston.authentication.oauth_auth_view"
+OAUTH_CALLBACK_VIEW = "piston.authentication.oauth_user_auth"
+
+BASE_DIR = "/home/open_municipio/opm_site"
+
+API_USER     ='admin'
+API_PASSWORD ='Vakka94'
+
+INTERNAL_IPS = ('127.0.0.1',)
+
+DEBUG_TOOLBAR_PANELS = (
+    'debug_toolbar.panels.version.VersionDebugPanel',
+    'debug_toolbar.panels.timer.TimerDebugPanel',
+    'debug_toolbar.panels.settings_vars.SettingsVarsDebugPanel',
+    'debug_toolbar.panels.headers.HeaderDebugPanel',
+    'debug_toolbar.panels.request_vars.RequestVarsDebugPanel',
+    'debug_toolbar.panels.template.TemplateDebugPanel',
+    'debug_toolbar.panels.sql.SQLDebugPanel',
+    'debug_toolbar.panels.signals.SignalDebugPanel',
+    'debug_toolbar.panels.logger.LoggingPanel',
+)
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -71,6 +93,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    #    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
 )
@@ -78,7 +101,8 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'opm_site.urls'
 
 TEMPLATE_DIRS = (
-  '/home/open_municipio/opm_site/templates',
+  os.path.join(BASE_DIR, 'templates'),
+  os.path.join(BASE_DIR, 'piston/templates'),
 )
 
 INSTALLED_APPS = (
@@ -92,6 +116,10 @@ INSTALLED_APPS = (
     'django.contrib.flatpages',
     'south',
     'om',
+    'om.api',
     'django.contrib.admindocs',
     'tagging',
+    'piston',
+#    'debug_toolbar',
+    
 )

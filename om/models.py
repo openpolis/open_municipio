@@ -168,7 +168,7 @@ class Person(models.Model):
   birth_date = models.DateField(_('birth date'))
   birth_location = models.CharField(_('birth location'), blank=True, max_length=128)
   sex = models.CharField(_('sex'), max_length=1, choices=SEX)
-  op_politician_id = models.IntegerField(_('openpolis ID'), blank=True, null=True)
+  op_politician_id = models.IntegerField(_('openpolis politician ID'), blank=True, null=True)
   def __unicode__(self):
     return u'%s %s' % (self.first_name, self.last_name)
 
@@ -184,12 +184,13 @@ class Charge(models.Model):
   '''
   person = models.ForeignKey('Person', verbose_name=_('person'))
   start_date = models.DateField(_('start date'))
-  end_date = models.DateField(_('end date'))
+  end_date = models.DateField(_('end date'), blank=True, null=True)
   end_reason = models.CharField(_('end reason'), blank=True, max_length=255)
   description = models.CharField(_('description'), blank=True, max_length=255, help_text=_('Insert the complete description of the charge, if it gives more information than the charge type'))
 
   class Meta:
     abstract = True
+    
 
 class InstitutionCharge(Charge):
   '''
@@ -197,15 +198,20 @@ class InstitutionCharge(Charge):
   '''
   CHARGE_TYPES = Choices(
     ('may', _('Mayor')),    
-    ('cgm', _('City government member')),
+    ('tgm', _('Town government member')),
     ('cpr', _('Counsil president')),
-    ('cvp', _('Counselor')),
+    ('cvp', _('Counsil vice president')),
+    ('cou', _('Counselor')),    
     ('com', _('Committee member')),
   )
   substitutes = models.OneToOneField('InstitutionCharge', blank=True, null=True, related_name='reverse_substitutes', on_delete=models.PROTECT, verbose_name=_('in substitution of'))
   substituted_by = models.OneToOneField('InstitutionCharge', blank=True, null=True, related_name='reverse_substituted_by', on_delete=models.PROTECT, verbose_name=_('substituted by'))
   institution = models.ForeignKey('Institution', on_delete=models.PROTECT, verbose_name=_('institution'))
   charge_type = models.CharField(_('charge type'), max_length=3, choices=CHARGE_TYPES)
+  op_charge_id = models.IntegerField(_('openpolis institution charge ID'), blank=True, null=True)
+
+  def __unicode__(self):
+    return u'%s - %s' % (self.get_charge_type_display(), self.institution.name)
 
   class Meta(Charge.Meta):
     db_table = u'om_institution_charge'
@@ -223,6 +229,10 @@ class CompanyCharge(Charge):
   )
   company = models.ForeignKey('Company', on_delete=models.PROTECT, verbose_name=_('company'))
   charge_type = models.CharField(_('charge type'), max_length=3, choices=CHARGE_TYPES)
+
+  def __unicode__(self):
+    return u'%s - %s' % (self.get_charge_type_display(), self.company.name)
+
   class Meta(Charge.Meta):
     db_table = u'om_organization_charge'
     verbose_name = _('organization charge')
@@ -238,6 +248,10 @@ class AdministrationCharge(Charge):
   )
   office = models.ForeignKey('Office', on_delete=models.PROTECT, verbose_name=_('office'))
   charge_type = models.CharField(_('charge type'), max_length=3, choices=CHARGE_TYPES)
+
+  def __unicode__(self):
+    return u'%s - %s' % (self.get_charge_type_display(), self.office.name)
+
   class Meta(Charge.Meta):
     db_table = u'om_administration_charge'
     verbose_name = _('administration charge')
@@ -267,7 +281,8 @@ class GroupCharge(models.Model):
   charge_description = models.CharField(blank=True, max_length=255)
   start_date = models.DateField()
   end_date = models.DateField()
-
+  end_reason = models.CharField(blank=True, max_length=255)
+  
   class Meta:
     db_table = u'om_group_charge'
     verbose_name = _('group charge')
@@ -281,7 +296,10 @@ class Body(models.Model):
   '''
   base class for the body, uses the Abstract Class inheritance model
   '''
-  name = models.CharField(max_length=255)
+  name = models.CharField(_('name'), max_length=255)
+  description = models.TextField(_('description'), blank=True)
+  def __unicode__(self):
+    return u'%s' % (self.name,)
 
   class Meta:
     abstract = True
@@ -293,14 +311,13 @@ class Institution(Body):
   '''
   INSTITUTION_TYPES = Choices(
     ('may', _('Mayor')),    
-    ('cou', _('Standard')),
-    ('cig', _('City government')),
+    ('cou', _('Counsil')),
+    ('tgv', _('Town government')),
     ('com', _('Committee')),
     ('jco', _('Joint committee')),
   )
-  parent = models.ForeignKey('Institution', related_name='sub_bodies_set')
+  parent = models.ForeignKey('Institution', related_name='sub_bodies_set', blank=True, null=True)
   institution_type = models.CharField(max_length=3, choices=INSTITUTION_TYPES)
-  description = models.TextField(blank=True)
 
   class Meta(Body.Meta):
     verbose_name = _('institution')
@@ -333,8 +350,8 @@ class Document(TimeStampedModel):
   '''
   document_date = models.DateField(null=True, blank=True)
   text = models.TextField(blank=True)
-  text_url = models.CharField(max_length=255, blank=True)
-  pdf_url = models.CharField(max_length=255, blank=True)
+  text_url = models.URLField(blank=True, verify_exists=True)
+  pdf_url = models.URLField(blank=True, verify_exists=True)
 
   class Meta:
     abstract = True
@@ -354,7 +371,7 @@ class Attach(Document):
 
 class Minute(Document):
   sitting = models.ForeignKey('Sitting')
-  act = models.ManyToManyField('Act')    
+  acts = models.ManyToManyField('Act')    
   pdf_file = models.FileField(upload_to="minutes/%Y%d%m", blank=True)
 
   class Meta(Document.Meta):
@@ -363,7 +380,7 @@ class Minute(Document):
 
 class Outcome(models.Model):
   sitting = models.ForeignKey('Sitting')
-  act = models.OneToOneField('Act', related_name='related_outcome')  
+  acts = models.ManyToManyField('Act')    
   pdf_file = models.FileField(upload_to="outcomes/%Y%d%m", blank=True)
 
   class Meta(Document.Meta):
@@ -371,8 +388,8 @@ class Outcome(models.Model):
     verbose_name_plural = _('outcomes')
 
 class Decision(models.Model):
-  ofice = models.ForeignKey('Office')
-  act = models.OneToOneField('Act', related_name='related_decision')  
+  office = models.ForeignKey('Office')
+  acts = models.ManyToManyField('Act')    
   pdf_file = models.FileField(upload_to="decisions/%Y%d%m", blank=True)
 
   class Meta(Document.Meta):
@@ -453,4 +470,5 @@ class ChargeVote(TimeStampedModel):
     db_table = u'om_charge_vote'    
     verbose_name = _('charge vote')
     verbose_name_plural = _('charge votes')
+    
     
