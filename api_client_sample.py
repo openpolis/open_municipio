@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
-import json
+try:
+    import json
+except ImportError:
+    import simplejson as json
 from om.api.clients import OmAPI
 from piston_mini_client.auth import BasicAuthorizer
 from create_random_persons import create_person
