@@ -5,8 +5,9 @@ OAUTH_CALLBACK_VIEW = "piston.authentication.oauth_user_auth"
 
 BASE_DIR = "/home/open_municipio/opm_site"
 
-API_USER     ='admin'
-API_PASSWORD ='Vakka94'
+API_USER         = 'admin'
+API_PASSWORD     = 'Vakka94'
+API_SERVICE_ROOT = 'http://localhost:8000/api/1.0'
 
 INTERNAL_IPS = ('127.0.0.1',)
 

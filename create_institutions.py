@@ -11,7 +11,7 @@ from datetime import *
 from create_random_persons import create_person
 from django.conf import settings
 
-auth_api = OmAPI(service_root='http://localhost:8000/api/1.0',
+auth_api = OmAPI(service_root=settings.API_SERVICE_ROOT,
                  auth=BasicAuthorizer(settings.API_USER, settings.API_PASSWORD))
 
 '''
