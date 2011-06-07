@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.conf.urls.defaults import *
 
 # Uncomment the next two lines to enable the admin:
@@ -17,13 +18,13 @@ urlpatterns = patterns('',
   (r'^admin/', include(admin.site.urls)),
 
   (r'^js/(?P<path>.*)$', 'django.views.static.serve',
-    { 'document_root': '/Users/guglielmo/Workspace/open_municipio/opm_site/templates/js' }),
+    { 'document_root': '%s/templates/static/js' % settings.BASE_DIR}),
   (r'^css/(?P<path>.*)$', 'django.views.static.serve',
-    { 'document_root': '/Users/guglielmo/Workspace/open_municipio/opm_site/templates/css'}),
+    { 'document_root': '%s/templates/static/css' % settings.BASE_DIR}),
   (r'^images/(?P<path>.*)$', 'django.views.static.serve',
-    { 'document_root': '/Users/guglielmo/Workspace/open_municipio/opm_site/templates/images'}),
+    { 'document_root': '%s/templates/static/images' % settings.BASE_DIR}),
   (r'^fonts/(?P<path>.*)$', 'django.views.static.serve',
-    { 'document_root': '/Users/guglielmo/Workspace/open_municipio/opm_site/templates/fonts'}),
+    { 'document_root': '%s/templates/static/fonts' % settings.BASE_DIR}),
 
   # home page
   (r'^$', RedirectView.as_view(

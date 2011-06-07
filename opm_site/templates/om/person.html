@@ -6,6 +6,11 @@
 {% block content %}
   <section id="content"><!-- #content -->
     <h2>Scheda {{ person }}</h2>
+	<p>
+		data di nascita: {{ person.birth_date }}<br/>
+		localit&agrave; di nascita: {{ person.birth_location }}
+	</p>
+	<br/>
 
     <h3>Incarichi Istituzionali</h3>
     <table id="complete-chart" class="chart tablesorter">
