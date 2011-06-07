@@ -29,6 +29,7 @@ class ProcessAdmin(admin.ModelAdmin):
 
 class PersonAdmin(admin.ModelAdmin):
   search_fields = ['^first_name', '^last_name']
+  prepopulated_fields = {"slug": ("first_name","last_name","birth_date", "birth_location",)}
   
 class ChargeAdmin(admin.ModelAdmin):
   raw_id_fields = ('person', )
@@ -109,11 +110,15 @@ class InstitutionChargeAdmin(ChargeAdmin):
     }),
   )
 
-class CompanyAdmin(admin.ModelAdmin):
+
+class BodyAdmin(admin.ModelAdmin):
+  prepopulated_fields = {"slug": ("name",)}
+
+class CompanyAdmin(BodyAdmin):
   inlines = [CompanyChargeInline]
-class OfficeAdmin(admin.ModelAdmin):
+class OfficeAdmin(BodyAdmin):
   inlines = [AdministrationChargeInline]
-class InstitutionAdmin(admin.ModelAdmin):
+class InstitutionAdmin(BodyAdmin):
   inlines = [InstitutionChargeInline]
   
   

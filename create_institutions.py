@@ -11,6 +11,7 @@ from datetime import *
 from create_random_persons import create_person
 from django.conf import settings
 
+
 auth_api = OmAPI(service_root=settings.API_SERVICE_ROOT,
                  auth=BasicAuthorizer(settings.API_USER, settings.API_PASSWORD))
 
@@ -41,7 +42,9 @@ for i in sorted(institutions.iterkeys()):
 # add references to persons created in the first loop
 for i in sorted(institutions.iterkeys()):
   institution = institutions[i]
-  i_obj = {'name': institution['name'], 'institution_type': institution['institution_type'], 'description': ''}
+  i_obj = {'name': institution['name'], 
+           'institution_type': institution['institution_type'], 
+           'description': ''}
   if 'description' in institution:
     i_obj['description'] = institution['description']
 

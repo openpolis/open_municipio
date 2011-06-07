@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}| Dettaglio {{ person }}{% endblock %}
+
+{% block content %}
+  <section id="content"><!-- #content -->
+    <h2>Scheda {{ person }}</h2>
+
+    <h3>Incarichi Istituzionali</h3>
+    <table id="complete-chart" class="chart tablesorter">
+      <thead>
+        <tr> 
+          <th>{% trans "institution" %}</th>
+          <th>{% trans "charge_type" %}</th>  
+          <th>{% trans "from" %}</th>  
+          <th>{% trans "to" %}</th>  
+        </tr>
+      </thead>
+
+      <tbody>		
+        {% for charge in person.institutioncharge_set.all %}
+          <tr>
+            <td>
+              <p class="politician-id">
+                <a href="{{ charge.institution.get_absolute_url }}">
+                   {{ charge.institution }} 
+                </a>
+              </p>
+            </td>
+            <td class="centered">{{ charge.get_charge_type_display }}</td>
+            <td class="centered">{{ charge.start_date|date:'d/m/Y' }}</td>
+            <td class="centered">{{ charge.end_date|date:'d/m/Y' }}</td>
+          </tr>
+        {% endfor %}    
+
+        </tr>
+      </tbody>
+    </table>
+  </section><!-- end of #content -->  
+{% endblock %}
+

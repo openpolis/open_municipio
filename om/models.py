@@ -167,10 +167,14 @@ class Person(models.Model):
   last_name = models.CharField(_('last name'), max_length=128)
   birth_date = models.DateField(_('birth date'))
   birth_location = models.CharField(_('birth location'), blank=True, max_length=128)
+  slug = models.SlugField(unique=True, blank=True, null=True, max_length=128)
   sex = models.CharField(_('sex'), max_length=1, choices=SEX)
   op_politician_id = models.IntegerField(_('openpolis politician ID'), blank=True, null=True)
   def __unicode__(self):
     return u'%s %s' % (self.first_name, self.last_name)
+
+  def get_absolute_url(self):
+    return "/persone/%s.html" % self.slug
 
   class Meta:
     verbose_name = _('person')
@@ -297,6 +301,7 @@ class Body(models.Model):
   base class for the body, uses the Abstract Class inheritance model
   '''
   name = models.CharField(_('name'), max_length=255)
+  slug = models.SlugField(unique=True, blank=True, null=True, help_text=_('Suggested value automatically generated from name, must be unique'))
   description = models.TextField(_('description'), blank=True)
   def __unicode__(self):
     return u'%s' % (self.name,)
@@ -319,6 +324,9 @@ class Institution(Body):
   parent = models.ForeignKey('Institution', related_name='sub_bodies_set', blank=True, null=True)
   institution_type = models.CharField(max_length=3, choices=INSTITUTION_TYPES)
 
+  def get_absolute_url(self):
+    return "/istituzioni/%s.html" % self.slug
+
   class Meta(Body.Meta):
     verbose_name = _('institution')
     verbose_name_plural = _('institutions')
@@ -327,6 +335,10 @@ class Company(Body):
   '''
   company owned by the municipality, whose executives are nominated politically
   '''
+
+  def get_absolute_url(self):
+    return "/aziende/%s.html" % self.slug
+
   class Meta(Body.Meta):
     verbose_name = _('company')
     verbose_name_plural = _('companies')
@@ -335,6 +347,9 @@ class Office(Body):
   '''
   internal municipality office, that plays a role in the administration of the municipalities
   '''
+  def get_absolute_url(self):
+    return "/uffici/%s.html" % self.slug
+
   class Meta(Body.Meta):
     verbose_name = _('office')
     verbose_name_plural = _('offices')

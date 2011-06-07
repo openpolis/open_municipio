@@ -1,0 +1,330 @@
+/* Created by http://freehtml5templates.com */
+
+/* reset */
+* {
+  margin: 0;
+  padding: 0;
+}
+
+/* render html5 elements as block */
+header, footer, section, aside, nav, article {
+  display: block;
+}
+
+body {
+  background: #f4f2ea;
+  color: #333;
+  font-family: Arial, Helvetica, sans-serif;
+  min-width: 900px;
+}
+	
+/* basics */
+a { 
+  color:#004C9A; 
+  text-decoration: none; 
+}
+a:hover, a:active { color: #333; }
+ul { list-style-type: none; }
+p { line-height: 1.2em; }
+
+table tbody th {
+  text-align: left;
+  font-weight: normal;
+}
+
+
+/* layout */
+
+#wrapper { min-width:1004px; width: auto !important; width: 1004px; margin: 1px auto 10px auto; }
+#wrapper-800 { min-width:750px; width: auto !important; width: 750px; margin: 1px auto 10px auto; }
+
+header { 
+  margin: 0 12px;
+}
+
+/* nav */
+nav { 
+  background: #0a5264; 
+  min-height:24px; 
+  height: auto !important; 
+  padding: 5px;
+ }
+
+nav li { float: left;  }
+nav a, nav .active { 
+  color: #f4f2ea; 
+  font-size: 18px; 
+  padding: 2px 6px; 
+  margin-right: 15px; 
+  -moz-border-radius: 3px; 
+  -webkit-border-radius: 3px; 
+  border-radius: 3px; 
+  font-weight: bold; 
+}
+nav a:hover, nav .active { 
+  color: #f4f2ea; 
+  background-color: #e27221; 
+  text-decoration: none; 
+}
+#wrapper-800 nav { padding-left: 15px; }
+#wrapper-800 nav a, #wrapper-800 #nav .current { margin-right: 10px; }
+
+nav#sub {
+  font-size: 14px;
+  background-image: none;
+  background-color: #fff;
+}
+
+nav#sub a:hover, nav#sub .active { 
+  background-color: #0a5264; 
+  color: #f4f2ea ;
+}
+
+nav#sub a {
+  color:  #e27221;
+  font-weight: normal;  
+}
+
+
+#logos {
+  background: url("/images/bg-header.png") repeat-x -10px;
+  border-top-left-radius: 5px 5px;
+  border-top-right-radius: 5px 5px;
+  color: white;
+  font-size: 11px;
+  height: 86px;
+  padding: 0;
+}
+
+#logos h1 {
+  float: left;
+  margin-top: 0px;
+  margin-left: 25px;
+}
+
+
+
+#main {
+  margin: 0 12px;
+  padding-top: 30px;
+  background-color: #FFF;
+  overflow: hidden;
+}
+
+
+#content {
+  width: 96%;
+  float: left;
+  margin-left: 20px;
+}
+
+#sidebar {
+  float: right;
+  width: 15%;
+}
+#sidebar h3 {
+  margin-bottom: 1em;
+}
+#content.with-sidebar {
+  width: 76%;
+}
+
+
+footer {
+  margin: 0 12px;
+  clear: both;
+}
+
+
+
+#content ul, #content ol, #content hr {
+  margin-bottom: 24px;
+}
+
+#content ul ul, #content ol ol, #content ul ol, #content ol ul {
+  margin-bottom: 0;
+}
+
+#content h1, #content h2, #content h3, #content h4, #content h5, #content h6 {
+  color: #333;
+  margin: 0 0 20px 0;
+  line-height: 1.5em;
+}
+
+#content h2 {
+  font-size: 28px;
+}
+
+.alignleft, img.alignleft {
+display: inline;
+float: left;
+margin-right: 10px;
+}
+
+.alignright, img.alignright {
+display: inline;
+float: right;
+margin-left: 10px;
+}
+
+.aligncenter, img.aligncenter {
+clear: both;
+display: block;
+margin-left: auto;
+margin-right: auto;
+}
+
+#error-text {
+  font-size: 20px;
+  margin: 4em auto;
+  text-align: center;
+}
+
+#intro-text {
+  font-size: 16px;
+  margin: 0.5em 0 1em 0;
+  padding: 0 0.5em;
+  line-height: 1.4em;
+}
+
+#top-deputati {
+  width: 48%;
+  float: left;
+}
+
+#top-senatori {
+  width: 48%;
+  float: right;
+  
+}
+
+#top-deputati h3, #top-senatori h3 {
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+#top-deputati h3 {
+  background-color: #3c8cb5;
+}
+#top-senatori h3 {
+  background-color: #f3b846;
+}
+
+
+
+.top-chart {
+  width: 45%;
+  padding: 0.5em;
+  margin-bottom: 1em;
+}
+.top-chart h3 {
+  text-align: center;
+}
+.top-chart .link-to-all {
+  text-align: right;
+  margin: 0.5em 0 1em 0;
+}
+
+.top-chart table.chart th { padding-top: 0px; }
+#city-search {
+  text-align: left;
+  width: 35%;
+  margin: 0 auto;
+  margin-bottom: 1em;
+  clear: both;
+}
+
+#city-search label {
+  font-size: 18px;
+  color: #789FBB;
+  padding: 15px 0 25px 0;
+  font-weight: bold;
+}
+#city-search input {
+  font-size: 18px;
+  color: #999;
+}
+
+#language-selector { color: white; font-size: 12px;}
+
+
+#footer-area {
+  background: #fff;
+  color: #000;
+  font-size: 90%;
+  padding: 18px 0;
+  overflow: hidden;
+  /* curved border radius */
+  -moz-border-radius-bottomright: 8px;
+  -moz-border-radius-bottomleft: 8px;
+  -webkit-border-bottom-left-radius: 8px;
+  -webkit-border-bottom-right-radius: 8px;
+}
+
+.footer-segment {
+  float: left;
+  margin-right: 20px;
+  margin-left: 20px;
+  width: 190px;
+}
+
+
+table.chart { 
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 1em;
+}
+
+table.chart thead {
+  background: url("/images/bg-table-head.png") repeat-x scroll left top transparent;
+  border-left: 1px solid #E5E5E5;
+  border-top: 1px solid #E5E5E5;
+  height: 30px;
+}
+
+table.chart thead th {
+  background: transparent url("/images/bg-table-head-cell.png") no-repeat top right;
+}
+
+
+table.chart thead th {
+  padding: 0 5px 5px 5px;
+  font-size: 11px;
+  vertical-align: bottom;
+}
+
+table.chart tbody th, table.chart tbody td  { 
+  padding: 10px 5px 5px 5px; 
+  border-bottom: 1px solid #dfe0e0; 
+  border-top: 1px solid #fff; 
+  color: #000;
+}
+table.chart tbody tr { padding-bottom: 3px; }
+table.chart tbody td.centered { text-align: center; }
+table.chart tbody tr.even { background-color: #ffffff; }
+table.chart tbody tr.odd { background-color: #fafafa; }
+table.chart tbody tr:hover { background-color: #fffaea; }
+table.chart td.numeric-value { font-weight: bold; text-align: center; padding-right: 0.4em;}
+table.chart .politician-id img { 
+  background: transparent url("/images/bg-ico-portrait-small.png") no-repeat center center; 
+  padding: 6px; 
+  margin: 0 2px; 
+  vertical-align: middle; 
+}
+
+table.chart tbody tr .evident {
+  background-color: #FEF3DB;
+  border-right: 1px solid white;
+}
+
+table.chart thead th.evident {
+  background: transparent url("/images/bg-table-head-cell-evident.png") no-repeat top right;
+  border-left: 1px solid #E6C29D;
+  border-top: 1px solid #E6C29D;
+}
+table.chart td span.small {
+  font-size: 11px;
+  color: #888;
+}
+
+

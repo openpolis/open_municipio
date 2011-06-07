@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-04 09:44+0200\n"
+"POT-Creation-Date: 2011-06-07 13:22+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -47,3 +47,39 @@ msgid "Please correct the error below."
 msgid_plural "Please correct the errors below."
 msgstr[0] ""
 msgstr[1] ""
+
+#: templates/om/base.html:7
+msgid "openmunicipio"
+msgstr "amministrazione sito openmunicipio"
+
+#: templates/om/base.html:53
+msgid "language"
+msgstr "lingua"
+
+#: templates/om/base.html:63
+msgid "go"
+msgstr "vai"
+
+#: templates/om/base.html:89
+msgid "ideated, designed and developed by:"
+msgstr "ideato, progettato e sviluppato da"
+
+#: templates/om/institution.html:19
+msgid "name"
+msgstr "nome"
+
+#: templates/om/institution.html:20
+msgid "charge_type"
+msgstr "incarico"
+
+#: templates/om/institution.html:21
+msgid "from"
+msgstr "dal"
+
+#: templates/om/institution.html:22
+msgid "to"
+msgstr "al"
+
+#: templates/om/institution.html:32
+msgid "go to page on openparlamento.it"
+msgstr "vai alla pagina su openparlamento.it"

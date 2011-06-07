@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}| Elenco istituzioni{% endblock %}
+
+{% block istituzioni_class %}
+  class="active"
+{% endblock %}
+
+{% block content %}
+<section id="content"><!-- #content -->
+  <h2>Istituzioni</h2>
+  <ul>
+      {% for institution in object_list %}
+          <li><a href="{{ institution.get_absolute_url }}">{{ institution.name }}</a></li>
+      {% endfor %}
+  </ul>
+</section><!-- end of #content -->  
+{% endblock %}

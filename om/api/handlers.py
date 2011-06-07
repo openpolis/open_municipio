@@ -1,6 +1,7 @@
 from piston.handler import AnonymousBaseHandler, BaseHandler
 from piston.utils import rc, throttle, validate
 from om.models import Person, Institution, InstitutionCharge
+from django.template.defaultfilters import slugify
 import logging
 
 from django import forms
@@ -12,12 +13,12 @@ class InstitutionForm(forms.ModelForm):
 
 class AnonymousInstitutionHandler(AnonymousBaseHandler):
   model = Institution
-  fields = ('id', 'name', 'description', 'institution_type', 'parent')
+  fields = ('id', 'name', 'slug', 'description', 'institution_type', 'parent')
   allowed_methods = ('GET')
 
 class InstitutionHandler(BaseHandler):
   allowed_methods = ('GET', 'POST', 'PUT', 'DELETE')
-  fields = ('id', 'name', 'description', 'institution_type', 'parent')
+  fields = ('id', 'name', 'slug', 'description', 'institution_type', 'parent')
   exclude = ('id')
   model = Institution
   anonymous = AnonymousInstitutionHandler
@@ -38,6 +39,11 @@ class InstitutionHandler(BaseHandler):
         name=data['name'],
         institution_type=data['institution_type']
       )
+      if 'slug' in data:
+        institution.slug = data['slug']
+      else:
+        institution.slug = slugify(data['name'])
+        
       if 'description' in data:
         institution.description = data['description']
       if 'parent' in data:
@@ -54,12 +60,12 @@ class InstitutionHandler(BaseHandler):
 
       return rc.CREATED
     else:
-      super(PersonHandler, self).create(request)
+      super(InstitutionHandler, self).create(request)
 
 
 class PersonHandler(BaseHandler):
     allowed_methods = ('GET', 'POST', 'PUT', 'DELETE')
-    fields = ('id', 'first_name', 'last_name', 'sex', 'birth_date', 'birth_location')
+    fields = ('id', 'first_name', 'last_name', 'sex', 'birth_date', 'birth_location', 'slug', 'op_politician_id')
     exclude = ('id')
     model = Person
     anonymous = 'AnonymousPersonHandler'
@@ -80,6 +86,35 @@ class PersonHandler(BaseHandler):
         if birth_location:
           q = q.filter(birth_location__iexact=birth_location)
         return q 
+        
+    def create(self, request):
+      '''
+      overriding standard create to slugify, if slug is not given
+      '''
+      if request.content_type and request.data:
+        data = request.data
+
+        person = self.model(
+          first_name=data['first_name'],
+          last_name=data['last_name'],
+          birth_date=data['birth_date'],
+          birth_location=data['birth_location'],
+          sex=data['sex']
+        )
+        if 'slug' in data:
+          person.slug = data['slug']
+        else:
+          person.slug = slugify("%s %s %s %s" % (data['first_name'], data['last_name'], data['birth_date'], data['birth_location']))
+
+        if 'op_politician_id' in data:
+          person.op_politician_id = data['op_politician_id']
+
+        person.save()
+
+        return rc.CREATED
+      else:
+        super(PersonHandler, self).create(request)
+      
 
 class AnonymousPersonHandler(AnonymousBaseHandler, PersonHandler):
    model = Person

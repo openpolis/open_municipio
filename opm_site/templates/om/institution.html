@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}| Dettaglio {{ institution.name }}{% endblock %}
+
+{% block istituzioni_class %}
+  class="active"
+{% endblock %}
+
+{% block content %}
+  <section id="content" class="with-sidebar"><!-- #content -->
+    <h2>{{ institution.name }}</h2>
+    <p>
+      {{ institution.description }}
+    </p>
+
+    <table id="complete-chart" class="chart tablesorter">
+      <thead>
+        <tr> 
+          <th>{% trans "name" %}</th>
+          <th>{% trans "charge_type" %}</th>  
+          <th>{% trans "from" %}</th>  
+          <th>{% trans "to" %}</th>  
+        </tr>
+      </thead>
+
+      <tbody>		
+        {% for charge in institution.institutioncharge_set.all %}
+          <tr>
+            <td>
+              <p class="politician-id">
+                <a href="{{ charge.person.get_absolute_url }}" 
+                   target="_blank" title="{% trans 'go to page on openparlamento.it' %}">
+                   {{ charge.person }}
+                </a>
+              </p>
+            </td>
+            <td class="centered">{{ charge.get_charge_type_display }}</td>
+            <td class="centered">{{ charge.start_date|date:'d/m/Y' }}</td>
+            <td class="centered">{{ charge.end_date|date:'d/m/Y' }}</td>
+          </tr>
+        {% endfor %}    
+
+        </tr>
+      </tbody>
+    </table>
+  </section><!-- end of #content -->  
+{% endblock %}
+
+
+{% block sidebar %}
+  <aside id="sidebar"><!-- sidebar -->
+    <h3>Istituzioni</h3>
+    <ul>
+        {% for item in institutions_list %}
+            <li><a href="{{ item.get_absolute_url }}">{{ item.name }}</a></li>
+        {% endfor %}
+    </ul>
+	</aside><!-- end of sidebar -->
+{% endblock %}

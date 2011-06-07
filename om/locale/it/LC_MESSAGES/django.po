@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-04 10:32+0200\n"
+"POT-Creation-Date: 2011-06-07 13:19+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,10 +18,9 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
-#: admin.py:60
-#, fuzzy
+#: admin.py:51 admin.py:69
 msgid "Advanced options"
-msgstr "Votazione annullata"
+msgstr "Opzioni avanzate"
 
 #: models.py:27
 msgid ""
@@ -71,11 +70,11 @@ msgstr "destinatari"
 msgid "emitting institution"
 msgstr "istituzione emanante"
 
-#: models.py:63 models.py:203
+#: models.py:63 models.py:204
 msgid "Counselor"
 msgstr "Consigliere"
 
-#: models.py:64 models.py:222
+#: models.py:64 models.py:226
 msgid "President"
 msgstr "Presidente"
 
@@ -87,7 +86,7 @@ msgstr "Assessore"
 msgid "City Government"
 msgstr "Giunta"
 
-#: models.py:67 models.py:200 models.py:301
+#: models.py:67 models.py:200 models.py:314
 msgid "Mayor"
 msgstr "Sindaco"
 
@@ -208,7 +207,6 @@ msgid "sex"
 msgstr "sesso"
 
 #: models.py:171
-#, fuzzy
 msgid "openpolis politician ID"
 msgstr "ID di openpolis"
 
@@ -232,7 +230,7 @@ msgstr "data fine incarico"
 msgid "end reason"
 msgstr "motivazione fine incarico"
 
-#: models.py:189 models.py:288
+#: models.py:189 models.py:301
 msgid "description"
 msgstr "descrizione"
 
@@ -245,247 +243,253 @@ msgstr ""
 "informazioni rispetto al tipo incarico"
 
 #: models.py:201
-msgid "City government member"
+msgid "Town government member"
 msgstr "Assessore"
 
 #: models.py:202
 msgid "Counsil president"
 msgstr "Presidente del Consiglio"
 
-#: models.py:204
+#: models.py:203
+msgid "Counsil vice president"
+msgstr "Vicepresidente del Consiglio"
+
+#: models.py:205
 msgid "Committee member"
 msgstr "Membro di commissione"
 
-#: models.py:206
+#: models.py:207
 msgid "in substitution of"
 msgstr "sostituisce"
 
-#: models.py:207
+#: models.py:208
 msgid "substituted by"
 msgstr "sostituito da"
 
-#: models.py:208 models.py:311
+#: models.py:209 models.py:328
 msgid "institution"
 msgstr "istituzione"
 
-#: models.py:209 models.py:227 models.py:242
+#: models.py:210 models.py:231 models.py:250
 msgid "charge type"
 msgstr "tipo incarico"
 
-#: models.py:210
-#, fuzzy
+#: models.py:211
 msgid "openpolis institution charge ID"
-msgstr "incarico istituzionale"
+msgstr "ID carica openpolis"
 
-#: models.py:214
+#: models.py:218
 msgid "institution charge"
 msgstr "incarico istituzionale"
 
-#: models.py:215
+#: models.py:219
 msgid "institution charges"
 msgstr "incarichi istituzionali"
 
-#: models.py:223
+#: models.py:227
 msgid "Chief Executive Officer"
 msgstr "Amministratore delegato"
 
-#: models.py:224
+#: models.py:228
 msgid "Member of the board"
 msgstr "Consigliere di amministrazione"
 
-#: models.py:226 models.py:319
+#: models.py:230 models.py:336
 msgid "company"
 msgstr "azienda"
 
-#: models.py:230
+#: models.py:238
 msgid "organization charge"
 msgstr "incarico aziendale"
 
-#: models.py:231
+#: models.py:239
 msgid "organization charges"
 msgstr "incarichi aziendali"
 
-#: models.py:238
+#: models.py:246
 msgid "Director"
 msgstr "Direttore"
 
-#: models.py:239
+#: models.py:247
 msgid "Executive"
 msgstr "Funzionario"
 
-#: models.py:241 models.py:327
+#: models.py:249 models.py:344
 msgid "office"
 msgstr "ufficio"
 
-#: models.py:245
+#: models.py:257
 msgid "administration charge"
 msgstr "incarico amministrativo"
 
-#: models.py:246
+#: models.py:258
 msgid "administration charges"
 msgstr "incarichi amministrativi"
 
-#: models.py:259
+#: models.py:271
 msgid "group"
 msgstr "gruppo"
 
-#: models.py:260
+#: models.py:272
 msgid "groups"
 msgstr "gruppi"
 
-#: models.py:276
+#: models.py:288
 msgid "group charge"
 msgstr "carica gruppo"
 
-#: models.py:277
+#: models.py:289
 msgid "group charges"
 msgstr "cariche gruppo"
 
-#: models.py:287
-#, fuzzy
+#: models.py:299
 msgid "name"
-msgstr "cognome"
+msgstr "nome"
 
-#: models.py:302
-msgid "Standard"
-msgstr ""
+#: models.py:300
+msgid "Suggested value automatically generated from name, must be unique"
+msgstr "Valore suggerito automaticamente a partire dal campo nome, deve essere unico"
 
-#: models.py:303
-msgid "City government"
+#: models.py:315
+msgid "Counsil"
+msgstr "Consiglio"
+
+#: models.py:316
+msgid "Town government"
 msgstr "Giunta"
 
-#: models.py:304
+#: models.py:317
 msgid "Committee"
 msgstr "Commissione"
 
-#: models.py:305
+#: models.py:318
 msgid "Joint committee"
 msgstr "Commissione riunita"
 
-#: models.py:312
+#: models.py:329
 msgid "institutions"
 msgstr "istituzioni"
 
-#: models.py:320
+#: models.py:337
 msgid "companies"
 msgstr "aziende"
 
-#: models.py:328
+#: models.py:345
 msgid "offices"
 msgstr "uffici"
 
-#: models.py:356
+#: models.py:373
 msgid "attach"
 msgstr "allegato"
 
-#: models.py:357
+#: models.py:374
 msgid "attaches"
 msgstr "allegati"
 
-#: models.py:366
+#: models.py:383
 msgid "minute"
 msgstr "verbale"
 
-#: models.py:367
+#: models.py:384
 msgid "minutes"
 msgstr "verbali"
 
-#: models.py:375
+#: models.py:392
 msgid "outcome"
 msgstr "esito"
 
-#: models.py:376
+#: models.py:393
 msgid "outcomes"
 msgstr "esiti"
 
-#: models.py:384
+#: models.py:401
 msgid "decision"
 msgstr "decisione"
 
-#: models.py:385
+#: models.py:402
 msgid "decisions"
 msgstr "decisioni"
 
-#: models.py:396
+#: models.py:413
 msgid "sitting"
 msgstr "seduta"
 
-#: models.py:397
+#: models.py:414
 msgid "sittings"
 msgstr "sedute"
 
-#: models.py:405
+#: models.py:422
 msgid "Passed"
 msgstr "Accettato"
 
-#: models.py:406
+#: models.py:423
 msgid "Rejected"
 msgstr "Respinto"
 
-#: models.py:422
+#: models.py:439
 msgid "votation"
 msgstr "votazione"
 
-#: models.py:423
+#: models.py:440
 msgid "votations"
 msgstr "votazioni"
 
-#: models.py:427 models.py:442
+#: models.py:444 models.py:459
 msgid "Yes"
 msgstr "Sì"
 
-#: models.py:428 models.py:443
+#: models.py:445 models.py:460
 msgid "No"
 msgstr "No"
 
-#: models.py:429 models.py:444
+#: models.py:446 models.py:461
 msgid "Abstained"
 msgstr "Astenuto"
 
-#: models.py:430
+#: models.py:447
 msgid "Non computable"
 msgstr "Non calcolabile"
 
-#: models.py:437
+#: models.py:454
 msgid "group vote"
 msgstr "voto gruppo"
 
-#: models.py:438
+#: models.py:455
 msgid "group votes"
 msgstr "voti gruppo"
 
-#: models.py:445
+#: models.py:462
 msgid "Is on mission"
 msgstr "In missione"
 
-#: models.py:446
+#: models.py:463
 msgid "Is absent"
 msgstr "Assente"
 
-#: models.py:447
+#: models.py:464
 msgid "Participates to an invalid votation"
 msgstr "Partecipante votazione non valida"
 
-#: models.py:448
+#: models.py:465
 msgid "President during votation"
 msgstr "Presidente di turno"
 
-#: models.py:449
+#: models.py:466
 msgid "Requires votation, but does not vote"
 msgstr "Richiedente la votazione e non votante"
 
-#: models.py:450
+#: models.py:467
 msgid "Canceled votation"
 msgstr "Votazione annullata"
 
-#: models.py:451
+#: models.py:468
 msgid "Secret votation"
 msgstr "Voto segreto"
 
-#: models.py:459
+#: models.py:476
 msgid "charge vote"
 msgstr "voto carica"
 
-#: models.py:460
+#: models.py:477
 msgid "charge votes"
 msgstr "voti carica"
