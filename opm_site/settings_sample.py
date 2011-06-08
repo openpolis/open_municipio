@@ -114,7 +114,6 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django_extensions',
     'django.contrib.admin',
-    'django.contrib.flatpages',
     'south',
     'om',
     'om.api',

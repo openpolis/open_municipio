@@ -1,6 +1,13 @@
-from django.views.generic import DetailView
+from django.views.generic import DetailView, TemplateView
 from om.models import Institution
 
+
+class HomeView(TemplateView):
+    template_name = "home.html"
+
+class InfoView(TemplateView):
+    template_name = "info.html"
+    
 class InstitutionDetailView(DetailView):
 
     context_object_name = "institution"

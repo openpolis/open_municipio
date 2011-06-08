@@ -9,7 +9,7 @@ from om.models import Institution, Office, Company, Person
 from django.views.generic.base import RedirectView
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
-from views import InstitutionDetailView
+from views import InstitutionDetailView, HomeView, InfoView
 
 urlpatterns = patterns('',
   (r'^api/1.0/', include('om.api.urls')),
@@ -27,10 +27,10 @@ urlpatterns = patterns('',
     { 'document_root': '%s/templates/static/fonts' % settings.BASE_DIR}),
 
   # home page
-  (r'^$', RedirectView.as_view(
-    url='/home',
-    permanent=True
-  )),
+  (r'^$', HomeView.as_view()),  
+  
+  # info page
+  (r'^info.html$', InfoView.as_view()),  
 
   (r'^persone/(?P<slug>[-\w]+).html$', DetailView.as_view(
     model=Person,
@@ -52,7 +52,5 @@ urlpatterns = patterns('',
     model=Company,
     template_name='companies_list.html'
   )),
-
-  (r'', include('django.contrib.flatpages.urls')),
 
 )
