@@ -393,8 +393,8 @@ class Document(TimeStampedModel):
   """
   document_date = models.DateField(null=True, blank=True)
   text = models.TextField(blank=True)
-  text_url = models.URLField(blank=True, verify_exists=True)
-  pdf_url = models.URLField(blank=True, verify_exists=True)
+  text_url = models.URLField(blank=True)
+  pdf_url = models.URLField(blank=True)
 
   class Meta:
     abstract = True
