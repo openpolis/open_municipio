@@ -114,14 +114,13 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.messages',
-    'django_extensions',
     'django.contrib.admin',
+    'django.contrib.admindocs',
+    'django_extensions',
     'south',
     'om',
     'om.api',
-    'django.contrib.admindocs',
     'tagging',
     'piston',
 #    'debug_toolbar',
-    
 )
