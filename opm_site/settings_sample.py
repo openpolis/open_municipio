@@ -1,5 +1,7 @@
 # Django settings for opm_site project.
 
+import os
+
 OAUTH_AUTH_VIEW = "piston.authentication.oauth_auth_view"
 OAUTH_CALLBACK_VIEW = "piston.authentication.oauth_user_auth"
 
