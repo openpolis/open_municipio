@@ -1,0 +1,4 @@
+docutils
+-e hg+https://bitbucket.org/brodie/django-piston#egg=django-piston
+-e git://github.com/openpolis/piston_mini_client.git#egg=piston_mini_client
+django-debug-toolbar
