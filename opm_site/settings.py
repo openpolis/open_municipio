@@ -1,15 +1,27 @@
-# Django settings for opm_site project.
+## Django global settings for the "OpenMunicipio" web application.
+##
+## Note that machine-specific settings (such as DB connection parameters,
+## absolute filesystem paths, passwords, etc.) should be placed within 
+## a separate Python module, beginning with this import statement:
+##
+## .. code:: python
+##     from opm_site.settings import * 
+##
+## This way, machine-specific settings override project-level settings.
+##
+## A common naming scheme for these overlay settings files is as follows:
+##
+## * ``local_settings.py`` -- for development machines
+## * ``settings_staging.py`` -- for staging servers
+## * ``settings_production.py`` -- for production servers
 
 import os
 
+PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
+VERSION = __version__ = file(os.path.join(PROJECT_ROOT, 'VERSION')).read().strip()
+
 OAUTH_AUTH_VIEW = "piston.authentication.oauth_auth_view"
 OAUTH_CALLBACK_VIEW = "piston.authentication.oauth_user_auth"
-
-BASE_DIR = "/home/open_municipio/opm_site"
-
-API_USER         = 'admin'
-API_PASSWORD     = 'Vakka94'
-API_SERVICE_ROOT = 'http://localhost:8000/api/1.0'
 
 INTERNAL_IPS = ('127.0.0.1',)
 
@@ -33,17 +45,6 @@ ADMINS = (
 )
 
 MANAGERS = ADMINS
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3', 
-        'NAME': '/Users/guglielmo/Workspace/open_municipio/om.db',
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': '',
-        'PORT': '',
-    }
-}
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -70,7 +71,7 @@ USE_L10N = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = '/Users/guglielmo/Workspace/open_municipio/uploads/'
+MEDIA_ROOT = ''
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
@@ -81,9 +82,6 @@ MEDIA_URL = ''
 # trailing slash.
 # Examples: "http://foo.com/media/", "/media/".
 ADMIN_MEDIA_PREFIX = '/media/'
-
-# Make this unique, and don't share it with anybody.
-SECRET_KEY = '(c!0th6qo2vbp0os80zj_n!8p%n@e=ypfrpn4%!mydd(mgfm1e'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -96,7 +94,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    #    'debug_toolbar.middleware.DebugToolbarMiddleware',
+#   'debug_toolbar.middleware.DebugToolbarMiddleware', 
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
 )
@@ -104,8 +102,8 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'opm_site.urls'
 
 TEMPLATE_DIRS = (
-  os.path.join(BASE_DIR, 'templates'),
-  os.path.join(BASE_DIR, 'piston/templates'),
+  os.path.join(PROJECT_ROOT, 'templates'),
+  os.path.join(PROJECT_ROOT, 'piston/templates'),
 )
 
 INSTALLED_APPS = (
@@ -122,5 +120,5 @@ INSTALLED_APPS = (
     'om.api',
     'tagging',
     'piston',
-#    'debug_toolbar',
+#   'debug_toolbar',
 )
