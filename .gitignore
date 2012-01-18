@@ -1,6 +1,7 @@
 *~
 *.pyc
 *.db
+opm_site/local_settings.py
 apache
 om/migrations/*
 uploads/attached_documents/*
