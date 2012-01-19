@@ -1,3 +1,23 @@
+## Global URLconf module for the "OpenMunicipio" web application.
+##
+## Since some URL patterns may be machine-specific (think about static files served
+## by Django in development setups), it's advisable to keep those URL patterns
+## within a separate URLconf module, beginning with this import statement:
+##
+## .. code:: python
+##
+##     from opm_site.urls import * 
+##
+## This way, project-level URL patterns are transparently added to 
+## machine-specific ones.
+##
+## A common naming scheme for these "overlay" URLconf modules is as follows:
+##
+## * ``local_urls.py`` -- for development machines
+## * ``urls_staging.py`` -- for staging servers
+## * ``urls_production.py`` -- for production servers
+
+
 from django.conf import settings
 from django.conf.urls.defaults import *
 
@@ -13,18 +33,8 @@ from views import InstitutionDetailView, HomeView, InfoView
 
 urlpatterns = patterns('',
   (r'^api/1.0/', include('om.api.urls')),
-
   (r'^admin/doc/', include('django.contrib.admindocs.urls')),
   (r'^admin/', include(admin.site.urls)),
-
-  (r'^js/(?P<path>.*)$', 'django.views.static.serve',
-    { 'document_root': '%s/templates/static/js' % settings.BASE_DIR}),
-  (r'^css/(?P<path>.*)$', 'django.views.static.serve',
-    { 'document_root': '%s/templates/static/css' % settings.BASE_DIR}),
-  (r'^images/(?P<path>.*)$', 'django.views.static.serve',
-    { 'document_root': '%s/templates/static/images' % settings.BASE_DIR}),
-  (r'^fonts/(?P<path>.*)$', 'django.views.static.serve',
-    { 'document_root': '%s/templates/static/fonts' % settings.BASE_DIR}),
 
   # home page
   (r'^$', HomeView.as_view()),  
