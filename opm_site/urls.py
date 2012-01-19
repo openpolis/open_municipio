@@ -40,27 +40,27 @@ urlpatterns = patterns('',
   (r'^$', HomeView.as_view()),  
   
   # info page
-  (r'^info.html$', InfoView.as_view()),  
+  (r'^info/$', InfoView.as_view()),  
 
-  (r'^persone/(?P<slug>[-\w]+).html$', DetailView.as_view(
+  (r'^persone/(?P<slug>[-\w]+)/$', DetailView.as_view(
     model=Person,
     context_object_name='person',
-    template_name='person.html')),
+    template_name='person_detail.html')),
 
-  (r'^istituzioni.html$', ListView.as_view(
+  (r'^istituzioni/$', ListView.as_view(
     model=Institution,
-    template_name='institutions_list.html'
+    template_name='institution_list.html'
   )),
-  (r'^istituzioni/(?P<slug>[-\w]+).html$', InstitutionDetailView.as_view(
-    template_name='institution.html')),
+  (r'^istituzioni/(?P<slug>[-\w]+)/$', InstitutionDetailView.as_view(
+    template_name='institution_detail.html')),
     
-  (r'^uffici.html$', ListView.as_view(
+  (r'^uffici/$', ListView.as_view(
     model=Office,
-    template_name='offices_list.html'
+    template_name='office_list.html'
   )), 
-  (r'^aziende.html$', ListView.as_view(
+  (r'^aziende/$', ListView.as_view(
     model=Company,
-    template_name='companies_list.html'
+    template_name='company_list.html'
   )),
 
 )
