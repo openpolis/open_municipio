@@ -1,6 +1,8 @@
+## -*- mode: python -*-
+## Django settings specific for your development environment should be placed below
+
 from opm_site.settings import * 
 
-## Django settings specific for your development environment should be placed below
 
 API_USER         = 'foo'
 API_PASSWORD     = 'secret'

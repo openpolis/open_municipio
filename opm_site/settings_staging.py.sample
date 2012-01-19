@@ -1,3 +1,5 @@
+## -*- mode: python -*-
+## Django settings specific for your staging server should be placed here
+
 from opm_site.settings import * 
 
-## Django settings specific for your staging server should be placed below

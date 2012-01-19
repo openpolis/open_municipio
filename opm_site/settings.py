@@ -9,7 +9,7 @@
 ##
 ## This way, machine-specific settings override project-level settings.
 ##
-## A common naming scheme for these overlay settings files is as follows:
+## A common naming scheme for these "overlay" settings files is as follows:
 ##
 ## * ``local_settings.py`` -- for development machines
 ## * ``settings_staging.py`` -- for staging servers

@@ -1,3 +1,5 @@
+## -*- mode: python -*-
+## Django settings specific for your production server should be placed below
+
 from opm_site.settings import * 
 
-## Django settings specific for your production server should be placed below
