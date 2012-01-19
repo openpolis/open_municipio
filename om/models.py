@@ -14,16 +14,20 @@ add_introspection_rules([], ["^tagging\.fields\.TagField"])
 # Acts
 #
 class Act(TimeStampedModel):
-  '''
+  """
   This is the base class for all the different act types: it contains the common fields for
-  deliberations, interrogations, interpellations, motions, agendas and emendations
+  deliberations, interrogations, interpellations, motions, agendas and emendations.
   
-  It is a TimeStampedModel, so it tracks creation and modification timestamps for each record.
+  It is a ``TimeStampedModel``, so it tracks creation and modification timestamps for each record.
   
   Inheritance is done through multi-table inheritance, since browsing the whole set of acts may be useful.
-  The default Manager is the model_utils.managers.InheritanceManager (https://bitbucket.org/carljm/django-model-utils/src),
-  that enables the select_subclasses() method, allowing the retrieval of subclasses, when needed.
-  '''
+  The default manager is the ``InheritanceManager`` (from package ``django-model-utils``_),
+  that enables the ``select_subclasses()`` method, allowing the retrieval of subclasses, when needed.
+
+
+  .. _django-model-utils: https://bitbucket.org/carljm/django-model-utils/src
+
+  """
   idnum = models.CharField(max_length=64, blank=True, help_text=_("A string representing the identification number or sequence, used internally by the administration."))
   title = models.CharField(_('title'), max_length=255, blank=True)
   adj_title = models.CharField(_('adjoint title'), max_length=255, blank=True, help_text=_("An adjoint title, added to further explain an otherwise cryptic title"))
@@ -116,10 +120,11 @@ class Agenda(Act):
     verbose_name_plural = _('agendas')
 
 class Emendation(Act):
-  '''
-  an emendation relates to an act, and it can relate theoretically to another emendation (sub-emendations)
-  optionally, an emendation relates to an act section (article, paragraph)
-  '''
+  """
+  An emendation relates to an act, and it can relate theoretically to another emendation (sub-emendations).
+
+  Optionally, an emendation relates to an act section (article, paragraph).
+  """
   act = models.ForeignKey('Act', related_name='related_emendations', on_delete=models.PROTECT)
   act_section = models.ForeignKey('ActSection', null=True, blank=True, on_delete=models.PROTECT)
 
@@ -174,6 +179,7 @@ class Person(models.Model):
     return u'%s %s' % (self.first_name, self.last_name)
 
   def get_absolute_url(self):
+    # FIXME: ``get_absolute_url`` shouldn't contain hard-coded URLs
     return "/persone/%s.html" % self.slug
 
   class Meta:
@@ -182,10 +188,11 @@ class Person(models.Model):
 
 
 class Charge(models.Model):
-  '''
+  """
   This is the base class for the different macro-types of charges (institution, organization, administration).
-  Inheritance here is done through Abstract Classes, since there is no apparent need to browse all 
-  '''
+
+  Inheritance here is done through abstract classes, since there is no apparent need to browse all.
+  """
   person = models.ForeignKey('Person', verbose_name=_('person'))
   start_date = models.DateField(_('start date'))
   end_date = models.DateField(_('end date'), blank=True, null=True)
@@ -197,9 +204,9 @@ class Charge(models.Model):
     
 
 class InstitutionCharge(Charge):
-  '''
-  this is a charge in the institution (city council, city government, mayor)
-  '''
+  """
+  This is a charge in the institution (city council, city government, mayor).
+  """
   CHARGE_TYPES = Choices(
     ('may', _('Mayor')),    
     ('tgm', _('Town government member')),
@@ -215,6 +222,7 @@ class InstitutionCharge(Charge):
   op_charge_id = models.IntegerField(_('openpolis institution charge ID'), blank=True, null=True)
 
   def __unicode__(self):
+    # TODO: implement ``get_charge_type_display()`` method
     return u'%s - %s' % (self.get_charge_type_display(), self.institution.name)
 
   class Meta(Charge.Meta):
@@ -222,10 +230,11 @@ class InstitutionCharge(Charge):
     verbose_name = _('institution charge')
     verbose_name_plural = _('institution charges')
 
+
 class CompanyCharge(Charge):
-  '''
-  this is a charge in a company controlled by the municipality (it: partecipate)
-  '''  
+  """
+  This is a charge in a company controlled by the municipality (it: partecipate).
+  """  
   CHARGE_TYPES = Choices(
     ('pre', _('President')),    
     ('ceo', _('Chief Executive Officer')),
@@ -235,6 +244,7 @@ class CompanyCharge(Charge):
   charge_type = models.CharField(_('charge type'), max_length=3, choices=CHARGE_TYPES)
 
   def __unicode__(self):
+    # TODO: implement ``get_charge_type_display()`` method
     return u'%s - %s' % (self.get_charge_type_display(), self.company.name)
 
   class Meta(Charge.Meta):
@@ -242,10 +252,11 @@ class CompanyCharge(Charge):
     verbose_name = _('organization charge')
     verbose_name_plural = _('organization charges')
 
+
 class AdministrationCharge(Charge):
-  '''
-  this is a charge in the internal municipality administration
-  '''
+  """
+  This is a charge in the internal municipality administration.
+  """
   CHARGE_TYPES = Choices(
     ('dir', _('Director')),    
     ('exe', _('Executive')),
@@ -254,6 +265,7 @@ class AdministrationCharge(Charge):
   charge_type = models.CharField(_('charge type'), max_length=3, choices=CHARGE_TYPES)
 
   def __unicode__(self):
+    # TODO: implement ``get_charge_type_display()`` method
     return u'%s - %s' % (self.get_charge_type_display(), self.office.name)
 
   class Meta(Charge.Meta):
@@ -261,12 +273,11 @@ class AdministrationCharge(Charge):
     verbose_name = _('administration charge')
     verbose_name_plural = _('administration charges')
 
-
   
 class Group(models.Model):
-  '''
-  the class maps the groups of counselors
-  '''
+  """
+  This model represents a group of counselors.
+  """
   name = models.CharField(max_length=100)
   acronym = models.CharField(blank=True, max_length=16)
   counselors = models.ManyToManyField('InstitutionCharge', through='GroupCharge')
@@ -276,10 +287,11 @@ class Group(models.Model):
     verbose_name_plural = _('groups')
   
 class GroupCharge(models.Model):
-  '''
-  maps the historical composition of council groups, this is only valid for InstitutionCharges
-  
-  '''
+  """
+  This model records the historical composition of council groups. 
+
+  This is only valid for ``InstitutionCharges``.
+  """
   group = models.ForeignKey('Group')
   charge = models.ForeignKey('InstitutionCharge')
   charge_description = models.CharField(blank=True, max_length=255)
@@ -297,23 +309,28 @@ class GroupCharge(models.Model):
 # Bodies
 #
 class Body(models.Model):
-  '''
-  base class for the body, uses the Abstract Class inheritance model
-  '''
+  """
+  The base model for bodies. 
+
+  Uses the *abstract base class* inheritance model.
+  """
   name = models.CharField(_('name'), max_length=255)
   slug = models.SlugField(unique=True, blank=True, null=True, help_text=_('Suggested value automatically generated from name, must be unique'))
   description = models.TextField(_('description'), blank=True)
+  
   def __unicode__(self):
     return u'%s' % (self.name,)
 
   class Meta:
     abstract = True
+
   
 class Institution(Body):
-  '''
-  institutional bodies can be of different types and the types are mapped in institution_type
-  it has a relation with itself, in order to map hierarchical bodies (joint committee, ...)
-  '''
+  """
+  Institutional bodies can be of different types (as specified by the ``institution_type`` field).
+  
+  This model has a relation with itself, in order to map hierarchical bodies (joint committees, ...).
+  """
   INSTITUTION_TYPES = Choices(
     ('may', _('Mayor')),    
     ('cou', _('Counsil')),
@@ -321,20 +338,23 @@ class Institution(Body):
     ('com', _('Committee')),
     ('jco', _('Joint committee')),
   )
+
   parent = models.ForeignKey('Institution', related_name='sub_bodies_set', blank=True, null=True)
   institution_type = models.CharField(max_length=3, choices=INSTITUTION_TYPES)
 
   def get_absolute_url(self):
+    # FIXME: ``get_absolute_url`` shouldn't contain hard-coded URLs
     return "/istituzioni/%s.html" % self.slug
 
   class Meta(Body.Meta):
     verbose_name = _('institution')
     verbose_name_plural = _('institutions')
 
+
 class Company(Body):
-  '''
-  company owned by the municipality, whose executives are nominated politically
-  '''
+  """
+  A company owned by the municipality, whose executives are nominated politically.
+  """
 
   def get_absolute_url(self):
     return "/aziende/%s.html" % self.slug
@@ -342,12 +362,14 @@ class Company(Body):
   class Meta(Body.Meta):
     verbose_name = _('company')
     verbose_name_plural = _('companies')
+
   
 class Office(Body):
-  '''
-  internal municipality office, that plays a role in the administration of the municipalities
-  '''
-  def get_absolute_url(self):
+  """
+  Internal municipality office, playing a role in municipality's administration.
+  """
+  def get_abolute_url(self):
+    # FIXME: ``get_absolute_url`` shouldn't contain hard-coded URLs
     return "/uffici/%s.html" % self.slug
 
   class Meta(Body.Meta):
@@ -359,19 +381,29 @@ class Office(Body):
 # Documents
 #
 class Document(TimeStampedModel):
-  '''
-  base class for all complex documents, text can be in a text field, in a url, or it can be a pdf,
-  uploaded into a dedicated folder, or a url to a pdf
-  '''
+  """
+  An abstract base class for all complex documents. 
+
+  Document's content can be specified either as:
+  
+  * a text string
+  * an URL to its textual representation
+  * a PDF file (uploaded into a dedicated folder)
+  * an URL to a PDF file
+  """
   document_date = models.DateField(null=True, blank=True)
   text = models.TextField(blank=True)
-  text_url = models.URLField(blank=True, verify_exists=True)
-  pdf_url = models.URLField(blank=True, verify_exists=True)
+  text_url = models.URLField(blank=True)
+  pdf_url = models.URLField(blank=True)
 
   class Meta:
     abstract = True
 
+
 class Attach(Document):
+  """
+  WRITEME
+  """
   title = models.CharField(max_length=255)
   act = models.ForeignKey('Act')
   pdf_file = models.FileField(upload_to="attached_documents/%Y%d%m", blank=True)
@@ -385,6 +417,9 @@ class Attach(Document):
 
 
 class Minute(Document):
+  """
+  WRITEME
+  """
   sitting = models.ForeignKey('Sitting')
   acts = models.ManyToManyField('Act')    
   pdf_file = models.FileField(upload_to="minutes/%Y%d%m", blank=True)
@@ -393,7 +428,11 @@ class Minute(Document):
     verbose_name = _('minute')
     verbose_name_plural = _('minutes')
 
+
 class Outcome(models.Model):
+  """
+  WRITEME
+  """
   sitting = models.ForeignKey('Sitting')
   acts = models.ManyToManyField('Act')    
   pdf_file = models.FileField(upload_to="outcomes/%Y%d%m", blank=True)
@@ -402,7 +441,11 @@ class Outcome(models.Model):
     verbose_name = _('outcome')
     verbose_name_plural = _('outcomes')
 
+
 class Decision(models.Model):
+  """
+  WRITEME
+  """
   office = models.ForeignKey('Office')
   acts = models.ManyToManyField('Act')    
   pdf_file = models.FileField(upload_to="decisions/%Y%d%m", blank=True)
@@ -428,10 +471,14 @@ class Sitting(models.Model):
 # Votations
 #
 class Votation(models.Model):
+  """
+  WRITEME
+  """
   OUTCOMES = Choices(
     ('pas', _('Passed')),    
     ('rej', _('Rejected')),
   )
+
   idnum = models.CharField(blank=True, max_length=64)
   sitting = models.ForeignKey('Sitting')
   acts = models.ManyToManyField('Act')
@@ -449,6 +496,7 @@ class Votation(models.Model):
     verbose_name = _('votation')
     verbose_name_plural = _('votations')
 
+
 class GroupVote(TimeStampedModel):
   VOTES = Choices(
     ('yes', _('Yes')),    
@@ -456,13 +504,16 @@ class GroupVote(TimeStampedModel):
     ('ab', _('Abstained')),
     ('nc', _('Non computable')),
   )
+
   votation = models.ForeignKey('Votation')
   vote = models.CharField(max_length=3, choices=VOTES)
   group = models.ForeignKey('Group')
+
   class Meta:
     db_table = u'om_group_vote'    
     verbose_name = _('group vote')
     verbose_name_plural = _('group votes')
+
 
 class ChargeVote(TimeStampedModel):
   VOTES = Choices(
@@ -477,13 +528,13 @@ class ChargeVote(TimeStampedModel):
     ('can', _('Canceled votation')),
     ('sec', _('Secret votation')),
   )
+
   votation = models.ForeignKey('Votation')
   vote = models.CharField(max_length=3, choices=VOTES)
   charge = models.ForeignKey('InstitutionCharge')
   rebel = models.BooleanField(default=False)
+
   class Meta:
     db_table = u'om_charge_vote'    
     verbose_name = _('charge vote')
     verbose_name_plural = _('charge votes')
-    
-    
