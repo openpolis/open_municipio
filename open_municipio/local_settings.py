@@ -1,13 +1,13 @@
 ## -*- mode: python -*-
 ## Django settings specific for your development environment should be placed below
 
-from opm_site.settings import * 
+from open_municipio.settings import * 
 
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', 
-        'NAME': '',
+        'NAME': os.path.join(PROJECT_ROOT, 'om.db'),
         'USER': '',
         'PASSWORD': '',
         'HOST': '',
@@ -16,7 +16,7 @@ DATABASES = {
 }
 
 # Root URLconf module for development installations
-ROOT_URLCONF = 'opm_site.local_urls'
+ROOT_URLCONF = 'open_municipio.local_urls'
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/"
