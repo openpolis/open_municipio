@@ -20,9 +20,6 @@ import os
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 VERSION = __version__ = file(os.path.join(PROJECT_ROOT, 'VERSION')).read().strip()
 
-OAUTH_AUTH_VIEW = "piston.authentication.oauth_auth_view"
-OAUTH_CALLBACK_VIEW = "piston.authentication.oauth_user_auth"
-
 INTERNAL_IPS = ('127.0.0.1',)
 
 DEBUG_TOOLBAR_PANELS = (
@@ -103,7 +100,6 @@ ROOT_URLCONF = 'opm_site.local_urls'
 
 TEMPLATE_DIRS = (
   os.path.join(PROJECT_ROOT, 'templates'),
-  os.path.join(PROJECT_ROOT, 'piston/templates'),
 )
 
 INSTALLED_APPS = (
@@ -119,6 +115,5 @@ INSTALLED_APPS = (
     'om',
     'om.api',
     'tagging',
-    'piston',
 #   'debug_toolbar',
 )

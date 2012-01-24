@@ -4,10 +4,6 @@
 from opm_site.settings import * 
 
 
-API_USER         = 'foo'
-API_PASSWORD     = 'secret'
-API_SERVICE_ROOT = 'http://localhost:8000/api/1.0'
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', 
