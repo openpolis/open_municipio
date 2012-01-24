@@ -96,7 +96,6 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
 )
 
-ROOT_URLCONF = 'opm_site.local_urls'
 
 TEMPLATE_DIRS = (
   os.path.join(PROJECT_ROOT, 'templates'),

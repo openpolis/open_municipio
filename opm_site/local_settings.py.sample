@@ -15,6 +15,9 @@ DATABASES = {
     }
 }
 
+# Root URLconf module for development installations
+ROOT_URLCONF = 'opm_site.local_urls'
+
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/"
 MEDIA_ROOT = ''
