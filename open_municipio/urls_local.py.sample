@@ -1,7 +1,7 @@
 ## -*- mode: python -*-
 ## Use this module as the root URLconf for development
 
-from opm_site.urls import *
+from open_municipio.urls import *
 
 urlpatterns += patterns('',
   (r'^js/(?P<path>.*)$', 'django.views.static.serve',

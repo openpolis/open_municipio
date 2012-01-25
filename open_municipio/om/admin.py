@@ -1,6 +1,6 @@
 from django.contrib import admin 
 from django.utils.translation import ugettext_lazy as _
-from om.models import *
+from open_municipio.om.models import *
 
 class AttachInline(admin.StackedInline): 
   model = Attach

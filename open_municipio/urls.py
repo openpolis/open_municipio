@@ -25,7 +25,7 @@ from django.conf.urls.defaults import *
 from django.contrib import admin
 admin.autodiscover()
 
-from om.models import Institution, Office, Company, Person
+from open_municipio.om.models import Institution, Office, Company, Person
 from django.views.generic.base import RedirectView
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView

@@ -1,7 +1,7 @@
 ## -*- mode: python -*-
 ## Django settings specific for your production server should be placed below
 
-from opm_site.settings import * 
+from open_municipio.settings import * 
 
 # Root URLconf module for production servers
 ROOT_URLCONF = 'open_municipio.urls_production'
