@@ -32,7 +32,7 @@ class Act(TimeStampedModel):
     adj_title = models.CharField(_('adjoint title'), max_length=255, blank=True, help_text=_("An adjoint title, added to further explain an otherwise cryptic title"))
     presentation_date = models.DateField(_('presentation date'), null=True, help_text=_("Date of presentation, as stated in the act"))
     text = models.TextField(_('text'), blank=True)
-    process_step_set = models.ManyToManyField('Status', through='Transition', verbose_name=_('transitions'))
+    transition_set = models.ManyToManyField('Status', through='Transition', verbose_name=_('transitions'))
     presenter_set = models.ManyToManyField('InstitutionCharge', blank=True, null=True, db_table='om_act_presenter', related_name='act_presentation_set', verbose_name=_('presenters'))
     recipient_set = models.ManyToManyField('InstitutionCharge', blank=True, null=True, db_table='om_act_recipient', related_name='act_destination_set', verbose_name=_('recipients'))
     emitting_institution = models.ForeignKey('Institution', related_name='emitted_act_set', verbose_name=_('emitting institution'))
@@ -49,7 +49,7 @@ class Act(TimeStampedModel):
 
     @property
     def transitions(self):
-        return self.process_step_set.all()
+        return self.transition_set.all()
 
     @property
     def presenters(self):
