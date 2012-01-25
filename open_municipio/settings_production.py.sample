@@ -4,5 +4,5 @@
 from opm_site.settings import * 
 
 # Root URLconf module for production servers
-ROOT_URLCONF = 'opm_site.urls_production'
+ROOT_URLCONF = 'open_municipio.urls_production'
 

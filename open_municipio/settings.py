@@ -112,7 +112,6 @@ INSTALLED_APPS = (
     'django_extensions',
     'south',
     'om',
-    'om.api',
     'tagging',
 #   'debug_toolbar',
 )

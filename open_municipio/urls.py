@@ -29,10 +29,9 @@ from om.models import Institution, Office, Company, Person
 from django.views.generic.base import RedirectView
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
-from opm_site.views import InstitutionDetailView, HomeView, InfoView
+from open_municipio.views import InstitutionDetailView, HomeView, InfoView
 
 urlpatterns = patterns('',
-  (r'^api/1.0/', include('om.api.urls')),
   (r'^admin/doc/', include('django.contrib.admindocs.urls')),
   (r'^admin/', include(admin.site.urls)),
 
