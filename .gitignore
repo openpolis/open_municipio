@@ -1,8 +1,8 @@
 *~
 *.pyc
 *.db
-opm_site/settings_local.py
-opm_site/urls_local.py
+open_municipio/settings_local.py
+open_municipio/urls_local.py
 apache
-om/migrations/*
+open_municipio/om/migrations/*
 uploads/attached_documents/*
