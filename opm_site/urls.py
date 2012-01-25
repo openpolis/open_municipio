@@ -13,7 +13,7 @@
 ##
 ## A common naming scheme for these "overlay" URLconf modules is as follows:
 ##
-## * ``local_urls.py`` -- for development machines
+## * ``urls_local.py`` -- for development machines
 ## * ``urls_staging.py`` -- for staging servers
 ## * ``urls_production.py`` -- for production servers
 

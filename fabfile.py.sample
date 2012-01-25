@@ -29,7 +29,7 @@ RSYNC_EXCLUDE = ( ##CHANGEME!
     '*.db',
     'media/admin',
     'media/attachments',
-    'local_settings.py',
+    'settings_local.py',
     'fabfile.py',
     'bootstrap.py',
 )
