@@ -6,7 +6,7 @@
 ##
 ## .. code:: python
 ##
-##     from opm_site.urls import * 
+##     from open_municipio.urls import * 
 ##
 ## This way, project-level URL patterns are transparently added to 
 ## machine-specific ones.

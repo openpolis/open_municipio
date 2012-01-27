@@ -5,7 +5,7 @@
 ## a separate Python module, beginning with this import statement:
 ##
 ## .. code:: python
-##     from opm_site.settings import * 
+##     from open_municipio.settings import * 
 ##
 ## This way, machine-specific settings override project-level settings.
 ##
