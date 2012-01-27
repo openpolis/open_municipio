@@ -112,6 +112,6 @@ INSTALLED_APPS = (
     'django_extensions',
     'south',
     'open_municipio.om',
-#    'tagging',
+    'taggit',
 #   'debug_toolbar',
 )
