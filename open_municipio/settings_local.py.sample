@@ -42,5 +42,14 @@ STATIC_URL = '/static/'
 # Examples: "http://foo.com/static/admin/", "/static/admin/".
 ADMIN_MEDIA_PREFIX = '/static/admin/'
 
+# Additional locations of static files
+STATICFILES_DIRS = (
+    # Put strings here, like "/home/html/static" or "C:/www/django/static".
+    # Always use forward slashes, even on Windows.
+    # Don't forget to use absolute paths, not relative paths.
+    os.path.join(PROJECT_ROOT, 'templates/static'),
+
+)
+
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = '(c!0th6qo2vbp0os80zj_n!8p%n@e=ypfrpn4%!mydd(mgfm1e'

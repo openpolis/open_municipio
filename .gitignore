@@ -4,5 +4,6 @@
 open_municipio/settings_local.py
 open_municipio/urls_local.py
 apache
-open_municipio/om/migrations/*
+sitestatic
 uploads/attached_documents/*
+open_municipio/om/migrations/*
