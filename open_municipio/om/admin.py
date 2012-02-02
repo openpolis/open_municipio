@@ -135,6 +135,8 @@ class VotationAdminWithGroupsAndChargesVotes(admin.ModelAdmin):
   inlines = [GroupVoteInline, ChargeVoteInline] 
 
 
+class ActAdmin(admin.ModelAdmin):
+    pass
 
 admin.site.register(Person, PersonAdmin)
 admin.site.register(Group, GroupAdminWithCharges)
@@ -144,7 +146,7 @@ admin.site.register(AdministrationCharge, AdministrationChargeAdmin)
 admin.site.register(Institution, InstitutionAdmin)
 admin.site.register(Company, CompanyAdmin)
 admin.site.register(Office, OfficeAdmin)
-
+admin.site.register(Act, ActAdmin)
 
 '''
 admin.site.register(Deliberation, ActAdminWithAttachesAndEmendations)
