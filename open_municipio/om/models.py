@@ -1,9 +1,14 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+
 from model_utils import Choices
 from model_utils.models import TimeStampedModel, StatusModel, TimeFramedModel
 from model_utils.managers import InheritanceManager
+
 from taggit.managers import TaggableManager
+
+from open_municipio.taxonomy.models import TaggedItem, Category 
+
 # 
 # Acts
 #
@@ -30,10 +35,11 @@ class Act(TimeStampedModel):
     presenter_set = models.ManyToManyField('InstitutionCharge', blank=True, null=True, db_table='om_act_presenter', related_name='act_presentation_set', verbose_name=_('presenters'))
     recipient_set = models.ManyToManyField('InstitutionCharge', blank=True, null=True, db_table='om_act_recipient', related_name='act_destination_set', verbose_name=_('recipients'))
     emitting_institution = models.ForeignKey('Institution', related_name='emitted_act_set', verbose_name=_('emitting institution'))
+    category = models.ForeignKey(Category, verbose_name=_('category'), blank=True, null=True)
     
     objects = InheritanceManager()
     
-    tags = TaggableManager()
+    tag_set = TaggableManager(through=TaggedItem, blank=True)
 
     def __unicode__(self):
         uc = u'%s' % (self.title)
@@ -54,6 +60,10 @@ class Act(TimeStampedModel):
     @property
     def recipients(self):
         return self.recipient_set.all()
+    
+    @property
+    def tags(self):
+        return self.tag_set.all()
 
       
 class ActSection(models.Model):
