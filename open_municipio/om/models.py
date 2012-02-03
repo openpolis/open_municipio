@@ -35,7 +35,7 @@ class Act(TimeStampedModel):
     presenter_set = models.ManyToManyField('InstitutionCharge', blank=True, null=True, db_table='om_act_presenter', related_name='act_presentation_set', verbose_name=_('presenters'))
     recipient_set = models.ManyToManyField('InstitutionCharge', blank=True, null=True, db_table='om_act_recipient', related_name='act_destination_set', verbose_name=_('recipients'))
     emitting_institution = models.ForeignKey('Institution', related_name='emitted_act_set', verbose_name=_('emitting institution'))
-    category = models.ForeignKey(Category, verbose_name=_('category'), blank=True, null=True)
+    category_set = models.ManyToManyField(Category, verbose_name=_('categories'), blank=True, null=True)
     
     objects = InheritanceManager()
     
@@ -64,6 +64,10 @@ class Act(TimeStampedModel):
     @property
     def tags(self):
         return self.tag_set.all()
+    
+    @property
+    def categories(self):
+        return self.category_set.all()
 
       
 class ActSection(models.Model):
