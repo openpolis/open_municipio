@@ -4,10 +4,11 @@ try:
     import json
 except ImportError:
     import simplejson as json
-from om.api.clients import OmAPI
-from piston_mini_client.auth import BasicAuthorizer
 from random import choice
+from random import random
+
 from datetime import *
+from open_municipio.om.models import Person
 from django.conf import settings
 
 
@@ -35,15 +36,13 @@ def unify(seq, idfun=None):
 def create_person():
   '''
   create a random person in the db and return the person just created
+  if the person already exists, return it
   '''
-  auth_api = OmAPI(service_root=settings.API_SERVICE_ROOT,
-                   auth=BasicAuthorizer(settings.API_USER, settings.API_PASSWORD))
-
   try:
-    f = open("om/fixtures/op_politician_first_names_sex.csv", "r")
-    l = open("om/fixtures/op_politician_last_names.csv", "r")
-    loc = open("om/fixtures/op_politician_birth_locations.csv", "r")
-    dat = open("om/fixtures/op_politician_birth_dates.csv", "r")
+    f = open("open_municipio/om/fixtures/op_politician_first_names_sex.csv", "r")
+    l = open("open_municipio/om/fixtures/op_politician_last_names.csv", "r")
+    loc = open("open_municipio/om/fixtures/op_politician_birth_locations.csv", "r")
+    dat = open("open_municipio/om/fixtures/op_politician_birth_dates.csv", "r")
 
     first_names = unify(f.readlines())
     last_names = unify(l.readlines())
@@ -54,6 +53,10 @@ def create_person():
     first_names.remove(first_name)
     first_name = first_name.strip()
     (names, sex) = first_name.split(',')
+    if sex == 'M':
+        sex = Person.MALE_SEX
+    else:
+        sex = Person.FEMALE_SEX
     names = names.split()
     first_name = choice(names)
 
@@ -70,24 +73,25 @@ def create_person():
     birth_locations.remove(birth_location)
     birth_location = birth_location.strip()
 
-    p_obj = {
-      'first_name': first_name, 
-      'last_name': last_name, 
-      'birth_date': birth_date, 
-      'birth_location': birth_location, 
-      'sex': sex.lower()
-    }
-    
-    # if the person exists, then return it, else create it and return it
-    # avoid duplications
-    p = json.loads(auth_api.get_persons_from_data(p_obj))
-    if (len(p) == 0):
-      auth_api.add_person(json.dumps(p_obj))
-      p = json.loads(auth_api.get_persons_from_data(p_obj))
+    persons = Person.objects.filter(first_name=first_name, last_name=last_name, birth_date=birth_date, birth_location=birth_location)
+    if (not persons):
+        p = Person(first_name=first_name, last_name=last_name, birth_date=birth_date, birth_location=birth_location, sex=sex)
+        p.save()
+    else: 
+        p = persons[0]
 
-    return p[0]
+    return p
 
       
   except IOError:
     print "Error while opening file"
     return 0
+
+def weighted_choice(weights):
+    choice = random() * sum(weights)
+    for i, w in enumerate(weights):
+        choice -= w
+        if choice < 0:
+            return i
+            
+
