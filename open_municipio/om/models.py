@@ -1,12 +1,13 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from django.template.defaultfilters import slugify
+
 from model_utils import Choices
 from model_utils.models import TimeStampedModel, StatusModel, TimeFramedModel
 from model_utils.managers import InheritanceManager
 
 from south.modelsinspector import add_introspection_rules
 
-add_introspection_rules([], ["^tagging\.fields\.TagField"])
 
 
 # 
@@ -74,18 +75,23 @@ class ActSection(models.Model):
 
 
 class Deliberation(Act):
+    COUNSELOR_INIT = 1
+    PRESIDENT_INIT = 2
+    ASSESSOR_INIT = 3
+    GOVERNMENT_INIT = 4
+    MAYOR_INIT = 5
     INIZIATIVE_CHOICES = (
-        ('cou', _('Counselor')),
-        ('pre', _('President')),
-        ('cgm', _('City Government Member')),
-        ('cgo', _('City Government')),
-        ('may', _('Mayor')),
+        (COUNSELOR_INIT, _('Counselor')),
+        (PRESIDENT_INIT, _('President')),
+        (ASSESSOR_INIT, _('City Government Member')),
+        (GOVERNMENT_INIT, _('City Government')),
+        (MAYOR_INIT, _('Mayor')),
     )
 
     approval_date = models.DateField(_('approval date'), null=True, blank=True)
     publication_date = models.DateField(_('publication date'), null=True, blank=True)
     execution_date = models.DateField(_('execution date'), null=True, blank=True)
-    initiative = models.CharField(_('initiative'), max_length=3, choices=INIZIATIVE_CHOICES)
+    initiative = models.IntegerField(_('initiative'), choices=INIZIATIVE_CHOICES)
 
     class Meta:
         verbose_name = _('deliberation')
@@ -93,12 +99,14 @@ class Deliberation(Act):
 
 
 class Interrogation(Act):
+    WRITTEN_ANSWER = 1
+    VERBAL_ANSWER = 2
     ANSWER_TYPES = Choices(
-        ('w', _('Written')),
-        ('v', _('Verbal')),
+        (WRITTEN_ANSWER, _('Written')),
+        (VERBAL_ANSWER, _('Verbal')),
     )
   
-    answer_type = models.CharField(max_length=1, choices=ANSWER_TYPES)
+    answer_type = models.IntegerField(_('answer type'), choices=ANSWER_TYPES)
     question_motivation = models.TextField(blank=True)
     answer_text = models.TextField(blank=True)
     reply_text = models.TextField(blank=True)
@@ -109,12 +117,14 @@ class Interrogation(Act):
 
 
 class Interpellation(Act):
+    WRITTEN_ANSWER = 1
+    VERBAL_ANSWER = 2
     ANSWER_TYPES = Choices(
-        ('w', _('Written')),
-        ('v', _('Verbal')),
-     )
+        (WRITTEN_ANSWER, _('Written')),
+        (VERBAL_ANSWER, _('Verbal')),
+    )
     
-    answer_type = models.CharField(max_length=3, choices=ANSWER_TYPES)
+    answer_type = models.IntegerField(_('answer type'), choices=ANSWER_TYPES)
     question_motivation = models.TextField(blank=True)
     answer_text = models.TextField(blank=True)
 
@@ -185,16 +195,18 @@ class Transition(models.Model):
 # Persons, charges and groups
 #
 class Person(models.Model):
+    FEMALE_SEX = 0
+    MALE_SEX = 1
     SEX = Choices(
-        ('m', _('Male')),    
-        ('f', _('Female')),
+        (MALE_SEX, _('Male')),    
+        (FEMALE_SEX, _('Female')),
         )
     first_name = models.CharField(_('first name'), max_length=128)
     last_name = models.CharField(_('last name'), max_length=128)
     birth_date = models.DateField(_('birth date'))
     birth_location = models.CharField(_('birth location'), blank=True, max_length=128)
     slug = models.SlugField(unique=True, blank=True, null=True, max_length=128)
-    sex = models.CharField(_('sex'), max_length=1, choices=SEX)
+    sex = models.IntegerField(_('sex'), choices=SEX)
     op_politician_id = models.IntegerField(_('openpolis politician ID'), blank=True, null=True)
     
     def __unicode__(self):
@@ -229,18 +241,30 @@ class InstitutionCharge(Charge):
     """
     This is a charge in the institution (city council, city government, mayor).
     """
+    MAYOR_CHARGE = 1
+    ASSESSOR_CHARGE = 2
+    COUNSELOR_CHARGE = 3
+    COUNCIL_PRES_CHARGE = 4
+    COUNCIL_VICE_CHARGE = 5
+    COMMITTEE_MEMBER_CHARGE = 6
     CHARGE_TYPES = Choices(
-      ('may', _('Mayor')),    
-      ('tgm', _('Town government member')),
-      ('cpr', _('Counsil president')),
-      ('cvp', _('Counsil vice president')),
-      ('cou', _('Counselor')),    
-      ('com', _('Committee member')),
+      (MAYOR_CHARGE, _('Mayor')),    
+      (ASSESSOR_CHARGE, _('Town government member')),
+      (COUNCIL_PRES_CHARGE, _('Counsil president')),
+      (COUNCIL_VICE_CHARGE, _('Counsil vice president')),
+      (COUNSELOR_CHARGE, _('Counselor')),    
+      (COMMITTEE_MEMBER_CHARGE, _('Committee member')),
     )
-    substitutes = models.OneToOneField('InstitutionCharge', blank=True, null=True, related_name='reverse_substitute_set', on_delete=models.PROTECT, verbose_name=_('in substitution of'))
-    substituted_by = models.OneToOneField('InstitutionCharge', blank=True, null=True, related_name='reverse_substituted_by_set', on_delete=models.PROTECT, verbose_name=_('substituted by'))
+    substitutes = models.OneToOneField('InstitutionCharge', blank=True, null=True, 
+                     related_name='reverse_substitute_set', 
+                     on_delete=models.PROTECT, 
+                     verbose_name=_('in substitution of'))
+    substituted_by = models.OneToOneField('InstitutionCharge', blank=True, null=True,
+                     related_name='reverse_substituted_by_set', 
+                     on_delete=models.PROTECT, 
+                     verbose_name=_('substituted by'))
     institution = models.ForeignKey('Institution', on_delete=models.PROTECT, verbose_name=_('institution'))
-    charge_type = models.CharField(_('charge type'), max_length=3, choices=CHARGE_TYPES)
+    charge_type = models.IntegerField(_('charge type'), choices=CHARGE_TYPES)
     op_charge_id = models.IntegerField(_('openpolis institution charge ID'), blank=True, null=True)
     
     def __unicode__(self):
@@ -257,14 +281,19 @@ class CompanyCharge(Charge):
     """
     This is a charge in a company controlled by the municipality (it: partecipate).
     """  
+    CEO_CHARGE = 1
+    PRES_CHARGE = 2
+    VICE_CHARGE = 3
+    DIR_CHARGE = 4
     CHARGE_TYPES = Choices(
-      ('pre', _('President')),    
-      ('ceo', _('Chief Executive Officer')),
-      ('dir', _('Member of the board')),
+        (CEO_CHARGE, _('Chief Executive Officer')),
+        (PRES_CHARGE, _('President')),    
+        (VICE_CHARGE, _('Vice president')),
+        (DIR_CHARGE, _('Member of the board')),
     )
 
     company = models.ForeignKey('Company', on_delete=models.PROTECT, verbose_name=_('company'))
-    charge_type = models.CharField(_('charge type'), max_length=3, choices=CHARGE_TYPES)
+    charge_type = models.IntegerField(_('charge type'), choices=CHARGE_TYPES)
     
     def __unicode__(self):
         # TODO: implement ``get_charge_type_display()`` method
@@ -280,13 +309,15 @@ class AdministrationCharge(Charge):
     """
     This is a charge in the internal municipality administration.
     """
+    DIR_CHARGE = 1
+    EXEC_CHARGE = 2
     CHARGE_TYPES = Choices(
-      ('dir', _('Director')),    
-      ('exe', _('Executive')),
+      (DIR_CHARGE, _('Director')),    
+      (EXEC_CHARGE, _('Executive')),
     )
 
     office = models.ForeignKey('Office', on_delete=models.PROTECT, verbose_name=_('office'))
-    charge_type = models.CharField(_('charge type'), max_length=3, choices=CHARGE_TYPES)
+    charge_type = models.IntegerField(_('charge type'), choices=CHARGE_TYPES)
     
     def __unicode__(self):
         # TODO: implement ``get_charge_type_display()`` method
@@ -305,6 +336,9 @@ class Group(models.Model):
     name = models.CharField(max_length=100)
     acronym = models.CharField(blank=True, max_length=16)
     counselor_set = models.ManyToManyField('InstitutionCharge', through='GroupCharge')
+
+    def __unicode__(self):
+        return u'%s (%s)' % (self.name, self.acronym)
     
     class Meta:
         verbose_name = _('group')
@@ -313,8 +347,18 @@ class Group(models.Model):
     @property
     def counselors(self):
         return self.counselor_set.all()
+    
+    @property
+    def majority_records(self):
+        return self.groupismajority_set.all()
+        
+    def is_majority_now(self):
+        current_is_maj = self.groupismajority_set.filter(end_date__isnull=True)
+        return current_is_maj[0]
+    is_majority_now.short_description = _('Is Majority?')
+        
 
-  
+
 class GroupCharge(models.Model):
     """
     This model records the historical composition of council groups. 
@@ -325,13 +369,34 @@ class GroupCharge(models.Model):
     charge = models.ForeignKey('InstitutionCharge')
     charge_description = models.CharField(blank=True, max_length=255)
     start_date = models.DateField()
-    end_date = models.DateField()
+    end_date = models.DateField(blank=True, null=True)
     end_reason = models.CharField(blank=True, max_length=255)
     
     class Meta:
         db_table = u'om_group_charge'
         verbose_name = _('group charge')
         verbose_name_plural = _('group charges')
+
+class GroupIsMajority(models.Model):
+    """
+    This model records the historical composition of the majority
+    """
+    group = models.ForeignKey('Group')
+    is_majority = models.BooleanField(_('Is majority'), default=False)
+    start_date = models.DateField(_('Start date'))
+    end_date = models.DateField(_('End date'), blank=True, null=True)
+
+    def __unicode__(self):
+        if self.is_majority:
+            return u'yes'
+        elif self.is_majority is False:
+            return u'no'
+        else:
+            return u'na'
+            
+    class Meta:
+        verbose_name = _('group majority')
+        verbose_name_plural = _('group majorities')
 
 
 #
@@ -360,21 +425,32 @@ class Institution(Body):
     
     This model has a relation with itself, in order to map hierarchical bodies (joint committees, ...).
     """
+    MAYOR = 1
+    TOWN_GOVERNMENT = 2
+    COUNCIL = 3
+    COMMITTEE = 4
+    JOINT_COMMITTEE = 5
     INSTITUTION_TYPES = Choices(
-      ('may', _('Mayor')),    
-      ('cou', _('Counsil')),
-      ('tgv', _('Town government')),
-      ('com', _('Committee')),
-      ('jco', _('Joint committee')),
+      (MAYOR, _('Mayor')),    
+      (COUNCIL, _('Council')),
+      (TOWN_GOVERNMENT, _('Town government')),
+      (COMMITTEE, _('Committee')),
+      (JOINT_COMMITTEE, _('Joint committee')),
     )
     
     parent = models.ForeignKey('Institution', related_name='sub_body_set', blank=True, null=True)
-    institution_type = models.CharField(max_length=3, choices=INSTITUTION_TYPES)
+    institution_type = models.IntegerField(choices=INSTITUTION_TYPES)
     
     def get_absolute_url(self):
         # FIXME: ``get_absolute_url`` shouldn't contain hard-coded URLs
         return "/istituzioni/%s.html" % self.slug
-    
+
+    def save(self, *args, **kwargs):
+        """slugify name on first save"""
+        if not self.id:
+            self.slug = slugify(self.name)
+        super(Institution, self).save(*args, **kwargs)
+
     class Meta(Body.Meta):
         verbose_name = _('institution')
         verbose_name_plural = _('institutions')
@@ -518,9 +594,11 @@ class Votation(models.Model):
     """
     WRITEME
     """
+    REJECTED = 0
+    PASSED = 1
     OUTCOMES = Choices(
-      ('pas', _('Passed')),    
-      ('rej', _('Rejected')),
+      (PASSED, _('Passed')),    
+      (REJECTED, _('Rejected')),
     )
     
     idnum = models.CharField(blank=True, max_length=64)
@@ -534,7 +612,7 @@ class Votation(models.Model):
     n_no = models.IntegerField(blank=True, null=True)
     n_abst = models.IntegerField(blank=True, null=True)
     n_maj = models.IntegerField(blank=True, null=True)
-    outcome = models.CharField(max_length=3, choices=OUTCOMES)
+    outcome = models.IntegerField(choices=OUTCOMES)
 
     class Meta:
         verbose_name = _('votation')
@@ -557,15 +635,19 @@ class GroupVote(TimeStampedModel):
     """
     WRITEME
     """
+    NO = 0
+    YES = 1
+    ABSTAINED = 2
+    NON_COMPUTABLE = 3
     VOTES = Choices(
-      ('yes', _('Yes')),    
-      ('no', _('No')),
-      ('ab', _('Abstained')),
-      ('nc', _('Non computable')),
+      (YES, _('Yes')),    
+      (NO, _('No')),
+      (ABSTAINED, _('Abstained')),
+      (NON_COMPUTABLE, _('Non computable')),
     )
     
     votation = models.ForeignKey('Votation')
-    vote = models.CharField(max_length=3, choices=VOTES)
+    vote = models.IntegerField(choices=VOTES)
     group = models.ForeignKey('Group')
 
     class Meta:
@@ -578,21 +660,31 @@ class ChargeVote(TimeStampedModel):
     """
     WRITEME
     """  
+    NO = 0
+    YES = 1
+    ABSTAINED = 2
+    MISSION = 3
+    ABSENT = 4
+    INVALID = 5
+    PRES = 6
+    REQUIRES = 7
+    CANCELED = 8
+    SECRET = 9
     VOTES = Choices(
-    ('yes', _('Yes')),    
-    ('no', _('No')),
-    ('ab', _('Abstained')),
-    ('mis', _('Is on mission')),
-    ('abs', _('Is absent')),
-    ('inv', _('Participates to an invalid votation')),
-    ('pre', _('President during votation')),
-    ('rnv', _('Requires votation, but does not vote')),
-    ('can', _('Canceled votation')),
-    ('sec', _('Secret votation')),
+    (YES, _('Yes')),    
+    (NO, _('No')),
+    (ABSTAINED, _('Abstained')),
+    (MISSION, _('Is on mission')),
+    (ABSENT, _('Is absent')),
+    (INVALID, _('Participates to an invalid votation')),
+    (PRES, _('President during votation')),
+    (REQUIRES, _('Requires votation, but does not vote')),
+    (CANCELED, _('Canceled votation')),
+    (SECRET, _('Secret votation')),
     )
 
     votation = models.ForeignKey('Votation')
-    vote = models.CharField(max_length=3, choices=VOTES)
+    vote = models.IntegerField(choices=VOTES)
     charge = models.ForeignKey('InstitutionCharge')
     rebel = models.BooleanField(default=False)
 
