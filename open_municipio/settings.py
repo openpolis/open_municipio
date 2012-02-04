@@ -111,6 +111,7 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
     'django_extensions',
     'south',
+    'open_municipio.people',
     'open_municipio.om',
 #    'tagging',
 #   'debug_toolbar',

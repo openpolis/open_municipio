@@ -5,7 +5,7 @@ from random import choice
 
 import random_items_factory
 
-from open_municipio.om.models import *
+from open_municipio.people.models import *
 from django.conf import settings
 
 # cleanup
