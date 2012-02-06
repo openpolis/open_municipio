@@ -37,13 +37,19 @@ RSYNC_EXCLUDE = (
 
 ## TODO: these constants should be read from an external configuration file
 # the name of the project managed by this fabfile
-PROJECT_NAME = 'myproject' ##CHANGEME!
+PROJECT_NAME = 'open_municipio' 
 # a unique identifier for this web application instance
 # usually is set to the primary domain from which the web application is accessed
 APP_DOMAIN = 'www.example.com' ##CHANGEME!
 
 env.project = PROJECT_NAME
 env.app_domain = APP_DOMAIN
+
+env.roledefs = {
+    'web': ['webuser@www.example.com'],
+    'db': ['webuser@db.example.com'],
+}
+
 
 ## Environment-specific setup
 def staging():
@@ -53,20 +59,20 @@ def staging():
     # the system user (on the server machine) used for managing websites
     WEB_USER = 'webuser' ##CHANGEME!
     # the parent directory of domain-specific directories (on the server machine) 
-    WEB_ROOT = os.path.join('/home', env.web_user, 'websites') 
+    WEB_ROOT = os.path.join('/home', WEB_USER, 'websites') 
     # the root directory for domain-specific files (on the server machine)
-    DOMAIN_ROOT = os.path.join(env.web_root, env.app_domain) 
+    DOMAIN_ROOT = os.path.join(WEB_ROOT, env.app_domain) 
     # the root directory of application-specific Python virtual environment (on the server machine)
-    VIRTUALENV_ROOT = os.path.join(env.domain_root, 'private', 'venv') 
+    VIRTUALENV_ROOT = os.path.join(DOMAIN_ROOT, 'private', 'venv') 
     # the root directory for project-specific files (on the server machine)
-    PROJECT_ROOT = os.path.join(env.domain_root, 'private', env.project) 
+    PROJECT_ROOT = os.path.join(DOMAIN_ROOT, 'private', env.project) 
     # the root directory for application-specific Python code (on the server machine)
-    CODE_ROOT = os.path.join(env.project_root, env.project) ##CHANGEME!
+    CODE_ROOT = os.path.join(PROJECT_ROOT, env.project) ##CHANGEME!
     # import path of Django settings file for the staging environment
     DJANGO_SETTINGS_MODULE = '%(project)s.settings_staging' % env 
     # Directory where static files should be collected.  This MUST equal the value
     # of ``STATIC_ROOT`` attribute of the Django settings module used on the server.
-    STATIC_ROOT =  os.path.join(env.domain_root, 'public', 'static') ## CHANGEME!
+    STATIC_ROOT =  os.path.join(DOMAIN_ROOT, 'public', 'static') ## CHANGEME!
     ## set up Fabric global environment dictionary
     env.web_user = WEB_USER
     env.web_root = WEB_ROOT
@@ -85,26 +91,27 @@ def production():
 
 ## Webserver management
 
+@roles('web')
 def webserver_reload():    
     """Reload the webserver on remote host"""
-    run('/etc/init.d/apache2 reload')
+    sudo('/etc/init.d/apache2 reload')
 
-
+@roles('web')
 def webserver_restart():    
     """Restart the webserver on remote host"""
-    run('/etc/init.d/apache2 restart')
+    sudo('/etc/init.d/apache2 restart')
 
-
+@roles('web')
 def webserver_enable_site(site_name):
     """Enable a webserver virtualhost"""
-    run('a2ensite %s' % site_name)
+    sudo('a2ensite %s' % site_name)
 
-
+@roles('web')
 def webserver_disable_site(site_name):
     """Disable a webserver virtualhost"""
-    run('a2dissite %s' % site_name)
+    sudo('a2dissite %s' % site_name)
 
-
+@roles('web')
 def upload_webserver_conf():
     """Upload webserver configuration to remote host"""
     require('environment', provided_by=('staging', 'production'))
@@ -112,20 +119,29 @@ def upload_webserver_conf():
     dest = os.path.join('/etc/apache2/sites-available', env.app_domain)
     put(source, dest, mode=0755)
   
-
+@roles('web')
 def update_webserver_conf():
     """Update webserver configuration on remote host """
     upload_webserver_conf()
     webserver_enable_site(env.app_domain)
     webserver_restart()
 
-
+@roles('web')
 def touch_WSGI_script():
     """ Touch WSGI file to trigger code reload """
     require('project_root', provided_by=('staging', 'production'))
     apache_dir = os.path.join(env.code_root, 'apache')
     with cd(apache_dir):
         run('touch django.wsgi')
+
+def clear_logs():
+    """
+    Clear website-specific logs.
+    """
+    require('domain_root', provided_by=('staging', 'production'))
+    with cd(env.domain_root):
+        run('rm -f log/*')
+    
 
 ## Virtual environment management
 
@@ -135,7 +151,6 @@ def create_virtualenv():
     args = '--clear --python=%s' % PYTHON_FULL_PATH
     run('virtualenv %s %s' % (args, env.virtualenv_root))
 
-
 def ensure_virtualenv():
     """Check if a project-specific virtualenv already exists; if not, create it."""
     require('virtualenv_root', provided_by=('staging', 'production'))
@@ -143,7 +158,6 @@ def ensure_virtualenv():
         return
     else:
         create_virtualenv()
-
 
 def virtualenv(venv_root):
     """
@@ -174,22 +188,36 @@ def run_venv(command, **kwargs):
     activate_virtualenv()
     run(command, **kwargs)
 
-
+@roles('web')
 def update_requirements():
-    """Update external dependencies on remote host"""
+    """
+    Update external dependencies on remote host.
+    """
     require('project_root', provided_by=('staging', 'production'))
     ensure_virtualenv()
-    requirements = os.path.join(env.project_root, 'requirements')
+    requirements_dir = os.path.join(env.project_root, 'requirements')
     # TODO: generalize to multiple requirement files
-    with cd(requirements):
+    with cd(requirements_dir):
         cmd = ['pip install']
         cmd += ['-E %(virtualenv_root)s' % env] # select the target virtualenv
         cmd += ['--update'] # update already installed packages
-        cmd += ['--requirement %s' % os.path.join(requirements, 'main.txt')] # specify a requirement file
+        cmd += ['--requirement %s' % os.path.join(requirements_dir, 'main.txt')] # specify a requirement file
         run(' '.join(cmd))
 
 ## Application code management
 
+@roles('web')
+def copy_website_skeleton():
+    """
+    Create a skeleton directory tree for the new website.
+
+    Include setup of suitable filesystem permissions.
+    """
+    require(('website_root', 'app_domain'), provided_by=('staging', 'production'))
+    with cd(env.website_root):
+        run('cp -a skeleton %(app_domain)s' % env) 
+
+@roles('web')
 def update_code():
     """Transfer application code to remote host"""
     require('project_root', provided_by=('staging', 'production'))
@@ -216,34 +244,42 @@ def update_code():
     touch_WSGI_script()
 
 ## Static files management
-
+@roles('web')
 def setup_static_files():
     require(('static_root','virtualenv_root'), provided_by=('staging', 'production'))
     # safety checks
     assert env.static_root.strip() != '' and env.static_root.strip() != '/'
     # Before Django 1.4 we don't have the ``--clear`` option to ``collectstatic``
-    run('rm -rf %(static_root)s/' % env)
-    run_venv('django-admin.py collectstatic -v 0 --noinput --settings=%(settings)' % env)
+    run('rm -rf %(static_root)s/*' % env)
+    run_venv('django-admin.py collectstatic -v 0 --noinput --settings=%(settings)s' % env)
 
 
 ## Database management
-
+@roles('db')
 def create_database():
-    """Create the application's database on the server machine"""
+    """
+    Create the application's database on the server machine.
+    """
     raise NotImplementedError
 
-
+@roles('db')
 def drop_database():
-    """Delete the application's database on the server machine"""
-    raise NotImplementedError
+    """
+    Delete the application's database on the server machine.
+    """
+    require('code_root', provided_by=('staging', 'production'))
+    with cd(env.code_root):
+        run('rm -f sqlite.db')
 
-
+@roles('db')
 def remote_sync_db():
-    """Sync the application's database on the server machine"""
-    require(('settings', 'virtualenv_root', provided_by=('staging', 'production'))
-    run_venv('django-admin.py syncdb --settings=%(settings)' % env)
+    """
+    Sync the application's database on the server machine.
+    """
+    require(('settings', 'virtualenv_root'), provided_by=('staging', 'production'))
+    run_venv('django-admin.py syncdb --noinput --settings=%(settings)s' % env)
     
-
+@roles('db')
 def update_database():
     """Update remote database (including South migrations, if any)."""
     if getattr(env, 'initial_deploy', False):
@@ -254,10 +290,10 @@ def update_database():
         run_venv('django-admin.py migrate --noinput --settings=%(settings)' % env)
 
 ## Macro-tasks
-
+@roles('web')
 def initial_deploy():
     """
-    Deploy the web application to a remote server **for the first time**.
+    Deploy the web application to remote server(s) **for the first time**
 
     The first deployment procedure may differ from subsequent ones,
     since some initialization tasks have to be performed only once.
@@ -269,17 +305,23 @@ def initial_deploy():
     env.initial_deploy = True
     deploy()        
 
+
+@roles('web')
 def deploy():
-    """Deploy the web application to a remote server"""
+    """
+    Deploy the web application to remote server(s)
+    """
     require('environment', provided_by=('staging', 'production'))
-    ## TODO: early inizialization steps go here
+    ## TODO: early initialization steps go here
     with settings(warn_only=True):
         webserver_stop()
-
+    
+    copy_website_skeleton()
     update_code()
     update_requirements()
     update_database()
     setup_static_files()
+    clear_logs()
 
     webserver_start()
 
