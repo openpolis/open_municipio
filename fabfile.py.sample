@@ -150,7 +150,7 @@ def update_webserver_conf():
 def touch_WSGI_script():
     """ Touch WSGI file to trigger code reload """
     require('project_root', provided_by=('staging', 'production'))
-    apache_dir = os.path.join(env.code_root, 'apache')
+    apache_dir = os.path.join(env.project_root, 'apache')
     with cd(apache_dir):
         run('touch django.wsgi')
 
@@ -168,7 +168,7 @@ def clear_logs():
 def create_virtualenv():
     """Create a virtualenv on remote host"""
     require('virtualenv_root', provided_by=('staging', 'production'))
-    args = '--clear --python=%s' % PYTHON_FULL_PATH
+    args = '--clear --python=%s --no-site-packages' % PYTHON_FULL_PATH
     run('virtualenv %s %s' % (args, env.virtualenv_root))
 
 def ensure_virtualenv():
@@ -220,7 +220,7 @@ def update_requirements():
     with cd(requirements_dir):
         cmd = ['pip install']
         cmd += ['-E %(virtualenv_root)s' % env] # select the target virtualenv
-        cmd += ['--update'] # update already installed packages
+        cmd += ['--upgrade'] # upgrade already installed packages
         cmd += ['--requirement %s' % os.path.join(requirements_dir, 'main.txt')] # specify a requirement file
         run(' '.join(cmd))
 
