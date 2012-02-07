@@ -25,14 +25,17 @@ PYTHON_FULL_PATH = "%s/bin/%s" % (PYTHON_PREFIX, PYTHON_BIN) if PYTHON_PREFIX el
 RSYNC_EXCLUDE = ( 
     ##CHANGEME!
     '.git',
+    '.gitignore',
     '*.pyc',
-    '*.example',
+    '*.sample',
     '*.db',
-    'media/admin',
-    'media/attachments',
-    'settings_local.py',
+    'docs/',
+    '*.markdown',
     'fabfile.py',
     'bootstrap.py',
+    'open_municipio/settings_*.py',
+    'open_municipio/urls_*.py',
+    'open_municipio/sitestatic',
 )
 
 ## TODO: these constants should be read from an external configuration file
@@ -40,7 +43,9 @@ RSYNC_EXCLUDE = (
 PROJECT_NAME = 'open_municipio' 
 # a unique identifier for this web application instance
 # usually is set to the primary domain from which the web application is accessed
-APP_DOMAIN = 'www.example.com' ##CHANGEME!
+APP_DOMAIN = 'staging.openmunicipio.it' 
+# filesystem location of project's files on the local machine
+LOCAL_PROJECT_ROOT = '/home/lorenzo/djcode/open_municipio'
 
 env.project = PROJECT_NAME
 env.app_domain = APP_DOMAIN
@@ -82,6 +87,12 @@ def staging():
     env.code_root = CODE_ROOT
     env.settings = DJANGO_SETTINGS_MODULE
     env.static_root = STATIC_ROOT
+    
+    env.roledefs = {
+    'web': ['webuser@www.example.com'],
+    'db': ['dbuser@db.example.com'],
+    }
+
 
 def production():
     """ Use production environment on remote host"""
@@ -115,9 +126,18 @@ def webserver_disable_site(site_name):
 def upload_webserver_conf():
     """Upload webserver configuration to remote host"""
     require('environment', provided_by=('staging', 'production'))
-    source = os.path.join('apache', '%(environment)s.conf' % env)
-    dest = os.path.join('/etc/apache2/sites-available', env.app_domain)
-    put(source, dest, mode=0755)
+    ## upload custom Apache directives
+    source = os.path.join(LOCAL_PROJECT_ROOT, 'apache', 'httpd.conf.%(environment)s' % env)
+    with cd('/etc/apache2'):
+        dest = 'httpd.conf'
+        put(source, dest, use_sudo=True, mode=0644)
+        sudo('chown root:root %s' % dest)
+    ## upload Virtual Host configuration
+    source = os.path.join(LOCAL_PROJECT_ROOT, 'apache', 'vhost.conf.%(environment)s' % env)
+    with cd('/etc/apache2/sites-available'):
+        dest = env.app_domain
+        put(source, dest, use_sudo=True, mode=0644)
+        sudo('chown root:root %s' % dest)
   
 @roles('web')
 def update_webserver_conf():
@@ -154,7 +174,7 @@ def create_virtualenv():
 def ensure_virtualenv():
     """Check if a project-specific virtualenv already exists; if not, create it."""
     require('virtualenv_root', provided_by=('staging', 'production'))
-    if file.exists(env.virtualenv_root):
+    if files.exists(env.virtualenv_root):
         return
     else:
         create_virtualenv()
@@ -213,8 +233,10 @@ def copy_website_skeleton():
 
     Include setup of suitable filesystem permissions.
     """
-    require(('website_root', 'app_domain'), provided_by=('staging', 'production'))
-    with cd(env.website_root):
+    require('web_root', 'app_domain', provided_by=('staging', 'production'))
+    with cd(env.web_root):
+        if files.exists(env.app_domain):
+            utils.abort("Directory %s already exists on the remote machine" % os.path.join(env.web_root, env.app_domain))
         run('cp -a skeleton %(app_domain)s' % env) 
 
 @roles('web')
@@ -235,7 +257,8 @@ def update_code():
     # -z compress file data during the transfer
     extra_opts = '--omit-dir-times'
     rsync_project(
-        env.project_root,
+        remote_dir = env.project_root,
+        local_dir = LOCAL_PROJECT_ROOT + os.path.sep,
         exclude=RSYNC_EXCLUDE,
         delete=True,
         extra_opts=extra_opts,
@@ -246,7 +269,7 @@ def update_code():
 ## Static files management
 @roles('web')
 def setup_static_files():
-    require(('static_root','virtualenv_root'), provided_by=('staging', 'production'))
+    require('static_root','virtualenv_root', provided_by=('staging', 'production'))
     # safety checks
     assert env.static_root.strip() != '' and env.static_root.strip() != '/'
     # Before Django 1.4 we don't have the ``--clear`` option to ``collectstatic``
@@ -312,11 +335,13 @@ def deploy():
     Deploy the web application to remote server(s)
     """
     require('environment', provided_by=('staging', 'production'))
-    ## TODO: early initialization steps go here
+    ## TODO: early initialization steps go here  
+    if env.initial_deploy:
+        copy_website_skeleton()
+
     with settings(warn_only=True):
         webserver_stop()
-    
-    copy_website_skeleton()
+
     update_code()
     update_requirements()
     update_database()
