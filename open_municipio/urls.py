@@ -30,6 +30,7 @@ from django.views.generic.base import RedirectView
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from open_municipio.views import InstitutionDetailView, HomeView, InfoView, ActDetailView
+from voting.views import vote_on_object
 
 urlpatterns = patterns('',
   (r'^admin/doc/', include('django.contrib.admindocs.urls')),
@@ -71,5 +72,14 @@ urlpatterns = patterns('',
     template_name='act_detail.html')),
 
   (r'^comments/', include('django.contrib.comments.urls')),
-  (r"^likes/", include("phileo.urls")),
+)
+
+act_dict = {
+    'model': Act,
+    'template_object_name': 'act',
+    'allow_xmlhttprequest': 'true',
+}
+
+urlpatterns += patterns('',
+   (r'^atti/(?P<object_id>\d+)/(?P<direction>up|down|clear)vote/?$', vote_on_object, act_dict),
 )

@@ -1,7 +1,60 @@
 {% extends "base.html" %}
 {% load comments %}
-{% load phileo_tags %}
-{% block head_includes %}{% likes_css %}{% endblock %}
+{% load voting_tags %}
+
+{% block head_includes %}
+<script>
+    $(document).ajaxSend(function(event, xhr, settings) {
+	function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie != '') {
+		var cookies = document.cookie.split(';');
+		for (var i = 0; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) == (name + '=')) {
+			cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+			break;
+                    }
+		}
+            }
+            return cookieValue;
+	}
+	function sameOrigin(url) {
+            // url could be relative or scheme relative or absolute
+            var host = document.location.host; // host + port
+            var protocol = document.location.protocol;
+            var sr_origin = '//' + host;
+            var origin = protocol + sr_origin;
+            // Allow absolute or scheme relative URLs to same origin
+            return (url == origin || url.slice(0, origin.length + 1) == origin + '/') ||
+		(url == sr_origin || url.slice(0, sr_origin.length + 1) == sr_origin + '/') ||
+		// or any other URL that isn't scheme relative or absolute i.e relative.
+		!(/^(\/\/|http:|https:).*/.test(url));
+	}
+	function safeMethod(method) {
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+	}
+
+	if (!safeMethod(settings.type) && sameOrigin(settings.url)) {
+            xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+	}
+    });
+
+function vote(object_id, direction) {
+    $.post('/atti/'+object_id+'/'+direction+'vote/', {HTTP_X_REQUESTED:'XMLHttpRequest'},
+           function(data) {
+               if (data.success == true) {
+                   $('#score').text(data.score.score);
+                   $('#num_votes').text(data.score.num_votes);
+               } else {
+                   alert('ERROR: ' + data.error_message);
+               }
+           }, 'json'
+          )
+}
+</script>
+{% endblock %}
 {% block title %}| Act list {% endblock %}
 
 {% block content %}
@@ -11,15 +64,14 @@
   <section id="content"><!-- #content -->
     Act id: {{ act.idnum }} - Title: {{ act.title }}
 
-    {% if request.user.is_authenticated %}
-    {% likes_widget request.user act %}
-    {% likes_js request.user act %}
-    {% else %}
-    <div class="phileo">
-      <a class="phileo-liked" id="likes" href="/login/"></a>
-      <span class="phileo-count">{{ act|likes_count }}</span>
-    </div>
-    {% endif %}
+    {% score_for_object act as score %}
+    <h5>Votes <span id="score">{{ score.score }}</span> point{{ score.score|pluralize }}
+      after <span id="num_votes">{{ score.num_votes }}</span> vote{{ score.num_votes|pluralize }}</h5>
+    <ul>
+      <li><a href="#" onclick="vote('{{ object.id }}', 'up');">I like it!</a></li>
+      <li><a href="#" onclick="vote('{{ object.id }}', 'down');">I hate it!</a></li>
+      <li><a href="#" onclick="vote('{{ object.id }}', 'clear');">I take it back! Clear my vote.</a></li>
+    </ul>
 
     <br />
     <br />
