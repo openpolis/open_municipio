@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}| Act list {% endblock %}
+
+{% block content %}
+  <section id="content"><!-- #content -->
+    <ul>
+      {% for act in object_list %}
+      <li><a href="">Act id: {{ act.idnum }} - Title: {{ act.title }}</a></li>
+      {% endfor %}
+    </ul>
+  </section><!-- end of #content -->  
+{% endblock %}

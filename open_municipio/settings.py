@@ -99,18 +99,22 @@ MIDDLEWARE_CLASSES = (
 
 TEMPLATE_DIRS = (
   os.path.join(PROJECT_ROOT, 'templates'),
+  os.path.join(PROJECT_ROOT, 'templates/om/'),
 )
 
 INSTALLED_APPS = (
     'django.contrib.auth',
+    'django.contrib.comments',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',
+    'django.contrib.staticfiles',
     'django.contrib.messages',
     'django.contrib.admin',
     'django.contrib.admindocs',
     'django_extensions',
     'south',
+    'phileo',
     'open_municipio.om',
 #    'tagging',
 #   'debug_toolbar',

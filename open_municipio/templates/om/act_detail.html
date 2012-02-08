@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load comments %}
+{% load phileo_tags %}
+{% block head_includes %}{% likes_css %}{% endblock %}
+{% block title %}| Act list {% endblock %}
+
+{% block content %}
+{% get_comment_count for act as comment_count %}
+{% get_comment_list for act as comment_list %}
+{% get_comment_form for act as form %}
+  <section id="content"><!-- #content -->
+    Act id: {{ act.idnum }} - Title: {{ act.title }}
+
+    {% if request.user.is_authenticated %}
+    {% likes_widget request.user act %}
+    {% likes_js request.user act %}
+    {% else %}
+    <div class="phileo">
+      <a class="phileo-liked" id="likes" href="/login/"></a>
+      <span class="phileo-count">{{ act|likes_count }}</span>
+    </div>
+    {% endif %}
+
+    <br />
+    <br />
+    Total number of comments: {{ comment_count }}
+    <ul>
+      {% for comment in comment_list %}
+      <li>{{ comment }}</li>
+      {% endfor %}
+    </ul>
+    {% if request.user.is_authenticated %}
+    Add your comment:
+    <table>
+      <form action="{% comment_form_target %}" method="post">
+	{% csrf_token %}
+	{{ form }}
+	<tr>
+	  <td colspan="2">
+            <input type="submit" name="submit" value="Post">
+            <input type="submit" name="preview" value="Preview">
+	  </td>
+	</tr>
+      </form>
+    </table>
+    {% endif %}
+  </section><!-- end of #content -->  
+{% endblock %}

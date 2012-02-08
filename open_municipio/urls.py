@@ -25,11 +25,11 @@ from django.conf.urls.defaults import *
 from django.contrib import admin
 admin.autodiscover()
 
-from open_municipio.om.models import Institution, Office, Company, Person
+from open_municipio.om.models import Institution, Office, Company, Person, Act
 from django.views.generic.base import RedirectView
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
-from open_municipio.views import InstitutionDetailView, HomeView, InfoView
+from open_municipio.views import InstitutionDetailView, HomeView, InfoView, ActDetailView
 
 urlpatterns = patterns('',
   (r'^admin/doc/', include('django.contrib.admindocs.urls')),
@@ -62,4 +62,14 @@ urlpatterns = patterns('',
     template_name='company_list.html'
   )),
 
+  (r'^atti/$', ListView.as_view(
+    model=Act,
+    template_name='act_list.html'
+  )),
+  (r'^atti/(?P<pk>[-\w]+)/$', ActDetailView.as_view(
+    model=Act,
+    template_name='act_detail.html')),
+
+  (r'^comments/', include('django.contrib.comments.urls')),
+  (r"^likes/", include("phileo.urls")),
 )
