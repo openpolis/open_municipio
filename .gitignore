@@ -1,8 +1,8 @@
 *~
 *.pyc
 *.db
-open_municipio/settings_local.py
-open_municipio/urls_local.py
+open_municipio/settings_*.py
+open_municipio/urls_*.py
 apache
 sitestatic
 uploads/attached_documents/*
