@@ -24,6 +24,7 @@ PYTHON_FULL_PATH = "%s/bin/%s" % (PYTHON_PREFIX, PYTHON_BIN) if PYTHON_PREFIX el
 # exclude patterns for ``rsync`` invocations
 RSYNC_EXCLUDE = ( 
     ##CHANGEME!
+    '*~',
     '.git',
     '.gitignore',
     '*.pyc',
@@ -33,6 +34,7 @@ RSYNC_EXCLUDE = (
     '*.markdown',
     'fabfile.py',
     'bootstrap.py',
+    'apache/*',
     'open_municipio/settings_*.py',
     'open_municipio/urls_*.py',
     'open_municipio/sitestatic',
@@ -43,18 +45,12 @@ RSYNC_EXCLUDE = (
 PROJECT_NAME = 'open_municipio' 
 # a unique identifier for this web application instance
 # usually is set to the primary domain from which the web application is accessed
-APP_DOMAIN = 'staging.openmunicipio.it' 
+APP_DOMAIN = 'www.example.com' 
 # filesystem location of project's files on the local machine
-LOCAL_PROJECT_ROOT = '/home/lorenzo/djcode/open_municipio'
+LOCAL_PROJECT_ROOT = '/local/path/to/open_municipio'
 
 env.project = PROJECT_NAME
 env.app_domain = APP_DOMAIN
-
-env.roledefs = {
-    'web': ['webuser@www.example.com'],
-    'db': ['webuser@db.example.com'],
-}
-
 
 ## Environment-specific setup
 def staging():
@@ -102,27 +98,30 @@ def production():
 
 ## Webserver management
 
-@roles('web')
 def webserver_reload():    
     """Reload the webserver on remote host"""
     sudo('/etc/init.d/apache2 reload')
 
-@roles('web')
+def webserver_start():    
+    """Start the webserver on remote host"""
+    sudo('/etc/init.d/apache2 start')
+
+def webserver_stop():    
+    """Restart the webserver on remote host"""
+    sudo('/etc/init.d/apache2 stop')
+
 def webserver_restart():    
     """Restart the webserver on remote host"""
     sudo('/etc/init.d/apache2 restart')
 
-@roles('web')
 def webserver_enable_site(site_name):
     """Enable a webserver virtualhost"""
     sudo('a2ensite %s' % site_name)
 
-@roles('web')
 def webserver_disable_site(site_name):
     """Disable a webserver virtualhost"""
     sudo('a2dissite %s' % site_name)
 
-@roles('web')
 def upload_webserver_conf():
     """Upload webserver configuration to remote host"""
     require('environment', provided_by=('staging', 'production'))
@@ -139,14 +138,12 @@ def upload_webserver_conf():
         put(source, dest, use_sudo=True, mode=0644)
         sudo('chown root:root %s' % dest)
   
-@roles('web')
 def update_webserver_conf():
     """Update webserver configuration on remote host """
     upload_webserver_conf()
     webserver_enable_site(env.app_domain)
     webserver_restart()
 
-@roles('web')
 def touch_WSGI_script():
     """ Touch WSGI file to trigger code reload """
     require('project_root', provided_by=('staging', 'production'))
@@ -174,7 +171,7 @@ def create_virtualenv():
 def ensure_virtualenv():
     """Check if a project-specific virtualenv already exists; if not, create it."""
     require('virtualenv_root', provided_by=('staging', 'production'))
-    if files.exists(env.virtualenv_root):
+    if files.exists(os.path.join(env.virtualenv_root, 'bin', 'python')):
         return
     else:
         create_virtualenv()
@@ -203,7 +200,6 @@ def run_venv(command, **kwargs):
     run(' && '.join(cmd), **kwargs)
 
 
-@roles('web')
 def update_requirements():
     """
     Update external dependencies on remote host.
@@ -213,15 +209,15 @@ def update_requirements():
     requirements_dir = os.path.join(env.project_root, 'requirements')
     # TODO: generalize to multiple requirement files
     with cd(requirements_dir):
-        cmd = ['pip install']
-        cmd += ['-E %(virtualenv_root)s' % env] # select the target virtualenv
+        pip_executable = os.path.join(env.virtualenv_root, 'bin', 'pip')              
+        cmd = [pip_executable] # use pip version provided by virtualenv              
+        cmd += ['install']
         cmd += ['--upgrade'] # upgrade already installed packages
         cmd += ['--requirement %s' % os.path.join(requirements_dir, 'main.txt')] # specify a requirement file
         run(' '.join(cmd))
 
 ## Application code management
 
-@roles('web')
 def copy_website_skeleton():
     """
     Create a skeleton directory tree for the new website.
@@ -229,12 +225,12 @@ def copy_website_skeleton():
     Include setup of suitable filesystem permissions.
     """
     require('web_root', 'app_domain', provided_by=('staging', 'production'))
+    # FIXME: skeleton should be created programmatically for increased portability
     with cd(env.web_root):
         if files.exists(env.app_domain):
             utils.abort("Directory %s already exists on the remote machine" % os.path.join(env.web_root, env.app_domain))
         run('cp -a skeleton %(app_domain)s' % env) 
 
-@roles('web')
 def update_code():
     """Transfer application code to remote host"""
     require('project_root', 'code_root', provided_by=('staging', 'production'))
@@ -279,7 +275,7 @@ def update_code():
 
 
 ## Static files management
-@roles('web')
+
 def setup_static_files():
     require('static_root','virtualenv_root', provided_by=('staging', 'production'))
     # safety checks
@@ -323,7 +319,6 @@ def update_database():
     require('settings','code_root', provided_by=('staging', 'production'))
     drop_database()
     run_venv('django-admin.py syncdb --all --noinput --settings=%(settings)s' % env)
-    run('chmod g+w %(code_root)s' % env)
     # if getattr(env, 'initial_deploy', False):
     #     run_venv('django-admin.py syncdb --all --noinput --settings=%(settings)s' % env)
     #     run_venv('django-admin.py migrate --fake --noinput --settings=%(settings)s' % env)
@@ -348,7 +343,6 @@ def initial_deploy():
     env.initial_deploy = True
     deploy()        
 
-
 @roles('web')
 def deploy():
     """
@@ -366,10 +360,23 @@ def deploy():
     update_requirements()
     update_database()
     setup_static_files()
+    adjust_permissions()
     clear_logs()
 
     webserver_start()
 
 
+def adjust_permissions():
+    """
+    Adjust filesystem permissions after completing the deployment process.
+    """
+    require('web_user', 'domain_root', 'code_root', provided_by=('staging', 'production'))
+    sudo('chown -R %(web_user)s:www-data %(domain_root)s' % env)
+    ## Only needed for SQLite DBs
+    # SQLite need write access to the folder containing the DB file
+    sudo('chmod g+w %(code_root)s' % env)
+    # SQLite need write access to the DB file itself
+    db_file = os.path.join(env.code_root, 'sqlite.db')
+    sudo('chmod g+w %s' % db_file)
 
 
