@@ -189,24 +189,19 @@ def virtualenv(venv_root):
     return settings(virtualenv_root=venv_root)
 
 
-def activate_virtualenv(venv_root=None):
-    """Activate virtualenv on remote host"""
-    if not venv_root:
-        require('virtualenv_root', provided_by=('staging', 'production'))
-    else:
-        env.virtualenv_root = venv_root
-    env.activation_script = os.path.join(env.virtualenv_root, 'bin/activate')
-    run('source %(activation_script)s' % env) 
-
-
 def run_venv(command, **kwargs):
     """
     Run a command (via ``fabric.api.run``) within a given virtualenv context 
     (to be specified either via ``env.virtualenv_root`` or the ``virtualenv`` 
     context manager)
     """
-    activate_virtualenv()
-    run(command, **kwargs)
+    require('virtualenv_root', provided_by=('staging', 'production'))
+    env.activation_script = os.path.join(env.virtualenv_root, 'bin/activate')
+    cmd = ['source %(activation_script)s' % env]
+    cmd += ['export PYTHONPATH=%(project_root)s:$PYTHONPATH' % env ] # configure PYTHONPATH
+    cmd += [command] # shell command to be run within this virtualenv
+    run(' && '.join(cmd), **kwargs)
+
 
 @roles('web')
 def update_requirements():
@@ -242,7 +237,7 @@ def copy_website_skeleton():
 @roles('web')
 def update_code():
     """Transfer application code to remote host"""
-    require('project_root', provided_by=('staging', 'production'))
+    require('project_root', 'code_root', provided_by=('staging', 'production'))
     if env.environment == 'production':
         if not console.confirm('Are you sure you want to deploy to the production server(s)?',
                                default=False):
@@ -263,8 +258,25 @@ def update_code():
         delete=True,
         extra_opts=extra_opts,
     )
+    
+    with lcd(os.path.join(LOCAL_PROJECT_ROOT, env.project)):
+        with cd(env.code_root):
+            # update Django settings module
+            settings_file = 'settings_%(environment)s.py' % env
+            put(settings_file, settings_file, mode=0644)
+            # update Django main URLconf module
+            urls_file = 'urls_%(environment)s.py' % env        
+            put(urls_file, urls_file, mode=0644)
+
+    with lcd(os.path.join(LOCAL_PROJECT_ROOT, 'apache')):
+        with cd(os.path.join(env.project_root, 'apache')):
+            source = '%(environment)s.wsgi' % env
+            dest = 'django.wsgi'
+            put(source, dest, mode=0644)
+
     # trigger code reloading
     touch_WSGI_script()
+
 
 ## Static files management
 @roles('web')
@@ -292,25 +304,33 @@ def drop_database():
     """
     require('code_root', provided_by=('staging', 'production'))
     with cd(env.code_root):
-        run('rm -f sqlite.db')
+        if files.exists('sqlite.db'):
+            run('rm -f sqlite.db')
 
 @roles('db')
 def remote_sync_db():
     """
     Sync the application's database on the server machine.
     """
-    require(('settings', 'virtualenv_root'), provided_by=('staging', 'production'))
+    require('settings', 'virtualenv_root', provided_by=('staging', 'production'))
     run_venv('django-admin.py syncdb --noinput --settings=%(settings)s' % env)
     
 @roles('db')
 def update_database():
-    """Update remote database (including South migrations, if any)."""
-    if getattr(env, 'initial_deploy', False):
-        run_venv('django-admin.py syncdb --all --noinput --settings=%(settings)' % env)
-        run_venv('django-admin.py migrate --fake --noinput --settings=%(settings)' % env)
-    else:
-        run_venv('django-admin.py syncdb --all --noinput --settings=%(settings)' % env)
-        run_venv('django-admin.py migrate --noinput --settings=%(settings)' % env)
+    """
+    Update remote database (including South migrations, if any).
+    """
+    require('settings','code_root', provided_by=('staging', 'production'))
+    drop_database()
+    run_venv('django-admin.py syncdb --all --noinput --settings=%(settings)s' % env)
+    run('chmod g+w %(code_root)s' % env)
+    # if getattr(env, 'initial_deploy', False):
+    #     run_venv('django-admin.py syncdb --all --noinput --settings=%(settings)s' % env)
+    #     run_venv('django-admin.py migrate --fake --noinput --settings=%(settings)s' % env)
+    # else:
+    #     run_venv('django-admin.py syncdb --all --noinput --settings=%(settings)s' % env)
+    #     run_venv('django-admin.py migrate --noinput --settings=%(settings)s' % env)
+
 
 ## Macro-tasks
 @roles('web')
