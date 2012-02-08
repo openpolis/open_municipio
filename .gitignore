@@ -7,4 +7,4 @@ apache
 sitestatic
 uploads/attached_documents/*
 open_municipio/om/migrations/*
-fabfile.py
+fabfile/
