@@ -1,0 +1,43 @@
+<VirtualHost *:80>
+    ServerName example.com
+    ServerAlias www.example.com
+
+    WSGIScriptReloading On
+    WSGIReloadMechanism Process
+
+    WSGIDaemonProcess open_municipio-production
+    WSGIProcessGroup open_municipio-production
+    WSGIApplicationGroup open_municipio-production
+
+    WSGIPassAuthorization On
+
+
+    DocumentRoot /home/webuser/websites/example.com/public
+
+    <Directory /home/webuser/websites/example.com/public>
+    Order allow,deny
+    Allow from all
+    </Directory>
+
+    Alias /static/ /home/webuser/websites/example.com/public/static/
+
+    <Directory /home/webuser/websites/example.com/public/static>
+    Order deny,allow
+    Allow from all
+    </Directory>
+
+
+
+    WSGIScriptAlias / /home/webuser/websites/example.com/private/open_municipio/apache/django.wsgi
+
+    <Directory /home/webuser/websites/example.com/private/open_municipio/apache>
+    Order allow,deny
+    Allow from all
+    </Directory>
+
+
+
+    LogLevel info
+    ErrorLog /home/webuser/websites/example.com/log/error.log
+    CustomLog /home/webuser/websites/example.com/log/access.log combined
+</VirtualHost>

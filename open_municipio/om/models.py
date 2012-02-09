@@ -8,8 +8,10 @@ from model_utils.managers import InheritanceManager
 
 from south.modelsinspector import add_introspection_rules
 
-from open_municipio.people.models import *
+from taggit.managers import TaggableManager
 
+from open_municipio.people.models import *
+from open_municipio.taxonomy.models import TaggedItem, Category 
 
 # 
 # Acts
@@ -34,12 +36,14 @@ class Act(TimeStampedModel):
     adj_title = models.CharField(_('adjoint title'), max_length=255, blank=True, help_text=_("An adjoint title, added to further explain an otherwise cryptic title"))
     presentation_date = models.DateField(_('presentation date'), null=True, help_text=_("Date of presentation, as stated in the act"))
     text = models.TextField(_('text'), blank=True)
-    process_step_set = models.ManyToManyField('Status', through='Transition', verbose_name=_('transitions'))
     presenter_set = models.ManyToManyField(InstitutionCharge, blank=True, null=True, db_table='om_act_presenter', related_name='act_presentation_set', verbose_name=_('presenters'))
     recipient_set = models.ManyToManyField(InstitutionCharge, blank=True, null=True, db_table='om_act_recipient', related_name='act_destination_set', verbose_name=_('recipients'))
     emitting_institution = models.ForeignKey(Institution, related_name='emitted_act_set', verbose_name=_('emitting institution'))
+    category_set = models.ManyToManyField(Category, verbose_name=_('categories'), blank=True, null=True)
 
     objects = InheritanceManager()
+    
+    tag_set = TaggableManager(through=TaggedItem, blank=True)
 
     def __unicode__(self):
         uc = u'%s' % (self.title)
@@ -51,7 +55,7 @@ class Act(TimeStampedModel):
 
     @property
     def transitions(self):
-        return self.process_step_set.all()
+        return self.transition_set.all()
 
     @property
     def presenters(self):
@@ -60,6 +64,14 @@ class Act(TimeStampedModel):
     @property
     def recipients(self):
         return self.recipient_set.all()
+    
+    @property
+    def tags(self):
+        return self.tag_set.all()
+    
+    @property
+    def categories(self):
+        return self.category_set.all()
 
       
 class ActSection(models.Model):
@@ -180,7 +192,7 @@ class Status(models.Model):
   
 class Transition(models.Model):
     final_status = models.ForeignKey(Status, on_delete=models.PROTECT)
-    act = models.ForeignKey(Act)
+    act = models.ForeignKey(Act, related_name='transition_set')
     transition_date = models.DateField()
     symbol = models.CharField(_('symbol'), max_length=128, null=True)
     note = models.CharField(_('note'), max_length=255, null=True)

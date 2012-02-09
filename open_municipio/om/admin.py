@@ -15,6 +15,9 @@ class TransitionInline(admin.TabularInline):
     model = Transition
     extra = 1
 
+class ActAdmin(admin.ModelAdmin):
+    pass
+
 class ActAdminWithAttaches(admin.ModelAdmin):
     inlines = [AttachInline, TransitionInline]
 
@@ -24,7 +27,7 @@ class ActAdminWithEmendations(admin.ModelAdmin):
 class ActAdminWithAttachesAndEmendations(admin.ModelAdmin):
     inlines = [AttachInline, EmendationInline, TransitionInline]
 
-class ProcessAdmin(admin.ModelAdmin):
+class StatusAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("name",)}
 
 class GroupVoteInline(admin.TabularInline):
@@ -42,13 +45,14 @@ class VotationAdminWithGroupsAndChargesVotes(admin.ModelAdmin):
 admin.site.register(Deliberation, ActAdminWithAttachesAndEmendations)
 admin.site.register(Interrogation)
 admin.site.register(Interpellation)
+admin.site.register(Act, ActAdmin)
 admin.site.register(Motion, ActAdminWithEmendations)
 admin.site.register(Agenda, ActAdminWithEmendations)
 admin.site.register(Emendation, ActAdminWithAttaches)
   
 '''
 admin.site.register(Attach)
-admin.site.register(Process, ProcessAdmin)
+admin.site.register(Status, StatusAdmin)
 admin.site.register(Decision)
 admin.site.register(Votation, VotationAdminWithGroupsAndChargesVotes)
 admin.site.register(GroupVote)
