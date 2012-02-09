@@ -26,6 +26,7 @@ from django.contrib import admin
 admin.autodiscover()
 
 from open_municipio.om.models import Institution, Office, Company, Person, Act
+from django.contrib.comments.models import Comment
 from django.views.generic.base import RedirectView
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
@@ -80,6 +81,13 @@ act_dict = {
     'allow_xmlhttprequest': 'true',
 }
 
+comment_dict = {
+    'model': Comment,
+    'template_object_name': 'comment',
+    'allow_xmlhttprequest': 'true',
+}
+
 urlpatterns += patterns('',
    (r'^atti/(?P<object_id>\d+)/(?P<direction>up|down|clear)vote/?$', vote_on_object, act_dict),
+   (r'^commenti/(?P<object_id>\d+)/(?P<direction>up|down|clear)vote/?$', vote_on_object, comment_dict),
 )
