@@ -7,3 +7,4 @@ apache
 open_municipio/om/migrations/*
 open_municipio/people/migrations/*
 uploads/attached_documents/*
+docs/files
