@@ -9,12 +9,14 @@
 	<xs:complexType name="actType" >
 		<xs:sequence>
 			<xs:element ref="PresentingInstitutions" minOccurs="1" maxOccurs="1" />
+			<xs:element ref="TargetInstitutions" minOccurs="0" maxOccurs="1" />
 			<xs:element ref="ProcessStep" minOccurs="1" maxOccurs="unbounded" />
 			<xs:element ref="Section" minOccurs="1" maxOccurs="unbounded" />
 		</xs:sequence>
 		<xs:attribute name="id" use="required" type="xs:string" />
 		<xs:attribute name="title" use="required" type="xs:string" />
 		<xs:attribute name="adj_title" use="optional" type="xs:string" />
+		<xs:attribute name="expire_date" use="optional" type="dateType" />
 	</xs:complexType>
 	
 	<xs:element name="PresentingInstitutions">
@@ -24,6 +26,15 @@
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
+	
+	<xs:element name="TargetInstitutions">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="Institution" minOccurs="1" maxOccurs="unbounded" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	
 	
 	<xs:complexType name="bodyType" >
 		<xs:sequence>
@@ -92,10 +103,10 @@
 		<xs:complexType>		
 			<xs:attribute name="name" use="required" type="xs:string" />
 			<xs:attribute name="last_name" use="required" type="xs:string" />
-			<xs:attribute name="birth_date" use="required" type="xs:date" use="optional" />
-			<xs:attribute name="birth_place" use="required" type="xs:string" use="optional" />
-			<xs:attribute name="sex" use="required" type="genderType" use="optional" />
-			<xs:attribute name="ssn" use="required" type="ssnType" use="optional" />
+			<xs:attribute name="birth_date" type="xs:date" use="optional" />
+			<xs:attribute name="birth_place" type="xs:string" use="optional" />
+			<xs:attribute name="sex" type="genderType" use="optional" />
+			<xs:attribute name="ssn" type="ssnType" use="optional" />
 			
 		</xs:complexType>
 	</xs:element>
@@ -216,8 +227,7 @@
 				<xs:extension base="actType"  >
 					<xs:sequence>
 						<xs:element ref="QuestionMotivation" minOccurs="1" maxOccurs="1" />
-						<xs:element ref="AnswerText" minOccurs="1" maxOccurs="1" />
-						<xs:element ref="ReplyText" minOccurs="1" maxOccurs="1" />
+						<xs:element ref="Reply" minOccurs="1" maxOccurs="1" />
 					</xs:sequence>
 					<xs:attribute name="answer_type" type="xs:string" use="required" />
 				</xs:extension>
@@ -226,8 +236,27 @@
 	</xs:element>
 	
 	<xs:element name="QuestionMotivation" />
-	<xs:element name="AnswerText" />
+	<xs:element name="Reply" >
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="ReplyInstitution" />
+				<xs:element ref="ReplyText" />
+			</xs:sequence>
+			<xs:attribute name="answerType" use="required"  >
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:enumeration value="written" />
+						<xs:enumeration value="oral" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	
 	<xs:element name="ReplyText" />
+	<xs:element name="ReplyInstitution" type="bodyType">
+		
+	</xs:element>
 	
 	<xs:element name="Interpellation" type="actType" />
 	<xs:element name="Motion" type="actType" />
