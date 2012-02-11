@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Persons
+	xmlns="http://www.w3schools.com"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.w3schools.com OpenMunicipioDataImport.xsd"
+	xmlns:xi="http://www.w3.org/2001/XInclude">	
+	<Person
+		name="Pippo"
+		last_name="Poppi"
+		birth_date="1982-07-26"
+		birth_place="Loreto (AN)"
+		sex="m"
+		ssn="PPPPPP86L26E690K">
+		<PCharges />
+	</Person>
+	<Person
+		name="AAAA"
+		last_name="BBBB"
+		birth_date="1982-07-26"
+		birth_place="Loreto (AN)"
+		sex="f"
+		ssn="AAABBB86L26E690K">
+		<PCharges>
+			<PCharge
+				id="1"
+				start_date="2010-01-01"
+				end_date="2011-12-31"
+				end_reason="got tired"
+				charge_type="Administration"
+				description="I do stuff, I see people" 
+ 				office="321" />
+		</PCharges>
+	</Person>
+		<Person
+		name="XXXX"
+		last_name="YYYY"
+		birth_date="1982-07-26"
+		birth_place="Loreto (AN)"
+		sex="f"
+		ssn="XXXYYY86L26E690K">
+		<PCharges>
+			<PCharge
+				id="1"
+				start_date="2010-01-01"
+				end_date="2011-12-31"
+				end_reason="got tired"
+				charge_type="Company"
+				description="I do stuff, I see people too" 
+ 				company="246" />
+		</PCharges>
+	</Person>
+</Persons>

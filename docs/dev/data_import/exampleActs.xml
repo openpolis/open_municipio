@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OpenMunicipio
+	xmlns="http://www.w3schools.com"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.w3schools.com OpenMunicipioDataImport.xsd"
+	xmlns:xi="http://www.w3.org/2001/XInclude">
+	<Acts>
+		<Motion id="M.123.a" title="This is a very important motion" >
+			<ProcessStep name="Presented" date="2012-01-01" />
+			<Section title="M.123.a-Introduction" >
+				<SectionText>
+					This is the first and most important part of this motion
+				</SectionText>
+			</Section>
+			<Section title="M.123.a-Chapter1" >
+				<SectionText>
+				This is a not so important chapter
+				</SectionText>
+			</Section>
+			<Section title="M.123.a-Chapter2" >
+				<SectionText>
+				Try a duplicate chapter name
+				</SectionText>
+				<Section title="M.123.a-Chapter2" >
+					<SectionText>
+					Try a duplicate chapter name
+					</SectionText>
+				</Section>
+			</Section>
+		</Motion>
+		<Motion id="M.123.b" title="This is a very important motion2" >
+			<ProcessStep name="Presented" date="2012-01-01" />
+			<ProcessStep name="Voted" date="2012-01-02" />
+			<Section title="M.123.b-Introduction" > 
+				<SectionText>
+					This is the first and most important part of this motion
+				</SectionText>
+			</Section>
+			<Section title="M.123.b-Chapter1" >
+				<SectionText>
+					This is a not so important chapter
+				</SectionText>
+			</Section>
+			<Section title="M.123.b-Chapter2" >
+				<SectionText>
+					Try a duplicate chapter name
+				</SectionText>
+			</Section>
+		</Motion>
+		
+	</Acts>
+</OpenMunicipio>
