@@ -20,7 +20,7 @@
 	<xs:element name="PresentingInstitutions">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element ref="Institution" />
+				<xs:element ref="Institution" minOccurs="1" maxOccurs="unbounded" />
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
@@ -92,10 +92,10 @@
 		<xs:complexType>		
 			<xs:attribute name="name" use="required" type="xs:string" />
 			<xs:attribute name="last_name" use="required" type="xs:string" />
-			<xs:attribute name="birth_date" use="required" type="xs:date" />
-			<xs:attribute name="birth_place" use="required" type="xs:string" />
-			<xs:attribute name="sex" use="required" type="genderType" />
-			<xs:attribute name="ssn" use="required" type="ssnType" />
+			<xs:attribute name="birth_date" use="required" type="xs:date" use="optional" />
+			<xs:attribute name="birth_place" use="required" type="xs:string" use="optional" />
+			<xs:attribute name="sex" use="required" type="genderType" use="optional" />
+			<xs:attribute name="ssn" use="required" type="ssnType" use="optional" />
 			
 		</xs:complexType>
 	</xs:element>
@@ -111,7 +111,7 @@
 	<xs:element name="Group">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element name="Person" />
+				<xs:element name="Person" minOccurs="1" maxOccurs="unbounded" />
 			</xs:sequence>
 			<xs:attribute name="name" type="xs:string" />
 			<xs:attribute name="acronym" type="xs:string" />
@@ -252,6 +252,7 @@
 				<xs:simpleType>
 					<xs:restriction base="xs:token">
 						<xs:enumeration value="Presented" />
+						<xs:enumeration value="Voted" />
 						<!-- Aggiungere gli stati del workflow di presentazione degli atti -->
 					</xs:restriction>
 				</xs:simpleType>
