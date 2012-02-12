@@ -19,3 +19,17 @@ body {
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;  
 }
+
+small {
+  font-size: 12px;
+  text-align: right;
+  color: gray;
+}
+
+.pdfviewer {
+  height: 480px;
+}
+
+footer {
+  text-align: center;
+}
