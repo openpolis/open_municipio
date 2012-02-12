@@ -1,26 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
-    <title>{{ page.title }} - Open municipio</title>
-    <meta name="description" content="{{ page.description }}">
-    <meta name="author" content="{{ page.author }}">
-
-    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
-    <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-
-    <!-- Le styles -->
-    <link href="css/bootstrap.css" rel="stylesheet">
-    <link href="css/bootstrap-responsive.css" rel="stylesheet">
-    <link href="css/styles.css" rel="stylesheet">
-
-    <!-- Le fav and touch icons -->
-    <link rel="shortcut icon" href="img/favicon.ico">
-    <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="img/apple-touch-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="img/apple-touch-icon-114x114.png">
+    {% include head.html%}
   </head>
 
   <body>
@@ -31,31 +12,19 @@
     
     <div class="container">
       <div class="row">
-        {% if page.no_sidebar %}
           <div class="span10 offset1">
-            <div class="hero-unit">
+            {% if page.is_hero %}
+              <div class="hero-unit">
+                {{ content }}
+              </div>
+            {% else %}
               {{ content }}
-            </div>
+            {% endif %}
           </div>
-        {% else %}
-          <div class="span3">
-            {% include sidebar.html %}
-          </div><!--/span-->
-
-          <div class="span9">
-            {{ content }}
-          </div><!--/span-->
-        {% endif %}
       </div><!--/row-->
 
-      <hr>
-
-      <footer>
-        <p>&copy; 2012 - <a href="http://www.openpolis.it" target="_blank">Openpolis</a> &amp; 
-           <a href="http://www.informaetica.it" target="_blank">Informaetica</a></p>
-      </footer>
-
-    </div><!--/.fluid-container-->
+      {% include footer.html %}
+    </div><!--/container-->
     
     <!-- Le javascript
     ================================================== -->
