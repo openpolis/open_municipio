@@ -36,23 +36,86 @@
 	function safeMethod(method) {
             return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
 	}
-
+	
 	if (!safeMethod(settings.type) && sameOrigin(settings.url)) {
             xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
 	}
     });
 
-function vote(path, score_id, num_votes_id, object_id, direction) {
-    $.post('/' + path + '/' + object_id + '/' + direction + 'vote/', {HTTP_X_REQUESTED: 'XMLHttpRequest'},
-           function(data) {
+function vote_act(act_id, direction) {
+    $.post('/atti/' + act_id + '/' + direction + 'vote/', {HTTP_X_REQUESTED: 'XMLHttpRequest'}, 
+	   function(data) {
                if (data.success == true) {
-                   $('#' + score_id).text(data.score.score);
-                   $('#' + num_votes_id).text(data.score.num_votes);
-               } else {
-                   alert('ERROR: ' + data.error_message);
-               }
+		   var $box = $('#act_' + act_id);
+                   $box.find(".score").text(data.score.score);
+                   $box.find(".num_votes").text(data.score.num_votes);
+                   if (direction == "up") {
+ 		       $box.find("ul").replaceWith(
+'<ul>' +
+  '<li><a onclick=\'vote_act("' + act_id + '", "clear");\'><img alt="Vote up" src="{{ STATIC_URL }}img/thumb-up.png" /></a></li>' + 
+  '<li><a onclick=\'vote_act("' + act_id + '", "down");\'><img alt="Vote down" src="{{ STATIC_URL }}img/thumb-down-grey.png" /></a></li>' + 
+'</ul>'
+);
+		   }
+		   else if (direction == "down") {
+		       $box.find("ul").replaceWith(
+'<ul>' +
+  '<li><a onclick=\'vote_act("' + act_id + '", "up");\'><img alt="Vote up" src="{{ STATIC_URL }}img/thumb-up-grey.png" /></a></li>' +
+  '<li><a onclick=\'vote_act("' + act_id + '", "clear");\'><img alt="Vote down" src="{{ STATIC_URL }}img/thumb-down.png" /></a></li>' + 
+'</ul>'
+);
+		   }
+		   else {
+		       $box.find("ul").replaceWith(
+'<ul>' + 
+  '<li><a onclick=\'vote_act("' + act_id + '", "up");\'><img alt="Vote up" src="{{ STATIC_URL }}img/thumb-up-grey.png" /></a></li>' + 
+  '<li><a onclick=\'vote_act("' + act_id + '", "down");\'><img alt="Vote down" src="{{ STATIC_URL }}img/thumb-down-grey.png" /></a></li>' + 
+'</ul>');
+ 		   }
+	       }
+	       else {
+		   alert('ERROR: ' + data.error_message);
+	       }
            }, 'json'
-          )
+	  )
+}
+
+function vote_comment(comment_id, direction) {
+    $.post('/commenti/' + comment_id + '/' + direction + 'vote/', {HTTP_X_REQUESTED: 'XMLHttpRequest'}, 
+	   function(data) {
+               if (data.success == true) {
+		   var $box = $('#comment_' + comment_id);
+                   $box.find(".score").text(data.score.score);
+                   $box.find(".num_votes").text(data.score.num_votes);
+                   if (direction == "up") {
+ 		       $box.find("ul").replaceWith(
+'<ul>' +
+  '<li><a onclick=\'vote_comment("' + comment_id + '", "clear");\'><img alt="Vote up" src="{{ STATIC_URL }}img/thumb-up.png" /></a></li>' + 
+  '<li><a onclick=\'vote_comment("' + comment_id + '", "down");\'><img alt="Vote down" src="{{ STATIC_URL }}img/thumb-down-grey.png" /></a></li>' + 
+'</ul>'
+);
+		   }
+		   else if (direction == "down") {
+		       $box.find("ul").replaceWith(
+'<ul>' +
+  '<li><a onclick=\'vote_comment("' + comment_id + '", "up");\'><img alt="Vote up" src="{{ STATIC_URL }}img/thumb-up-grey.png" /></a></li>' +
+  '<li><a onclick=\'vote_comment("' + comment_id + '", "clear");\'><img alt="Vote down" src="{{ STATIC_URL }}img/thumb-down.png" /></a></li>' + 
+'</ul>'
+);
+		   }
+		   else {
+		       $box.find("ul").replaceWith(
+'<ul>' + 
+  '<li><a onclick=\'vote_comment("' + comment_id + '", "up");\'><img alt="Vote up" src="{{ STATIC_URL }}img/thumb-up-grey.png" /></a></li>' + 
+  '<li><a onclick=\'vote_comment("' + comment_id + '", "down");\'><img alt="Vote down" src="{{ STATIC_URL }}img/thumb-down-grey.png" /></a></li>' + 
+'</ul>');
+ 		   }
+	       }
+	       else {
+		   alert('ERROR: ' + data.error_message);
+	       }
+           }, 'json'
+	  )
 }
 </script>
 {% endblock %}
@@ -67,17 +130,27 @@ function vote(path, score_id, num_votes_id, object_id, direction) {
     <p>{{ act.text }}</p>
 
     {% score_for_object act as act_score %}
-    <div class="voting-box">
+    {% if request.user.is_authenticated %}
+    {% vote_by_user request.user on act as vote %}
+    {% endif %}
+    <div class="voting-box" id="act_{{ object.id }}">
       <h1>Vote this act</h1>
       <ul>
-	<li><a href="#" onclick="vote('atti', 'act_score', 'act_num_votes', '{{ object.id }}', 'up');"><img alt="Vote up" src="{{ STATIC_URL }}img/thumb-up.png" /></a></li>
-	<li><a href="#" onclick="vote('atti', 'act_score', 'act_num_votes', '{{ object.id }}', 'down');"><img alt="Vote down" src="{{ STATIC_URL }}img/thumb-down.png" /></a></li>
-	<li><a href="#" onclick="vote('atti', 'act_score', 'act_num_votes', '{{ object.id }}', 'clear');"><img alt="Clear my vote" src="{{ STATIC_URL }}img/clear-vote.png" /></a></li>
+	{% if vote.vote < 0 %}
+	<li><a onclick="vote_act('{{ object.id }}', 'up');"><img alt="Vote up" src="{{ STATIC_URL }}img/thumb-up-grey.png" /></a></li>
+	<li><a onclick="vote_act('{{ object.id }}', 'clear');"><img alt="Vote down" src="{{ STATIC_URL }}img/thumb-down.png" /></a></li>
+	{% else %}{% if vote.vote > 0 %}
+	<li><a onclick="vote_act('{{ object.id }}', 'clear');"><img alt="Vote up" src="{{ STATIC_URL }}img/thumb-up.png" /></a></li>
+	<li><a onclick="vote_act('{{ object.id }}', 'down');"><img alt="Vote down" src="{{ STATIC_URL }}img/thumb-down-grey.png" /></a></li>
+	{% else %}
+	<li><a onclick="vote_act('{{ object.id }}', 'up');"><img alt="Vote up" src="{{ STATIC_URL }}img/thumb-up-grey.png" /></a></li>
+	<li><a onclick="vote_act('{{ object.id }}', 'down');"><img alt="Vote down" src="{{ STATIC_URL }}img/thumb-down-grey.png" /></a></li>
+	{% endif %}
+	{% endif %}
       </ul>
       <div class="voting-score">
-	Score: <span id="act_score">{{ act_score.score }}</span>
-	point{{ act_score.score|pluralize }}
-	after <span id="act_num_votes">{{ act_score.num_votes }}</span> vote{{ act_score.num_votes|pluralize }}
+ 	Score: <span class="score">{{ act_score.score }}</span>
+	Votes: <span class="num_votes">{{ act_score.num_votes }}</span>
       </div>
     </div>
 
@@ -87,24 +160,32 @@ function vote(path, score_id, num_votes_id, object_id, direction) {
       <h1>Comments</h1>
       <p>Total number of comments: {{ comment_count }}.</p>
       {% for comment in comment_list %}
-      <div class="comment-box">
+      <div class="comment-box" id="comment_{{ comment.id }}">
 	<div class="comment-content">
 	  <div class="comment-author">{{ comment.user_name }}</div>
 	  <div class="comment-date">{{ comment.submit_date|date:"d M Y" }}</div>
 	  <div class="comment-text">{{ comment.comment }}</div>
 	</div>
 	{% score_for_object comment as comment_score %}
+	{% vote_by_user request.user on comment as vote %}
 	<div class="voting-box">
 	  <h1>Vote this comment</h1>
 	  <ul>
-	    <li><a href="#" onclick="vote('commenti', 'comment_score_{{ comment.id }}', 'comment_num_votes_{{ comment.id }}', '{{ comment.id }}', 'up');"><img alt="Vote up" src="{{ STATIC_URL }}img/thumb-up.png" /></a></li>
-	    <li><a href="#" onclick="vote('commenti', 'comment_score_{{ comment.id }}', 'comment_num_votes_{{ comment.id }}', '{{ comment.id }}', 'down');"><img alt="Vote down" src="{{ STATIC_URL }}img/thumb-down.png" /></a></li>
-	    <li><a href="#" onclick="vote('commenti', 'comment_score_{{ comment.id }}', 'comment_num_votes_{{ comment.id }}', '{{ comment.id }}', 'clear');"><img alt="Clear my vote" src="{{ STATIC_URL }}img/clear-vote.png" /></a></li>
+	    {% if vote.vote < 0 %}
+	    <li><a onclick="vote_comment('{{ comment.id }}', 'up');"><img alt="Vote up" src="{{ STATIC_URL }}img/thumb-up-grey.png" /></a></li>
+	    <li><a onclick="vote_comment('{{ comment.id }}', 'clear');"><img alt="Vote down" src="{{ STATIC_URL }}img/thumb-down.png" /></a></li>
+	    {% else %}{% if vote.vote > 0 %}
+	    <li><a onclick="vote_comment('{{ comment.id }}', 'clear');"><img alt="Vote up" src="{{ STATIC_URL }}img/thumb-up.png" /></a></li>
+	    <li><a onclick="vote_comment('{{ comment.id }}', 'down');"><img alt="Vote down" src="{{ STATIC_URL }}img/thumb-down-grey.png" /></a></li>
+	    {% else %}
+	    <li><a onclick="vote_comment('{{ comment.id }}', 'up');"><img alt="Vote up" src="{{ STATIC_URL }}img/thumb-up-grey.png" /></a></li>
+	    <li><a onclick="vote_comment('{{ comment.id }}', 'down');"><img alt="Vote down" src="{{ STATIC_URL }}img/thumb-down-grey.png" /></a></li>
+	    {% endif %}
+	    {% endif %}
 	  </ul>
 	  <div class="voting-score">
-	    Score: <span id="comment_score_{{ comment.id }}">{{ comment_score.score }}</span>
-	    point{{ comment_score.score|pluralize }}
-	    after <span id="comment_num_votes_{{ comment.id }}">{{ comment_score.num_votes }}</span> vote{{ comment_score.num_votes|pluralize }}
+	    Score: <span class="score">{{ comment_score.score }}</span>
+	    Votes: <span class="num_votes">{{ comment_score.num_votes }}</span>
 	  </div>
 	</div>
       </div>
