@@ -33,3 +33,7 @@ small {
 footer {
   text-align: center;
 }
+
+@media (max-width: 980px) {
+  #github-forkme { display: none }
+}
