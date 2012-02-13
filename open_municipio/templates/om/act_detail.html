@@ -132,7 +132,6 @@ function vote_comment(comment_id, direction) {
     {% score_for_object act as act_score %}
     {% if request.user.is_authenticated %}
     {% vote_by_user request.user on act as vote %}
-    {% endif %}
     <div class="voting-box" id="act_{{ object.id }}">
       <h1>Vote this act</h1>
       <ul>
@@ -153,6 +152,19 @@ function vote_comment(comment_id, direction) {
 	Votes: <span class="num_votes">{{ act_score.num_votes }}</span>
       </div>
     </div>
+    {% else %}
+    <div class="voting-box" id="act_{{ object.id }}">
+      <h1>Vote this act</h1>
+      <ul>
+	<li><a onclick="vote_act('{{ object.id }}', 'up');"><img alt="Vote up" src="{{ STATIC_URL }}img/thumb-up-grey.png" /></a></li>
+	<li><a onclick="vote_act('{{ object.id }}', 'down');"><img alt="Vote down" src="{{ STATIC_URL }}img/thumb-down-grey.png" /></a></li>
+      </ul>
+      <div class="voting-score">
+ 	Score: <span class="score">{{ act_score.score }}</span>
+	Votes: <span class="num_votes">{{ act_score.num_votes }}</span>
+      </div>
+    </div>
+    {% endif %}
 
     <br clear="all" />
     <br />
@@ -167,6 +179,7 @@ function vote_comment(comment_id, direction) {
 	  <div class="comment-text">{{ comment.comment }}</div>
 	</div>
 	{% score_for_object comment as comment_score %}
+	{% if request.user.is_authenticated %}
 	{% vote_by_user request.user on comment as vote %}
 	<div class="voting-box">
 	  <h1>Vote this comment</h1>
@@ -188,6 +201,19 @@ function vote_comment(comment_id, direction) {
 	    Votes: <span class="num_votes">{{ comment_score.num_votes }}</span>
 	  </div>
 	</div>
+	{% else %}
+	<div class="voting-box">
+	  <h1>Vote this comment</h1>
+	  <ul>
+	    <li><a onclick="vote_comment('{{ comment.id }}', 'up');"><img alt="Vote up" src="{{ STATIC_URL }}img/thumb-up-grey.png" /></a></li>
+	    <li><a onclick="vote_comment('{{ comment.id }}', 'down');"><img alt="Vote down" src="{{ STATIC_URL }}img/thumb-down-grey.png" /></a></li>
+	  </ul>
+	  <div class="voting-score">
+	    Score: <span class="score">{{ comment_score.score }}</span>
+	    Votes: <span class="num_votes">{{ comment_score.num_votes }}</span>
+	  </div>
+	</div>
+	{% endif %}
       </div>
       {% endfor %}
       {% if request.user.is_authenticated %}
