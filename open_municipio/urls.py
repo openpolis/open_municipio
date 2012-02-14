@@ -25,12 +25,14 @@ from django.conf.urls.defaults import *
 from django.contrib import admin
 admin.autodiscover()
 
-from open_municipio.om.models import Institution, Office, Company, Person, Act
 from django.contrib.comments.models import Comment
 from django.views.generic.base import RedirectView
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
-from open_municipio.views import InstitutionDetailView, HomeView, InfoView, ActDetailView
+
+from om.models import Institution, Office, Company, Person, Act
+from om_comments.models import CommentWithMood
+from views import InstitutionDetailView, HomeView, InfoView, ActDetailView
 from voting.views import vote_on_object
 
 urlpatterns = patterns('',
@@ -82,7 +84,7 @@ act_dict = {
 }
 
 comment_dict = {
-    'model': Comment,
+    'model': CommentWithMood,
     'template_object_name': 'comment',
     'allow_xmlhttprequest': 'true',
 }

@@ -114,8 +114,11 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
     'django_extensions',
     'south', 
-    'open_municipio.voting',
-    'open_municipio.om',
+    'voting',
+    'om_comments',
+    'om',
 #    'tagging',
 #   'debug_toolbar',
 )
+
+COMMENTS_APP = 'om_comments'

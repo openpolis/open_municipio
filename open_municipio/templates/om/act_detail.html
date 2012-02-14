@@ -135,10 +135,10 @@ function vote_comment(comment_id, direction) {
     <div class="voting-box" id="act_{{ object.id }}">
       <h1>Vote this act</h1>
       <ul>
-	{% if vote.vote < 0 %}
+	{% if vote.vote and vote.vote < 0 %}
 	<li><a onclick="vote_act('{{ object.id }}', 'up');"><img alt="Vote up" src="{{ STATIC_URL }}img/thumb-up-grey.png" /></a></li>
 	<li><a onclick="vote_act('{{ object.id }}', 'clear');"><img alt="Vote down" src="{{ STATIC_URL }}img/thumb-down.png" /></a></li>
-	{% else %}{% if vote.vote > 0 %}
+	{% else %}{% if vote.vote and vote.vote > 0 %}
 	<li><a onclick="vote_act('{{ object.id }}', 'clear');"><img alt="Vote up" src="{{ STATIC_URL }}img/thumb-up.png" /></a></li>
 	<li><a onclick="vote_act('{{ object.id }}', 'down');"><img alt="Vote down" src="{{ STATIC_URL }}img/thumb-down-grey.png" /></a></li>
 	{% else %}
@@ -174,7 +174,7 @@ function vote_comment(comment_id, direction) {
       {% for comment in comment_list %}
       <div class="comment-box" id="comment_{{ comment.id }}">
 	<div class="comment-content">
-	  <div class="comment-author">{{ comment.user_name }}</div>
+	  <div class="comment-author">{{ comment.user.username|capfirst }}</div>
 	  <div class="comment-date">{{ comment.submit_date|date:"d M Y" }}</div>
 	  <div class="comment-text">{{ comment.comment }}</div>
 	</div>
@@ -184,10 +184,10 @@ function vote_comment(comment_id, direction) {
 	<div class="voting-box">
 	  <h1>Vote this comment</h1>
 	  <ul>
-	    {% if vote.vote < 0 %}
+	    {% if vote.vote and vote.vote < 0 %}
 	    <li><a onclick="vote_comment('{{ comment.id }}', 'up');"><img alt="Vote up" src="{{ STATIC_URL }}img/thumb-up-grey.png" /></a></li>
 	    <li><a onclick="vote_comment('{{ comment.id }}', 'clear');"><img alt="Vote down" src="{{ STATIC_URL }}img/thumb-down.png" /></a></li>
-	    {% else %}{% if vote.vote > 0 %}
+	    {% else %}{% if vote.vote and vote.vote > 0 %}
 	    <li><a onclick="vote_comment('{{ comment.id }}', 'clear');"><img alt="Vote up" src="{{ STATIC_URL }}img/thumb-up.png" /></a></li>
 	    <li><a onclick="vote_comment('{{ comment.id }}', 'down');"><img alt="Vote down" src="{{ STATIC_URL }}img/thumb-down-grey.png" /></a></li>
 	    {% else %}
