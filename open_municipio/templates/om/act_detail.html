@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load i18n %}
 {% load comments %}
 {% load voting_tags %}
 
@@ -52,24 +53,24 @@ function vote_act(act_id, direction) {
                    if (direction == "up") {
  		       $box.find("ul").replaceWith(
 '<ul>' +
-  '<li><a onclick=\'vote_act("' + act_id + '", "clear");\'><img alt="Vote up" src="{{ STATIC_URL }}img/thumb-up.png" /></a></li>' + 
-  '<li><a onclick=\'vote_act("' + act_id + '", "down");\'><img alt="Vote down" src="{{ STATIC_URL }}img/thumb-down-grey.png" /></a></li>' + 
+  '<li><a onclick=\'vote_act("' + act_id + '", "clear");\'><img alt="{% trans 'Thumb up' %}" title="{% trans 'Clear your vote' %}" src="{{ STATIC_URL }}img/thumb-up.png" /></a></li>' + 
+  '<li><a onclick=\'vote_act("' + act_id + '", "down");\'><img alt="{% trans 'Thumb down' %}" title="{% trans 'Vote down' %}" src="{{ STATIC_URL }}img/thumb-down-grey.png" /></a></li>' + 
 '</ul>'
 );
 		   }
 		   else if (direction == "down") {
 		       $box.find("ul").replaceWith(
 '<ul>' +
-  '<li><a onclick=\'vote_act("' + act_id + '", "up");\'><img alt="Vote up" src="{{ STATIC_URL }}img/thumb-up-grey.png" /></a></li>' +
-  '<li><a onclick=\'vote_act("' + act_id + '", "clear");\'><img alt="Vote down" src="{{ STATIC_URL }}img/thumb-down.png" /></a></li>' + 
+  '<li><a onclick=\'vote_act("' + act_id + '", "up");\'><img alt="{% trans 'Thumb up' %}" title="{% trans 'Vote up' %}" src="{{ STATIC_URL }}img/thumb-up-grey.png" /></a></li>' +
+  '<li><a onclick=\'vote_act("' + act_id + '", "clear");\'><img alt="{% trans 'Thumb down' %}" title="{% trans 'Clear your vote' %}" src="{{ STATIC_URL }}img/thumb-down.png" /></a></li>' + 
 '</ul>'
 );
 		   }
 		   else {
 		       $box.find("ul").replaceWith(
 '<ul>' + 
-  '<li><a onclick=\'vote_act("' + act_id + '", "up");\'><img alt="Vote up" src="{{ STATIC_URL }}img/thumb-up-grey.png" /></a></li>' + 
-  '<li><a onclick=\'vote_act("' + act_id + '", "down");\'><img alt="Vote down" src="{{ STATIC_URL }}img/thumb-down-grey.png" /></a></li>' + 
+  '<li><a onclick=\'vote_act("' + act_id + '", "up");\'><img alt="{% trans 'Thumb up' %}" title="{% trans 'Vote up' %}" src="{{ STATIC_URL }}img/thumb-up-grey.png" /></a></li>' + 
+  '<li><a onclick=\'vote_act("' + act_id + '", "down");\'><img alt="{% trans 'Thumb down' %}" title="{% trans 'Vote down' %}" src="{{ STATIC_URL }}img/thumb-down-grey.png" /></a></li>' + 
 '</ul>');
  		   }
 	       }
@@ -90,24 +91,24 @@ function vote_comment(comment_id, direction) {
                    if (direction == "up") {
  		       $box.find("ul").replaceWith(
 '<ul>' +
-  '<li><a onclick=\'vote_comment("' + comment_id + '", "clear");\'><img alt="Vote up" src="{{ STATIC_URL }}img/thumb-up.png" /></a></li>' + 
-  '<li><a onclick=\'vote_comment("' + comment_id + '", "down");\'><img alt="Vote down" src="{{ STATIC_URL }}img/thumb-down-grey.png" /></a></li>' + 
+  '<li><a onclick=\'vote_comment("' + comment_id + '", "clear");\'><img alt="{% trans 'Thumb up' %}" title="{% trans 'Clear your vote' %}" src="{{ STATIC_URL }}img/thumb-up.png" /></a></li>' + 
+  '<li><a onclick=\'vote_comment("' + comment_id + '", "down");\'><img alt="{% trans 'Thumb down' %}" title="{% trans 'Vote down' %}" src="{{ STATIC_URL }}img/thumb-down-grey.png" /></a></li>' + 
 '</ul>'
 );
 		   }
 		   else if (direction == "down") {
 		       $box.find("ul").replaceWith(
 '<ul>' +
-  '<li><a onclick=\'vote_comment("' + comment_id + '", "up");\'><img alt="Vote up" src="{{ STATIC_URL }}img/thumb-up-grey.png" /></a></li>' +
-  '<li><a onclick=\'vote_comment("' + comment_id + '", "clear");\'><img alt="Vote down" src="{{ STATIC_URL }}img/thumb-down.png" /></a></li>' + 
+  '<li><a onclick=\'vote_comment("' + comment_id + '", "up");\'><img alt="{% trans 'Thumb up' %}" title="{% trans 'Vote up' %}" src="{{ STATIC_URL }}img/thumb-up-grey.png" /></a></li>' +
+  '<li><a onclick=\'vote_comment("' + comment_id + '", "clear");\'><img alt="{% trans 'Thumb down' %}" title="{% trans 'Clear your vote' %}" src="{{ STATIC_URL }}img/thumb-down.png" /></a></li>' + 
 '</ul>'
 );
 		   }
 		   else {
 		       $box.find("ul").replaceWith(
 '<ul>' + 
-  '<li><a onclick=\'vote_comment("' + comment_id + '", "up");\'><img alt="Vote up" src="{{ STATIC_URL }}img/thumb-up-grey.png" /></a></li>' + 
-  '<li><a onclick=\'vote_comment("' + comment_id + '", "down");\'><img alt="Vote down" src="{{ STATIC_URL }}img/thumb-down-grey.png" /></a></li>' + 
+  '<li><a onclick=\'vote_comment("' + comment_id + '", "up");\'><img alt="{% trans 'Thumb up' %}" title="{% trans 'Vote up' %}" src="{{ STATIC_URL }}img/thumb-up-grey.png" /></a></li>' + 
+  '<li><a onclick=\'vote_comment("' + comment_id + '", "down");\'><img alt="{% trans 'Thumb down' %}" title="{% trans 'Vote down' %}" src="{{ STATIC_URL }}img/thumb-down-grey.png" /></a></li>' + 
 '</ul>');
  		   }
 	       }
@@ -136,14 +137,14 @@ function vote_comment(comment_id, direction) {
       <h1>Vote this act</h1>
       <ul>
 	{% if vote.vote and vote.vote < 0 %}
-	<li><a onclick="vote_act('{{ object.id }}', 'up');"><img alt="Vote up" src="{{ STATIC_URL }}img/thumb-up-grey.png" /></a></li>
-	<li><a onclick="vote_act('{{ object.id }}', 'clear');"><img alt="Vote down" src="{{ STATIC_URL }}img/thumb-down.png" /></a></li>
+	<li><a onclick="vote_act('{{ object.id }}', 'up');"><img alt="{% trans 'Thumb up' %}" title="{% trans 'Vote up' %}" src="{{ STATIC_URL }}img/thumb-up-grey.png" /></a></li>
+	<li><a onclick="vote_act('{{ object.id }}', 'clear');"><img alt="{% trans 'Thumb down' %}" title="{% trans 'Clear your vote' %}" src="{{ STATIC_URL }}img/thumb-down.png" /></a></li>
 	{% else %}{% if vote.vote and vote.vote > 0 %}
-	<li><a onclick="vote_act('{{ object.id }}', 'clear');"><img alt="Vote up" src="{{ STATIC_URL }}img/thumb-up.png" /></a></li>
-	<li><a onclick="vote_act('{{ object.id }}', 'down');"><img alt="Vote down" src="{{ STATIC_URL }}img/thumb-down-grey.png" /></a></li>
+	<li><a onclick="vote_act('{{ object.id }}', 'clear');"><img alt="{% trans 'Thumb up' %}" title="{% trans 'Clear your vote' %}" src="{{ STATIC_URL }}img/thumb-up.png" /></a></li>
+	<li><a onclick="vote_act('{{ object.id }}', 'down');"><img alt="{% trans 'Thumb down' %}" title="{% trans 'Vote down' %}" src="{{ STATIC_URL }}img/thumb-down-grey.png" /></a></li>
 	{% else %}
-	<li><a onclick="vote_act('{{ object.id }}', 'up');"><img alt="Vote up" src="{{ STATIC_URL }}img/thumb-up-grey.png" /></a></li>
-	<li><a onclick="vote_act('{{ object.id }}', 'down');"><img alt="Vote down" src="{{ STATIC_URL }}img/thumb-down-grey.png" /></a></li>
+	<li><a onclick="vote_act('{{ object.id }}', 'up');"><img alt="{% trans 'Thumb up' %}" title="{% trans 'Vote up' %}" src="{{ STATIC_URL }}img/thumb-up-grey.png" /></a></li>
+	<li><a onclick="vote_act('{{ object.id }}', 'down');"><img alt="{% trans 'Thumb down' %}" title="{% trans 'Vote down' %}" src="{{ STATIC_URL }}img/thumb-down-grey.png" /></a></li>
 	{% endif %}
 	{% endif %}
       </ul>
@@ -156,8 +157,8 @@ function vote_comment(comment_id, direction) {
     <div class="voting-box" id="act_{{ object.id }}">
       <h1>Vote this act</h1>
       <ul>
-	<li><a onclick="vote_act('{{ object.id }}', 'up');"><img alt="Vote up" src="{{ STATIC_URL }}img/thumb-up-grey.png" /></a></li>
-	<li><a onclick="vote_act('{{ object.id }}', 'down');"><img alt="Vote down" src="{{ STATIC_URL }}img/thumb-down-grey.png" /></a></li>
+	<li><a onclick="vote_act('{{ object.id }}', 'up');"><img alt="{% trans 'Thumb up' %}" title="{% trans 'Vote up' %}" src="{{ STATIC_URL }}img/thumb-up-grey.png" /></a></li>
+	<li><a onclick="vote_act('{{ object.id }}', 'down');"><img alt="{% trans 'Thumb down' %}" title="{% trans 'Vote down' %}" src="{{ STATIC_URL }}img/thumb-down-grey.png" /></a></li>
       </ul>
       <div class="voting-score">
  	Score: <span class="score">{{ act_score.score }}</span>
@@ -185,14 +186,14 @@ function vote_comment(comment_id, direction) {
 	  <h1>Vote this comment</h1>
 	  <ul>
 	    {% if vote.vote and vote.vote < 0 %}
-	    <li><a onclick="vote_comment('{{ comment.id }}', 'up');"><img alt="Vote up" src="{{ STATIC_URL }}img/thumb-up-grey.png" /></a></li>
-	    <li><a onclick="vote_comment('{{ comment.id }}', 'clear');"><img alt="Vote down" src="{{ STATIC_URL }}img/thumb-down.png" /></a></li>
+	    <li><a onclick="vote_comment('{{ comment.id }}', 'up');"><img alt="{% trans 'Thumb up' %}" title="{% trans 'Vote up' %}" src="{{ STATIC_URL }}img/thumb-up-grey.png" /></a></li>
+	    <li><a onclick="vote_comment('{{ comment.id }}', 'clear');"><img alt="{% trans 'Thumb down' %}" title="{% trans 'Clear your vote' %}" src="{{ STATIC_URL }}img/thumb-down.png" /></a></li>
 	    {% else %}{% if vote.vote and vote.vote > 0 %}
-	    <li><a onclick="vote_comment('{{ comment.id }}', 'clear');"><img alt="Vote up" src="{{ STATIC_URL }}img/thumb-up.png" /></a></li>
-	    <li><a onclick="vote_comment('{{ comment.id }}', 'down');"><img alt="Vote down" src="{{ STATIC_URL }}img/thumb-down-grey.png" /></a></li>
+	    <li><a onclick="vote_comment('{{ comment.id }}', 'clear');"><img alt="{% trans 'Thumb up' %}" title="{% trans 'Clear your vote' %}" src="{{ STATIC_URL }}img/thumb-up.png" /></a></li>
+	    <li><a onclick="vote_comment('{{ comment.id }}', 'down');"><img alt="{% trans 'Thumb down' %}" title="{% trans 'Vote down' %}" src="{{ STATIC_URL }}img/thumb-down-grey.png" /></a></li>
 	    {% else %}
-	    <li><a onclick="vote_comment('{{ comment.id }}', 'up');"><img alt="Vote up" src="{{ STATIC_URL }}img/thumb-up-grey.png" /></a></li>
-	    <li><a onclick="vote_comment('{{ comment.id }}', 'down');"><img alt="Vote down" src="{{ STATIC_URL }}img/thumb-down-grey.png" /></a></li>
+	    <li><a onclick="vote_comment('{{ comment.id }}', 'up');"><img alt="{% trans 'Thumb up' %}" title="{% trans 'Vote up' %}" src="{{ STATIC_URL }}img/thumb-up-grey.png" /></a></li>
+	    <li><a onclick="vote_comment('{{ comment.id }}', 'down');"><img alt="{% trans 'Thumb down' %}" title="{% trans 'Vote down' %}" src="{{ STATIC_URL }}img/thumb-down-grey.png" /></a></li>
 	    {% endif %}
 	    {% endif %}
 	  </ul>
@@ -205,8 +206,8 @@ function vote_comment(comment_id, direction) {
 	<div class="voting-box">
 	  <h1>Vote this comment</h1>
 	  <ul>
-	    <li><a onclick="vote_comment('{{ comment.id }}', 'up');"><img alt="Vote up" src="{{ STATIC_URL }}img/thumb-up-grey.png" /></a></li>
-	    <li><a onclick="vote_comment('{{ comment.id }}', 'down');"><img alt="Vote down" src="{{ STATIC_URL }}img/thumb-down-grey.png" /></a></li>
+	    <li><a onclick="vote_comment('{{ comment.id }}', 'up');"><img alt="{% trans 'Thumb up' %}" title="{% trans 'Vote up' %}" src="{{ STATIC_URL }}img/thumb-up-grey.png" /></a></li>
+	    <li><a onclick="vote_comment('{{ comment.id }}', 'down');"><img alt="{% trans 'Thumb down' %}" title="{% trans 'Vote down' %}" src="{{ STATIC_URL }}img/thumb-down-grey.png" /></a></li>
 	  </ul>
 	  <div class="voting-score">
 	    Score: <span class="score">{{ comment_score.score }}</span>

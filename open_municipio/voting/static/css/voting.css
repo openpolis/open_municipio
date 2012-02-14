@@ -91,4 +91,5 @@ label[for=id_honeypot] {
 
 .voting-box img {
     width: 30px;
+    cursor: pointer;
 }
