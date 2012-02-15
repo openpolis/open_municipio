@@ -2,7 +2,7 @@
 layout: pdfpage
 title: Entity-Relationship Model
 description: The Entity-Relationship Mpodel
-pdfsrc: https://s3-eu-west-1.amazonaws.com/open-municipio-docs/er_model.pdf
+pdfsrc: files/er_model.pdf
 pdffile: er_model.pdf
 ---
 
