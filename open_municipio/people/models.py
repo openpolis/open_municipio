@@ -1,14 +1,8 @@
 from django.db import models
-
 from django.utils.translation import ugettext_lazy as _
 from django.template.defaultfilters import slugify
 
 from model_utils import Choices
-from model_utils.models import TimeStampedModel, StatusModel, TimeFramedModel
-from model_utils.managers import InheritanceManager
-
-from south.modelsinspector import add_introspection_rules
-
 
 #
 # Persons, charges and groups
@@ -300,3 +294,17 @@ class Office(Body):
         verbose_name = _('office')
         verbose_name_plural = _('offices')
 
+#
+# Sittings
+#
+class Sitting(models.Model):
+    """
+    WRITEME
+    """
+    idnum = models.CharField(blank=True, max_length=64)
+    date = models.DateField()
+    institution = models.ForeignKey(Institution, on_delete=models.PROTECT)
+    
+    class Meta:
+        verbose_name = _('sitting')
+        verbose_name_plural = _('sittings')

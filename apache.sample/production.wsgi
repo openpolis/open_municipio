@@ -14,7 +14,7 @@ if PROJECT_ROOT not in sys.path:
    sys.path.insert(0, PROJECT_ROOT)
 
 # required for Django to work !                                                                                                                             
-os.environ['DJANGO_SETTINGS_MODULE'] = 'open_municipio.settings_staging'
+os.environ['DJANGO_SETTINGS_MODULE'] = 'open_municipio.settings_production'
 
 # create the WSGI application object                                                                                                                        
 import django.core.handlers.wsgi

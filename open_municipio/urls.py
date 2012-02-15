@@ -6,7 +6,7 @@
 ##
 ## .. code:: python
 ##
-##     from opm_site.urls import * 
+##     from open_municipio.urls import * 
 ##
 ## This way, project-level URL patterns are transparently added to 
 ## machine-specific ones.
@@ -18,14 +18,13 @@
 ## * ``urls_production.py`` -- for production servers
 
 
-from django.conf import settings
 from django.conf.urls.defaults import *
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 admin.autodiscover()
 
-from open_municipio.om.models import Institution, Office, Company, Person
+from open_municipio.people.models import Institution, Office, Company, Person
 from django.views.generic.base import RedirectView
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
