@@ -108,7 +108,9 @@ INSTALLED_APPS = (
     'south',
     'taggit',
     'open_municipio.om',
+    'open_municipio.acts',
     'open_municipio.people',
     'open_municipio.taxonomy',
+    'open_municipio.votations',
 #   'debug_toolbar',
 )

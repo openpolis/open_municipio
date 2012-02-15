@@ -1,5 +1,5 @@
 from django.views.generic import DetailView, TemplateView
-from om.models import Institution
+from open_municipio.people.models import Institution
 
 
 class HomeView(TemplateView):
