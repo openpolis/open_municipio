@@ -20,19 +20,15 @@
 
 from django.conf.urls.defaults import *
 
-# Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 admin.autodiscover()
 
-from open_municipio.people.models import Institution, Office, Company, Person
-from django.views.generic.base import RedirectView
-from django.views.generic.list import ListView
-from django.views.generic.detail import DetailView
-from open_municipio.views import InstitutionDetailView, HomeView, InfoView
+from open_municipio.views import HomeView, InfoView
+
 
 urlpatterns = patterns('',
-  (r'^admin/doc/', include('django.contrib.admindocs.urls')),
-  (r'^admin/', include(admin.site.urls)),
+    (r'^admin/doc/', include('django.contrib.admindocs.urls')),
+    (r'^admin/', include(admin.site.urls)),
 
   # home page
   (r'^$', HomeView.as_view()),  
@@ -40,25 +36,8 @@ urlpatterns = patterns('',
   # info page
   (r'^info/$', InfoView.as_view()),  
 
-  (r'^persone/(?P<slug>[-\w]+)/$', DetailView.as_view(
-    model=Person,
-    context_object_name='person',
-    template_name='person_detail.html')),
-
-  (r'^istituzioni/$', ListView.as_view(
-    model=Institution,
-    template_name='institution_list.html'
-  )),
-  (r'^istituzioni/(?P<slug>[-\w]+)/$', InstitutionDetailView.as_view(
-    template_name='institution_detail.html')),
-    
-  (r'^uffici/$', ListView.as_view(
-    model=Office,
-    template_name='office_list.html'
-  )), 
-  (r'^aziende/$', ListView.as_view(
-    model=Company,
-    template_name='company_list.html'
-  )),
-
+  (r'^people/', include('open_municipio.people.urls.people')),
+  (r'^institutions/', include('open_municipio.people.urls.institutions')),
+  (r'^offices/', include('open_municipio.people.urls.offices')),
+  (r'^companies/', include('open_municipio.people.urls.companies')), 
 )
