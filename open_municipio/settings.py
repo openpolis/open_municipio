@@ -117,8 +117,9 @@ INSTALLED_APPS = (
     'voting',
     'om_comments',
     'om',
+    'people',
 #    'tagging',
-#   'debug_toolbar',
+#    'debug_toolbar',
 )
 
 COMMENTS_APP = 'om_comments'
