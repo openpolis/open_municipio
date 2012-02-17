@@ -27,8 +27,7 @@ def add_tags_to_act(request, pk):
             act = get_object_or_404(Act, pk=pk)
             new_tags =  form.cleaned_data['tags']
             act.tag_set.add(*new_tags)
-            # FIXME: hardcoded URL !
-            return HttpResponseRedirect('/acts/%s/' % act.pk) 
+            return HttpResponseRedirect(act.get_absolute_url()) 
     else:
         form = TagAddForm() 
 
@@ -42,7 +41,6 @@ class ActRemoveTagView(TemplateView):
         act = get_object_or_404(Act, pk=kwargs.get('act_pk'))
         tag = get_object_or_404(Tag, slug=kwargs.get('tag_slug'))
         act.tag_set.remove(tag)
-        # FIXME: hardcoded URL !
-        return HttpResponseRedirect('/acts/%s/' % act.pk)
+        return HttpResponseRedirect(act.get_absolute_url())
     
     

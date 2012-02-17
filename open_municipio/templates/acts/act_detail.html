@@ -21,8 +21,7 @@
 			{% for tag in act.tags %}
 				<div id="tag-{{ tag.id }}" class="">
 					<span class="remover" title="clicca qui per rimuovere questo tag">
-						{# FIXME: hardcoded URL ! #}
-						<a href="/acts/{{ act.pk }}/tags/remove/{{ tag.slug }}">(X)</a>
+						<a href="{{ act.get_absolute_url }}tags/remove/{{ tag.slug }}">(X)</a>
 					</span>
 					<span class="tag">
 						<a href="/tags/{{ tag.slug }} "> {{ tag }} </a>
@@ -32,9 +31,8 @@
 	</div>
 	
 	<div id="tag_edit">
-	Cerca tag:
-	{# FIXME: hardcoded URL ! #}	
-	<form id="" method="post" action="/acts/{{ act.pk }}/tags/add/" style="display:inline"> 
+	Cerca tag:	
+	<form id="" method="post" action="{{ act.get_absolute_url }}tags/add/" style="display:inline"> 
 		{% csrf_token %}
 		{{ tag_add_form.as_p }}
 		<input type="submit" value="Aggiungi" />
