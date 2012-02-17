@@ -32,7 +32,7 @@
 	
 	<div id="tag_edit">
 	Cerca tag:	
-	<form id="" method="post" action="{{ act.get_absolute_url }}tags/add/" style="display:inline"> 
+	<form id="" method="post" action="{{ act.get_absolute_url }}tags/add/" style="display: inline;"> 
 		{% csrf_token %}
 		{{ tag_add_form.as_p }}
 		<input type="submit" value="Aggiungi" />

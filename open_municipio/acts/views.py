@@ -1,5 +1,6 @@
 from django.http import HttpResponseRedirect
 from django.views.generic import DetailView, TemplateView
+from django.template import RequestContext
 from django.shortcuts import get_object_or_404, render_to_response
 
 from open_municipio.taxonomy.models import Tag
@@ -21,19 +22,19 @@ class ActDetailView(DetailView):
 
 # FIXME: convert to a CBV
 def add_tags_to_act(request, pk):
+    act = get_object_or_404(Act, pk=pk)
     if request.method == 'POST': 
         form = TagAddForm(request.POST) 
         if form.is_valid():
-            act = get_object_or_404(Act, pk=pk)
             new_tags =  form.cleaned_data['tags']
             act.tag_set.add(*new_tags)
             return HttpResponseRedirect(act.get_absolute_url()) 
     else:
         form = TagAddForm() 
 
-    return render_to_response('acts/act_detail.html', {
-        'form': form,
-    })
+    return render_to_response('acts/act_detail.html', 
+                              {'act': act, 'tag_add_form': form,},
+                              context_instance=RequestContext(request))
     
     
 class ActRemoveTagView(TemplateView):
