@@ -1,11 +1,12 @@
 ---
-layout: pdfpage
-title: Entity-Relationship Model
-description: The Entity-Relationship Model
-pdfsrc: files/er_model.pdf
-pdffile: er_model.pdf
+layout: image
+title: Entity-Relationship Model - Overview
+description: The Entity-Relationship Model - Overview
+imgsrc: files/er_model.png
+imgfile: er_model.png
 ---
 
-The ensemble view and three details.
+{% include subnav_model.html %}
 
+Overview of all classes
     
