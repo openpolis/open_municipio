@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8"?>
+    <xs:schema
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        targetNamespace="http://www.w3schools.com"
+        xmlns="http://www.w3schools.com"
+        elementFormDefault="qualified">
+    
+<!-- BEGIN auxiliary types -->    
+    <xs:complexType name="actType" >
+        <xs:sequence>
+            <xs:element ref="PresentingInstitutions" minOccurs="1" maxOccurs="1" />
+            <xs:element ref="TargetInstitutions" minOccurs="0" maxOccurs="1" />
+            <xs:element ref="ProcessStep" minOccurs="1" maxOccurs="unbounded" />
+            <xs:element ref="Section" minOccurs="1" maxOccurs="unbounded" />
+        </xs:sequence>
+        <xs:attribute name="id" use="required" type="xs:string" />
+        <xs:attribute name="title" use="required" type="xs:string" />
+        <xs:attribute name="adj_title" use="optional" type="xs:string" />
+        <xs:attribute name="expire_date" use="optional" type="dateType" />
+    </xs:complexType>
+    
+    <xs:element name="PresentingInstitutions">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="Institution" minOccurs="1" maxOccurs="unbounded" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="TargetInstitutions">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="Institution" minOccurs="1" maxOccurs="unbounded" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    
+    <xs:complexType name="bodyType" >
+        <xs:sequence>
+            <xs:element ref="Charge" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+        <xs:attribute name="name" type="xs:string" use="required" />
+        <xs:attribute name="description" type="xs:string" use="optional" />
+    </xs:complexType>
+        
+    <xs:simpleType name="genderType" >
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="m"/>
+            <xs:enumeration value="f"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="ssnType" >
+        <xs:restriction base="xs:string">
+            <xs:length value="16" />
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="dateType">
+        <xs:union memberTypes="xs:dateTime">
+            <xs:simpleType>
+                <xs:restriction base="xs:token">
+                    <xs:enumeration value="unknown" />
+                </xs:restriction>            
+            </xs:simpleType>
+        </xs:union>
+    </xs:simpleType>
+    
+    <xs:simpleType name="chargeType">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="Administration" />
+            <xs:enumeration value="Company" />
+            <xs:enumeration value="Institution" />
+        </xs:restriction>
+    </xs:simpleType>
+<!-- END auxiliary types -->    
+
+<!-- ROOT -->
+    <xs:element name="OpenMunicipio">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="Bodies" minOccurs="0" maxOccurs="1" />
+                <xs:element ref="Acts" minOccurs="0" maxOccurs="1" />
+                <xs:element ref="Ballots" minOccurs="0" maxOccurs="1" />
+                <xs:element ref="Groups" minOccurs="0" maxOccurs="1" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>    
+
+    
+<!-- BEGIN groups and people -->    
+    
+    <xs:element name="Persons">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="Person" minOccurs="0" maxOccurs="unbounded" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="Person">
+        <xs:complexType>        
+            <xs:attribute name="name" use="required" type="xs:string" />
+            <xs:attribute name="last_name" use="required" type="xs:string" />
+            <xs:attribute name="birth_date" type="xs:date" use="optional" />
+            <xs:attribute name="birth_place" type="xs:string" use="optional" />
+            <xs:attribute name="sex" type="genderType" use="optional" />
+            <xs:attribute name="ssn" type="ssnType" use="optional" />
+            
+        </xs:complexType>
+    </xs:element>
+        
+    <xs:element name="Groups">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="Group" minOccurs="0" maxOccurs="unbounded" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="Group">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="Person" minOccurs="1" maxOccurs="unbounded" />
+            </xs:sequence>
+            <xs:attribute name="name" type="xs:string" />
+            <xs:attribute name="acronym" type="xs:string" />
+        </xs:complexType>
+    </xs:element>
+
+<!-- BEGIN bodies -->    
+    <xs:element name="Bodies">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="Offices" minOccurs="0" maxOccurs="1" />
+                <xs:element ref="Companies" minOccurs="0" maxOccurs="1" />
+                <xs:element ref="Institutions" minOccurs="0" maxOccurs="1" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="Offices" >
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="Office" minOccurs="0" maxOccurs="unbounded" />
+            </xs:sequence>
+        </xs:complexType>
+        
+        <!-- perche` non funziona con xpath="./Office/ -->
+        <xs:key name="officeHasUniqueName">
+            <xs:selector xpath="./*" />
+            <xs:field xpath="@name" />
+        </xs:key>
+    </xs:element>
+    
+    <xs:element name="Office" type="bodyType" />
+    
+    <xs:element name="Charge">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="Person" minOccurs="1" maxOccurs="1" />
+            </xs:sequence>
+            <xs:attribute name="start_date" type="dateType" use="required" />
+            <xs:attribute name="end_date" type="dateType" use="optional" />
+            <xs:attribute name="end_reason" type="xs:string" use="optional" />
+            <xs:attribute name="description" type="xs:string" use="optional" />
+        </xs:complexType>
+    </xs:element>    
+    
+    <xs:element name="Companies">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="Company" minOccurs="0" maxOccurs="unbounded"  />
+            </xs:sequence>
+        </xs:complexType>    
+    </xs:element>
+    
+    <xs:element name="Institutions" >
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="Institution" minOccurs="0" maxOccurs="unbounded"  />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="Company" type="bodyType" />
+    <xs:element name="Institution" type="bodyType" />
+<!-- END bodies -->
+
+<!-- BEGIN acts -->    
+    <xs:element name="Acts">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="Deliberation" minOccurs="0" maxOccurs="unbounded" />
+                <xs:element ref="Interrogation" minOccurs="0" maxOccurs="unbounded" />
+                <xs:element ref="Interpellation" minOccurs="0" maxOccurs="unbounded" />
+                <xs:element ref="Motion" minOccurs="0" maxOccurs="unbounded" />
+                <xs:element ref="Agenda" minOccurs="0" maxOccurs="unbounded" />
+                <xs:element ref="Emendation" minOccurs="0" maxOccurs="unbounded" />    
+            </xs:sequence>
+        </xs:complexType>
+
+        <!-- I expect the selector xpath to be '*/Section' but it does not work in that way -->
+        <xs:unique name="actHasUniqueId">
+             <xs:selector xpath="./*/*" /> <!-- only Section's of level 2 --> 
+            <xs:field xpath="@title" />
+        </xs:unique>
+    </xs:element>
+    
+    <xs:element name="Deliberation">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="actType" >
+                    <xs:attribute name="approval_date" type="xs:date" use="required" />
+                    <xs:attribute name="publication_date" type="xs:date" use="required" />
+                    <xs:attribute name="execution_date" type="xs:date" use="required" />
+                    <xs:attribute name="initiative" type="xs:string" use="optional" />
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="Interrogation" >
+        <xs:complexType >
+            <xs:complexContent >
+                <xs:extension base="actType"  >
+                    <xs:sequence>
+                        <xs:element ref="QuestionMotivation" minOccurs="1" maxOccurs="1" />
+                        <xs:element ref="Reply" minOccurs="1" maxOccurs="1" />
+                    </xs:sequence>
+                    <xs:attribute name="answer_type" type="xs:string" use="required" />
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="QuestionMotivation" />
+    <xs:element name="Reply" >
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="ReplyInstitution" />
+                <xs:element ref="ReplyText" />
+            </xs:sequence>
+            <xs:attribute name="answerType" use="required"  >
+                <xs:simpleType>
+                    <xs:restriction base="xs:token">
+                        <xs:enumeration value="written" />
+                        <xs:enumeration value="oral" />
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="ReplyText" />
+    <xs:element name="ReplyInstitution" type="bodyType">
+        
+    </xs:element>
+    
+    <xs:element name="Interpellation" type="actType" />
+    <xs:element name="Motion" type="actType" />
+    <xs:element name="Agenda" type="actType" />
+    
+    <xs:element name="Emendation">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="actType" >
+                    <xs:attribute name="act" type="xs:string" use="required" />
+                    <xs:attribute name="section" type="xs:string" use="required" />
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+        
+        
+    </xs:element>
+    
+    <xs:element name="ProcessStep">
+        <xs:complexType>
+            <xs:attribute name="name">
+                <xs:simpleType>
+                    <xs:restriction base="xs:token">
+                        <xs:enumeration value="Presented" />
+                        <xs:enumeration value="Voted" />
+                        <!-- Aggiungere gli stati del workflow di presentazione degli atti -->
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="date" type="dateType" />
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="Section" >
+        <xs:complexType >
+            <xs:sequence>
+                <xs:element ref="SectionText" />
+                <xs:element ref="Section" minOccurs="0" maxOccurs="unbounded" />                
+            </xs:sequence>
+            <xs:attribute name="title" use="required" type="xs:string" />
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="SectionText">
+        <xs:complexType mixed="true" />
+    </xs:element>
+<!-- END acts -->
+    
+<!-- BEGIN ballots and votes -->    
+    <xs:element name="Ballots" />
+    
+<!-- END ballots and votes -->    
+</xs:schema>

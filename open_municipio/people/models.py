@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.template.defaultfilters import slugify
+from django.core.urlresolvers import reverse
 
 from model_utils import Choices
 
@@ -82,10 +83,10 @@ class InstitutionCharge(Charge):
     
     def __unicode__(self):
         # TODO: implement ``get_charge_type_display()`` method
-        return u'%s - %s' % (self.get_charge_type_display(), self.institution.name)
+        return u'%s - %s dal %s' % (self.person, self.get_charge_type_display(), self.start_date.strftime('%d/%m/%Y'))
     
     class Meta(Charge.Meta):
-        db_table = u'om_institution_charge'
+        db_table = u'people_institution_charge'
         verbose_name = _('institution charge')
         verbose_name_plural = _('institution charges')
 
@@ -113,7 +114,7 @@ class CompanyCharge(Charge):
         return u'%s - %s' % (self.get_charge_type_display(), self.company.name)
     
     class Meta(Charge.Meta):
-        db_table = u'om_organization_charge'
+        db_table = u'people_organization_charge'
         verbose_name = _('organization charge')
         verbose_name_plural = _('organization charges')
 
@@ -137,7 +138,7 @@ class AdministrationCharge(Charge):
         return u'%s - %s' % (self.get_charge_type_display(), self.office.name)
     
     class Meta(Charge.Meta):
-        db_table = u'om_administration_charge'
+        db_table = u'people_administration_charge'
         verbose_name = _('administration charge')
         verbose_name_plural = _('administration charges')
 
@@ -164,11 +165,11 @@ class Group(models.Model):
     @property
     def majority_records(self):
         return self.groupismajority_set.all()
-        
+    
+    @property
     def is_majority_now(self):
         current_is_maj = self.groupismajority_set.filter(end_date__isnull=True)
         return current_is_maj[0]
-    is_majority_now.short_description = _('Is Majority?')
         
 
 
@@ -186,7 +187,7 @@ class GroupCharge(models.Model):
     end_reason = models.CharField(blank=True, max_length=255)
     
     class Meta:
-        db_table = u'om_group_charge'
+        db_table = u'people_group_charge'
         verbose_name = _('group charge')
         verbose_name_plural = _('group charges')
 
@@ -256,7 +257,7 @@ class Institution(Body):
     
     def get_absolute_url(self):
         # FIXME: ``get_absolute_url`` shouldn't contain hard-coded URLs
-        return "/istituzioni/%s.html" % self.slug
+        return reverse("institution_detail", kwargs={'slug': self.slug})
 
     def save(self, *args, **kwargs):
         """slugify name on first save"""
@@ -303,6 +304,7 @@ class Sitting(models.Model):
     """
     idnum = models.CharField(blank=True, max_length=64)
     date = models.DateField()
+    number = models.IntegerField(blank=True, null=True)
     institution = models.ForeignKey(Institution, on_delete=models.PROTECT)
     
     class Meta:

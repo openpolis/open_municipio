@@ -28,7 +28,8 @@ from open_municipio.people.models import Institution, Office, Company, Person
 from django.views.generic.base import RedirectView
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
-from open_municipio.views import InstitutionDetailView, HomeView, InfoView
+from open_municipio.views import HomeView, InfoView
+from open_municipio.people.views import InstitutionDetailView
 
 urlpatterns = patterns('',
   (r'^admin/doc/', include('django.contrib.admindocs.urls')),
@@ -45,12 +46,9 @@ urlpatterns = patterns('',
     context_object_name='person',
     template_name='person_detail.html')),
 
-  (r'^istituzioni/$', ListView.as_view(
-    model=Institution,
-    template_name='institution_list.html'
-  )),
-  (r'^istituzioni/(?P<slug>[-\w]+)/$', InstitutionDetailView.as_view(
-    template_name='institution_detail.html')),
+  url(r'^istituzioni/', ListView.as_view(model=Institution, template_name='institution_list.html'), {}, name="institution_list"),
+  
+  url(r'^istituzioni/(?P<slug>[-\w]+)/$', InstitutionDetailView.as_view(template_name='institution_detail.html'), {}, name="institution_detail"),
     
   (r'^uffici/$', ListView.as_view(
     model=Office,
