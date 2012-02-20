@@ -775,6 +775,7 @@
 				<xs:extension base="actType">
 					<xs:sequence>
 						<xs:element ref="DeterminationStep" minOccurs="1" maxOccurs="unbounded" />
+						<xs:element ref="Payee" minOccurs="0" maxOccurs="unbounded"/>
 					</xs:sequence>
 					<xs:attribute name="number" />	
 					<xs:attribute name="year">
@@ -800,9 +801,14 @@
 							</xs:restriction>
 						</xs:simpleType>
 					</xs:attribute>
+					<xs:attribute name="peg_reference" type="xs:string" />
 				</xs:extension>
 			</xs:complexContent>
 		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="Payee">
+		<xs:complexType mixed="true" />
 	</xs:element>
 	
 	<xs:element name="DeterminationStep">
