@@ -72,6 +72,22 @@
 		</xs:complexContent>
 	</xs:complexType>
 	
+	<xs:complexType name="mayorActStep">
+		<xs:attribute name="name">
+			<xs:simpleType>
+				<xs:restriction base="xs:token">
+					<!-- generic -->
+					<xs:enumeration value="Presented" />
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="date" type="dateType" />
+		<!-- a concise description of the reason that lead the transition to this step -->
+		<xs:attribute name="reason" type="xs:string" />
+		<!-- in the note field it is possible to store unstructure information attached to the transition -->
+		<xs:attribute name="note" type="xs:string" />
+	</xs:complexType>
+	
 	
 	<!-- a deliberation can be subscribed by institutions (I presume also by citizens. Check it! -FS) -->
 	<xs:element name="ActSubscribers">
@@ -298,7 +314,7 @@
 	<xs:element name="ActsOffices">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element ref="OfficeDetermination" />
+				<xs:element ref="Determination" />
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
@@ -314,7 +330,6 @@
 						<xs:element ref="Answer" minOccurs="0" maxOccurs="1" />
 						<xs:element ref="InterrogationStep" minOccurs="1" maxOccurs="unbounded" />
 					</xs:sequence>
-					<xs:attribute name="site" use="required" type="siteType" />
 					<xs:attribute name="answer_type" use="required" >
 						<xs:simpleType>
 							<xs:restriction base="xs:token">
@@ -728,16 +743,128 @@
 	<!-- END giunta acts -->
 	
 	<!-- BEGIN mayor acts -->
+	<xs:element name="Regulation">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="actType">
+					<xs:sequence>
+						<xs:element name="RegulationStep" type="mayorActStep" />
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
 	
+	<xs:element name="Decree">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="actType">
+					<xs:sequence>
+						<xs:element name="Decree" type="mayorActStep" />
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
 	<!-- END mayor acts -->
 	
 	<!-- BEGIN office acts -->
+	<xs:element name="Determination">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="actType">
+					<xs:sequence>
+						<xs:element ref="DeterminationStep" minOccurs="1" maxOccurs="unbounded" />
+					</xs:sequence>
+					<xs:attribute name="number" />	
+					<xs:attribute name="year">
+						<xs:simpleType>
+							<xs:restriction base="xs:integer" >
+								<xs:minInclusive value="2011" />
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+					<xs:attribute name="currency">
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:enumeration value="euro" />
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+					<xs:attribute name="amount" type="xs:float" />
+					<xs:attribute name="action" >
+						<xs:simpleType>
+							<xs:restriction base="xs:token">
+								<xs:enumeration value="income" /> 
+								<xs:enumeration value="outcome" />
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
 	
+	<xs:element name="DeterminationStep">
+		<xs:complexType>
+			<xs:attribute name="name">
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<!-- generic -->
+						<xs:enumeration value="Presented" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="date" type="dateType" />
+			<!-- a concise description of the reason that lead the transition to this step -->
+			<xs:attribute name="reason" type="xs:string" />
+			<!-- in the note field it is possible to store unstructure information attached to the transition -->
+			<xs:attribute name="note" type="xs:string" />
+		</xs:complexType>
+	</xs:element>
 	<!-- END office acts -->
 <!-- END acts -->
 	
 <!-- BEGIN ballots and votes -->	
-	<xs:element name="Ballot" />
+	<xs:element name="Ballot">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="ChargeVote" minOccurs="0" maxOccurs="unbounded" />
+			</xs:sequence>
+			<xs:attribute name="ballot_id" type="xs:string" />
+			<xs:attribute name="date" type="xs:dateTime" />
+			<xs:attribute name="partecipants" type="xs:integer" />
+			<xs:attribute name="legal_number" type="xs:integer" />
+			<xs:attribute name="counter_yes" type="xs:integer" />
+			<xs:attribute name="counter_no" type="xs:integer" />
+			<!-- counter_abs counts the 'abstainers', aka "astenuti" -->
+			<xs:attribute name="counter_abs" type="xs:integer" />
+			<xs:attribute name="outcome">
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:enumeration value="approved" />
+						<xs:enumeration value="rejected" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
 	
+	<xs:element name="ChargeVote">
+		<xs:complexType>
+			<xs:sequence>
+				<!-- the istitutional charge casting the vote -->
+				<xs:element ref="Charge" minOccurs="1" maxOccurs="1" />
+			</xs:sequence>
+			<xs:attribute name="vote">
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:enumeration value="yes" />
+						<xs:enumeration value="no" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
 <!-- END ballots and votes -->	
 </xs:schema>
