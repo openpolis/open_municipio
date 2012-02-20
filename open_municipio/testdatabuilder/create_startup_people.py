@@ -3,7 +3,7 @@
 from datetime import *
 from random import choice
 
-import random_items_factory
+import open_municipio.testdatabuilder.random_items_factory as random_factory
 
 from open_municipio.people.models import *
 from django.conf import settings
@@ -94,7 +94,7 @@ for g in gruppi:
 print "Incarichi"
 
 print "  sindaco"
-sindaco_pers = random_items_factory.create_person()
+sindaco_pers = random_factory.create_person()
 print sindaco_pers
 sindaco_charge = InstitutionCharge(
     description="Descrizione incarico di sindaco",
@@ -111,7 +111,7 @@ consiglieri = []
 pres_created = False
 vice_created = False
 for i in range(0, n_consiglieri):
-    pers = random_items_factory.create_person()
+    pers = random_factory.create_person()
     charge = InstitutionCharge(
         description="Consigliere semplice",
         start_date = election_date,
@@ -177,7 +177,7 @@ assessorati = [
      "Servizi alla Persona, Sanità, Politiche per l’Integrazione ed Edilizia Residenziale Pubblica"
 ]
 for i in range(0, len(assessorati)):
-    pers = random_items_factory.create_person()
+    pers = random_factory.create_person()
     charge = InstitutionCharge(
         description=assessorati[i],
         start_date = election_date,

@@ -3,14 +3,14 @@
 <!doctype html>
 <html lang="en">
 <head>
-	<meta charset="utf-8" />
+  <meta charset="utf-8" />
   <title>{% trans "openmunicipio" %} {% block title %}{% endblock %}</title>
-	<script type="text/javascript" src="/js/jquery.min.js"></script>
+  <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.min.js"></script>
   {% block head_includes %}
   {% endblock %}
-	<link rel="stylesheet" href="/css/styles.css" type="text/css" media="screen" />
-	<link rel="stylesheet" href="/css/print.css"  type="text/css" media="print" />
-	<!--[if IE]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <link rel="stylesheet" href="{{ STATIC_URL }}css/styles.css" type="text/css" media="screen" />
+  <link rel="stylesheet" href="{{ STATIC_URL }}css/print.css"  type="text/css" media="print" />
+  <!--[if IE]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 </head>
 <body>
 
@@ -19,29 +19,29 @@
   <header>
     <section id="logos">
       <h1>
-        <a href="/"><img src="/images/title-img.png" border="0"/></a>
+        <a href="/"><img src="{{ STATIC_URL }}images/title-img.png" border="0"/></a>
       </h1>
       <div style="float:right;">
-        <a href="http://associazione.openpolis.it" target="_blank"><img src="/images/logo-associazione.png" alt="associazione openpolis" border="0"/></a>
+        <a href="http://associazione.openpolis.it" target="_blank"><img src="{{ STATIC_URL }}images/logo-associazione.png" alt="associazione openpolis" border="0"/></a>
       </div>
     </section>
     
   	<nav><!-- top nav -->
       <ul style="clear:both; float: left">
         <li id="main-nav-istituzioni">
-          <a href="/istituzioni.html" {% block istituzioni_class %}{% endblock %}>Istituzioni</a>
+          <a href="/istituzioni" {% block istituzioni_class %}{% endblock %}>Istituzioni</a>
         </li>
         <li id="main-nav-uffici">
-          <a href="/uffici.html" {% block uffici_class %}{% endblock %}>Uffici</a>
+          <a href="/uffici" {% block uffici_class %}{% endblock %}>Uffici</a>
         </li>
         <li id="main-nav-aziende">
-          <a href="/aziende.html" {% block aziende_class %}{% endblock %}>Aziende</a>
+          <a href="/aziende" {% block aziende_class %}{% endblock %}>Aziende</a>
         </li>
       </ul>  	   
 
       <ul style="float:right">
         <li id="main-nav-info">
-          <a href="/info.html" {% block info_class %}{% endblock %}>Info</a>
+          <a href="/info" {% block info_class %}{% endblock %}>Info</a>
         </li>
       </ul>
       
@@ -86,7 +86,7 @@
   		<section id="footer-area" style="text-align: center;">
         <p style="color: grey; margin-bottom: 5px;">{% trans "ideated, designed and developed by:" %}</p>
         <span style="margin-top: 100px;">
-          <a href="http://www.openpolis.it"><img src="/images/logo-informaetica.png" border="0" alt=" logo di informaetica"></a>
+          <a href="http://www.openpolis.it"><img src="{{ STATIC_URL }}images/logo-informaetica.png" border="0" alt=" logo di informaetica"></a>
           <a href="http://associazione.openpolis.it"><img src="http://associazione.openpolis.it/images/button_ass_op.png" border="0" alt="logo associazione openpolis"></a>
         </span>
   		</section><!-- end of footer-area -->

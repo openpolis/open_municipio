@@ -34,8 +34,9 @@ class Act(TimeStampedModel):
     adj_title = models.CharField(_('adjoint title'), max_length=255, blank=True, help_text=_("An adjoint title, added to further explain an otherwise cryptic title"))
     presentation_date = models.DateField(_('presentation date'), null=True, help_text=_("Date of presentation, as stated in the act"))
     text = models.TextField(_('text'), blank=True)
-    presenter_set = models.ManyToManyField(InstitutionCharge, blank=True, null=True, db_table='om_act_presenter', related_name='act_presentation_set', verbose_name=_('presenters'))
-    recipient_set = models.ManyToManyField(InstitutionCharge, blank=True, null=True, db_table='om_act_recipient', related_name='act_destination_set', verbose_name=_('recipients'))
+    transitions = models.ManyToManyField('Status', blank=True, null=True, through='Transition', verbose_name=_('statuses'))
+    presenters = models.ManyToManyField(InstitutionCharge, blank=True, null=True, through='ActSupport', related_name='presenter_act_set', verbose_name=_('presenters'))
+    recipients = models.ManyToManyField(InstitutionCharge, blank=True, null=True, db_table='acts_act_recipient', related_name='recipient_act_set', verbose_name=_('recipients'))
     emitting_institution = models.ForeignKey(Institution, related_name='emitted_act_set', verbose_name=_('emitting institution'))
     category_set = models.ManyToManyField(Category, verbose_name=_('categories'), blank=True, null=True)
 
@@ -50,18 +51,6 @@ class Act(TimeStampedModel):
         if self.adj_title:
             uc = u'%s (%s)' % (uc, self.adj_title)
         return uc
-
-    @property
-    def transitions(self):
-        return self.transition_set.all()
-
-    @property
-    def presenters(self):
-        return self.presenter_set.all()
-
-    @property
-    def recipients(self):
-        return self.recipient_set.all()
     
     @property
     def tags(self):
@@ -74,8 +63,7 @@ class Act(TimeStampedModel):
       
 class ActSection(models.Model):
     act = models.ForeignKey(Act, on_delete=models.PROTECT)
-    # FIXME: should ``ForeignKey`` be to 'self' ?
-    parent_section = models.ForeignKey('ActSection', on_delete=models.PROTECT)  
+    parent_section = models.ForeignKey('self', on_delete=models.PROTECT)  
     title = models.CharField(max_length=128, blank=True)
     text = models.TextField(blank=True)
   
@@ -83,9 +71,27 @@ class ActSection(models.Model):
         return u'%s' % self.title
 
     class Meta:
-        db_table = u'om_act_section'
+        db_table = u'acts_act_section'
 
 
+class ActSupport(models.Model):
+    FIRST_SIGNER = 1
+    CO_SIGNER = 2
+    RELATOR = 3
+    SUPPORT_TYPE_CHOICES = (
+        (FIRST_SIGNER, _('First signer')),
+        (CO_SIGNER, _('Co signer')),
+        (RELATOR, _('Relator')),
+    )
+    charge = models.ForeignKey(InstitutionCharge)
+    act = models.ForeignKey('Act')
+    support_type = models.IntegerField(_('support type'), choices=SUPPORT_TYPE_CHOICES)    
+    support_date = models.DateField(_('support date'), default=None, blank=True, null=True)
+
+    class Meta:
+        db_table = u'acts_act_support'
+    
+    
 class Deliberation(Act):
     COUNSELOR_INIT = 1
     PRESIDENT_INIT = 2
@@ -104,7 +110,8 @@ class Deliberation(Act):
     publication_date = models.DateField(_('publication date'), null=True, blank=True)
     execution_date = models.DateField(_('execution date'), null=True, blank=True)
     initiative = models.IntegerField(_('initiative'), choices=INIZIATIVE_CHOICES)
-
+    approved_text = models.TextField(blank=True)
+    
     class Meta:
         verbose_name = _('deliberation')
         verbose_name_plural = _('deliberations')
@@ -152,12 +159,6 @@ class Motion(Act):
         verbose_name_plural = _('motions')
 
 
-class Agenda(Act):
-    """WRITEME"""
-    class Meta:
-        verbose_name = _('agenda')
-        verbose_name_plural = _('agendas')
-
 
 class Emendation(Act):
     """
@@ -192,16 +193,18 @@ class Status(models.Model):
   
 class Transition(models.Model):
     final_status = models.ForeignKey(Status, on_delete=models.PROTECT)
-    act = models.ForeignKey(Act, related_name='transition_set')
-    transition_date = models.DateField()
+    act = models.ForeignKey(Act)
+    sitting = models.ForeignKey(Sitting, null=True, blank=True, on_delete=models.PROTECT)
+    transition_date = models.DateField(default=None)
     symbol = models.CharField(_('symbol'), max_length=128, null=True)
     note = models.CharField(_('note'), max_length=255, null=True)
     
     class Meta:
-        db_table = u'om_transition'
+        db_table = u'acts_transition'
         verbose_name = _('status transition')
         verbose_name_plural = _('status transition')
     
+
 
 
 #
@@ -216,13 +219,17 @@ class Document(TimeStampedModel):
     
     * a text string
     * an URL to its textual representation
-    * a PDF file (uploaded into a dedicated folder)
-    * an URL to a PDF file
+    * an URL to an external PDF file
+    * an uploaded internal PDF file
+    
+    It is possible that a single document may have more than ont type of content:
+    for example, a textual and a pdf local versions, or remote links ...
     """
     document_date = models.DateField(null=True, blank=True)
     text = models.TextField(blank=True)
     text_url = models.URLField(blank=True)
     pdf_url = models.URLField(blank=True)
+    pdf_file = models.FileField(upload_to="attached_documents/%Y%d%m", blank=True)
     
     class Meta:
         abstract = True
@@ -230,11 +237,12 @@ class Document(TimeStampedModel):
 
 class Attach(Document):
     """
-    WRITEME
+    An attachment to a formal act. 
+    Extends the Document class, by adding a title,
+    and a foreign key to the act the document relates to
     """
     title = models.CharField(max_length=255)
     act = models.ForeignKey(Act)
-    pdf_file = models.FileField(upload_to="attached_documents/%Y%d%m", blank=True)
     
     def __unicode__(self):
         return u'%s' % self.title
@@ -250,7 +258,6 @@ class Minute(Document):
     """
     sitting = models.ForeignKey(Sitting)
     act_set = models.ManyToManyField(Act)    
-    pdf_file = models.FileField(upload_to="minutes/%Y%d%m", blank=True)
     
     class Meta(Document.Meta):
         verbose_name = _('minute')
@@ -267,7 +274,6 @@ class Outcome(models.Model):
     """
     sitting = models.ForeignKey(Sitting)
     act_set = models.ManyToManyField(Act)    
-    pdf_file = models.FileField(upload_to="outcomes/%Y%d%m", blank=True)
 
     class Meta(Document.Meta):
         verbose_name = _('outcome')
@@ -276,3 +282,21 @@ class Outcome(models.Model):
     @property
     def acts(self):
         return self.act_set.all()
+        
+        
+#
+# Calendar
+#
+class Calendar(models.Model):
+    """WRITEME"""
+    act_set = models.ManyToManyField('Act')
+    date = models.DateField()
+
+    class Meta:
+        verbose_name = _('calendar')
+        verbose_name_plural = _('calendar')
+
+    @property
+    def acts(self):
+        return self.act_set.all()
+

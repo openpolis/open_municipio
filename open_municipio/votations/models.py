@@ -68,7 +68,7 @@ class GroupVote(TimeStampedModel):
     group = models.ForeignKey(Group)
 
     class Meta:
-        db_table = u'om_group_vote'    
+        db_table = u'votations_group_vote'    
         verbose_name = _('group vote')
         verbose_name_plural = _('group votes')
 
@@ -106,6 +106,6 @@ class ChargeVote(TimeStampedModel):
     rebel = models.BooleanField(default=False)
 
     class Meta:
-        db_table = u'om_charge_vote'    
+        db_table = u'votations_charge_vote'    
         verbose_name = _('charge vote')
         verbose_name_plural = _('charge votes')
