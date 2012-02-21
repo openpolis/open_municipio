@@ -1,0 +1,5 @@
+# mod_wsgi                                                                                                                                                  
+# point to a baseline Python virtual environment                                                                                                            
+# to be overlayed by application-specific venvs                                                                                                            
+ 
+WSGIPythonHome /usr/local/pythonenv/BASELINE

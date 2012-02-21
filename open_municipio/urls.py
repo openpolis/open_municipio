@@ -6,7 +6,7 @@
 ##
 ## .. code:: python
 ##
-##     from opm_site.urls import * 
+##     from open_municipio.urls import * 
 ##
 ## This way, project-level URL patterns are transparently added to 
 ## machine-specific ones.
@@ -18,7 +18,6 @@
 ## * ``urls_production.py`` -- for production servers
 
 
-from django.conf import settings
 from django.conf.urls.defaults import *
 
 # Uncomment the next two lines to enable the admin:
@@ -29,10 +28,10 @@ from django.contrib.comments.models import Comment
 from django.views.generic.base import RedirectView
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
-
-from om.models import Institution, Office, Company, Person, Act
-from om_comments.models import CommentWithMood
-from views import InstitutionDetailView, HomeView, InfoView, ActDetailView
+from open_municipio.om_comments.models import CommentWithMood
+from open_municipio.people.models import Institution, Office, Company, Person
+from open_municipio.people.views import InstitutionDetailView
+from open_municipio.views import HomeView, InfoView
 from voting.views import vote_on_object
 
 urlpatterns = patterns('',
@@ -50,12 +49,9 @@ urlpatterns = patterns('',
     context_object_name='person',
     template_name='person_detail.html')),
 
-  (r'^istituzioni/$', ListView.as_view(
-    model=Institution,
-    template_name='institution_list.html'
-  )),
-  (r'^istituzioni/(?P<slug>[-\w]+)/$', InstitutionDetailView.as_view(
-    template_name='institution_detail.html')),
+  url(r'^istituzioni/', ListView.as_view(model=Institution, template_name='institution_list.html'), {}, name="institution_list"),
+  
+  url(r'^istituzioni/(?P<slug>[-\w]+)/$', InstitutionDetailView.as_view(template_name='institution_detail.html'), {}, name="institution_detail"),
     
   (r'^uffici/$', ListView.as_view(
     model=Office,
