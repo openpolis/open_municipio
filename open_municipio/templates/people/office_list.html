@@ -2,7 +2,7 @@
 
 {% block title %}| Elenco uffici{% endblock %}
 
-{% block uffici_class %}
+{% block office_class %}
   class="active"
 {% endblock %}
 
@@ -10,7 +10,7 @@
 <section id="content"><!-- #content -->
   <h2>Uffici</h2>
   <ul>
-      {% for office in object_list %}
+      {% for office in office_list %}
           <li><a href="{{ office.get_absolute_url }}">{{ office.name }}</a></li>
       {% endfor %}
   </ul>

@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}| Dettaglio {{ act }}{% endblock %}
+
+{% block content %}
+  <section id="content"><!-- #content -->
+ 	 <ul>
+ 		<li> ID: {{ act.idnum }} </li>
+		<li> Istituzione: {{ act.emitting_institution }} </li>
+		<li> Data di presentazione: {{ act.presentation_date }} </li> 	
+		<li> [ {{ act.adj_title }} ]  Titolo: {{ act.title }} </li>
+	  </ul>
+ 
+ 	{{ act.text }}
+	
+	
+	<div id="related_tags" style="margin: 20px 0">
+ 		<div id="tag_show" class="tags">
+ 			<em>argomenti:</em>
+			{% for tag in act.tags %}
+				<div id="tag-{{ tag.id }}" class="">
+					<span class="remover" title="clicca qui per rimuovere questo tag">
+						<a href="{{ act.get_absolute_url }}tags/remove/{{ tag.slug }}">(X)</a>
+					</span>
+					<span class="tag">
+						<a href="/tags/{{ tag.slug }} "> {{ tag }} </a>
+					</span>
+				</div>
+			{% endfor %}
+	</div>
+	
+	<div id="tag_edit">
+	Cerca tag:	
+	<form id="" method="post" action="{{ act.get_absolute_url }}tags/add/" style="display: inline;"> 
+		{% csrf_token %}
+		{{ tag_add_form.as_p }}
+		<input type="submit" value="Aggiungi" />
+	</form>
+	</div>
+  </section><!-- end of #content -->  
+{% endblock %}

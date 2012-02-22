@@ -2,7 +2,7 @@
 
 {% block title %}| Elenco istituzioni{% endblock %}
 
-{% block istituzioni_class %}
+{% block institution_class %}
   class="active"
 {% endblock %}
 
@@ -10,7 +10,7 @@
 <section id="content"><!-- #content -->
   <h2>Istituzioni</h2>
   <ul>
-      {% for institution in object_list %}
+      {% for institution in institution_list %}
           <li><a href="{{ institution.get_absolute_url }}">{{ institution.name }}</a></li>
       {% endfor %}
   </ul>
