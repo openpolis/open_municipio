@@ -12,5 +12,5 @@ open_municipio/people/migrations/*
 open_municipio/votation/migrations/*
 open_municipio/taxonomy/migrations/*
 uploads/attached_documents/*
-docs/list_s3_docs.py
+docs/ignored
 
