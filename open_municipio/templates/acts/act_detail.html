@@ -3,17 +3,61 @@
 
 {% block title %}| Dettaglio {{ act }}{% endblock %}
 
+{% block head_includes %}
+{# FIXME: include superblock's declarations #}
+<script src="{{ STATIC_URL }}js/ajax_csrf.js" type="text/javascript" charset="utf-8"></script>
+<script src="{{ STATIC_URL }}js/jquery.jeditable.min.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript" charset="utf-8">
+
+$(document).ready(function() {
+	 $('.editable').editable('/inline/edit/', {
+		type      : 'text',
+     	cancel    : 'Cancel',
+     	submit    : 'OK',
+     	indicator : '<img src="images/indicator.gif">',
+     	tooltip   : 'Click to edit...',
+		width : 300 
+ 	 });
+ });
+</script>
+{% endblock %}
+
 {% block content %}
   <section id="content"><!-- #content -->
  	 <ul>
  		<li> ID: {{ act.idnum }} </li>
 		<li> Istituzione: {{ act.emitting_institution }} </li>
 		<li> Data di presentazione: {{ act.presentation_date }} </li> 	
-		<li> [ {{ act.adj_title }} ]  Titolo: {{ act.title }} </li>
 	  </ul>
  
- 	{{ act.text }}
+ 	<p class="synopsis"> 
+ 	Titolo: 
 	
+	{% if not user.is_staff and act.adj_title %}
+		<div>[{{ act.adj_title }}]</div>   
+	{% endif %}
+	
+	{% if user.is_staff %}
+		
+		{% if act.adj_title %}
+			<div id="acts-act-{{act.id}}-adj_title" class="editable">[{{ act.adj_title }}]</div>
+		{% endif %}   
+		
+		{% if not act.adj_title %}
+			<div id="acts-act-{{act.id}}-adj_title" class="editable">[Inserisci titolo aggiunto]</div>
+		{% endif %}
+		
+	{% endif %}
+	
+	
+	{{ act.title }}
+	</p>
+	
+	<br />
+	
+	<p>
+	{{ act.text }}
+	</p>
 	
 	<div id="related_tags" style="margin: 20px 0">
  		<div id="tag_show" class="tags">

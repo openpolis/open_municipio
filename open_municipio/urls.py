@@ -25,6 +25,8 @@ admin.autodiscover()
 
 from open_municipio.views import HomeView, InfoView
 
+from open_municipio.inline_edit.views import InlineEditView
+
 
 urlpatterns = patterns('',
     (r'^admin/doc/', include('django.contrib.admindocs.urls')),
@@ -41,4 +43,9 @@ urlpatterns = patterns('',
   (r'^offices/', include('open_municipio.people.urls.offices')),
   (r'^companies/', include('open_municipio.people.urls.companies')), 
   (r'^acts/', include('open_municipio.acts.urls')),
+)
+
+# inline editing
+urlpatterns += patterns('',
+    url(r'^inline/edit/$', InlineEditView.as_view(),  name='om_inline_edit'),
 )
