@@ -879,6 +879,14 @@
 <!-- END acts -->
 	
 <!-- BEGIN ballots and votes -->	
+	<xs:element name="Ballots">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="Ballot" minOccurs="0" maxOccurs="unbounded" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
 	<xs:element name="Ballot">
 		<xs:complexType>
 			<xs:sequence>
