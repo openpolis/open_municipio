@@ -3,7 +3,7 @@
 
 {% block title %}| Dettaglio {{ institution.name }}{% endblock %}
 
-{% block istituzioni_class %}
+{% block institution_class %}
   class="active"
 {% endblock %}
 
@@ -51,8 +51,8 @@
   <aside id="sidebar"><!-- sidebar -->
     <h3>Istituzioni</h3>
     <ul>
-        {% for item in institutions_list %}
-            <li><a href="{{ item.get_absolute_url }}">{{ item.name }}</a></li>
+        {% for institution in institution_list %}
+            <li><a href="{{ institution.get_absolute_url }}">{{ institution.name }}</a></li>
         {% endfor %}
     </ul>
 	</aside><!-- end of sidebar -->
