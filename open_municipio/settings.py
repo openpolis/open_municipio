@@ -120,4 +120,4 @@ INSTALLED_APPS = (
 #   'debug_toolbar',
 )
 
-COMMENTS_APP = 'om_comments'
+COMMENTS_APP = 'open_municipio.om_comments'
