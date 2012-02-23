@@ -1,6 +1,6 @@
 *~
 *.pyc
-*.db
+*.sqlite
 open_municipio/settings_*.py
 open_municipio/urls_*.py
 apache
