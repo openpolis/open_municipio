@@ -19,8 +19,8 @@ class Votation(models.Model):
     )
     
     idnum = models.CharField(blank=True, max_length=64)
-    sitting = models.ForeignKey(Sitting)
-    act_set = models.ManyToManyField(Act)
+    sitting = models.ForeignKey(Sitting, null=True)
+    act = models.ForeignKey(Act, null=True)
     group_vote_set = models.ManyToManyField(Group, through='GroupVote')
     charge_vote_set = models.ManyToManyField(InstitutionCharge, through='ChargeVote')
     n_legal = models.IntegerField(blank=True, null=True)
@@ -35,10 +35,6 @@ class Votation(models.Model):
         verbose_name = _('votation')
         verbose_name_plural = _('votations')
 
-    @property
-    def acts(self):
-        return self.act_set.all()
-  
     @property
     def group_votes(self):
         return self.group_vote_set.all()
