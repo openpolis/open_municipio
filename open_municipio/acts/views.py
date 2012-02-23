@@ -4,7 +4,6 @@ from django.template import RequestContext
 from django.shortcuts import get_object_or_404, render_to_response
 
 from taggit.models import Tag
-from open_municipio.taxonomy.models import TaggedItem
 
 from open_municipio.acts.models import Act
 from open_municipio.acts.forms import TagAddForm
@@ -28,10 +27,7 @@ def add_tags_to_act(request, pk):
         form = TagAddForm(request.POST) 
         if form.is_valid():
             new_tags =  form.cleaned_data['tags']
-            # FIXME: HACK !
-            for tag_str in new_tags:
-                tag, created = Tag.objects.get_or_create(name=tag_str)
-                TaggedItem.objects.create(tag=tag, content_object=act, tagger=request.user)
+            act.tag_set.add(*new_tags, tagger=request.user)
             return HttpResponseRedirect(act.get_absolute_url()) 
     else:
         form = TagAddForm() 
@@ -47,5 +43,3 @@ class ActRemoveTagView(TemplateView):
         tag = get_object_or_404(Tag, slug=kwargs.get('tag_slug'))
         act.tag_set.remove(tag)
         return HttpResponseRedirect(act.get_absolute_url())
-    
-    
