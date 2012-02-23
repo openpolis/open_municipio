@@ -18,6 +18,7 @@
 import os
 
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
+REPO_ROOT = os.path.abspath(os.path.dirname(PROJECT_ROOT))
 VERSION = __version__ = file(os.path.join(PROJECT_ROOT, 'VERSION')).read().strip()
 
 INTERNAL_IPS = ('127.0.0.1',)
