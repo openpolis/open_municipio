@@ -26,6 +26,7 @@ admin.autodiscover()
 from voting.views import vote_on_object
 
 from open_municipio.views import HomeView, InfoView
+from open_municipio.acts.models import Act
 from open_municipio.om_comments.models import CommentWithMood
 
 

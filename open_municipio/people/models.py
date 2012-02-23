@@ -256,8 +256,7 @@ class Institution(Body):
     institution_type = models.IntegerField(choices=INSTITUTION_TYPES)
     
     def get_absolute_url(self):
-        # FIXME: ``get_absolute_url`` shouldn't contain hard-coded URLs
-        return reverse("institution_detail", kwargs={'slug': self.slug})
+        return reverse("om_institution_detail", kwargs={'slug': self.slug})
 
     def save(self, *args, **kwargs):
         """slugify name on first save"""
@@ -276,7 +275,7 @@ class Company(Body):
     """
     
     def get_absolute_url(self):
-        return "/aziende/%s.html" % self.slug
+        return reverse("om_company_detail", kwargs={'slug': self.slug})
     
     class Meta(Body.Meta):
         verbose_name = _('company')
@@ -288,8 +287,7 @@ class Office(Body):
     Internal municipality office, playing a role in municipality's administration.
     """
     def get_abolute_url(self):
-        # FIXME: ``get_absolute_url`` shouldn't contain hard-coded URLs
-        return "/uffici/%s.html" % self.slug
+        return reverse("om_office_detail", kwargs={'slug': self.slug})
     
     class Meta(Body.Meta):
         verbose_name = _('office')

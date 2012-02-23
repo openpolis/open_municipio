@@ -52,7 +52,12 @@
     <h3>Istituzioni</h3>
     <ul>
         {% for institution in institution_list %}
+          {% if institution.get_absolute_url == request.get_full_path %}
+            <li class="active">{{ institution.name }}</li>
+          {% else %}
             <li><a href="{{ institution.get_absolute_url }}">{{ institution.name }}</a></li>
+          {% endif %}
+            
         {% endfor %}
     </ul>
 	</aside><!-- end of sidebar -->

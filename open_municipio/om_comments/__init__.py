@@ -1,8 +1,8 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.comments.views import comments
 
-from om_comments.models import CommentWithMood
-from om_comments.forms import CommentFormWithMood
+from open_municipio.om_comments.models import CommentWithMood
+from open_municipio.om_comments.forms import CommentFormWithMood
 
 
 original_post_comment = comments.post_comment

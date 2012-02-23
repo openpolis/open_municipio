@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.comments.admin import CommentsAdmin
 
-from om_comments.models import CommentWithMood
+from open_municipio.om_comments.models import CommentWithMood
 
 class CommentWithMoodAdmin(CommentsAdmin):
     pass
