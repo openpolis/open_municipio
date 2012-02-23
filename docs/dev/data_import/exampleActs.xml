@@ -5,67 +5,45 @@
 	xsi:schemaLocation="http://www.w3schools.com OpenMunicipioDataImport.xsd"
 	xmlns:xi="http://www.w3.org/2001/XInclude">
 	<Acts>
-		<Motion id="M.123.a" title="This is a very important motion" >
-			<PresentingInstitution>
-				<Institution name="Assessorato dell'universo">
-					<Charge start_date="2011-01-01">
-						<Person ssn="1112223334445556" last_name="AAAA" name="BBBB" />
-					</Charge>
-				</Institution>
-			</PresentingInstitution>
-			<ProcessStep name="Presented" date="2012-01-01T00:00:00" />
-			<Section title="M.123.a-Introduction" >
-				<SectionText>
-					This is the first and most important part of this motion
-				</SectionText>
-			</Section>
-			<Section title="M.123.a-Chapter1" >
-				<SectionText>
-				This is a not so important chapter
-				</SectionText>
-			</Section>
-			<Section title="M.123.a-Chapter2" >
-				<SectionText>
-				Try a duplicate chapter name
-				</SectionText>
-				<Section title="M.123.a-Chapter2" >
-					<SectionText>
-					Try a duplicate chapter name
-					</SectionText>
-				</Section>
-			</Section>
-		</Motion>
-		<Motion id="M.123.b" title="This is a very important motion2" >
-			<PresentingInstitutions>
-				<Institution name="Assessore allo Sport" description="E` quello che si occupa di assessorare lo sport">
-					<Charge  start_date="2011-01-01T00:00:00" end_date="2011-12-31T00:00:00">
-						<Person ssn="1231231231231234" last_name="Foo" name="Fie" birth_date="2008-01-01" sex="m" birth_place="Senigallia (AN)"/>
-					</Charge>
-				</Institution>
-				<Institution name="Assessore allo Sport" description="E` quello che si occupa di assessorare lo sport">
-					<Charge  start_date="2011-01-01T00:00:00" end_date="2011-12-31T00:00:00">
-						<Person ssn="1231231231231234" last_name="Foo" name="Fie" birth_date="2008-01-01" sex="m" birth_place="Senigallia (AN)"/>
-					</Charge>
-				</Institution>
-			</PresentingInstitutions>
-			<ProcessStep name="Presented" date="2012-01-01T00:00:00" />
-			<ProcessStep name="Voted" date="2012-01-02T00:00:00" />
-			<Section title="M.123.b-Introduction" > 
-				<SectionText>
-					This is the first and most important part of this motion
-				</SectionText>
-			</Section>
-			<Section title="M.123.b-Chapter1" >
-				<SectionText>
-					This is a not so important chapter
-				</SectionText>
-			</Section>
-			<Section title="M.123.b-Chapter2" >
-				<SectionText>
-					Try a duplicate chapter name
-				</SectionText>
-			</Section>
-		</Motion>
-		
+		<ActsCouncil>
+			<Motion id="M.123.a" title="This is a very important motion" >
+				<Content title="Title of the motion">
+					<Section title="Introduzione">
+					</Section>
+					<Section title="Capitolo 1">
+						This is the first and most important part of this motion
+					</Section>
+				</Content>
+				<ActSubscribers>
+					<Institution name="Assessorato dell'universo">
+						<Charge start_date="2011-01-01T00:00:00">
+							<Person ssn="1112223334445556" last_name="AAAA" 
+								first_name="BBBB" />
+						</Charge>
+					</Institution>
+				</ActSubscribers>
+				<MotionStep name="Presented" date="2012-01-01T00:00:00" />
+			</Motion>
+			<Motion id="M.123.b" title="This is a very important motion2" >
+				<Content title="Titolo della mozione" >
+					Contenuto della mozione
+				</Content>
+				<ActSubscribers>
+					<Institution name="Assessore allo Sport" description="E` quello che si occupa di assessorare lo sport">
+						<Charge  start_date="2011-01-01T00:00:00" end_date="2011-12-31T00:00:00">
+							<Person ssn="1231231231231234" last_name="Foo" first_name="Fie" birth_date="2008-01-01" sex="m" birth_place="Senigallia (AN)"/>
+						</Charge>
+					</Institution>
+					<Institution name="Assessore allo Sport" description="E` quello che si occupa di assessorare lo sport">
+						<Charge  start_date="2011-01-01T00:00:00" end_date="2011-12-31T00:00:00">
+							<Person ssn="1231231231231234" last_name="Foo" first_name="Fie" birth_date="2008-01-01" sex="m" birth_place="Senigallia (AN)"/>
+						</Charge>
+					</Institution>
+				</ActSubscribers>
+				<MotionStep name="Presented" date="2012-01-01T00:00:00" />
+				<MotionStep name="Voted" date="2012-01-02T00:00:00" />
+				<MotionStep name="Accepted" date="2012-01-02T00:00:00" />
+			</Motion>
+		</ActsCouncil>
 	</Acts>
 </OpenMunicipio>
