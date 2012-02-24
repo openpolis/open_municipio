@@ -1,14 +1,17 @@
 {% extends "base.html" %}
 {% load i18n %}
 
-{% block title %}| Dettaglio {{ act }}{% endblock %}
+{% block title %}| Dettaglio {{ act }}{% endblock title %}
 
-{% block head_includes %}
-{# FIXME: include superblock's declarations #}
+{% block head_js_includes %}
+{{ block.super }}
 <script src="{{ STATIC_URL }}js/ajax_csrf.js" type="text/javascript" charset="utf-8"></script>
+{% if user.is_staff %}
 <script src="{{ STATIC_URL }}js/jquery.jeditable.min.js" type="text/javascript" charset="utf-8"></script>
-<script type="text/javascript" charset="utf-8">
+{% endif %}
+{% endblock head_js_includes %}
 
+{% block extra_js %} 	
 $(document).ready(function() {
 	 $('.editable').editable('/inline/edit/', {
 		type      : 'text',
@@ -19,8 +22,9 @@ $(document).ready(function() {
 		width : 300 
  	 });
  });
-</script>
-{% endblock %}
+{% endblock extra_js %}
+
+
 
 {% block content %}
   <section id="content"><!-- #content -->
@@ -31,24 +35,18 @@ $(document).ready(function() {
 	  </ul>
  
  	<p class="synopsis"> 
- 	Titolo: 
-	
-	{% if not user.is_staff and act.adj_title %}
-		<div>[{{ act.adj_title }}]</div>   
-	{% endif %}
-	
+ 	Titolo: 	
 	{% if user.is_staff %}
-		
 		{% if act.adj_title %}
-			<div id="acts-act-{{act.id}}-adj_title" class="editable">[{{ act.adj_title }}]</div>
-		{% endif %}   
-		
-		{% if not act.adj_title %}
-			<div id="acts-act-{{act.id}}-adj_title" class="editable">[Inserisci titolo aggiunto]</div>
+			[<span id="acts-act-{{act.id}}-adj_title" class="editable">{{ act.adj_title }}</span>]		
+		{% else %}
+			<span id="acts-act-{{act.id}}-adj_title" class="editable">[Inserisci titolo aggiunto]</span>
 		{% endif %}
-		
+	{% else %}
+		{% if act.adj_title %}
+			<span>[{{ act.adj_title }}]</span>   
+		{% endif %}
 	{% endif %}
-	
 	
 	{{ act.title }}
 	</p>
@@ -64,9 +62,11 @@ $(document).ready(function() {
  			<em>argomenti:</em>
 			{% for tag in act.tags %}
 				<div id="tag-{{ tag.id }}" class="">
+					{% if user.is_staff %}
 					<span class="remover" title="clicca qui per rimuovere questo tag">
 						<a href="{{ act.get_absolute_url }}tags/remove/{{ tag.slug }}">(X)</a>
 					</span>
+					{% endif %}
 					<span class="tag">
 						<a href="/tags/{{ tag.slug }} "> {{ tag }} </a>
 					</span>
@@ -83,4 +83,4 @@ $(document).ready(function() {
 	</form>
 	</div>
   </section><!-- end of #content -->  
-{% endblock %}
+{% endblock content %}
