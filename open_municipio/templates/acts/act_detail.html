@@ -1,7 +1,30 @@
 {% extends "base.html" %}
 {% load i18n %}
 
-{% block title %}| Dettaglio {{ act }}{% endblock %}
+{% block title %}| Dettaglio {{ act }}{% endblock title %}
+
+{% block head_js_includes %}
+{{ block.super }}
+<script src="{{ STATIC_URL }}js/ajax_csrf.js" type="text/javascript" charset="utf-8"></script>
+{% if user.is_staff %}
+<script src="{{ STATIC_URL }}js/jquery.jeditable.min.js" type="text/javascript" charset="utf-8"></script>
+{% endif %}
+{% endblock head_js_includes %}
+
+{% block extra_js %} 	
+$(document).ready(function() {
+	 $('.editable').editable('/inline/edit/', {
+		type      : 'text',
+     	cancel    : 'Cancel',
+     	submit    : 'OK',
+     	indicator : '<img src="images/indicator.gif">',
+     	tooltip   : 'Click to edit...',
+		width : 300 
+ 	 });
+ });
+{% endblock extra_js %}
+
+
 
 {% block content %}
   <section id="content"><!-- #content -->
@@ -9,20 +32,41 @@
  		<li> ID: {{ act.idnum }} </li>
 		<li> Istituzione: {{ act.emitting_institution }} </li>
 		<li> Data di presentazione: {{ act.presentation_date }} </li> 	
-		<li> [ {{ act.adj_title }} ]  Titolo: {{ act.title }} </li>
 	  </ul>
  
- 	{{ act.text }}
+ 	<p class="synopsis"> 
+ 	Titolo: 	
+	{% if user.is_staff %}
+		{% if act.adj_title %}
+			[<span id="acts-act-{{act.id}}-adj_title" class="editable">{{ act.adj_title }}</span>]		
+		{% else %}
+			<span id="acts-act-{{act.id}}-adj_title" class="editable">[Inserisci titolo aggiunto]</span>
+		{% endif %}
+	{% else %}
+		{% if act.adj_title %}
+			<span>[{{ act.adj_title }}]</span>   
+		{% endif %}
+	{% endif %}
 	
+	{{ act.title }}
+	</p>
+	
+	<br />
+	
+	<p>
+	{{ act.text }}
+	</p>
 	
 	<div id="related_tags" style="margin: 20px 0">
  		<div id="tag_show" class="tags">
  			<em>argomenti:</em>
 			{% for tag in act.tags %}
 				<div id="tag-{{ tag.id }}" class="">
+					{% if user.is_staff %}
 					<span class="remover" title="clicca qui per rimuovere questo tag">
 						<a href="{{ act.get_absolute_url }}tags/remove/{{ tag.slug }}">(X)</a>
 					</span>
+					{% endif %}
 					<span class="tag">
 						<a href="/tags/{{ tag.slug }} "> {{ tag }} </a>
 					</span>
@@ -39,4 +83,4 @@
 	</form>
 	</div>
   </section><!-- end of #content -->  
-{% endblock %}
+{% endblock content %}
