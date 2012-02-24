@@ -18,6 +18,7 @@
 import os
 
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
+REPO_ROOT = os.path.abspath(os.path.dirname(PROJECT_ROOT))
 VERSION = __version__ = file(os.path.join(PROJECT_ROOT, 'VERSION')).read().strip()
 
 INTERNAL_IPS = ('127.0.0.1',)
@@ -85,7 +86,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-#   'debug_toolbar.middleware.DebugToolbarMiddleware', 
+    # 'debug_toolbar.middleware.DebugToolbarMiddleware', 
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
 )
@@ -111,6 +112,7 @@ INSTALLED_APPS = (
     'south',
     'taggit',
     'voting',
+    'open_municipio.inline_edit',
     'open_municipio.om',
     'open_municipio.om_comments',
     'open_municipio.acts',

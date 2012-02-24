@@ -28,6 +28,8 @@ from voting.views import vote_on_object
 from open_municipio.views import HomeView, InfoView
 from open_municipio.om_comments.models import CommentWithMood
 
+from open_municipio.inline_edit.views import InlineEditView
+
 
 urlpatterns = patterns('',
     (r'^admin/doc/', include('django.contrib.admindocs.urls')),
@@ -65,4 +67,9 @@ comment_dict = {
 urlpatterns += patterns('',
    (r'^atti/(?P<object_id>\d+)/(?P<direction>up|down|clear)vote/?$', vote_on_object, act_dict),
    (r'^commenti/(?P<object_id>\d+)/(?P<direction>up|down|clear)vote/?$', vote_on_object, comment_dict),
+)
+
+# inline editing
+urlpatterns += patterns('',
+    url(r'^inline/edit/$', InlineEditView.as_view(),  name='om_inline_edit'),
 )
