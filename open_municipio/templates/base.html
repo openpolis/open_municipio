@@ -4,13 +4,27 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8" />
-  <title>{% trans "OpenMunicipio" %} {% block title %}{% endblock %}</title>
-	<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.min.js"></script>
-  {% block head_includes %}
-  {% endblock %}
-	<link rel="stylesheet" href="{{ STATIC_URL }}css/styles.css" type="text/css" media="screen" />
-	<link rel="stylesheet" href="{{ STATIC_URL }}css/print.css"  type="text/css" media="print" />
-	<!--[if IE]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  	<title>{% trans "OpenMunicipio" %} {% block title %}{% endblock %}</title>
+  
+  	{% block head_css_includes %}
+  	<link rel="stylesheet" href="{{ STATIC_URL }}css/styles.css" type="text/css" media="screen" />
+  	<link rel="stylesheet" href="{{ STATIC_URL }}css/print.css"  type="text/css" media="print" />
+  	{% endblock head_css_includes %}
+  
+  	<style type="text/css">
+  	{% block extra_style %} {% endblock %}
+  	</style>
+  
+  	{% block head_js_includes %}
+  	<!--[if IE]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  	<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.min.js"></script>
+  	{% endblock head_js_includes %}
+  
+  	<script type="text/javascript" charset="utf-8">
+  	{% block extra_js %} {% endblock %}	
+  	</script>
+ 
+  	{% block extra_head %} {% endblock %}	
 </head>
 <body>
 
