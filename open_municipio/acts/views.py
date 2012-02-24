@@ -1,7 +1,10 @@
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.views.generic import DetailView, TemplateView
 from django.template import RequestContext
 from django.shortcuts import get_object_or_404, render_to_response
+from django.utils.decorators import method_decorator
+
+from django.contrib.auth.decorators import login_required
 
 from taggit.models import Tag
 
@@ -21,6 +24,7 @@ class ActDetailView(DetailView):
         return context
 
 # FIXME: convert to a CBV
+@login_required
 def add_tags_to_act(request, pk):
     act = get_object_or_404(Act, pk=pk)
     if request.method == 'POST': 
@@ -38,8 +42,18 @@ def add_tags_to_act(request, pk):
     
     
 class ActRemoveTagView(TemplateView):
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(ActRemoveTagView, self).dispatch(*args, **kwargs)
+    
+    def check_perms(self): 
+        return self.request.user.is_staff
+    
     def get(self, request, *args, **kwargs):
-        act = get_object_or_404(Act, pk=kwargs.get('act_pk'))
-        tag = get_object_or_404(Tag, slug=kwargs.get('tag_slug'))
-        act.tag_set.remove(tag)
-        return HttpResponseRedirect(act.get_absolute_url())
+        if self.check_perms():
+            act = get_object_or_404(Act, pk=kwargs.get('act_pk'))
+            tag = get_object_or_404(Tag, slug=kwargs.get('tag_slug'))
+            act.tag_set.remove(tag)
+            return HttpResponseRedirect(act.get_absolute_url())
+        else: # permission check failed !
+            return HttpResponseForbidden
