@@ -76,8 +76,9 @@ STATICFILES_FINDERS = (
 )
 
 STATICFILES_DIRS = (
-    os.path.join(PROJECT_ROOT, 'templates/static'),
+    os.path.join(PROJECT_ROOT, 'static'),
 )
+
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -98,7 +99,6 @@ MIDDLEWARE_CLASSES = (
 
 TEMPLATE_DIRS = (
   os.path.join(PROJECT_ROOT, 'templates'),
-  os.path.join(PROJECT_ROOT, 'templates/om/'),
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
