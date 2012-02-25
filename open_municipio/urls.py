@@ -58,9 +58,9 @@ urlpatterns = patterns('',
     context_object_name='person',
     template_name='person_detail.html')),
 
-  url(r'^istituzioni/', ListView.as_view(model=Institution, template_name='institution_list.html'), {}, name="institution_list"),
+  url(r'^istituzioni/', ListView.as_view(model=Institution, template_name='institution_list.html'), {}, name="institution-list"),
   
-  url(r'^istituzioni/(?P<slug>[-\w]+)/$', InstitutionDetailView.as_view(template_name='institution_detail.html'), {}, name="institution_detail"),
+  url(r'^istituzioni/(?P<slug>[-\w]+)/$', InstitutionDetailView.as_view(template_name='institution_detail.html'), {}, name="institution-detail"),
     
   (r'^uffici/$', ListView.as_view(
     model=Office,
@@ -71,19 +71,18 @@ urlpatterns = patterns('',
     template_name='company_list.html'
   )),
 
-  (r'^atti/$', ListView.as_view(
+  (r'^acts/$', ListView.as_view(
     model=Act,
     template_name='act_list.html'
   )),
-  (r'^atti/(?P<pk>[-\w]+)/$', ActDetailView.as_view(
-    model=Act,
-    template_name='act_detail.html')),
+  url(r'^acts/(?P<pk>[-\w]+)/$', ActDetailView.as_view(model=Act, template_name='act_detail.html'), name="act-detail"),
 
   # We insert our own post_comment and comment_done urls so to wrap
   # them inside the login_required decorator. We do need that
   # decorator so that only authenticated users can post comments.
-  (r'^comments/post/$', login_required(post_comment), 'comments-post-comment'),
-  (r'^comments/posted/$', login_required(comment_done), 'comments-comment-done'),
+  url(r'^comments/post/$', login_required(post_comment), name="comments-post-comment"),
+  url(r'^comments/posted/$', login_required(comment_done), name="comments-comment-done"),
+  url(r'^comments/delete-own/(\d+)/$', delete_own_comment, name="comments-delete-own-comment"),
   # Despite the previous urls entries, also standard
   # django.contrib.comments urls must be included. If not, we get some
   # complaints about comment_form_target no reverse match.
@@ -103,7 +102,7 @@ comment_dict = {
 }
 
 urlpatterns += patterns('',
-   (r'^atti/(?P<object_id>\d+)/(?P<direction>up|down|clear)vote/?$', vote_on_object, act_dict),
-   (r'^commenti/(?P<object_id>\d+)/(?P<direction>up|down|clear)vote/?$', vote_on_object, comment_dict),
-   (r'^commenti/(?P<object_id>\d+)/delete/?$', delete_own_comment, comment_dict),
+   (r'^acts/(?P<object_id>\d+)/(?P<direction>up|down|clear)vote/?$', vote_on_object, act_dict),
+   (r'^comments/(?P<object_id>\d+)/(?P<direction>up|down|clear)vote/?$', vote_on_object, comment_dict),
+   (r'^comments/(?P<object_id>\d+)/delete/?$', delete_own_comment, comment_dict),
 )

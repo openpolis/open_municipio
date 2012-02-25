@@ -44,7 +44,7 @@
     });
 
 function vote_act(act_id, direction) {
-    $.post('/atti/' + act_id + '/' + direction + 'vote/', {HTTP_X_REQUESTED: 'XMLHttpRequest'}, 
+    $.post('/acts/' + act_id + '/' + direction + 'vote/', {HTTP_X_REQUESTED: 'XMLHttpRequest'}, 
 	   function(data) {
                if (data.success == true) {
 		   var $box = $('#act_' + act_id);
@@ -83,7 +83,7 @@ function vote_act(act_id, direction) {
 }
 
 function vote_comment(comment_id, direction) {
-    $.post('/commenti/' + comment_id + '/' + direction + 'vote/', {HTTP_X_REQUESTED: 'XMLHttpRequest'}, 
+    $.post('/comments/' + comment_id + '/' + direction + 'vote/', {HTTP_X_REQUESTED: 'XMLHttpRequest'}, 
 	   function(data) {
                if (data.success == true) {
 		   var $box = $('#comment_' + comment_id);
@@ -180,6 +180,18 @@ function vote_comment(comment_id, direction) {
 	  <div class="comment-author">{{ comment.user.username|capfirst }}</div>
 	  <div class="comment-date">{{ comment.submit_date|date:"d M Y" }}</div>
 	  <div class="comment-text">{{ comment.comment }}</div>
+	  {% if comment.user == request.user %}
+	  <form action="{% url comments-delete-own-comment comment.id %}" method="post">
+            {% csrf_token %}
+	    <input type="submit" name="submit" value="{% trans 'Delete' %}">
+	  </form>
+	  {% comment %}
+	  <!-- A simple anchor tag instead of the form can work too,
+	  but the form csrf_token provide some additional security!
+	  Yep, bit of a paranoyd thing indeed! ;-) -->
+	  <a href="{% url comments-delete-own-comment comment.id %}">Remove comment</a>
+	  {% endcomment %}
+	  {% endif %}
 	</div>
 	{% score_for_object comment as comment_score %}
 	{% if request.user.is_authenticated %}
