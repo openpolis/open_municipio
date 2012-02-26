@@ -34,6 +34,18 @@
     padding-top: 10px;
 }
 
+.comment-delete {
+    border: 1px solid #aaa;
+    background: #f88;
+    margin-top: 2px;
+    padding: 4px;
+    font-size: 10px;
+}
+
+.comment-delete input {
+    font-size: 10px;
+}
+
 #comment-form-wrapper {
     margin: 10px 0;
     padding: 6px;
