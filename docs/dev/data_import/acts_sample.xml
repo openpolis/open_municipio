@@ -36,7 +36,7 @@
 					</Section>
 				</Content>
 				<ActSubscribers type="first_subscriber">
-					<ChargeXRef href="#ilsindaco"/>
+					<ChargeXRef href="http://www.openmunicipio.it/ilsindaco"/>
 				</ActSubscribers>
 				<MotionTransition name="Presented" date="2012-01-01T00:00:00" />
 			</Motion>
