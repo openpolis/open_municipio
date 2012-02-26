@@ -38,7 +38,7 @@
 				<ActSubscribers type="first_subscriber">
 					<ChargeXRef href="#ilsindaco"/>
 				</ActSubscribers>
-				<MotionStep name="Presented" date="2012-01-01T00:00:00" />
+				<MotionTransition name="Presented" date="2012-01-01T00:00:00" />
 			</Motion>
 			<Motion id="M.123.b" title="This is a very important motion2" >
 				<Content title="Titolo della mozione" >
@@ -50,9 +50,9 @@
 				<ActSubscribers type="cosignatory">
 					<ChargeXRef href="#assessoretempolibero" />
 				</ActSubscribers>
-				<MotionStep name="Presented" date="2012-01-01T00:00:00" />
-				<MotionStep name="Voted" date="2012-01-02T00:00:00" />
-				<MotionStep name="Accepted" date="2012-01-02T00:00:00" />
+				<MotionTransition name="Presented" date="2012-01-01T00:00:00" />
+				<MotionTransition name="Voted" date="2012-01-02T00:00:00" />
+				<MotionTransition name="Accepted" date="2012-01-02T00:00:00" />
 			</Motion>
 		</ActsCouncil>
 	</Acts>

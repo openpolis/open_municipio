@@ -99,7 +99,7 @@
 		</xs:complexContent>
 	</xs:complexType>
 
-	<xs:complexType name="mayorActStep">
+	<xs:complexType name="mayorActTransition">
 		<xs:attribute name="name">
 			<xs:simpleType>
 				<xs:restriction base="xs:token">
@@ -359,7 +359,7 @@
 						<!-- 						<xs:element ref="QuestionText" minOccurs="1" maxOccurs="1" /> -->
 						<!-- the Answer is optional because the act may have not received it, yet -->
 						<xs:element ref="Answer" minOccurs="0" maxOccurs="1"/>
-						<xs:element ref="InterrogationStep" minOccurs="1" maxOccurs="unbounded"/>
+						<xs:element ref="InterrogationTransition" minOccurs="1" maxOccurs="unbounded"/>
 					</xs:sequence>
 					<xs:attribute name="answer_type" use="required">
 						<xs:simpleType>
@@ -407,7 +407,7 @@
 						<xs:element ref="ActTargets" minOccurs="1" maxOccurs="1"/>
 						<!-- the Answer is optional because the act may have not received it, yet -->
 						<xs:element ref="Answer" minOccurs="0" maxOccurs="1"/>
-						<xs:element ref="InterpellationStep" minOccurs="1" maxOccurs="unbounded"/>
+						<xs:element ref="InterpellationTransition" minOccurs="1" maxOccurs="unbounded"/>
 					</xs:sequence>
 				</xs:extension>
 			</xs:complexContent>
@@ -421,7 +421,7 @@
 					<xs:sequence>
 						<xs:element ref="Emendation" minOccurs="0" maxOccurs="unbounded"/>
 						<xs:element ref="AgendaBallot" minOccurs="0" maxOccurs="1"/>
-						<xs:element ref="AgendaStep"/>
+						<xs:element ref="AgendaTransition"/>
 					</xs:sequence>
 				</xs:extension>
 			</xs:complexContent>
@@ -437,7 +437,7 @@
 					<xs:sequence>
 						<xs:element ref="Emendation" minOccurs="0" maxOccurs="unbounded"/>
 						<xs:element ref="MotionBallot" minOccurs="0" maxOccurs="1"/>
-						<xs:element ref="MotionStep" minOccurs="1" maxOccurs="unbounded"/>
+						<xs:element ref="MotionTransition" minOccurs="1" maxOccurs="unbounded"/>
 					</xs:sequence>
 				</xs:extension>
 			</xs:complexContent>
@@ -446,7 +446,7 @@
 
 	<xs:element name="MotionBallot" type="actBallot"/>
 
-	<xs:element name="MotionStep">
+	<xs:element name="MotionTransition">
 		<xs:complexType>
 			<xs:attribute name="name">
 				<xs:simpleType>
@@ -507,7 +507,7 @@
 		</xs:complexType>
 	</xs:element>
 
-	<xs:element name="InterrogationStep">
+	<xs:element name="InterrogationTransition">
 		<xs:complexType>
 			<xs:attribute name="name">
 				<xs:simpleType>
@@ -529,7 +529,7 @@
 		</xs:complexType>
 	</xs:element>
 
-	<xs:element name="InterpellationStep">
+	<xs:element name="InterpellationTransition">
 		<xs:complexType>
 			<xs:attribute name="name">
 				<xs:simpleType>
@@ -550,7 +550,7 @@
 		</xs:complexType>
 	</xs:element>
 
-	<xs:element name="AgendaStep">
+	<xs:element name="AgendaTransition">
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element ref="SittingXRef"/>
@@ -675,7 +675,7 @@
 				<xs:extension base="giuntaActType">
 					<xs:sequence>
 						<xs:element ref="OfficeOpinion"/>
-						<xs:element ref="GiuntaDeliberationStep" minOccurs="0" maxOccurs="unbounded"/>
+						<xs:element ref="GiuntaDeliberationTransition" minOccurs="0" maxOccurs="unbounded"/>
 						<!-- Institution keeps track of present people -->
 						<xs:element ref="Institution" minOccurs="1" maxOccurs="unbounded"/>
 						<xs:element ref="DeliberationBallot" minOccurs="0" maxOccurs="1"/>
@@ -690,7 +690,7 @@
 
 	<xs:element name="DeliberationBallot" type="actBallot"/>
 
-	<xs:element name="GiuntaDeliberationStep">
+	<xs:element name="GiuntaDeliberationTransition">
 		<xs:complexType>
 			<xs:attribute name="name">
 				<xs:simpleType>
@@ -716,7 +716,7 @@
 			<xs:complexContent>
 				<xs:extension base="giuntaActType">
 					<xs:sequence>
-						<xs:element ref="InvestigationStep" minOccurs="0" maxOccurs="unbounded"/>
+						<xs:element ref="InvestigationTransition" minOccurs="0" maxOccurs="unbounded"/>
 						<xs:element ref="Attachment" minOccurs="0" maxOccurs="unbounded"/>
 					</xs:sequence>
 				</xs:extension>
@@ -724,7 +724,7 @@
 		</xs:complexType>
 	</xs:element>
 
-	<xs:element name="InvestigationStep">
+	<xs:element name="InvestigationTransition">
 		<xs:complexType>
 			<xs:attribute name="name">
 				<xs:simpleType>
@@ -750,7 +750,7 @@
 						<!-- Charge records the persons present at the current sitting -->
 						<xs:element ref="PresentingOffice" minOccurs="1" maxOccurs="unbounded"/>
 						<xs:element ref="DecisionBallot" minOccurs="0" maxOccurs="unbounded"/>
-						<xs:element ref="DecisionStep" minOccurs="0" maxOccurs="unbounded"/>
+						<xs:element ref="DecisionTransition" minOccurs="0" maxOccurs="unbounded"/>
 						<xs:element ref="Attachment" minOccurs="0" maxOccurs="unbounded"/>
 					</xs:sequence>
 				</xs:extension>
@@ -762,7 +762,7 @@
 
 	<xs:element name="DecisionBallot" type="actBallot"/>
 
-	<xs:element name="DecisionStep">
+	<xs:element name="DecisionTransition">
 		<xs:complexType>
 			<xs:attribute name="name">
 				<xs:simpleType>
@@ -789,7 +789,7 @@
 			<xs:complexContent>
 				<xs:extension base="actType">
 					<xs:sequence>
-						<xs:element name="RegulationStep" type="mayorActStep"/>
+						<xs:element name="RegulationTransition" type="mayorActTransition"/>
 						<xs:element ref="Attachment" minOccurs="0" maxOccurs="unbounded"/>
 					</xs:sequence>
 				</xs:extension>
@@ -802,7 +802,7 @@
 			<xs:complexContent>
 				<xs:extension base="actType">
 					<xs:sequence>
-						<xs:element name="Decree" type="mayorActStep"/>
+						<xs:element name="Decree" type="mayorActTransition"/>
 						<xs:element ref="Attachment" minOccurs="0" maxOccurs="unbounded"/>
 					</xs:sequence>
 				</xs:extension>
@@ -817,7 +817,7 @@
 			<xs:complexContent>
 				<xs:extension base="actType">
 					<xs:sequence>
-						<xs:element ref="DeterminationStep" minOccurs="1" maxOccurs="unbounded"/>
+						<xs:element ref="DeterminationTransition" minOccurs="1" maxOccurs="unbounded"/>
 						<xs:element ref="Payee" minOccurs="0" maxOccurs="unbounded"/>
 					</xs:sequence>
 					<xs:attribute name="number"/>
@@ -854,7 +854,7 @@
 		<xs:complexType mixed="true"/>
 	</xs:element>
 
-	<xs:element name="DeterminationStep">
+	<xs:element name="DeterminationTransition">
 		<xs:complexType>
 			<xs:attribute name="name">
 				<xs:simpleType>
