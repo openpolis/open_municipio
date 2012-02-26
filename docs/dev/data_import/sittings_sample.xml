@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<om:Sittings xmlns:xlink="http://www.w3.org/1999/xlink"
+ xmlns:om="http://www.openmunicipio.it"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://www.openmunicipio.it OpenMunicipioDataImport.xsd">
+    <om:Sitting call="1" date="2011-11-23" num="12">
+        <om:Votation seq_n="1" presents="39" partecipants="39" outcome="approved" legal_number="20" date_time="2010-02-15T21:00:00" counter_yes="23" counter_no="16" counter_abs="0">           
+            <om:Subject sintetic="OGG 1">Titolo che descrive l'atto per esteso</om:Subject>
+            <om:Votes>
+                <om:ChargeVote cardID="011" componentID="0011" groupID="0001" vote="yes">
+                    <om:ChargeXRef xlink:href="people_sample.xml#0012" xlink:type="simple"/>
+                </om:ChargeVote>
+                <om:ChargeVote cardID="010" componentID="0010" groupID="0002" vote="no">
+                    <om:ChargeXRef xlink:href="people_sample.xml#0010" xlink:type="simple"/>
+                </om:ChargeVote>
+                <om:ChargeVote cardID="013" componentID="0013" groupID="0001" vote="yes">
+                    <om:ChargeXRef xlink:href="people_sample.xml#0013" xlink:type="simple"/>
+                </om:ChargeVote>
+                <om:ChargeVote cardID="014" componentID="0014" groupID="0002" vote="no">
+                    <om:ChargeXRef xlink:href="people_sample.xml#0014" xlink:type="simple"/>
+                </om:ChargeVote>
+            </om:Votes>            
+        </om:Votation>             
+        <om:Votation seq_n="2" presents="39" partecipants="37" outcome="approved" legal_number="20" date_time="2010-02-15T21:00:00" counter_yes="22" counter_no="15" counter_abs="0">           
+            <om:Subject sintetic="I.E. ogg 1" />
+            <om:Votes>
+                <om:ChargeVote cardID="011" componentID="0011" groupID="0001" vote="no">
+                    <om:ChargeXRef xlink:href="people_sample.xml#0011" xlink:type="simple"/>
+                </om:ChargeVote>
+                <om:ChargeVote cardID="013" componentID="0013" groupID="0001" vote="yes">
+                    <om:ChargeXRef xlink:href="people_sample.xml#0013" xlink:type="simple"/>
+                </om:ChargeVote>
+                <om:ChargeVote cardID="010" componentID="0010" groupID="0002" vote="no">
+                    <om:ChargeXRef xlink:href="people_sample.xml#0010" xlink:type="simple"/>
+                </om:ChargeVote>
+                <om:ChargeVote cardID="014" componentID="0014" groupID="0002" vote="no">
+                    <om:ChargeXRef xlink:href="people_sample.xml#0014" xlink:type="simple"/>
+                </om:ChargeVote>
+            </om:Votes>            
+        </om:Votation>             
+    </om:Sitting>
+</om:Sittings>

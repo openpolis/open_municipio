@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OpenMunicipio
+	xmlns="http://www.openmunicipio.it"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.openmunicipio.it OpenMunicipioDataImport.xsd">
+	<People>
+		<Offices>
+			<Office name="Ufficio Anagrafe" description="Elenco degli abitanti del comune">
+				<Charge id="pippo_poppi" start_date="2012-01-01T00:00:00" end_date="2012-01-02T00:00:00" end_reason="too lazy" description="dipendente" >
+					<Person ssn="BBBCCC00L26AASD1" last_name="Poppi" first_name="Pippo" birth_date="2000-07-26" sex="m" birth_place="Topolinia (TP)"/>
+				</Charge>
+				<Charge id="topolino_topoloni" start_date="2012-01-01T00:00:00" end_date="2012-01-02T00:00:00" end_reason="too lazy" description="dirigente" >
+					<Person ssn="BBBCCC00L26AASD1" last_name="Topolino" first_name="Topoloni" birth_date="2000-07-26" sex="m" birth_place="Topolinia (TP)"/>
+				</Charge>
+			</Office>
+			<Office name="Un altro ufficio" description="Elenco degli abitanti del comune">
+				<Charge id="poppi_" start_date="2012-01-01T00:00:00" end_date="2012-01-02T00:00:00" end_reason="too lazy" description="dipendente" >
+					<Person ssn="BBBCCC00L26AASD1" last_name="Poppi" first_name="Pippo" birth_date="2000-07-26" sex="m" birth_place="Topolinia (TP)"/>
+				</Charge>
+				<Charge id="topolini_topolino" start_date="2012-01-01T00:00:00" end_date="2012-01-02T00:00:00" end_reason="too lazy" description="dirigente" >
+					<Person ssn="BBBCCC00L26AASD1" last_name="Topolino" first_name="Topoloni" birth_date="2000-07-26" sex="m" birth_place="Topolinia (TP)"/>
+				</Charge>
+			</Office>
+		</Offices>
+	</People>
+</OpenMunicipio>
