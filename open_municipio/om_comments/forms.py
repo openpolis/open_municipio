@@ -9,6 +9,7 @@ from django.utils.encoding import force_unicode
 
 from open_municipio.om_comments.models import CommentWithMood
 
+
 class CommentFormWithMood(CommentForm):
     """
     A comment form which matches the default djanago.contrib.comments

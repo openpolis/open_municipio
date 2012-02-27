@@ -51,6 +51,22 @@ class Act(TimeStampedModel):
         if self.adj_title:
             uc = u'%s (%s)' % (uc, self.adj_title)
         return uc
+   
+    @models.permalink
+    def get_absolute_url(self):
+        return ('om_act_detail', (), {'pk': str(self.pk)})
+    
+    @property
+    def transitions(self):
+        return self.transition_set.all()
+
+    @property
+    def presenters(self):
+        return self.presenter_set.all()
+
+    @property
+    def recipients(self):
+        return self.recipient_set.all()
     
     @property
     def tags(self):

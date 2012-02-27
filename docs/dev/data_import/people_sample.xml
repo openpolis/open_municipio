@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<om:People xmlns:xlink="http://www.w3.org/1999/xlink"
+ xmlns:om="http://www.openmunicipio.it"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://www.openmunicipio.it file:/Users/guglielmo/Workspace/open_municipio/docs/dev/data_import/OpenMunicipioDataImport.xsd">
+ <om:Institutions>
+  <om:Mayor>
+   <om:Charge id="0001">
+    <om:Person first_name="Ivo" last_name="Lenardon" sex="m"/>
+   </om:Charge>
+  </om:Mayor>
+  <om:CityGovernment>
+   <om:Charge id="0002" description="Assessore al Bilancio">
+    <om:Person first_name="Salvatore" last_name="Cortis"/>
+   </om:Charge>
+   <om:Charge id="0003" description="Assessore allo Sport e alla Cultura">
+    <om:Person first_name="" last_name=""/>
+   </om:Charge>
+  </om:CityGovernment>
+  <om:Council>
+   <om:Charge id="0011" description="Presidente del Consiglio">
+    <om:Person first_name="Giacomo" last_name="Gonfiotti" sex="m"/>
+   </om:Charge>
+   <om:Charge id="0010" description="Consigliere con delega ai servizi di Decoro Urbano">
+    <om:Person first_name="Giovanna" last_name="Biancucci" sex="f"/>
+   </om:Charge>
+   <om:Charge id="0013">
+    <om:Person first_name="Antonio" last_name="Maurano" sex="m"/>
+   </om:Charge>
+   <om:Charge id="0014">
+    <om:Person first_name="Marcello" last_name="Storto Paro"/>
+   </om:Charge>
+  </om:Council>
+  <om:Commission name="Commissione bilancio">
+   <om:ChargeXRef xlink:href="#0010"/>
+   <om:ChargeXRef xlink:href="#0013" xlink:type="simple"/>
+  </om:Commission>
+ </om:Institutions>
+ <om:Groups>
+  <om:Group acronym="PP" name="Popolari per il Passato">
+   <om:ChargeXRef xlink:href="#0011" xlink:type="simple"/>
+   <om:ChargeXRef xlink:href="#0013" xlink:type="simple"/>
+  </om:Group>
+  <om:Group acronym="ND" name="Nostalgia Democraica">
+   <om:ChargeXRef xlink:href="#0010" xlink:type="simple"/>
+   <om:ChargeXRef xlink:href="#0014" xlink:type="simple"/>
+  </om:Group>
+ </om:Groups>
+</om:People>

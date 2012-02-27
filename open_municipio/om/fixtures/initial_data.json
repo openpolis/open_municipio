@@ -1,0 +1,56 @@
+[
+    {
+        "pk": 1,
+        "model": "auth.user",
+        "fields": {
+            "username": "admin",
+            "first_name": "",
+            "last_name": "",
+            "is_active": true,
+            "is_superuser": true,
+            "is_staff": true,
+            "last_login": "2012-02-16 16:15:54",
+            "groups": [],
+            "user_permissions": [],
+            "password": "sha1$c6b1d$2eb0302e100ff2093d98fea5c9c0340d1c86cb62",
+            "email": "admin@example.com",
+            "date_joined": "2012-01-27 19:54:21"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "auth.user",
+        "fields": {
+            "username": "editor",
+            "first_name": "",
+            "last_name": "",
+            "is_active": true,
+            "is_superuser": false,
+            "is_staff": true,
+            "last_login": "2012-02-17 15:36:28",
+            "groups": [],
+            "user_permissions": [],
+            "password": "sha1$d9a84$ef4579c9be18acf5aba5785d247ba3cb6939d65e",
+            "email": "",
+            "date_joined": "2012-02-17 15:36:28"
+        }
+    },
+    {
+        "pk": 3,
+        "model": "auth.user",
+        "fields": {
+            "username": "user",
+            "first_name": "",
+            "last_name": "",
+            "is_active": true,
+            "is_superuser": false,
+            "is_staff": false,
+            "last_login": "2012-02-17 16:05:20",
+            "groups": [],
+            "user_permissions": [],
+            "password": "sha1$7c2e4$2b66a1e84c9257212b8be35918e42f5f137fbbd9",
+            "email": "",
+            "date_joined": "2012-02-17 16:05:20"
+        }
+    }
+]

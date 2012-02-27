@@ -18,6 +18,7 @@
 import os
 
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
+REPO_ROOT = os.path.abspath(os.path.dirname(PROJECT_ROOT))
 VERSION = __version__ = file(os.path.join(PROJECT_ROOT, 'VERSION')).read().strip()
 
 INTERNAL_IPS = ('127.0.0.1',)
@@ -74,6 +75,11 @@ STATICFILES_FINDERS = (
 #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
+STATICFILES_DIRS = (
+    os.path.join(PROJECT_ROOT, 'static'),
+)
+
+
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
@@ -85,7 +91,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-#   'debug_toolbar.middleware.DebugToolbarMiddleware', 
+    # 'debug_toolbar.middleware.DebugToolbarMiddleware', 
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
 )
@@ -93,7 +99,16 @@ MIDDLEWARE_CLASSES = (
 
 TEMPLATE_DIRS = (
   os.path.join(PROJECT_ROOT, 'templates'),
-  os.path.join(PROJECT_ROOT, 'templates/om/'),
+)
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    "django.contrib.auth.context_processors.auth",
+    "django.core.context_processors.debug",
+    "django.core.context_processors.i18n",
+    "django.core.context_processors.media",
+    "django.core.context_processors.static",
+    "django.contrib.messages.context_processors.messages",
+    "django.core.context_processors.request",
 )
 
 INSTALLED_APPS = (
@@ -111,6 +126,7 @@ INSTALLED_APPS = (
     'south',
     'taggit',
     'voting',
+    'open_municipio.inline_edit',
     'open_municipio.om',
     'open_municipio.om_comments',
     'open_municipio.acts',
