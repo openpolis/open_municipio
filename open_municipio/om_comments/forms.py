@@ -6,7 +6,7 @@ from django.forms.fields import ChoiceField
 from django.forms.widgets import RadioSelect
 from django.utils.encoding import force_unicode
 
-from om_comments.models import CommentWithMood, COMMENT_MOOD
+from open_municipio.om_comments.models import CommentWithMood, COMMENT_MOOD
 
 import datetime
 
