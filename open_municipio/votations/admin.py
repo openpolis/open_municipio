@@ -16,6 +16,10 @@ class ChargeVoteInline(admin.TabularInline):
 class VotationAdminWithGroupsAndChargesVotes(admin.ModelAdmin):
     inlines = [GroupVoteInline, ChargeVoteInline] 
 
+class VotationsInline(admin.TabularInline):
+    model = Votation
+    fields = ('n_legal', 'n_presents', 'n_maj', 'n_yes', 'n_no', 'n_abst', 'outcome')
+    
 admin.site.register(Votation, VotationAdminWithGroupsAndChargesVotes)
 admin.site.register(GroupVote)
 admin.site.register(ChargeVote)

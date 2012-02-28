@@ -1,6 +1,7 @@
 from django.contrib import admin 
 from django.utils.translation import ugettext_lazy as _
 from open_municipio.people.models import *
+from open_municipio.votations.admin import VotationsInline
 
 class PersonAdmin(admin.ModelAdmin):
     search_fields = ['^first_name', '^last_name']
@@ -106,6 +107,11 @@ class InstitutionAdmin(BodyAdmin):
     inlines = [InstitutionChargeInline]
   
   
+
+class SittingAdmin(admin.ModelAdmin):
+    inlines = [VotationsInline]
+    
+admin.site.register(Sitting, SittingAdmin)
 admin.site.register(Person, PersonAdmin)
 admin.site.register(Group, GroupAdminWithCharges)
 admin.site.register(InstitutionCharge, InstitutionChargeAdmin)
