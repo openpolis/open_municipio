@@ -58,7 +58,8 @@ PDF's are generated randomly with lorem-ipsum content and uploaded into the uplo
 create_startup_votes
 ++++++++++++++++++++
 A council *Sitting* containing a number of *Votations* is generated.
-Each Votation has ChargVotes added for each member. The percentages of YES, NO, ABST and ABSENT are computed using
+
+Each Votation has ChargeVotes added for each member. The percentages of YES, NO, ABST and ABSENT are computed using
 weighted probabilities. Probabilities are defined in the source code, currently.
 
 Votes are **not linked** to acts. They could be linked, of course, but are left linkless, to map
