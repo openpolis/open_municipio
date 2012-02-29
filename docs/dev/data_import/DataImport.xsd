@@ -24,6 +24,8 @@
 
 			<xs:attribute name="title" type="xs:string" use="required"/>
 			<xs:attribute name="type" type="xs:string" use="optional"/>
+			<xs:attribute ref="xlink:href"/>
+			<xs:attribute fixed="simple" ref="xlink:type"/>
 		</xs:complexType>
 	</xs:element>
 
@@ -63,7 +65,6 @@
 		<xs:sequence>
 			<xs:element ref="Section" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
-		<xs:attribute name="title" use="required" type="xs:string"/>
 	</xs:complexType>
 
 	<xs:complexType name="actType">
@@ -72,7 +73,6 @@
 		</xs:sequence>
 		<xs:attribute name="id" use="required" type="xs:string"/>
 		<xs:attribute name="title" use="required" type="xs:string"/>
-		<xs:attribute name="expire_date" use="optional" type="dateType"/>
 		<!-- presentation date is not present because every it is derived from the first TransitionStep -->
 		<!-- the text of the act must be wrapped in a Section -->
 	</xs:complexType>
@@ -83,7 +83,6 @@
 				<xs:sequence>
 					<xs:element ref="ActSubscribers" minOccurs="1" maxOccurs="2"/>
 				</xs:sequence>
-				<xs:attribute name="site" use="optional" type="siteType"/>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
@@ -128,7 +127,7 @@
 						<!-- denotes the italian "primo firmatario" -->
 						<xs:enumeration value="first_subscriber"/>
 						<!-- denotes the italian "cofirmatario" -->
-						<xs:enumeration value="cosignatory"/>
+						<xs:enumeration value="co_signer"/>
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:attribute>
