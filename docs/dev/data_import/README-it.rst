@@ -126,5 +126,3 @@ Modalità PULL (web service), con notifica cambiamento o file elenco cambiamento
 
 
 
-
-  
