@@ -1,5 +1,5 @@
 from django.http import HttpResponseRedirect, HttpResponseForbidden
-from django.views.generic import DetailView, TemplateView
+from django.views.generic import DetailView, ListView, TemplateView
 from django.template import RequestContext
 from django.shortcuts import get_object_or_404, render_to_response
 from django.utils.decorators import method_decorator
@@ -11,6 +11,8 @@ from taggit.models import Tag
 from open_municipio.acts.models import Act
 from open_municipio.acts.forms import TagAddForm
 
+class ActListView(ListView):
+    pass
 
 class ActDetailView(DetailView):
     model = Act
