@@ -36,7 +36,7 @@ la disattivazione. Vengono settate alcune variabili di environment per poter lav
     cd /home/open_municipio
     export OLD_PYTHONPATH=$PYTHONPATH
     export PYTHONPATH=/home/open_municipio:$PYTHONPATH
-    export DJANGO_SETTINGS_MODULE=opm_site.settings
+    export DJANGO_SETTINGS_MODULE=open_municipio.settings
 
 **postdeactivate**
 
