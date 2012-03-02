@@ -25,19 +25,26 @@ Per lo scambio dati si è definito uno schema XML, in formato XSD, definito seco
 Assieme allo schema, sono fornite istanze di esempio, in formato XML, che implementano lo schema.
 
 **DataImport.xsd**
-  è lo schema XML
+  è lo schema XML (`visualizza`__)
 
-**people_sample.xml**
-  esempio di flusso che definisce la composizione degli organi di un Comune
+.. __: ./DataImport.xsd
 
-**delibera_sample.xml**
-  esempio di una proposta di delibera consiliare
+**institutions_sample.xml**
+  esempio di flusso che definisce la composizione degli organi istituzionale di un Comune (`visualizza`__)
 
-**interrogazione_sample.xml**
-  esempio di interrogazione
+.. __: ./institutions_sample.xml
+
+**deliberation_sample_20120229.xml** e **deliberation_sample_20120301.xml**
+  esempi di proposta di delibera consiliare (2 snapshot di date diverse) 
+  (`visualizza prima snapshot`_, `visualizza seconda snapshot`_)
+
+.. _`visualizza prima snapshot`: ./deliberation_sample_20120229.xml
+.. _`visualizza seconda snapshot`: ./deliberation_sample_20120301.xml
 
 **sitting_sample.xml**
-  esempio di votazioni relative a una seduta 
+  esempio di votazioni relative a una seduta (`visualizza`__)
+
+.. __: ./sitting_sample.xml
 
 .. _`raccomandazioni del W3C`: http://www.w3.org/TR/xmlschema-0/
 
@@ -117,12 +124,35 @@ che contengono codice XML commentato, in modo da guidare alla comprensione della
   che in quella seduta sono occorsi; si veda il file sitting_sample.xml
 
   
-Protocollo di scambio (regole generali)
----------------------------------------
-Regole generali perché quelle particolari sono da definire di volta in volta con il Comune interessato.
+Protocollo di scambio (principi generali)
+-----------------------------------------
+Sono enunciati alcuni principi generali,  
+in quanto c'è da definire i dettagli e le eccezioni, di volta in volta con il Comune interessato.
 
-Modalita PUSH (invio files o pacchetto)
-Modalità PULL (web service), con notifica cambiamento o file elenco cambiamento
+Lo scambio dei files può avvenire secondo due modalità, alternative:
+
+in Modalita PUSH (invio files o pacchetto)
+++++++++++++++++++++++++++++++++++++++++++
+Il Comune invia i dati su nostri server, in modalità PUSH, seguendo uno dei protocolli
+standard (FTP, SSH, RSYNC, SVN, ...) da decidere assieme.
+
+In questo caso siamo noi a gestire il servizio e il comune effettua le connessioni come client
+quando ci sono comunicazioni da inviare.
+
+In questo caso è sufficiente inviare i files che contengono cambiamenti rispetto agli ultimi inviati,
+ricordandosi di aggiungere il timestamp della data di generazione nel nome del file.
+
+in Modalità PULL
+++++++++++++++++
+Il Comune mette a disposizione un area condivisa con noi, dove noi andiamo a prendere i files.
+Il protocollo di lettura può essere HTTP, FTP, SSH, RSYNC, SVN, anche qui da decidere assieme.
+
+In questo caso è il Comune che ospita il server e noi che, periodicamente andiamo a leggere.
+
+Per ottimizzare il numero di pagine lette e la velocità dell'operazione,
+sarebbe utile avere un file aggiornato contenente l'elenco dei file cambiati, in modo da
+leggere per primo quello.
+
 
 
 
