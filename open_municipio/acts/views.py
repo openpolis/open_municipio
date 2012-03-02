@@ -1,7 +1,6 @@
 from django.http import HttpResponseRedirect, HttpResponseForbidden
-from django.views.generic import DetailView, ListView, TemplateView
-from django.template import RequestContext
-from django.shortcuts import get_object_or_404, render_to_response
+from django.views.generic import DetailView, FormView, ListView, TemplateView
+from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
 
 from django.contrib.auth.decorators import login_required
@@ -25,23 +24,54 @@ class ActDetailView(DetailView):
         context['tag_add_form'] = TagAddForm()
         return context
 
-# FIXME: convert to a CBV
-@login_required
-def add_tags_to_act(request, pk):
-    act = get_object_or_404(Act, pk=pk)
-    if request.method == 'POST': 
-        form = TagAddForm(request.POST) 
-        if form.is_valid():
-            new_tags =  form.cleaned_data['tags']
-            act.tag_set.add(*new_tags, tagger=request.user)
-            return HttpResponseRedirect(act.get_absolute_url()) 
-    else:
-        form = TagAddForm() 
 
-    return render_to_response('acts/act_detail.html', 
-                              {'act': act, 'tag_add_form': form,},
-                              context_instance=RequestContext(request))
+class ActAddTagsView(FormView):
+    form_class = TagAddForm
+    template_name = 'acts/act_detail.html'
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(ActAddTagsView, self).dispatch(*args, **kwargs)
     
+    def get_object(self):
+        """
+        Returns the ``Act`` instance being tagged.
+        """
+        act = get_object_or_404(Act, pk=self.kwargs['pk'])
+        return act
+    
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(ActAddTagsView, self).get_context_data(**kwargs)
+        # Just an alias for ``form`` context variable
+        context['tag_add_form'] = kwargs['form']
+        context['act'] = self.act
+        return context
+    
+    def get_success_url(self):
+        return self.act.get_absolute_url()
+    
+    def form_valid(self, form):
+        new_tags =  form.cleaned_data['tags']
+        self.act.tag_set.add(*new_tags, tagger=self.request.user)
+        return HttpResponseRedirect(self.get_success_url())
+    
+    def get(self, request, *args, **kwargs):
+        self.act = self.get_object()
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        context = self.get_context_data(form=form)
+        self.render_to_response(context)
+        
+    def post(self, request, *args, **kwargs):
+        self.act = self.get_object()
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+ 
     
 class ActRemoveTagView(TemplateView):
     @method_decorator(login_required)
