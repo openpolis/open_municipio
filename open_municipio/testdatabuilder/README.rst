@@ -7,16 +7,17 @@ This may be useful in the development phase, or for unit or functional testing p
 
 Prerequisites
 -------------
-These python packages must be installed in the environment:
- * lorem-ipsum-generator
- * -e git://github.com/openpolis/rst2pdf-patched-docutils-0.8#egg=rst2pdf
+These python packages must be installed in the environment
+
+* lorem-ipsum-generator
+* -e git://github.com/openpolis/rst2pdf-patched-docutils-0.8#egg=rst2pdf
  
 The last package is a patched version of the rst2pdf package, that takes into account the issues introduced by 
 docutils > 0.8 as described in issue #25.
 
 The database must not contain valuable records, since the scripts start by cleaning up some tables.
 Using an empty test database and environment may be the best approach.
-These are the cleanup instruction as of the time of this writing, and they may vary in the future::
+These are the cleanup instructions as of the time of this writing, and they may vary in the future::
 
     Person.objects.all().delete()
     InstitutionCharge.objects.all().delete()
@@ -57,7 +58,8 @@ PDF's are generated randomly with lorem-ipsum content and uploaded into the uplo
 create_startup_votes
 ++++++++++++++++++++
 A council *Sitting* containing a number of *Votations* is generated.
-Each Votation has ChargVotes added for each member. The percentages of YES, NO, ABST and ABSENT are computed using
+
+Each Votation has ChargeVotes added for each member. The percentages of YES, NO, ABST and ABSENT are computed using
 weighted probabilities. Probabilities are defined in the source code, currently.
 
 Votes are **not linked** to acts. They could be linked, of course, but are left linkless, to map
@@ -65,9 +67,10 @@ the current situation in the datasets coming from the municipalities we're deali
 
 Todos
 -----
- * Add other acts types (motion, interrogation, city government acts ...)
- * Votings weight probabilities expressed by couselors vary according to group and majority
- * Definitions (groups, commissions,probability weights, ...) are moved from the source code to a configuration file
- * Integrate with testing framework for testing purposes
- * Implement signals to generate news after new acts or votes are created.
+
+* Add other acts types (motion, interrogation, city government acts ...)
+* Votings weight probabilities expressed by couselors vary according to group and majority
+* Definitions (groups, commissions,probability weights, ...) are moved from the source code to a configuration file
+* Integrate with testing framework for testing purposes
+* Implement signals to generate news after new acts or votes are created.
 

@@ -74,3 +74,9 @@ urlpatterns += patterns('',
 urlpatterns += patterns('',
     url(r'^inline/edit/$', InlineEditView.as_view(),  name='om_inline_edit'),
 )
+
+# autocompletion
+urlpatterns += patterns('',
+    url(r'^autocomplete/', include('open_municipio.autocomplete.urls')),
+)
+

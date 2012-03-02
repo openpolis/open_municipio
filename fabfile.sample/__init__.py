@@ -122,7 +122,7 @@ def deploy():
     """
     require('environment', provided_by=('staging', 'production'))
     ## TODO: early initialization steps go here  
-    if env.initial_deploy:
+    if env.get('initial_deploy'):
         code.copy_website_skeleton()
 
     with settings(warn_only=True):
