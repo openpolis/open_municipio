@@ -1,6 +1,7 @@
+.DS_Store
 *~
 *.pyc
-*.db
+*.sqlite
 open_municipio/settings_*.py
 open_municipio/urls_*.py
 apache
@@ -8,9 +9,11 @@ sitestatic
 fabfile/
 uploads/attached_documents/*
 open_municipio/om/migrations/*
+open_municipio/acts/migrations/*
 open_municipio/people/migrations/*
-open_municipio/votation/migrations/*
+open_municipio/votations/migrations/*
 open_municipio/taxonomy/migrations/*
 uploads/attached_documents/*
-docs/list_s3_docs.py
-
+docs/ignored
+docs/dev/data_import/README-it.html
+docs/dev/data_import/style.css

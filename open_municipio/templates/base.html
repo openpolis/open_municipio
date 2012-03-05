@@ -1,0 +1,131 @@
+{% load i18n %}
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>{% trans "OpenMunicipio" %} {% block title %}{% endblock %}</title>
+  
+    {% block head_css_includes %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap-responsive.css" />
+    {% endblock head_css_includes %}
+  
+    <style type="text/css">
+    {% block extra_style %}{% endblock %}
+    </style>
+  
+    {% block head_js_includes %}
+    <!--[if IE]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-1.7.1.js"></script>
+    {% endblock head_js_includes %}
+  
+    <script type="text/javascript" charset="utf-8">
+    {% block extra_js %}{% endblock %}  
+    </script>
+ 
+    {% block extra_head %}{% endblock %}    
+</head>
+<body>
+
+
+<div id="wrapper"><!-- #wrapper -->
+
+  <header>
+    
+      <!-- TOPBAR -->
+      <section class="navbar" id="topbar">
+          <div class="navbar-inner">
+              <div class="container-fluid">
+                  <a href="#" class="brand">Open Municipio</a>
+
+                  <ul class="nav pull-right">
+                      <li><a href="#">Registrati</a></li>
+                      <li class="dropdown">
+                          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Entra <b class="caret"></b></a>
+                          <ul class="dropdown-menu">
+                              <li><a href="#">Action</a></li><li><a href="#">Another action</a></li><li><a href="#">Something else here</a></li>
+                              <li class="divider"></li><li><a href="#">Separated link</a></li>
+                          </ul>
+                      </li>
+                  </ul>
+              </div>
+          </div>
+      </section> <!-- /TOPBAR -->
+
+      <!-- AREA-TITLE -->
+      <hgroup class="container-fluid">
+          <div class="row-fluid">
+              <h1 class="span12" id="area-title">#MUNICIPIO# | AREA</h1>
+          </div>
+      </hgroup><!-- /AREA-TITLE -->
+
+      <!-- MAIN-NAVBAR -->
+      <nav class="navbar">
+        <div class="navbar-inner">
+          <div class="container-fluid">
+              <ul class="nav">
+                  <li class="active"><a href="#">Politici</a></li>
+                  <li><a href="#">Argomenti</a></li>
+                  <li><a href="#">Cittadini</a></li>
+              </ul>
+          </div>
+        </div>
+      </nav><!-- /MAIN-NAVBAR -->
+
+    {% block sub_nav %}{% endblock %}
+      
+  </header>
+
+    <section id="main" class="container-fluid"><!-- #main container for content and sidebar area -->
+
+    {% block container %}{% endblock %}      
+
+    </section><!-- end of #main container for content and sidebar-->
+
+    <footer>
+        <!-- FOOTER-NAV -->
+        <nav class="navbar">
+          <div class="navbar-inner">
+            <div class="container-fluid">
+                <ul class="nav">
+                    <li><a href="#">Atti</a></li>
+                    <li class="active"><a href="#">Votazioni</a></li>
+                    <li><a href="#">Organi politici</a></li>
+                    <li><a href="#">Società partecipate</a></li>
+                </ul>
+            </div>
+          </div>
+        </nav><!-- /FOOTER-NAV -->
+        
+        <!-- start of footer-area -->
+        <section id="footer-area" style="text-align: center;">
+            <p style="color: grey; margin-bottom: 5px;">{% trans "ideated, designed and developed by:" %}</p>
+            <span style="margin-top: 100px;">
+              <a href="http://www.informaetica.it"><img src="{{ STATIC_URL }}images/logo-informaetica.png" border="0" alt="Logo di InformaEtica"></a>
+              <a href="http://associazione.openpolis.it"><img src="{{ STATIC_URL }}images/logo-openpolis.png" border="0" alt="Logo associazione Openpolis"></a>
+            </span>
+        </section><!-- end of footer-area -->
+    </footer>
+</div><!-- #wrapper -->
+
+{% block footer_js_includes %}
+<script src="{{ STATIC_URL }}js/bootstrap-dropdown.js"></script><!-- used in top menu -->
+{% endblock %}
+
+<script type="text/javascript">
+/*
+  // TODO: google analytics code 
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-XXXXXX-YY']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+*/
+</script>
+</body>
+</html>

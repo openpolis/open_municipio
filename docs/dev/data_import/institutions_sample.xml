@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<om:People xmlns:xlink="http://www.w3.org/1999/xlink"
+ xmlns:om="http://www.openmunicipio.it"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="https://raw.github.com/openpolis/open_municipio/dev/docs/dev/data_import/DataImport.xsd">
+ <om:Institutions>
+  <!-- 
+   Questo elemento contiene dati relativi a Sindaco, Giunta, Consiglio e Commissioni.
+   Per ogni istituzione sono elencati gli incarichi (Charge). 
+   Ad ogni incarico è legata una sola persona (Person) che contiene i dati anagrafici.
+   Di seguito i possibili attributi per i tag Charge e Person.
+   Gli attributi indicati con asterisco sono obbligatori
+   Charge:
+     id        - identificativo univoco interno al sistema informativo comunale
+     name        - denominazione dell'incarico, se necessario (assessore alla partecipazione)
+     description - descrizione estesa, quando necessaria, ad es: deleghe)
+     start_date  - data inizio incarico (dd-m-aaaa)
+     end_date    - data fine incarico (dd-mm-aaaa)
+     end_reason  - motivazione fine incarico
+   Person:
+     * first_name - nome
+     * last_name  - cognome
+     birth_date   - data nascita, formato dd-mm-aaaa
+     birth_place  - luogo di nascita, formato suggerito: nome comune (prov)
+     sex (m, f)   - sesso, utile per statistiche
+     
+   I dati relativi alle commissioni non seguono questo schema, 
+   ma fanno riferimento agli incarichi introdotti nel Council, 
+   utilizzado l'elemento ChargeXRef, con l'attributo xlink:href che punta
+   alla risorsa già introdotta in Council, attraverso il protocollo XLink
+   L'incerico di presidente di commissione è descritto nell'attributo description.
+  -->
+  <om:Mayor>
+   <om:Charge id="0001">
+    <om:Person first_name="prof. Furio" last_name="Honsell"/>
+   </om:Charge>
+  </om:Mayor>
+  <om:CityGovernment>
+   <om:Charge id="0002"  name="Vice sindaco Assessore Attività Economiche" description="Attività turistiche, Bilancio, Bilancio sociale,  Commercio e attività produttive, Finanze, Locazioni, Marketing urbano,  Mercati e annona, Rapporti con associazioni di consumatori" start_date="08-05-2008">
+    <om:Person first_name="dott. Vincenzo" last_name="Martines"/>
+   </om:Charge>
+   <om:Charge id="0003" name="Assessore all'innovazione ed e-government" description="Città della conoscenza, Controllo di gestione, Distretto Tecnologie Digitali, Interoperabilità Basi Dati, Servizi Demografici, Sistemi Informativi e Telematici,  Sportelli e Punti unici di Accesso, Studi e Statistica, Trasparenza, Verifica del programma, Comunicazione e URP" start_date="08-05-2008T12:00:00">
+    <om:Person first_name="" last_name=""/>
+   </om:Charge>
+  </om:CityGovernment>
+  <om:Council>
+   <om:Charge id="0010" name="Presidente del Consiglio">
+    <om:Person first_name="Daniele" last_name="Cortolezzis"/>
+   </om:Charge>
+   <om:Charge id="0011">
+    <om:Person first_name="Cinzia" last_name="Del Torre"/>
+   </om:Charge>
+   <om:Charge id="0012">
+    <om:Person first_name="Mario Cianciano" last_name="Cianciani"/>
+   </om:Charge>
+   <om:Charge id="0013">
+    <om:Person first_name="Giovanni" last_name="Ortis"/>
+   </om:Charge>
+   <om:Charge id="0014">
+    <om:Person first_name="Alberto" last_name="Bertossi"/>
+   </om:Charge>
+   <om:Charge id="0015">
+    <om:Person first_name="Franco" last_name="Della Rossa"/>
+   </om:Charge>
+   <om:Charge id="0016">
+    <om:Person first_name="Enrico" last_name="D'Este"/>
+   </om:Charge>
+   <om:Charge id="0017">
+    <om:Person first_name="Mara" last_name="Barbiera"/>
+   </om:Charge>
+   <om:Charge id="0019">
+    <om:Person first_name="Antonella" last_name="Nonino"/>
+   </om:Charge>
+  </om:Council>
+  <om:Commission name="I^ COMMISSIONE  ORDINARIA" description=" BILANCIO E  PROGRAMMAZIONE">
+   <om:ChargeXRef xlink:href="#0014" xlink:type="simple" description="Presidente"/>
+   <om:ChargeXRef xlink:href="#0015" xlink:type="simple"/>
+   <om:ChargeXRef xlink:href="#0016" xlink:type="simple"/>
+   <om:ChargeXRef xlink:href="#0017" xlink:type="simple"/>
+  </om:Commission>
+  <om:Commission name="II^ COMMISSIONE  ORDINARIA" description="TERRITORIO  E AMBIENTE">
+   <om:ChargeXRef xlink:href="#0014" xlink:type="simple" description="Presidente"/>
+   <om:ChargeXRef xlink:href="#0012" xlink:type="simple"/>
+   <om:ChargeXRef xlink:href="#0019" xlink:type="simple"/>
+   <om:ChargeXRef xlink:href="#0017" xlink:type="simple"/>
+  </om:Commission>
+  <om:Commission name="III^ COMMISSIONE  ORDINARIA" description="POLITICHE SOCIALI E  DIRITTI DI  CITTADINANZA">
+   <om:ChargeXRef xlink:href="#0014" xlink:type="simple" description="Presidente"/>
+   <om:ChargeXRef xlink:href="#0015" xlink:type="simple"/>
+   <om:ChargeXRef xlink:href="#0016" xlink:type="simple"/>
+   <om:ChargeXRef xlink:href="#0017" xlink:type="simple"/>
+  </om:Commission>
+ </om:Institutions>
+ <om:Groups>
+  <!--
+   Un gruppo consiliare (Group) è composto da Consiglieri (Charge), 
+   referenziati attraverso l'elemento XCharge (protocollo XLink).
+   Il presidente del gruppo, o altri incarichi particolari, sono descritti nel tag Description.
+  -->
+  <om:Group acronym="PD" name="Partito Democratico">
+   <om:ChargeXRef xlink:href="#0010" xlink:type="simple" description="Presidente"/>
+   <om:ChargeXRef xlink:href="#0011" xlink:type="simple"/>
+  </om:Group>
+  <om:Group acronym="IH" name="Innovare con Honsell">
+   <om:ChargeXRef xlink:href="#0015" xlink:type="simple" description="Presidente"/>
+   <om:ChargeXRef xlink:href="#0016" xlink:type="simple"/>
+  </om:Group>
+ </om:Groups>
+</om:People>

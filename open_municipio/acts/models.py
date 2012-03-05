@@ -34,7 +34,7 @@ class Act(TimeStampedModel):
     adj_title = models.CharField(_('adjoint title'), max_length=255, blank=True, help_text=_("An adjoint title, added to further explain an otherwise cryptic title"))
     presentation_date = models.DateField(_('presentation date'), null=True, help_text=_("Date of presentation, as stated in the act"))
     text = models.TextField(_('text'), blank=True)
-    transitions = models.ManyToManyField('Status', blank=True, null=True, through='Transition', verbose_name=_('statuses'))
+    transitions = models.ManyToManyField('Status', blank=True, null=True, through='Transition', verbose_name=_('transitions'))
     presenters = models.ManyToManyField(InstitutionCharge, blank=True, null=True, through='ActSupport', related_name='presenter_act_set', verbose_name=_('presenters'))
     recipients = models.ManyToManyField(InstitutionCharge, blank=True, null=True, db_table='acts_act_recipient', related_name='recipient_act_set', verbose_name=_('recipients'))
     emitting_institution = models.ForeignKey(Institution, related_name='emitted_act_set', verbose_name=_('emitting institution'))
@@ -51,6 +51,26 @@ class Act(TimeStampedModel):
         if self.adj_title:
             uc = u'%s (%s)' % (uc, self.adj_title)
         return uc
+   
+    @models.permalink
+    def get_absolute_url(self):
+        return ('om_act_detail', (), {'pk': str(self.pk)})
+    
+    @property
+    def attachments(self):
+        return self.attachment_set.all()
+
+    @property
+    def transitions(self):
+        return self.transition_set.all()
+
+    @property
+    def presenters(self):
+        return self.presenter_set.all()
+
+    @property
+    def recipients(self):
+        return self.recipient_set.all()
     
     @property
     def tags(self):
@@ -62,6 +82,9 @@ class Act(TimeStampedModel):
 
       
 class ActSection(models.Model):
+    """
+    WRITEME
+    """
     act = models.ForeignKey(Act, on_delete=models.PROTECT)
     parent_section = models.ForeignKey('self', on_delete=models.PROTECT)  
     title = models.CharField(max_length=128, blank=True)
@@ -75,6 +98,9 @@ class ActSection(models.Model):
 
 
 class ActSupport(models.Model):
+    """
+    WRITEME
+    """
     FIRST_SIGNER = 1
     CO_SIGNER = 2
     RELATOR = 3
@@ -84,7 +110,7 @@ class ActSupport(models.Model):
         (RELATOR, _('Relator')),
     )
     charge = models.ForeignKey(InstitutionCharge)
-    act = models.ForeignKey('Act')
+    act = models.ForeignKey(Act)
     support_type = models.IntegerField(_('support type'), choices=SUPPORT_TYPE_CHOICES)    
     support_date = models.DateField(_('support date'), default=None, blank=True, null=True)
 
@@ -93,6 +119,9 @@ class ActSupport(models.Model):
     
     
 class Deliberation(Act):
+    """
+    WRITEME
+    """
     COUNSELOR_INIT = 1
     PRESIDENT_INIT = 2
     ASSESSOR_INIT = 3
@@ -118,6 +147,9 @@ class Deliberation(Act):
 
 
 class Interrogation(Act):
+    """
+    WRITEME
+    """
     WRITTEN_ANSWER = 1
     VERBAL_ANSWER = 2
     ANSWER_TYPES = Choices(
@@ -136,6 +168,9 @@ class Interrogation(Act):
 
 
 class Interpellation(Act):
+    """
+    WRITEME
+    """
     WRITTEN_ANSWER = 1
     VERBAL_ANSWER = 2
     ANSWER_TYPES = Choices(
@@ -153,7 +188,9 @@ class Interpellation(Act):
 
 
 class Motion(Act):
-    """WRITEME"""
+    """
+    WRITEME
+    """
     class Meta:
         verbose_name = _('motion')
         verbose_name_plural = _('motions')
@@ -222,7 +259,7 @@ class Document(TimeStampedModel):
     * an URL to an external PDF file
     * an uploaded internal PDF file
     
-    It is possible that a single document may have more than ont type of content:
+    It is possible for a single document to have more than one type of content:
     for example, a textual and a pdf local versions, or remote links ...
     """
     document_date = models.DateField(null=True, blank=True)
@@ -238,11 +275,12 @@ class Document(TimeStampedModel):
 class Attach(Document):
     """
     An attachment to a formal act. 
-    Extends the Document class, by adding a title,
-    and a foreign key to the act the document relates to
+
+    Extends the ``Document`` class, by adding a title
+    and a foreign key to the act the attachment relates to.
     """
     title = models.CharField(max_length=255)
-    act = models.ForeignKey(Act)
+    act = models.ForeignKey(Act, related_name='attachment_set')
     
     def __unicode__(self):
         return u'%s' % self.title
@@ -288,8 +326,10 @@ class Outcome(models.Model):
 # Calendar
 #
 class Calendar(models.Model):
-    """WRITEME"""
-    act_set = models.ManyToManyField('Act')
+    """
+    WRITEME
+    """
+    act_set = models.ManyToManyField(Act)
     date = models.DateField()
 
     class Meta:

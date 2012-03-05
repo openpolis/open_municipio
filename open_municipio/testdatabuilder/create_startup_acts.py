@@ -19,33 +19,50 @@ g = lipsum.Generator()
 
 
 #
-# creazione proposta di delibera di consiglio
+# creazione proposte di delibera di consiglio
 #
 institution = Institution.objects.get(slug='consiglio-comunale')
 
 
-d1 = Deliberation(
-    idnum="a1",
-    title=g.generate_sentence(),
-    text=g.generate_paragraph(),
-    presentation_date=datetime.date.today() - datetime.timedelta(days=random.randint(1, 10)),
-    emitting_institution=institution,
-    initiative=Deliberation.COUNSELOR_INIT,
-)
-d1.save()
-print "Delibera %s - %s creata" % (d1.idnum, d1.title)
-
-print "Aggiunta di 3 firmatari"
-for presenter in random_factory.get_institution_charges(institution='consiglio', majority=True, n=3):
-    act_support = ActSupport(
-        charge=presenter, act=d1, 
-        support_type=ActSupport.FIRST_SIGNER,
-        support_date=d1.presentation_date
+for i in range(1, 5):
+    d = Deliberation(
+        idnum="%s" % i,
+        title=g.generate_sentence(),
+        text=g.generate_paragraph(),
+        presentation_date=datetime.date.today() - datetime.timedelta(days=random.randint(1, 10)),
+        emitting_institution=institution,
+        initiative=Deliberation.COUNSELOR_INIT,
     )
-    print "%s" % (presenter)
-    act_support.save()
+    d.save()
+    print "Delibera %s - %s creata" % (d.idnum, d.title)
     
-print "Aggiunta di N allegati (random tra 0 e 5)"
-random_factory.generate_random_act_attach(d1, n=random.randint(0, 5))
+    nf = random.randint(1, 3)
+    nc = random.randint(0, 5)
+    print "Aggiunta di %s primi firmatari"  % nf
+    maj = random.choice([1, 1, 1, 1, 1, 1, 1, 1, 0]) # first-signers and co-signers come from maj 90% of the times
+    presenters = random_factory.get_institution_charges(institution='consiglio', majority=maj, n=(nf+nc))
+        
+    for presenter in presenters[0:nf]:
+        act_support = ActSupport(
+            charge=presenter, act=d, 
+            support_type=ActSupport.FIRST_SIGNER,
+            support_date=d.presentation_date
+        )
+        print "%s" % (presenter)
+        act_support.save()
+    
+    print "Aggiunta di %s co firmatari"  % nc
+    for presenter in presenters[nf:]:
+        act_support = ActSupport(
+            charge=presenter, act=d, 
+            support_type=ActSupport.CO_SIGNER,
+            support_date=d.presentation_date
+        )
+        print "%s" % (presenter)
+        act_support.save()
+    
+    na = random.randint(0, 5)
+    print "Aggiunta di %s allegati" % na
+    random_factory.generate_random_act_attach(d, n=na)
 
 print "ok"

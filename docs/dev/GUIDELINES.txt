@@ -155,6 +155,32 @@ Fields
          @property
          def authors(self):
              return self.author_set.all()
+
+URLconfs
+--------
+#. URLs MUST end with a ``/``character
+
+#. Language strings within URLs MUST be in English for development setups and in Italian for production setups
+
+#. URLs pointing to detail pages for objects (e.g. ``DetailView``s) SHOULD look like  ``/<object>s/<id>/``, ``/<object>s/<slug>/``, ... (e.g. ``/acts/1/``)
+
+#. URLs pointing to pages listing objects *of the same kind* (e.g. ``ListView``s) SHOULD look like  ``/<object>s/`` (e.g. ``/acts/``)
+
+#. the root URLconf module (``open_municipio.urls`` should only contains:
+ 
+ * URLs not associated to any specific application (e.g. ``/info/``)
+ * *mount-points* of application-specific URLs (using Django ``include()`` facility)
+
+#. Application-specific URLs go within the ``urls`` module (or package) of the corresponding application
+
+
+Views
+-----
+#. EVERY view SHOULD be named (via the ``name`` parameter of the corresponding URL pattern) (useful for enabling the reverse-lookup mechanisms for URLs)
+
+#. Class-based view implementations should be preferred to function-based ones
+
+
             
 
 Markers

@@ -1,0 +1,250 @@
+{% extends "base_two_columns.html" %}
+{% load i18n %}
+
+{% block title %}| Dettaglio {{ act }}{% endblock title %}
+
+{% block head_css_includes %}
+    {{ block.super }}
+    {% if user.is_staff %}
+    <!-- required for TextboxList -->
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/textboxlist.css" />
+    {% endif %}
+{% endblock head_css_includes %}
+
+{% block head_js_includes %}
+    {{ block.super }}
+    <!--<script src="{{ STATIC_URL }}js/ajax_csrf.js" type="text/javascript" charset="utf-8"></script>-->
+    {% if user.is_staff %}
+    <!-- required for TextboxList -->
+    <script src="{{ STATIC_URL }}js/GrowingInput.js" type="text/javascript" charset="utf-8"></script>
+    <script src="{{ STATIC_URL }}js/TextboxList.js" type="text/javascript" charset="utf-8"></script>		
+    <script src="{{ STATIC_URL }}js/TextboxList.Autocomplete.js" type="text/javascript" charset="utf-8"></script>
+    <!-- required for TextboxList.Autocomplete if method set to 'binary' -->
+    <script src="{{ STATIC_URL }}js/TextboxList.Autocomplete.Binary.js" type="text/javascript" charset="utf-8"></script>
+    <script src="{{ STATIC_URL }}js/jquery.cteditor.js" type="text/javascript"></script>
+    {% endif %}
+{% endblock head_js_includes %}
+
+{% block extra_js %}    
+$(document).ready(function() {
+        $('#cteditor-launcher').click(function(event){
+            event.preventDefault();
+            $('#cteditor').cteditor();
+        })
+        .parent()
+            .hover(
+                function() { $('#cteditor-launcher', this).fadeIn(); }, 
+                function() { $('#cteditor-launcher', this).fadeOut(); }
+            );
+
+});
+{% endblock extra_js %}
+
+
+{% block content %}
+<hgroup>
+    <table class="pull-right">
+        <tr>
+            <th><span class="lightgraybox smallbox">Prossima discussione</span></th>
+            <td><span class="graybox smallbox">3.3.2012</span></td>
+        </tr>
+    </table>
+    
+    <h2><small><strong>Delibera di consiglio</strong> del Consiglio comunale N° 85 del <span class="date">2.2.2012</span></small></h2>
+    <h1><strong>{{ act.title }}</strong> ({{ act.idnum }})</h1>
+</hgroup>
+
+<p>{{ act.text|safe }}</p>
+
+<ul class="nav nav-tabs">
+  <li class="active">
+    <a href="#">Stato</a>
+  </li>
+  <li><a href="#">Documenti</a></li>
+  <li><a href="#">Emendamenti</a></li>
+  <li><a href="#">Voti</a></li>
+</ul>
+
+<table id="acttable">
+    <thead>
+        <tr>
+            <td>Presentazione</td>
+            <td>Discussione in Commissione</td>
+            <td>Discussione in Consiglio</td>
+            <td>Aprrovazione</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{ act.presentation_date }}</td>
+            <td>
+                <ul>
+                    <li>
+                        2.2.2012 - Edilizia <br />
+                        <strong>In esame</strong>
+                    </li>
+                    <li>
+                        12.2.2012 - Edilizia <br />
+                        <strong><i class="icon-ok"></i> Approvato</strong> <br />
+                        <a href="#">Emendamenti</a> &middot; <a href="#">Voti</a>
+                    </li>
+                    <li><strong><a href="#">Vedi tutte <i class="icon-chevron-down"></i></a></strong></li>
+                </ul>
+            </td>
+            <td></td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="row-fluid">
+    
+    <section id="firmatari" class="span6">
+        <h1>Firmatari</h1>
+        <ul class="unstyled">
+            <li>
+                <img src="http://placehold.it/50" class="pull-left"> 
+                <strong><a href="#"><i class="icon-ok"></i> Mario Rossi</a></strong> <br />
+                Partito Democratico
+                <span class="monitoring">Monitorato da 2 cittadini - <a href="#"><i class="icon-plus-sign"></i> Monitora</a>
+            </li>
+            <li>
+                <img src="http://placehold.it/50" class="pull-left"> 
+                <strong><a href="#"><i class="icon-ok"></i> Mario Rossi</a></strong> <br />
+                Partito Democratico
+                <span class="monitoring">Monitorato da 2 cittadini - <a href="#"><i class="icon-plus-sign"></i> Monitora</a>
+            </li>
+        </ul>
+        
+    </section>
+    
+    <section id="cofirmatari" class="span6">
+        <h1>Co-firmatari</h1>
+        <ul class="unstyled">
+            <li>
+                <img src="http://placehold.it/50" class="pull-left"> 
+                <strong><a href="#"><i class="icon-ok"></i> Mario Rossi</a></strong> <br />
+                Partito Democratico
+            </li>
+            <li>
+                <img src="http://placehold.it/50" class="pull-left"> 
+                <strong><a href="#"><i class="icon-ok"></i> Mario Rossi</a></strong> <br />
+                Italia dei Valori
+                <span class="monitoring">Monitorato da 2 cittadini - <a href="#"><i class="icon-plus-sign"></i> Monitora</a>
+            </li>
+        </ul>
+        
+    </section>
+    
+</div>
+{% endblock content %}
+
+
+{% block sidebar %}
+
+<section>
+    
+    {% include 'acts/act_tags_editor.html' %}
+    
+    <h3>Argomenti dell'atto</h3>
+    
+    <dl class="arguments">
+        {% for category in act.categories %}
+        <dt class="label"><a href="{{ category.get_absolute_url }}">{{ category.name }}</a></dt>
+        {% for arg in category.tags %}
+            <dd class="label"><a href="{{ arg.get_absolute_url }}">{{ arg }}</a></dd>
+        {% endfor %}
+        {% endfor %}
+    </dl>
+    
+</section>
+
+<section>
+    <h3>Monitora</h3>
+    <table class="table">
+        <tr>
+            <td><span class="bluebox">14</span></td>
+            <td>
+                utenti che monitora l'atto<br />
+                <a href="#">John Doe</a>, <a href="#">Carlo Rossi</a>, <a href="#">Mario Bianchi</a>... <br>
+                <span class="monitoring"><a href="#"><i class="icon-plus-sign"></i> Monitora</a>
+            </td>
+        </tr>
+        <tr>
+            <td><span class="greenbox">0</span></td>
+            <td>
+                politici che monitorano l'atto <br>
+                <span class="monitoring"><a href="#"><i class="icon-plus-sign"></i> Monitora</a>
+            </td>
+        </tr>
+    </table>
+</section>
+
+<section>
+    <h3>Vota</h3>
+    <table class="table">
+        <tr>
+            <td><span class="okbox">0</span></td>
+            <td>Sono favorevole</td>
+            <td><span class="kobox">10</span></td>
+            <td>Sono contrario</td>
+        </tr>
+    </table>
+</section>
+
+<section>
+    <h3>Commenti (20)</h3>
+    <table class="table">
+
+        <tr class="cell-gray">
+            <td><img src="http://placehold.it/50x50"></td>
+            <td><a href="#">JohnDoe</a> Lorem ipsum dolor sit amet,consectetuer adipiscing elit. Suspendisse ut purus.
+                <br />
+                <i class="icon-remove"></i> · 14.06.2011 · <a href="#">Condividi</a> · <a href="#">Mi piace</a> · <i class="icon-plus"></i> 4
+            </td>
+        </tr>
+        <tr class="cell-gray">
+            <td><img src="http://placehold.it/50x50"></td>
+            <td><a href="#">JohnDoe</a> Lorem ipsum dolor sit amet,consectetuer adipiscing elit. Suspendisse ut purus.
+                <br />
+                <i class="icon-remove"></i> · 14.06.2011 · <a href="#">Condividi</a> · <a href="#">Mi piace</a> · <i class="icon-plus"></i> 4
+            </td>
+        </tr>
+        <tr class="cell-gray">
+            <td><img src="http://placehold.it/50x50"></td>
+            <td><a href="#">JohnDoe</a> Lorem ipsum dolor sit amet,consectetuer adipiscing elit. Suspendisse ut purus.
+                <br />
+                <i class="icon-remove"></i> · 14.06.2011 · <a href="#">Condividi</a> · <a href="#">Mi piace</a> · <i class="icon-plus"></i> 4
+            </td>
+        </tr>
+
+    </table>
+    <form action="#">
+        <i class="icon-plus"></i><i class="icon-remove"></i><i class="icon-asterisk"></i>
+        <input type="text" placeholder="Scrivi un commento..." />
+    </form>
+    <p>Leggi tutti (Cronologia) <i class="icon-chevron-down"></i></p>
+</section>
+
+<section>
+    <h3>Ultime sugli Atti <i class="icon-eye-open"></i></h3>
+
+    <ul class="unstyled">
+        <li><a href="#">Mario Rossi ha commentato il voto</a></li>
+        <li><a href="#">Il voto è inserito nell'ordine del giorno N° 13516</a></li>
+        <li><a href="#">Barcaiuolo, Pellacani, Bellei, Morandi, Santoro (PdL) hanno presentato la mozione...</a></li>
+    </ul>
+    <p>Leggi tutti (Cronologia) <i class="icon-chevron-down"></i></p>
+</section>
+
+<section id="utimem">
+    <h3>Ultime dalla community <i class="icon-eye-open"></i></h3>
+
+    <ul class="unstyled">
+        <li><a href="#">Mario Rossi ha commentato il voto</a></li>
+        <li><a href="#">Il voto è inserito nell'ordine del giorno N° 13516</a></li>
+        <li><a href="#">Barcaiuolo, Pellacani, Bellei, Morandi, Santoro (PdL) hanno presentato la mozione...</a></li>
+    </ul>
+    <p>Leggi tutti (Cronologia) <i class="icon-chevron-down"></i></p>
+</section>
+{% endblock %}
