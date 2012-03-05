@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Users list{% endblock %}
+ 
+{% block content %}
+<h2>Public users list</h2>
+
+{% for obj in object_list %}
+  <a href="{{ obj.get_absolute_url }}">{{ obj.user.username }}</a> ({{ obj.user.email }}) <br/>
+{% endfor %}
+{% endblock %}

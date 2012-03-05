@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Profile details{% endblock %}
+ 
+{% block content %}
+<h2>{{user}}'s public profile</h2>
+
+{% if profile %}
+  <div style="margin-top: 20px">
+    Privacy settings: {{ profile.get_privacy_level_display }} <br/>
+    Wants newsletter: {{ profile.wants_newsletter }} <br/>
+  </div>
+{% else %}  
+    Is not public
+{% endif %}
+{% endblock %}

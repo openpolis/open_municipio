@@ -55,6 +55,14 @@
       </ul>        
 
       <ul style="float: right;">
+        <li>
+          {% if user.is_authenticated %}
+            <span style="color: white">Logged in as <a style="margin-right: 0;" href="/users/create/">{{ user.username }}</a> (<a style="margin-right: 0;" href="/accounts/logout/?next=/">Log out</a>)</span>
+          {% else %}
+            <a href="/accounts/login/?next={% ifequal request.path "/accounts/logout/" %}/{% else %}{{ request.path }}{% endifequal %}">Log in</a> or <a href="/accounts/register/">register</a>
+          {% endif %}
+        </li>
+        
         <li id="main-nav-info">
           <a href="/info/" {% block info_class %}{% endblock %}>Info</a>
         </li>
