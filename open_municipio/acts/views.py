@@ -17,9 +17,33 @@ class ActDetailView(DetailView):
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super(ActDetailView, self).get_context_data(**kwargs)
+        # mix-in tab-related context
+        tab = self.kwargs('tab')
+        extra_context = getattr(self, 'get_related_%(tab)' % {'tab': tab})()
+        context.update(extra_context)
         # Add in a form for adding tags
         context['tag_add_form'] = TagAddForm()
         return context
+    
+    def get_related_emendations(self):
+        """
+        Retrieve context needed for populating the *emendations* tab.
+        """
+        pass
+
+    def get_related_documents(self):
+        """
+        Retrieve context needed for populating the *documents* tab.
+        """
+        pass
+
+        
+    def get_related_votes(self):
+        """
+        Retrieve context needed for populating the *votes* tab.
+        """
+        pass
+
 
 
 class AgendaDetailView(ActDetailView):
