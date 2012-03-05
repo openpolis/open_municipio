@@ -1,0 +1,104 @@
+.monitoring { color: @grayLight; }
+#content { border-bottom: 1px dotted @grayLight; }
+#wrapper > header { background-color: #c7beb7; }
+#area-title { margin-bottom: 18px; }
+#topbar .navbar-inner { 
+    background-color: @topNavbarBackground; 
+    background-image: none;
+    .nav > li > a {
+        color: @gray;
+        &:hover {
+            color: @grayDark;
+        }
+    }
+    .nav .active > a {
+        color: @grayDark;
+        &:hover {
+            color: @gray;
+        }
+    }
+}
+#content > hgroup h1 { margin-top: 30px; }
+
+/* Giunta */
+section#giunta { 
+    border-bottom: 1px dotted @grayLight; 
+    a.politician { display: block; padding-top: 5px; }
+    ul { .clearfix; padding: 0; margin: 0; }
+    li { float: left; width:45%; padding:10px 2% 0 0; list-style-type: none; }
+    img { float:left; vertical-align: top; padding: 5px; }
+    .charge { display: block; }
+    .monitoring { display:block; }
+}
+
+/* Agenda */
+section#agenda {
+    #calendar_container {
+        border: 1px solid @grayLight;
+        min-width: 200px;
+        .border-radius;
+        h3 { margin: 5px 0; text-align:center; border-bottom: 1px solid @grayLight; }
+        #calendar { padding: 5px; }
+        .ui-datepicker { width: auto; }
+    }
+    dl > * { float:left; display: inline-block; padding: 0; margin: 5px 0; }
+    dt { margin-right: 5px; }
+    dd { width: 35%; }
+} 
+
+/* Stats block */
+dl.stats {    
+    background-color: @baseBackground;
+    dt { background-color: @darkBackground; color: @lightText; }
+    dd { background-color: @lightBackground; color: @darkText; }
+}
+
+/* Arguments cloud */
+dl.arguments {
+    > * { font-size: 14px; padding: 4px; display: inline; .border-radius(5px); margin: 0; text-transform: lowercase; }
+    dd { font-weight: normal;  }
+    line-height: 34px;
+    dt { font-size: 16px; text-transform: capitalize; }
+}
+
+/* Data boxing */
+.data-box(@bgcolor, @fontcolor: @white, @size: 22px, @fontsize: 20px) {
+    font-size: @fontsize;
+    padding: 8px;
+    text-align: center;
+    display: inline-block;
+    background-color: @bgcolor;
+    color: @fontcolor;
+    min-height: @size;
+    min-width: @size;
+    line-height: @size;
+}
+.greenbox       { .data-box(@green);    }
+.blackbox       { .data-box(@black);    }
+.lightgraybox   { .data-box(@grayLighter); color: @grayDarker;   }
+.graybox        { .data-box(@gray);    }
+.bluebox        { .data-box(@blue);     }
+.okbox          { .data-box(@greenDark);     }
+.kobox          { .data-box(@red);     }
+
+.smallbox {  
+    font-size: 14px;
+    min-height: 16px;
+    min-width: 16px;
+    line-height: 16px;
+    padding: 4px;
+}
+
+/* Act page */
+/*#firmatari { border-right: 1px dotted @grayLight; }*/
+#firmatari, #cofirmatari {
+    li {    display: block;     
+            margin-top: 10px;
+            min-height:50px; }
+}
+#firmatari ul {  border-right: 1px dotted @grayLight; }
+#acttable {
+    .table;
+}
+
+.textboxlist-loading { background: url('../img/spinner.gif') no-repeat right center; }
