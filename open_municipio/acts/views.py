@@ -7,7 +7,7 @@ from open_municipio.acts.models import Act, Agenda, Deliberation, Interpellation
 from open_municipio.acts.forms import TagAddForm
 
 class ActListView(ListView):
-    pass
+    template_name = 'acts/act_list.html'
 
 class ActDetailView(DetailView):
     model = Act
