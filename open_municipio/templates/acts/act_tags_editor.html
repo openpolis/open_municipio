@@ -6,7 +6,7 @@
         <a class="close" data-dismiss="modal">×</a>
         <h3>Editor Argomenti</h3>
       </div>
-      <form action="{% url om_act_editor act.id %}" method="post" class="form-horizontal">
+      <form action="#" method="get" class="form-horizontal">{% csrf_token %}
           <div class="modal-body">
 
                 {% for cat in act.categories %}
@@ -16,7 +16,7 @@
                             <a href="#"><i class="icon-remove"></i></a> <span class="label">{{ cat.name }}</span>
                         </label>
                         <div class="controls">
-                            <select name="categories[{{ cat.id }}]" id="category_{{ cat.id }}">
+                            <select name="categories[{{ cat.id }}]" id="category_{{ cat.id }}" multiple="multiple">
                                 {% for tag in cat.tags %}
                                 <option value="{{ tag.id }}"{% if tag in act.tags %} selected="selected"{% endif %}>{{ tag.name }}</option>
                                 {% endfor %}
@@ -28,8 +28,8 @@
 
           </div>
           <div class="modal-footer">
-            <a href="#" class="btn btn-primary">Salva</a>
-            <a href="#" class="btn">Close</a>
+              <input type="submit" value="Salva" class="btn btn-primary" />
+              <input type="reset" value="Reset" class="btn" />
           </div>
       </form>
     </div>
