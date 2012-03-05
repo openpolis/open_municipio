@@ -14,10 +14,10 @@ InstitutionCharge.objects.all().delete()
 Institution.objects.all().delete()
 Group.objects.all().delete()
 
-election_date = '2010-06-14'
-n_consiglieri = 32
+election_date = '2008-05-08'
+n_consiglieri = 40
 n_membri_commissione = 15
-n_assessori = 7
+n_assessori = 10
 
 #
 # creazione istituzioni
@@ -46,7 +46,7 @@ print "  consiglio"
 
 # commissioni
 comm_descrizioni = [
-    u"Affari Istituzionali, Personale e Partecipazione",
+    u"Bilancio e programmazione",
     u"Urbanistica, Infrastrutture e Lavori pubblici",
     u"Città sostenibile (Ambiente, Mobilità, Energia, Trasporto pubblico),frazioni, attività produttive, sport",
     u"Servizi alla Persona, Pubblica Istruzione e Politiche Giovanili",

@@ -24,6 +24,8 @@
 
 			<xs:attribute name="title" type="xs:string" use="required"/>
 			<xs:attribute name="type" type="xs:string" use="optional"/>
+			<xs:attribute ref="xlink:href"/>
+			<xs:attribute fixed="simple" ref="xlink:type"/>
 		</xs:complexType>
 	</xs:element>
 
@@ -63,7 +65,6 @@
 		<xs:sequence>
 			<xs:element ref="Section" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
-		<xs:attribute name="title" use="required" type="xs:string"/>
 	</xs:complexType>
 
 	<xs:complexType name="actType">
@@ -72,7 +73,6 @@
 		</xs:sequence>
 		<xs:attribute name="id" use="required" type="xs:string"/>
 		<xs:attribute name="title" use="required" type="xs:string"/>
-		<xs:attribute name="expire_date" use="optional" type="dateType"/>
 		<!-- presentation date is not present because every it is derived from the first TransitionStep -->
 		<!-- the text of the act must be wrapped in a Section -->
 	</xs:complexType>
@@ -83,7 +83,6 @@
 				<xs:sequence>
 					<xs:element ref="ActSubscribers" minOccurs="1" maxOccurs="2"/>
 				</xs:sequence>
-				<xs:attribute name="site" use="optional" type="siteType"/>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
@@ -128,7 +127,7 @@
 						<!-- denotes the italian "primo firmatario" -->
 						<xs:enumeration value="first_subscriber"/>
 						<!-- denotes the italian "cofirmatario" -->
-						<xs:enumeration value="cosignatory"/>
+						<xs:enumeration value="co_signer"/>
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:attribute>
@@ -179,11 +178,12 @@
 		<xs:sequence>
 			<xs:element ref="Person" minOccurs="1" maxOccurs="1"/>
 		</xs:sequence>
-		<xs:attribute name="id" type="xs:string" use="required"/>
+		<xs:attribute name="id" type="xs:string" use="optional"/>
+		<xs:attribute name="name" type="xs:string"/>
+		<xs:attribute name="description" type="xs:string" use="optional"/>
 		<xs:attribute name="start_date" type="dateType" use="optional"/>
 		<xs:attribute name="end_date" type="dateType" use="optional"/>
 		<xs:attribute name="end_reason" type="xs:string" use="optional"/>
-		<xs:attribute name="description" type="xs:string" use="optional"/>
 	</xs:complexType>
 	<!-- END auxiliary types -->
 
@@ -191,7 +191,7 @@
 	<xs:element name="OpenMunicipio">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element ref="People"/>
+				<xs:element minOccurs="0" maxOccurs="1" ref="People"/>
 				<xs:element ref="Acts" minOccurs="0" maxOccurs="1"/>
 				<xs:element maxOccurs="1" minOccurs="0" ref="Sittings"/>
 			</xs:sequence>
@@ -262,10 +262,10 @@
 	<xs:element name="Institutions">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element name="Mayor" type="bodyType" minOccurs="0" maxOccurs="1" />
-				<xs:element name="CityGovernment" type="bodyType" minOccurs="0" maxOccurs="1" />
+				<xs:element name="Mayor" type="bodyType" minOccurs="0" maxOccurs="1"/>
+				<xs:element name="CityGovernment" type="bodyType" minOccurs="0" maxOccurs="1"/>
 				<xs:element name="Council" type="bodyType" minOccurs="0" maxOccurs="1"/>
-				<xs:element name="Commission" minOccurs="0" maxOccurs="unbounded" >
+				<xs:element name="Commission" minOccurs="0" maxOccurs="unbounded">
 					<xs:complexType>
 						<xs:sequence>
 							<xs:element ref="ChargeXRef" maxOccurs="unbounded"/>
@@ -359,7 +359,8 @@
 						<!-- 						<xs:element ref="QuestionText" minOccurs="1" maxOccurs="1" /> -->
 						<!-- the Answer is optional because the act may have not received it, yet -->
 						<xs:element ref="Answer" minOccurs="0" maxOccurs="1"/>
-						<xs:element ref="InterrogationTransition" minOccurs="1" maxOccurs="unbounded"/>
+						<xs:element ref="InterrogationTransition" minOccurs="1"
+							maxOccurs="unbounded"/>
 					</xs:sequence>
 					<xs:attribute name="answer_type" use="required">
 						<xs:simpleType>
@@ -407,7 +408,8 @@
 						<xs:element ref="ActTargets" minOccurs="1" maxOccurs="1"/>
 						<!-- the Answer is optional because the act may have not received it, yet -->
 						<xs:element ref="Answer" minOccurs="0" maxOccurs="1"/>
-						<xs:element ref="InterpellationTransition" minOccurs="1" maxOccurs="unbounded"/>
+						<xs:element ref="InterpellationTransition" minOccurs="1"
+							maxOccurs="unbounded"/>
 					</xs:sequence>
 				</xs:extension>
 			</xs:complexContent>
@@ -584,9 +586,9 @@
 						<xs:element minOccurs="0" name="CouncilBallot" type="actBallot"/>
 						<xs:element ref="Attachment" minOccurs="0" maxOccurs="unbounded"/>
 					</xs:sequence>
-					<xs:attribute name="approval_date" type="xs:date" use="required"/>
+					<xs:attribute name="approval_date" type="xs:date" use="optional"/>
 					<!-- publication_date is the same as presentation_date, see actType -->
-					<xs:attribute name="execution_date" type="xs:date" use="required"/>
+					<xs:attribute name="execution_date" type="xs:date" use="optional"/>
 					<xs:attribute name="initiative" use="required">
 						<xs:simpleType>
 							<xs:restriction base="xs:token">
@@ -675,7 +677,8 @@
 				<xs:extension base="cityGovernmentActType">
 					<xs:sequence>
 						<xs:element ref="OfficeOpinion"/>
-						<xs:element ref="CityGovernmentDeliberationTransition" minOccurs="0" maxOccurs="unbounded"/>
+						<xs:element ref="CityGovernmentDeliberationTransition" minOccurs="0"
+							maxOccurs="unbounded"/>
 						<!-- Institution keeps track of present people -->
 						<xs:element ref="Institution" minOccurs="1" maxOccurs="unbounded"/>
 						<xs:element ref="DeliberationBallot" minOccurs="0" maxOccurs="1"/>
@@ -716,7 +719,8 @@
 			<xs:complexContent>
 				<xs:extension base="cityGovernmentActType">
 					<xs:sequence>
-						<xs:element ref="InvestigationTransition" minOccurs="0" maxOccurs="unbounded"/>
+						<xs:element ref="InvestigationTransition" minOccurs="0"
+							maxOccurs="unbounded"/>
 						<xs:element ref="Attachment" minOccurs="0" maxOccurs="unbounded"/>
 					</xs:sequence>
 				</xs:extension>
@@ -817,7 +821,8 @@
 			<xs:complexContent>
 				<xs:extension base="actType">
 					<xs:sequence>
-						<xs:element ref="DeterminationTransition" minOccurs="1" maxOccurs="unbounded"/>
+						<xs:element ref="DeterminationTransition" minOccurs="1"
+							maxOccurs="unbounded"/>
 						<xs:element ref="Payee" minOccurs="0" maxOccurs="unbounded"/>
 					</xs:sequence>
 					<xs:attribute name="number"/>
@@ -949,6 +954,7 @@
 		<xs:complexType>
 			<xs:attribute ref="xlink:href" use="required"/>
 			<xs:attribute ref="xlink:type" fixed="simple"/>
+			<xs:attribute name="description" type="xs:string"/>
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="People">

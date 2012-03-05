@@ -79,3 +79,4 @@ urlpatterns += patterns('',
 urlpatterns += patterns('',
     url(r'^autocomplete/', include('open_municipio.autocomplete.urls')),
 )
+
