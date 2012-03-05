@@ -68,7 +68,7 @@ class Category(models.Model):
         # auto-generate a slug, if needed 
         if not self.pk and not self.slug:
             self.slug = self.calculate_slug()
-            return super(Category, self).save(*args, **kwargs)
+        return super(Category, self).save(*args, **kwargs)
         
     @property
     def tags(self):

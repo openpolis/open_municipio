@@ -7,8 +7,8 @@
   <title>{% trans "OpenMunicipio" %} {% block title %}{% endblock %}</title>
   
     {% block head_css_includes %}
-    <link rel="stylesheet" href="{{ STATIC_URL }}css/styles.css" type="text/css" media="screen" />
-    <link rel="stylesheet" href="{{ STATIC_URL }}css/print.css"  type="text/css" media="print" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap-responsive.css" />
     {% endblock head_css_includes %}
   
     <style type="text/css">
@@ -17,7 +17,7 @@
   
     {% block head_js_includes %}
     <!--[if IE]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
-    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.min.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-1.7.1.js"></script>
     {% endblock head_js_includes %}
   
     <script type="text/javascript" charset="utf-8">
@@ -32,88 +32,86 @@
 <div id="wrapper"><!-- #wrapper -->
 
   <header>
-    <section id="logos">
-      <h1>
-        <a href="/"><img src="{{ STATIC_URL }}images/title-img.png" border="0"/></a>
-      </h1>
-      <div style="float: right;">
-        <a href="http://associazione.openpolis.it" target="_blank"><img src="{{ STATIC_URL }}images/logo-associazione.png" alt="associazione openpolis" border="0"/></a>
-      </div>
-    </section>
     
-  <nav><!-- top nav -->
-      <ul style="clear: both; float: left;">
-        <li id="main-nav-institutions">
-          <a href="/institutions/" {% block institutions_class %}{% endblock %}>Istituzioni</a>
-        </li>
-        <li id="main-nav-offices">
-          <a href="/offices/" {% block offices_class %}{% endblock %}>Uffici</a>
-        </li>
-        <li id="main-nav-companies">
-          <a href="/companies/" {% block companies_class %}{% endblock %}>Aziende</a>
-        </li>
-      </ul>        
+      <!-- TOPBAR -->
+      <section class="navbar" id="topbar">
+          <div class="navbar-inner">
+              <div class="container-fluid">
+                  <a href="#" class="brand">Open Municipio</a>
 
-      <ul style="float: right;">
-        <li>
-          {% if user.is_authenticated %}
-            <span style="color: white">Logged in as <a style="margin-right: 0;" href="/users/create/">{{ user.username }}</a> (<a style="margin-right: 0;" href="/accounts/logout/?next=/">Log out</a>)</span>
-          {% else %}
-            <a href="/accounts/login/?next={% ifequal request.path "/accounts/logout/" %}/{% else %}{{ request.path }}{% endifequal %}">Log in</a> or <a href="/accounts/register/">register</a>
-          {% endif %}
-        </li>
-        
-        <li id="main-nav-info">
-          <a href="/info/" {% block info_class %}{% endblock %}>Info</a>
-        </li>
-      </ul>
-      
-      <!-- language selector -->
-      <!-- 
-      <div style="float: right;">
-        <form id="language-selector" action="/i18n/setlang/" method="post">
-          {% csrf_token %}
-          <label for="language">{% trans "language" %}</label>
-          <select name="language" id="language">
-            {% for lang in LANGUAGES %}
-              {% if LANGUAGE_CODE == lang.0 %}
-                <option value="{{ lang.0 }}" selected="selected">{{ lang.1 }}</option>
-              {% else %}
-                <option value="{{ lang.0 }}">{{ lang.1 }}</option>
-              {% endif %}
-            {% endfor %}
-          </select>
-          <input type="submit" value="{% trans 'go' %}" />
-        </form>
-      </div>
-      -->
-      
-    </nav><!-- end of top nav -->
+                  <ul class="nav pull-right">
+                    {% if user.is_authenticated %}
+                      <li>Logged in as <a href="/users/create/">{{ user.username }}</a></li>
+                      <li><a style="margin-right: 0;" href="/accounts/logout/?next=/">Log out</a></li>
+                    {% else %}
+                       or <a href="/accounts/register/">register</a>
+                      <li><a href="/accounts/register/">Registrati</a></li>
+                      <li><a href="/accounts/login/?next={% ifequal request.path "/accounts/logout/" %}/{% else %}{{ request.path }}{% endifequal %}">Log in</a></li>
+                    {% endif %}
+                  </ul>
+              </div>
+          </div>
+      </section> <!-- /TOPBAR -->
 
-    {% block sub_nav %}    
-    {% endblock %}
+      <!-- AREA-TITLE -->
+      <hgroup class="container-fluid">
+          <div class="row-fluid">
+              <h1 class="span12" id="area-title">#MUNICIPIO# | AREA</h1>
+          </div>
+      </hgroup><!-- /AREA-TITLE -->
+
+      <!-- MAIN-NAVBAR -->
+      <nav class="navbar">
+        <div class="navbar-inner">
+          <div class="container-fluid">
+              <ul class="nav">
+                  <li class="active"><a href="#">Politici</a></li>
+                  <li><a href="#">Argomenti</a></li>
+                  <li><a href="#">Cittadini</a></li>
+              </ul>
+          </div>
+        </div>
+      </nav><!-- /MAIN-NAVBAR -->
+
+    {% block sub_nav %}{% endblock %}
       
   </header>
 
-    <section id="main"><!-- #main content and sidebar area -->
+    <section id="main" class="container-fluid"><!-- #main container for content and sidebar area -->
 
-    {% block content %}{% endblock %}      
+    {% block container %}{% endblock %}      
 
-    {% block sidebar %}{% endblock %}
-
-    </section><!-- end of #main content and sidebar-->
+    </section><!-- end of #main container for content and sidebar-->
 
     <footer>
+        <!-- FOOTER-NAV -->
+        <nav class="navbar">
+          <div class="navbar-inner">
+            <div class="container-fluid">
+                <ul class="nav">
+                    <li><a href="#">Atti</a></li>
+                    <li class="active"><a href="#">Votazioni</a></li>
+                    <li><a href="#">Organi politici</a></li>
+                    <li><a href="#">Società partecipate</a></li>
+                </ul>
+            </div>
+          </div>
+        </nav><!-- /FOOTER-NAV -->
+        
+        <!-- start of footer-area -->
         <section id="footer-area" style="text-align: center;">
-        <p style="color: grey; margin-bottom: 5px;">{% trans "ideated, designed and developed by:" %}</p>
-        <span style="margin-top: 100px;">
-          <a href="http://www.informaetica.it"><img src="{{ STATIC_URL }}images/logo-informaetica.png" border="0" alt="Logo di InformaEtica"></a>
-          <a href="http://associazione.openpolis.it"><img src="{{ STATIC_URL }}images/logo-openpolis.png" border="0" alt="Logo associazione Openpolis"></a>
-        </span>
+            <p style="color: grey; margin-bottom: 5px;">{% trans "ideated, designed and developed by:" %}</p>
+            <span style="margin-top: 100px;">
+              <a href="http://www.informaetica.it"><img src="{{ STATIC_URL }}images/logo-informaetica.png" border="0" alt="Logo di InformaEtica"></a>
+              <a href="http://associazione.openpolis.it"><img src="{{ STATIC_URL }}images/logo-openpolis.png" border="0" alt="Logo associazione Openpolis"></a>
+            </span>
         </section><!-- end of footer-area -->
     </footer>
 </div><!-- #wrapper -->
 
+{% block footer_js_includes %}
+<script src="{{ STATIC_URL }}js/bootstrap-dropdown.js"></script><!-- used in top menu -->
+{% endblock %}
 
 <script type="text/javascript">
 /*
