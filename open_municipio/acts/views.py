@@ -13,6 +13,9 @@ from open_municipio.acts.forms import TagAddForm
 class ActListView(ListView):
     pass
 
+class ActEditorView(TemplateView):
+    pass
+
 class ActDetailView(DetailView):
     model = Act
     context_object_name = 'act'
