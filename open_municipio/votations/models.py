@@ -30,11 +30,11 @@ class Votation(models.Model):
     n_abst = models.IntegerField(blank=True, null=True)
     n_maj = models.IntegerField(blank=True, null=True)
     outcome = models.IntegerField(choices=OUTCOMES)
-
+    
     class Meta:
         verbose_name = _('votation')
         verbose_name_plural = _('votations')
-
+        
     @property
     def group_votes(self):
         return self.group_vote_set.all()
@@ -42,6 +42,9 @@ class Votation(models.Model):
     @property
     def charge_votes(self):
         return self.charge_vote_set.all()
+        
+    def __unicode__(self):
+        return u'votation %s' % (self.idnum)
 
 
 class GroupVote(TimeStampedModel):
@@ -62,7 +65,7 @@ class GroupVote(TimeStampedModel):
     votation = models.ForeignKey(Votation)
     vote = models.IntegerField(choices=VOTES)
     group = models.ForeignKey(Group)
-
+    
     class Meta:
         db_table = u'votations_group_vote'    
         verbose_name = _('group vote')
@@ -95,12 +98,12 @@ class ChargeVote(TimeStampedModel):
     (CANCELED, _('Canceled votation')),
     (SECRET, _('Secret votation')),
     )
-
+    
     votation = models.ForeignKey(Votation)
     vote = models.IntegerField(choices=VOTES)
     charge = models.ForeignKey(InstitutionCharge)
     rebel = models.BooleanField(default=False)
-
+    
     class Meta:
         db_table = u'votations_charge_vote'    
         verbose_name = _('charge vote')

@@ -14,4 +14,5 @@ open_municipio/votations/migrations/*
 open_municipio/taxonomy/migrations/*
 uploads/attached_documents/*
 docs/ignored
-
+docs/dev/data_import/README-it.html
+docs/dev/data_import/style.css

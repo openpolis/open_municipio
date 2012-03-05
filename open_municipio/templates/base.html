@@ -3,24 +3,29 @@
 <!doctype html>
 <html lang="en">
 <head>
-	<meta charset="utf-8" />
-  	<title>{% trans "OpenMunicipio" %} {% block title %}{% endblock %}</title>
+  <meta charset="utf-8" />
+  <title>{% trans "OpenMunicipio" %}{% block title %}{% endblock %}</title>
   
-  	{% block head_css_includes %}
-  	<link rel="stylesheet" href="{{ STATIC_URL }}css/styles.css" type="text/css" media="screen" />
-  	<link rel="stylesheet" href="{{ STATIC_URL }}css/print.css"  type="text/css" media="print" />
-  	{% endblock head_css_includes %}
+    {% block head_css_includes %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/styles.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/print.css"  type="text/css" media="print" />
+    {% endblock head_css_includes %}
   
-  	{% block extra_style %}{% endblock %}
+    <style type="text/css">
+    {% block extra_style %}{% endblock %}
+    </style>
+
+    {% block head_js_includes %}
+    <!--[if IE]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.min.js"></script>
+    {% endblock head_js_includes %}
   
-  	{% block head_js_includes %}
-  	<!--[if IE]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
-  	<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.min.js"></script>
-  	{% endblock head_js_includes %}
-  
-  	{% block extra_js %}{% endblock %}	
+    <script type="text/javascript" charset="utf-8">
+    {% block extra_js %}{% endblock %}  
+    </script>
  
-  	{% block extra_head %}{% endblock %}	
+    {% block extra_head %}{% endblock %}    
+
 </head>
 <body>
 
@@ -37,7 +42,7 @@
       </div>
     </section>
     
-  	<nav><!-- top nav -->
+  <nav><!-- top nav -->
       <ul style="clear: both; float: left;">
         <li id="main-nav-institutions">
           <a href="/institutions/" {% block institutions_class %}{% endblock %}>Istituzioni</a>
@@ -48,9 +53,9 @@
         <li id="main-nav-companies">
           <a href="/companies/" {% block companies_class %}{% endblock %}>Aziende</a>
         </li>
-      </ul>  	   
+      </ul>        
 
-      <ul style="float:right">
+      <ul style="float: right;">
         <li id="main-nav-info">
           <a href="/info/" {% block info_class %}{% endblock %}>Info</a>
         </li>
@@ -76,32 +81,30 @@
       </div>
       -->
       
-  	</nav><!-- end of top nav -->
+    </nav><!-- end of top nav -->
 
     {% block sub_nav %}    
     {% endblock %}
-	  
+      
   </header>
 
-	<section id="main"><!-- #main content and sidebar area -->
+    <section id="main"><!-- #main content and sidebar area -->
 
-	{% block content %}      
-    {% endblock %}      
+    {% block content %}{% endblock %}      
 
-    {% block sidebar %}    
-    {% endblock %}
+    {% block sidebar %}{% endblock %}
 
-	</section><!-- end of #main content and sidebar-->
+    </section><!-- end of #main content and sidebar-->
 
-	<footer>
-  		<section id="footer-area" style="text-align: center;">
+    <footer>
+        <section id="footer-area" style="text-align: center;">
         <p style="color: grey; margin-bottom: 5px;">{% trans "ideated, designed and developed by:" %}</p>
         <span style="margin-top: 100px;">
           <a href="http://www.informaetica.it"><img src="{{ STATIC_URL }}images/logo-informaetica.png" border="0" alt="Logo di InformaEtica"></a>
           <a href="http://associazione.openpolis.it"><img src="{{ STATIC_URL }}images/logo-openpolis.png" border="0" alt="Logo associazione Openpolis"></a>
         </span>
-  		</section><!-- end of footer-area -->
-  	</footer>
+        </section><!-- end of footer-area -->
+    </footer>
 </div><!-- #wrapper -->
 
 

@@ -5,6 +5,7 @@ from django.core.urlresolvers import reverse
 
 from model_utils import Choices
 
+
 #
 # Persons, charges and groups
 #
@@ -25,11 +26,11 @@ class Person(models.Model):
     
     def __unicode__(self):
         return u'%s %s' % (self.first_name, self.last_name)
-
+    
     def get_absolute_url(self):
         # FIXME: ``get_absolute_url`` shouldn't contain hard-coded URLs
         return "/persone/%s.html" % self.slug
-
+    
     class Meta:
         verbose_name = _('person')
         verbose_name_plural = _('persons')
@@ -46,10 +47,11 @@ class Charge(models.Model):
     end_date = models.DateField(_('end date'), blank=True, null=True)
     end_reason = models.CharField(_('end reason'), blank=True, max_length=255)
     description = models.CharField(_('description'), blank=True, max_length=255, help_text=_('Insert the complete description of the charge, if it gives more information than the charge type'))
-
+    
     class Meta:
         abstract = True
     
+
 
 class InstitutionCharge(Charge):
     """
@@ -105,7 +107,7 @@ class CompanyCharge(Charge):
         (VICE_CHARGE, _('Vice president')),
         (DIR_CHARGE, _('Member of the board')),
     )
-
+    
     company = models.ForeignKey('Company', on_delete=models.PROTECT, verbose_name=_('company'))
     charge_type = models.IntegerField(_('charge type'), choices=CHARGE_TYPES)
     
@@ -129,7 +131,7 @@ class AdministrationCharge(Charge):
       (DIR_CHARGE, _('Director')),    
       (EXEC_CHARGE, _('Executive')),
     )
-
+    
     office = models.ForeignKey('Office', on_delete=models.PROTECT, verbose_name=_('office'))
     charge_type = models.IntegerField(_('charge type'), choices=CHARGE_TYPES)
     
@@ -150,7 +152,7 @@ class Group(models.Model):
     name = models.CharField(max_length=100)
     acronym = models.CharField(blank=True, max_length=16)
     counselor_set = models.ManyToManyField('InstitutionCharge', through='GroupCharge')
-
+    
     def __unicode__(self):
         return u'%s (%s)' % (self.name, self.acronym)
     
@@ -191,6 +193,7 @@ class GroupCharge(models.Model):
         verbose_name = _('group charge')
         verbose_name_plural = _('group charges')
 
+
 class GroupIsMajority(models.Model):
     """
     This model records the historical composition of the majority
@@ -199,7 +202,7 @@ class GroupIsMajority(models.Model):
     is_majority = models.NullBooleanField(_('Is majority'), default=False, null=True)
     start_date = models.DateField(_('Start date'))
     end_date = models.DateField(_('End date'), blank=True, null=True)
-
+    
     def __unicode__(self):
         if self.is_majority:
             return u'yes'
@@ -257,13 +260,13 @@ class Institution(Body):
     
     def get_absolute_url(self):
         return reverse("om_institution_detail", kwargs={'slug': self.slug})
-
+    
     def save(self, *args, **kwargs):
         """slugify name on first save"""
         if not self.id:
             self.slug = slugify(self.name)
         super(Institution, self).save(*args, **kwargs)
-
+    
     class Meta(Body.Meta):
         verbose_name = _('institution')
         verbose_name_plural = _('institutions')
@@ -293,6 +296,8 @@ class Office(Body):
         verbose_name = _('office')
         verbose_name_plural = _('offices')
 
+
+
 #
 # Sittings
 #
@@ -304,6 +309,9 @@ class Sitting(models.Model):
     date = models.DateField()
     number = models.IntegerField(blank=True, null=True)
     institution = models.ForeignKey(Institution, on_delete=models.PROTECT)
+    
+    def __unicode__(self):
+        return u'seduta num. %s del %s' % (self.number, self.date.strftime('%d/%m/%Y'))
     
     class Meta:
         verbose_name = _('sitting')
