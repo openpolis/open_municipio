@@ -91,6 +91,9 @@ class InstitutionCharge(Charge):
         db_table = u'people_institution_charge'
         verbose_name = _('institution charge')
         verbose_name_plural = _('institution charges')
+        
+    # TODO: model validation: check that ``substitutes`` and ``substituted_by`` fields
+    # point to ``InstitutionCharge``s of the same kind
 
 
 class CompanyCharge(Charge):
