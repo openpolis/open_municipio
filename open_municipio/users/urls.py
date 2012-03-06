@@ -1,6 +1,16 @@
 from django.conf.urls.defaults import *
+from django.views.generic import DetailView
+from django.contrib.auth.models import User
 
-urlpatterns = patterns('profiles.views',
+urlpatterns = patterns('',
+    url(r'^(?P<pk>\w+)/$', DetailView.as_view(
+         model=User,
+         context_object_name='registered_user',
+         template_name='users/user_detail.html',
+    ), name='users_user_detail')
+)
+
+urlpatterns += patterns('profiles.views',
     url(r'^profile/create/$',
        'create_profile',
        name='profiles_create_profile'),
