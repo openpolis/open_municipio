@@ -1,4 +1,4 @@
-from django.views.generic import DetailView, ListView
+from django.views.generic import DetailView, ListView, TemplateView
 from django.shortcuts import get_object_or_404
 
 from open_municipio.taxonomy.views import AddTagsView, RemoveTagView  
@@ -8,47 +8,80 @@ from open_municipio.acts.forms import TagAddForm
 
 class ActListView(ListView):
     model = Act
-    
+    template_name = 'acts/act_list.html'
+
+class ActEditorView(TemplateView):
+    pass
+
 class ActDetailView(DetailView):
     model = Act
-    context_object_name = 'act'
-    template_name = 'acts/act_detail.html'
+    context_object_name = 'act' 
     
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super(ActDetailView, self).get_context_data(**kwargs)
+        # mix-in tab-related context
+        self.tab = self.kwargs.get('tab', 'default')
+        extra_context = getattr(self, 'get_related_%(tab)s' % {'tab': self.tab})()
+        if extra_context:
+            context.update(extra_context)
         # Add in a form for adding tags
         context['tag_add_form'] = TagAddForm()
         return context
+    
+    def get_related_default(self):
+        """
+        Retrieve context needed for populating the default tab.
+        """
+        pass
+    
+    def get_related_emendations(self):
+        """
+        Retrieve context needed for populating the *emendations* tab.
+        """
+        pass
+
+    def get_related_documents(self):
+        """
+        Retrieve context needed for populating the *documents* tab.
+        """
+        pass
+        
+    def get_related_votes(self):
+        """
+        Retrieve context needed for populating the *votes* tab.
+        """
+        pass
+    
+    def get_template_names(self):
+        if self.tab == 'default': # default tab selected
+            return 'acts/%(model)s_detail.html' % {'model': self.model.__name__.lower()}
+        else:
+            return 'acts/%(model)s_detail_%(tab)s.html' % {'model': self.model.__name__.lower(), 'tab': self.tab}
 
 
 class AgendaDetailView(ActDetailView):
     model = Agenda
     context_object_name = 'agenda'
-    template_name = 'acts/agenda_detail.html'
 
 
 class DeliberationDetailView(ActDetailView):
     model = Deliberation
     context_object_name = 'deliberation'
-    template_name = 'acts/deliberation_detail.html'
 
 
 class InterpellationDetailView(ActDetailView):
     model = Interpellation
     context_object_name = 'interpellation'
-    template_name = 'acts/interpellation_detail.html'
 
 
 class InterrogationDetailView(ActDetailView):
     model = Interrogation
     context_object_name = 'interrogation'
-    template_name = 'acts/interrogation_detail.html'
 
 class MotionDetailView(ActDetailView):
     model = Motion
     context_object_name = 'motion'
-    template_name = 'acts/motion_detail.html'
     
 
 ## Tag management

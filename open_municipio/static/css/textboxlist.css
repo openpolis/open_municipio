@@ -12,7 +12,7 @@
 .textboxlist-bit-editable-input:focus { outline: 0; }
 .textboxlist-bit-box { position: relative; line-height: 18px; padding: 0 5px; -moz-border-radius: 9px; -webkit-border-radius: 9px; border-radius: 9px; border: 1px solid #CAD8F3; background: #DEE7F8; cursor: default; }
 .textboxlist-bit-box-deletable { padding-right: 15px; }
-.textboxlist-bit-box-deletebutton { position: absolute; right: 4px; top: 6px; display: block; width: 7px; height: 7px; font-size: 1px; background: url('close.gif'); }
+.textboxlist-bit-box-deletebutton { position: absolute; right: 4px; top: 6px; display: block; width: 7px; height: 7px; font-size: 1px; background: url('../img/close.gif'); }
 .textboxlist-bit-box-deletebutton:hover { border: none; background-position: 7px; text-decoration: none; }
 .textboxlist-bit-box-hover { background: #BBCEF1; border: 1px solid #6D95E0; }
 .textboxlist-bit-box-focus { border-color: #598BEC; background: #598BEC; color: #fff; }
