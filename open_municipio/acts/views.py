@@ -7,11 +7,8 @@ from open_municipio.acts.models import Act, Agenda, Deliberation, Interpellation
 from open_municipio.acts.forms import TagAddForm
 
 class ActListView(ListView):
-    pass
-
-class ActEditorView(TemplateView):
-    pass
-
+    model = Act
+    
 class ActDetailView(DetailView):
     model = Act
     context_object_name = 'act'
