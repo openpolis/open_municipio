@@ -10,6 +10,7 @@
     {% if user.is_staff %}
     <!-- required for TextboxList -->
     <link rel="stylesheet" href="{{ STATIC_URL }}css/textboxlist.css" />
+    <link type="text/css" href="{{ STATIC_URL }}css/ui-custom-theme/jquery-ui-1.8.16.custom.css" rel="stylesheet" />
     {% endif %}
 {% endblock head_css_includes %}
 
@@ -29,6 +30,15 @@
 {% endblock head_js_includes %}
 
 {% block extra_js %}    
+$(document).ready(function() {
+    $('#cteditor-launcher').click(function(event){
+        event.preventDefault();
+        $('#cteditor').cteditor();
+    }).parent().hover(
+        function() { $('#cteditor-launcher', this).fadeIn(); }, 
+        function() { $('#cteditor-launcher', this).fadeOut(); }
+    );
+});
 {% endblock extra_js %}
 
 
@@ -41,11 +51,11 @@
         </tr>
     </table>
     
-    <h2><small><strong>Delibera di consiglio</strong> del Consiglio comunale N° 85 del <span class="date">2.2.2012</span></small></h2>
+    <h2><strong>Delibera di consiglio</strong> del Consiglio comunale N° 85 del <span class="date">{{ act.presentatio_date }}</span></h2>
     <h1><strong>{{ act.title }}</strong> ({{ act.idnum }})</h1>
 </hgroup>
 
-<p>{{ act.text|safe }}</p>
+<p class="well">{{ act.text|safe }}</p>
 
 <ul class="nav nav-tabs">
   <li class="active">
@@ -59,10 +69,10 @@
 <table id="acttable">
     <thead>
         <tr>
-            <td>Presentazione</td>
-            <td>Discussione in Commissione</td>
-            <td>Discussione in Consiglio</td>
-            <td>Aprrovazione</td>
+            <th class="green">Presentazione</th>
+            <th class="greenLight">Discussione in Commissione</th>
+            <th>Discussione in Consiglio</th>
+            <th>Approvazione</th>
         </tr>
     </thead>
     <tbody>
@@ -76,7 +86,7 @@
                     </li>
                     <li>
                         12.2.2012 - Edilizia <br />
-                        <strong><i class="icon-ok"></i> Approvato</strong> <br />
+                        <strong><i class="icon-check"></i> Approvato</strong> <br />
                         <a href="#">Emendamenti</a> &middot; <a href="#">Voti</a>
                     </li>
                     <li><strong><a href="#">Vedi tutte <i class="icon-chevron-down"></i></a></strong></li>
@@ -90,17 +100,23 @@
 
 <div class="row-fluid">
     
-    <section id="firmatari" class="span6">
+    <section class="span6">
         <h1>Firmatari</h1>
-        <ul class="unstyled">
+        <ul class="people-list border-right">
             <li>
-                <img src="http://placehold.it/50" class="pull-left"> 
+                <a href="#"><img src="http://placehold.it/50" /></a>
                 <strong><a href="#"><i class="icon-ok"></i> Mario Rossi</a></strong> <br />
                 Partito Democratico
                 <span class="monitoring">Monitorato da 2 cittadini - <a href="#"><i class="icon-plus-sign"></i> Monitora</a>
             </li>
             <li>
-                <img src="http://placehold.it/50" class="pull-left"> 
+                <a href="#"><img src="http://placehold.it/50" /></a>
+                <strong><a href="#"><i class="icon-ok"></i> Mario Rossi</a></strong> <br />
+                Partito Democratico
+                <span class="monitoring">Monitorato da 2 cittadini - <a href="#"><i class="icon-plus-sign"></i> Monitora</a>
+            </li>
+            <li>
+                <a href="#"><img src="http://placehold.it/50" /></a>
                 <strong><a href="#"><i class="icon-ok"></i> Mario Rossi</a></strong> <br />
                 Partito Democratico
                 <span class="monitoring">Monitorato da 2 cittadini - <a href="#"><i class="icon-plus-sign"></i> Monitora</a>
@@ -109,16 +125,22 @@
         
     </section>
     
-    <section id="cofirmatari" class="span6">
+    <section class="span6">
         <h1>Co-firmatari</h1>
-        <ul class="unstyled">
+        <ul class="people-list">
             <li>
-                <img src="http://placehold.it/50" class="pull-left"> 
+                <a href="#"><img src="http://placehold.it/50" /></a>
                 <strong><a href="#"><i class="icon-ok"></i> Mario Rossi</a></strong> <br />
                 Partito Democratico
             </li>
             <li>
-                <img src="http://placehold.it/50" class="pull-left"> 
+                <a href="#"><img src="http://placehold.it/50" /></a>
+                <strong><a href="#"><i class="icon-ok"></i> Mario Rossi</a></strong> <br />
+                Italia dei Valori
+                <span class="monitoring">Monitorato da 2 cittadini - <a href="#"><i class="icon-plus-sign"></i> Monitora</a>
+            </li>
+            <li>
+                <a href="#"><img src="http://placehold.it/50" /></a>
                 <strong><a href="#"><i class="icon-ok"></i> Mario Rossi</a></strong> <br />
                 Italia dei Valori
                 <span class="monitoring">Monitorato da 2 cittadini - <a href="#"><i class="icon-plus-sign"></i> Monitora</a>
@@ -134,106 +156,104 @@
 {% block sidebar %}
 
 <section>
-    
+    {% include 'acts/act_tags_editor.html' %}
     <h3>Argomenti dell'atto</h3>
     
-    <dl class="arguments">
+    <dl class="tags-cloud">
         {% for category in act.categories %}
-        <dt class="label"><a href="{{ category.get_absolute_url }}">{{ category.name }}</a></dt>
+        <dt><a href="{{ category.get_absolute_url }}">{{ category.name }}</a></dt>
         {% for arg in category.tags %}
-            <dd class="label"><a href="{{ arg.get_absolute_url }}">{{ arg }}</a></dd>
+            <dd><a href="{{ arg.get_absolute_url }}">{{ arg }}</a></dd>
         {% endfor %}
         {% endfor %}
     </dl>
     
 </section>
 
-<section>
-    <h3>Monitora</h3>
-    <table class="table">
+<section><h3>Monitora</h3>
+    <table class="">
         <tr>
             <td><span class="bluebox">14</span></td>
-            <td>
+            <th class="bg-dark span12">
                 utenti che monitora l'atto<br />
                 <a href="#">John Doe</a>, <a href="#">Carlo Rossi</a>, <a href="#">Mario Bianchi</a>... <br>
                 <span class="monitoring"><a href="#"><i class="icon-plus-sign"></i> Monitora</a>
-            </td>
+            </th>
         </tr>
         <tr>
             <td><span class="greenbox">0</span></td>
-            <td>
+            <th class="bg-dark span12">
                 politici che monitorano l'atto <br>
                 <span class="monitoring"><a href="#"><i class="icon-plus-sign"></i> Monitora</a>
-            </td>
+            </th>
         </tr>
     </table>
 </section>
 
-<section>
-    <h3>Vota</h3>
+<section><h3>Vota</h3>
     <table class="table">
         <tr>
             <td><span class="okbox">0</span></td>
-            <td>Sono favorevole</td>
-            <td><span class="kobox">10</span></td>
-            <td>Sono contrario</td>
+            <th class="bg-dark span6"><i class="hand-ok"></i> Sono favorevole</th>
+            <td><span class="kobox">1000</span></td>
+            <th class="bg-dark span6"><i class="hand-ko"></i> Sono contrario</th>
         </tr>
     </table>
 </section>
 
-<section>
-    <h3>Commenti (20)</h3>
-    <table class="table">
-
-        <tr class="cell-gray">
-            <td><img src="http://placehold.it/50x50"></td>
-            <td><a href="#">JohnDoe</a> Lorem ipsum dolor sit amet,consectetuer adipiscing elit. Suspendisse ut purus.
-                <br />
-                <i class="icon-remove"></i> · 14.06.2011 · <a href="#">Condividi</a> · <a href="#">Mi piace</a> · <i class="icon-plus"></i> 4
-            </td>
-        </tr>
-        <tr class="cell-gray">
-            <td><img src="http://placehold.it/50x50"></td>
-            <td><a href="#">JohnDoe</a> Lorem ipsum dolor sit amet,consectetuer adipiscing elit. Suspendisse ut purus.
-                <br />
-                <i class="icon-remove"></i> · 14.06.2011 · <a href="#">Condividi</a> · <a href="#">Mi piace</a> · <i class="icon-plus"></i> 4
-            </td>
-        </tr>
-        <tr class="cell-gray">
-            <td><img src="http://placehold.it/50x50"></td>
-            <td><a href="#">JohnDoe</a> Lorem ipsum dolor sit amet,consectetuer adipiscing elit. Suspendisse ut purus.
-                <br />
-                <i class="icon-remove"></i> · 14.06.2011 · <a href="#">Condividi</a> · <a href="#">Mi piace</a> · <i class="icon-plus"></i> 4
-            </td>
-        </tr>
-
-    </table>
-    <form action="#">
-        <i class="icon-plus"></i><i class="icon-remove"></i><i class="icon-asterisk"></i>
-        <input type="text" placeholder="Scrivi un commento..." />
+<section><h3>Commenti (20)</h3>
+    <ul class="people-list">
+        <li class="bg-light">
+            <a href="#"><img src="http://placehold.it/50x50" alt="" /></a>
+            <a href="#">JohnDoe</a> Lorem ipsum dolor sit amet,consectetuer adipiscing elit. Suspendisse ut purus.
+            <span class="monitoring">
+                <i class="hand-ko"></i> · 14.06.2011 · <a href="#">Condividi</a> · <a href="#">Mi piace</a> · <i class="icon-plus"></i> 4
+            </span>
+        </li>
+        <li class="bg-lightgreen">
+            <a href="#"><img src="http://placehold.it/50x50" alt="" /></a>
+            <a href="#">JohnDoe</a> Lorem ipsum dolor sit amet,consectetuer adipiscing elit. Suspendisse ut purus.
+            <span class="monitoring">
+                <i class="hand-ko"></i> · 14.06.2011 · <a href="#">Condividi</a> · <a href="#">Mi piace</a> · <i class="icon-plus"></i> 4
+            </span>
+        </li>
+        <li class="bg-light">
+            <a href="#"><img src="http://placehold.it/50x50" alt="" /></a>
+            <a href="#">JohnDoe</a> Lorem ipsum dolor sit amet,consectetuer adipiscing elit. Suspendisse ut purus.
+            <span class="monitoring">
+                <i class="hand-ko"></i> · 14.06.2011 · <a href="#">Condividi</a> · <a href="#">Mi piace</a> · <i class="icon-plus"></i> 4
+            </span>
+        </li>
+    </ul>
+    <form action="#" class="form-inline bg-dark">
+        <i class="hand-ok"></i><i class="hand-ko"></i><i class="hand-five"></i>
+        <input type="text" placeholder="Scrivi un commento..." />        
     </form>
+    
+    
     <p>Leggi tutti (Cronologia) <i class="icon-chevron-down"></i></p>
 </section>
 
 <section>
-    <h3>Ultime sugli Atti <i class="icon-eye-open"></i></h3>
+    <h3>Ultime sugli Atti <img src="{{ STATIC_URL }}img/feed-icon-14x14.png" alt="" /></h3>
 
-    <ul class="unstyled">
+    <ul class="feed-list">
         <li><a href="#">Mario Rossi ha commentato il voto</a></li>
         <li><a href="#">Il voto è inserito nell'ordine del giorno N° 13516</a></li>
         <li><a href="#">Barcaiuolo, Pellacani, Bellei, Morandi, Santoro (PdL) hanno presentato la mozione...</a></li>
     </ul>
-    <p>Leggi tutti (Cronologia) <i class="icon-chevron-down"></i></p>
+    <p class="bg-dark">Leggi tutti (Cronologia) <i class="icon-chevron-down"></i></p>
 </section>
 
-<section id="utimem">
-    <h3>Ultime dalla community <i class="icon-eye-open"></i></h3>
+<section>
+    <h3>Ultime dalla community <img src="{{ STATIC_URL }}img/feed-icon-14x14.png" alt="" /></h3>
 
-    <ul class="unstyled">
+    <ul class="feed-list">
         <li><a href="#">Mario Rossi ha commentato il voto</a></li>
         <li><a href="#">Il voto è inserito nell'ordine del giorno N° 13516</a></li>
         <li><a href="#">Barcaiuolo, Pellacani, Bellei, Morandi, Santoro (PdL) hanno presentato la mozione...</a></li>
+
     </ul>
-    <p>Leggi tutti (Cronologia) <i class="icon-chevron-down"></i></p>
+    <p class="bg-dark">Leggi tutte (Cronologia) <i class="icon-chevron-down"></i></p>
 </section>
 {% endblock %}

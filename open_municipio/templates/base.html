@@ -6,6 +6,9 @@
   <meta charset="utf-8" />
   <title>{% trans "OpenMunicipio" %} - {% block title %}{% endblock %}</title>
   
+  <!-- To ensure devices display responsive pages properly, include the viewport meta tag. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
     {% block head_css_includes %}
     <link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap-responsive.css" />
@@ -37,7 +40,7 @@
       <section class="navbar" id="topbar">
           <div class="navbar-inner">
               <div class="container-fluid">
-                  <a href="#" class="brand">Open Municipio</a>
+                  <a href="#" class="brand">Open<strong>municipio</strong></a>
 
                   <ul class="nav pull-right">
                     {% if user.is_authenticated %}
