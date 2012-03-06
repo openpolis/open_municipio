@@ -26,3 +26,8 @@ class UserProfile(models.Model):
         return ('profiles_profile_detail', (), { 'username': self.user.username })
     get_absolute_url = models.permalink(get_absolute_url)
     
+    @property
+    def monitored_objects(self):
+        """returns monitored objects as list of objects"""
+        return [o.content_object for o in self.user.monitorings.all()]
+    

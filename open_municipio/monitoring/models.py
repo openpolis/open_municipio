@@ -28,7 +28,7 @@ class Monitoring(models.Model):
     
     # Who's monitoring
     user           = models.ForeignKey(User, verbose_name=_('user'),
-                                       related_name="%(class)s_monitoring")
+                                       related_name="%(class)ss")
     # Is it a public monitoring (visibility)
     # defaults to true
     is_public      = models.BooleanField(default=True)

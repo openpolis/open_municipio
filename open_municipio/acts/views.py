@@ -1,8 +1,9 @@
 from django.views.generic import DetailView, ListView, TemplateView
 from django.shortcuts import get_object_or_404
+from django.core.exceptions import ObjectDoesNotExist
 
+from os import sys
 from open_municipio.taxonomy.views import AddTagsView, RemoveTagView  
-
 from open_municipio.acts.models import Act, Agenda, Deliberation, Interpellation, Interrogation, Motion
 from open_municipio.acts.forms import TagAddForm
 
@@ -25,8 +26,21 @@ class ActDetailView(DetailView):
         extra_context = getattr(self, 'get_related_%(tab)s' % {'tab': self.tab})()
         if extra_context:
             context.update(extra_context)
+            
         # Add in a form for adding tags
         context['tag_add_form'] = TagAddForm()
+        
+        # is the user monitoring the act?
+        context['is_user_monitoring'] = False
+        try:
+            if (self.request.user.is_authenticated() and
+                context['act'] in self.request.user.get_profile().monitored_objects):
+                context['is_user_monitoring'] = True
+        except ObjectDoesNotExist, e:
+            context['is_user_monitoring'] = False
+
+
+        print >> sys.stderr, context
         return context
     
     def get_related_default(self):

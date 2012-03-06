@@ -85,7 +85,11 @@ class Act(TimeStampedModel):
     @property
     def categories(self):
         return self.category_set.all()
-
+    
+    @property
+    def monitoring_users(self):
+        """return list of users monitoring this object"""
+        return [m.user for m in self.monitorings.all()]
       
 class ActSection(models.Model):
     """

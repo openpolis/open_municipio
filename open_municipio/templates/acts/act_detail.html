@@ -41,7 +41,9 @@
         </tr>
     </table>
     
-    <h2><small><strong>Delibera di consiglio</strong> del Consiglio comunale N° 85 del <span class="date">2.2.2012</span></small></h2>
+    <h2><small>
+      <strong>{% block act_type %}TIPO ATTO{% endblock %}</strong> 
+      del Consiglio comunale N° 85 del <span class="date">2.2.2012</span></small></h2>
     <h1><strong>{{ act.title }}</strong> ({{ act.idnum }})</h1>
 </hgroup>
 
@@ -152,11 +154,31 @@
     <h3>Monitora</h3>
     <table class="table">
         <tr>
-            <td><span class="bluebox">14</span></td>
+            <td><span class="bluebox">{{ act.monitoring_users|length}}</span></td>
             <td>
-                utenti che monitora l'atto<br />
-                <a href="#">John Doe</a>, <a href="#">Carlo Rossi</a>, <a href="#">Mario Bianchi</a>... <br>
-                <span class="monitoring"><a href="#"><i class="icon-plus-sign"></i> Monitora</a>
+                utenti che monitorano l'atto<br />
+                {% for u in act.monitoring_users %}
+                  <a href="#">{{ u }}</a>  
+                  {% if forloop.last %}<br/>{% else %},{% endif %}
+                {% endfor %}
+                
+                {% if user.is_authenticated %}
+                  {% if is_user_monitoring %}
+                    <i class="icon-minus-sign"></i>
+                    <span class="label label-info monitoring">
+                      <a href="#">
+                         Interrompi il monitoraggio
+                      </a>
+                    </span>                    
+                  {% else %}
+                    <i class="icon-plus-sign"></i>
+                    <span class="label label-info monitoring">
+                      <a href="#">
+                         Avvia il monitoraggio
+                      </a>
+                    </span>
+                  {% endif %}
+                {% endif %}
             </td>
         </tr>
         <tr>
