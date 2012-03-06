@@ -95,7 +95,7 @@ urlpatterns += patterns('profiles.views',
                        url(r'^users/(?P<username>\w+)/$',
                            'profile_detail', { 'public_profile_field': 'is_public' },
                            name='profiles_profile_detail'),
-                       url(r'^users$',
+                       url(r'^users/$',
                            'profile_list', { 'public_profile_field': 'is_public' },
                            name='profiles_profile_list'),
                        )
