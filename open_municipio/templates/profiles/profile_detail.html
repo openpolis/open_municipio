@@ -1,15 +1,16 @@
 {% extends "base.html" %}
-{% block title %}Profile details{% endblock %}
+{% block title %}Profilo utente{% endblock %}
+{% block content_header %}Profilo di {{user}}{% endblock %}
+{% block users_class %}class="active"{% endblock %}
  
 {% block content %}
-<h2>{{user}}'s public profile</h2>
 
-{% if profile %}
-  <div style="margin-top: 20px">
-    Privacy settings: {{ profile.get_privacy_level_display }} <br/>
-    Wants newsletter: {{ profile.wants_newsletter }} <br/>
-  </div>
-{% else %}  
-    Is not public
-{% endif %}
+  {% if profile %}
+    <div style="margin-top: 20px">
+      Opzioni della Privacy: {{ profile.get_privacy_level_display }} <br/>
+      Vuole ricevere la newsletter: {{ profile.wants_newsletter }} <br/>
+    </div>
+  {% else %}  
+      Non ha un profilo pubblico
+  {% endif %}
 {% endblock %}

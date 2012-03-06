@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>{% trans "OpenMunicipio" %} {% block title %}{% endblock %}</title>
+  <title>{% trans "OpenMunicipio" %} - {% block title %}{% endblock %}</title>
   
     {% block head_css_includes %}
     <link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap.css" />
@@ -44,7 +44,6 @@
                       <li>Logged in as <a href="/users/create/">{{ user.username }}</a></li>
                       <li><a style="margin-right: 0;" href="/accounts/logout/?next=/">Log out</a></li>
                     {% else %}
-                       or <a href="/accounts/register/">register</a>
                       <li><a href="/accounts/register/">Registrati</a></li>
                       <li><a href="/accounts/login/?next={% ifequal request.path "/accounts/logout/" %}/{% else %}{{ request.path }}{% endifequal %}">Log in</a></li>
                     {% endif %}
@@ -56,7 +55,7 @@
       <!-- AREA-TITLE -->
       <hgroup class="container-fluid">
           <div class="row-fluid">
-              <h1 class="span12" id="area-title">#MUNICIPIO# | AREA</h1>
+              <h1 class="span12" id="area-title">Senigallia | {% block content_header %}{% endblock %}</h1>
           </div>
       </hgroup><!-- /AREA-TITLE -->
 
@@ -65,9 +64,9 @@
         <div class="navbar-inner">
           <div class="container-fluid">
               <ul class="nav">
-                  <li class="active"><a href="#">Politici</a></li>
+                  <li><a href="#">Politici</a></li>
                   <li><a href="#">Argomenti</a></li>
-                  <li><a href="#">Cittadini</a></li>
+                  <li {% block users_class %}{% endblock %}><a href="/users/">Cittadini</a></li>
               </ul>
           </div>
         </div>
@@ -89,10 +88,10 @@
           <div class="navbar-inner">
             <div class="container-fluid">
                 <ul class="nav">
-                    <li><a href="#">Atti</a></li>
-                    <li class="active"><a href="#">Votazioni</a></li>
+                    <li {% block acts_class %}{% endblock %}><a href="/acts/">Atti</a></li>
+                    <li {% block votations_class %}{% endblock %}><a href="/votations/">Votazioni</a></li>
                     <li><a href="#">Organi politici</a></li>
-                    <li><a href="#">Società partecipate</a></li>
+                    <!-- TODO <li><a href="#">Società partecipate</a></li> -->
                 </ul>
             </div>
           </div>

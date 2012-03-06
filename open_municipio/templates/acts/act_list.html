@@ -2,9 +2,13 @@
 {% load i18n %}
 
 {% block title %} Elenco atti {% endblock %}
+{% block content_header %}Elenco degli atti{% endblock %}
+{% block acts_class %}class="active"{% endblock %}
 
 {% block content %}
   <section id="content"><!-- #content -->
-  
+    {% for obj in object_list %}
+      <a href="{{ obj.get_absolute_url }}">{{ obj }}</a> ({{ obj.id }}) <br/>
+    {% endfor %}
   </section><!-- end of #content -->  
 {% endblock %}

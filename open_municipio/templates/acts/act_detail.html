@@ -2,6 +2,8 @@
 {% load i18n %}
 
 {% block title %}| Dettaglio {{ act }}{% endblock title %}
+{% block content_header %}Dettaglio atto{% endblock %}
+{% block acts_class %}class="active"{% endblock %}
 
 {% block head_css_includes %}
     {{ block.super }}
@@ -26,18 +28,6 @@
 {% endblock head_js_includes %}
 
 {% block extra_js %}    
-$(document).ready(function() {
-        $('#cteditor-launcher').click(function(event){
-            event.preventDefault();
-            $('#cteditor').cteditor();
-        })
-        .parent()
-            .hover(
-                function() { $('#cteditor-launcher', this).fadeIn(); }, 
-                function() { $('#cteditor-launcher', this).fadeOut(); }
-            );
-
-});
 {% endblock extra_js %}
 
 
@@ -143,8 +133,6 @@ $(document).ready(function() {
 {% block sidebar %}
 
 <section>
-    
-    {% include 'acts/act_tags_editor.html' %}
     
     <h3>Argomenti dell'atto</h3>
     
