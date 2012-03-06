@@ -164,19 +164,19 @@
                 
                 {% if user.is_authenticated %}
                   {% if is_user_monitoring %}
+                  <form action="{% url monitoring-stop %}" method="post">
+                    {% csrf_token %}
+                    {{ monitoring_form }}
                     <i class="icon-minus-sign"></i>
-                    <span class="label label-info monitoring">
-                      <a href="#">
-                         Interrompi il monitoraggio
-                      </a>
-                    </span>                    
+                    <button type="submit" class="btn btn-info btn-small">Interrompi il monitoraggio</button>
+                  </form>
                   {% else %}
-                    <i class="icon-plus-sign"></i>
-                    <span class="label label-info monitoring">
-                      <a href="#">
-                         Avvia il monitoraggio
-                      </a>
-                    </span>
+                    <form action="{% url monitoring-start %}" method="post">
+                      {% csrf_token %}
+                      {{ monitoring_form }}
+                      <i class="icon-plus-sign"></i>
+                      <button type="submit" class="btn btn-info btn-small">Avvia il monitoraggio</button>
+                    </form>
                   {% endif %}
                 {% endif %}
             </td>

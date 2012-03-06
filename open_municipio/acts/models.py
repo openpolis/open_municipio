@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes import generic
+from django.contrib.contenttypes.models import ContentType
 
 from model_utils import Choices
 from model_utils.managers import InheritanceManager
@@ -11,6 +12,7 @@ from taggit.managers import TaggableManager
 from open_municipio.people.models import Institution, InstitutionCharge, Sitting
 from open_municipio.taxonomy.models import TaggedItem, Category
 from open_municipio.monitoring.models import Monitoring
+
 
 #
 # Acts
@@ -90,6 +92,11 @@ class Act(TimeStampedModel):
     def monitoring_users(self):
         """return list of users monitoring this object"""
         return [m.user for m in self.monitorings.all()]
+        
+    @property
+    def content_type_id(self):
+        """return id of the content_type for this instance"""
+        return ContentType.objects.get_for_model(self).id
       
 class ActSection(models.Model):
     """

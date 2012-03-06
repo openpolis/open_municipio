@@ -6,6 +6,7 @@ from os import sys
 from open_municipio.taxonomy.views import AddTagsView, RemoveTagView  
 from open_municipio.acts.models import Act, Agenda, Deliberation, Interpellation, Interrogation, Motion
 from open_municipio.acts.forms import TagAddForm
+from open_municipio.monitoring.forms import MonitoringForm
 
 class ActListView(ListView):
     model = Act
@@ -30,17 +31,25 @@ class ActDetailView(DetailView):
         # Add in a form for adding tags
         context['tag_add_form'] = TagAddForm()
         
+        
         # is the user monitoring the act?
         context['is_user_monitoring'] = False
         try:
-            if (self.request.user.is_authenticated() and
-                context['act'] in self.request.user.get_profile().monitored_objects):
-                context['is_user_monitoring'] = True
+            if self.request.user.is_authenticated():
+                # add a monitoring form, to context,
+                # to switch monitoring on and off
+                context['monitoring_form'] = MonitoringForm(data = {
+                    'content_type_id': context['act'].content_type_id, 
+                    'object_pk': context['act'].id,
+                    'user_id': self.request.user.id
+                })
+                
+                if context['act'] in self.request.user.get_profile().monitored_objects:
+                    context['is_user_monitoring'] = True
         except ObjectDoesNotExist, e:
             context['is_user_monitoring'] = False
-
-
-        print >> sys.stderr, context
+        
+        
         return context
     
     def get_related_default(self):
