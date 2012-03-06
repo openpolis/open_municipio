@@ -84,6 +84,11 @@ urlpatterns += patterns('',
     url(r'^autocomplete/', include('open_municipio.autocomplete.urls')),
 )
 
+# monitoring
+urlpatterns += patterns('',
+    url(r'^monitoring/', include('open_municipio.monitoring.urls')),
+)
+
 # user profiles
 urlpatterns += patterns('profiles.views',
                        url(r'^users/create/$',
