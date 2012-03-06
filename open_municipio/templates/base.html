@@ -41,7 +41,7 @@
 
                   <ul class="nav pull-right">
                     {% if user.is_authenticated %}
-                      <li>Logged in as <a href="/users/create/">{{ user.username }}</a></li>
+                      <li><a href="/users/create/">Logged in as {{ user.username }}</a></li>
                       <li><a style="margin-right: 0;" href="/accounts/logout/?next=/">Log out</a></li>
                     {% else %}
                       <li><a href="/accounts/register/">Registrati</a></li>
@@ -108,9 +108,7 @@
     </footer>
 </div><!-- #wrapper -->
 
-{% block footer_js_includes %}
-<script src="{{ STATIC_URL }}js/bootstrap-dropdown.js"></script><!-- used in top menu -->
-{% endblock %}
+{% block footer_js_includes %}{% endblock %}
 
 <script type="text/javascript">
 /*
