@@ -46,12 +46,6 @@ class ActDetailView(DetailView):
         Retrieve context needed for populating the *documents* tab.
         """
         pass
-        
-    def get_related_votes(self):
-        """
-        Retrieve context needed for populating the *votes* tab.
-        """
-        pass
     
     def get_template_names(self):
         if self.tab == 'default': # default tab selected
