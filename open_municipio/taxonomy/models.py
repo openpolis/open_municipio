@@ -3,7 +3,13 @@ from django.utils.translation import ugettext_lazy as _
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
 
-from taggit.models import Tag, TaggedItemBase
+from taggit.models import TagBase, TaggedItemBase
+
+
+class Tag(TagBase):
+    class Meta:
+        verbose_name = _("Tag")
+        verbose_name_plural = _("Tags")
 
 
 class TaggedAct(TaggedItemBase):
@@ -21,12 +27,23 @@ class TaggedAct(TaggedItemBase):
     .. _`custom version`: http://readthedocs.org/docs/django-taggit/en/latest/custom_tagging.html
     """
     content_object = models.ForeignKey('Act')
+    tag = models.ForeignKey(Tag, related_name='tagged_acts')
     tagger = models.ForeignKey(User, null=True, blank=True, editable=False)
     tagging_time = models.DateTimeField(null=True, auto_now_add=True)    
                                        
     class Meta:
         verbose_name = _("tagged act")
         verbose_name_plural = _("tagged acts")
+    
+    @classmethod
+    def tags_for(cls, model, instance=None):
+        if instance is not None:
+            return cls.tag_model().objects.filter(**{
+                '%s__content_object' % cls.tag_relname(): instance
+            })
+        return cls.tag_model().objects.filter(**{
+            '%s__content_object__isnull' % cls.tag_relname(): False
+        }).distinct()
 
 
 class Category(models.Model):
