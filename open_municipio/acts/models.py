@@ -8,7 +8,7 @@ from model_utils.models import TimeStampedModel
 from taggit.managers import TaggableManager
 
 from open_municipio.people.models import Institution, InstitutionCharge, Sitting
-from open_municipio.taxonomy.models import TaggedAct, Category
+from open_municipio.taxonomy.models import TaggedAct, Category, Location
 
 #
 # Acts
@@ -39,6 +39,7 @@ class Act(TimeStampedModel):
     recipients = models.ManyToManyField(InstitutionCharge, blank=True, null=True, db_table='acts_act_recipient', related_name='recipient_act_set', verbose_name=_('recipients'))
     emitting_institution = models.ForeignKey(Institution, related_name='emitted_act_set', verbose_name=_('emitting institution'))
     category_set = models.ManyToManyField(Category, verbose_name=_('categories'), blank=True, null=True)
+    location_set = models.ManyToManyField(Location, verbose_name=_('locations'), blank=True, null=True)
 
     objects = InheritanceManager()
     
@@ -79,6 +80,10 @@ class Act(TimeStampedModel):
     @property
     def categories(self):
         return self.category_set.all()
+    
+    @property
+    def locations(self):
+        return self.location_set.all()
 
       
 class ActSection(models.Model):
