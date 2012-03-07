@@ -3,7 +3,7 @@ from django.views.generic import DetailView
 from django.contrib.auth.models import User
 
 urlpatterns = patterns('',
-    url(r'^(?P<pk>\w+)/$', DetailView.as_view(
+    url(r'^(?P<pk>\d+)/$', DetailView.as_view(
          model=User,
          context_object_name='registered_user',
          template_name='users/user_detail.html',
@@ -18,9 +18,9 @@ urlpatterns += patterns('profiles.views',
        'edit_profile',
        name='profiles_edit_profile'),
     url(r'^profile/(?P<username>\w+)/$',
-       'profile_detail', { 'public_profile_field': 'is_public' },
+       'profile_detail',
        name='profiles_profile_detail'),
     url(r'^$',
-       'profile_list', { 'public_profile_field': 'is_public' },
+       'profile_list',
        name='profiles_profile_list'),
 )
