@@ -8,7 +8,7 @@ from model_utils.models import TimeStampedModel
 from taggit.managers import TaggableManager
 
 from open_municipio.people.models import Institution, InstitutionCharge, Sitting
-from open_municipio.taxonomy.models import TaggedItem, Category
+from open_municipio.taxonomy.models import TaggedAct, Category
 
 #
 # Acts
@@ -42,7 +42,7 @@ class Act(TimeStampedModel):
 
     objects = InheritanceManager()
     
-    tag_set = TaggableManager(through=TaggedItem, blank=True)
+    tag_set = TaggableManager(through=TaggedAct, blank=True)
 
     def __unicode__(self):
         uc = u'%s' % (self.title)
