@@ -319,3 +319,48 @@ class Sitting(models.Model):
     class Meta:
         verbose_name = _('sitting')
         verbose_name_plural = _('sittings')
+
+
+## Private DB access API
+class Council(object):
+    @property
+    def members(self):
+        pass
+    
+    @property
+    def majority_members(self):
+        pass
+    
+    @property
+    def minority_members(self):
+        pass
+        
+    @property
+    def groups(self):
+        pass
+    
+    @property
+    def majority_groups(self):
+        pass
+    
+    @property
+    def minority_groups(self):
+        pass
+      
+
+class CityGov(object):
+    @property
+    def members(self):
+        pass
+
+class Municipality(object):
+    
+    def __init__(self):
+        self.gov = CityGov()
+        self.council = Council()
+    
+    @property
+    def mayor(self):
+        pass
+
+municipality = Municipality()
