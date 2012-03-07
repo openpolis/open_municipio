@@ -174,8 +174,8 @@
                     <form action="{% url monitoring-start %}" method="post">
                       {% csrf_token %}
                       {{ monitoring_form }}
-                      <i class="icon-plus-sign"></i>
-                      <button type="submit" class="btn btn-info btn-small">Avvia il monitoraggio</button>
+                      
+                      <button type="submit" class="btn btn-info btn-mini"><i class="icon-plus-sign"></i> Avvia il monitoraggio</button>
                     </form>
                   {% endif %}
                 {% endif %}
