@@ -8,6 +8,37 @@ from model_utils import Choices
 from open_municipio.monitoring.models import Monitoring
 
 
+class classproperty(property):
+    def __get__(self, obj, type_):
+        return self.fget.__get__(None, type_)()
+    
+    def __set__(self, obj, value):
+        cls = type(obj)
+        return self.fset.__get__(None, cls)(value)
+
+class Municipality:
+    @classproperty
+    @classmethod
+    def mayor(self):
+        return Institution.objects.get(institution_type=Institution.MAYOR).institutioncharge_set.all()[0]
+    
+    @classproperty
+    @classmethod
+    def council_members(self):
+        return Institution.objects.get(institution_type=Institution.COUNCIL).institutioncharge_set.all()   
+    
+    @classproperty
+    @classmethod
+    def citygov_members(self):
+        return Institution.objects.get(institution_type=Institution.CITY_GOVERNMENT).institutioncharge_set.all()
+
+    @classproperty
+    @classmethod
+    def council_groups(self):
+        return Group.objects.all()
+    
+
+
 #
 # Persons, charges and groups
 #
