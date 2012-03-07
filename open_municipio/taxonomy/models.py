@@ -3,7 +3,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
 
-from taggit.models import TagBase, TaggedItemBase
+from taggit.models import TagBase, ItemBase
 
 
 class Tag(TagBase):
@@ -12,7 +12,7 @@ class Tag(TagBase):
         verbose_name_plural = _("Tags")
 
 
-class TaggedAct(TaggedItemBase):
+class TaggedAct(ItemBase):
     """
     A intermediate model to record associations between tags and ``Act`` model instances.
     
@@ -26,7 +26,7 @@ class TaggedAct(TaggedItemBase):
     
     .. _`custom version`: http://readthedocs.org/docs/django-taggit/en/latest/custom_tagging.html
     """
-    content_object = models.ForeignKey('Act')
+    content_object = models.ForeignKey('acts.Act')
     tag = models.ForeignKey(Tag, related_name='tagged_acts')
     tagger = models.ForeignKey(User, null=True, blank=True, editable=False)
     tagging_time = models.DateTimeField(null=True, auto_now_add=True)    
