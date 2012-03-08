@@ -355,14 +355,14 @@ class Mayor(object):
         """
         A municipality mayor, as an *institution*.
         """
-        NotImplementedError
+        return Institution.objects.get(institution_type=Institution.MAYOR)
     
     @property
     def as_charge(self):
         """
         A municipality mayor, as a *charge*.
         """
-        NotImplementedError
+        return self.as_institution.charges[0]
     
 
 class TownCouncil(object):
@@ -372,14 +372,14 @@ class TownCouncil(object):
         """
         A municipality council, as an *institution*.
         """
-        NotImplementedError
+        return Institution.objects.get(institution_type=Institution.COUNCIL)
     
     @property
     def members(self):
         """
         Members of a municipality council (aka *counselors*), as charges.
         """
-        NotImplementedError
+        return self.as_institution.charges
     
     @property
     def majority_members(self):
@@ -400,7 +400,7 @@ class TownCouncil(object):
         """
         Groups of counselors within of a municipality council.
         """
-        NotImplementedError
+        return Group.objects.all()
     
     @property
     def majority_groups(self):
@@ -423,14 +423,14 @@ class TownGovernment(object):
         """
         A municipality government, as an *institution*.
         """
-        NotImplementedError
+        return Institution.objects.get(institution_type=Institution.TOWN_GOVERNMENT)
     
     @property
     def members(self):
         """
         Members of a municipality government (aka *assessors*), as charges.
         """
-        NotImplementedError
+        return self.as_institution.charges
 
 
 class Municipality(object):
