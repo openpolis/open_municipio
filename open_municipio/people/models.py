@@ -1,10 +1,13 @@
 from django.db import models
+from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
 from django.template.defaultfilters import slugify
 from django.core.urlresolvers import reverse
 
 from model_utils import Choices
+from model_utils.managers import QueryManager
 
+from datetime import datetime
 
 #
 # Persons, charges and groups
@@ -47,6 +50,11 @@ class Charge(models.Model):
     end_date = models.DateField(_('end date'), blank=True, null=True)
     end_reason = models.CharField(_('end reason'), blank=True, max_length=255)
     description = models.CharField(_('description'), blank=True, max_length=255, help_text=_('Insert the complete description of the charge, if it gives more information than the charge type'))
+    
+    # all charges (including expired ones)
+    objects = models.Manager()
+    # currently active charges only 
+    active = QueryManager(Q(start_date__lte=datetime.now) & (Q(end_date__gte=datetime.now) | Q(end_date__isnull=True))) 
     
     class Meta:
         abstract = True
@@ -189,6 +197,12 @@ class GroupCharge(models.Model):
     end_date = models.DateField(blank=True, null=True)
     end_reason = models.CharField(blank=True, max_length=255)
     
+    # all group charges (including expired ones)
+    objects = models.Manager()
+    # currently active group charges only 
+    active = QueryManager(Q(start_date__lte=datetime.now) & (Q(end_date__gte=datetime.now) | Q(end_date__isnull=True))) 
+
+    
     class Meta:
         db_table = u'people_group_charge'
         verbose_name = _('group charge')
@@ -203,6 +217,11 @@ class GroupIsMajority(models.Model):
     is_majority = models.NullBooleanField(_('Is majority'), default=False, null=True)
     start_date = models.DateField(_('Start date'))
     end_date = models.DateField(_('End date'), blank=True, null=True)
+    
+    # all records (including expired ones)
+    objects = models.Manager()
+    # currently active records only 
+    active = QueryManager(Q(start_date__lte=datetime.now) & (Q(end_date__gte=datetime.now) | Q(end_date__isnull=True))) 
 
     class Meta:
         verbose_name = _('group majority')
