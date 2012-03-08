@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
 from django.template.defaultfilters import slugify
 from django.core.urlresolvers import reverse
@@ -8,6 +9,7 @@ from model_utils.managers import PassThroughManager
 
 from open_municipio.people.managers import TimeFramedQuerySet
 
+from datetime import datetime
 #
 # Persons, charges and groups
 #
@@ -168,7 +170,15 @@ class Group(models.Model):
         
     @property
     def counselors(self):
-        return self.counselor_set.all()
+        """
+        Return a QuerySet containing the counselors (as charges) currently
+        belonging to this group.
+        """
+        now = datetime.now()
+        # filter out non-current ``GroupCharges`` records
+        current_Q = Q(groupcharge__start_date__lte=now) & (Q(groupcharge__end_date__gte=now) | Q(groupcharge__end_date__isnull=True)) 
+        qs = InstitutionCharge.objects.current().filter(current_Q).filter(groupcharge__group__id=self.id) 
+        return qs
     
     @property
     def majority_records(self):
@@ -176,8 +186,9 @@ class Group(models.Model):
     
     @property
     def is_majority_now(self):
-        current_is_maj = self.groupismajority_set.filter(end_date__isnull=True)
-        return current_is_maj[0]
+        # only one majority record with no ``end_date`` should exists 
+        # at a time (i.e. the current one)
+        return self.majority_records.get(end_date__isnull=True).is_majority
 
 
 class GroupCharge(models.Model):
@@ -285,10 +296,10 @@ class Institution(Body):
     @property
     def charges(self):
         """
-        The QuerySet of all charges (``InstitutionCharge`` instances) 
+        The QuerySet of all *current* charges (``InstitutionCharge`` instances) 
         associated with this institution.  
         """
-        return self.charge_set.all()
+        return self.charge_set.current()
     
 
 class Company(Body):
@@ -305,10 +316,10 @@ class Company(Body):
     @property
     def charges(self):
         """
-        The QuerySet of all charges (``CompanyCharge`` instances) 
+        The QuerySet of all *current* charges (``CompanyCharge`` instances) 
         associated with this company.  
         """
-        return self.charge_set.all()
+        return self.charge_set.current()
  
     
   
@@ -326,10 +337,10 @@ class Office(Body):
     @property
     def charges(self):
         """
-        The QuerySet of all charges (``AdministrationCharge`` instances) 
+        The QuerySet of all *current* charges (``AdministrationCharge`` instances) 
         associated with this office.  
         """
-        return self.charge_set.all()
+        return self.charge_set.current()
     
 #
 # Sittings
