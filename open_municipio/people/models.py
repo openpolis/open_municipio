@@ -1,13 +1,12 @@
 from django.db import models
-from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
 from django.template.defaultfilters import slugify
 from django.core.urlresolvers import reverse
 
 from model_utils import Choices
-from model_utils.managers import QueryManager
+from model_utils.managers import PassThroughManager
 
-from datetime import datetime
+from open_municipio.people.managers import TimeFramedQuerySet
 
 #
 # Persons, charges and groups
@@ -51,10 +50,7 @@ class Charge(models.Model):
     end_reason = models.CharField(_('end reason'), blank=True, max_length=255)
     description = models.CharField(_('description'), blank=True, max_length=255, help_text=_('Insert the complete description of the charge, if it gives more information than the charge type'))
     
-    # all charges (including expired ones)
-    objects = models.Manager()
-    # currently active charges only 
-    active = QueryManager(Q(start_date__lte=datetime.now) & (Q(end_date__gte=datetime.now) | Q(end_date__isnull=True))) 
+    objects = PassThroughManager.for_queryset_class(TimeFramedQuerySet)() 
     
     class Meta:
         abstract = True
@@ -188,7 +184,7 @@ class GroupCharge(models.Model):
     """
     This model records the historical composition of council groups. 
     
-    This is only valid for ``InstitutionCharges``.
+    This only makes sense for ``InstitutionCharges``.
     """
     group = models.ForeignKey('Group')
     charge = models.ForeignKey('InstitutionCharge')
@@ -197,11 +193,7 @@ class GroupCharge(models.Model):
     end_date = models.DateField(blank=True, null=True)
     end_reason = models.CharField(blank=True, max_length=255)
     
-    # all group charges (including expired ones)
-    objects = models.Manager()
-    # currently active group charges only 
-    active = QueryManager(Q(start_date__lte=datetime.now) & (Q(end_date__gte=datetime.now) | Q(end_date__isnull=True))) 
-
+    objects = PassThroughManager.for_queryset_class(TimeFramedQuerySet)()    
     
     class Meta:
         db_table = u'people_group_charge'
@@ -218,10 +210,7 @@ class GroupIsMajority(models.Model):
     start_date = models.DateField(_('Start date'))
     end_date = models.DateField(_('End date'), blank=True, null=True)
     
-    # all records (including expired ones)
-    objects = models.Manager()
-    # currently active records only 
-    active = QueryManager(Q(start_date__lte=datetime.now) & (Q(end_date__gte=datetime.now) | Q(end_date__isnull=True))) 
+    objects = PassThroughManager.for_queryset_class(TimeFramedQuerySet)() 
 
     class Meta:
         verbose_name = _('group majority')
