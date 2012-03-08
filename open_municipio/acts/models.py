@@ -34,7 +34,7 @@ class Act(TimeStampedModel):
     adj_title = models.CharField(_('adjoint title'), max_length=255, blank=True, help_text=_("An adjoint title, added to further explain an otherwise cryptic title"))
     presentation_date = models.DateField(_('presentation date'), null=True, help_text=_("Date of presentation, as stated in the act"))
     text = models.TextField(_('text'), blank=True)
-    transitions = models.ManyToManyField('Status', blank=True, null=True, through='Transition', verbose_name=_('transitions'))
+    transition_set = models.ManyToManyField('Status', blank=True, null=True, through='Transition', verbose_name=_('transitions'))
     presenters = models.ManyToManyField(InstitutionCharge, blank=True, null=True, through='ActSupport', related_name='presenter_act_set', verbose_name=_('presenters'))
     recipients = models.ManyToManyField(InstitutionCharge, blank=True, null=True, db_table='acts_act_recipient', related_name='recipient_act_set', verbose_name=_('recipients'))
     emitting_institution = models.ForeignKey(Institution, related_name='emitted_act_set', verbose_name=_('emitting institution'))
