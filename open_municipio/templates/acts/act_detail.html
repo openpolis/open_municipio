@@ -49,12 +49,11 @@ $(document).ready(function() {
             <th><span class="lightgraybox smallbox">Prossima discussione</span></th>
             <td><span class="graybox smallbox">3.3.2012</span></td>
         </tr>
-    </table>
-    
+
     <h2><small>
       <strong>{% block act_type %}TIPO ATTO{% endblock %}</strong> 
       del Consiglio comunale N° 85 del <span class="date">2.2.2012</span></small></h2>
-    <h1><strong>{{ act.title }}</strong> ({{ act.idnum }})</h1>
+ z    <h1><strong>{{ act.title }}</strong> ({{ act.idnum }})</h1>
 </hgroup>
 
 <p class="well">{{ act.text|safe }}</p>

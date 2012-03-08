@@ -11,9 +11,6 @@ urlpatterns = patterns('',
 )
 
 urlpatterns += patterns('profiles.views',
-    url(r'^profile/create/$',
-       'create_profile',
-       name='profiles_create_profile'),
     url(r'^profile/edit/$',
        'edit_profile',
        name='profiles_edit_profile'),

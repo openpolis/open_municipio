@@ -39,12 +39,14 @@ class UserProfile(models.Model):
     says_is_politician = models.BooleanField(_('i am a politician'), default=False)
     
     # user's privacy options
-    privacy_level = models.IntegerField(_('privacy level'), choices=PRIVACY_LEVELS)
+    privacy_level = models.IntegerField(_('privacy level'), choices=PRIVACY_LEVELS, default=NONE)
     
     # user wants to receive newsletters (whatever that means)
-    wants_newsletter = models.BooleanField()
+    wants_newsletter = models.BooleanField(_('wants newsletter'), default=False)
     
-    
+    # TODO: location must be a foreign key to a proper, dedicated table
+    city = models.CharField(_(u'location'), max_length=128)
+
     class Meta:
         db_table = u'users_user_profile'
     
@@ -55,5 +57,5 @@ class UserProfile(models.Model):
     @property
     def monitored_objects(self):
         """returns monitored objects as list of objects"""
-        return [o.content_object for o in self.user.    monitorings.all()]
+        return [o.content_object for o in self.user.monitorings.all()]
     
