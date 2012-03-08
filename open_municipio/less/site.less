@@ -4,6 +4,7 @@
 @greenDark:             #438137;
 @greenLight:            #9bce7e;
 @greenLighter:          #cde6be;
+@brown:                 #7a6a5c;
 
 @baseBackground:      #ebebeb;
 @lightBackground:     #f6f4f2;
@@ -47,6 +48,28 @@
 .monitoring { color: @grayLight; }
 .textboxlist-loading { background: url('../img/spinner.gif') no-repeat right center; }
 
+/* Tables */
+table.data {
+    .table;
+    .table-striped;
+    thead { background-color: @brown;
+            color: @lightText;
+            font-size: 1.2em; }
+    tfoot { background-color: @darkBackground;
+            font-weight: bold; }
+    td { vertical-align: middle; }
+}
+
+/* Text alignments (with table-fix) */
+.text-left table th.text-left, table td.text-left { text-align: left; }
+.text-right, table th.text-right , table td.text-right { text-align: right; }
+.text-center, table th.text-center, table td.text-center { text-align: center; }
+
+/* Generic thumbnail */
+.thumb {
+    .pull-left;
+    margin-right: 5px;
+}
 
 /* Stats block */
 dl.stats {    
@@ -136,6 +159,33 @@ ul.feed-list {
         margin-bottom: 3px;
         padding: 3px 5px 3px;
     }
+}
+
+/* Data lists */
+ul.data-list {
+    margin-left: 0;
+    list-style: none;
+    margin-bottom: 12px;
+    > li {
+        margin-bottom: 12px;
+    }
+    ul {
+        margin-left: 0;
+        list-style: none;
+    }
+}
+
+dl.data-list {
+    dt { 
+        float:left;
+        margin-top: 12px;
+        &:first-child { margin-top: 0; }
+        i { text-indent: -9999px; overflow: hidden; }
+    }
+    dd {
+        margin-left: 25px;
+    }
+    dt + dd { margin-top: 12px;  }
 }
 
 /* Hand icons */
