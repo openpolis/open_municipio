@@ -78,7 +78,7 @@ class InstitutionCharge(Charge):
                      related_name='reverse_substituted_by_set', 
                      on_delete=models.PROTECT, 
                      verbose_name=_('substituted by'))
-    institution = models.ForeignKey('Institution', on_delete=models.PROTECT, verbose_name=_('institution'))
+    institution = models.ForeignKey('Institution', on_delete=models.PROTECT, verbose_name=_('institution'), related_name='charge_set')
     charge_type = models.IntegerField(_('charge type'), choices=CHARGE_TYPES)
     op_charge_id = models.IntegerField(_('openpolis institution charge ID'), blank=True, null=True)
   
@@ -110,7 +110,7 @@ class CompanyCharge(Charge):
         (DIR_CHARGE, _('Member of the board')),
     )
     
-    company = models.ForeignKey('Company', on_delete=models.PROTECT, verbose_name=_('company'))
+    company = models.ForeignKey('Company', on_delete=models.PROTECT, verbose_name=_('company'), related_name='charge_set')
     charge_type = models.IntegerField(_('charge type'), choices=CHARGE_TYPES)
     
     class Meta(Charge.Meta):
@@ -134,7 +134,7 @@ class AdministrationCharge(Charge):
       (EXEC_CHARGE, _('Executive')),
     )
     
-    office = models.ForeignKey('Office', on_delete=models.PROTECT, verbose_name=_('office'))
+    office = models.ForeignKey('Office', on_delete=models.PROTECT, verbose_name=_('office'), related_name='charge_set')
     charge_type = models.IntegerField(_('charge type'), choices=CHARGE_TYPES)
 
     class Meta(Charge.Meta):
@@ -274,7 +274,13 @@ class Institution(Body):
     def get_absolute_url(self):
         return reverse("om_institution_detail", kwargs={'slug': self.slug})
     
-    
+    @property
+    def charges(self):
+        """
+        The QuerySet of all charges (``InstitutionCharge`` instances) 
+        associated with this institution.  
+        """
+        return self.charge_set.all()
     
 
 class Company(Body):
@@ -288,6 +294,14 @@ class Company(Body):
     def get_absolute_url(self):
         return reverse("om_company_detail", kwargs={'slug': self.slug})
     
+    @property
+    def charges(self):
+        """
+        The QuerySet of all charges (``CompanyCharge`` instances) 
+        associated with this company.  
+        """
+        return self.charge_set.all()
+ 
     
   
 class Office(Body):
@@ -300,7 +314,15 @@ class Office(Body):
 
     def get_abolute_url(self):
         return reverse("om_office_detail", kwargs={'slug': self.slug})
- 
+    
+    @property
+    def charges(self):
+        """
+        The QuerySet of all charges (``AdministrationCharge`` instances) 
+        associated with this office.  
+        """
+        return self.charge_set.all()
+    
 #
 # Sittings
 #
