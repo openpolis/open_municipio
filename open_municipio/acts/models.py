@@ -3,7 +3,8 @@ from django.utils.translation import ugettext_lazy as _
 
 from model_utils import Choices
 from model_utils.managers import InheritanceManager
-from model_utils.models import TimeStampedModel 
+from model_utils.models import TimeStampedModel
+from model_utils.fields import StatusField  
 
 from taggit.managers import TaggableManager
 
@@ -34,7 +35,6 @@ class Act(TimeStampedModel):
     adj_title = models.CharField(_('adjoint title'), max_length=255, blank=True, help_text=_("An adjoint title, added to further explain an otherwise cryptic title"))
     presentation_date = models.DateField(_('presentation date'), null=True, help_text=_("Date of presentation, as stated in the act"))
     text = models.TextField(_('text'), blank=True)
-    transition_set = models.ManyToManyField('Status', blank=True, null=True, through='Transition', verbose_name=_('transitions'))
     presenters = models.ManyToManyField(InstitutionCharge, blank=True, null=True, through='ActSupport', related_name='presenter_act_set', verbose_name=_('presenters'))
     recipients = models.ManyToManyField(InstitutionCharge, blank=True, null=True, db_table='acts_act_recipient', related_name='recipient_act_set', verbose_name=_('recipients'))
     emitting_institution = models.ForeignKey(Institution, related_name='emitted_act_set', verbose_name=_('emitting institution'))
@@ -129,6 +129,11 @@ class Agenda(Act):
     It is specifically used with respect to issues specific to the deliberation process.
     It is submitted to the Council approval and Emendations to it can be presented before the votation.
     """
+    # TODO: add additional statuses allowed for this act type
+    STATUS = Choices(('PRESENTED', 'presented', _('presented')), ('APRROVED', 'approved', _('approved')))
+    
+    status = StatusField()
+    
     class Meta:
         verbose_name = _('agenda')
         verbose_name_plural = _('agenda')
@@ -149,7 +154,10 @@ class Deliberation(Act):
         (GOVERNMENT_INIT, _('City Government')),
         (MAYOR_INIT, _('Mayor')),
     )
-
+    # TODO: add additional statuses allowed for this act type
+    STATUS = Choices(('PRESENTED', 'presented', _('presented')), ('APRROVED', 'approved', _('approved')))
+    
+    status = StatusField()
     approval_date = models.DateField(_('approval date'), null=True, blank=True)
     publication_date = models.DateField(_('publication date'), null=True, blank=True)
     execution_date = models.DateField(_('execution date'), null=True, blank=True)
@@ -171,7 +179,10 @@ class Interrogation(Act):
         (WRITTEN_ANSWER, _('Written')),
         (VERBAL_ANSWER, _('Verbal')),
     )
-  
+    # TODO: add additional statuses allowed for this act type
+    STATUS = Choices(('PRESENTED', 'presented', _('presented')), ('ANSWERED', 'answered', _('answered')))
+    
+    status = StatusField()
     answer_type = models.IntegerField(_('answer type'), choices=ANSWER_TYPES)
     question_motivation = models.TextField(blank=True)
     answer_text = models.TextField(blank=True)
@@ -192,7 +203,10 @@ class Interpellation(Act):
         (WRITTEN_ANSWER, _('Written')),
         (VERBAL_ANSWER, _('Verbal')),
     )
+    # TODO: add additional statuses allowed for this act type
+    STATUS = Choices(('PRESENTED', 'presented', _('presented')), ('ANSWERED', 'answered', _('answered')))
     
+    status = StatusField()
     answer_type = models.IntegerField(_('answer type'), choices=ANSWER_TYPES)
     question_motivation = models.TextField(blank=True)
     answer_text = models.TextField(blank=True)
@@ -208,6 +222,11 @@ class Motion(Act):
     on a broad type of issues (specific to the Comune proceedings, or of a more general category)
     It is submitted to the Council approval and Emendations to it can be presented before the votation.
     """
+    # TODO: add additional statuses allowed for this act type
+    STATUS = Choices(('PRESENTED', 'presented', _('presented')), ('APRROVED', 'approved', _('approved')))
+    
+    status = StatusField()
+    
     class Meta:
         verbose_name = _('motion')
         verbose_name_plural = _('motions')
@@ -221,6 +240,10 @@ class Emendation(Act):
     An emendation relates to an act, and it can relate theoretically to another emendation (sub-emendations).
     Optionally, an emendation relates to an act section (article, paragraph).
     """
+    # TODO: add additional statuses allowed for this act type
+    STATUS = Choices(('PRESENTED', 'presented', _('presented')), ('APRROVED', 'approved', _('approved')))
+    
+    status = StatusField()
     act = models.ForeignKey(Act, related_name='related_emendation_set', on_delete=models.PROTECT)
     act_section = models.ForeignKey(ActSection, null=True, blank=True, on_delete=models.PROTECT)
 
@@ -233,22 +256,9 @@ class Emendation(Act):
 #
 # Workflows
 #
-
-class Status(models.Model):
-    name = models.CharField(max_length=128)
-    slug = models.SlugField()
-  
-    def __unicode__(self):
-        return u'%s' % self.name
-    
-    class Meta:
-        verbose_name = _('status')
-        verbose_name_plural = _('statuses')
-  
-  
 class Transition(models.Model):
-    final_status = models.ForeignKey(Status, on_delete=models.PROTECT)
-    act = models.ForeignKey(Act)
+    final_status = models.CharField(_('final status'), max_length=100)
+    act = models.ForeignKey(Act, related_name='transition_set')
     sitting = models.ForeignKey(Sitting, null=True, blank=True, on_delete=models.PROTECT)
     transition_date = models.DateField(default=None)
     symbol = models.CharField(_('symbol'), max_length=128, null=True)
