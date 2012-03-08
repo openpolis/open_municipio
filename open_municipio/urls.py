@@ -19,32 +19,49 @@
 
 
 from django.conf.urls.defaults import *
-
 from django.contrib import admin
-admin.autodiscover()
-
+from voting.views import vote_on_object
+from open_municipio.acts.models import Act
+from open_municipio.om_comments.models import CommentWithMood
 from open_municipio.inline_edit.views import InlineEditView
-from open_municipio.people.models import Institution, Office, Company, Person
-from open_municipio.people.views import InstitutionDetailView
-from open_municipio.views import HomeView, InfoView
+admin.autodiscover()
 
 
 urlpatterns = patterns('',
     (r'^admin/doc/', include('django.contrib.admindocs.urls')),
     (r'^admin/', include(admin.site.urls)),
-
+    
     # home page
-    (r'^$', HomeView.as_view()),  
-  
+    (r'^$', 'django.views.generic.simple.direct_to_template', {'template': 'om/home.html'}),
+
     # info page
-    (r'^info/$', InfoView.as_view()),  
+    (r'^info/$', 'django.views.generic.simple.direct_to_template', {'template': 'om/info.html'}),
+
+    (r'^comments/', include('django.contrib.comments.urls')),
 
     (r'^people/', include('open_municipio.people.urls.people')),
     (r'^institutions/', include('open_municipio.people.urls.institutions')),
     (r'^offices/', include('open_municipio.people.urls.offices')),
     (r'^companies/', include('open_municipio.people.urls.companies')), 
     (r'^acts/', include('open_municipio.acts.urls')),
-    (r'^comments/', include('open_municipio.om_comments.urls')),
+)
+
+
+act_dict = {
+    'model': Act,
+    'template_object_name': 'act',
+    'allow_xmlhttprequest': 'true',
+}
+
+comment_dict = {
+    'model': CommentWithMood,
+    'template_object_name': 'comment',
+    'allow_xmlhttprequest': 'true',
+}
+
+urlpatterns += patterns('',
+   (r'^atti/(?P<object_id>\d+)/(?P<direction>up|down|clear)vote/?$', vote_on_object, act_dict),
+   (r'^commenti/(?P<object_id>\d+)/(?P<direction>up|down|clear)vote/?$', vote_on_object, comment_dict),
 )
 
 # inline editing
@@ -55,5 +72,17 @@ urlpatterns += patterns('',
 # autocompletion
 urlpatterns += patterns('',
     url(r'^autocomplete/', include('open_municipio.autocomplete.urls')),
+)
+
+# monitoring
+urlpatterns += patterns('',
+    url(r'^monitoring/', include('open_municipio.monitoring.urls')),
+)
+
+
+# user registration and profiles
+urlpatterns += patterns('',
+    url(r'^accounts/', include('open_municipio.registration.backends.om.urls')),
+    url(r'^users/', include('open_municipio.users.urls')),
 )
 

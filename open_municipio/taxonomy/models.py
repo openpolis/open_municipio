@@ -2,8 +2,10 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
+from django.contrib.contenttypes import generic
 
 from taggit.models import Tag, GenericTaggedItemBase, TaggedItemBase
+from open_municipio.monitoring.models import Monitoring
 
 class TaggedItem(GenericTaggedItemBase, TaggedItemBase):
     """
@@ -34,6 +36,10 @@ class Category(models.Model):
     name = models.CharField(verbose_name=_('Name'), max_length=100)
     slug = models.SlugField(verbose_name=_('Slug'), blank=True, unique=True, max_length=100)
     tag_set = models.ManyToManyField(Tag, related_name='category_set', null=True, blank=True)
+  
+    # manager to handle the list of monitoring having as content_object this instance
+    monitorings = generic.GenericRelation(Monitoring,
+                                          object_id_field='object_pk')
   
     class Meta:
         verbose_name = _('category')
@@ -68,7 +74,7 @@ class Category(models.Model):
         # auto-generate a slug, if needed 
         if not self.pk and not self.slug:
             self.slug = self.calculate_slug()
-            return super(Category, self).save(*args, **kwargs)
+        return super(Category, self).save(*args, **kwargs)
         
     @property
     def tags(self):

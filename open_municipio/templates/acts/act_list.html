@@ -1,14 +1,27 @@
-{% extends "base.html" %}
+{% extends "acts/act_section.html" %}
 {% load i18n %}
 
 {% block title %} Elenco atti {% endblock %}
+{% block content_header %}Elenco degli atti{% endblock %}
+{% block acts_class %}class="active"{% endblock %}
 
 {% block content %}
   <section id="content"><!-- #content -->
-    <ul>
-      {% for act in object_list %}
-      <li><a href="">Act id: {{ act.idnum }} - Title: {{ act.title }}</a></li>
-      {% endfor %}
-    </ul>  
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Data di presentazione</th>
+          <th>Atto</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for obj in object_list %}
+          <tr>
+            <td>{{ obj.presentation_date}}</td>
+            <td><a href="{{ obj.get_absolute_url }}">{{ obj }}</a></td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>      
   </section><!-- end of #content -->  
 {% endblock %}

@@ -1,6 +1,9 @@
+.DS_Store
+.idea
 *~
 *.pyc
 *.sqlite
+.idea
 open_municipio/settings_*.py
 open_municipio/urls_*.py
 apache
@@ -12,6 +15,8 @@ open_municipio/acts/migrations/*
 open_municipio/people/migrations/*
 open_municipio/votations/migrations/*
 open_municipio/taxonomy/migrations/*
+open_municipio/monitoring/migrations/*
+open_municipio/users/migrations/*
 uploads/attached_documents/*
 docs/ignored
 docs/dev/data_import/README-it.html

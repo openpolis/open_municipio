@@ -1,86 +1,281 @@
-{% extends "base.html" %}
+{% extends "acts/act_section.html" %}
 {% load i18n %}
 
 {% block title %}| Dettaglio {{ act }}{% endblock title %}
+{% block content_header %}Dettaglio atto{% endblock %}
+{% block acts_class %}class="active"{% endblock %}
+
+{% block head_css_includes %}
+    {{ block.super }}
+    {% if user.is_staff %}
+    <!-- required for TextboxList -->
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/textboxlist.css" />
+    <link type="text/css" href="{{ STATIC_URL }}css/ui-custom-theme/jquery-ui-1.8.16.custom.css" rel="stylesheet" />
+    {% endif %}
+{% endblock head_css_includes %}
 
 {% block head_js_includes %}
-{{ block.super }}
-<script src="{{ STATIC_URL }}js/ajax_csrf.js" type="text/javascript" charset="utf-8"></script>
-{% if user.is_staff %}
-<script src="{{ STATIC_URL }}js/jquery.jeditable.min.js" type="text/javascript" charset="utf-8"></script>
-{% endif %}
+    {{ block.super }}
+    <!--<script src="{{ STATIC_URL }}js/ajax_csrf.js" type="text/javascript" charset="utf-8"></script>-->
+    {% if user.is_staff %}
+    <!-- required for TextboxList -->
+    <script src="{{ STATIC_URL }}js/GrowingInput.js" type="text/javascript" charset="utf-8"></script>
+    <script src="{{ STATIC_URL }}js/TextboxList.js" type="text/javascript" charset="utf-8"></script>		
+    <script src="{{ STATIC_URL }}js/TextboxList.Autocomplete.js" type="text/javascript" charset="utf-8"></script>
+    <!-- required for TextboxList.Autocomplete if method set to 'binary' -->
+    <script src="{{ STATIC_URL }}js/TextboxList.Autocomplete.Binary.js" type="text/javascript" charset="utf-8"></script>
+    <script src="{{ STATIC_URL }}js/bootstrap-modal.js" type="text/javascript"></script>
+    <script src="{{ STATIC_URL }}js/jquery.cteditor.js" type="text/javascript"></script>
+    {% endif %}
 {% endblock head_js_includes %}
 
 {% block extra_js %} 	
 $(document).ready(function() {
-	 $('.editable').editable('/inline/edit/', {
-		type      : 'text',
-     	cancel    : 'Cancel',
-     	submit    : 'OK',
-     	indicator : '<img src="images/indicator.gif">',
-     	tooltip   : 'Click to edit...',
-		width : 300 
- 	 });
- });
+    $('#cteditor-launcher').click(function(event){
+        event.preventDefault();
+        $('#cteditor').cteditor();
+    }).parent().hover(
+        function() { $('#cteditor-launcher', this).fadeIn(); }, 
+        function() { $('#cteditor-launcher', this).fadeOut(); }
+    );
+});
 {% endblock extra_js %}
 
 
 
 {% block content %}
-  <section id="content"><!-- #content -->
- 	 <ul>
- 		<li> ID: {{ act.idnum }} </li>
-		<li> Istituzione: {{ act.emitting_institution }} </li>
-		<li> Data di presentazione: {{ act.presentation_date }} </li> 	
-	  </ul>
- 
- 	<p class="synopsis"> 
- 	Titolo: 	
-	{% if user.is_staff %}
-		{% if act.adj_title %}
-			[<span id="acts-act-{{act.id}}-adj_title" class="editable">{{ act.adj_title }}</span>]		
-		{% else %}
-			<span id="acts-act-{{act.id}}-adj_title" class="editable">[Inserisci titolo aggiunto]</span>
-		{% endif %}
-	{% else %}
-		{% if act.adj_title %}
-			<span>[{{ act.adj_title }}]</span>   
-		{% endif %}
-	{% endif %}
-	
-	{{ act.title }}
-	</p>
-	
-	<br />
-	
-	<p>
-	{{ act.text }}
-	</p>
-	
-	<div id="related_tags" style="margin: 20px 0">
- 		<div id="tag_show" class="tags">
- 			<em>argomenti:</em>
-			{% for tag in act.tags %}
-				<div id="tag-{{ tag.id }}" class="">
-					{% if user.is_staff %}
-					<span class="remover" title="clicca qui per rimuovere questo tag">
-						<a href="{{ act.get_absolute_url }}tags/remove/{{ tag.slug }}">(X)</a>
-					</span>
-					{% endif %}
-					<span class="tag">
-						<a href="/tags/{{ tag.slug }} "> {{ tag }} </a>
-					</span>
-				</div>
-			{% endfor %}
-	</div>
-	
-	<div id="tag_edit">
-	Cerca tag:	
-	<form id="" method="post" action="{{ act.get_absolute_url }}tags/add/" style="display: inline;"> 
-		{% csrf_token %}
-		{{ tag_add_form.as_p }}
-		<input type="submit" value="Aggiungi" />
-	</form>
-	</div>
-  </section><!-- end of #content -->  
+<hgroup>
+    <table class="pull-right">
+        <tr>
+            <th><span class="lightgraybox smallbox">Prossima discussione</span></th>
+            <td><span class="graybox smallbox">3.3.2012</span></td>
+        </tr>
+
+    <h2><small>
+      <strong>{% block act_type %}TIPO ATTO{% endblock %}</strong> 
+      del Consiglio comunale N° 85 del <span class="date">2.2.2012</span></small></h2>
+ z    <h1><strong>{{ act.title }}</strong> ({{ act.idnum }})</h1>
+</hgroup>
+
+<p class="well">{{ act.text|safe }}</p>
+
+<ul class="nav nav-tabs">
+  <li class="active">
+    <a href="#">Stato</a>
+  </li>
+  <li><a href="#">Documenti</a></li>
+  <li><a href="#">Emendamenti</a></li>
+  <li><a href="#">Voti</a></li>
+</ul>
+
+<table id="acttable">
+    <thead>
+        <tr>
+            <th class="green span3">Presentazione</th>
+            <th class="greenLight span3">Discussione in Commissione</th>
+            <th class="span3">Discussione in Consiglio</th>
+            <th class="span3">Approvazione</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{ act.presentation_date }}</td>
+            <td>
+                <ul>
+                    <li>
+                        2.2.2012 - Edilizia <br />
+                        <strong>In esame</strong>
+                    </li>
+                    <li>
+                        12.2.2012 - Edilizia <br />
+                        <strong><i class="icon-check"></i> Approvato</strong> <br />
+                        <a href="#">Emendamenti</a> &middot; <a href="#">Voti</a>
+                    </li>
+                    <li><strong><a href="#">Vedi tutte <i class="icon-chevron-down"></i></a></strong></li>
+                </ul>
+            </td>
+            <td></td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="row-fluid">
+    
+    <section class="span6">
+        <h1>Firmatari</h1>
+        <ul class="people-list border-right">
+            <li>
+                <a href="#"><img src="http://placehold.it/50" /></a>
+                <strong><a href="#"><i class="icon-ok"></i> Mario Rossi</a></strong> <br />
+                Partito Democratico
+                <span class="monitoring">Monitorato da 2 cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a>
+            </li>
+            <li>
+                <a href="#"><img src="http://placehold.it/50" /></a>
+                <strong><a href="#"><i class="icon-ok"></i> Mario Rossi</a></strong> <br />
+                Partito Democratico
+                <span class="monitoring">Monitorato da 2 cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a>
+            </li>
+            <li>
+                <a href="#"><img src="http://placehold.it/50" /></a>
+                <strong><a href="#"><i class="icon-ok"></i> Mario Rossi</a></strong> <br />
+                Partito Democratico
+                <span class="monitoring">Monitorato da 2 cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a>
+            </li>
+        </ul>
+        
+    </section>
+    
+    <section class="span6">
+        <h1>Co-firmatari</h1>
+        <ul class="people-list">
+            <li>
+                <a href="#"><img src="http://placehold.it/50" /></a>
+                <strong><a href="#"><i class="icon-ok"></i> Mario Rossi</a></strong> <br />
+                Partito Democratico
+            </li>
+            <li>
+                <a href="#"><img src="http://placehold.it/50" /></a>
+                <strong><a href="#"><i class="icon-ok"></i> Mario Rossi</a></strong> <br />
+                Italia dei Valori
+                <span class="monitoring">Monitorato da 2 cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a>
+            </li>
+            <li>
+                <a href="#"><img src="http://placehold.it/50" /></a>
+                <strong><a href="#"><i class="icon-ok"></i> Mario Rossi</a></strong> <br />
+                Italia dei Valori
+                <span class="monitoring">Monitorato da 2 cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a>
+            </li>
+        </ul>
+        
+    </section>
+    
+</div>
 {% endblock content %}
+
+
+{% block sidebar %}
+
+<section>
+    {% include 'acts/act_tags_editor.html' %}
+    <h3>Argomenti dell'atto</h3>
+    
+    <dl class="tags-cloud">
+        {% for category in act.categories %}
+        <dt><a href="{{ category.get_absolute_url }}">{{ category.name }}</a></dt>
+        {% for arg in category.tags %}
+            <dd><a href="{{ arg.get_absolute_url }}">{{ arg }}</a></dd>
+        {% endfor %}
+        {% endfor %}
+    </dl>
+    
+</section>
+
+<section><h3>Monitora</h3>
+    <table class="">
+        <tr>
+            <td><span class="bluebox">{{ act.monitoring_users|length}}</span></td>
+            <th class="bg-dark span12">
+                utenti che monitorano l'atto<br />
+                {% for u in act.monitoring_users %}
+                  <a href="#">{{ u }}</a>  
+                  {% if forloop.last %}<br/>{% else %},{% endif %}
+                {% endfor %}
+                
+                {% if user.is_authenticated %}
+                  {% if is_user_monitoring %}
+                  <form action="{% url monitoring-stop %}" method="post">
+                    {% csrf_token %}
+                    {{ monitoring_form }}
+                    <i class="icon-minus-sign"></i>
+                    <button type="submit" class="btn btn-info btn-small">Interrompi il monitoraggio</button>
+                  </form>
+                  {% else %}
+                    <form action="{% url monitoring-start %}" method="post">
+                      {% csrf_token %}
+                      {{ monitoring_form }}
+                      
+                      <button type="submit" class="btn btn-info btn-mini"><i class="socialicon-add"></i> Avvia il monitoraggio</button>
+                    </form>
+                  {% endif %}
+                {% endif %}
+            </th>
+        </tr>
+        <tr>
+            <td><span class="greenbox">0</span></td>
+            <th class="bg-dark span12">
+                politici che monitorano l'atto <br>
+                <span class="monitoring"><a href="#"><i class="socialicon-add"></i> Monitora</a>
+            </th>
+        </tr>
+    </table>
+</section>
+
+<section><h3>Vota</h3>
+    <table class="table">
+        <tr>
+            <td><span class="okbox">0</span></td>
+            <th class="bg-dark span6"><i class="socialicon-ok"></i> Sono favorevole</th>
+            <td><span class="kobox">1000</span></td>
+            <th class="bg-dark span6"><i class="socialicon-ko"></i> Sono contrario</th>
+        </tr>
+    </table>
+</section>
+
+<section><h3>Commenti (20)</h3>
+    <ul class="people-list">
+        <li class="bg-light">
+            <a href="#"><img src="http://placehold.it/50x50" alt="" /></a>
+            <a href="#">JohnDoe</a> Lorem ipsum dolor sit amet,consectetuer adipiscing elit. Suspendisse ut purus.
+            <span class="monitoring">
+                <i class="socialicon-ko"></i> · 14.06.2011 · <a href="#">Condividi</a> · <a href="#">Mi piace</a> · <i class="socialicon-add"></i> 4
+            </span>
+        </li>
+        <li class="bg-lightgreen">
+            <a href="#"><img src="http://placehold.it/50x50" alt="" /></a>
+            <a href="#">JohnDoe</a> Lorem ipsum dolor sit amet,consectetuer adipiscing elit. Suspendisse ut purus.
+            <span class="monitoring">
+                <i class="socialicon-ko"></i> · 14.06.2011 · <a href="#">Condividi</a> · <a href="#">Mi piace</a> · <i class="socialicon-add"></i> 4
+            </span>
+        </li>
+        <li class="bg-light">
+            <a href="#"><img src="http://placehold.it/50x50" alt="" /></a>
+            <a href="#">JohnDoe</a> Lorem ipsum dolor sit amet,consectetuer adipiscing elit. Suspendisse ut purus.
+            <span class="monitoring">
+                <i class="socialicon-ko"></i> · 14.06.2011 · <a href="#">Condividi</a> · <a href="#">Mi piace</a> · <i class="socialicon-plus"></i> 4
+            </span>
+        </li>
+    </ul>
+    <form action="#" class="form-inline bg-dark">
+        <i class="socialicon-ok"></i><i class="socialicon-ko"></i><i class="socialicon-five"></i>
+        <input type="text" placeholder="Scrivi un commento..." />        
+    </form>
+    
+    
+    <p>Leggi tutti (Cronologia) <i class="icon-chevron-down"></i></p>
+</section>
+
+<section>
+    <h3>Ultime sugli Atti <img src="{{ STATIC_URL }}img/feed-icon-14x14.png" alt="" /></h3>
+
+    <ul class="feed-list">
+        <li><a href="#">Mario Rossi ha commentato il voto</a></li>
+        <li><a href="#">Il voto è inserito nell'ordine del giorno N° 13516</a></li>
+        <li><a href="#">Barcaiuolo, Pellacani, Bellei, Morandi, Santoro (PdL) hanno presentato la mozione...</a></li>
+    </ul>
+    <p class="bg-dark">Leggi tutti (Cronologia) <i class="icon-chevron-down"></i></p>
+</section>
+
+<section>
+    <h3>Ultime dalla community <img src="{{ STATIC_URL }}img/feed-icon-14x14.png" alt="" /></h3>
+
+    <ul class="feed-list">
+        <li><a href="#">Mario Rossi ha commentato il voto</a></li>
+        <li><a href="#">Il voto è inserito nell'ordine del giorno N° 13516</a></li>
+        <li><a href="#">Barcaiuolo, Pellacani, Bellei, Morandi, Santoro (PdL) hanno presentato la mozione...</a></li>
+
+    </ul>
+    <p class="bg-dark">Leggi tutte (Cronologia) <i class="icon-chevron-down"></i></p>
+</section>
+{% endblock %}

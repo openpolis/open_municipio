@@ -1,0 +1,229 @@
+// Site Colours
+@blueDark:              #0064cd;
+@blueLight:             #5ac3e6;
+@greenDark:             #438137;
+@greenLight:            #9bce7e;
+@greenLighter:          #cde6be;
+
+@baseBackground:      #ebebeb;
+@lightBackground:     #f6f4f2;
+@darkBackground:      #e1d9d3;
+@lightText:           @white;
+@darkText:            #5e5d5e;
+
+@topNavbarBackground:             #efe9e6;
+
+
+
+
+#content { border-bottom: 1px dotted @grayLight; }
+#wrapper > header { background-color: #c7beb7; }
+#area-title { margin-bottom: 18px; }
+#content > hgroup {
+    h1 { margin-top: 10px; margin-bottom: 10px; }
+    h2 {
+        color: @gray;
+        font-size: 14px;
+    }
+}
+#topbar .navbar-inner { 
+    background-color: @topNavbarBackground; 
+    background-image: none;
+    .nav > li > a {
+        color: @gray;
+        &:hover {
+            color: @grayDark;
+            background-color: transparent;
+        }
+    }
+    .nav .active > a {
+        color: @grayDark;
+        &:hover {
+            color: @gray;
+        }
+    }
+}
+
+.monitoring { color: @grayLight; }
+.textboxlist-loading { background: url('../img/spinner.gif') no-repeat right center; }
+
+
+/* Stats block */
+dl.stats {    
+    background-color: @baseBackground;
+    dt { background-color: @darkBackground; color: @lightText; }
+    dd { background-color: @lightBackground; color: @darkText; }
+}
+
+/* Arguments cloud */
+dl.tags-cloud {
+    dd, dt {
+        .label;
+        .border-radius(5px); 
+        display: inline;
+        background-color: @darkBackground;
+        font-size: 14px;
+        margin: 0; 
+        text-transform: lowercase;
+        padding: 4px;
+        a, a:hover { color: @darkText; }
+    }
+    dd { font-weight: normal;  }
+    dt { font-size: 16px; text-transform: capitalize; }
+    line-height: 34px;
+}
+
+/* Data boxing */
+.data-box(@bgcolor, @fontcolor: @white, @size: 22px, @fontsize: 20px) {
+    font-size: @fontsize;
+    padding: 8px;
+    text-align: center;
+    display: inline-block;
+    background-color: @bgcolor;
+    color: @fontcolor;
+    min-height: @size;
+    min-width: @size;
+    line-height: @size;
+}
+.greenbox       { .data-box(@greenLight);               }
+.blackbox       { .data-box(@black);                    }
+.lightgraybox   { .data-box(@grayLighter, @grayDarker); }
+.graybox        { .data-box(@gray);                     }
+.bluebox        { .data-box(@blueLight);                }
+.okbox          { .data-box(@green);                    }
+.kobox          { .data-box(@red);                      }
+
+.smallbox {  
+    font-size: 14px;
+    min-height: 16px;
+    min-width: 16px;
+    line-height: 16px;
+    padding: 4px;
+}
+
+/* Dotted Bordering */
+.border-right { border-right: 1px dotted @grayLight; }
+.border-left { border-left: 1px dotted @grayLight; }
+.border-top { border-top: 1px dotted @grayLight; }
+.border-bottom { border-bottom: 1px dotted @grayLight; }
+
+/* Backgrounding */
+.bg-dark { background-color: @darkBackground; }
+.bg-light { background-color: @baseBackground; }
+.bg-lightgreen { background-color: #e3ecda; }
+
+/* Generic list of person, with pic, name and short description */
+ul.people-list {
+    margin-left: 0;
+    list-style: none;
+    li {    display: block;     
+            margin-top: 5px;
+            min-height:50px; 
+            padding-top: 3px; padding-bottom: 3px;
+            line-height: 16px;
+            img { .pull-left; margin-right:5px; margin-left: 5px; border:0; }
+            .monitoring { display:block; }
+    }
+            
+}
+
+ul.feed-list {
+    margin: 0;
+    list-style: none;
+    background-color: @white;
+    li {
+        background-color: @lightBackground;
+        margin-bottom: 3px;
+        padding: 3px 5px 3px;
+    }
+}
+
+/* Hand icons */
+[class^="socialicon-"] {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  vertical-align: text-top;
+  background-image: url(../img/social-icons.png);
+  background-position: 14px 14px;
+  background-repeat: no-repeat;
+
+  .ie7-restore-right-whitespace();
+}
+
+
+.socialicon-five              { background-position: 0      0; }
+.socialicon-ok                { background-position: -20px  0; }
+.socialicon-ko                { background-position: -40px  0; }
+.socialicon-add               { background-position: -60px  0; }
+
+.socialicon-five:hover              { background-position: 0      -20px; }
+.socialicon-ok:hover                { background-position: -20px  -20px; }
+.socialicon-ko:hover                { background-position: -40px  -20px; }
+.socialicon-add:hover               { background-position: -60px  -20px; }
+
+.socialicon-five.used             { background-position: 0      -40px; }
+.socialicon-ok.used                { background-position: -20px  -40px; }
+.socialicon-ko.used               { background-position: -40px  -40px; }
+.socialicon-add.used               { background-position: -60px  -40px; }
+
+/* Sticky Footer Navbar */
+
+#wrapper { padding-bottom: @navbarHeight; }
+.fixed-bottom {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    min-width: @gridRowWidth;
+    text-align: left;
+    z-index: @zindexFixedNavbar;
+}
+.fixed-bottom > .navbar { margin-bottom: 0; }
+
+
+/* Bottom-up menu */
+.navbar .dropdown-menu.bottom-up {
+    &:before {
+        border-bottom: 0;
+        border-top: 7px solid #ccc;
+        position: absolute;
+        bottom: -7px;
+        top: auto;
+    }
+    &:after {
+        border-bottom: 0;
+        border-top: 6px solid @white;
+        bottom: -6px;
+        top: auto;
+    }
+}
+
+/********************************/
+/*          Act page            */
+/********************************/
+#sidebar table {
+    .table;
+    border-spacing: 3px; border-collapse: separate;
+    td, th { border-top:0;  }
+    th { font-weight:normal; padding: 0 8px; vertical-align:middle; }
+    td { padding:0; }
+
+}
+
+table#acttable {
+    .table;
+    .table-bordered;
+    tbody ul {
+        margin-left: 0;
+        list-style: none;
+        li { .border-top; }
+        li:first-child { border-top: 0; }
+    }
+    th { background-color: @darkBackground; }
+    th.green { background-color: @green; }
+    th.greenLight { background-color: @greenLight; }
+    th.greenLighter { background-color: @greenLighter; }
+
+}
+
