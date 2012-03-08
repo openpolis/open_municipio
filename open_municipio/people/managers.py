@@ -18,19 +18,22 @@ class TimeFramedQuerySet(QuerySet):
         Return a QuerySet containing the *current* instances of the model 
         (i.e. those for which the current date-time lies within their associated time range). 
         """
-        return self.filter(Q(start_date__lte=datetime.now) & 
-                           (Q(end_date__gte=datetime.now) | Q(end_date__isnull=True)))
+        now = datetime.now()
+        return self.filter(Q(start_date__lte=now) & 
+                           (Q(end_date__gte=now) | Q(end_date__isnull=True)))
         
     def past(self):
         """
         Return a QuerySet containing the *past* instances of the model
         (i.e. those having an end date which is in the past).
         """
-        return self.filter(end_date__lte=datetime.now)
+        now = datetime.now()
+        return self.filter(end_date__lte=now)
     
     def future(self):
         """
         Return a QuerySet containing the *future* instances of the model
         (i.e. those having a start date which is in the future).
         """
-        return self.filter(start_date__gte=datetime.now)
+        now = datetime.now()
+        return self.filter(start_date__gte=now)
