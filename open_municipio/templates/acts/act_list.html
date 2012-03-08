@@ -7,8 +7,21 @@
 
 {% block content %}
   <section id="content"><!-- #content -->
-    {% for obj in object_list %}
-      <a href="{{ obj.get_absolute_url }}">{{ obj }}</a> ({{ obj.id }}) <br/>
-    {% endfor %}
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Data di presentazione</th>
+          <th>Atto</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for obj in object_list %}
+          <tr>
+            <td>{{ obj.presentation_date}}</td>
+            <td><a href="{{ obj.get_absolute_url }}">{{ obj }}</a></td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>      
   </section><!-- end of #content -->  
 {% endblock %}

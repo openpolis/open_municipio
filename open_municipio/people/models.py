@@ -3,13 +3,18 @@ from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
 from django.template.defaultfilters import slugify
 from django.core.urlresolvers import reverse
+from django.contrib.contenttypes import generic
 
 from model_utils import Choices
 from model_utils.managers import PassThroughManager
 
+from open_municipio.monitoring.models import Monitoring
+
 from open_municipio.people.managers import TimeFramedQuerySet
 
 from datetime import datetime
+
+
 #
 # Persons, charges and groups
 #
@@ -27,6 +32,9 @@ class Person(models.Model):
     slug = models.SlugField(unique=True, blank=True, null=True, max_length=128)
     sex = models.IntegerField(_('sex'), choices=SEX)
     op_politician_id = models.IntegerField(_('openpolis politician ID'), blank=True, null=True)
+
+    # manager to handle the list of monitoring having as content_object this instance
+    monitorings = generic.GenericRelation(Monitoring, object_id_field='object_pk')
     
     class Meta:
         verbose_name = _('person')
