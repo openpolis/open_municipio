@@ -344,45 +344,105 @@ class Sitting(models.Model):
      
 
 ## Private DB access API
-class Council(object):
+
+class Mayor(object):
+    """
+    A municipality major (both as a charge and an institution).
+    """
+     
+    @property
+    def as_institution(self):
+        """
+        A municipality mayor, as an *institution*.
+        """
+        NotImplementedError
+    
+    @property
+    def as_charge(self):
+        """
+        A municipality mayor, as a *charge*.
+        """
+        NotImplementedError
+    
+
+class TownCouncil(object):
+    
+    @property
+    def as_institution(self):
+        """
+        A municipality council, as an *institution*.
+        """
+        NotImplementedError
+    
     @property
     def members(self):
-        pass
+        """
+        Members of a municipality council (aka *counselors*), as charges.
+        """
+        NotImplementedError
     
     @property
     def majority_members(self):
-        pass
+        """
+        Majority counselors, as charges.
+        """
+        NotImplementedError
     
     @property
     def minority_members(self):
-        pass
+        """
+        Minority counselors, as charges.
+        """
+        NotImplementedError
         
     @property
     def groups(self):
-        pass
+        """
+        Groups of counselors within of a municipality council.
+        """
+        NotImplementedError
     
     @property
     def majority_groups(self):
-        pass
+        """
+        Counselors' groups belonging to majority.
+        """
+        NotImplementedError
     
     @property
     def minority_groups(self):
-        pass
+        """
+        Counselors' groups belonging to minority.
+        """
+        NotImplementedError
       
 
-class CityGov(object):
+class TownGovernment(object):
+    @property
+    def as_institution(self):
+        """
+        A municipality government, as an *institution*.
+        """
+        NotImplementedError
+    
     @property
     def members(self):
-        pass
+        """
+        Members of a municipality government (aka *assessors*), as charges.
+        """
+        NotImplementedError
+
 
 class Municipality(object):
+    """
+    A hierarchy of objects representing a municipality.
     
+    Provides convenient access to insitutions, charges, groups and the like.
+    """  
     def __init__(self):
-        self.gov = CityGov()
-        self.council = Council()
-    
-    @property
-    def mayor(self):
-        pass
-
+        self.mayor = Mayor()
+        self.gov = TownGovernment()
+        self.council = TownCouncil()
+  
+  
 municipality = Municipality()
