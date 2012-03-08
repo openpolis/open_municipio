@@ -40,6 +40,7 @@ class Act(TimeStampedModel):
     emitting_institution = models.ForeignKey(Institution, related_name='emitted_act_set', verbose_name=_('emitting institution'))
     category_set = models.ManyToManyField(Category, verbose_name=_('categories'), blank=True, null=True)
     location_set = models.ManyToManyField(Location, verbose_name=_('locations'), blank=True, null=True)
+    status_is_final = models.BooleanField(default=False)
 
     objects = InheritanceManager()
     
