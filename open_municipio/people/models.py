@@ -24,17 +24,17 @@ class Person(models.Model):
     sex = models.IntegerField(_('sex'), choices=SEX)
     op_politician_id = models.IntegerField(_('openpolis politician ID'), blank=True, null=True)
     
+    class Meta:
+        verbose_name = _('person')
+        verbose_name_plural = _('persons')
+    
     def __unicode__(self):
         return u'%s %s' % (self.first_name, self.last_name)
     
     def get_absolute_url(self):
         # FIXME: ``get_absolute_url`` shouldn't contain hard-coded URLs
-        return "/persone/%s.html" % self.slug
+        return "/persone/%s.html" % self.slug   
     
-    class Meta:
-        verbose_name = _('person')
-        verbose_name_plural = _('persons')
-
 
 class Charge(models.Model):
     """
@@ -50,7 +50,6 @@ class Charge(models.Model):
     
     class Meta:
         abstract = True
-    
 
 
 class InstitutionCharge(Charge):
@@ -82,15 +81,15 @@ class InstitutionCharge(Charge):
     institution = models.ForeignKey('Institution', on_delete=models.PROTECT, verbose_name=_('institution'))
     charge_type = models.IntegerField(_('charge type'), choices=CHARGE_TYPES)
     op_charge_id = models.IntegerField(_('openpolis institution charge ID'), blank=True, null=True)
-    
-    def __unicode__(self):
-        # TODO: implement ``get_charge_type_display()`` method
-        return u'%s - %s dal %s' % (self.person, self.get_charge_type_display(), self.start_date.strftime('%d/%m/%Y'))
-    
+  
     class Meta(Charge.Meta):
         db_table = u'people_institution_charge'
         verbose_name = _('institution charge')
         verbose_name_plural = _('institution charges')
+      
+    def __unicode__(self):
+        # TODO: implement ``get_charge_type_display()`` method
+        return u'%s - %s dal %s' % (self.person, self.get_charge_type_display(), self.start_date.strftime('%d/%m/%Y'))
         
     # TODO: model validation: check that ``substitutes`` and ``substituted_by`` fields
     # point to ``InstitutionCharge``s of the same kind
@@ -114,16 +113,16 @@ class CompanyCharge(Charge):
     company = models.ForeignKey('Company', on_delete=models.PROTECT, verbose_name=_('company'))
     charge_type = models.IntegerField(_('charge type'), choices=CHARGE_TYPES)
     
-    def __unicode__(self):
-        # TODO: implement ``get_charge_type_display()`` method
-        return u'%s - %s' % (self.get_charge_type_display(), self.company.name)
-    
     class Meta(Charge.Meta):
         db_table = u'people_organization_charge'
         verbose_name = _('organization charge')
         verbose_name_plural = _('organization charges')
-
-
+    
+    def __unicode__(self):
+        # TODO: implement ``get_charge_type_display()`` method
+        return u'%s - %s' % (self.get_charge_type_display(), self.company.name)
+    
+    
 class AdministrationCharge(Charge):
     """
     This is a charge in the internal municipality administration.
@@ -137,16 +136,16 @@ class AdministrationCharge(Charge):
     
     office = models.ForeignKey('Office', on_delete=models.PROTECT, verbose_name=_('office'))
     charge_type = models.IntegerField(_('charge type'), choices=CHARGE_TYPES)
-    
-    def __unicode__(self):
-        # TODO: implement ``get_charge_type_display()`` method
-        return u'%s - %s' % (self.get_charge_type_display(), self.office.name)
-    
+
     class Meta(Charge.Meta):
         db_table = u'people_administration_charge'
         verbose_name = _('administration charge')
         verbose_name_plural = _('administration charges')
-
+    
+    def __unicode__(self):
+        # TODO: implement ``get_charge_type_display()`` method
+        return u'%s - %s' % (self.get_charge_type_display(), self.office.name)
+  
   
 class Group(models.Model):
     """
@@ -156,12 +155,12 @@ class Group(models.Model):
     acronym = models.CharField(blank=True, max_length=16)
     counselor_set = models.ManyToManyField('InstitutionCharge', through='GroupCharge')
     
-    def __unicode__(self):
-        return u'%s (%s)' % (self.name, self.acronym)
-    
     class Meta:
         verbose_name = _('group')
         verbose_name_plural = _('groups')
+    
+    def __unicode__(self):
+        return u'%s (%s)' % (self.name, self.acronym)
         
     @property
     def counselors(self):
@@ -175,7 +174,6 @@ class Group(models.Model):
     def is_majority_now(self):
         current_is_maj = self.groupismajority_set.filter(end_date__isnull=True)
         return current_is_maj[0]
-        
 
 
 class GroupCharge(models.Model):
@@ -205,6 +203,10 @@ class GroupIsMajority(models.Model):
     is_majority = models.NullBooleanField(_('Is majority'), default=False, null=True)
     start_date = models.DateField(_('Start date'))
     end_date = models.DateField(_('End date'), blank=True, null=True)
+
+    class Meta:
+        verbose_name = _('group majority')
+        verbose_name_plural = _('group majorities')
     
     def __unicode__(self):
         if self.is_majority:
@@ -214,9 +216,6 @@ class GroupIsMajority(models.Model):
         else:
             return u'na'
             
-    class Meta:
-        verbose_name = _('group majority')
-        verbose_name_plural = _('group majorities')
 
 
 #
@@ -231,13 +230,14 @@ class Body(models.Model):
     name = models.CharField(_('name'), max_length=255)
     slug = models.SlugField(unique=True, blank=True, null=True, help_text=_('Suggested value automatically generated from name, must be unique'))
     description = models.TextField(_('description'), blank=True)
+  
+    class Meta:
+        abstract = True
     
     def __unicode__(self):
         return u'%s' % (self.name,)
     
-    class Meta:
-        abstract = True
-
+  
   
 class Institution(Body):
     """
@@ -261,46 +261,46 @@ class Institution(Body):
     parent = models.ForeignKey('Institution', related_name='sub_body_set', blank=True, null=True)
     institution_type = models.IntegerField(choices=INSTITUTION_TYPES)
     
-    def get_absolute_url(self):
-        return reverse("om_institution_detail", kwargs={'slug': self.slug})
+    class Meta(Body.Meta):
+        verbose_name = _('institution')
+        verbose_name_plural = _('institutions')
     
     def save(self, *args, **kwargs):
         """slugify name on first save"""
         if not self.id:
             self.slug = slugify(self.name)
         super(Institution, self).save(*args, **kwargs)
+        
+    def get_absolute_url(self):
+        return reverse("om_institution_detail", kwargs={'slug': self.slug})
     
-    class Meta(Body.Meta):
-        verbose_name = _('institution')
-        verbose_name_plural = _('institutions')
-
+    
+    
 
 class Company(Body):
     """
     A company owned by the municipality, whose executives are nominated politically.
     """
-    
-    def get_absolute_url(self):
-        return reverse("om_company_detail", kwargs={'slug': self.slug})
-    
     class Meta(Body.Meta):
         verbose_name = _('company')
         verbose_name_plural = _('companies')
 
+    def get_absolute_url(self):
+        return reverse("om_company_detail", kwargs={'slug': self.slug})
+    
+    
   
 class Office(Body):
     """
     Internal municipality office, playing a role in municipality's administration.
     """
-    def get_abolute_url(self):
-        return reverse("om_office_detail", kwargs={'slug': self.slug})
-    
     class Meta(Body.Meta):
         verbose_name = _('office')
         verbose_name_plural = _('offices')
 
-
-
+    def get_abolute_url(self):
+        return reverse("om_office_detail", kwargs={'slug': self.slug})
+ 
 #
 # Sittings
 #
@@ -312,14 +312,14 @@ class Sitting(models.Model):
     date = models.DateField()
     number = models.IntegerField(blank=True, null=True)
     institution = models.ForeignKey(Institution, on_delete=models.PROTECT)
-    
-    def __unicode__(self):
-        return u'seduta num. %s del %s' % (self.number, self.date.strftime('%d/%m/%Y'))
-    
+ 
     class Meta:
         verbose_name = _('sitting')
         verbose_name_plural = _('sittings')
-
+    
+    def __unicode__(self):
+        return u'seduta num. %s del %s' % (self.number, self.date.strftime('%d/%m/%Y'))
+     
 
 ## Private DB access API
 class Council(object):
