@@ -2,8 +2,41 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.template.defaultfilters import slugify
 from django.core.urlresolvers import reverse
+from django.contrib.contenttypes import generic
 
 from model_utils import Choices
+from open_municipio.monitoring.models import Monitoring
+
+
+class classproperty(property):
+    def __get__(self, obj, type_):
+        return self.fget.__get__(None, type_)()
+    
+    def __set__(self, obj, value):
+        cls = type(obj)
+        return self.fset.__get__(None, cls)(value)
+
+class Municipality:
+    @classproperty
+    @classmethod
+    def mayor(self):
+        return Institution.objects.get(institution_type=Institution.MAYOR).institutioncharge_set.all()[0]
+    
+    @classproperty
+    @classmethod
+    def council_members(self):
+        return Institution.objects.get(institution_type=Institution.COUNCIL).institutioncharge_set.all()   
+    
+    @classproperty
+    @classmethod
+    def citygov_members(self):
+        return Institution.objects.get(institution_type=Institution.CITY_GOVERNMENT).institutioncharge_set.all()
+
+    @classproperty
+    @classmethod
+    def council_groups(self):
+        return Group.objects.all()
+    
 
 
 #
@@ -23,6 +56,10 @@ class Person(models.Model):
     slug = models.SlugField(unique=True, blank=True, null=True, max_length=128)
     sex = models.IntegerField(_('sex'), choices=SEX)
     op_politician_id = models.IntegerField(_('openpolis politician ID'), blank=True, null=True)
+    
+    # manager to handle the list of monitoring having as content_object this instance
+    monitorings = generic.GenericRelation(Monitoring,
+                                          object_id_field='object_pk')
     
     def __unicode__(self):
         return u'%s %s' % (self.first_name, self.last_name)

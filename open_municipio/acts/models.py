@@ -1,5 +1,7 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from django.contrib.contenttypes import generic
+from django.contrib.contenttypes.models import ContentType
 
 from model_utils import Choices
 from model_utils.managers import InheritanceManager
@@ -9,6 +11,8 @@ from taggit.managers import TaggableManager
 
 from open_municipio.people.models import Institution, InstitutionCharge, Sitting
 from open_municipio.taxonomy.models import TaggedItem, Category
+from open_municipio.monitoring.models import Monitoring
+
 
 #
 # Acts
@@ -41,6 +45,10 @@ class Act(TimeStampedModel):
     category_set = models.ManyToManyField(Category, verbose_name=_('categories'), blank=True, null=True)
 
     objects = InheritanceManager()
+    
+    # manager to handle the list of monitoring having as content_object this instance
+    monitorings = generic.GenericRelation(Monitoring,
+                                          object_id_field='object_pk')
     
     tag_set = TaggableManager(through=TaggedItem, blank=True)
 
@@ -79,7 +87,16 @@ class Act(TimeStampedModel):
     @property
     def categories(self):
         return self.category_set.all()
-
+    
+    @property
+    def monitoring_users(self):
+        """return list of users monitoring this object"""
+        return [m.user for m in self.monitorings.all()]
+        
+    @property
+    def content_type_id(self):
+        """return id of the content_type for this instance"""
+        return ContentType.objects.get_for_model(self).id
       
 class ActSection(models.Model):
     """
