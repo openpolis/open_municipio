@@ -405,14 +405,22 @@ class TownCouncil(object):
         """
         Majority counselors, as charges.
         """
-        NotImplementedError
+        # FIXME: this method should return a QuerySet, non a Set
+        result = set()
+        for majority_group in self.majority_groups:
+            result.add(majority_group.counselors)            
+        return result
     
     @property
     def minority_members(self):
         """
         Minority counselors, as charges.
         """
-        NotImplementedError
+        # FIXME: this method should return a QuerySet, non a Set
+        result = set()
+        for minority_group in self.minority_groups:
+            result.add(minority_group.counselors)            
+        return result
         
     @property
     def groups(self):
@@ -426,15 +434,17 @@ class TownCouncil(object):
         """
         Counselors' groups belonging to majority.
         """
-        NotImplementedError
+        qs = Group.objects.filter(groupismajority__end_date__isnull=True).filter(groupismajority__is_majority=True)
+        return qs
     
     @property
     def minority_groups(self):
         """
         Counselors' groups belonging to minority.
         """
-        NotImplementedError
-      
+        qs = Group.objects.filter(groupismajority__end_date__isnull=True).filter(groupismajority__is_majority=False)
+        return qs
+    
 
 class TownGovernment(object):
     @property
