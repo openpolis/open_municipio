@@ -12,13 +12,16 @@
 @lightText:           @white;
 @darkText:            #5e5d5e;
 
-@topNavbarBackground:             #efe9e6;
+@topNavbarBackground:   #efe9e6;
+@sidebarBackground:     @lightBackground;
 
 
-
-
-#content { border-bottom: 1px dotted @grayLight; }
+#main { padding-top: 15px; }
+#content { border-bottom: 1px dotted @grayLight; padding-bottom: 10px; }
+#content > * { margin-bottom: 15px; }
+//#sidebar { background-color: @sidebarBackground; }
 #wrapper > header { background-color: #c7beb7; }
+#wrapper > header > .navbar { margin-bottom: 0; }
 #area-title { margin-bottom: 18px; }
 #content > hgroup {
     h1 { margin-top: 10px; margin-bottom: 10px; }
@@ -162,6 +165,10 @@ ul.feed-list {
 }
 
 /* Data lists */
+ul.list-floated {
+    li { width: 48%; float:left; margin-bottom: 10px; padding-right: 1%; }
+}
+
 ul.data-list {
     margin-left: 0;
     list-style: none;
@@ -218,7 +225,6 @@ dl.data-list {
 .socialicon-add.used               { background-position: -60px  -40px; }
 
 /* Sticky Footer Navbar */
-
 #wrapper { padding-bottom: @navbarHeight; }
 .fixed-bottom {
     position: fixed;
@@ -277,3 +283,32 @@ table#acttable {
 
 }
 
+/********************************/
+/*        Council page          */
+/********************************/
+.party-people {
+    .clearfix;
+    .border-bottom;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+
+    h2 {
+        color: @grayLight;
+        font-size: 2em;
+        img { vertical-align: middle; margin-right: 10px; }
+    }
+    p { margin: 10px 0; }
+    ul.list-floated li { margin-bottom: 0; }
+
+}
+
+/* Utils */
+.calendar_container {
+    border: 1px solid @grayLight;
+    min-width: 200px;
+    .border-radius;
+    h3 { margin: 5px 0; text-align:center; border-bottom: 1px solid @grayLight; }
+    .calendar { padding: 5px; }
+    .ui-datepicker { width: auto; }
+    .ui-datepicker-calendar tbody td.highlight > a { font-weight: bold; color: @linkColor; }
+}
