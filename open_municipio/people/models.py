@@ -273,14 +273,14 @@ class Institution(Body):
     This model has a relation with itself, in order to map hierarchical bodies (joint committees, ...).
     """
     MAYOR = 1
-    TOWN_GOVERNMENT = 2
+    CITY_GOVERNMENT = 2
     COUNCIL = 3
     COMMITTEE = 4
     JOINT_COMMITTEE = 5
     INSTITUTION_TYPES = Choices(
       (MAYOR, _('Mayor')),    
       (COUNCIL, _('Council')),
-      (TOWN_GOVERNMENT, _('Town government')),
+      (CITY_GOVERNMENT, _('Town government')),
       (COMMITTEE, _('Committee')),
       (JOINT_COMMITTEE, _('Joint committee')),
     )
@@ -392,7 +392,7 @@ class Mayor(object):
         return self.as_institution.charges[0]
     
 
-class TownCouncil(object):
+class CityCouncil(object):
     
     @property
     def as_institution(self):
@@ -454,13 +454,13 @@ class TownCouncil(object):
         return qs
     
 
-class TownGovernment(object):
+class CityGovernment(object):
     @property
     def as_institution(self):
         """
         A municipality government, as an *institution*.
         """
-        return Institution.objects.get(institution_type=Institution.TOWN_GOVERNMENT)
+        return Institution.objects.get(institution_type=Institution.CITY_GOVERNMENT)
     
     @property
     def members(self):
@@ -478,8 +478,8 @@ class Municipality(object):
     """  
     def __init__(self):
         self.mayor = Mayor()
-        self.gov = TownGovernment()
-        self.council = TownCouncil()
+        self.gov = CityGovernment()
+        self.council = CityCouncil()
   
   
 municipality = Municipality()
