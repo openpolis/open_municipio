@@ -147,7 +147,7 @@ class Agenda(Act):
     It is submitted to the Council approval and Emendations to it can be presented before the votation.
     """
     # TODO: add additional statuses allowed for this act type
-    STATUS = Choices(('PRESENTED', 'presented', _('presented')), ('APRROVED', 'approved', _('approved')))
+    STATUS = Choices(('PRESENTED', 'presented', _('presented')), ('APPROVED', 'approved', _('approved')))
     
     status = StatusField()
     
@@ -172,7 +172,7 @@ class Deliberation(Act):
         (MAYOR_INIT, _('Mayor')),
     )
     # TODO: add additional statuses allowed for this act type
-    STATUS = Choices(('PRESENTED', 'presented', _('presented')), ('APRROVED', 'approved', _('approved')))
+    STATUS = Choices(('PRESENTED', 'presented', _('presented')), ('APPROVED', 'approved', _('approved')))
     
     status = StatusField()
     approval_date = models.DateField(_('approval date'), null=True, blank=True)
@@ -240,7 +240,7 @@ class Motion(Act):
     It is submitted to the Council approval and Emendations to it can be presented before the votation.
     """
     # TODO: add additional statuses allowed for this act type
-    STATUS = Choices(('PRESENTED', 'presented', _('presented')), ('APRROVED', 'approved', _('approved')))
+    STATUS = Choices(('PRESENTED', 'presented', _('presented')), ('APPROVED', 'approved', _('approved')))
     
     status = StatusField()
     
@@ -258,7 +258,7 @@ class Emendation(Act):
     Optionally, an emendation relates to an act section (article, paragraph).
     """
     # TODO: add additional statuses allowed for this act type
-    STATUS = Choices(('PRESENTED', 'presented', _('presented')), ('APRROVED', 'approved', _('approved')))
+    STATUS = Choices(('PRESENTED', 'presented', _('presented')), ('APPROVED', 'approved', _('approved')))
     
     status = StatusField()
     act = models.ForeignKey(Act, related_name='related_emendation_set', on_delete=models.PROTECT)
