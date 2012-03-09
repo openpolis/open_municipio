@@ -76,7 +76,8 @@ class Person(models.Model):
 
     # save
     def save(self, *args, **kwargs):
-        self.slug = slugify("%s %s %s" % (self.first_name, self.last_name, self.birth_date))
+        if self.slug is None:
+            self.slug = slugify("%s %s %s" % (self.first_name, self.last_name, self.birth_date))
         super(Person, self).save(*args, **kwargs)
 
     def __unicode__(self):
