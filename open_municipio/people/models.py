@@ -1,3 +1,4 @@
+from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.db.models import permalink
 from django.utils.translation import ugettext_lazy as _
@@ -86,6 +87,12 @@ class Person(models.Model):
     @permalink
     def get_absolute_url(self):
         return 'om_person_detail', (), { 'slug': self.slug }
+
+    @property
+    def content_type_id(self):
+        """return id of the content_type for this instance"""
+        return ContentType.objects.get_for_model(self).id
+
     
     class Meta:
         verbose_name = _('person')

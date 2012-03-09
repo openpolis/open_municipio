@@ -2,8 +2,7 @@ from django.views.generic import DetailView, ListView, TemplateView
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
 
-from os import sys
-from open_municipio.taxonomy.views import AddTagsView, RemoveTagView  
+from open_municipio.taxonomy.views import AddTagsView, RemoveTagView
 from open_municipio.acts.models import Act, Agenda, Deliberation, Interpellation, Interrogation, Motion
 from open_municipio.acts.forms import TagAddForm
 from open_municipio.monitoring.forms import MonitoringForm
@@ -46,7 +45,7 @@ class ActDetailView(DetailView):
                 
                 if context['act'] in self.request.user.get_profile().monitored_objects:
                     context['is_user_monitoring'] = True
-        except ObjectDoesNotExist, e:
+        except ObjectDoesNotExist:
             context['is_user_monitoring'] = False
         
         
