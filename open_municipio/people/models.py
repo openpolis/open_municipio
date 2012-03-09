@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import permalink
 from django.utils.translation import ugettext_lazy as _
 from django.template.defaultfilters import slugify
 from django.core.urlresolvers import reverse
@@ -8,35 +9,47 @@ from model_utils import Choices
 from open_municipio.monitoring.models import Monitoring
 
 
-class classproperty(property):
-    def __get__(self, obj, type_):
-        return self.fget.__get__(None, type_)()
-    
-    def __set__(self, obj, value):
-        cls = type(obj)
-        return self.fset.__get__(None, cls)(value)
+## Private DB access API
+class Council(object):
+    @property
+    def members(self):
+        return Institution.objects.get(institution_type=Institution.COUNCIL).institutioncharge_set
 
-class Municipality:
-    @classproperty
-    @classmethod
+    @property
+    def majority_members(self):
+        pass
+
+    @property
+    def minority_members(self):
+        pass
+
+    @property
+    def groups(self):
+        pass
+
+    @property
+    def majority_groups(self):
+        pass
+
+    @property
+    def minority_groups(self):
+        pass
+
+
+class CityGov(object):
+    @property
+    def members(self):
+        return Institution.objects.get(institution_type=Institution.CITY_GOVERNMENT).institutioncharge_set
+
+class Municipality(object):
+
+    def __init__(self):
+        self.gov = CityGov()
+        self.council = Council()
+
+    @property
     def mayor(self):
         return Institution.objects.get(institution_type=Institution.MAYOR).institutioncharge_set.all()[0]
-    
-    @classproperty
-    @classmethod
-    def council_members(self):
-        return Institution.objects.get(institution_type=Institution.COUNCIL).institutioncharge_set.all()   
-    
-    @classproperty
-    @classmethod
-    def citygov_members(self):
-        return Institution.objects.get(institution_type=Institution.CITY_GOVERNMENT).institutioncharge_set.all()
-
-    @classproperty
-    @classmethod
-    def council_groups(self):
-        return Group.objects.all()
-    
 
 
 #
@@ -60,13 +73,18 @@ class Person(models.Model):
     # manager to handle the list of monitoring having as content_object this instance
     monitorings = generic.GenericRelation(Monitoring,
                                           object_id_field='object_pk')
-    
+
+    # save
+    def save(self, *args, **kwargs):
+        self.slug = slugify("%s %s %s" % (self.first_name, self.last_name, self.birth_date))
+        super(Person, self).save(*args, **kwargs)
+
     def __unicode__(self):
         return u'%s %s' % (self.first_name, self.last_name)
-    
+
+    @permalink
     def get_absolute_url(self):
-        # FIXME: ``get_absolute_url`` shouldn't contain hard-coded URLs
-        return "/persone/%s.html" % self.slug
+        return 'om_person_detail', (), { 'slug': self.slug }
     
     class Meta:
         verbose_name = _('person')
@@ -83,7 +101,8 @@ class Charge(models.Model):
     start_date = models.DateField(_('start date'))
     end_date = models.DateField(_('end date'), blank=True, null=True)
     end_reason = models.CharField(_('end reason'), blank=True, max_length=255)
-    description = models.CharField(_('description'), blank=True, max_length=255, help_text=_('Insert the complete description of the charge, if it gives more information than the charge type'))
+    description = models.CharField(_('description'), blank=True, max_length=255,
+                                   help_text=_('Insert the complete description of the charge, if it gives more information than the charge type'))
     
     class Meta:
         abstract = True
