@@ -53,9 +53,6 @@ class ActAdminWithSATE(admin.ModelAdmin):
     )
     
 
-class StatusAdmin(admin.ModelAdmin):
-    prepopulated_fields = {"slug": ("name",)}
-
 admin.site.register(Act, ActAdmin)
 admin.site.register(Deliberation, ActAdminWithSATE)
 admin.site.register(Interrogation)
@@ -63,6 +60,4 @@ admin.site.register(Interpellation)
 admin.site.register(Motion, ActAdminWithEmendations)
 admin.site.register(Calendar)
 admin.site.register(Emendation, ActAdminWithAttaches)
-admin.site.register(Status, StatusAdmin)
 admin.site.register(Attach)
-

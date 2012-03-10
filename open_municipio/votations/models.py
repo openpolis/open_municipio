@@ -8,6 +8,7 @@ from open_municipio.people.models import Group, InstitutionCharge, Sitting
 from open_municipio.acts.models import Act
 from open_municipio.votations.filters import IsLinkedFilterSpec
 
+
 class Votation(models.Model):
     """
     WRITEME
@@ -37,8 +38,8 @@ class Votation(models.Model):
     n_maj = models.IntegerField(blank=True, null=True)
     outcome = models.IntegerField(choices=OUTCOMES)
     
-    # activation of the is_linked_filter
-    # add 'act' to the list_filter list in admin.py
+    # activation of the ``is_linked_filter``
+    # add ``act`` to the ``list_filter`` list in ``admin.py``
     # to filter votations based on the existence of a related act
     act.is_linked_filter = True
     
