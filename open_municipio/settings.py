@@ -124,6 +124,7 @@ INSTALLED_APPS = (
     'open_municipio.taxonomy',
     'open_municipio.votations',
     'open_municipio.users',
+    'open_municipio.monitoring',
 )
 
 COMMENTS_APP = 'open_municipio.om_comments'

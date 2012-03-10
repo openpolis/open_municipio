@@ -4,6 +4,7 @@
 @greenDark:             #438137;
 @greenLight:            #9bce7e;
 @greenLighter:          #cde6be;
+@brown:                 #7a6a5c;
 
 @baseBackground:      #ebebeb;
 @lightBackground:     #f6f4f2;
@@ -11,13 +12,16 @@
 @lightText:           @white;
 @darkText:            #5e5d5e;
 
-@topNavbarBackground:             #efe9e6;
+@topNavbarBackground:   #efe9e6;
+@sidebarBackground:     @lightBackground;
 
 
-
-
-#content { border-bottom: 1px dotted @grayLight; }
+#main { padding-top: 15px; }
+#content { border-bottom: 1px dotted @grayLight; padding-bottom: 10px; }
+#content > * { margin-bottom: 15px; }
+//#sidebar { background-color: @sidebarBackground; }
 #wrapper > header { background-color: #c7beb7; }
+#wrapper > header > .navbar { margin-bottom: 0; }
 #area-title { margin-bottom: 18px; }
 #content > hgroup {
     h1 { margin-top: 10px; margin-bottom: 10px; }
@@ -47,6 +51,28 @@
 .monitoring { color: @grayLight; }
 .textboxlist-loading { background: url('../img/spinner.gif') no-repeat right center; }
 
+/* Tables */
+table.data {
+    .table;
+    .table-striped;
+    thead { background-color: @brown;
+            color: @lightText;
+            font-size: 1.2em; }
+    tfoot { background-color: @darkBackground;
+            font-weight: bold; }
+    td { vertical-align: middle; }
+}
+
+/* Text alignments (with table-fix) */
+.text-left table th.text-left, table td.text-left { text-align: left; }
+.text-right, table th.text-right , table td.text-right { text-align: right; }
+.text-center, table th.text-center, table td.text-center { text-align: center; }
+
+/* Generic thumbnail */
+.thumb {
+    .pull-left;
+    margin-right: 5px;
+}
 
 /* Stats block */
 dl.stats {    
@@ -138,6 +164,37 @@ ul.feed-list {
     }
 }
 
+/* Data lists */
+ul.list-floated {
+    li { width: 48%; float:left; margin-bottom: 10px; padding-right: 1%; }
+}
+
+ul.data-list {
+    margin-left: 0;
+    list-style: none;
+    margin-bottom: 12px;
+    > li {
+        margin-bottom: 12px;
+    }
+    ul {
+        margin-left: 0;
+        list-style: none;
+    }
+}
+
+dl.data-list {
+    dt { 
+        float:left;
+        margin-top: 12px;
+        &:first-child { margin-top: 0; }
+        i { text-indent: -9999px; overflow: hidden; }
+    }
+    dd {
+        margin-left: 25px;
+    }
+    dt + dd { margin-top: 12px;  }
+}
+
 /* Hand icons */
 [class^="socialicon-"] {
   display: inline-block;
@@ -168,7 +225,6 @@ ul.feed-list {
 .socialicon-add.used               { background-position: -60px  -40px; }
 
 /* Sticky Footer Navbar */
-
 #wrapper { padding-bottom: @navbarHeight; }
 .fixed-bottom {
     position: fixed;
@@ -227,3 +283,32 @@ table#acttable {
 
 }
 
+/********************************/
+/*        Council page          */
+/********************************/
+.party-people {
+    .clearfix;
+    .border-bottom;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+
+    h2 {
+        color: @grayLight;
+        font-size: 2em;
+        img { vertical-align: middle; margin-right: 10px; }
+    }
+    p { margin: 10px 0; }
+    ul.list-floated li { margin-bottom: 0; }
+
+}
+
+/* Utils */
+.calendar_container {
+    border: 1px solid @grayLight;
+    min-width: 200px;
+    .border-radius;
+    h3 { margin: 5px 0; text-align:center; border-bottom: 1px solid @grayLight; }
+    .calendar { padding: 5px; }
+    .ui-datepicker { width: auto; }
+    .ui-datepicker-calendar tbody td.highlight > a { font-weight: bold; color: @linkColor; }
+}

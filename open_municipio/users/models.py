@@ -17,15 +17,12 @@ class UserProfile(models.Model):
     From profile to user: ``profile.user``
     
     """
-    ALL = 1
-    SOME = 2
-    NONE = 3
     PRIVACY_LEVELS = Choices(
-      (ALL, _('Open')),    
-      (SOME, _('50/50')),
-      (NONE, _('Tight')),
+        (1, 'all', _('all')),
+        (2, 'some', _('some')),
+        (3, 'none', _('none'))
     )
-    
+
     # This field is required.
     user = models.OneToOneField(User)
     
@@ -39,7 +36,7 @@ class UserProfile(models.Model):
     says_is_politician = models.BooleanField(_('i am a politician'), default=False)
     
     # user's privacy options
-    privacy_level = models.IntegerField(_('privacy level'), choices=PRIVACY_LEVELS, default=NONE)
+    privacy_level = models.IntegerField(_('privacy level'), choices=PRIVACY_LEVELS, default=PRIVACY_LEVELS.none)
     
     # user wants to receive newsletters (whatever that means)
     wants_newsletter = models.BooleanField(_('wants newsletter'), default=False)
