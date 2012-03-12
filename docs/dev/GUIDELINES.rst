@@ -23,7 +23,7 @@ In case of conflicts, assume this order of precedence:
 * `PEP 8`_ 
 
 
-.. _`PEP8`: https://docs.djangoproject.com/en/dev/internals/contributing/writing-code/coding-style/
+.. _`PEP 8`: https://docs.djangoproject.com/en/dev/internals/contributing/writing-code/coding-style/
 .. _`Django Coding Style`: https://docs.djangoproject.com/en/dev/internals/contributing/writing-code/coding-style/
 
 
@@ -55,10 +55,9 @@ Comments
 --------
 
 #. Within source code, docstrings, comments, etc. SHOULD be formatted following
- ``docutils`` conventions (i.e. using the `reStructuredText`_ markup syntax
+   ``docutils`` conventions (i.e. using the `reStructuredText`_ markup syntax
 
-
-.._ `reStructuredText`: http://docutils.sourceforge.net/rst.html
+.. _`reStructuredText`: http://docutils.sourceforge.net/rst.html
 
 
 Python module's import order
@@ -78,7 +77,7 @@ Settings
 --------
 
 #. Values of Django settings MUST be accessed via the proxy object
-  ``django.conf.settings``, NOT importing the ``settings.py`` module.
+   ``django.conf.settings``, NOT importing the ``settings.py`` module.
 
   That is to say, in order to access e.g. ``STATIC_ROOT`` use:
   
@@ -99,37 +98,38 @@ Naming conventions
 ------------------
 #. class names MUST be CamelCase
 #. names made by multiple words (except classes) MUST be separated by ``_`` (underscore)
-#. variables and attributes referencing multiple entities MUST be pluralized (except ``ManyToManyField``s, see below)
+#. variables and attributes referencing multiple entities MUST be pluralized (except ``ManyToManyField``\ s, see below)
 
 
 Stubs
 -----
 
-#. When stubbing callable objects (functions, methods) you should use ``raise
- NotImplementedError`` instead of just a ``pass`` statement, as a remainder for
- you and other developers;
+#. When stubbing callable objects (functions, methods) you should use ``raise NotImplementedError`` 
+   instead of just a ``pass`` statement, as a remainder for you and other developers;
+
 
 Managed attributes
 ------------------
 
 #. To retrieve a computed attribute in class, try to use Python *properties* when
- possible, instead of *methods*, since this style provides for improved readability
+   possible, instead of *methods*, since this style provides for improved readability
+
 
 Models
 ------
 #. Names for ``BooleanField`` and ``NullBooleanField`` model fields SHOULD begin
- with a verb: e.g. ``is_active``, ``can_do_something``, etc.
+   with a verb: e.g. ``is_active``, ``can_do_something``, etc.
 #. Model validation and model save steps SHOULD be kept distinct;
- e.g. validation-specific logic goes within the ``Model.clean()`` method, while
- save-time logic goes within ``Model.save()``.  Since ``Model.clean()`` doesn't
- get automatically called, usually ``Model.save()`` will call it;
+   e.g. validation-specific logic goes within the ``Model.clean()`` method, while
+   save-time logic goes within ``Model.save()``.  Since ``Model.clean()`` doesn't
+   get automatically called, usually ``Model.save()`` will call it;
+
 
 Fields
 ------
 #. When a ``related_name`` attribute of a ``ForeignKey`` or ``ManyToManyField``
- model field is specified, it SHOULD end with ``_set``, for consistency with
- Django default behaviour;
-
+    model field is specified, it SHOULD end with ``_set``, for consistency with
+    Django default behaviour;
 #. Since ``ManyToManyField`` model fields behave as ``Manager`` objects, like
    ``related_name`` model attributes automatically added by Django to describe
    reverse relationships between models, for usage consistency their names SHOULD
@@ -158,7 +158,7 @@ Fields
 
 URLconfs
 --------
-#. URLs MUST end with a ``/``character
+#. URLs MUST end with a ``/`` character
 
 #. Language strings within URLs MUST be in English for development setups and in Italian for production setups
 
@@ -187,7 +187,7 @@ Markers
 -------
 
 #. Within source code, you SHOULD use convential (uppercased) keywords to denote
- specific kind of comments:
+   specific kind of comments:
  
     #. ``TODO`` denotes features to implement, improvements to made, etc.
     #. ``FIXME`` denotes issues with the code to be solved later
