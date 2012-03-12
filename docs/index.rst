@@ -9,10 +9,10 @@ Welcome to OpenMunicipio's documentation!
 Contents:
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    
    dev/GUIDELINES
-
+   dev/code/queries
 
 Indices and tables
 ==================

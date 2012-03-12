@@ -4,6 +4,8 @@
 Guidelines for developers
 =========================
 
+.. contents::
+
 Generalities
 ============
 
