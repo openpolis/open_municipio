@@ -3689,6 +3689,10 @@ a.thumbnail:hover {
 .invisible {
   visibility: hidden;
 }
+address {
+  font-size: 12px;
+  line-height: 14px;
+}
 #main {
   padding-top: 15px;
 }
@@ -3706,7 +3710,8 @@ a.thumbnail:hover {
   margin-bottom: 0;
 }
 #area-title {
-  margin-bottom: 18px;
+  margin: 30px auto;
+  font-size: 40px;
 }
 #content > hgroup h1 {
   margin-top: 10px;
@@ -3993,7 +3998,7 @@ ul.feed-list {
 ul.feed-list li {
   background-color: #f6f4f2;
   margin-bottom: 3px;
-  padding: 3px 5px 3px;
+  padding: 10px;
 }
 /* Data lists */
 ul.list-floated li {
@@ -4111,9 +4116,7 @@ dl.data-list dt + dd {
   bottom: -6px;
   top: auto;
 }
-/********************************/
-/*          Act page            */
-/********************************/
+/* Sidebar styles */
 #sidebar table {
   width: 100%;
   margin-bottom: 18px;
@@ -4157,6 +4160,24 @@ dl.data-list dt + dd {
 #sidebar table td {
   padding: 0;
 }
+#sidebar h1,
+#sidebar h2,
+#sidebar h3 {
+  margin-top: 30px;
+  margin-bottom: 15px;
+}
+#sidebar h2 {
+  font-size: 30px;
+}
+#sidebar h3 {
+  font-size: 26px;
+}
+#sidebar p.bg-dark {
+  padding: 5px;
+}
+/********************************/
+/*          Act page            */
+/********************************/
 table#acttable {
   width: 100%;
   margin-bottom: 18px;

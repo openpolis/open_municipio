@@ -92,6 +92,18 @@
 {% endblock %}
 
 {% block sidebar %}
+
+    <h2>Commissioni</h2>
+    <ul class="unstyled">
+        <li><a href="{% url om_institution_commission %}"><strong>Commissione 1</strong>: edilizia, urbanistica…</a></li>
+        <li><a href="#"><strong>Commissione 2</strong>: ambiente, energie rinnovabili…</a></li>
+        <li><a href="#"><strong>Commissione 3</strong>: cultura, teatro…</a></li>
+        <li><a href="#"><strong>Commissione 1</strong>: edilizia, urbanistica…</a></li>
+        <li><a href="#"><strong>Commissione 2</strong>: ambiente, energie rinnovabili…</a></li>
+        <li><a href="#"><strong>Commissione 3</strong>: cultura, teatro...</a></li>
+    </ul>
+
+
     <h2>Ultimi 3 atti del Consiglio</h2>
     <ul class="feed-list">
 
@@ -150,6 +162,7 @@
 {% endblock %}
 
 {% block extra_js %}
+    // http://jsfiddle.net/Zrz9t/2/
 
     // initialize events
     var events = [
