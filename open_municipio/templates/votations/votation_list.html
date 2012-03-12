@@ -7,7 +7,7 @@
     <h2>Votazioni</h2>
     <ul>
         {% for votation in object_list %}
-            <li><a href="{{ votations.get_absolute_url }}">{{ votation }}</a></li>
+            <li><a href="/voting/{{ votation.id }}">{{ votation }}</a></li>
         {% endfor %}
     </ul>
 {% endblock %}

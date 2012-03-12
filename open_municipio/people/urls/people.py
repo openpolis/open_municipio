@@ -5,10 +5,16 @@ from open_municipio.people.models import Person
 
 
 urlpatterns = patterns('',
-    url(r'^(?P<slug>[-\w]+)/$', DetailView.as_view(
-         model=Person,
-         context_object_name='person',
-         template_name='person_detail.html',
+    url(r'^citizen/(?P<slug>[-\w]+)/$', DetailView.as_view(
+        model=Person,
+        context_object_name='person',
+        template_name='people/citizen_detail.html',
+    ), name='om_citizen_detail'),
+
+    url(r'^person/(?P<slug>[-\w]+)/$', DetailView.as_view(
+        model=Person,
+        context_object_name='person',
+        template_name='people/person_detail.html',
     ), name='om_person_detail')
 )
     

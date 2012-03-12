@@ -92,21 +92,21 @@
         </tbody>
     </table>
 
-    <div class="well">
-        <form class="form-inline pull-right">
-
-            <label for="current_page">Pagina:</label>
-            <input type="text" name="page" id="current_page" class="input-mini" value="1">
-            <button type="submit" class="btn btn-small">Vai</button>
-
-            <label for="row_for_page">Mostra:</label>
-            <select name="pages" id="row_for_page" class="span2">
-                <option value="10">10 righe</option>
-                <option value="15" selected="selected">15 righe</option>
-                <option value="20">20 righe</option>
-            </select>
-        </form>
+    <div class="clearfix">
         <div class="pagination">
+            <form class="form-inline pull-right">
+
+                <label for="current_page">Pagina:</label>
+                <input type="text" name="page" id="current_page" class="input-mini" value="1">
+                <button type="submit" class="btn btn-small">Vai</button>
+
+                <label for="row_for_page">Mostra:</label>
+                <select name="pages" id="row_for_page" class="span2">
+                    <option value="10">10 righe</option>
+                    <option value="15" selected="selected">15 righe</option>
+                    <option value="20">20 righe</option>
+                </select>
+            </form>
             <ul>
                 <li><a href="#">Prev</a></li>
                 <li class="active">
@@ -130,7 +130,7 @@
 
 {% block sidebar %}
     <h2 class="text-green"><i class="socialicon-ok socialicon-active"></i> Approvato</h2>
-    <table>
+    <table class="stats">
         <tr>
             <td><span class="okbox">150</span></td>
             <th class="bg-dark span6">Favorevoli</th>
@@ -140,7 +140,7 @@
             <th class="bg-dark span6">Contrari</th>
         </tr>
     </table>
-    <table>
+    <table class="stats">
         <tr>
             <td><span class="lightgraybox">150</span></td>
             <th class="bg-dark span6">Voti di scarto</th>

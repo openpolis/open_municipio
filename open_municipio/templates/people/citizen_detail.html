@@ -1,0 +1,187 @@
+{% extends "base_two_columns.html" %}
+{% load i18n %}
+
+{% block title %}| Dettaglio {{ person }}{% endblock %}
+
+{% block content_header %}{% trans 'citizens' %}{% endblock %}
+
+{% block body_class %}citizen{% endblock %}
+
+{% block head_css_includes %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/meter-bar.css" />
+{% endblock head_css_includes %}
+
+{% block content %}
+    <header class="clearfix">
+        <a href="{{ person.get_absolute_url }}" class="thumb"><img src="http://placehold.it/100"></a>
+        <h1>{{ person }}</h1>
+        <small>da Borgo Molino</small>
+        <ul class="unstyled">
+            <li>Iscritto dal <strong>14.06.2012</strong></li>
+            <li>Risiede a <strong>Sinigaglia</strong></li>
+            <li>Utente <strong>registrato</strong></li>
+        </ul>
+    </header>
+
+    <section class="row-fluid">
+
+        <p class="span6">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+        </p>
+
+        <div class="span6">
+            <dl class="data-list">
+                <dt><i class="icon-picture">News</i></dt>
+                <dd><a href="#">Il feed di Giorgio Bianchi</a></dd>
+
+                <dt><i class="icon-retweet">Tweets</i></dt>
+                <dd><a href="#">Giorgio Bianchi su Twitter</a></dd>
+
+                <dt><i class="icon-retweet">Facebook posts</i></dt>
+                <dd><a href="#">Giorgio Bianchi su Facebook</a></dd>
+
+                <dt><i class="icon-retweet">Sito</i></dt>
+                <dd><a href="#">Il Sito di Giorgio Bianchi</a></dd>
+            </dl>
+
+        </div>
+
+    </section>
+
+    <hr>
+
+    <section>
+        <h2>Come ha votato</h2>
+        <table class="data">
+            <thead>
+            <tr>
+                <th>Data</th>
+                <th>Atto</th>
+                <th class="text-center">Voto</th>
+            </tr>
+            </thead>
+            <tfoot>
+            <tr>
+                <td colspan="3"><a href="#"><i class="icon-play"></i> Vedi tutti i voti chiave</a></td>
+            </tr>
+            </tfoot>
+            <tbody>
+                <tr>
+                    <td>oggi</td>
+                    <td><a href="#"><i class="icon-star"></i> <strong>Titolo di una votazione effettuata</strong> (19374)</a></td>
+                    <td class="text-center"><span class="label label-success">Approvato</span></td>
+                </tr>
+                <tr>
+                    <td>ieri</td>
+                    <td><a href="#"><i class="icon-star"></i> <strong>Titolo di una votazione effettuata</strong> (19374)</a></td>
+                    <td class="text-center"><span class="label label-success">Approvato</span></td>
+                </tr>
+                <tr>
+                    <td>25.02.2012</td>
+                    <td><a href="#"><i class="icon-star"></i> <strong>Titolo di una votazione effettuata </strong> (19374)</a></td>
+                    <td class="text-center"><span class="label label-success">Approvato</span></td>
+                </tr>
+                <tr>
+                    <td>21.02.2012</td>
+                    <td><a href="#"><i class="icon-star"></i> <strong>Titolo di una votazione effettuata</strong> (19374)</a></td>
+                    <td class="text-center"><span class="label label-important">Respinto</span></td>
+                </tr>
+                <tr>
+                    <td>10.02.2012</td>
+                    <td><a href="#"><i class="icon-star"></i> <strong>Titolo di una votazione effettuata</strong> (19374)</a></td>
+                    <td class="text-center"><span class="label label-success">Approvato</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section>
+        <h2>Atti monitorati</h2>
+
+        <table class="data">
+            <tfoot>
+            <tr>
+                <td colspan="2"><a href="#"><i class="icon-play"></i> Vedi tutti gli atti su cui lavora</a></td>
+            </tr>
+            </tfoot>
+            <tbody>
+                <tr>
+                    <td>25.02.2012</td>
+                    <td>
+                        <a href="#"><strong>Titolo di una votazione effettuata</strong> (94756)</a><br>
+                        <strong>Delibera di consiglio</strong> del Consiglio Comunale N°<strong>85</strong> del <strong>2.2.2012</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td>25.02.2012</td>
+                    <td>
+                        <a href="#"><strong>Titolo di una votazione effettuata</strong> (94756)</a><br>
+                        <strong>Delibera di consiglio</strong> del Consiglio Comunale N°<strong>85</strong> del <strong>2.2.2012</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td>25.02.2012</td>
+                    <td>
+                        <a href="#"><strong>Titolo di una votazione effettuata</strong> (94756)</a><br>
+                        <strong>Delibera di consiglio</strong> del Consiglio Comunale N°<strong>85</strong> del <strong>2.2.2012</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td>25.02.2012</td>
+                    <td>
+                        <a href="#"><strong>Titolo di una votazione effettuata</strong> (94756)</a><br>
+                        <strong>Delibera di consiglio</strong> del Consiglio Comunale N°<strong>85</strong> del <strong>2.2.2012</strong>
+                    </td>
+                </tr>
+            </tbody>
+            
+
+        </table>
+
+    </section>
+
+
+{% endblock %}
+
+{% block sidebar %}
+    <section><h3>Argomenti monitorati</h3>
+        <dl class="tags-cloud">
+
+            <dt><a href="#">Urbanistica</a></dt>
+            <dd><a href="#">infrastrutture</a></dd>
+            <dd><a href="#">acqua</a></dd>
+            <dd><a href="#">gas</a></dd>
+
+            <dt><a href="#">Ambiente</a></dt>
+            <dd><a href="#">casa</a></dd>
+            <dd><a href="#">ambiente</a></dd>
+            <dd><a href="#">inquinamento</a></dd>
+        </dl>
+    </section>
+
+    <section><h3>Politici monitorati</h3>
+        <table>
+            <tr>
+                <td><span class="bluebox">14</span></td>
+                <th class="bg-dark span12">
+                    utenti che monitorano questo politico<br>
+                    <a href="#">John Doe</a>, <a href="#">Carlo Rossi</a>, <a href="#">Mario Bianchi</a>... <br>
+                    <span class="monitoring"><a href="#"><i class="socialicon-add"></i> Monitora</a>
+                </th>
+            </tr>
+        </table>
+    </section>
+
+    <section>
+        <h3>Ultime su {{ person }} <img src="{{ STATIC_URL }}img/feed-icon-14x14.png" alt="" /></h3>
+
+        <ul class="feed-list">
+            <li><a href="#">Mario Rossi ha commentato il voto</a></li>
+            <li><a href="#">Il voto è inserito nell'ordine del giorno N° 13516</a></li>
+            <li><a href="#">Barcaiuolo, Pellacani, Bellei, Morandi, Santoro (PdL) hanno presentato la mozione...</a></li>
+        </ul>
+        <p class="bg-dark">Leggi tutte <i class="icon-chevron-down"></i></p>
+    </section>
+
+{% endblock %}

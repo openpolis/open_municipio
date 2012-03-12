@@ -4215,6 +4215,21 @@ dl.data-list dt + dd {
 #sidebar table td {
   padding: 0;
 }
+#sidebar table.stats {
+  font-size: 12px;
+  margin-bottom: 0;
+}
+#sidebar .tabbable {
+  margin-top: 18px;
+  margin-bottom: 18px;
+}
+#sidebar .tabbable .nav-tabs {
+  margin-bottom: 0;
+}
+#sidebar .tabbable .tab-content {
+  border: 1px solid #DDD;
+  border-top-width: 0;
+}
 #sidebar h1,
 #sidebar h2,
 #sidebar h3 {
@@ -4252,9 +4267,6 @@ dl.data-list dt + dd {
   border: 2px solid #ddd;
   border-bottom-color: transparent;
   cursor: default;
-}
-#content .well .pagination {
-  margin: 0;
 }
 /********************************/
 /*          Act page            */
