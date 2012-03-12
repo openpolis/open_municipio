@@ -103,6 +103,9 @@ table.data {
 .text-right, table th.text-right , table td.text-right { text-align: right; }
 .text-center, table th.text-center, table td.text-center { text-align: center; }
 
+/* Text colouring */
+.text-green { color: @greenDark; }
+
 /* Generic thumbnail */
 .thumb {
     .pull-left;
@@ -178,13 +181,14 @@ dl.tags-cloud {
 ul.people-list {
     margin-left: 0;
     list-style: none;
-    li {    display: block;     
+    li {
             margin-top: 5px;
-            min-height:50px; 
+            .clearfix;
             padding-top: 3px; padding-bottom: 3px;
             line-height: 16px;
             img { .pull-left; margin-right:5px; margin-left: 5px; border:0; }
             .monitoring { display:block; }
+            form { margin: 0; }
     }
             
 }
@@ -250,10 +254,10 @@ dl.data-list {
 .socialicon-ko                { background-position: -40px  0; }
 .socialicon-add               { background-position: -60px  0; }
 
-.socialicon-five:hover              { background-position: 0      -20px; }
-.socialicon-ok:hover                { background-position: -20px  -20px; }
-.socialicon-ko:hover                { background-position: -40px  -20px; }
-.socialicon-add:hover               { background-position: -60px  -20px; }
+.socialicon-five:hover, .socialicon-five.socialicon-active    { background-position: 0      -20px; }
+.socialicon-ok:hover, .socialicon-ok.socialicon-active        { background-position: -20px  -20px; }
+.socialicon-ko:hover, .socialicon-ko.socialicon-active        { background-position: -40px  -20px; }
+.socialicon-add:hover, .socialicon-add.socialicon-active      { background-position: -60px  -20px; }
 
 .socialicon-five.used             { background-position: 0      -40px; }
 .socialicon-ok.used                { background-position: -20px  -40px; }
@@ -311,6 +315,28 @@ dl.data-list {
     h3 { font-size: 24px; }
 
     p.bg-dark { padding: 5px; }
+}
+
+#content {
+
+
+    .nav-tabs {
+      border-bottom: 2px solid #ddd;
+    }
+    .nav-tabs > li {
+      margin-bottom: -2px;
+    }
+    .nav-tabs > li > a { .border-radius(0,0,0,0); }
+    .nav > li > a { background-color: @grayLighter; border: 2px solid #ddd; }
+    .nav > li > a:hover {  }
+    .nav-tabs > .active > a,
+    .nav-tabs > .active > a:hover {
+      background-color: @white;
+      border: 2px solid #ddd;
+      border-bottom-color: transparent;
+      cursor: default;
+    }
+
 }
 
 /********************************/

@@ -3388,6 +3388,14 @@ a.thumbnail:hover {
 .label-info:hover {
   background-color: #2d6987;
 }
+.label-white {
+  background-color: #ffffff;
+  color: #5e5d5e;
+}
+.label-white:hover {
+  background-color: #e6e6e6;
+  color: #5e5d5e;
+}
 @-webkit-keyframes progress-bar-stripes {
   from {
     background-position: 0 0;
@@ -3826,6 +3834,10 @@ table th.text-center,
 table td.text-center {
   text-align: center;
 }
+/* Text colouring */
+.text-green {
+  color: #438137;
+}
 /* Generic thumbnail */
 .thumb {
   float: left;
@@ -4003,12 +4015,19 @@ ul.people-list {
   list-style: none;
 }
 ul.people-list li {
-  display: block;
   margin-top: 5px;
-  min-height: 50px;
+  *zoom: 1;
   padding-top: 3px;
   padding-bottom: 3px;
   line-height: 16px;
+}
+ul.people-list li:before,
+ul.people-list li:after {
+  display: table;
+  content: "";
+}
+ul.people-list li:after {
+  clear: both;
 }
 ul.people-list li img {
   float: left;
@@ -4018,6 +4037,9 @@ ul.people-list li img {
 }
 ul.people-list li .monitoring {
   display: block;
+}
+ul.people-list li form {
+  margin: 0;
 }
 ul.feed-list {
   margin: 0;
@@ -4091,16 +4113,20 @@ dl.data-list dt + dd {
 .socialicon-add {
   background-position: -60px 0;
 }
-.socialicon-five:hover {
+.socialicon-five:hover,
+.socialicon-five.socialicon-active {
   background-position: 0 -20px;
 }
-.socialicon-ok:hover {
+.socialicon-ok:hover,
+.socialicon-ok.socialicon-active {
   background-position: -20px -20px;
 }
-.socialicon-ko:hover {
+.socialicon-ko:hover,
+.socialicon-ko.socialicon-active {
   background-position: -40px -20px;
 }
-.socialicon-add:hover {
+.socialicon-add:hover,
+.socialicon-add.socialicon-active {
   background-position: -60px -20px;
 }
 .socialicon-five.used {
@@ -4204,6 +4230,31 @@ dl.data-list dt + dd {
 }
 #sidebar p.bg-dark {
   padding: 5px;
+}
+#content .nav-tabs {
+  border-bottom: 2px solid #ddd;
+}
+#content .nav-tabs > li {
+  margin-bottom: -2px;
+}
+#content .nav-tabs > li > a {
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+}
+#content .nav > li > a {
+  background-color: #eeeeee;
+  border: 2px solid #ddd;
+}
+#content .nav-tabs > .active > a,
+#content .nav-tabs > .active > a:hover {
+  background-color: #ffffff;
+  border: 2px solid #ddd;
+  border-bottom-color: transparent;
+  cursor: default;
+}
+#content .well .pagination {
+  margin: 0;
 }
 /********************************/
 /*          Act page            */

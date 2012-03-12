@@ -49,11 +49,12 @@ $(document).ready(function() {
             <th><span class="lightgraybox smallbox">Prossima discussione</span></th>
             <td><span class="graybox smallbox">3.3.2012</span></td>
         </tr>
-
-    <h2><small>
-      <strong>{% block act_type %}TIPO ATTO{% endblock %}</strong> 
-      del Consiglio comunale N° 85 del <span class="date">2.2.2012</span></small></h2>
- z    <h1><strong>{{ act.title }}</strong> ({{ act.idnum }})</h1>
+    </table>
+    <h2>
+        <strong>{% block act_type %}TIPO ATTO{% endblock %}</strong>
+        del Consiglio comunale N° 85 del <span class="date">2.2.2012</span></small>
+    </h2>
+    <h1><strong>{{ act.title }}</strong> ({{ act.idnum }})</h1>
 </hgroup>
 
 <p class="well">{{ act.text|safe }}</p>
@@ -63,8 +64,7 @@ $(document).ready(function() {
     <a href="#">Stato</a>
   </li>
   <li><a href="#">Documenti</a></li>
-  <li><a href="#">Emendamenti</a></li>
-  <li><a href="#">Voti</a></li>
+  <li><a href="#"><strong>Voti</strong></a></li>
 </ul>
 
 <table id="acttable">
@@ -242,17 +242,18 @@ $(document).ready(function() {
             <a href="#"><img src="http://placehold.it/50x50" alt="" /></a>
             <a href="#">JohnDoe</a> Lorem ipsum dolor sit amet,consectetuer adipiscing elit. Suspendisse ut purus.
             <span class="monitoring">
-                <i class="socialicon-ko"></i> · 14.06.2011 · <a href="#">Condividi</a> · <a href="#">Mi piace</a> · <i class="socialicon-plus"></i> 4
+                <i class="socialicon-ko"></i> · 14.06.2011 · <a href="#">Condividi</a> · <a href="#">Mi piace</a> · <i class="socialicon-add"></i> 4
             </span>
         </li>
+        <li class="bg-light">
+            <form action="#" class="form-inline">
+                <i class="socialicon-ok"></i><i class="socialicon-ko"></i><i class="socialicon-five"></i>
+                <input type="text" placeholder="Scrivi un commento..." />
+            </form>
+        </li>
     </ul>
-    <form action="#" class="form-inline bg-dark">
-        <i class="socialicon-ok"></i><i class="socialicon-ko"></i><i class="socialicon-five"></i>
-        <input type="text" placeholder="Scrivi un commento..." />        
-    </form>
-    
-    
-    <p>Leggi tutti (Cronologia) <i class="icon-chevron-down"></i></p>
+    <p class="bg-dark">Leggi tutti (Cronologia) <i class="icon-chevron-down"></i></p>
+
 </section>
 
 <section>

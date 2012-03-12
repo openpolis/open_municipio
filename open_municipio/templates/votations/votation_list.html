@@ -1,10 +1,13 @@
-{% extends "base.html" %}
+{% extends "base_two_columns.html" %}
 {% load i18n %}
 
 {% block title %} Elenco votazioni {% endblock %}
 
 {% block content %}
-  <section id="content"><!-- #content -->
-  
-  </section><!-- end of #content -->  
+    <h2>Votazioni</h2>
+    <ul>
+        {% for votation in object_list %}
+            <li><a href="{{ votations.get_absolute_url }}">{{ votation }}</a></li>
+        {% endfor %}
+    </ul>
 {% endblock %}

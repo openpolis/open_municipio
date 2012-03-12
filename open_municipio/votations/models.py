@@ -8,6 +8,7 @@ from open_municipio.people.models import Group, InstitutionCharge, Sitting
 from open_municipio.acts.models import Act
 from open_municipio.votations.filters import IsLinkedFilterSpec
 
+
 class Votation(models.Model):
     """
     WRITEME
@@ -60,6 +61,10 @@ class Votation(models.Model):
             return False
         else:
             return True
+
+    @models.permalink
+    def get_absolute_url(self):
+        return ('om_votation_detail', [str(self.pk)])
         
     def __unicode__(self):
         return u'votation %s' % (self.idnum)
