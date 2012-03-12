@@ -1,0 +1,11 @@
+{% extends "base_one_column.html" %}
+{% block title %}Create Profile{% endblock %}
+ 
+{% block content %}
+Insert profile info form {{user}}. <br/>
+<form action="" method="post" accept-charset="utf-8">
+  {% csrf_token %}
+  {{ form.as_p }}  
+  <p><input type="submit" value="Submit"></p>
+</form>
+{% endblock %}

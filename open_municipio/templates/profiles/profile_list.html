@@ -1,0 +1,10 @@
+{% extends "base_one_column.html" %}
+{% block title %}Users list{% endblock %}
+{% block content_header %}Elenco dei cittadini registrati{% endblock %}
+{% block users_class %}class="active"{% endblock %}
+ 
+{% block content %}
+  {% for obj in object_list %}
+    <a href="{{ obj.get_absolute_url }}">{{ obj.user.username }}</a> ({{ obj.user.email }}) <br/>
+  {% endfor %}
+{% endblock %}

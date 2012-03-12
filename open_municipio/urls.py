@@ -25,7 +25,8 @@ admin.autodiscover()
 
 from voting.views import vote_on_object
 
-from open_municipio.views import HomeView, InfoView
+import profiles.views
+
 from open_municipio.acts.models import Act
 from open_municipio.om_comments.models import CommentWithMood
 
@@ -35,20 +36,23 @@ from open_municipio.inline_edit.views import InlineEditView
 urlpatterns = patterns('',
     (r'^admin/doc/', include('django.contrib.admindocs.urls')),
     (r'^admin/', include(admin.site.urls)),
+    
+    # user registration
+    (r'^accounts/', include('open_municipio.registration.backends.om.urls')),
 
-  # home page
-  (r'^$', HomeView.as_view()),  
-  
-  # info page
-  (r'^info/$', InfoView.as_view()),  
+    # home page
+    (r'^$', 'django.views.generic.simple.direct_to_template', {'template': 'om/home.html'}),
 
-  (r'^comments/', include('django.contrib.comments.urls')),
+    # info page
+    (r'^info/$', 'django.views.generic.simple.direct_to_template', {'template': 'om/info.html'}),
 
-  (r'^people/', include('open_municipio.people.urls.people')),
-  (r'^institutions/', include('open_municipio.people.urls.institutions')),
-  (r'^offices/', include('open_municipio.people.urls.offices')),
-  (r'^companies/', include('open_municipio.people.urls.companies')), 
-  (r'^acts/', include('open_municipio.acts.urls')),
+    (r'^comments/', include('django.contrib.comments.urls')),
+
+    (r'^people/', include('open_municipio.people.urls.people')),
+    (r'^institutions/', include('open_municipio.people.urls.institutions')),
+    (r'^offices/', include('open_municipio.people.urls.offices')),
+    (r'^companies/', include('open_municipio.people.urls.companies')), 
+    (r'^acts/', include('open_municipio.acts.urls')),
 
 )
 
@@ -79,4 +83,20 @@ urlpatterns += patterns('',
 urlpatterns += patterns('',
     url(r'^autocomplete/', include('open_municipio.autocomplete.urls')),
 )
+
+# user profiles
+urlpatterns += patterns('profiles.views',
+                       url(r'^users/create/$',
+                           'create_profile',
+                           name='profiles_create_profile'),
+                       url(r'^users/edit/$',
+                           'edit_profile',
+                           name='profiles_edit_profile'),
+                       url(r'^users/(?P<username>\w+)/$',
+                           'profile_detail', { 'public_profile_field': 'is_public' },
+                           name='profiles_profile_detail'),
+                       url(r'^users/$',
+                           'profile_list', { 'public_profile_field': 'is_public' },
+                           name='profiles_profile_list'),
+                       )
 

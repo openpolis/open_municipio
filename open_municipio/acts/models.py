@@ -116,7 +116,17 @@ class ActSupport(models.Model):
 
     class Meta:
         db_table = u'acts_act_support'
-    
+
+class Agenda(Act):
+    """
+    Maps the *Ordine del Giorno* act type.
+    It is a political act, used to publicly influence the following discussions on Deliberations.
+    It is specifically used with respect to issues specific to the deliberation process.
+    It is submitted to the Council approval and Emendations to it can be presented before the votation.
+    """
+    class Meta:
+        verbose_name = _('agenda')
+        verbose_name_plural = _('agenda')
     
 class Deliberation(Act):
     """
@@ -189,7 +199,9 @@ class Interpellation(Act):
 
 class Motion(Act):
     """
-    WRITEME
+    It is a political act, used to publicly influence members of the City Government, or the Mayor,
+    on a broad type of issues (specific to the Comune proceedings, or of a more general category)
+    It is submitted to the Council approval and Emendations to it can be presented before the votation.
     """
     class Meta:
         verbose_name = _('motion')
@@ -199,8 +211,9 @@ class Motion(Act):
 
 class Emendation(Act):
     """
-    An emendation relates to an act, and it can relate theoretically to another emendation (sub-emendations).
+    It is a modification of a particular act, that can be voted specifically and separately from the act itself.
     
+    An emendation relates to an act, and it can relate theoretically to another emendation (sub-emendations).
     Optionally, an emendation relates to an act section (article, paragraph).
     """
     act = models.ForeignKey(Act, related_name='related_emendation_set', on_delete=models.PROTECT)

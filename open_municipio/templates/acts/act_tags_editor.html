@@ -1,0 +1,37 @@
+<a href="#" id="cteditor-launcher" class="hide pull-right label label-info"><i class="icon-edit icon-white"></i> Edit</a>
+<div id="cteditor" class="hide">
+    
+    <div class="modal" id="modal-container">
+      <div class="modal-header">
+        <a class="close" data-dismiss="modal">×</a>
+        <h3>Editor Argomenti</h3>
+      </div>
+      <form action="#" method="get" class="form-horizontal">{% csrf_token %}
+          <div class="modal-body">
+
+                {% for cat in act.categories %}
+                <fieldset>
+                    <div class="control-group">
+                        <label class="control-label" for="category_{{ cat.id }}">
+                            <a href="#"><i class="icon-remove"></i></a> <span class="label">{{ cat.name }}</span>
+                        </label>
+                        <div class="controls">
+                            <select name="categories[{{ cat.id }}]" id="category_{{ cat.id }}" multiple="multiple">
+                                {% for tag in cat.tags %}
+                                <option value="{{ tag.id }}"{% if tag in act.tags %} selected="selected"{% endif %}>{{ tag.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </fieldset>
+                {% endfor %}
+
+          </div>
+          <div class="modal-footer">
+              <input type="submit" value="Salva" class="btn btn-primary" />
+              <input type="reset" value="Reset" class="btn" />
+          </div>
+      </form>
+    </div>
+    
+</div>

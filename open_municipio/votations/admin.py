@@ -4,6 +4,7 @@ from django.utils.translation import ugettext_lazy as _
 from open_municipio.votations.models import ChargeVote, GroupVote, Votation  
 
 
+
 class GroupVoteInline(admin.TabularInline):
     model = GroupVote
     extra = 1
@@ -14,6 +15,9 @@ class ChargeVoteInline(admin.TabularInline):
     extra = 1
  
 class VotationAdminWithGroupsAndChargesVotes(admin.ModelAdmin):
+    list_display = ('idnum', 'act_descr', 'sitting', 'is_linked', 'outcome')
+    list_filter = ('act', 'sitting',)
+    readonly_fields = ('act_descr', )
     inlines = [GroupVoteInline, ChargeVoteInline] 
 
 class VotationsInline(admin.TabularInline):
