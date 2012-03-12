@@ -122,6 +122,8 @@ INSTALLED_APPS = (
     'open_municipio.people',
     'open_municipio.taxonomy',
     'open_municipio.votations',
+    'open_municipio.users',
+    'open_municipio.monitoring',
 )
 
 COMMENTS_APP = 'open_municipio.om_comments'
@@ -131,4 +133,4 @@ ACCOUNT_ACTIVATION_DAYS = 7 # One-week activation window; you may, of course, us
 REGISTRATION_AUTO_LOGIN = True
 
 # use app shortcut (app.class)
-AUTH_PROFILE_MODULE = 'om.UserProfile'
+AUTH_PROFILE_MODULE = 'users.UserProfile'

@@ -8,7 +8,7 @@
 // --------------------------------------------------
 
 // Links
-@linkColor:             #08c;
+@linkColor:             #285698; //#08c;
 @linkColorHover:        darken(@linkColor, 15%);
 
 // Grays
@@ -24,7 +24,6 @@
 @blue:                  #049cdb;
 @blueDark:              #0064cd;
 @green:                 #46a546;
-@greenDark:             #438137;
 @red:                   #9d261d;
 @yellow:                #ffc40d;
 @orange:                #f89406;
@@ -32,7 +31,7 @@
 @purple:                #7a43b6;
 
 // Typography
-@baseFontSize:          13px;
+@baseFontSize:          15px;
 @baseFontFamily:        "Helvetica Neue", Helvetica, Arial, sans-serif;
 @baseLineHeight:        18px;
 @textColor:             @grayDark;
@@ -40,12 +39,6 @@
 // Buttons
 @primaryButtonBackground:    @linkColor;
 
-// Site Colours
-@baseBackground:      @grayLighter;
-@lightBackground:     @grayLight;
-@darkBackground:      @grayDark;
-@lightText:           @white;
-@darkText:            @black;
 
 
 // COMPONENT VARIABLES
@@ -54,29 +47,32 @@
 // Z-index master list
 // Used for a bird's eye view of components dependent on the z-axis
 // Try to avoid customizing these :)
-@zindexDropdown:        1000;
-@zindexPopover:         1010;
-@zindexTooltip:         1020;
-@zindexFixedNavbar:     1030;
-@zindexModalBackdrop:   1040;
-@zindexModal:           1050;
+@zindexDropdown:          1000;
+@zindexPopover:           1010;
+@zindexTooltip:           1020;
+@zindexFixedNavbar:       1030;
+@zindexModalBackdrop:     1040;
+@zindexModal:             1050;
+
+// Sprite icons path
+@iconSpritePath:          "../img/glyphicons-halflings.png";
+@iconWhiteSpritePath:     "../img/glyphicons-halflings-white.png";
 
 // Input placeholder text color
-@placeholderText:       @grayLight;
+@placeholderText:         @grayLight;
 
-// Branding
-@brandText:              @gray;
+// Hr border color
+@hrBorder:                @grayLighter;
 
 // Navbar
-@navbarHeight:                    20px;
+@navbarHeight:                    30px;
 @navbarBackground:                @black;
 @navbarBackgroundHighlight:       @black;
-@navbarLinkBackgroundHover:       transparent;
-@topNavbarBackground:             #efe9e6;
+@navbarLinkBackgroundHover:       @white;
 
 @navbarText:                      @grayLight;
-@navbarLinkColor:                 @grayLight;
-@navbarLinkColorHover:            @grayLighter;
+@navbarLinkColor:                 @grayLighter;
+@navbarLinkColorHover:            @gray;
 
 // Form states and alerts
 @warningText:             #c09853;

@@ -1,16 +1,206 @@
-{% extends "base.html" %}
+{% extends "base_two_columns.html" %}
 {% load i18n %}
 
 {% block title %}| Dettaglio {{ person }}{% endblock %}
 
+{% block content_header %}{% trans 'politicians' %}{% endblock %}
+
+{% block head_css_includes %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/meter-bar.css" />
+{% endblock head_css_includes %}
+
 {% block content %}
-  <section id="content"><!-- #content -->
-    <h2>Scheda {{ person }}</h2>
-	<p>
-		data di nascita: {{ person.birth_date }}<br/>
-		localit&agrave; di nascita: {{ person.birth_location }}
-	</p>
-	<br/>
+    <header class="clearfix">
+        <a href="{{ person.get_absolute_url }}" class="thumb"><img src="http://placehold.it/100"></a>
+        <h1>{{ person }}</h1>
+        <small><i class="icon-ok"></i> {{ person }} è iscritto a Open municipio</small>
+        <ul class="unstyled">
+            <li><small>Sindaco</small></li>
+            <li><a href="mailto:sindaco@email.it">sindaco@email.it</a></li>
+            <li>T. 076107610761 F. 076107610761</li>
+        </ul>
+    </header>
+
+    <section class="container-fluid">
+        <div class="row-fluid">
+        <div class="span6">
+            <ul class="data-list">
+                <li>In carica dal <strong>29.04.2008</strong></li>
+                <li>Lista di elezione <strong>Solidarietà e giustizia</strong></li>
+                <li>
+                    <ul>
+                        <li>Gruppo <strong>PD</strong></li>
+                        <li>(le altre appartenenze <i class="icon-chevron-down"></i>)</li>
+                    </ul>
+                </li>
+                <li>
+                    <ul>
+                        <li>Presidente <strong>Commissione permanente Edilizia e urbanistica</strong></li>
+                        <li>(le altre presenze in commissione <i class="icon-chevron-down"></i>)</li>
+                    </ul>
+                </li>
+                <li>
+                    <ul>
+                        <li>Vicepresidente Conorobus SpA</li>
+                        <li>Presidente Mario Rossi SpA</li>
+                        <li>(altri incarichi <i class="icon-chevron-down"></i>)</li>
+                    </ul>
+                </li>
+                <li>Pensione d'invalidità</li>
+                <li>Dichiarazione patrimoniale <i class="icon-download-alt"></i></li>
+            </ul>
+
+        </div>
+
+        <div class="span6">
+            <dl class="data-list">
+                <dt><i class="icon-picture">News</i></dt>
+                <dd>(2.2.2012) <a href="#">Adesso siano i senigalliesi a reagire!</a></dd>
+                <dd>(2.2.2012) <a href="#">Adesso siano i senigalliesi a reagire!</a></dd>
+
+                <dt><i class="icon-retweet">Tweets</i></dt>
+                <dd>(2.2.2012) <a href="#">Una nuova piazza Verdi a #senigallia http://bit</a></dd>
+                <dd>(2.2.2012) <a href="#">@gbianchi ci stiamo lavorando, dovrebbe ... </a></dd>
+
+                <dt><i class="icon-retweet">Facebook posts</i></dt>
+                <dd>(2.2.2012) <a href="#">Una nuova piazza Verdi a #senigallia http://bit</a></dd>
+                <dd>(2.2.2012) <a href="#">@gbianchi ci stiamo lavorando, dovrebbe ... </a></dd>
+
+                <dt><i class="icon-retweet">Openpolitici</i></dt>
+                <dd><a href="#">Una nuova piazza Verdi a #senigallia http://bit</a></dd>
+
+            </dl>
+
+        </div>
+        </div>
+    </section>
+
+    <hr>
+
+    <section>
+        <h2>Presenze (400 votazioni)</h2>
+
+        <div class="meter-bar float-container">
+            <div class="meter-bar-container">
+                <div class="meter-label"><strong class="green">89.60%</strong>&nbsp;(4,953)</div>
+                <label>Presenze:</label>
+                <div class="green-meter-bar">
+                    <div style="left: 79.89%;" class="meter-average"><label>valore medio: 79.89%</label>&nbsp;</div>
+                    <div style="width: 89.60%;" class="meter-value">&nbsp;</div>
+                </div>
+            </div>
+            <div class="meter-bar-container">
+                <label>Assenze:</label>
+                <div class="meter-label"><strong class="red">10.13%</strong>&nbsp;(560)</div>
+                <div class="red-meter-bar">
+                    <div style="left: 12.59%;" class="meter-average"><label>valore medio: 12.59%</label>&nbsp;</div>
+                    <div style="width: 10.13%;" class="meter-value">&nbsp;</div>
+                </div>
+            </div>
+            <div class="meter-bar-container">
+                <label>Missioni:</label>
+                <div class="meter-label"><strong class="blue">0.27%</strong>&nbsp;(15)</div>
+                <div class="blue-meter-bar">
+                    <div style="left: 7.53%;" class="meter-average"><label>valore medio: 7.53%</label>&nbsp;</div>
+                    <div style="width: 0.271345875543%;" class="meter-value">&nbsp;</div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <section>
+        <h2>Voti nelle votazioni chiave</h2>
+
+        <table class="data">
+            <thead>
+            <tr>
+                <th>Data</th>
+                <th>Atto</th>
+                <th class="text-center">Voto</th>
+            </tr>
+            </thead>
+            <tfoot>
+            <tr>
+                <td colspan="3"><a href="#"><i class="icon-play"></i> Vedi tutti i voti chiave</a></td>
+            </tr>
+            </tfoot>
+            <tbody>
+                <tr>
+                    <td>oggi</td>
+                    <td><a href="#"><i class="icon-star"></i> <strong>Titolo di una votazione effettuata</strong> (19374)</a></td>
+                    <td class="text-center"><span class="label label-success">Approvato</span></td>
+                </tr>
+                <tr>
+                    <td>ieri</td>
+                    <td><a href="#"><i class="icon-star"></i> <strong>Titolo di una votazione effettuata</strong> (19374)</a></td>
+                    <td class="text-center"><span class="label label-success">Approvato</span></td>
+                </tr>
+                <tr>
+                    <td>25.02.2012</td>
+                    <td><a href="#"><i class="icon-star"></i> <strong>Titolo di una votazione effettuata </strong> (19374)</a></td>
+                    <td class="text-center"><span class="label label-success">Approvato</span></td>
+                </tr>
+                <tr>
+                    <td>21.02.2012</td>
+                    <td><a href="#"><i class="icon-star"></i> <strong>Titolo di una votazione effettuata</strong> (19374)</a></td>
+                    <td class="text-center"><span class="label label-important">Respinto</span></td>
+                </tr>
+                <tr>
+                    <td>10.02.2012</td>
+                    <td><a href="#"><i class="icon-star"></i> <strong>Titolo di una votazione effettuata</strong> (19374)</a></td>
+                    <td class="text-center"><span class="label label-success">Approvato</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section>
+        <h2>Atti su cui lavora</h2>
+
+        <table class="data">
+            <thead>
+            <tr>
+                <th>Atto</th>
+                <th class="text-center">Stato</th>
+                <th class="text-center">Voti degli utenti</th>
+                <th class="text-center">Commenti</th>
+            </tr>
+            </thead>
+            <tfoot>
+            <tr>
+                <td colspan="4"><a href="#"><i class="icon-play"></i> Vedi tutti gli atti su cui lavora</a></td>
+            </tr>
+            </tfoot>
+            <tbody>
+            <tr>
+                <td><a href="#"><strong>Titolo di una votazione effettuata</strong> (94756)</a></td>
+                <td class="text-center"><span class="label label-success">Approvato</span></td>
+                <td class="text-center"><span class="okbox">10</span> <span class="kobox">25</span></td>
+                <td class="text-center"><a href="#"><strong>25</strong></a></td>
+            </tr>
+            <tr>
+                <td><a href="#"><strong>Titolo di una votazione effettuata</strong> (94756)</a></td>
+                <td class="text-center"><span class="label label-important">Respinta</span></td>
+                <td class="text-center"><span class="okbox">10</span> <span class="kobox">25</span></td>
+                <td class="text-center"><a href="#"><strong>25</strong></a></td>
+            </tr>
+            <tr>
+                <td><a href="#"><strong>Titolo di una votazione effettuata</strong> (94756)</a></td>
+                <td class="text-center"><span class="label">In esame</span></td>
+                <td class="text-center"><span class="okbox">10</span> <span class="kobox">25</span></td>
+                <td class="text-center"><a href="#"><strong>25</strong></a></td>
+            </tr>
+            </tbody>
+            
+
+        </table>
+
+    </section>
+
+
+  <section><!-- #content -->
 
     <h3>Incarichi Istituzionali</h3>
     <table id="complete-chart" class="chart tablesorter">
@@ -45,3 +235,75 @@
   </section><!-- end of #content -->  
 {% endblock %}
 
+{% block sidebar %}
+
+    <section><h3>Monitora</h3>
+        <table class="">
+            <tr>
+                <td><span class="bluebox">{{ person.monitoring_users|length }}</span></td>
+                <th class="bg-dark span12">
+                    utenti che monitorano il politico<br />
+                    {% for u in person.monitoring_users %}
+                        <a href="#">{{ u }}</a>
+                        {% if forloop.last %}<br/>{% else %},{% endif %}
+                    {% endfor %}
+
+                    {% if user.is_authenticated %}
+                        {% if is_user_monitoring %}
+                            <form action="{% url monitoring-stop %}" method="post">
+                                {% csrf_token %}
+                                {{ monitoring_form }}
+                                <i class="icon-minus-sign"></i>
+                                <button type="submit" class="btn btn-info btn-small">Interrompi il monitoraggio</button>
+                            </form>
+                        {% else %}
+                            <form action="{% url monitoring-start %}" method="post">
+                                {% csrf_token %}
+                                {{ monitoring_form }}
+
+                                <button type="submit" class="btn btn-info btn-mini"><i class="socialicon-add"></i> Avvia il monitoraggio</button>
+                            </form>
+                        {% endif %}
+                    {% endif %}
+                </th>
+            </tr>
+        </table>
+    </section>
+
+    <section><h3>Argomenti di cui si occupa</h3>
+        <dl class="tags-cloud">
+
+            <dt><a href="#">Urbanistica</a></dt>
+            <dd><a href="#">infrastrutture</a></dd>
+            <dd><a href="#">acqua</a></dd>
+            <dd><a href="#">gas</a></dd>
+
+            <dt><a href="#">Ambiente</a></dt>
+            <dd><a href="#">casa</a></dd>
+            <dd><a href="#">ambiente</a></dd>
+            <dd><a href="#">inquinamento</a></dd>
+        </dl>
+    </section>
+
+    <section>
+        <h3>Ultime su {{ person }} <img src="{{ STATIC_URL }}img/feed-icon-14x14.png" alt="" /></h3>
+
+        <ul class="feed-list">
+            <li><a href="#">Mario Rossi ha commentato il voto</a></li>
+            <li><a href="#">Il voto è inserito nell'ordine del giorno N° 13516</a></li>
+            <li><a href="#">Barcaiuolo, Pellacani, Bellei, Morandi, Santoro (PdL) hanno presentato la mozione...</a></li>
+        </ul>
+        <p class="bg-dark">Leggi tutte <i class="icon-chevron-down"></i></p>
+    </section>
+
+    <section>
+        <h3>Ultime dalla community <img src="{{ STATIC_URL }}img/feed-icon-14x14.png" alt="" /></h3>
+
+        <ul class="feed-list">
+            <li><a href="#">Mario Rossi ha commentato il voto</a></li>
+            <li><a href="#">Il voto è inserito nell'ordine del giorno N° 13516</a></li>
+            <li><a href="#">Barcaiuolo, Pellacani, Bellei, Morandi, Santoro (PdL) hanno presentato la mozione...</a></li>
+        </ul>
+        <p class="bg-dark">Leggi tutte <i class="icon-chevron-down"></i></p>
+    </section>
+{% endblock %}

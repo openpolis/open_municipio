@@ -5,6 +5,6 @@
  
 {% block content %}
   {% for obj in object_list %}
-    <a href="{{ obj.get_absolute_url }}">{{ obj.user.username }}</a> ({{ obj.user.email }}) <br/>
+    <a href="{{ obj.profile.get_absolute_url }}">{{ obj.user.username }}</a> ({{ obj.user.email }}) <br/>
   {% endfor %}
 {% endblock %}

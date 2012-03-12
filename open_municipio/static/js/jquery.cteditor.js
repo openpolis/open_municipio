@@ -11,12 +11,15 @@
             
         }, params);  
         return this.each(function(i,obj) {
-        
+            
             // express a single node as a jQuery object  
             var $t = $(this);
-            
+                
             // open modal with editor
             $('#cteditor').modal();
+            
+            if ( $t.data('cteditor') )
+                return
             
             // create inputs for each category
             $('#cteditor select').each(function(){
@@ -29,22 +32,26 @@
                 })
                 
                 // fill input after multiple-select
-                $(this).attr('name', '_'+ $(this).attr('name')).after( el );
+                $(this).attr('name', '_'+ $(this).attr('name') ).hide().after( el );
                 
+                // initialize textboxlist
                 var t = new $.TextboxList(el, {unique: true, plugins: {autocomplete: {
                     minLength: 1,
                     onlyFromValues: true
                 }}});
                 
+                // retrieve available tags
                 var tags = [];
                 $(this).children('option').each(function(){
                     tags.push([ $(this).val(), $(this).text() ]);
                     if ( $(this).attr('selected') )
                         t.add( $(this).text(), $(this).val() );
                 });
-
+                
+                // adds to autocompleter
                 t.plugins['autocomplete'].setValues(tags);
-
+                
+                $t.data('cteditor', t)
             });
         
         });

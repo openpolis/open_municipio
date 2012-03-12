@@ -19,27 +19,18 @@
 
 
 from django.conf.urls.defaults import *
-
 from django.contrib import admin
-admin.autodiscover()
-
 from voting.views import vote_on_object
-
-import profiles.views
-
 from open_municipio.acts.models import Act
 from open_municipio.om_comments.models import CommentWithMood
-
 from open_municipio.inline_edit.views import InlineEditView
+admin.autodiscover()
 
 
 urlpatterns = patterns('',
     (r'^admin/doc/', include('django.contrib.admindocs.urls')),
     (r'^admin/', include(admin.site.urls)),
     
-    # user registration
-    (r'^accounts/', include('open_municipio.registration.backends.om.urls')),
-
     # home page
     (r'^$', 'django.views.generic.simple.direct_to_template', {'template': 'om/home.html'}),
 
@@ -53,7 +44,6 @@ urlpatterns = patterns('',
     (r'^offices/', include('open_municipio.people.urls.offices')),
     (r'^companies/', include('open_municipio.people.urls.companies')), 
     (r'^acts/', include('open_municipio.acts.urls')),
-
 )
 
 
@@ -84,19 +74,15 @@ urlpatterns += patterns('',
     url(r'^autocomplete/', include('open_municipio.autocomplete.urls')),
 )
 
-# user profiles
-urlpatterns += patterns('profiles.views',
-                       url(r'^users/create/$',
-                           'create_profile',
-                           name='profiles_create_profile'),
-                       url(r'^users/edit/$',
-                           'edit_profile',
-                           name='profiles_edit_profile'),
-                       url(r'^users/(?P<username>\w+)/$',
-                           'profile_detail', { 'public_profile_field': 'is_public' },
-                           name='profiles_profile_detail'),
-                       url(r'^users/$',
-                           'profile_list', { 'public_profile_field': 'is_public' },
-                           name='profiles_profile_list'),
-                       )
+# monitoring
+urlpatterns += patterns('',
+    url(r'^monitoring/', include('open_municipio.monitoring.urls')),
+)
+
+
+# user registration and profiles
+urlpatterns += patterns('',
+    url(r'^accounts/', include('open_municipio.registration.backends.om.urls')),
+    url(r'^users/', include('open_municipio.users.urls')),
+)
 

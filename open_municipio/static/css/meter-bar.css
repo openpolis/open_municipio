@@ -1,0 +1,42 @@
+/*
+ * METER BAR
+ *----------------------------------------------*/
+
+.meter-bar { padding: 20px 10px 10px 10px; position: relative; }
+.meter-bar-container { padding-bottom: 5px;  }
+.meter-average { position: absolute; top: -8px; z-index: 10; background: transparent url(/images/line-meter.png) no-repeat top left; height: 28px; width: 10px; margin-left: -2px; }
+.meter-bar .meter-average label { margin-top: 29px; margin-left: 2px; padding: 2px; background-color: #fff; display: none; font-size: 12px; font-weight: bold; color: #000; border: 1px solid #7e858b; -moz-border-radius: 3px; -webkit-border-radius: 3px; border-radius: 3px; position: relative; left: -50%; text-align: center; width: 150px;}
+.meter-bar:hover .meter-average { height: 40px; width: 150px;}
+.meter-bar:hover .meter-average label { display: block; }
+
+.green-meter-bar { background-color: #d9ebd7; margin-bottom: 7px; margin-right: 100px; }
+.red-meter-bar { background-color: #efdad8;  margin-bottom: 7px; margin-right: 100px; }
+.blue-meter-bar { background-color: #ddeaea;  margin-bottom: 7px; margin-right: 100px; }
+.violet-meter-bar { background-color: #f3cff0;  margin-bottom: 7px; margin-right: 100px; }
+.violet-meter-bar-short { background-color: #f3cff0;  margin-bottom: 7px; margin-right: 200px; }
+.meter-bar { color: #333; font-weight: bold; text-align: right; }
+.meter-value { position: absolute; padding: 2px; color: #333; font-weight: bold; left: 0; }
+.meter-label { position: absolute; z-index: 15; padding: 2px; right: 0; width: 100px; text-align: left; }
+.meter-label-long { position: absolute; z-index: 15; padding: 2px; right: 0; width: 200px; text-align: left; }
+.meter-label strong { font-size: 120%; }
+
+.green-meter-bar .meter-bar { background-color: #39aa2d; padding: 3px;}
+.red-meter-bar .meter-bar { background-color: #bd3a2e; padding: 3px; }
+
+.meter-bar .green-meter-bar,
+.meter-bar .red-meter-bar,
+.meter-bar .blue-meter-bar,
+.meter-bar .violet-meter-bar,
+.meter-bar .violet-meter-bar-short { margin-left: 90px; position: relative; margin-bottom: 30px; height: 18px;}
+
+.meter-bar .evidence-box { border: 1px solid #eac4e7; padding: 10px; -moz-border-radius: 3px; -webkit-border-radius: 3px; border-radius: 3px; }
+.meter-bar .evidence-box .violet-meter-bar,
+.meter-bar .evidence-box .violet-meter-bar-short{ margin-left: 130px; }
+
+.meter-bar label { display: block; float: left; font-size: 14px; color: #555; }
+
+.green-meter-bar .meter-value { background-color: #43ca34; }
+.red-meter-bar .meter-value { background-color: #d54235; }
+.blue-meter-bar .meter-value { background-color: #67abab; }
+.violet-meter-bar .meter-value { background-color: #ce35c4; }
+.violet-meter-bar-short .meter-value { background-color: #ce35c4; }
