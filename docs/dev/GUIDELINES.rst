@@ -7,14 +7,13 @@ Guidelines for developers
 Generalities
 ============
 
-This document lists guidelines to be followed by developers contributing to
-**OpenMunicipio**.
+This document collects guidelines to be followed by developers willing to contribute to **OpenMunicipio**.
 
-Please adhere to these coding standards when writing code intended to be included within
-**OpenMunicipio**'s codebase.
+Please be sure to adhere to these coding standards when writing code intended to be included within
+**OpenMunicipio**\ 's codebase.
 
-Unless otherwise stated, you MUST follow `PEP 8`_ (aka *Style Guide for Python
-Code*) and `Django Coding Style`_ guidelines.  
+Unless otherwise stated, you MUST follow `PEP 8`_ (aka *Style Guide for Python Code*) and `Django Coding Style`_
+guidelines.
 
 In case of conflicts, assume this order of precedence:
 
@@ -30,32 +29,37 @@ In case of conflicts, assume this order of precedence:
 Language
 --------
 
-#. Source code MUST be written in English
-#. Source code's comments MUST be written in English, too
-#. Developer documentation MUST be written in English
-#. User documentation MUST be written in Italian
-#. Commit messages MUST be written in English
-#. QUESTION: tickets ??
+For the sake of consistency, these pieces of text MUST be written in **English**:
+
+* source code 
+* source code's comments 
+* documentation intended for developers
+* commit messages (for the version control system used by the project -- currently, Git)
+* development-related issues (a.k.a. tickets),  including comments made to them
+
+These pieces of text, instead, MUST be written in **Italian**:
+
+* documentation intended for end-users
 
 
 Indentation
 -----------
 
-#. Source code MUST be indented by 4 spaces (NO tabs, please !). 
+* Source code MUST be indented by 4 spaces (**NO tabs**, please !). 
 
   * for `vim` users, these options should do the trick:
 
     .. sourcecode:: vim
 
-    set expandtab
-    set tabstop=4
-    set shiftwidth=4
+        set expandtab
+        set tabstop=4
+        set shiftwidth=4
     
 Comments
 --------
 
-#. Within source code, docstrings, comments, etc. SHOULD be formatted following
-   ``docutils`` conventions (i.e. using the `reStructuredText`_ markup syntax
+* documentation included within source code files, including docstrings, comments, etc. SHOULD be formatted following
+  ``docutils`` conventions (i.e. using the `reStructuredText`_ markup syntax)
 
 .. _`reStructuredText`: http://docutils.sourceforge.net/rst.html
 
@@ -64,80 +68,76 @@ Python module's import order
 ----------------------------
 
 Python modules should be imported at the top of source files for readability
-reasons (non-module-level imports (if needed) are an exception, of course!).
+reasons (non-module-level imports -- if needed -- are an exception, of course!).
 
 Module-level imports SHOULD follow this order:
 
-#. modules included with the official Django distribution
-#. modules provided by 3-rd party Django apps
-#. system libraries
-#. project-specific modules
+* modules included with the official Django distribution
+* modules provided by 3-rd party Django apps
+* project-specific modules
+* system libraries
 
 Settings
 --------
 
-#. Values of Django settings MUST be accessed via the proxy object
-   ``django.conf.settings``, NOT importing the ``settings.py`` module.
+Values of Django settings MUST be accessed via the proxy object ``django.conf.settings``, NOT by importing the
+``settings.py`` module.
 
-  That is to say, in order to access e.g. ``STATIC_ROOT`` use:
+That is to say, in order to access e.g. ``STATIC_ROOT`` use:
   
-  .. code-block:: python
+.. code-block:: python
 
-     from django.conf import settings
-     value = settings.STATIC_ROOT
+   from django.conf import settings
+   value = settings.STATIC_ROOT
 
-  DON'T use:
-  
-    .. code-block:: python
+DON'T use:
 
-    import mysite.settings
-    value = settings.STATIC_ROOT
+.. code-block:: python
+
+   import mysite.settings
+   value = settings.STATIC_ROOT
 
 
 Naming conventions
 ------------------
-#. class names MUST be CamelCase
-#. names made by multiple words (except classes) MUST be separated by ``_`` (underscore)
-#. variables and attributes referencing multiple entities MUST be pluralized (except ``ManyToManyField``\ s, see below)
+* class names MUST be CamelCase
+* names made by multiple words -- except for classes -- MUST be separated by ``_`` (the underscore character)
+* variables and attributes referencing multiple entities MUST be pluralized (except for ``ManyToManyField``\ s, see below)
 
 
 Stubs
 -----
 
-#. When stubbing callable objects (functions, methods) you should use ``raise NotImplementedError`` 
-   instead of just a ``pass`` statement, as a remainder for you and other developers;
+When stubbing callable objects (functions, methods, etc.) you should use ``raise NotImplementedError`` instead of just a
+``pass`` statement, as a remainder for you and other developers.
 
 
 Managed attributes
 ------------------
 
-#. To retrieve a computed attribute in class, try to use Python *properties* when
-   possible, instead of *methods*, since this style provides for improved readability
+To retrieve a computed attribute in class, try to use Python *properties* when possible, instead of *methods*, since
+this style provides for improved readability.
 
 
 Models
 ------
-#. Names for ``BooleanField`` and ``NullBooleanField`` model fields SHOULD begin
-   with a verb: e.g. ``is_active``, ``can_do_something``, etc.
-#. Model validation and model save steps SHOULD be kept distinct;
-   e.g. validation-specific logic goes within the ``Model.clean()`` method, while
-   save-time logic goes within ``Model.save()``.  Since ``Model.clean()`` doesn't
-   get automatically called, usually ``Model.save()`` will call it;
+* Names for ``BooleanField`` and ``NullBooleanField`` model fields SHOULD begin with a verb: e.g. ``is_active``,
+  ``can_do_something``, etc.
+* *Model validation* and *model save* steps SHOULD be kept distinct, as much as possible; e.g. validation-specific logic
+  goes within the ``Model.clean()`` method, while save-time logic goes within ``Model.save()``.  Since ``Model.clean()``
+  doesn't get automatically called, usually ``Model.save()`` will call it
 
 
 Fields
 ------
-#. When a ``related_name`` attribute of a ``ForeignKey`` or ``ManyToManyField``
-    model field is specified, it SHOULD end with ``_set``, for consistency with
-    Django default behaviour;
-#. Since ``ManyToManyField`` model fields behave as ``Manager`` objects, like
-   ``related_name`` model attributes automatically added by Django to describe
-   reverse relationships between models, for usage consistency their names SHOULD
-   end ``_set``;
+* When a ``related_name`` attribute of a ``ForeignKey`` or ``ManyToManyField`` model field is specified, it SHOULD end
+  with ``_set``, for consistency with Django default behaviour;
+* Since ``ManyToManyField`` model fields behave as ``Manager`` objects, like ``related_name`` model attributes
+  automatically added by Django to describe reverse relationships between models, for usage consistency their names
+  SHOULD end with ``_set``;
 
-#. For each ``ManyToManyField`` or  ``related_name`` attribute, add a property
-   providing direct access to the full QuerySet of corresponding model
-   instances.  Example:
+* For each ``ManyToManyField`` or ``related_name`` attribute, add a property providing direct access to the full
+  QuerySet of corresponding model instances.  Example:
 
 .. sourcecode:: python
 
@@ -158,27 +158,28 @@ Fields
 
 URLconfs
 --------
-#. URLs MUST end with a ``/`` character
+* URLs MUST end with a ``/`` character
 
-#. Language strings within URLs MUST be in English for development setups and in Italian for production setups
+* Language strings within URLs MUST be in English for *development* setups and in Italian for *production* setups
 
-#. URLs pointing to detail pages for objects (e.g. ``DetailView``s) SHOULD look like  ``/<object>s/<id>/``, ``/<object>s/<slug>/``, ... (e.g. ``/acts/1/``)
+* URLs pointing to detail pages for objects (e.g. ``DetailView``\ s) SHOULD look like  ``/<object>s/<id>/``, ``/<object>s/<slug>/``, ... (e.g. ``/acts/1/``)
 
-#. URLs pointing to pages listing objects *of the same kind* (e.g. ``ListView``s) SHOULD look like  ``/<object>s/`` (e.g. ``/acts/``)
+* URLs pointing to pages listing objects *of the same kind* (e.g. ``ListView``\ s) SHOULD look like  ``/<object>s/`` (e.g. ``/acts/``)
 
-#. the root URLconf module (``open_municipio.urls`` should only contains:
+* the root URLconf module -- i.e. ``open_municipio.urls`` -- should only contains:
  
- * URLs not associated to any specific application (e.g. ``/info/``)
- * *mount-points* of application-specific URLs (using Django ``include()`` facility)
+ * URLs not associated with any specific application (e.g. ``/info/``)
+ * *mount-points* of application-specific URLs (by using Django ``include()`` facility)
 
-#. Application-specific URLs go within the ``urls`` module (or package) of the corresponding application
+* Application-specific URLs go within the ``urls`` module (or package) of the corresponding application
 
 
 Views
 -----
-#. EVERY view SHOULD be named (via the ``name`` parameter of the corresponding URL pattern) (useful for enabling the reverse-lookup mechanisms for URLs)
+* EVERY view SHOULD be **named** (via the ``name`` parameter of the corresponding URL pattern); this is useful for
+  enabling the reverse-lookup mechanisms for URL resolution
 
-#. Class-based view implementations should be preferred to function-based ones
+* **Class-based** view implementations should be preferred to **function-based** ones
 
 
             
@@ -186,12 +187,11 @@ Views
 Markers
 -------
 
-#. Within source code, you SHOULD use convential (uppercased) keywords to denote
-   specific kind of comments:
+Within source code, you SHOULD use convential (uppercased) keywords to denote specific kind of comments:
  
-    #. ``TODO`` denotes features to implement, improvements to made, etc.
-    #. ``FIXME`` denotes issues with the code to be solved later
-    #. ``WRITEME`` SHOULD be used as a (temporary!) replacement for docstrings, etc.
+  * ``TODO`` denotes features to implement, improvements to made, etc.
+  * ``FIXME`` denotes issues with the code to be solved later
+  * ``WRITEME`` SHOULD be used as a (temporary!) replacement for docstrings, etc.
  
 
 
