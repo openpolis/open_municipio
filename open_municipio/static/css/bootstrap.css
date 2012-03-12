@@ -3706,6 +3706,27 @@ address {
 #wrapper > header {
   background-color: #c7beb7;
 }
+body.politician #wrapper > header {
+  background-color: #9bce7e;
+}
+body.politician dl.tags-cloud dd,
+body.politician dl.tags-cloud dt {
+  background-color: #9bce7e;
+}
+body.tags #wrapper > header {
+  background-color: #fee265;
+}
+body.tags dl.tags-cloud dd,
+body.tags dl.tags-cloud dt {
+  background-color: #fee265;
+}
+body.citizen #wrapper > header {
+  background-color: #5ac3e6;
+}
+body.citizen dl.tags-cloud dd,
+body.citizen dl.tags-cloud dt {
+  background-color: #5ac3e6;
+}
 #wrapper > header > .navbar {
   margin-bottom: 0;
 }
@@ -3852,6 +3873,7 @@ dl.tags-cloud dt a,
 dl.tags-cloud dd a:hover,
 dl.tags-cloud dt a:hover {
   color: #5e5d5e;
+  text-shadow: 0 0 0 transparent;
 }
 dl.tags-cloud dd {
   font-weight: normal;
@@ -3864,6 +3886,7 @@ dl.tags-cloud dt {
 .greenbox {
   font-size: 20px;
   padding: 8px;
+  font-weight: bold;
   text-align: center;
   display: inline-block;
   background-color: #9bce7e;
@@ -3875,6 +3898,7 @@ dl.tags-cloud dt {
 .blackbox {
   font-size: 20px;
   padding: 8px;
+  font-weight: bold;
   text-align: center;
   display: inline-block;
   background-color: #000000;
@@ -3886,6 +3910,7 @@ dl.tags-cloud dt {
 .lightgraybox {
   font-size: 20px;
   padding: 8px;
+  font-weight: bold;
   text-align: center;
   display: inline-block;
   background-color: #eeeeee;
@@ -3897,6 +3922,7 @@ dl.tags-cloud dt {
 .graybox {
   font-size: 20px;
   padding: 8px;
+  font-weight: bold;
   text-align: center;
   display: inline-block;
   background-color: #555555;
@@ -3908,6 +3934,7 @@ dl.tags-cloud dt {
 .bluebox {
   font-size: 20px;
   padding: 8px;
+  font-weight: bold;
   text-align: center;
   display: inline-block;
   background-color: #5ac3e6;
@@ -3919,6 +3946,7 @@ dl.tags-cloud dt {
 .okbox {
   font-size: 20px;
   padding: 8px;
+  font-weight: bold;
   text-align: center;
   display: inline-block;
   background-color: #46a546;
@@ -3930,6 +3958,7 @@ dl.tags-cloud dt {
 .kobox {
   font-size: 20px;
   padding: 8px;
+  font-weight: bold;
   text-align: center;
   display: inline-block;
   background-color: #9d261d;
@@ -4165,12 +4194,13 @@ dl.data-list dt + dd {
 #sidebar h3 {
   margin-top: 30px;
   margin-bottom: 15px;
+  font-color: #5e5d5e;
 }
 #sidebar h2 {
-  font-size: 30px;
+  font-size: 28px;
 }
 #sidebar h3 {
-  font-size: 26px;
+  font-size: 24px;
 }
 #sidebar p.bg-dark {
   padding: 5px;
