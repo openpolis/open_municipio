@@ -11,6 +11,7 @@ Contents:
 .. toctree::
    :maxdepth: 1
    
+   dev/install
    dev/GUIDELINES
    dev/code/queries
 
