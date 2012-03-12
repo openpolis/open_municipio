@@ -36,7 +36,7 @@ class Votation(models.Model):
     n_no = models.IntegerField(blank=True, null=True)
     n_abst = models.IntegerField(blank=True, null=True)
     n_maj = models.IntegerField(blank=True, null=True)
-    outcome = models.IntegerField(choices=OUTCOMES)
+    outcome = models.IntegerField(choices=OUTCOMES, blank=True, null=True)
     
     # activation of the ``is_linked_filter``
     # add ``act`` to the ``list_filter`` list in ``admin.py``
