@@ -13,7 +13,7 @@ from model_utils.managers import PassThroughManager
 from open_municipio.monitoring.models import Monitoring
 from open_municipio.people.managers import TimeFramedQuerySet
 
-from datetime import datetime
+import datetime
 
 
 #
@@ -194,7 +194,7 @@ class Group(models.Model):
         Return a QuerySet containing the counselors (as charges) currently
         belonging to this group.
         """
-        now = datetime.now()
+        now = datetime.datetime.now()
         # filter out non-current ``GroupCharges`` records
         current_Q = Q(groupcharge__start_date__lte=now) & (Q(groupcharge__end_date__gte=now) | Q(groupcharge__end_date__isnull=True)) 
         qs = InstitutionCharge.objects.current().filter(current_Q).filter(groupcharge__group__id=self.id) 
