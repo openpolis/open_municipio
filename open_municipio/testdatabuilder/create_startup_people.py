@@ -31,7 +31,7 @@ sindaco_inst.save()
 print "  sindaco"
 
 giunta_inst = Institution(
-    name='Giunta comunale', institution_type=Institution.TOWN_GOVERNMENT, parent=sindaco_inst,
+    name='Giunta comunale', institution_type=Institution.CITY_GOVERNMENT, parent=sindaco_inst,
     description="Descrizione dell'istituzione Giunta"
 )
 giunta_inst.save()

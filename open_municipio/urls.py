@@ -44,7 +44,6 @@ urlpatterns = patterns('',
     (r'^offices/', include('open_municipio.people.urls.offices')),
     (r'^companies/', include('open_municipio.people.urls.companies')), 
     (r'^acts/', include('open_municipio.acts.urls')),
-
 )
 
 
