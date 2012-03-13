@@ -21,6 +21,7 @@ open_municipio/taxonomy/migrations
 open_municipio/users/migrations
 open_municipio/om_comments/migrations
 uploads/attached_documents/*
+docs/_build
 docs/ignored
 docs/dev/data_import/README-it.html
 docs/dev/data_import/style.css
