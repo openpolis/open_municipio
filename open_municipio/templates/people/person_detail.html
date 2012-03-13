@@ -5,6 +5,8 @@
 
 {% block content_header %}{% trans 'politicians' %}{% endblock %}
 
+{% block body_class %}politician{% endblock %}
+
 {% block head_css_includes %}
     {{ block.super }}
     <link rel="stylesheet" href="{{ STATIC_URL }}css/meter-bar.css" />
@@ -238,7 +240,7 @@
 {% block sidebar %}
 
     <section><h3>Monitora</h3>
-        <table class="">
+        <table>
             <tr>
                 <td><span class="bluebox">{{ person.monitoring_users|length }}</span></td>
                 <th class="bg-dark span12">

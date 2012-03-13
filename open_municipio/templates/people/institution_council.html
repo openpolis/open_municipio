@@ -92,6 +92,18 @@
 {% endblock %}
 
 {% block sidebar %}
+
+    <h2>Commissioni</h2>
+    <ul class="unstyled">
+        <li><a href="{% url om_institution_commission %}"><strong>Commissione 1</strong>: edilizia, urbanistica…</a></li>
+        <li><a href="#"><strong>Commissione 2</strong>: ambiente, energie rinnovabili…</a></li>
+        <li><a href="#"><strong>Commissione 3</strong>: cultura, teatro…</a></li>
+        <li><a href="#"><strong>Commissione 1</strong>: edilizia, urbanistica…</a></li>
+        <li><a href="#"><strong>Commissione 2</strong>: ambiente, energie rinnovabili…</a></li>
+        <li><a href="#"><strong>Commissione 3</strong>: cultura, teatro...</a></li>
+    </ul>
+
+
     <h2>Ultimi 3 atti del Consiglio</h2>
     <ul class="feed-list">
 
@@ -136,86 +148,25 @@
     <p class="bg-dark"><a href="#">Vedi tutti <i class="icon-chevron-down"></i></a></p>
 {% endblock %}
 
+
+{% comment %}Calendar blocks{% endcomment %}
 {% block head_css_includes %}
     {{ block.super }}
     <link rel="stylesheet" href="{{ STATIC_URL }}css/ui-custom-theme/jquery-ui-1.8.16.custom.css">
-{% endblock %}
-
-{% block head_js_includes_ie %}
-    <link rel="stylesheet" href="{{ STATIC_URL }}css/ui-custom-theme/jquery-ui-1.8.16.ie.css">
+    <!--[if IE]><link rel="stylesheet" href="{{ STATIC_URL }}css/ui-custom-theme/jquery-ui-1.8.16.ie.css"><![endif]-->
 {% endblock %}
 
 {% block footer_js_includes %}
+    {{ block.super }}
     <script src="{{ STATIC_URL }}js/jquery-ui-1.8.18.custom.min.js"></script>
+    <script src="{{ STATIC_URL }}js/jquery.ui.calendar.js"></script>
 {% endblock %}
 
 {% block extra_js %}
-
     // initialize events
     var events = [
     { Title: "Five K for charity", Date: new Date("02/03/2012") },
     { Title: "Dinner", Date: new Date("03/03/2012") },
     { Title: "Meeting with manager", Date: new Date("05/03/2012") }
     ];
-
-
-    jQuery(document).ready(function($) {
-    /* Italian initialisation for the jQuery UI date picker plugin. */
-    /* Written by Antonello Pasella (antonello.pasella@gmail.com). */
-    /* http://jquery-ui.googlecode.com/svn/trunk/ui/i18n/jquery.ui.datepicker-it.js */
-
-    $.datepicker.regional['it'] = {
-    closeText: 'Chiudi',
-    prevText: '&#x3c;Prec',
-    nextText: 'Succ&#x3e;',
-    currentText: 'Oggi',
-    monthNames: ['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno','Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'],
-    monthNamesShort: ['Gen','Feb','Mar','Apr','Mag','Giu','Lug','Ago','Set','Ott','Nov','Dic'],
-    dayNames: ['Domenica','Luned&#236','Marted&#236','Mercoled&#236','Gioved&#236','Venerd&#236','Sabato'],
-    dayNamesShort: ['Dom','Lun','Mar','Mer','Gio','Ven','Sab'],
-    dayNamesMin: ['Do','Lu','Ma','Me','Gi','Ve','Sa'],
-    weekHeader: 'Sm',
-    dateFormat: 'dd/mm/yy',
-    firstDay: 1,
-    isRTL: false,
-    showMonthAfterYear: false,
-    yearSuffix: ''};
-
-    $.datepicker.setDefaults($.datepicker.regional['it']);
-
-    // Load Datepicker
-    $('.calendar').datepicker({
-    inline: true,
-    beforeShowDay: function(date) {
-    var result = [true, '', null];
-    var matching = $.grep(events, function(event) {
-    return event.Date.valueOf() === date.valueOf();
-    });
-
-    if (matching.length) {
-    result = [true, 'highlight', null];
-    }
-    return result;
-    },
-    onSelect: function(dateText) {
-    var date,
-    selectedDate = new Date(dateText),
-    i = 0,
-    event = null;
-
-    while (i < events.length && !event) {
-    date = events[i].Date;
-
-    if (selectedDate.valueOf() === date.valueOf()) {
-    event = events[i];
-    }
-    i++;
-    }
-    if (event) {
-    alert(event.Title);
-    }
-    }
-    });
-    });
-
 {% endblock %}

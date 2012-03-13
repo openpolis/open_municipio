@@ -1799,7 +1799,6 @@ table .span12 {
   -o-transition: height 0.35s ease;
   transition: height 0.35s ease;
   position: relative;
-  overflow: hidden;
   height: 0;
 }
 .collapse.in {
@@ -3388,6 +3387,14 @@ a.thumbnail:hover {
 .label-info:hover {
   background-color: #2d6987;
 }
+.label-white {
+  background-color: #ffffff;
+  color: #5e5d5e;
+}
+.label-white:hover {
+  background-color: #e6e6e6;
+  color: #5e5d5e;
+}
 @-webkit-keyframes progress-bar-stripes {
   from {
     background-position: 0 0;
@@ -3689,6 +3696,10 @@ a.thumbnail:hover {
 .invisible {
   visibility: hidden;
 }
+address {
+  font-size: 12px;
+  line-height: 14px;
+}
 #main {
   padding-top: 15px;
 }
@@ -3702,11 +3713,33 @@ a.thumbnail:hover {
 #wrapper > header {
   background-color: #c7beb7;
 }
+body.politician #wrapper > header {
+  background-color: #9bce7e;
+}
+body.politician dl.tags-cloud dd,
+body.politician dl.tags-cloud dt {
+  background-color: #9bce7e;
+}
+body.tags #wrapper > header {
+  background-color: #fee265;
+}
+body.tags dl.tags-cloud dd,
+body.tags dl.tags-cloud dt {
+  background-color: #fee265;
+}
+body.citizen #wrapper > header {
+  background-color: #5ac3e6;
+}
+body.citizen dl.tags-cloud dd,
+body.citizen dl.tags-cloud dt {
+  background-color: #5ac3e6;
+}
 #wrapper > header > .navbar {
   margin-bottom: 0;
 }
 #area-title {
-  margin-bottom: 18px;
+  margin: 30px auto;
+  font-size: 40px;
 }
 #content > hgroup h1 {
   margin-top: 10px;
@@ -3800,6 +3833,10 @@ table th.text-center,
 table td.text-center {
   text-align: center;
 }
+/* Text colouring */
+.text-green {
+  color: #438137;
+}
 /* Generic thumbnail */
 .thumb {
   float: left;
@@ -3847,6 +3884,7 @@ dl.tags-cloud dt a,
 dl.tags-cloud dd a:hover,
 dl.tags-cloud dt a:hover {
   color: #5e5d5e;
+  text-shadow: 0 0 0 transparent;
 }
 dl.tags-cloud dd {
   font-weight: normal;
@@ -3859,6 +3897,7 @@ dl.tags-cloud dt {
 .greenbox {
   font-size: 20px;
   padding: 8px;
+  font-weight: bold;
   text-align: center;
   display: inline-block;
   background-color: #9bce7e;
@@ -3870,6 +3909,7 @@ dl.tags-cloud dt {
 .blackbox {
   font-size: 20px;
   padding: 8px;
+  font-weight: bold;
   text-align: center;
   display: inline-block;
   background-color: #000000;
@@ -3881,6 +3921,7 @@ dl.tags-cloud dt {
 .lightgraybox {
   font-size: 20px;
   padding: 8px;
+  font-weight: bold;
   text-align: center;
   display: inline-block;
   background-color: #eeeeee;
@@ -3892,6 +3933,7 @@ dl.tags-cloud dt {
 .graybox {
   font-size: 20px;
   padding: 8px;
+  font-weight: bold;
   text-align: center;
   display: inline-block;
   background-color: #555555;
@@ -3903,6 +3945,7 @@ dl.tags-cloud dt {
 .bluebox {
   font-size: 20px;
   padding: 8px;
+  font-weight: bold;
   text-align: center;
   display: inline-block;
   background-color: #5ac3e6;
@@ -3914,6 +3957,7 @@ dl.tags-cloud dt {
 .okbox {
   font-size: 20px;
   padding: 8px;
+  font-weight: bold;
   text-align: center;
   display: inline-block;
   background-color: #46a546;
@@ -3925,6 +3969,7 @@ dl.tags-cloud dt {
 .kobox {
   font-size: 20px;
   padding: 8px;
+  font-weight: bold;
   text-align: center;
   display: inline-block;
   background-color: #9d261d;
@@ -3965,16 +4010,23 @@ dl.tags-cloud dt {
 }
 /* Generic list of person, with pic, name and short description */
 ul.people-list {
-  margin-left: 0;
+  margin-left: 5px;
   list-style: none;
 }
 ul.people-list li {
-  display: block;
   margin-top: 5px;
-  min-height: 50px;
+  *zoom: 1;
   padding-top: 3px;
   padding-bottom: 3px;
   line-height: 16px;
+}
+ul.people-list li:before,
+ul.people-list li:after {
+  display: table;
+  content: "";
+}
+ul.people-list li:after {
+  clear: both;
 }
 ul.people-list li img {
   float: left;
@@ -3985,6 +4037,9 @@ ul.people-list li img {
 ul.people-list li .monitoring {
   display: block;
 }
+ul.people-list li form {
+  margin: 0;
+}
 ul.feed-list {
   margin: 0;
   list-style: none;
@@ -3993,7 +4048,12 @@ ul.feed-list {
 ul.feed-list li {
   background-color: #f6f4f2;
   margin-bottom: 3px;
-  padding: 3px 5px 3px;
+  padding: 10px;
+}
+ul.feed-list .rank-value {
+  color: #999999;
+  font-size: 2.5em;
+  font-weight: bold;
 }
 /* Data lists */
 ul.list-floated li {
@@ -4057,16 +4117,20 @@ dl.data-list dt + dd {
 .socialicon-add {
   background-position: -60px 0;
 }
-.socialicon-five:hover {
+.socialicon-five:hover,
+.socialicon-five.socialicon-active {
   background-position: 0 -20px;
 }
-.socialicon-ok:hover {
+.socialicon-ok:hover,
+.socialicon-ok.socialicon-active {
   background-position: -20px -20px;
 }
-.socialicon-ko:hover {
+.socialicon-ko:hover,
+.socialicon-ko.socialicon-active {
   background-position: -40px -20px;
 }
-.socialicon-add:hover {
+.socialicon-add:hover,
+.socialicon-add.socialicon-active {
   background-position: -60px -20px;
 }
 .socialicon-five.used {
@@ -4111,9 +4175,7 @@ dl.data-list dt + dd {
   bottom: -6px;
   top: auto;
 }
-/********************************/
-/*          Act page            */
-/********************************/
+/* Sidebar styles */
 #sidebar table {
   width: 100%;
   margin-bottom: 18px;
@@ -4157,6 +4219,66 @@ dl.data-list dt + dd {
 #sidebar table td {
   padding: 0;
 }
+#sidebar table.stats {
+  font-size: 12px;
+  margin-bottom: 0;
+}
+#sidebar .tabbable {
+  margin-top: 18px;
+  margin-bottom: 18px;
+}
+#sidebar .tabbable .nav-tabs {
+  margin-bottom: 0;
+}
+#sidebar .tabbable .tab-content {
+  border: 1px solid #DDD;
+  border-top-width: 0;
+}
+#sidebar h1,
+#sidebar h2,
+#sidebar h3 {
+  margin-top: 30px;
+  margin-bottom: 15px;
+  font-color: #5e5d5e;
+}
+#sidebar h2 {
+  font-size: 28px;
+}
+#sidebar h3 {
+  font-size: 24px;
+}
+#sidebar p.bg-dark {
+  padding: 5px;
+}
+#sidebar li .monitoring {
+  display: block;
+  margin-top: 5px;
+}
+#content .nav-tabs {
+  border-bottom: 2px solid #ddd;
+}
+#content .nav-tabs > li {
+  margin-bottom: -2px;
+}
+#content .nav-tabs > li > a {
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+}
+#content .nav > li > a {
+  background-color: #eeeeee;
+  border: 2px solid #ddd;
+}
+#content .nav-tabs > .active > a,
+#content .nav-tabs > .active > a:hover {
+  background-color: #ffffff;
+  border: 2px solid #ddd;
+  border-bottom-color: transparent;
+  cursor: default;
+}
+/********************************/
+/*          Act page            */
+/********************************/
 table#acttable {
   width: 100%;
   margin-bottom: 18px;
@@ -4249,12 +4371,8 @@ table#acttable th.greenLight {
 table#acttable th.greenLighter {
   background-color: #cde6be;
 }
-/********************************/
-/*        Council page          */
-/********************************/
 .party-people {
   *zoom: 1;
-  border-bottom: 1px dotted #999999;
   margin-bottom: 20px;
   padding-bottom: 10px;
 }
@@ -4302,4 +4420,7 @@ table#acttable th.greenLighter {
 .calendar_container .ui-datepicker-calendar tbody td.highlight > a {
   font-weight: bold;
   color: #285698;
+}
+#search-form input[type="submit"] {
+  margin-top: 23px;
 }
