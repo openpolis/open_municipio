@@ -37,6 +37,9 @@ class Votation(models.Model):
     n_abst = models.IntegerField(blank=True, null=True)
     n_maj = models.IntegerField(blank=True, null=True)
     outcome = models.IntegerField(choices=OUTCOMES)
+
+    is_key = models.BooleanField(default=False, help_text=_("Specify whether the present Act should be a featured one or not"))
+
     
     # activation of the ``is_linked_filter``
     # add ``act`` to the ``list_filter`` list in ``admin.py``

@@ -52,7 +52,9 @@ class Act(TimeStampedModel):
     # manager to handle the list of monitoring having as content_object this instance
     monitorings = generic.GenericRelation(Monitoring,
                                           object_id_field='object_pk')
-    
+ 
+    is_key = models.BooleanField(default=False, help_text=_("Specify whether the present Act should be a featured one or not"))
+   
     def __unicode__(self):
         uc = u'%s' % (self.title)
         if self.idnum:
