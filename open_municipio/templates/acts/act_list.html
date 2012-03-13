@@ -6,22 +6,163 @@
 {% block acts_class %}class="active"{% endblock %}
 
 {% block content %}
-  <section id="content"><!-- #content -->
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>Data di presentazione</th>
-          <th>Atto</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for obj in object_list %}
-          <tr>
-            <td>{{ obj.presentation_date}}</td>
-            <td><a href="{{ obj.get_absolute_url }}">{{ obj }}</a></td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>      
-  </section><!-- end of #content -->  
+
+    <section>
+
+        <h1>Cerca l'atto</h1>
+
+        <form action="#" id="search-form">
+
+            <fieldset class="row-fluid">
+                <p class="span4">
+                    <label for="search_category">Categoria</label>
+                    <select name="category" id="search_category"></select>
+                </p>
+                <p class="span4">
+                    <label for="search_act_type">Tipo di atto</label>
+                    <select name="act_type" id="search_act_type"></select>
+                </p>
+                <p class="span4">
+                    <label for="search_doc_title">Titolo del documento</label>
+                    <select name="doc_type" id="search_doc_title"></select>
+                </p>
+            </fieldset>
+
+            <fieldset class="row-fluid">
+                <p class="span4">
+                    <label for="search_initiative_type">Tipo di iniziativa</label>
+                    <select name="category" id="search_initiative_type"></select>
+                </p>
+                <p class="span4">
+                    <label for="search_council">Consiglio</label>
+                    <select name="act_type" id="search_council"></select>
+                </p>
+                <p class="span4">
+                    <label>Stato dell'atto</label>
+                    <input type="radio" /> In corso <input type="radio"> Concluso
+                </p>
+            </fieldset>
+
+            <fieldset class="row-fluid">
+                <p class="span4">
+                    <label for="search_period">Arco temporale</label>
+                    <select name="period" id="search_period"></select>
+                </p>
+
+                <p class="span8">
+                    <input type="submit" value="Cerca" class="btn">
+                </p>
+            </fieldset>
+
+        </form>
+
+    </section>
+
+
+    <hr>
+
+    <section>
+        <h2>Atti chiave</h2>
+
+        <table class="data">
+            <tfoot>
+            <tr>
+                <td colspan="2"><a href="#"><i class="icon-play"></i> Vedi tutti gli atti chiave</a></td>
+            </tr>
+            </tfoot>
+            <tbody>
+            {% for obj in object_list %}
+            <tr>
+                <td>{{ obj.presentation_date}}</td>
+                <td>
+                    <a href="{{ obj.get_absolute_url }}"><strong>{{ obj }}</strong> ({{ obj.idnum }})</a><br>
+                    <strong>Delibera di consiglio</strong> del Consiglio Comunale N°<strong>85</strong> del <strong>2.2.2012</strong>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </section>
+
+    <section>
+        <h2>Ultimi pubblicati</h2>
+
+        <table class="data">
+            <tfoot>
+            <tr>
+                <td colspan="2"><a href="#"><i class="icon-play"></i> Vedi tutti gli atti pubblicati</a></td>
+            </tr>
+            </tfoot>
+            <tbody>
+            {% for obj in object_list %}
+                <tr>
+                    <td>{{ obj.presentation_date}}</td>
+                    <td>
+                        <a href="{{ obj.get_absolute_url }}"><strong>{{ obj }}</strong> ({{ obj.idnum }})</a><br>
+                        <strong>Delibera di consiglio</strong> del Consiglio Comunale N°<strong>85</strong> del <strong>2.2.2012</strong>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </section>
+
+    <section>
+        <h2>Peso degli argomenti negli atti</h2>
+        <!-- Arguments cloud -->
+    </section>
+
+{% endblock %}
+
+{% block sidebar %}
+
+    <h2>Ultimi atti commentati</h2>
+    <ul class="feed-list">
+
+        <li>Stato idrogeologico della zona
+                <span class="monitoring">7 commenti - <a href="#"><i class="icon-comment"></i> Commenta</a>
+            </span></li>
+        <li>Stato idrogeologico della zona
+                <span class="monitoring">7 commenti - <a href="#"><i class="icon-comment"></i> Commenta</a>
+            </span></li>
+        <li>Stato idrogeologico della zona
+                <span class="monitoring">7 commenti - <a href="#"><i class="icon-comment"></i> Commenta</a>
+            </span></li>
+    </ul>
+    <p class="bg-dark"><a href="#"><i class="icon-play"></i> Vedi tutti</a></p>
+
+
+
+    <h2>Ultimi atti votati</h2>
+    <ul class="feed-list">
+
+        <li>Stato idrogeologico della zona
+                <span class="monitoring">7 favorevoli - 3 contrari - <a href="#"><i class="socialicon-ok"></i><i class="socialicon-ko"></i> Vota</a>
+            </span></li>
+        <li>Stato idrogeologico della zona
+                <span class="monitoring">7 favorevoli - 3 contrari - <a href="#"><i class="socialicon-ok"></i><i class="socialicon-ko"></i> Vota</a>
+            </span></li>
+        <li>Stato idrogeologico della zona
+                <span class="monitoring">7 favorevoli - 3 contrari - <a href="#"><i class="socialicon-ok"></i><i class="socialicon-ko"></i> Vota</a>
+            </span></li>
+    </ul>
+    <p class="bg-dark"><a href="#"><i class="icon-play"></i> Vedi tutti</a></p>
+
+    <h2>Ultime sugli atti <img src="{{ STATIC_URL }}img/feed-icon-14x14.png" alt="" /></h2>
+    <ul class="feed-list">
+        <li><a href="#">Mario Rossi ha commentato il voto</a></li>
+        <li><a href="#">Il voto è inserito nell'ordine del giorno N° 13516</a></li>
+        <li><a href="#">Barcaiuolo, Pellacani, Bellei, Morandi, Santoro (PdL) hanno presentato la mozione...</a></li>
+    </ul>
+    <p class="bg-dark"><a href="#">Leggi tutte <i class="icon-chevron-down"></i></a></p>
+
+    <h2>Ultime dalla community <img src="{{ STATIC_URL }}img/feed-icon-14x14.png" alt="" /></h2>
+    <ul class="feed-list">
+        <li><a href="#">Mario Rossi ha commentato il voto</a></li>
+        <li><a href="#">Il voto è inserito nell'ordine del giorno N° 13516</a></li>
+        <li><a href="#">Barcaiuolo, Pellacani, Bellei, Morandi, Santoro (PdL) hanno presentato la mozione...</a></li>
+    </ul>
+    <p class="bg-dark"><a href="#">Leggi tutte <i class="icon-chevron-down"></i></a></p>
+
+
 {% endblock %}

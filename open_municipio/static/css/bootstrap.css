@@ -1799,7 +1799,6 @@ table .span12 {
   -o-transition: height 0.35s ease;
   transition: height 0.35s ease;
   position: relative;
-  overflow: hidden;
   height: 0;
 }
 .collapse.in {
@@ -4416,4 +4415,7 @@ table#acttable th.greenLighter {
 .calendar_container .ui-datepicker-calendar tbody td.highlight > a {
   font-weight: bold;
   color: #285698;
+}
+#search-form input[type="submit"] {
+  margin-top: 23px;
 }
