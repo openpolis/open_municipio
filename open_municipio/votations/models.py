@@ -6,6 +6,8 @@ from model_utils.models import TimeStampedModel
 
 from open_municipio.people.models import Group, InstitutionCharge, Sitting 
 from open_municipio.acts.models import Act
+from open_municipio.votations.filters import IsLinkedFilterSpec
+
 
 class Votation(models.Model):
     """
@@ -21,6 +23,11 @@ class Votation(models.Model):
     idnum = models.CharField(blank=True, max_length=64)
     sitting = models.ForeignKey(Sitting, null=True)
     act = models.ForeignKey(Act, null=True)
+    
+    # this field is used to keep the textual description of the related act
+    # as expressed in the voting system
+    act_descr = models.CharField(blank=True, max_length=255)
+    
     group_vote_set = models.ManyToManyField(Group, through='GroupVote')
     charge_vote_set = models.ManyToManyField(InstitutionCharge, through='ChargeVote')
     n_legal = models.IntegerField(blank=True, null=True)
@@ -30,6 +37,11 @@ class Votation(models.Model):
     n_abst = models.IntegerField(blank=True, null=True)
     n_maj = models.IntegerField(blank=True, null=True)
     outcome = models.IntegerField(choices=OUTCOMES)
+    
+    # activation of the ``is_linked_filter``
+    # add ``act`` to the ``list_filter`` list in ``admin.py``
+    # to filter votations based on the existence of a related act
+    act.is_linked_filter = True
     
     class Meta:
         verbose_name = _('votation')
@@ -42,6 +54,13 @@ class Votation(models.Model):
     @property
     def charge_votes(self):
         return self.charge_vote_set.all()
+        
+    @property
+    def is_linked(self):
+        if self.act is None:
+            return False
+        else:
+            return True
         
     def __unicode__(self):
         return u'votation %s' % (self.idnum)

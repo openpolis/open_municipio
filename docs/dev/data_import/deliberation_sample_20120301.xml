@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    Una CouncilDeliberation è una proposta di deliberazione,
+    che quando è approvata diventa delibera (o deliberazione).
+    
+    Attributi:
+    id - identifica l'atto internamente, 
+         secondo le specifiche del sistema informativo che lo genera.
+    initiative - è il tipo di iniziativa se di consiglio, di giunta o popolare
+    approval_date - data di approvazione (se approvata)
+    execution_date - data in cui la delibera diventa esecutiva
+-->
+<om:CouncilDeliberation 
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns:om="http://www.openmunicipio.it"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="DataImport.xsd" 
+    initiative="council_member" id="act-001" approval_date="01-03-2012" execution_date="04-05-2012">
+    
+    <!-- Titolo e testo ufficiale dell'atto -->
+    <om:Content title="Lorem ipsum dolor sit amet">
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit, 
+        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi 
+        ut aliquip ex ea commodo consequat. Duis aute irure dolor 
+        in reprehenderit in voluptate velit esse cillum dolore eu 
+        fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, 
+        sunt in culpa qui officia deserunt mollit anim id est laborum.
+    </om:Content>
+    
+    <!-- 
+    Esistono due tipologie di firmatari: 
+     - i primi firmatari (presentano la proposta) 
+     - i co-firmatari (appoggiano la proposta)
+    E' possibile che l'elenco di firmatari vari nel tempo.
+    -->
+    <om:ActSubscribers type="first_subscriber">
+        <om:ChargeXRef xlink:href="institution_sample.xml#0015" xlink:type="simple"/>
+        <om:ChargeXRef xlink:href="institution_sample.xml#0016" xlink:type="simple"/>
+    </om:ActSubscribers>
+    <om:ActSubscribers type="co_signer">
+        <om:ChargeXRef xlink:href="institution_sample.xml#0014" xlink:type="simple"/>
+        <om:ChargeXRef xlink:href="institution_sample.xml#0018" xlink:type="simple"/>
+    </om:ActSubscribers> 
+    
+    <!-- 
+    Sequenza di allegati. 
+    Ciascun allegato può far riferimento a una risorsa esterna, 
+    tramite l'attributo xlink:href. 
+    Gli allegati possono essere di tipo differente: PDF, HTML, DOC, XLS, CSV, immagini
+    L'estensione viene specificata nell'attributo tipo.
+    
+    I tag om:AttachmentDescription e om:AttachmentContent sono 
+    la rappresentazione testuale dell'allegato, se disponibile.
+    
+    om:AttachmenteDescription è una versione breve (riassunto o abstract)
+    omAttachmentContent è la versione completa.
+    
+    Rappresentaizone testuale e risorsa esterna, se presenti entrambe, 
+    devono contenere lo stesso testo.    
+    -->
+    <om:Attachment title="Allegato A" 
+                   xlink:href="http://www.comune.x.it/dati/allegati/atto_15434_a.pdf" xlink:type="simple" 
+                   type="pdf">       
+        <om:AttachmentDescription>Abstract breve dell'allegato</om:AttachmentDescription>
+        <om:AttachmentContent>Rappresentaizone testuale completa dell'allegato A</om:AttachmentContent>
+    </om:Attachment>
+    <om:Attachment title="Allegato B">       
+        <om:AttachmentDescription>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</om:AttachmentDescription>
+        <om:AttachmentContent>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</om:AttachmentContent>
+    </om:Attachment>
+</om:CouncilDeliberation>

@@ -1,38 +1,111 @@
-from django.http import HttpResponseRedirect, HttpResponseForbidden
-from django.views.generic import DetailView, FormView, ListView, TemplateView
+from django.views.generic import DetailView, ListView, TemplateView
 from django.shortcuts import get_object_or_404
-from django.utils.decorators import method_decorator
+from django.core.exceptions import ObjectDoesNotExist
 
-from django.contrib.auth.decorators import login_required
-
-from taggit.models import Tag
-
-from open_municipio.acts.models import Act
+from open_municipio.taxonomy.views import AddTagsView, RemoveTagView
+from open_municipio.acts.models import Act, Agenda, Deliberation, Interpellation, Interrogation, Motion
 from open_municipio.acts.forms import TagAddForm
+from open_municipio.monitoring.forms import MonitoringForm
 
 class ActListView(ListView):
+    model = Act
+    template_name = 'acts/act_list.html'
+
+class ActEditorView(TemplateView):
     pass
 
 class ActDetailView(DetailView):
     model = Act
-    context_object_name = 'act'
+    context_object_name = 'act' 
     
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super(ActDetailView, self).get_context_data(**kwargs)
+        # mix-in tab-related context
+        self.tab = self.kwargs.get('tab', 'default')
+        extra_context = getattr(self, 'get_related_%(tab)s' % {'tab': self.tab})()
+        if extra_context:
+            context.update(extra_context)
+            
         # Add in a form for adding tags
         context['tag_add_form'] = TagAddForm()
+        
+        
+        # is the user monitoring the act?
+        context['is_user_monitoring'] = False
+        try:
+            if self.request.user.is_authenticated():
+                # add a monitoring form, to context,
+                # to switch monitoring on and off
+                context['monitoring_form'] = MonitoringForm(data = {
+                    'content_type_id': context['act'].content_type_id, 
+                    'object_pk': context['act'].id,
+                    'user_id': self.request.user.id
+                })
+                
+                if context['act'] in self.request.user.get_profile().monitored_objects:
+                    context['is_user_monitoring'] = True
+        except ObjectDoesNotExist:
+            context['is_user_monitoring'] = False
+        
+        
         return context
-
-
-class ActAddTagsView(FormView):
-    form_class = TagAddForm
-    template_name = 'acts/act_detail.html'
-
-    @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super(ActAddTagsView, self).dispatch(*args, **kwargs)
     
+    def get_related_default(self):
+        """
+        Retrieve context needed for populating the default tab.
+        """
+        pass
+    
+    def get_related_emendations(self):
+        """
+        Retrieve context needed for populating the *emendations* tab.
+        """
+        pass
+
+    def get_related_documents(self):
+        """
+        Retrieve context needed for populating the *documents* tab.
+        """
+        pass
+    
+    def get_template_names(self):
+        if self.tab == 'default': # default tab selected
+            return 'acts/%(model)s_detail.html' % {'model': self.model.__name__.lower()}
+        else:
+            return 'acts/%(model)s_detail_%(tab)s.html' % {'model': self.model.__name__.lower(), 'tab': self.tab}
+
+
+class AgendaDetailView(ActDetailView):
+    model = Agenda
+    context_object_name = 'agenda'
+
+
+class DeliberationDetailView(ActDetailView):
+    model = Deliberation
+    context_object_name = 'deliberation'
+
+
+class InterpellationDetailView(ActDetailView):
+    model = Interpellation
+    context_object_name = 'interpellation'
+
+
+class InterrogationDetailView(ActDetailView):
+    model = Interrogation
+    context_object_name = 'interrogation'
+
+class MotionDetailView(ActDetailView):
+    model = Motion
+    context_object_name = 'motion'
+    
+
+## Tag management
+class ActAddTagsView(AddTagsView):
+    form_class = TagAddForm
+    context_object_name = 'act'
+    template_name = 'acts/act_detail.html'
+  
     def get_object(self):
         """
         Returns the ``Act`` instance being tagged.
@@ -45,47 +118,13 @@ class ActAddTagsView(FormView):
         context = super(ActAddTagsView, self).get_context_data(**kwargs)
         # Just an alias for ``form`` context variable
         context['tag_add_form'] = kwargs['form']
-        context['act'] = self.act
         return context
-    
-    def get_success_url(self):
-        return self.act.get_absolute_url()
-    
-    def form_valid(self, form):
-        new_tags =  form.cleaned_data['tags']
-        self.act.tag_set.add(*new_tags, tagger=self.request.user)
-        return HttpResponseRedirect(self.get_success_url())
-    
-    def get(self, request, *args, **kwargs):
-        self.act = self.get_object()
-        form_class = self.get_form_class()
-        form = self.get_form(form_class)
-        context = self.get_context_data(form=form)
-        self.render_to_response(context)
-        
-    def post(self, request, *args, **kwargs):
-        self.act = self.get_object()
-        form_class = self.get_form_class()
-        form = self.get_form(form_class)
-        if form.is_valid():
-            return self.form_valid(form)
-        else:
-            return self.form_invalid(form)
  
     
-class ActRemoveTagView(TemplateView):
-    @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super(ActRemoveTagView, self).dispatch(*args, **kwargs)
-    
-    def check_perms(self): 
-        return self.request.user.is_staff
-    
-    def get(self, request, *args, **kwargs):
-        if self.check_perms():
-            act = get_object_or_404(Act, pk=kwargs.get('act_pk'))
-            tag = get_object_or_404(Tag, slug=kwargs.get('tag_slug'))
-            act.tag_set.remove(tag)
-            return HttpResponseRedirect(act.get_absolute_url())
-        else: # permission check failed !
-            return HttpResponseForbidden
+class ActRemoveTagView(RemoveTagView):
+    def get_object(self):
+        """
+        Returns the ``Act`` instance being un-tagged.
+        """
+        act = get_object_or_404(Act, pk=self.kwargs.get('act_pk'))
+        return act

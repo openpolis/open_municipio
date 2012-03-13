@@ -108,6 +108,9 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
     'django.contrib.staticfiles',
     'django_extensions',
+    'registration',
+    'open_municipio.registration',
+    'profiles',
     'south',
     'taggit',
     'voting',
@@ -119,6 +122,15 @@ INSTALLED_APPS = (
     'open_municipio.people',
     'open_municipio.taxonomy',
     'open_municipio.votations',
+    'open_municipio.users',
+    'open_municipio.monitoring',
 )
 
 COMMENTS_APP = 'open_municipio.om_comments'
+
+# registration settings
+ACCOUNT_ACTIVATION_DAYS = 7 # One-week activation window; you may, of course, use a different value.
+REGISTRATION_AUTO_LOGIN = True
+
+# use app shortcut (app.class)
+AUTH_PROFILE_MODULE = 'users.UserProfile'

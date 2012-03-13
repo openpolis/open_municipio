@@ -21,7 +21,14 @@ class TransitionInline(admin.TabularInline):
     extra = 1
 
 class ActAdmin(admin.ModelAdmin):
-    pass
+    # genial hack to allow users with no permissions to show
+    # the list of related acts for a raw field
+    # adapted from: http://www.maykinmedia.nl/blog/2010/feb/9/djang-view-permissions-for-related-objects/
+    #
+    # pop=1 is true when a window is open as popup for raw fields lookup
+    def has_change_permission(self, request, obj=None):
+        return request.GET.get('pop', None) == '1' or\
+               super(ActAdmin, self).has_change_permission(request, obj)
 
 class ActAdminWithAttaches(admin.ModelAdmin):
     inlines = [AttachInline, TransitionInline]
@@ -46,17 +53,11 @@ class ActAdminWithSATE(admin.ModelAdmin):
     )
     
 
-class StatusAdmin(admin.ModelAdmin):
-    prepopulated_fields = {"slug": ("name",)}
-
-
+admin.site.register(Act, ActAdmin)
 admin.site.register(Deliberation, ActAdminWithSATE)
 admin.site.register(Interrogation)
 admin.site.register(Interpellation)
-admin.site.register(Act, ActAdmin)
 admin.site.register(Motion, ActAdminWithEmendations)
 admin.site.register(Calendar)
 admin.site.register(Emendation, ActAdminWithAttaches)
-admin.site.register(Status, StatusAdmin)
 admin.site.register(Attach)
-

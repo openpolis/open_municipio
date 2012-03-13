@@ -1,0 +1,16 @@
+{% extends "base_one_column.html" %}
+{% block title %}Profilo utente{% endblock %}
+{% block content_header %}Profilo di {{user}}{% endblock %}
+{% block users_class %}class="active"{% endblock %}
+ 
+{% block content %}
+
+  {% if profile %}
+    <div style="margin-top: 20px">
+      Opzioni della Privacy: {{ profile.get_privacy_level_display }} <br/>
+      Vuole ricevere la newsletter: {{ profile.wants_newsletter }} <br/>
+    </div>
+  {% else %}  
+      Non ha un profilo pubblico
+  {% endif %}
+{% endblock %}

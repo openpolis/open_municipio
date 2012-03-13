@@ -1,22 +1,22 @@
+import datetime
+
 from django import forms
 from django.conf import settings
 from django.contrib.comments.forms import CommentForm
 from django.contrib.contenttypes.models import ContentType
-from django.forms.fields import ChoiceField
 from django.forms.widgets import RadioSelect
 from django.utils.encoding import force_unicode
 
-from open_municipio.om_comments.models import CommentWithMood, COMMENT_MOOD
+from open_municipio.om_comments.models import CommentWithMood
 
-import datetime
 
 class CommentFormWithMood(CommentForm):
     """
     A comment form which matches the default djanago.contrib.comments
-    one, but with some custom fields.
+    one, plus a few custom fields.
     """
-    mood = forms.ChoiceField(widget=RadioSelect, choices=COMMENT_MOOD, initial="0")
-
+    mood = forms.ChoiceField(widget=RadioSelect, choices=CommentWithMood.MOOD_CHOICES, initial=CommentWithMood.NEUTRAL)
+    
     def get_comment_model(self):
         # Use our custom comment model instead of the built-in one.
         return CommentWithMood
@@ -32,9 +32,4 @@ class CommentFormWithMood(CommentForm):
             is_public    = True,
             is_removed   = False,
             mood         = self.cleaned_data['mood'],
-            open_municipio_user = None,
             )
-
-CommentFormWithMood.base_fields.pop('name')
-CommentFormWithMood.base_fields.pop('email')
-CommentFormWithMood.base_fields.pop('url')
