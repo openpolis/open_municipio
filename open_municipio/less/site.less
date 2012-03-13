@@ -179,7 +179,7 @@ dl.tags-cloud {
 
 /* Generic list of person, with pic, name and short description */
 ul.people-list {
-    margin-left: 0;
+    margin-left: 5px;
     list-style: none;
     li {
             margin-top: 5px;
@@ -190,7 +190,6 @@ ul.people-list {
             .monitoring { display:block; }
             form { margin: 0; }
     }
-            
 }
 
 ul.feed-list {
@@ -202,6 +201,7 @@ ul.feed-list {
         margin-bottom: 3px;
         padding: 10px;
     }
+    .rank-value { color: @grayLight; font-size: 2.5em; font-weight: bold; }
 }
 
 /* Data lists */
@@ -322,6 +322,8 @@ dl.data-list {
     h3 { font-size: 24px; }
 
     p.bg-dark { padding: 5px; }
+
+    li .monitoring { display: block; margin-top: 5px; }
 }
 
 #content {
@@ -367,12 +369,9 @@ table#acttable {
 
 }
 
-/********************************/
-/*        Council page          */
-/********************************/
+// container for peoples with image left-floated
 .party-people {
     .clearfix;
-    .border-bottom;
     margin-bottom: 20px;
     padding-bottom: 10px;
 

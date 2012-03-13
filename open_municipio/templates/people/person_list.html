@@ -1,10 +1,237 @@
-{% extends "base.html" %}
+{% extends "base_two_columns.html" %}
 {% load i18n %}
 
-{% block title %} Elenco persone {% endblock %}
+{% block title %} Politici {% endblock %}
+
+{% block content_header %}Politici{% endblock %}
+
+{% block body_class %}politician{% endblock %}
+
+{% block footer_js_includes %}
+    {{ block.super }}
+    <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap-tab.js"></script>
+{% endblock %}
 
 {% block content %}
-  <section id="content"><!-- #content -->
-  
-  </section><!-- end of #content -->  
+
+    <section class="row-fluid">
+        <div class="party-people span4">
+            <h2>Sindaco</h2>
+
+            <p><a href="#"><strong>Mario Rossi</strong> (P)</a></p>
+
+            <h2>Giunta</h2>
+
+            <ul class="">
+                <li><a href="#"><strong>Mario Rossi</strong> (P)</a></li>
+                <li><a href="#"><strong>Mario Rossi</strong> (P)</a></li>
+                <li><a href="#"><strong>Mario Rossi</strong> (P)</a></li>
+                <li><a href="#"><strong>Mario Rossi</strong> (P)</a></li>
+                <li><a href="#"><strong>Mario Rossi</strong> (P)</a></li>
+                <li><a href="#"><strong>Mario Rossi</strong> (P)</a></li>
+                <li><a href="#"><strong>Mario Rossi</strong> (P)</a></li>
+                <li><a href="#"><strong>Mario Rossi</strong> (P)</a></li>
+                <li><a href="#"><strong>Mario Rossi</strong> (P)</a></li>
+                <li><a href="#"><strong>Mario Rossi</strong> (P)</a></li>
+            </ul>
+        </div>
+
+        <div class="party-people span8">
+
+            <h2>Consiglio</h2>
+
+            <ul class="list-floated">
+                <li><a href="#"><strong>Mario Rossi I</strong> (P)</a></li>
+                <li><a href="#"><strong>Mario Rossi II</strong> (P)</a></li>
+                <li><a href="#"><strong>Mario Rossi III</strong> (P)</a></li>
+                <li><a href="#"><strong>Mario Rossi IV</strong> (P)</a></li>
+                <li><a href="#"><strong>Mario Rossi ..</strong> (P)</a></li>
+                <li><a href="#"><strong>Mario Rossi</strong> (P)</a></li>
+                <li><a href="#"><strong>Mario Rossi</strong> (P)</a></li>
+                <li><a href="#"><strong>Mario Rossi</strong> (P)</a></li>
+                <li><a href="#"><strong>Mario Rossi</strong> (P)</a></li>
+                <li><a href="#"><strong>Mario Rossi</strong> (P)</a></li>
+                <li><a href="#"><strong>Mario Rossi</strong> (P)</a></li>
+                <li><a href="#"><strong>Mario Rossi</strong> (P)</a></li>
+                <li><a href="#"><strong>Mario Rossi</strong> (P)</a></li>
+                <li><a href="#"><strong>Mario Rossi</strong> (P)</a></li>
+                <li><a href="#"><strong>Mario Rossi</strong> (P)</a></li>
+            </ul>
+        </div>
+    </section>
+
+    <hr>
+
+    <div class="row-fluid">
+
+        <section class="span6">
+            <h2>Ultimi cambiamenti di gruppo</h2>
+            <ul class="people-list border-right">
+                <li>
+                    <a href="#"><img src="http://placehold.it/50" /></a>
+                    <strong><a href="#"><i class="icon-ok"></i> Mario Rossi</a></strong> <br />
+                    Partito Democratico
+                <span class="monitoring">Monitorato da 2 cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a>
+                </li>
+                <li>
+                    <a href="#"><img src="http://placehold.it/50" /></a>
+                    <strong><a href="#"><i class="icon-ok"></i> Mario Rossi</a></strong> <br />
+                    Partito Democratico
+                <span class="monitoring">Monitorato da 2 cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a>
+                </li>
+                <li>
+                    <a href="#"><img src="http://placehold.it/50" /></a>
+                    <strong><a href="#"><i class="icon-ok"></i> Mario Rossi</a></strong> <br />
+                    Partito Democratico
+                <span class="monitoring">Monitorato da 2 cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a>
+                </li>
+            </ul>
+
+        </section>
+
+        <section class="span6">
+            <h2>I più ribelli</h2>
+            <ul class="people-list">
+                <li>
+                    <a href="#"><img src="http://placehold.it/50" /></a>
+                    <strong><a href="#"><i class="icon-ok"></i> Mario Rossi</a></strong> <br />
+                    Partito Democratico
+                <span class="monitoring">Monitorato da 2 cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a>
+                </li>
+                <li>
+                    <a href="#"><img src="http://placehold.it/50" /></a>
+                    <strong><a href="#"><i class="icon-ok"></i> Mario Rossi</a></strong> <br />
+                    Partito Democratico
+                <span class="monitoring">Monitorato da 2 cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a>
+                </li>
+                <li>
+                    <a href="#"><img src="http://placehold.it/50" /></a>
+                    <strong><a href="#"><i class="icon-ok"></i> Mario Rossi</a></strong> <br />
+                    Partito Democratico
+                <span class="monitoring">Monitorato da 2 cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a>
+                </li>
+            </ul>
+
+        </section>
+
+    </div>
+
+    <hr>
+
+    <div class="row-fluid">
+
+        <section class="span6">
+            <h2>I meno assenti</h2>
+            <ul class="people-list border-right">
+                <li>
+                    <a href="#"><img src="http://placehold.it/50" /></a>
+                    <strong><a href="#"><i class="icon-ok"></i> Mario Rossi</a></strong> <br />
+                    Partito Democratico
+                <span class="monitoring">Monitorato da 2 cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a>
+                </li>
+                <li>
+                    <a href="#"><img src="http://placehold.it/50" /></a>
+                    <strong><a href="#"><i class="icon-ok"></i> Mario Rossi</a></strong> <br />
+                    Partito Democratico
+                <span class="monitoring">Monitorato da 2 cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a>
+                </li>
+                <li>
+                    <a href="#"><img src="http://placehold.it/50" /></a>
+                    <strong><a href="#"><i class="icon-ok"></i> Mario Rossi</a></strong> <br />
+                    Partito Democratico
+                <span class="monitoring">Monitorato da 2 cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a>
+                </li>
+            </ul>
+
+        </section>
+
+        <section class="span6">
+            <h2>I più assenti</h2>
+            <ul class="people-list">
+                <li>
+                    <a href="#"><img src="http://placehold.it/50" /></a>
+                    <strong><a href="#"><i class="icon-ok"></i> Mario Rossi</a></strong> <br />
+                    Partito Democratico
+                <span class="monitoring">Monitorato da 2 cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a>
+                </li>
+                <li>
+                    <a href="#"><img src="http://placehold.it/50" /></a>
+                    <strong><a href="#"><i class="icon-ok"></i> Mario Rossi</a></strong> <br />
+                    Partito Democratico
+                <span class="monitoring">Monitorato da 2 cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a>
+                </li>
+                <li>
+                    <a href="#"><img src="http://placehold.it/50" /></a>
+                    <strong><a href="#"><i class="icon-ok"></i> Mario Rossi</a></strong> <br />
+                    Partito Democratico
+                <span class="monitoring">Monitorato da 2 cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a>
+                </li>
+            </ul>
+
+        </section>
+
+    </div>
+
+{% endblock %}
+
+{% block sidebar %}
+
+<section><h3>I 3 politici più monitorati</h3>
+    <ul class="feed-list">
+        <li class="bg-light">
+            <span class="rank-value pull-right">1</span>
+            <a href="#"><strong>JohnDoe</strong> (PR)</a>
+            <span class="monitoring">
+                Monitorato da 5 cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a>
+            </span>
+        </li>
+        <li class="bg-lightgreen">
+            <span class="rank-value pull-right">2</span>
+            <a href="#"><strong>JohnDoe</strong> (PR)</a>
+            <span class="monitoring">
+                Monitorato da 5 cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a>
+            </span>
+        </li>
+        <li class="bg-light">
+            <span class="rank-value pull-right">3</span>
+            <a href="#"><strong>JohnDoe</strong> (PR)</a>
+            <span class="monitoring">
+                Monitorato da 5 cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a>
+            </span>
+        </li>
+    </ul>
+
+</section>
+
+
+
+
+<div class="tabbable">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#gender_tab" data-toggle="tab">Sesso</a></li>
+        <li><a href="#age_tab" data-toggle="tab">Età</a></li>
+        <li><a href="#instruction_tab" data-toggle="tab">Titolo di studio</a></li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane active" id="gender_tab">
+            <p><img src="https://chart.googleapis.com/chart?cht=p3&amp;chd=s:Uf9a&amp;chs=400x130&amp;chdl=con oltre 20 anni di incarichi: 2 (0.98%)|da 15 a 20 anni di incarichi: 11 (5.37%)|da 10 a 15 anni di incarichi: 35 (17.07%)|da 5 a 10 anni di incarichi: 74 (36.1%)|con+meno di 5 anni di incarichi: 83 (40.49%)&amp;chd=t:2,11,35,74,83&amp;chco=FF0000,FFFF10"></p>
+        </div>
+        <div class="tab-pane" id="age_tab">
+            <p><img src="https://chart.googleapis.com/chart?cht=p3&chd=s:Uf9a&chs=400x130&chdl=con%20oltre%2020%20anni%20di%20incarichi:%202%20(4.17%)|da%2015%20a%2020%20anni%20di%20incarichi:%208%20(16.67%)|da%2010%20a%2015%20anni%20di%20incarichi:%2012%20(25%)|da%205%20a%2010%20anni%20di%20incarichi:%2012%20(25%)|con+meno%20di%205%20anni%20di%20incarichi:%2014%20(29.17%)&chd=t:2,8,12,12,14&chco=FF0000,FFFF10"></p>
+        </div>
+        <div class="tab-pane" id="instruction_tab">
+            <p><img src="https://chart.googleapis.com/chart?cht=p3&chd=s:Uf9a&chs=400x130&chdl=con%20oltre%2020%20anni%20di%20incarichi:%203%20(7.89%)|da%2015%20a%2020%20anni%20di%20incarichi:%205%20(13.16%)|da%2010%20a%2015%20anni%20di%20incarichi:%207%20(18.42%)|da%205%20a%2010%20anni%20di%20incarichi:%2016%20(42.11%)|con+meno%20di%205%20anni%20di%20incarichi:%207%20(18.42%)&chd=t:3,5,7,16,7&chco=FF0000,FFFF10"></p>
+        </div>
+    </div>
+</div>
+
+
+<h2>Ultime sui politici <img src="{{ STATIC_URL }}img/feed-icon-14x14.png" alt="" /></h2>
+<ul class="feed-list">
+    <li><a href="#">Mario Rossi ha commentato il voto</a></li>
+    <li><a href="#">Il voto è inserito nell'ordine del giorno N° 13516</a></li>
+    <li><a href="#">Barcaiuolo, Pellacani, Bellei, Morandi, Santoro (PdL) hanno presentato la mozione...</a></li>
+</ul>
+<p class="bg-dark"><a href="#">Leggi tutte <i class="icon-chevron-down"></i></a></p>
+
 {% endblock %}
