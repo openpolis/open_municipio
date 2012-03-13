@@ -72,7 +72,10 @@ DEBUG_TOOLBAR_PANELS = (
     'debug_toolbar.panels.signals.SignalDebugPanel',
     'debug_toolbar.panels.logger.LoggingPanel',
 )
+<<<<<<< HEAD
+=======
 
 DEBUG_TOOLBAR_CONFIG = {
     'INTERCEPT_REDIRECTS': True,
 }  
+>>>>>>> 5838c397fd150c98346ff0bf549c654a4d6c9486
