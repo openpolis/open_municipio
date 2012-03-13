@@ -4359,17 +4359,33 @@ table#acttable tbody ul li {
 table#acttable tbody ul li:first-child {
   border-top: 0;
 }
-table#acttable th {
+table#acttable thead th {
   background-color: #e1d9d3;
+  position: relative;
+  vertical-align: top;
+  padding-left: 22px;
+  border-right: 1px solid #ffffff;
 }
-table#acttable th.green {
-  background-color: #46a546;
+table#acttable thead th .arrow {
+  position: absolute;
+  top: 0;
+  right: -18px;
+  width: 18px;
+  height: 50px;
+  z-index: 999;
+  background-image: url(../img/act-arrow.png);
 }
-table#acttable th.greenLight {
+table#acttable thead th.approved {
   background-color: #9bce7e;
 }
-table#acttable th.greenLighter {
+table#acttable thead th.approved .arrow {
+  background-image: url(../img/act-arrow-approved.png);
+}
+table#acttable thead th.current {
   background-color: #cde6be;
+}
+table#acttable thead th.current .arrow {
+  background-image: url(../img/act-arrow-current.png);
 }
 .party-people {
   *zoom: 1;
