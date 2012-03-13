@@ -60,7 +60,7 @@ for s_cnt in range(1, n_sittings):
             [4]*5    #  5% ABSENT
         ]))
 
-        for charge in council_institution.institutioncharge_set.all():
+        for charge in council_institution.charge_set.all():
             if (charge.charge_type == InstitutionCharge.COUNCIL_PRES_CHARGE or
                 charge.charge_type == InstitutionCharge.COUNCIL_VICE_CHARGE):
                 # president and vicepresident do not vote twice
@@ -69,7 +69,7 @@ for s_cnt in range(1, n_sittings):
                 # votings are drawn randomly with weighted probabilities
                 vote = random.choice(vw)
 
-            charge_vote = ChargeVote.objects.create(votation=v, charge=charge, vote=vote)
+            charge_vote = ChargeVote(votation=v, charge=charge, vote=vote)
             charge_vote.save()
             # print "%s voted %s" % (charge, charge_vote.vote)
         print "Voti creati"

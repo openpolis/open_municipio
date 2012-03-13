@@ -19,7 +19,7 @@
     </style>
 
     {% block head_js_includes %}
-    <!--[if IE]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>{% block head_js_includes_ie %}{% endblock %}<![endif]-->
+    <!--[if IE]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
     <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-1.7.1.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap-dropdown.js"></script>
     {% endblock head_js_includes %}
@@ -31,7 +31,7 @@
     {% block extra_head %}{% endblock %}    
 
 </head>
-<body>
+<body class="{% block body_class %}{% endblock %}">
 
 
 <div id="wrapper"><!-- #wrapper -->
@@ -69,7 +69,7 @@
         <div class="navbar-inner">
           <div class="container-fluid">
               <ul class="nav">
-                  <li><a href="#">Politici</a></li>
+                  <li><a href="{% url om_politician_list %}">Politici</a></li>
                   <li><a href="#">Argomenti</a></li>
                   <li {% block users_class %}{% endblock %}><a href="/users/">Cittadini</a></li>
               </ul>
@@ -94,7 +94,7 @@
             <div class="container-fluid">
                 <ul class="nav">
                     <li {% block acts_class %}{% endblock %}><a href="{% url om_act_list %}">Atti</a></li>
-                    <li {% block votations_class %}{% endblock %}><a href="/votations/">Votazioni</a></li>
+                    <li {% block votations_class %}{% endblock %}><a href="{% url om_votation_list %}">Votazioni</a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             Organi politici <b class="caret caret-up"></b>
