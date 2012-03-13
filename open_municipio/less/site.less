@@ -362,10 +362,34 @@ table#acttable {
         li { .border-top; }
         li:first-child { border-top: 0; }
     }
-    th { background-color: @darkBackground; }
-    th.green { background-color: @green; }
-    th.greenLight { background-color: @greenLight; }
-    th.greenLighter { background-color: @greenLighter; }
+    thead {
+        th {
+            background-color: @darkBackground;
+            position: relative;
+            vertical-align: top;
+            padding-left: 22px;
+            border-right: 1px solid @white;
+            .arrow {
+                position: absolute;
+                top:0; right:-18px;
+                width: 18px;
+                height: 50px;
+                z-index: 999;
+                background-image: url(../img/act-arrow.png);
+            }
+
+            &.approved {
+                background-color: @greenLight;
+                .arrow { background-image: url(../img/act-arrow-approved.png); }
+            }
+
+            &.current {
+                background-color: @greenLighter;
+                .arrow { background-image: url(../img/act-arrow-current.png); }
+            }
+        }
+    }
+
 
 }
 
