@@ -6,6 +6,7 @@ from open_municipio.taxonomy.views import AddTagsView, RemoveTagView
 from open_municipio.acts.models import Act, Agenda, Deliberation, Interpellation, Interrogation, Motion
 from open_municipio.acts.forms import TagAddForm
 from open_municipio.monitoring.forms import MonitoringForm
+from open_municipio.taxonomy.models import Tag
 
 class ActListView(ListView):
     model = Act
@@ -48,7 +49,9 @@ class ActDetailView(DetailView):
         except ObjectDoesNotExist:
             context['is_user_monitoring'] = False
         
-        
+        # all arguments
+        context['tags'] = Tag.objects.all()
+
         return context
     
     def get_related_default(self):
