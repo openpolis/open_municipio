@@ -1,10 +1,214 @@
-{% extends "base.html" %}
+{% extends "base_two_columns.html" %}
 {% load i18n %}
 
 {% block title %}| Dettaglio {{ votation }}{% endblock %}
 
+{% block content_header %}Argomenti{% endblock %}
+
+{% block footer_js_includes %}
+    {{ block.super }}
+    <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap-tab.js"></script>
+{% endblock %}
+
 {% block content %}
-  <section id="content"><!-- #content -->
-  
-  </section><!-- end of #content -->  
+    <hgroup>
+        <h2>
+            <strong>{% block act_type %}TIPO ATTO{% endblock %}</strong>
+            del Consiglio comunale N° 85 del <span class="date">2.2.2012</span></small>
+        </h2>
+        <h1>{{ votation }}</h1>
+    </hgroup>
+
+    <table class="table table-striped table-bordered table-condensed">
+        <thead>
+        <tr>
+            <th class="text-center">Gruppi</th>
+            <th>Favorevoli</th>
+            <th>Contrari</th>
+            <th>Astenuti</th>
+            <th>Assenti</th>
+            <th>In missione</th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Coesionie Nazionale - Io Sud</td>
+                <td>8</td><td>2</td><td>1</td><td>0</td><td>0</td>
+            </tr>
+            <tr>
+                <td>Gruppo Misto</td>
+                <td>8</td><td>2</td><td>1</td><td>0</td><td>0</td>
+            </tr>
+            <tr>
+                <td>Italia dei Valori</td>
+                <td>8</td><td>2</td><td>1</td><td>0</td><td>0</td>
+            </tr>
+            <tr>
+                <td>Lega Nsord Padania</td>
+                <td>8</td><td>2</td><td>1</td><td>0</td><td>0</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul class="nav nav-tabs">
+        <li class="active">
+            <a href="#">Tutti</a>
+        </li>
+        <li><a href="#">Ribelli</a></li>
+    </ul>
+
+    <table class="data">
+        <thead>
+        <tr>
+            <th>Politico</th>
+            <th>Favorevole</th>
+            <th>Contrario</th>
+            <th>Astenuto</th>
+            <th>Assente</th>
+            <th>In missione</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td><a href="#"><strong>Adamo Marilena</strong> (PD)</a></td>
+            <td><span class="label label-success">Favorevole</span></td><td></td><td></td><td></td><td></td>
+        </tr>
+        <tr>
+            <td><a href="#"><strong>Bianchi Gianni</strong> (IDV)</a></td>
+            <td></td><td><span class="label label-important">Contrario</span></td><td></td><td></td><td></td>
+        </tr>
+        <tr>
+            <td><a href="#"><strong>Denni Pino</strong> (PD)</a></td>
+            <td></td><td></td><td></td><td></td><td><span class="label label-info">In Missione</span></td>
+        </tr>
+        <tr>
+            <td><a href="#"><strong>Fiori rita</strong> (PDL)</a></td>
+            <td></td><td></td><td><span class="label">Astenuto</span></td><td></td><td></td>
+        </tr>
+        <tr>
+            <td><a href="#"><strong>Adamo Marilena</strong> (PD)</a></td>
+            <td></td><td></td><td></td><td><span class="label label-white">Assente</span></td><td></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="clearfix">
+        <div class="pagination">
+            <form class="form-inline pull-right">
+
+                <label for="current_page">Pagina:</label>
+                <input type="text" name="page" id="current_page" class="input-mini" value="1">
+                <button type="submit" class="btn btn-small">Vai</button>
+
+                <label for="row_for_page">Mostra:</label>
+                <select name="pages" id="row_for_page" class="span2">
+                    <option value="10">10 righe</option>
+                    <option value="15" selected="selected">15 righe</option>
+                    <option value="20">20 righe</option>
+                </select>
+            </form>
+            <ul>
+                <li><a href="#">Prev</a></li>
+                <li class="active">
+                    <a href="#">1</a>
+                </li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">4</a></li>
+                <li><a href="#">Next</a></li>
+            </ul>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block sidebar %}
+    <h2 class="text-green"><i class="socialicon-ok socialicon-active"></i> Approvato</h2>
+    <table class="stats">
+        <tr>
+            <td><span class="okbox">150</span></td>
+            <th class="bg-dark span6">Favorevoli</th>
+            <td><span class="graybox">150</span></td>
+            <th class="bg-dark span6">Astenuti</th>
+            <td><span class="kobox">150</span></td>
+            <th class="bg-dark span6">Contrari</th>
+        </tr>
+    </table>
+    <table class="stats">
+        <tr>
+            <td><span class="lightgraybox">150</span></td>
+            <th class="bg-dark span6">Voti di scarto</th>
+            <td><span class="lightgraybox">150</span></td>
+            <th class="bg-dark span6">Politici ribelli</th>
+        </tr>
+    </table>
+
+
+    <div class="tabbable">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#favorables_tab" data-toggle="tab">Favorevoli</a></li>
+            <li><a href="#against_tab" data-toggle="tab">Contrari</a></li>
+            <li><a href="#abstained_tab" data-toggle="tab">Astenuti</a></li>
+            <li><a href="#rebels_tab" data-toggle="tab">Ribelli</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" id="favorables_tab">
+                <p><img src="https://chart.googleapis.com/chart?cht=p3&amp;chd=s:Uf9a&amp;chs=400x130&amp;chdl=con oltre 20 anni di incarichi: 2 (0.98%)|da 15 a 20 anni di incarichi: 11 (5.37%)|da 10 a 15 anni di incarichi: 35 (17.07%)|da 5 a 10 anni di incarichi: 74 (36.1%)|con+meno di 5 anni di incarichi: 83 (40.49%)&amp;chd=t:2,11,35,74,83&amp;chco=FF0000,FFFF10"></p>
+            </div>
+            <div class="tab-pane" id="against_tab">
+                <p><img src="https://chart.googleapis.com/chart?cht=p3&chd=s:Uf9a&chs=400x130&chdl=con%20oltre%2020%20anni%20di%20incarichi:%202%20(4.17%)|da%2015%20a%2020%20anni%20di%20incarichi:%208%20(16.67%)|da%2010%20a%2015%20anni%20di%20incarichi:%2012%20(25%)|da%205%20a%2010%20anni%20di%20incarichi:%2012%20(25%)|con+meno%20di%205%20anni%20di%20incarichi:%2014%20(29.17%)&chd=t:2,8,12,12,14&chco=FF0000,FFFF10"></p>
+            </div>
+            <div class="tab-pane" id="abstained_tab">
+                <p><img src="https://chart.googleapis.com/chart?cht=p3&chd=s:Uf9a&chs=400x130&chdl=con%20oltre%2020%20anni%20di%20incarichi:%203%20(7.89%)|da%2015%20a%2020%20anni%20di%20incarichi:%205%20(13.16%)|da%2010%20a%2015%20anni%20di%20incarichi:%207%20(18.42%)|da%205%20a%2010%20anni%20di%20incarichi:%2016%20(42.11%)|con+meno%20di%205%20anni%20di%20incarichi:%207%20(18.42%)&chd=t:3,5,7,16,7&chco=FF0000,FFFF10"></p>
+            </div>
+            <div class="tab-pane" id="rebels_tab">
+                <p><img src="https://chart.googleapis.com/chart?cht=p3&chd=s:Uf9a&chs=400x130&chdl=con%20oltre%2020%20anni%20di%20incarichi:%202%20(0.95%)|da%2015%20a%2020%20anni%20di%20incarichi:%2045%20(21.33%)|da%2010%20a%2015%20anni%20di%20incarichi:%2041%20(19.43%)|da%205%20a%2010%20anni%20di%20incarichi:%2044%20(20.85%)|con+meno%20di%205%20anni%20di%20incarichi:%2079%20(37.44%)&chd=t:2,45,41,44,79&chco=FF0000,FFFF10"></p>
+            </div>
+        </div>
+    </div>
+
+
+    <section><h3>Commenti (20)</h3>
+        <ul class="people-list">
+            <li class="bg-light">
+                <a href="#"><img src="http://placehold.it/50x50" alt="" /></a>
+                <a href="#">JohnDoe</a> Lorem ipsum dolor sit amet,consectetuer adipiscing elit. Suspendisse ut purus.
+            <span class="monitoring">
+                <i class="socialicon-ko"></i> · 14.06.2011 · <a href="#">Condividi</a> · <a href="#">Mi piace</a> · <i class="socialicon-add"></i> 4
+            </span>
+            </li>
+            <li class="bg-lightgreen">
+                <a href="#"><img src="http://placehold.it/50x50" alt="" /></a>
+                <a href="#">JohnDoe</a> Lorem ipsum dolor sit amet,consectetuer adipiscing elit. Suspendisse ut purus.
+            <span class="monitoring">
+                <i class="socialicon-ko"></i> · 14.06.2011 · <a href="#">Condividi</a> · <a href="#">Mi piace</a> · <i class="socialicon-add"></i> 4
+            </span>
+            </li>
+            <li class="bg-light">
+                <a href="#"><img src="http://placehold.it/50x50" alt="" /></a>
+                <a href="#">JohnDoe</a> Lorem ipsum dolor sit amet,consectetuer adipiscing elit. Suspendisse ut purus.
+            <span class="monitoring">
+                <i class="socialicon-ko"></i> · 14.06.2011 · <a href="#">Condividi</a> · <a href="#">Mi piace</a> · <i class="socialicon-add"></i> 4
+            </span>
+            </li>
+            <li class="bg-light">
+                <form action="#" class="form-inline">
+                    <i class="socialicon-ok"></i><i class="socialicon-ko"></i><i class="socialicon-five"></i>
+                    <input type="text" placeholder="Scrivi un commento..." />
+                </form>
+            </li>
+        </ul>
+        <p class="bg-dark">Leggi tutti (Cronologia) <i class="icon-chevron-down"></i></p>
+
+    </section>
+
+
+
+    <h2>Ultime sul Voto <img src="{{ STATIC_URL }}img/feed-icon-14x14.png" alt="" /></h2>
+    <ul class="feed-list">
+        <li><a href="#">Mario Rossi ha commentato il voto</a></li>
+        <li><a href="#">Il voto è inserito nell'ordine del giorno N° 13516</a></li>
+        <li><a href="#">Barcaiuolo, Pellacani, Bellei, Morandi, Santoro (PdL) hanno presentato la mozione...</a></li>
+    </ul>
+    <p class="bg-dark"><a href="#">Leggi tutte <i class="icon-chevron-down"></i></a></p>
 {% endblock %}

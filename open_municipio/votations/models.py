@@ -36,10 +36,8 @@ class Votation(models.Model):
     n_no = models.IntegerField(blank=True, null=True)
     n_abst = models.IntegerField(blank=True, null=True)
     n_maj = models.IntegerField(blank=True, null=True)
-    outcome = models.IntegerField(choices=OUTCOMES)
-
     is_key = models.BooleanField(default=False, help_text=_("Specify whether the present Act should be a featured one or not"))
-
+    outcome = models.IntegerField(choices=OUTCOMES, blank=True, null=True)
     
     # activation of the ``is_linked_filter``
     # add ``act`` to the ``list_filter`` list in ``admin.py``
@@ -64,6 +62,10 @@ class Votation(models.Model):
             return False
         else:
             return True
+
+    @models.permalink
+    def get_absolute_url(self):
+        return ('om_votation_detail', [str(self.pk)])
         
     def __unicode__(self):
         return u'votation %s' % (self.idnum)
