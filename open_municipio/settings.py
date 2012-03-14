@@ -119,6 +119,7 @@ INSTALLED_APPS = (
     'open_municipio.autocomplete',
     'open_municipio.om',
     'open_municipio.om_comments',
+    'open_municipio.om_voting',
     'open_municipio.acts',
     'open_municipio.people',
     'open_municipio.taxonomy',
