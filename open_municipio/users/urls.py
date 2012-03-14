@@ -7,7 +7,7 @@ urlpatterns = patterns('',
          model=User,
          context_object_name='registered_user',
          template_name='users/user_detail.html',
-    ), name='users_user_detail')
+    ), name='users_user_detail'),
 )
 
 urlpatterns += patterns('profiles.views',

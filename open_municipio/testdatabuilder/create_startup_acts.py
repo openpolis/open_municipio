@@ -1,14 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
 import random
-import datetime
 import lipsum
-
+import datetime
 import open_municipio.testdatabuilder.random_items_factory as random_factory
 
 from open_municipio.people.models import *
 from open_municipio.acts.models import *
-from django.conf import settings
 
 # cleanup
 Act.objects.all().delete()
@@ -17,12 +15,10 @@ election_date = '2010-06-14'
 
 g = lipsum.Generator()
 
-
 #
 # creazione proposte di delibera di consiglio
 #
 institution = Institution.objects.get(slug='consiglio-comunale')
-
 
 for i in range(1, 5):
     d = Deliberation(
@@ -40,7 +36,7 @@ for i in range(1, 5):
     nc = random.randint(0, 5)
     print "Aggiunta di %s primi firmatari"  % nf
     maj = random.choice([1, 1, 1, 1, 1, 1, 1, 1, 0]) # first-signers and co-signers come from maj 90% of the times
-    presenters = random_factory.get_institution_charges(institution='consiglio', majority=maj, n=(nf+nc))
+    presenters = random_factory.get_institution_charges(majority=maj, n=(nf+nc))
         
     for presenter in presenters[0:nf]:
         act_support = ActSupport(
@@ -48,7 +44,7 @@ for i in range(1, 5):
             support_type=ActSupport.FIRST_SIGNER,
             support_date=d.presentation_date
         )
-        print "%s" % (presenter)
+        print "%s" % presenter
         act_support.save()
     
     print "Aggiunta di %s co firmatari"  % nc
@@ -58,7 +54,7 @@ for i in range(1, 5):
             support_type=ActSupport.CO_SIGNER,
             support_date=d.presentation_date
         )
-        print "%s" % (presenter)
+        print "%s" % presenter
         act_support.save()
     
     na = random.randint(0, 5)
