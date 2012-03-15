@@ -103,6 +103,7 @@ body.citizen {
         font-size: 14px;
     }
 }
+#content h4 { color:@gray; margin-bottom: 8px; }
 #topbar .navbar-inner { 
     background-color: @topNavbarBackground; 
     background-image: none;
@@ -137,9 +138,9 @@ table.data {
 }
 
 /* Text alignments (with table-fix) */
-.text-left table th.text-left, table td.text-left { text-align: left; }
-.text-right, table th.text-right , table td.text-right { text-align: right; }
-.text-center, table th.text-center, table td.text-center { text-align: center; }
+.text-left/*,     table th.text-left,     table td.text-left,     table tr.text-left > **/ { text-align: left; }
+.text-right/*,    table th.text-right ,   table td.text-right,    table tr.text-right > **/ { text-align: right; }
+.text-center/*,   table th.text-center,   table td.text-center,   table tr.text-center > **/ { text-align: center; }
 
 /* Text colouring */
 .text-green { color: @greenDark; }
@@ -373,7 +374,7 @@ dl.data-list {
     .nav-tabs > li {
       margin-bottom: -2px;
     }
-    .nav-tabs > li > a { .border-radius(0,0,0,0); }
+    .nav-tabs > li > a { .border-radius(0); }
     .nav > li > a { background-color: @grayLighter; border: 2px solid #ddd; }
     .nav > li > a:hover {  }
     .nav-tabs > .active > a,
@@ -402,10 +403,9 @@ table#acttable {
     }
     thead {
         th {
+            padding: 0;
             background-color: @darkBackground;
-            position: relative;
             vertical-align: top;
-            padding-left: 22px;
             border-right: 1px solid @white;
             .arrow {
                 position: absolute;
@@ -418,6 +418,7 @@ table#acttable {
 
             &.approved {
                 background-color: @greenLight;
+
                 .arrow { background-image: url(../img/act-arrow-approved.png); }
             }
 
@@ -425,6 +426,8 @@ table#acttable {
                 background-color: @greenLighter;
                 .arrow { background-image: url(../img/act-arrow-current.png); }
             }
+
+            > div { position: relative; padding: 8px 8px 8px 22px; }
         }
     }
 
@@ -452,7 +455,7 @@ table#acttable {
     border: 1px solid @grayLight;
     min-width: 200px;
     .border-radius;
-    h3 { margin: 5px 0; text-align:center; border-bottom: 1px solid @grayLight; }
+    h3 { margin: 5px 0; font-size: 15px; text-align:center; border-bottom: 1px solid @grayLight; }
     .calendar { padding: 5px; }
     .ui-datepicker { width: auto; }
     .ui-datepicker-calendar tbody td.highlight > a { font-weight: bold; color: @linkColor; }

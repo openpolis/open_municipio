@@ -1,0 +1,130 @@
+{% extends 'base_two_columns.html' %}
+
+{% block content_header %}Argomenti{% endblock %}
+{% block body_class %}tags{% endblock %}
+
+{% block sub_nav %}
+
+    <ul>
+        {% for category in category_list %}
+            <li>
+                <a href="{{ category.get_absolute_url }}">{{ category }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}
+
+{% block content %}
+
+    <h1>{{ tag_object|title }}</h1>
+
+    <section>
+        <div class="row-fluid">
+            <div class="span4">
+                <div class="calendar_container">
+                    <h3>Argomento sull'agenda politica</h3>
+                    <div class="calendar"></div>
+                </div>
+            </div>
+            <div class="span8">
+                <h4>Se ne discute</h4>
+
+                <ul class="data-list">
+                    <li>01.3.2012 in <a href="#">Consiglio comunale</a></li>
+                    <li>02.3.2012 in <a href="#">Commissione Edilizia e urbanistica</a></li>
+                    <li>04.3.2012 in <a href="#">Giunta</a></li>
+                    <li>05.3.2012 in <a href="#">Commissione Edilizia e urbanistica</a></li>
+                    <li>06.3.2012 in <a href="#">Giunta</a></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <hr>
+
+    <section>
+        <h3>Atti che trattano di {{ tag_object }}</h3>
+
+        <table class="data">
+            <thead>
+            <tr>
+                <td>Atti</td>
+                <td>Giunta</td>
+                <td>Consiglio</td>
+                <td>Commissioni</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>Proposta di delibera</td>
+                <td>23</td>
+                <td>34</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Delibera</td>
+                <td>10</td>
+                <td>10</td>
+                <td>10</td>
+            </tr>
+            <tr>
+                <td>Mozioni</td>
+                <td>5</td>
+                <td>5</td>
+                <td>5</td>
+            </tr>
+            <tr>
+                <td>Ordini del giorno</td>
+                <td>12</td>
+                <td>12</td>
+                <td>12</td>
+            </tr>
+            <tr>
+                <td>Interrogazione</td>
+                <td>23</td>
+                <td>34</td>
+                <td>12</td>
+            </tr>
+            <tr>
+                <td>Interpellanza</td>
+                <td>3</td>
+                <td>3</td>
+                <td>3</td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <hr>
+
+    <section>
+        <h3>Politici che si occupano dell'argomento</h3>
+
+        <div class="row-fluid"></div>
+
+    </section>
+
+{% endblock %}
+
+
+{% block head_css_includes %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/ui-custom-theme/jquery-ui-1.8.16.custom.css">
+    <!--[if IE]><link rel="stylesheet" href="{{ STATIC_URL }}css/ui-custom-theme/jquery-ui-1.8.16.ie.css"><![endif]-->
+{% endblock %}
+
+{% block footer_js_includes %}
+    {{ block.super }}
+    <script src="{{ STATIC_URL }}js/jquery-ui-1.8.18.custom.min.js"></script>
+    <script src="{{ STATIC_URL }}js/jquery.ui.calendar.js"></script>
+{% endblock %}
+
+{% block extra_js %}
+    // initialize events
+    var events = [
+    { Title: "Five K for charity", Date: new Date("02/03/2012") },
+    { Title: "Dinner", Date: new Date("03/03/2012") },
+    { Title: "Meeting with manager", Date: new Date("05/03/2012") }
+    ];
+{% endblock %}
