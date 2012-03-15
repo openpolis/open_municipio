@@ -3,9 +3,8 @@ from django.views.generic import DetailView
 from django.core.exceptions import ObjectDoesNotExist
 from django.template import RequestContext
 from os import sys
-from open_municipio.people.models import Institution, Person
+from open_municipio.people.models import Institution, Person, municipality
 from open_municipio.monitoring.forms import MonitoringForm
-
 
 class InstitutionDetailView(DetailView):
     model = Institution
@@ -45,8 +44,6 @@ class PersonDetailView(DetailView):
 
 
 def person_list(request):
-    from open_municipio.people.models import municipality
     return render_to_response('people/person_list.html',{
         'municipality': municipality
-    },context_instance=RequestContext(request)
-)
+    },context_instance=RequestContext(request) )

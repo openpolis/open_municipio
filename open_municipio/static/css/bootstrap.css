@@ -3749,6 +3749,10 @@ body.citizen dl.tags-cloud dt {
   color: #555555;
   font-size: 14px;
 }
+#content h4 {
+  color: #555555;
+  margin-bottom: 8px;
+}
 #topbar .navbar-inner {
   background-color: #efe9e6;
   background-image: none;
@@ -4422,6 +4426,7 @@ table#acttable thead th > div {
 }
 .calendar_container h3 {
   margin: 5px 0;
+  font-size: 15px;
   text-align: center;
   border-bottom: 1px solid #999999;
 }
