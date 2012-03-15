@@ -1,10 +1,135 @@
-{% extends "base_one_column.html" %}
+{% extends "base_two_columns.html" %}
 {% block title %}Users list{% endblock %}
 {% block content_header %}Elenco dei cittadini registrati{% endblock %}
 {% block users_class %}class="active"{% endblock %}
+{% block body_class %}citizen{% endblock %}
  
 {% block content %}
-  {% for obj in object_list %}
-    <a href="{{ obj.profile.get_absolute_url }}">{{ obj.user.username }}</a> ({{ obj.user.email }}) <br/>
-  {% endfor %}
+
+    <h3>Cerca il cittadino</h3>
+
+    <form action="#" id="search-form">
+
+        <fieldset class="row-fluid">
+            <p class="span4">
+                <label for="search_surname">Cognome</label>
+                <select name="surname" id="search_surname"></select>
+            </p>
+            <p class="span4">
+                <label for="search_nickname">Nickname</label>
+                <select name="nickname" id="search_nickname"></select>
+            </p>
+            <p class="span4">
+                <input type="submit" value="Cerca" class="btn">
+            </p>
+        </fieldset>
+
+    </form>
+
+    <hr>
+
+    <section class="row-fluid">
+
+        <div class="span6">
+            <h3>Politici più monitorati</h3>
+            <ul class="people-list">
+                <li><img src="http://placehold.it/50">
+                    <strong>Roberto Bianchi</strong>
+                    Partito Democratico
+                    <span class="monitoring">
+                        Monitorato da 2 cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a>
+                    </span>
+                </li>
+                <li><img src="http://placehold.it/50">
+                    <strong>Roberto Bianchi</strong>
+                    Partito Democratico
+                    <span class="monitoring">
+                        Monitorato da 2 cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a>
+                    </span>
+                </li>
+                <li><img src="http://placehold.it/50">
+                    <strong>Roberto Bianchi</strong>
+                    Partito Democratico
+                    <span class="monitoring">
+                        Monitorato da 2 cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a>
+                    </span>
+                </li>
+            </ul>
+        </div>
+        <div class="span6">
+            <h3>Argomenti più monitorati</h3>
+
+            <ol>
+                <li><a href="#">Abusivismo</a></li>
+                <li><a href="#">Urbanistica</a></li>
+                <li><a href="#">Sic amet</a></li>
+                <li><a href="#">Lorem ipsum</a></li>
+                <li><a href="#">Suc amet</a></li>
+            </ol>
+        </div>
+
+    </section>
+
+    <hr>
+
+    <section>
+
+        <h3>Cittadini per zone della città</h3>
+
+        MAP
+
+    </section>
+
+
+
 {% endblock %}
+
+{% block sidebar %}
+
+    <h3>Ultimi iscritti</h3>
+    {% for obj in object_list %}
+        <a href="{{ obj.profile.get_absolute_url }}">{{ obj.user.username }}</a>
+        {% if not forloop.last %},{% endif %}
+    {% endfor %}
+
+    <h3>Atti più monitorati</h3>
+
+    <ul class="feed-list">
+        <li>
+            <a href="#">Variante al PRG per le rifunzionalizzazione del comparto</a>
+            <span class="monitoring">
+                Monitorato da 2 cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a>
+            </span>
+        </li>
+        <li>
+            <a href="#">Variante al PRG per le rifunzionalizzazione del comparto</a>
+            <span class="monitoring">
+                Monitorato da 2 cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a>
+            </span>
+        </li>
+        <li>
+            <a href="#">Variante al PRG per le rifunzionalizzazione del comparto</a>
+            <span class="monitoring">
+                Monitorato da 2 cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a>
+            </span>
+        </li>
+    </ul>
+
+    <h3>Ultime sui cittadini <img src="{{ STATIC_URL }}img/feed-icon-14x14.png" alt="" /></h3>
+    <ul class="feed-list">
+        <li>
+            <a href="#">Variante al PRG per le rifunzionalizzazione del comparto</a>
+        </li>
+        <li>
+            <a href="#">Variante al PRG per le rifunzionalizzazione del comparto</a>
+        </li>
+        <li>
+            <a href="#">Variante al PRG per le rifunzionalizzazione del comparto</a>
+        </li>
+
+    </ul>
+
+    <p class="bg-dark"><a href="#">Leggi tutte <i class="icon-chevron-down"></i></a></p>
+
+{% endblock %}
+
