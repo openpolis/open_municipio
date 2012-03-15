@@ -1,7 +1,6 @@
 $(document).ready(function() {
 
-$(document).delegate('.vote','click',
-    function () {
+    $('.vote').click(function () {
       var options = $(this).attr('id').split('-');
       var target = options[0];
       var id = options [2];
@@ -34,6 +33,6 @@ $(document).delegate('.vote','click',
 	        }
         }, 'json');
       return false;
-});
+    });
 
 });
