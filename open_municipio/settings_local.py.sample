@@ -54,6 +54,11 @@ STATICFILES_DIRS = (
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = '(c!0th6qo2vbp0os80zj_n!8p%n@e=ypfrpn4%!mydd(mgfm1e'
 
+
+## ``django.contrib.databrowse`` config
+
+INSTALLED_APPS = INSTALLED_APPS + ('django.contrib.databrowse',)
+
 ## ``django-debug-toolbar`` config
 
 MIDDLEWARE_CLASSES = MIDDLEWARE_CLASSES + ('debug_toolbar.middleware.DebugToolbarMiddleware',)
