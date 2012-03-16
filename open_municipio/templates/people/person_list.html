@@ -13,26 +13,18 @@
 {% endblock %}
 
 {% block content %}
-
     <section class="row-fluid">
         <div class="party-people span4">
             <h2>Sindaco</h2>
 
-            <p><a href="#"><strong>Mario Rossi</strong> (P)</a></p>
+            <p><a href="{{ municipality.mayor.as_charge.person.get_absolute_url }}"><strong>{{ municipality.mayor.as_charge.person|title }}</strong> (P)</a></p>
 
             <h2>Giunta</h2>
 
-            <ul class="">
-                <li><a href="#"><strong>Mario Rossi</strong> (P)</a></li>
-                <li><a href="#"><strong>Mario Rossi</strong> (P)</a></li>
-                <li><a href="#"><strong>Mario Rossi</strong> (P)</a></li>
-                <li><a href="#"><strong>Mario Rossi</strong> (P)</a></li>
-                <li><a href="#"><strong>Mario Rossi</strong> (P)</a></li>
-                <li><a href="#"><strong>Mario Rossi</strong> (P)</a></li>
-                <li><a href="#"><strong>Mario Rossi</strong> (P)</a></li>
-                <li><a href="#"><strong>Mario Rossi</strong> (P)</a></li>
-                <li><a href="#"><strong>Mario Rossi</strong> (P)</a></li>
-                <li><a href="#"><strong>Mario Rossi</strong> (P)</a></li>
+            <ul>
+                {% for p in municipality.gov.members %}
+                <li><a href="{{ p.person.get_absolute_url }}"><strong>{{ p.person|title }}</strong> (P)</a></li>
+                {% endfor %}
             </ul>
         </div>
 
@@ -41,21 +33,9 @@
             <h2>Consiglio</h2>
 
             <ul class="list-floated">
-                <li><a href="#"><strong>Mario Rossi I</strong> (P)</a></li>
-                <li><a href="#"><strong>Mario Rossi II</strong> (P)</a></li>
-                <li><a href="#"><strong>Mario Rossi III</strong> (P)</a></li>
-                <li><a href="#"><strong>Mario Rossi IV</strong> (P)</a></li>
-                <li><a href="#"><strong>Mario Rossi ..</strong> (P)</a></li>
-                <li><a href="#"><strong>Mario Rossi</strong> (P)</a></li>
-                <li><a href="#"><strong>Mario Rossi</strong> (P)</a></li>
-                <li><a href="#"><strong>Mario Rossi</strong> (P)</a></li>
-                <li><a href="#"><strong>Mario Rossi</strong> (P)</a></li>
-                <li><a href="#"><strong>Mario Rossi</strong> (P)</a></li>
-                <li><a href="#"><strong>Mario Rossi</strong> (P)</a></li>
-                <li><a href="#"><strong>Mario Rossi</strong> (P)</a></li>
-                <li><a href="#"><strong>Mario Rossi</strong> (P)</a></li>
-                <li><a href="#"><strong>Mario Rossi</strong> (P)</a></li>
-                <li><a href="#"><strong>Mario Rossi</strong> (P)</a></li>
+                {% for p in municipality.council.members %}
+                    <li><a href="{{ p.person.get_absolute_url }}"><strong>{{ p.person|title }}</strong> (P)</a></li>
+                {% endfor %}
             </ul>
         </div>
     </section>
