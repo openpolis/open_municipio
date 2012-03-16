@@ -3,7 +3,9 @@
     ServerAlias www.example.com
 
     WSGIScriptReloading On
-    WSGIReloadMechanism Process
+
+    # removing, based on http://code.google.com/p/modwsgi/issues/detail?id=72
+    # WSGIReloadMechanism Process
 
     WSGIDaemonProcess open_municipio-production
     WSGIProcessGroup open_municipio-production
