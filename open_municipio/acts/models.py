@@ -149,7 +149,7 @@ class Agenda(Act):
     """
     # TODO: add additional statuses allowed for this act type
     STATUS = Choices(('PRESENTED', 'presented', _('presented')), ('APPROVED', 'approved', _('approved')))
-    
+
     status = StatusField()
     
     class Meta:
@@ -173,7 +173,13 @@ class Deliberation(Act):
         (MAYOR_INIT, _('Mayor')),
     )
     # TODO: add additional statuses allowed for this act type
-    STATUS = Choices(('PRESENTED', 'presented', _('presented')), ('APPROVED', 'approved', _('approved')))
+    STATUS = Choices(
+        ('PRESENTED', 'presented', _('presented')),
+        ('COMMISSION', 'commission', _('commission')),
+        ('COUNCIL', 'council', _('council')),
+        ('APPROVED', 'approved', _('approved')),
+        ('REJECTED', 'rejected', _('rejected'))
+    )
     
     status = StatusField()
     approval_date = models.DateField(_('approval date'), null=True, blank=True)
