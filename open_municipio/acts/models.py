@@ -140,6 +140,7 @@ class ActSupport(models.Model):
     class Meta:
         db_table = u'acts_act_support'
 
+
 class Agenda(Act):
     """
     Maps the *Ordine del Giorno* act type.
@@ -155,6 +156,7 @@ class Agenda(Act):
     class Meta:
         verbose_name = _('agenda')
         verbose_name_plural = _('agenda')
+
     
 class Deliberation(Act):
     """
@@ -254,7 +256,6 @@ class Motion(Act):
     class Meta:
         verbose_name = _('motion')
         verbose_name_plural = _('motions')
-
 
 
 class Emendation(Act):
