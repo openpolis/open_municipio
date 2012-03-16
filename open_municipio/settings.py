@@ -107,6 +107,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.admindocs',
     'django.contrib.staticfiles',
+    'django.contrib.databrowse',
     'django_extensions',
     'registration',
     'open_municipio.registration',
