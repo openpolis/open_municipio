@@ -7,6 +7,10 @@ from open_municipio.acts.models import Act, Agenda, Deliberation, Interpellation
 from open_municipio.acts.forms import TagAddForm
 from open_municipio.monitoring.forms import MonitoringForm
 
+from django.views.generic import View
+
+from django.http import HttpResponse
+
 class ActListView(ListView):
     model = Act
     template_name = 'acts/act_list.html'
@@ -128,3 +132,20 @@ class ActRemoveTagView(RemoveTagView):
         """
         act = get_object_or_404(Act, pk=self.kwargs.get('act_pk'))
         return act
+
+## Bookmark management
+class ActBookmarkSet(View):
+    model = Act
+
+    def get(self, request, *args, **kwargs):
+# TODO the get method is only for debugging purposes
+        return self.post(self, request, args, kwargs)
+
+    def post(self, request, *args, **kwargs):
+        act_id = int(self.kwargs.get('pk'))
+        act = get_object_or_404(Act, pk=act_id)
+        is_set = (self.kwargs.get('value') == 'set')
+        act.is_key = is_set
+        act.save()
+
+        return HttpResponse();

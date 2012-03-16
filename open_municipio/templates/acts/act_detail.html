@@ -28,7 +28,8 @@
     {% endif %}
 {% endblock head_js_includes %}
 
-{% block extra_js %} 	
+{% block extra_js %} 
+	
 $(document).ready(function() {
     $('#cteditor-launcher').click(function(event){
         event.preventDefault();
@@ -38,6 +39,25 @@ $(document).ready(function() {
         function() { $('#cteditor-launcher', this).fadeOut(); }
     );
 });
+<!-- This function adds the "bookmarked" class to the <img> tag that belong to the "star" class, when the image it's clicked -->
+<!-- Now it's a stub !!! -->
+$(document).ready(function() {
+    $(document).on("click",".star", 
+        function() {
+            {% if act.is_key %}
+                var action = "unsetbookmark";
+                alert ("già flaggato");
+            {% else %}
+                var action = "setbookmark";
+                alert ("non flaggato");
+            {% endif %}
+            $.get("/acts/" + {{ act.pk }} + "/" + action + "/");
+            $(this).toggleClass("bookmarked");
+        } 
+    ); 
+}
+);
+
 {% endblock extra_js %}
 
 
@@ -54,7 +74,7 @@ $(document).ready(function() {
         <strong>{% block act_type %}TIPO ATTO{% endblock %}</strong>
         del Consiglio comunale N° 85 del <span class="date">2.2.2012</span></small>
     </h2>
-    <h1><strong>{{ act.title }}</strong> ({{ act.idnum }})</h1>
+    <h1><a href="#" class="star">&nbsp;&nbsp;</a><strong>{{ act.title }}</strong> ({{ act.idnum }})</h1>
 </hgroup>
 
 <p class="well">{{ act.text|safe }}</p>
