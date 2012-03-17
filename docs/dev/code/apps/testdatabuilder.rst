@@ -35,7 +35,7 @@ These are the cleanup instructions as of the time of this writing, and they may 
 Launching the scripts
 ---------------------
 Scripts must be launched inside the project environment (if you're not using virtualenvs, then, go fetch it)
-It is advised to use the following order::
+It is advised to use the following order:
 
 .. sourcecode:: python 
 
@@ -72,6 +72,23 @@ weighted probabilities. Probabilities are defined in the source code, currently.
 Votes are **not linked** to acts. They could be linked, of course, but are left linkless, to map
 the current situation in the datasets coming from the municipalities we're dealing with.
 
+
+Creating a taxonomy
+-------------------
+In order to create a taxonomy -- i.e. a classification based on categories and tags -- for existing acts, just launch this command from a terminal:
+
+.. sourcecode:: bash
+
+   $ python open_municipio/testdatabuilder
+
+There are a few parameters you may customize to tweak the way the taxonomy is generated (the configuration file is ``testdatabuilder/conf.py``):
+
+* ``MIN_CATEGORIES_PER_ACT``: min number of categories associated with an act (default: ``0``)
+* ``MAX_CATEGORIES_PER_ACT``: max number of categories associated with an act (default: ``3``)
+* ``MIN_TAGS_PER_CATEGORY``: given an act, min number of tags associated with each category (default: ``0``)
+* ``MAX_TAGS_PER_CATEGORY``: given an act, max number of tags associated with each category (default: ``5``)
+
+
 Todos
 -----
 
@@ -80,4 +97,5 @@ Todos
 * Definitions (groups, commissions,probability weights, ...) are moved from the source code to a configuration file
 * Integrate with testing framework for testing purposes
 * Implement signals to generate news after new acts or votes are created.
+
 
