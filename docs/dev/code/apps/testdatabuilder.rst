@@ -1,3 +1,6 @@
+Generating random test data
+===========================
+
 Introduction
 ------------
 The scripts inside this directory allows a developer to create *startup random items* to 
@@ -17,7 +20,9 @@ docutils > 0.8 as described in issue #25.
 
 The database must not contain valuable records, since the scripts start by cleaning up some tables.
 Using an empty test database and environment may be the best approach.
-These are the cleanup instructions as of the time of this writing, and they may vary in the future::
+These are the cleanup instructions as of the time of this writing, and they may vary in the future:
+
+.. sourcecode:: python 
 
     Person.objects.all().delete()
     InstitutionCharge.objects.all().delete()
@@ -30,7 +35,9 @@ These are the cleanup instructions as of the time of this writing, and they may 
 Launching the scripts
 ---------------------
 Scripts must be launched inside the project environment (if you're not using virtualenvs, then, go fetch it)
-It is adviced to use the following order::
+It is advised to use the following order::
+
+.. sourcecode:: python 
 
     python open_municipio/testdatabuilder/create_startup_people.py
     python open_municipio/testdatabuilder/create_startup_acts.py
