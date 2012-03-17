@@ -68,8 +68,7 @@ class Category(models.Model):
     tag_set = models.ManyToManyField(Tag, related_name='category_set', null=True, blank=True)
   
     # manager to handle the list of monitoring having as content_object this instance
-    monitorings = generic.GenericRelation(Monitoring,
-                                          object_id_field='object_pk')
+    monitorings = generic.GenericRelation(Monitoring, object_id_field='object_pk')
   
     class Meta:
         verbose_name = _('category')
