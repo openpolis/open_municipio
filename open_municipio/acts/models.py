@@ -41,7 +41,7 @@ class Act(TimeStampedModel):
     presentation_date = models.DateField(_('presentation date'), null=True, help_text=_("Date of presentation, as stated in the act"))
     text = models.TextField(_('text'), blank=True)
     presenter_set = models.ManyToManyField(InstitutionCharge, blank=True, null=True, through='ActSupport', related_name='presenter_act_set', verbose_name=_('presenters'))
-    recipient_set = models.ManyToManyField(InstitutionCharge, blank=True, null=True, db_table='acts_act_recipient', related_name='recipient_act_set', verbose_name=_('recipients'))
+    recipient_set = models.ManyToManyField(InstitutionCharge, blank=True, null=True, related_name='recipient_act_set', verbose_name=_('recipients'))
     emitting_institution = models.ForeignKey(Institution, related_name='emitted_act_set', verbose_name=_('emitting institution'))
     category_set = models.ManyToManyField(Category, verbose_name=_('categories'), blank=True, null=True)
     location_set = models.ManyToManyField(Location, verbose_name=_('locations'), blank=True, null=True)
