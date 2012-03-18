@@ -233,54 +233,58 @@ $(document).ready(function() {
 {% get_comment_form for act as form %}
 <section><h3>Commenti ({{ comment_count }})</h3>
     <ul class="people-list">
-      {% for comment in comment_list %}
+	{% for comment in comment_list %}
         <li class="bg-light"> <!-- make control for different comment opinion, like positive comment use .bg-lightgreen -->
-    	  <a href="#"><img src="http://placehold.it/50x50" alt="" /></a>
-          <a href="#">{{ comment.user.username|capfirst }}</a> {{ comment.comment }}
-	      {% if comment.user == request.user and comment|comment_TTL > 0 %}
-	        <div class="comment-delete">
-              {% blocktrans with seconds=comment|comment_TTL %}You still have {{ seconds }} seconds to delete this comment{% endblocktrans %}
-   	            <form action="{% url comments-delete-own-comment comment.id %}" method="post">
-                  {% csrf_token %}
-	              <input type="submit" name="submit" value="{% trans 'Delete' %}">
-	            </form>
-	            {% comment %}
-	              <!-- A simple anchor tag instead of the form can work too,
-	              but the form csrf_token provide some additional security!
-	              Yep, bit of a paranoyd thing indeed! ;-) -->
-	              <a href="{% url comments-delete-own-comment comment.id %}">Remove comment</a>
-	            {% endcomment %}
+    	    <a href="#"><img src="http://placehold.it/50x50" alt="" /></a>
+            <a href="#">{{ comment.user.username|capfirst }}</a> {{ comment.comment }}
+	    {% if comment.user == request.user and comment|comment_TTL > 0 %}
+	    <div class="comment-delete">
+		{% blocktrans with seconds=comment|comment_TTL %}You still have {{ seconds }} seconds to delete this comment{% endblocktrans %}
+   		<form action="{% url comments-delete-own-comment comment.id %}" method="post">
+                    {% csrf_token %}
+	            <input type="submit" name="submit" value="{% trans 'Delete' %}">
+	        </form>
+	        {% comment %}
+	        <!-- A simple anchor tag instead of the form can work
+	             too, but the form csrf_token provide some
+	             additional security!  Yep, bit of a paranoyd
+	             thing indeed! ;-) -->
+	        <a href="{% url comments-delete-own-comment comment.id %}">Remove comment</a>
+	        {% endcomment %}
             </div>
-          {% endif %}
-
+            {% endif %}
+	    
             <span id="comments-votebox-{{ comment.id }}" class="monitoring">
-                <i class="socialicon-ko"></i> · {{ comment.submit_date|date:"d M Y" }} · 
+                {% if comment.mood = "+" %}<i class="socialicon-ok"></i>{% else %}
+		{% if comment.mood = "-" %}<i class="socialicon-ko"></i>{% else %}
+		{% if comment.mood = "0" %}<i class="socialicon-five"></i>{% endif %}{% endif %}{% endif %}
+		· {{ comment.submit_date|date:"d M Y" }} · 
                 <a href="#">Condividi</a> · 
                 {% score_for_object comment as comment_score %}
-				{% if request.user.is_authenticated %}
-					{% vote_by_user request.user on comment as vote %}
-				   	<a href="#" id="comments-vote-{{ comment.id }}-up" class='vote{% if vote.vote and vote.vote > 0 %} up-voted{% endif %}'><span class='notlike'>Non mi piace pi&ugrave</span><span class='like'>Mi piace</span></a> · 
-				{% else %}
-					<a href="#" class="vote"><span class='like'>Mi piace</span></a> ·                 
-				{% endif %}
-				<i class="socialicon-add"></i> <span class="okscore">{{ comment_score.score }}</span>
+		{% if request.user.is_authenticated %}
+		{% vote_by_user request.user on comment as vote %}
+		<a href="#" id="comments-vote-{{ comment.id }}-up" class='vote{% if vote.vote and vote.vote > 0 %} up-voted{% endif %}'><span class='notlike'>Non mi piace pi&ugrave</span><span class='like'>Mi piace</span></a> · 
+		{% else %}
+		<a href="#" class="vote"><span class='like'>Mi piace</span></a> ·                 
+		{% endif %}
+		<i class="socialicon-add"></i> <span class="okscore">{{ comment_score.score }}</span>
             </span>
         </li>
-	  {% endfor %}
-   </ul>
-  {% if request.user.is_authenticated %}
+	{% endfor %}
+    </ul>
+    {% if request.user.is_authenticated %}
     <form action="{% comment_form_target %}" method="post" class="form-inline bg-dark">
-            {% csrf_token %}
-            {% for field in form %}
-            {% if field.is_hidden %}{{ field }}{% else %}
-            {% if field.name != "name" and field.name != "email" and field.name != "url" %}{% if field.errors %}{{ field.errors }}{% endif %}{{ field }}{% endif %}{% endif %}
-            {% endfor %}
-            <input type="submit" name="submit" value="{% trans 'Post' %}">
-
+        {% csrf_token %}
+        {% for field in form %}
+        {% if field.is_hidden %}{{ field }}{% else %}
+        {% if field.name != "name" and field.name != "email" and field.name != "url" %}{% if field.errors %}{{ field.errors }}{% endif %}{{ field }}{% endif %}{% endif %}
+        {% endfor %}
+        <input type="submit" name="submit" value="{% trans 'Post' %}">
+	
         <!--<i class="socialicon-ok"></i><i class="socialicon-ko"></i><i class="socialicon-five"></i>-->
-		<!--<input type="text" placeholder="Scrivi un commento..." /> -->		       
+	<!--<input type="text" placeholder="Scrivi un commento..." /> -->		       
     </form>
-  {% endif %}  
+    {% endif %}  
     
     <p>Leggi tutti (Cronologia) <i class="icon-chevron-down"></i></p>
 </section>
