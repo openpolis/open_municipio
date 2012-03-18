@@ -1,0 +1,22 @@
+{% load voting_tags %}
+{% score_for_object act as act_score %}
+{% if request.user.is_authenticated %}
+  {% vote_by_user request.user on act as vote %}
+    <table id="acts-votebox-{{ object.id }}" class="table">
+	  <tr>
+        <td><span class="okbox okscore">{{ act_score.score }}</span></td>
+        <th id="acts-vote-{{ object.id }}-up" class="bg-dark span6 vote{% if vote.vote and vote.vote > 0 %} up-voted{% endif %}"><i class="socialicon-ok"></i> Sono favorevole</th>
+        <td><span class="kobox koscore">{{ act_score.num_votes }}</span></td>
+        <th id="acts-vote-{{ object.id }}-down" class="bg-dark span6 vote{% if vote.vote and vote.vote < 0 %} down-voted{% endif %}"><i class="socialicon-ko"></i> Sono contrario</th>
+      </tr>
+    </table>
+{% else %}
+    <table id="acts-votebox-{{ object.id }}" class="table">
+	  <tr>
+        <td><span class="okbox">{{ act_score.score }}</span></td>
+        <th class="bg-dark span6"><i class="socialicon-ok"></i> Sono favorevole</th>
+        <td><span class="kobox">0</span></td>
+        <th class="bg-dark span6"><i class="socialicon-ko"></i> Sono contrario</th>
+      </tr>
+    </table>
+{% endif %}
