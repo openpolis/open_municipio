@@ -5,9 +5,14 @@ from voting.models import Vote
 register = template.Library()
 
 
-# Tags
-
 class VotesForObjectNode(template.Node):
+    """
+    Django-voting provides score and total number of votes within a
+    dict. We use that to retrieve number of upvotes and downvotes.
+
+    This is the node class used by function ``do_votes_for_object``,
+    see later.
+    """
     def __init__(self, object, context_var):
         self.object = object
         self.context_var = context_var
@@ -19,8 +24,9 @@ class VotesForObjectNode(template.Node):
             return ''
 
         dict_score = Vote.objects.get_score(object)
-        s = dict_score.score
-        n = dict_score.num_votes
+
+        s = dict_score['score']
+        n = dict_score['num_votes']
 
         # Some advanced Maths here :-)
         upvotes = (n + s) / 2
