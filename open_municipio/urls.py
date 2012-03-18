@@ -45,6 +45,8 @@ urlpatterns = patterns('',
     (r'^companies/', include('open_municipio.people.urls.companies')), 
     (r'^acts/', include('open_municipio.acts.urls')),
     (r'^voting/', include('open_municipio.votations.urls')),
+
+    (r'^tag/', include('open_municipio.taxonomy.urls')),
 )
 
 

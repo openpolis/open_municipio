@@ -1132,12 +1132,12 @@ table {
 .table {
   width: 100%;
   margin-bottom: 18px;
+  text-align: left;
 }
 .table th,
 .table td {
   padding: 8px;
   line-height: 18px;
-  text-align: left;
   vertical-align: top;
   border-top: 1px solid #ddd;
 }
@@ -2763,7 +2763,7 @@ input[type="submit"].btn.small {
 .navbar-search .search-query :-moz-placeholder {
   color: #eeeeee;
 }
-.navbar-search .search-query::-webkit-input-placeholder {
+.navbar-search .search-query ::-webkit-input-placeholder {
   color: #eeeeee;
 }
 .navbar-search .search-query:hover {
@@ -3702,6 +3702,11 @@ address {
 }
 #main {
   padding-top: 15px;
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(0, transparent), color-stop(67%, transparent), color-stop(67%, #f6f4f2), color-stop(100%, #f6f4f2));
+  background-image: -webkit-linear-gradient(left, transparent, transparent 67%, #f6f4f2 67%, #f6f4f2 100%);
+  background-image: -moz-linear-gradient(left, transparent, transparent 67%, #f6f4f2 67%, #f6f4f2 100%);
+  background-image: -ms-linear-gradient(left, transparent, transparent 67%, #f6f4f2 67%, #f6f4f2 100%);
+  background-image: -o-linear-gradient(left, transparent, transparent 67%, #f6f4f2 67%, #f6f4f2 100%);
 }
 #content {
   border-bottom: 1px dotted #999999;
@@ -3749,6 +3754,10 @@ body.citizen dl.tags-cloud dt {
   color: #555555;
   font-size: 14px;
 }
+#content h4 {
+  color: #555555;
+  margin-bottom: 8px;
+}
 #topbar .navbar-inner {
   background-color: #efe9e6;
   background-image: none;
@@ -3776,12 +3785,12 @@ body.citizen dl.tags-cloud dt {
 table.data {
   width: 100%;
   margin-bottom: 18px;
+  text-align: left;
 }
 table.data th,
 table.data td {
   padding: 8px;
   line-height: 18px;
-  text-align: left;
   vertical-align: top;
   border-top: 1px solid #ddd;
 }
@@ -3819,18 +3828,13 @@ table.data td {
   vertical-align: middle;
 }
 /* Text alignments (with table-fix) */
-.text-left table th.text-left,
-table td.text-left {
+.text-left {
   text-align: left;
 }
-.text-right,
-table th.text-right,
-table td.text-right {
+.text-right {
   text-align: right;
 }
-.text-center,
-table th.text-center,
-table td.text-center {
+.text-center {
   text-align: center;
 }
 /* Text colouring */
@@ -4179,6 +4183,7 @@ dl.data-list dt + dd {
 #sidebar table {
   width: 100%;
   margin-bottom: 18px;
+  text-align: left;
   border-spacing: 3px;
   border-collapse: separate;
 }
@@ -4186,7 +4191,6 @@ dl.data-list dt + dd {
 #sidebar table td {
   padding: 8px;
   line-height: 18px;
-  text-align: left;
   vertical-align: top;
   border-top: 1px solid #ddd;
 }
@@ -4282,6 +4286,7 @@ dl.data-list dt + dd {
 table#acttable {
   width: 100%;
   margin-bottom: 18px;
+  text-align: left;
   border: 1px solid #ddd;
   border-collapse: separate;
   *border-collapse: collapsed;
@@ -4293,7 +4298,6 @@ table#acttable th,
 table#acttable td {
   padding: 8px;
   line-height: 18px;
-  text-align: left;
   vertical-align: top;
   border-top: 1px solid #ddd;
 }
@@ -4360,10 +4364,9 @@ table#acttable tbody ul li:first-child {
   border-top: 0;
 }
 table#acttable thead th {
+  padding: 0;
   background-color: #e1d9d3;
-  position: relative;
   vertical-align: top;
-  padding-left: 22px;
   border-right: 1px solid #ffffff;
 }
 table#acttable thead th .arrow {
@@ -4386,6 +4389,10 @@ table#acttable thead th.current {
 }
 table#acttable thead th.current .arrow {
   background-image: url(../img/act-arrow-current.png);
+}
+table#acttable thead th > div {
+  position: relative;
+  padding: 8px 8px 8px 22px;
 }
 .party-people {
   *zoom: 1;
@@ -4424,6 +4431,7 @@ table#acttable thead th.current .arrow {
 }
 .calendar_container h3 {
   margin: 5px 0;
+  font-size: 15px;
   text-align: center;
   border-bottom: 1px solid #999999;
 }

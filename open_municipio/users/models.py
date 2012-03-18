@@ -46,10 +46,10 @@ class UserProfile(models.Model):
 
     class Meta:
         db_table = u'users_user_profile'
-    
+
+    @models.permalink
     def get_absolute_url(self):
         return 'profiles_profile_detail', (), { 'username': self.user.username }
-    get_absolute_url = models.permalink(get_absolute_url)
     
     @property
     def monitored_objects(self):

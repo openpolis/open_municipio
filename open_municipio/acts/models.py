@@ -40,8 +40,8 @@ class Act(TimeStampedModel):
     adj_title = models.CharField(_('adjoint title'), max_length=255, blank=True, help_text=_("An adjoint title, added to further explain an otherwise cryptic title"))
     presentation_date = models.DateField(_('presentation date'), null=True, help_text=_("Date of presentation, as stated in the act"))
     text = models.TextField(_('text'), blank=True)
-    presenters = models.ManyToManyField(InstitutionCharge, blank=True, null=True, through='ActSupport', related_name='presenter_act_set', verbose_name=_('presenters'))
-    recipients = models.ManyToManyField(InstitutionCharge, blank=True, null=True, db_table='acts_act_recipient', related_name='recipient_act_set', verbose_name=_('recipients'))
+    presenter_set = models.ManyToManyField(InstitutionCharge, blank=True, null=True, through='ActSupport', related_name='presenter_act_set', verbose_name=_('presenters'))
+    recipient_set = models.ManyToManyField(InstitutionCharge, blank=True, null=True, related_name='recipient_act_set', verbose_name=_('recipients'))
     emitting_institution = models.ForeignKey(Institution, related_name='emitted_act_set', verbose_name=_('emitting institution'))
     category_set = models.ManyToManyField(Category, verbose_name=_('categories'), blank=True, null=True)
     location_set = models.ManyToManyField(Location, verbose_name=_('locations'), blank=True, null=True)
@@ -140,6 +140,7 @@ class ActSupport(models.Model):
     class Meta:
         db_table = u'acts_act_support'
 
+
 class Agenda(Act):
     """
     Maps the *Ordine del Giorno* act type.
@@ -149,12 +150,13 @@ class Agenda(Act):
     """
     # TODO: add additional statuses allowed for this act type
     STATUS = Choices(('PRESENTED', 'presented', _('presented')), ('APPROVED', 'approved', _('approved')))
-    
+
     status = StatusField()
     
     class Meta:
         verbose_name = _('agenda')
         verbose_name_plural = _('agenda')
+
     
 class Deliberation(Act):
     """
@@ -173,7 +175,13 @@ class Deliberation(Act):
         (MAYOR_INIT, _('Mayor')),
     )
     # TODO: add additional statuses allowed for this act type
-    STATUS = Choices(('PRESENTED', 'presented', _('presented')), ('APPROVED', 'approved', _('approved')))
+    STATUS = Choices(
+        ('PRESENTED', 'presented', _('presented')),
+        ('COMMISSION', 'commission', _('commission')),
+        ('COUNCIL', 'council', _('council')),
+        ('APPROVED', 'approved', _('approved')),
+        ('REJECTED', 'rejected', _('rejected'))
+    )
     
     status = StatusField()
     approval_date = models.DateField(_('approval date'), null=True, blank=True)
@@ -248,7 +256,6 @@ class Motion(Act):
     class Meta:
         verbose_name = _('motion')
         verbose_name_plural = _('motions')
-
 
 
 class Emendation(Act):

@@ -1,7 +1,9 @@
+from os import sys
+
 from django.views.generic import TemplateView, DetailView
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render
-from os import sys
+
 from open_municipio.people.models import Institution, InstitutionCharge, Person, municipality
 from open_municipio.monitoring.forms import MonitoringForm
 from open_municipio.acts.models import Act, Deliberation, Interrogation, Interpellation, Motion, Agenda
@@ -136,3 +138,10 @@ class PersonDetailView(DetailView):
         except ObjectDoesNotExist:
             context['is_user_monitoring'] = False
         return context
+
+
+
+def person_list(request):
+    return render_to_response('people/person_list.html',{
+        'municipality': municipality
+    },context_instance=RequestContext(request) )

@@ -45,7 +45,13 @@ Mayor
 -----
 
 * ``municipality.mayor.as_institution``:  the municipality mayor, as an ``Institution`` instance
+
 * ``municipality.mayor.as_charge``:  the municipality mayor, as an ``InstitutionCharge`` instance
+
+* ``municipality.mayor.acts``:  all acts emitted by the municipality mayor, as a QuerySet. Note that the objects comprising
+  the resulting QuerySet aren't generic ``Act`` instances, but instances of specific ``Act`` subclasses
+  (i.e. ``Deliberation``, ``Motion``, etc.).
+
 
 Council
 -------
@@ -64,12 +70,41 @@ Council
 * ``municipality.council.majority_groups``:  counselors' groups belonging to majority, as a QuerySet of ``Group`` instances
 
 * ``municipality.council.minority_groups``:  counselors' groups belonging to minority, as a QuerySet of ``Group`` instances
- 
+
+* ``municipality.council.acts``:  all acts emitted by the city council, as a QuerySet. Note that the objects comprising
+  the resulting QuerySet aren't generic ``Act`` instances, but instances of specific ``Act`` subclasses
+  (i.e. ``Deliberation``, ``Motion``, etc.).
+
+* ``municipality.council.deliberations``:  all deliberations emitted by the city council, as a QuerySet.
+
+* ``municipality.council.agendas``:  all agendas emitted by the city council, as a QuerySet.
+
+* ``municipality.council.motions``:  all motions emitted by the city council, as a QuerySet.
+
+* ``municipality.council.interpellations``:  all interpellations emitted by the city council, as a QuerySet.
+
+* ``municipality.council.interrogations``:  all interrogations emitted by the city council, as a QuerySet.
+
+
 
 City Government
 ---------------
 
 * ``municipality.gov.members``: members of the city government (aka *assessors*), as a QuerySet of ``InstitutionCharge`` instances
+
+* ``municipality.gov.acts``:  all acts emitted by the city government., as a QuerySet. Note that the objects comprising
+  the resulting QuerySet aren't generic ``Act`` instances, but instances of specific ``Act`` subclasses
+  (i.e. ``Deliberation``, ``Motion``, etc.).
+
+* ``municipality.gov.deliberations``:  all deliberations emitted by the city government, as a QuerySet.
+
+* ``municipality.gov.agendas``:  all agendas emitted by the city government, as a QuerySet.
+
+* ``municipality.gov.motions``:  all motions emitted by the city government, as a QuerySet.
+
+* ``municipality.gov.interpellations``:  all interpellations emitted by the city government, as a QuerySet.
+
+* ``municipality.gov.interrogations``:  all interrogations emitted by the city government, as a QuerySet.
 
 
 .. note::
