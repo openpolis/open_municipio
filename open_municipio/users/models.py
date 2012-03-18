@@ -1,10 +1,10 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from model_utils import Choices
-
 from django.contrib.auth.models import User
+from model_utils import Choices
+from open_municipio.newscache.models import NewsTargetMixin
 
-class UserProfile(models.Model):
+class UserProfile(NewsTargetMixin):
     """
     This is the user's profile.
     All infos about the user are here, except for those already in auth.User,
@@ -12,7 +12,10 @@ class UserProfile(models.Model):
               is_staff, is_active, is_superuser, last_login, date_joined)
     
     settings must contain: ``AUTH_PROFILE_MODULE = 'users.UserProfile'``
-    
+
+    It inherits from ``NewsTargetMixin``, that allows the ``related_news`` attribute, to fetch
+    news related to it (or its subclasses) from ``newscache.News``
+
     From user to profile: ``user.get_profile()``
     From profile to user: ``profile.user``
     

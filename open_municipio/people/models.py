@@ -11,6 +11,7 @@ from model_utils import Choices
 from model_utils.managers import PassThroughManager
 
 from open_municipio.monitoring.models import Monitoring
+from open_municipio.newscache.models import NewsTargetMixin
 from open_municipio.people.managers import TimeFramedQuerySet
 
 import datetime
@@ -59,11 +60,15 @@ class Person(models.Model):
         return ContentType.objects.get_for_model(self).id
 
 
-class Charge(models.Model):
+class Charge(NewsTargetMixin):
     """
     This is the base class for the different macro-types of charges (institution, organization, administration).
-    
+
     Inheritance here is done through abstract classes, since there is no apparent need to browse all.
+
+    The class inherits from ``NewsTargetMixin``, that allows the ``related_news`` attribute, to fetch
+    news related to it (or its subclasses) from ``newscache.News``
+
     """
     person = models.ForeignKey('Person', verbose_name=_('person'))
     start_date = models.DateField(_('start date'))
@@ -107,7 +112,7 @@ class InstitutionCharge(Charge):
     institution = models.ForeignKey('Institution', on_delete=models.PROTECT, verbose_name=_('institution'), related_name='charge_set')
     charge_type = models.IntegerField(_('charge type'), choices=CHARGE_TYPES)
     op_charge_id = models.IntegerField(_('openpolis institution charge ID'), blank=True, null=True)
-  
+
     class Meta(Charge.Meta):
         db_table = u'people_institution_charge'
         verbose_name = _('institution charge')

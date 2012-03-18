@@ -4,6 +4,10 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from django.template.context import Context
+from open_municipio.newscache.models import News
 
 class Monitoring(models.Model):
     """
@@ -46,4 +50,38 @@ class Monitoring(models.Model):
         return urlresolvers.reverse(
             "monitoring-url-redirect",
             args=(self.content_type_id, self.object_pk)
+        )
+
+
+#
+# Signals handlers
+#
+
+@receiver(post_save, sender=Monitoring)
+def new_monitoring(**kwargs):
+    """
+    generates a record in newscache, when someone starts monitoring something
+    """
+    # generates news only if not in raw mode (fixtures)
+    # and for objects creation
+    if not kwargs.get('raw', False) and kwargs.get('created', False):
+        generating_item = kwargs['instance']
+        monitored_object = generating_item.content_object
+        monitoring_user = generating_item.user
+        # define context for textual representation of the news
+        ctx = Context({ 'monitored_object': monitored_object, 'monitoring_user': monitoring_user })
+
+        # two news are generated
+
+        # first news related to the monitored object, with priority 3
+        News.objects.create(
+            generating_object=generating_item, related_object=monitored_object,
+            priority=3, news_type=News.NEWS_TYPE.community,
+            text=News.get_text_for_news(ctx, 'newscache/object_monitored.html')
+        )
+        # second news related to the monitoring user, with priority 2
+        News.objects.create(
+            generating_object=generating_item, related_object=monitoring_user,
+            priority=2, news_type=News.NEWS_TYPE.community,
+            text=News.get_text_for_news(ctx, 'newscache/user_monitoring.html')
         )
