@@ -6,7 +6,6 @@ from model_utils.models import TimeStampedModel
 
 from open_municipio.people.models import Group, InstitutionCharge, Sitting 
 from open_municipio.acts.models import Act
-from open_municipio.votations.filters import IsLinkedFilterSpec
 
 
 class Votation(models.Model):
@@ -28,8 +27,8 @@ class Votation(models.Model):
     # as expressed in the voting system
     act_descr = models.CharField(blank=True, max_length=255)
     
-    group_vote_set = models.ManyToManyField(Group, through='GroupVote')
-    charge_vote_set = models.ManyToManyField(InstitutionCharge, through='ChargeVote')
+    group_set = models.ManyToManyField(Group, through='GroupVote')
+    charge_set = models.ManyToManyField(InstitutionCharge, through='ChargeVote')
     n_legal = models.IntegerField(blank=True, null=True)
     n_presents = models.IntegerField(blank=True, null=True)
     n_yes = models.IntegerField(blank=True, null=True)
@@ -54,7 +53,11 @@ class Votation(models.Model):
     @property
     def charge_votes(self):
         return self.charge_vote_set.all()
-        
+
+    @property
+    def transitions(self):
+        return self.transition_set.all()
+
     @property
     def is_linked(self):
         if self.act is None:
@@ -64,10 +67,10 @@ class Votation(models.Model):
 
     @models.permalink
     def get_absolute_url(self):
-        return ('om_votation_detail', [str(self.pk)])
+        return 'om_votation_detail', [str(self.pk)]
         
     def __unicode__(self):
-        return u'votation %s' % (self.idnum)
+        return u'votation %s' % self.idnum
 
 
 class GroupVote(TimeStampedModel):
