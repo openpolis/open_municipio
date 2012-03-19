@@ -22,6 +22,7 @@ class ActDetailView(DetailView):
     context_object_name = 'act' 
     
     def get_context_data(self, **kwargs):
+        act = self.get_object()
         # Call the base implementation first to get a context
         context = super(ActDetailView, self).get_context_data(**kwargs)
         # mix-in tab-related context
@@ -41,12 +42,12 @@ class ActDetailView(DetailView):
                 # add a monitoring form, to context,
                 # to switch monitoring on and off
                 context['monitoring_form'] = MonitoringForm(data = {
-                    'content_type_id': context['act'].content_type_id, 
-                    'object_pk': context['act'].id,
+                    'content_type_id': act.content_type_id, 
+                    'object_pk': act.id,
                     'user_id': self.request.user.id
                 })
                 
-                if context['act'] in self.request.user.get_profile().monitored_objects:
+                if act in self.request.user.get_profile().monitored_objects:
                     context['is_user_monitoring'] = True
         except ObjectDoesNotExist:
             context['is_user_monitoring'] = False
