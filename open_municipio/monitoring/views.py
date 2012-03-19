@@ -1,9 +1,29 @@
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponseBadRequest, HttpResponseNotAllowed
+
+from django.views.generic import FormView
 
 from open_municipio.monitoring.forms import MonitoringForm
 
-# FIXME: convert to a CBV
-def start(request):
+
+class MonitoringToggleBaseView(FormView):
+    form_class = MonitoringForm
+    
+    def form_invalid(self, form):
+        msg = "It appears that the monitoring form has been tampered with !"
+        return HttpResponseBadRequest(msg)
+    
+    def get_success_url(self):
+        # FIXME: redirects shouldn't rely on the ``Referer`` header,
+        # since it might be missing from the HTTP request,
+        # depending on client's configuration.  
+        return self.request.META['HTTP_REFERER']
+    
+    def get(self, *args, **kwargs):
+        msg = "This view can be accessed only via POST"
+        return HttpResponseNotAllowed(msg)
+        
+
+class MonitoringStartView(MonitoringToggleBaseView):
     """
     Start the monitoring process of a content object by a given user.
     
@@ -11,16 +31,12 @@ def start(request):
     
     Redirect to referrer URL after processing.
     """
-    if request.method == 'POST':
-        form = MonitoringForm(data=request.POST)
-        if form.is_valid():  form.save()
-    # FIXME: redirects shouldn't rely on the ``Referer`` header,
-    # since it might be missing from the HTTP request,
-    # depending on client's configuration.  
-    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    def form_valid(self, form):
+        form.save()
+        return HttpResponseRedirect(self.get_success_url())
+       
 
-# FIXME: convert to a CBV
-def stop(request):
+class MonitoringStopView(MonitoringToggleBaseView):
     """
     Stop the monitoring process of a content object by a given user.
     
@@ -28,10 +44,7 @@ def stop(request):
     
     Redirect to referrer URL after processing.    
     """
-    if request.method == 'POST':
-        form = MonitoringForm(data=request.POST)
-        if form.is_valid():  form.remove()
-    # FIXME: redirects shouldn't rely on the ``Referer`` header,
-    # since it might be missing from the HTTP request,
-    # depending on client's configuration.  
-    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    
+    def form_valid(self, form):
+        form.remove()
+        return HttpResponseRedirect(self.get_success_url())
