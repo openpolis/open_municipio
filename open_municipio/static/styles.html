@@ -1,0 +1,698 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>OpenMunicipio - {block title}</title>
+
+    <!-- To ensure devices display responsive pages properly, include the viewport meta tag. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <link rel="stylesheet" href="css/bootstrap.css" />
+    <link rel="stylesheet" href="css/bootstrap-responsive.css" />
+
+    <style type="text/css">
+        #main > div > section { padding-top: 60px; }
+        h3 { margin-bottom: 10px; }
+        .subnav {
+            background-color: #EEEEEE;
+            background-image: -moz-linear-gradient(center top , #F5F5F5 0%, #EEEEEE 100%);
+            background-repeat: repeat-x;
+            border: 1px solid #E5E5E5;
+            border-radius: 4px 4px 4px 4px;
+            height: 36px;
+            width: 100%;
+        }
+        .subnav .nav {
+            margin-bottom: 0;
+        }
+        .subnav .nav > li > a {
+            border-left: 1px solid #F5F5F5;
+            border-radius: 0 0 0 0;
+            border-right: 1px solid #E5E5E5;
+            margin: 0;
+            padding-bottom: 11px;
+            padding-top: 11px;
+        }
+        .subnav .nav > .active > a, .subnav .nav > .active > a:hover {
+            background-color: #E9E9E9;
+            border-left: 0 none;
+            border-right-color: #DDDDDD;
+            box-shadow: 0 3px 5px rgba(0, 0, 0, 0.05) inset;
+            color: #777777;
+            padding-left: 13px;
+        }
+        .subnav .nav > .active > a .caret, .subnav .nav > .active > a:hover .caret {
+            border-top-color: #777777;
+        }
+        .subnav .nav > li:first-child > a, .subnav .nav > li:first-child > a:hover {
+            border-left: 0 none;
+            border-radius: 4px 0 0 4px;
+            padding-left: 12px;
+        }
+        .subnav .nav > li:last-child > a {
+            border-right: 0 none;
+        }
+        .subnav .dropdown-menu {
+            border-radius: 0 0 4px 4px;
+        }
+        .subnav-fixed {
+            border-color: #D5D5D5;
+            border-radius: 0 0 0 0;
+            border-width: 0 0 1px;
+            box-shadow: 0 1px 0 #FFFFFF inset, 0 1px 5px rgba(0, 0, 0, 0.1);
+            left: 0;
+            position: fixed;
+            right: 0;
+            top: 0;
+            z-index: 1020;
+        }
+        .subnav-fixed .nav {
+            margin: 0 auto;
+            padding: 0 1px;
+            width: 938px;
+        }
+        .subnav .nav > li:first-child > a, .subnav .nav > li:first-child > a:hover {
+            border-radius: 0 0 0 0;
+        }
+    </style>
+
+    <!--[if IE]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+    <script type="text/javascript" src="js/jquery-1.7.1.js"></script>
+
+</head>
+<body>
+
+
+<div id="wrapper"><!-- #wrapper -->
+
+    <header>
+
+        <!-- AREA-TITLE -->
+        <hgroup class="container-fluid">
+            <div class="row-fluid">
+                <h1 class="span12" id="area-title">Styles guide</h1>
+            </div>
+        </hgroup><!-- /AREA-TITLE -->
+
+        <!-- MAIN-NAVBAR -->
+        <nav class="subnav">
+
+            <ul class="nav nav-pills">
+                <li><a href="#globals">Globals</a></li>
+                <li><a href="#tables">Tables</a></li>
+                <li><a href="#lists">Lists</a></li>
+                <li><a href="#labels">Tabs &amp; Labels</a></li>
+            </ul>
+
+        </nav><!-- /MAIN-NAVBAR -->
+
+    </header>
+
+    <section id="main" class="container-fluid"><!-- #main container for content and sidebar area -->
+        <div class="row-fuild">
+
+            <section>
+                <a name="globals"></a>
+                <div class="page-header">
+                    <h1>Globals
+                        <small>for all elements</small></h1>
+                </div>
+
+                <div class="row-fluid">
+                    <div class="span4">
+                        <h2>Text alignments</h2>
+
+                        <table class="table table-bordered">
+                            <tr><td class="text-left"><code>.text-left</code></td></tr>
+                            <tr><td class="text-center"><code>.text-center</code></td></tr>
+                            <tr><td class="text-right"><code>.text-right</code></td></tr>
+                        </table>
+
+                        <h2>Backgrounds</h2>
+
+                        <table class="table table-bordered">
+                            <tr>
+                                <td><code>.bg-dark</code></td>
+                                <td class="bg-dark">Dark cell</td>
+                            </tr>
+                            <tr>
+                                <td><code>.bg-light</code></td>
+                                <td class="bg-light">Light cell</td>
+                            </tr>
+                            <tr>
+                                <td><code>.bg-lightgreen</code></td>
+                                <td class="bg-lightgreen">Light green cell</td>
+                            </tr>
+                        </table>
+
+                    </div>
+                    <div class="span4">
+                        <h2>Boxes</h2>
+
+                        <p><code>&lt;span class=&quot;greenbox&quot;&gt;10&lt;/span&gt;</code></p>
+                        <table class="table table-bordered">
+                            <tr>
+                                <td><code>.greenbox</code></td>
+                                <td><span class="greenbox">10</span></td>
+
+                                <td><code>.blackbox</code></td>
+                                <td><span class="blackbox">10</span></td>
+                            </tr>
+                            <tr>
+                                <td><code>.lightgraybox</code></td>
+                                <td><span class="lightgraybox">10</span></td>
+
+                                <td><code>.graybox</code></td>
+                                <td><span class="graybox">10</span></td>
+                            </tr>
+                            <tr>
+                                <td><code>.bluebox</code></td>
+                                <td><span class="bluebox">10</span></td>
+
+                                <td><code>.*box.smallbox</code></td>
+                                <td><span class="bluebox smallbox">10</span></td>
+                            </tr>
+                            <tr>
+                                <td><code>.okbox</code></td>
+                                <td><span class="okbox">10</span></td>
+
+                                <td><code>.kobox</code></td>
+                                <td><span class="kobox">10</span></td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="span4">
+
+                        <h2>Social icon</h2>
+
+                        <p><code>&lt;i class=&quot;.socialicon-ok&quot;&gt;&lt;/i&gt;</code> displays <i class="socialicon-five"></i></p>
+
+                        <table class="table table-bordered">
+                            <tr>
+                                <td><code>.socialicon-ok</code></td>
+                                <td><i class="socialicon-ok"></i></td>
+                            </tr>
+                            <tr>
+                                <td><code>.socialicon-ko</code></td>
+                                <td><i class="socialicon-ko"></i></td>
+                            </tr>
+                            <tr>
+                                <td><code>.socialicon-five</code></td>
+                                <td><i class="socialicon-five"></i></td>
+                            </tr>
+                            <tr>
+                                <td><code>.socialicon-add</code></td>
+                                <td><i class="socialicon-add"></i></td>
+                            </tr>
+                            <tr>
+                                <td><code>.socialicon-*.socialicon-active</code></td>
+                                <td><i class="socialicon-add socialicon-active"></i></td>
+                            </tr>
+                        </table>
+                        <p>Other icons : <a href="http://twitter.github.com/bootstrap/base-css.html#icons">bootstrap</a></p>
+                    </div>
+
+                </div>
+
+
+            </section>
+
+
+            <section>
+                <a name="tables"></a>
+                <div class="page-header">
+                    <h1>Tables</h1>
+                </div>
+                <div class="row-fluid">
+
+                    <div class="span6">
+                        <h2>Class <code>.data</code></h2>
+                    <pre>
+&lt;table class=&quot;data&quot;&gt;
+    &lt;thead&gt;
+    &lt;tr&gt;
+        &lt;th&gt;Column&lt;/th&gt;&lt;th&gt;Column&lt;/th&gt;&lt;th&gt;Column&lt;/th&gt;
+    &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tfoot&gt;
+    &lt;tr&gt;
+        &lt;td colspan=&quot;3&quot;&gt;Footer&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;/tfoot&gt;
+    &lt;tbody&gt;
+    &lt;tr&gt;
+        &lt;td&gt;Cell&lt;/td&gt;&lt;td&gt;Cell&lt;/td&gt;&lt;td&gt;Cell&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;td&gt;Cell&lt;/td&gt;&lt;td&gt;Cell&lt;/td&gt;&lt;td&gt;Cell&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;/tbody&gt;
+&lt;/table&gt;
+                    </pre>
+
+                    </div>
+                    <div class="span6">
+                        <h2>Results</h2>
+                        <table class="data">
+                            <thead>
+                            <tr>
+                                <th>Column</th><th>Column</th><th>Column</th>
+                            </tr>
+                            </thead>
+                            <tfoot>
+                            <tr>
+                                <td colspan="3">Footer</td>
+                            </tr>
+                            </tfoot>
+                            <tbody>
+                            <tr>
+                                <td>Cell</td><td>Cell</td><td>Cell</td>
+                            </tr>
+                            <tr>
+                                <td>Cell</td><td>Cell</td><td>Cell</td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                        <p>Other tables styles : <a href="http://twitter.github.com/bootstrap/base-css.html#tables">bootstrap</a> </p>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <a name="lists"></a>
+                <div class="page-header">
+                    <h1>Lists</h1>
+                </div>
+
+                <div class="row-fluid">
+
+                    <div class="span3">
+                        <h2>Party people list</h2>
+
+
+                        <pre>
+&lt;div class=&quot;party-people&quot;&gt;
+    &lt;h2&gt;&lt;img src=&quot;http://placehold.it/50&quot;&gt;
+            List title&lt;/h2&gt;
+
+    &lt;p&gt;Paragraph&lt;/p&gt;
+
+    &lt;ul class=&quot;list-floated&quot;&gt;
+        &lt;li&gt;Element1&lt;/li&gt;&lt;li&gt;Element2&lt;/li&gt;
+        &lt;li&gt;Element3&lt;/li&gt;&lt;li&gt;Element4&lt;/li&gt;
+        &lt;li&gt;Element5&lt;/li&gt;&lt;li&gt;Element6&lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/div&gt;
+                        </pre>
+
+
+                    </div>
+                    <div class="span3">
+                        <h3>Results</h3>
+                        <div class="party-people">
+                            <h2><img src="http://placehold.it/50">
+                                List title</h2>
+
+                            <p>Paragraph</p>
+
+                            <ul>
+                                <li>Element1</li><li>Element2</li>
+                                <li>Element3</li><li>Element4</li>
+                                <li>Element5</li><li>Element6</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="span3">
+                        <h2>Party people list
+                            <small>ul.list-floated</small></h2>
+
+
+                        <pre>
+&lt;div class=&quot;party-people&quot;&gt;
+    &lt;h2&gt;&lt;img src=&quot;http://placehold.it/50&quot;&gt;
+            List title&lt;/h2&gt;
+
+    &lt;p&gt;Paragraph&lt;/p&gt;
+
+    &lt;ul class=&quot;list-floated&quot;&gt;
+        &lt;li&gt;Element1&lt;/li&gt;&lt;li&gt;Element2&lt;/li&gt;
+        &lt;li&gt;Element3&lt;/li&gt;&lt;li&gt;Element4&lt;/li&gt;
+        &lt;li&gt;Element5&lt;/li&gt;&lt;li&gt;Element6&lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/div&gt;
+                        </pre>
+
+
+                    </div>
+                    <div class="span3">
+                        <h3>Results</h3>
+                        <div class="party-people">
+                            <h2><img src="http://placehold.it/50">
+                                List title</h2>
+
+                            <p>Paragraph</p>
+
+                            <ul class="list-floated">
+                                <li>Element1</li><li>Element2</li>
+                                <li>Element3</li><li>Element4</li>
+                                <li>Element5</li><li>Element6</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="row-fluid">
+
+                    <div class="span6">
+                        <h2>Data list
+                            <small>dl.data-list</small></h2>
+
+                        <pre>
+&lt;dl class=&quot;data-list&quot;&gt;
+    &lt;dt&gt;&lt;i class=&quot;icon-picture&quot;&gt;News&lt;/i&gt;&lt;/dt&gt;
+    &lt;dd&gt;(2.2.2012) &lt;a href=&quot;#&quot;&gt;Adesso siano i senigalliesi a reagire!&lt;/a&gt;&lt;/dd&gt;
+    &lt;dd&gt;(2.2.2012) &lt;a href=&quot;#&quot;&gt;Adesso siano i senigalliesi a reagire!&lt;/a&gt;&lt;/dd&gt;
+
+    &lt;dt&gt;&lt;i class=&quot;icon-retweet&quot;&gt;Tweets&lt;/i&gt;&lt;/dt&gt;
+    &lt;dd&gt;(2.2.2012) &lt;a href=&quot;#&quot;&gt;Una nuova piazza Verdi a #senigallia http://bit&lt;/a&gt;&lt;/dd&gt;
+    &lt;dd&gt;(2.2.2012) &lt;a href=&quot;#&quot;&gt;@gbianchi ci stiamo lavorando ... &lt;/a&gt;&lt;/dd&gt;
+&lt;/dl&gt;
+                        </pre>
+                    </div>
+                    <div class="span6">
+                        <h3>Results</h3>
+<dl class="data-list">
+    <dt><i class="icon-picture">News</i></dt>
+    <dd>(2.2.2012) <a href="#">Adesso siano i senigalliesi a reagire!</a></dd>
+    <dd>(2.2.2012) <a href="#">Adesso siano i senigalliesi a reagire!</a></dd>
+
+    <dt><i class="icon-retweet">Tweets</i></dt>
+    <dd>(2.2.2012) <a href="#">Una nuova piazza Verdi a #senigallia http://bit</a></dd>
+    <dd>(2.2.2012) <a href="#">@gbianchi ci stiamo lavorando ... </a></dd>
+</dl>
+
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="row-fluid">
+                    <div class="span6">
+                        <h2>Data list
+                            <small>ul.data-list</small></h2>
+                        <pre>
+&lt;ul class=&quot;data-list&quot;&gt;
+    &lt;li&gt;In carica dal &lt;strong&gt;29.04.2008&lt;/strong&gt;&lt;/li&gt;
+    &lt;li&gt;Lista di elezione &lt;strong&gt;Solidariet&Atilde;&nbsp; e giustizia&lt;/strong&gt;&lt;/li&gt;
+    &lt;li&gt;
+        &lt;ul&gt;
+            &lt;li&gt;Gruppo &lt;strong&gt;PD&lt;/strong&gt;&lt;/li&gt;
+            &lt;li&gt;(le altre appartenenze &lt;i class=&quot;icon-chevron-down&quot;&gt;&lt;/i&gt;)&lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+        &lt;ul&gt;
+            &lt;li&gt;Presidente &lt;strong&gt;Commissione permanente Edilizia e urbanistica&lt;/strong&gt;&lt;/li&gt;
+            &lt;li&gt;(le altre presenze in commissione &lt;i class=&quot;icon-chevron-down&quot;&gt;&lt;/i&gt;)&lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;Pensione d'invalidit&Atilde;&nbsp;&lt;/li&gt;
+    &lt;li&gt;Dichiarazione patrimoniale &lt;i class=&quot;icon-download-alt&quot;&gt;&lt;/i&gt;&lt;/li&gt;
+&lt;/ul&gt;
+                        </pre>
+
+                    </div>
+                    <div class="span6">
+
+                        <h3>Results</h3>
+<ul class="data-list">
+    <li>In carica dal <strong>29.04.2008</strong></li>
+    <li>Lista di elezione <strong>Solidarietà e giustizia</strong></li>
+    <li>
+        <ul>
+            <li>Gruppo <strong>PD</strong></li>
+            <li>(le altre appartenenze <i class="icon-chevron-down"></i>)</li>
+        </ul>
+    </li>
+    <li>
+        <ul>
+            <li>Presidente <strong>Commissione permanente Edilizia e urbanistica</strong></li>
+            <li>(le altre presenze in commissione <i class="icon-chevron-down"></i>)</li>
+        </ul>
+    </li>
+    <li>Pensione d'invalidità</li>
+    <li>Dichiarazione patrimoniale <i class="icon-download-alt"></i></li>
+</ul>
+                    </div>
+
+                </div>
+
+                <hr>
+
+                <div class="row-fluid">
+
+                    <div class="span4">
+                        <h2>People list
+                            <small>ul.people-list</small></h2>
+
+                        <pre>
+&lt;ul class=&quot;people-list&quot;&gt;
+    &lt;li&gt;
+        &lt;a href=&quot;#&quot;&gt;
+            &lt;img src=&quot;http://placehold.it/50&quot; /&gt;
+            &lt;i class=&quot;icon-ok&quot;&gt;&lt;/i&gt; Mario Rossi
+        &lt;/a&gt; &lt;br /&gt;
+        Partito Democratico
+        &lt;span class=&quot;monitoring&quot;&gt;Monitorato da 2 cittadini&lt;/span&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+        &lt;a href=&quot;#&quot;&gt;
+            &lt;img src=&quot;http://placehold.it/50&quot; /&gt;
+            &lt;i class=&quot;icon-ok&quot;&gt;&lt;/i&gt; Mario Rossi
+        &lt;/a&gt; &lt;br /&gt;
+        Partito Democratico
+        &lt;span class=&quot;monitoring&quot;&gt;Monitorato da 2 cittadini&lt;/span&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+        &lt;a href=&quot;#&quot;&gt;
+            &lt;img src=&quot;http://placehold.it/50&quot; /&gt;
+            &lt;i class=&quot;icon-ok&quot;&gt;&lt;/i&gt; Mario Rossi
+        &lt;/a&gt; &lt;br /&gt;
+        Partito Democratico
+        &lt;span class=&quot;monitoring&quot;&gt;Monitorato da 2 cittadini&lt;/span&gt;
+    &lt;/li&gt;
+&lt;/ul&gt;
+                        </pre>
+
+                    </div>
+                    <div class="span4">
+                        <h3>Results</h3>
+
+<ul class="people-list">
+    <li>
+        <a href="#">
+            <img src="http://placehold.it/50" />
+            <i class="icon-ok"></i> Mario Rossi
+        </a> <br />
+        Partito Democratico
+        <span class="monitoring">Monitorato da 2 cittadini</span>
+    </li>
+    <li>
+        <a href="#">
+            <img src="http://placehold.it/50" />
+            <i class="icon-ok"></i> Mario Rossi
+        </a> <br />
+        Partito Democratico
+        <span class="monitoring">Monitorato da 2 cittadini</span>
+    </li>
+    <li>
+        <a href="#">
+            <img src="http://placehold.it/50" />
+            <i class="icon-ok"></i> Mario Rossi
+        </a> <br />
+        Partito Democratico
+        <span class="monitoring">Monitorato da 2 cittadini</span>
+    </li>
+</ul>
+
+                    </div>
+
+                    <div class="span4">
+                        <h2>Feed list
+                            <small>ul.feed-list</small></h2>
+
+                        <pre>
+&lt;ul class=&quot;feed-list&quot;&gt;
+    &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Mario Rossi ha commentato il voto&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Il voto &Atilde;&uml; inserito nell'ordine del giorno N&Acirc;&deg; 13516&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Barcaiuolo, Pellacani hanno presentato la mozione...&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p class=&quot;bg-dark&quot;&gt;Leggi tutti (Cronologia) &lt;i class=&quot;icon-chevron-down&quot;&gt;&lt;/i&gt;&lt;/p&gt;
+                        </pre>
+
+                        <h3>Results</h3>
+
+<ul class="feed-list">
+    <li><a href="#">Mario Rossi ha commentato il voto</a></li>
+    <li><a href="#">Il voto è inserito nell'ordine del giorno N° 13516</a></li>
+    <li><a href="#">Barcaiuolo, Pellacani hanno presentato la mozione...</a></li>
+</ul>
+<p class="bg-dark">Leggi tutti (Cronologia) <i class="icon-chevron-down"></i></p>
+                    </div>
+
+
+                </div>
+
+            </section>
+            <section>
+                <a name="labels"></a>
+                <div class="page-header">
+                    <h1>Tags and Labels</h1>
+                </div>
+
+                <div class="row-fluid">
+
+                    <div class="span3">
+                        <h2>Tags Cloud</h2>
+
+                        <p>Use <code>dt</code> for categories and <code>dd</code> for tags</p>
+
+                        <pre>
+&lt;dl class=&quot;tags-cloud&quot;&gt;
+
+    &lt;dt&gt;&lt;a href=&quot;#&quot;&gt;Urbanistica&lt;/a&gt;&lt;/dt&gt;
+    &lt;dd&gt;&lt;a href=&quot;#&quot;&gt;infrastrutture&lt;/a&gt;&lt;/dd&gt;
+    &lt;dd&gt;&lt;a href=&quot;#&quot;&gt;acqua&lt;/a&gt;&lt;/dd&gt;
+    &lt;dd&gt;&lt;a href=&quot;#&quot;&gt;gas&lt;/a&gt;&lt;/dd&gt;
+
+    &lt;dt&gt;&lt;a href=&quot;#&quot;&gt;Ambiente&lt;/a&gt;&lt;/dt&gt;
+    &lt;dd&gt;&lt;a href=&quot;#&quot;&gt;casa&lt;/a&gt;&lt;/dd&gt;
+    &lt;dd&gt;&lt;a href=&quot;#&quot;&gt;ambiente&lt;/a&gt;&lt;/dd&gt;
+    &lt;dd&gt;&lt;a href=&quot;#&quot;&gt;inquinamento&lt;/a&gt;&lt;/dd&gt;
+&lt;/dl&gt;
+                        </pre>
+                    </div>
+                    <div class="span3">
+                        <h3>Results</h3>
+<dl class="tags-cloud">
+
+    <dt><a href="#">Urbanistica</a></dt>
+    <dd><a href="#">infrastrutture</a></dd>
+    <dd><a href="#">acqua</a></dd>
+    <dd><a href="#">gas</a></dd>
+
+    <dt><a href="#">Ambiente</a></dt>
+    <dd><a href="#">casa</a></dd>
+    <dd><a href="#">ambiente</a></dd>
+    <dd><a href="#">inquinamento</a></dd>
+</dl>
+                    </div>
+
+                    <div class="span6">
+                        <h2>Labels</h2>
+
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                            <tr>
+                                <th>Labels</th>
+                                <th>Markup</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>
+                                    <span class="label">Default</span>
+                                </td>
+                                <td>
+                                    <code>&lt;span class="label"&gt;Default&lt;/span&gt;</code>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="label label-success">Success</span>
+                                </td>
+                                <td>
+                                    <code>&lt;span class="label label-success"&gt;Success&lt;/span&gt;</code>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="label label-warning">Warning</span>
+                                </td>
+                                <td>
+                                    <code>&lt;span class="label label-warning"&gt;Warning&lt;/span&gt;</code>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="label label-important">Important</span>
+                                </td>
+                                <td>
+                                    <code>&lt;span class="label label-important"&gt;Important&lt;/span&gt;</code>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="label label-info">Info</span>
+                                </td>
+                                <td>
+                                    <code>&lt;span class="label label-info"&gt;Info&lt;/span&gt;</code>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="label label-white">Inverse</span>
+                                </td>
+                                <td>
+                                    <code>&lt;span class="label label-white"&gt;White&lt;/span&gt;</code>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </div>
+    </section><!-- end of #main container for content and sidebar-->
+
+</div><!-- #wrapper -->
+
+<script type="text/javascript">
+
+
+        $(function(){
+            // fix sub nav on scroll
+            var $win = $(window)
+                    , $nav = $('.subnav')
+                    , navTop = $('.subnav').length && $('.subnav').offset().top - 40
+                    , isFixed = 0
+            processScroll()
+            $win.on('scroll', processScroll)
+            function processScroll() {
+                var i, scrollTop = $win.scrollTop()
+                if (scrollTop >= navTop && !isFixed) {
+                    isFixed = 1
+                    $nav.addClass('subnav-fixed')
+                } else if (scrollTop <= navTop && isFixed) {
+                    isFixed = 0
+                    $nav.removeClass('subnav-fixed')
+                }
+            }
+        })
+
+
+</script>
+
+
+</body>
+</html>
