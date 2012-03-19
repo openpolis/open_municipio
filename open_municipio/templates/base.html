@@ -1,19 +1,18 @@
 {% load i18n %}
-
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <title>{% trans "OpenMunicipio" %} - {% block title %}{% endblock %}</title>
-  
-  <!-- To ensure devices display responsive pages properly, include the viewport meta tag. -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8" />
+    <title>{% trans "OpenMunicipio" %} - {% block title %}{% endblock %}</title>
+
+    <!-- To ensure devices display responsive pages properly, include the viewport meta tag. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
     {% block head_css_includes %}
     <link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap-responsive.css" />
     {% endblock head_css_includes %}
-  
+
     <style type="text/css">
     {% block extra_style %}{% endblock %}
     </style>
@@ -23,16 +22,18 @@
     <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-1.7.1.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap-dropdown.js"></script>
     {% endblock head_js_includes %}
-  
+
     <script type="text/javascript" charset="utf-8">
-    {% block extra_js %}{% endblock %}  
+        var asyncScripts = asyncScripts || [];
+        // asyncScripts.push(function() { return ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js'; });
+
+    {% block extra_js %}{% endblock %}
     </script>
- 
-    {% block extra_head %}{% endblock %}    
+
+    {% block extra_head %}{% endblock %}
 
 </head>
 <body class="{% block body_class %}{% endblock %}">
-
 
 <div id="wrapper"><!-- #wrapper -->
 
@@ -42,7 +43,7 @@
       <section class="navbar" id="topbar">
           <div class="navbar-inner">
               <div class="container-fluid">
-                  <a href="#" class="brand">Open<strong>municipio</strong></a>
+                  <a href="/" class="brand">Open<strong>municipio</strong></a>
 
                   <ul class="nav pull-right">
                     {% if user.is_authenticated %}
@@ -128,6 +129,14 @@
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
   })();
 */
+    (function() {
+        var b = document.getElementsByTagName('body')[0];
+        for ( source in asyncScripts ) {
+            var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true;
+            s.src = (typeof asyncScripts[source] == 'function') ? asyncScripts[source].call() : asyncScripts[source];
+            b.appendChild(s);
+        }
+    })();
 </script>
 </body>
 </html>
