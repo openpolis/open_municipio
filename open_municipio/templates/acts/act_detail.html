@@ -90,16 +90,17 @@ $(document).ready(function() {
 <table id="acttable">
     <thead>
         <tr>
-            <th class="approved span3">Presentazione
-                <span class="arrow"></span>
+            <th class="approved span3">
+                <div>Presentazione<span class="arrow"></span></div>
             </th>
-            <th class="current span3">Discussione in Commissione
-                <span class="arrow"></span>
+            <th class="current span3">
+                <div>Discussione in Commissione<span class="arrow"></span></div>
             </th>
-            <th class="span3">Discussione in Consiglio
-                <span class="arrow"></span>
+            <th class="span3">
+                <div>Discussione in Consiglio<span class="arrow"></span></div>
             </th>
-            <th class="span3">Approvazione</th>
+            <th class="span3">
+                <div>Approvazione</div></th>
         </tr>
     </thead>
     <tbody>
@@ -210,14 +211,14 @@ $(document).ready(function() {
                 
                 {% if user.is_authenticated %}
                   {% if is_user_monitoring %}
-                  <form action="{% url monitoring-stop %}" method="post">
+                  <form action="{% url om_monitoring_stop %}" method="post">
                     {% csrf_token %}
                     {{ monitoring_form }}
                     <i class="icon-minus-sign"></i>
                     <button type="submit" class="btn btn-info btn-small">Interrompi il monitoraggio</button>
                   </form>
                   {% else %}
-                    <form action="{% url monitoring-start %}" method="post">
+                    <form action="{% url om_monitoring_start %}" method="post">
                       {% csrf_token %}
                       {{ monitoring_form }}
                       

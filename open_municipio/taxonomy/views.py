@@ -1,11 +1,13 @@
 from django.http import HttpResponseRedirect, HttpResponseForbidden
+from django.template.context import RequestContext
 from django.views.generic import FormView, TemplateView
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render_to_response
 from django.utils.decorators import method_decorator
 
 from django.contrib.auth.decorators import login_required
 
 from taggit.models import Tag
+from open_municipio.taxonomy.models import Category
 
 
 class AddTagsView(FormView):
@@ -114,3 +116,24 @@ class RemoveTagView(TemplateView):
         else: # permission check failed !
             return HttpResponseForbidden
 
+
+def tag_list(request):
+    """
+    TODO: fetch top monitorized tags
+    """
+    return render_to_response('taxonomy/tag_list.html',{
+        'category_list': Category.objects.all(),
+        'tag_list': Tag.objects.all(),
+        'top_monitorized_tag':  Tag.objects.all(),
+        },context_instance=RequestContext(request) )
+
+def tag_detail(request, *args, **kwargs):
+    """
+
+    """
+    tag = get_object_or_404(Tag, slug=kwargs.get('slug'))
+
+    return render_to_response('taxonomy/tag_detail.html',{
+        'category_list': Category.objects.all(),
+        'tag_object': tag,
+        },context_instance=RequestContext(request) )

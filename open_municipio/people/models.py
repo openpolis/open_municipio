@@ -321,6 +321,23 @@ class Institution(Body):
         """
         return self.charge_set.current()
     
+    @property
+    def emitted_acts(self):
+        """
+        The QuerySet of all acts emitted by this institution.
+        
+        Note that the objects comprising the resulting QuerySet aren't generic ``Act`` instances,
+        but instances of specific ``Act`` subclasses (i.e. ``Deliberation``, ``Motion``, etc.).
+        This is made possible by the fact that the default manager for the ``Act`` model is 
+        ``model_utils.managers.InheritanceManager``, and this manager class declares 
+        ``use_for_related_fields = True``.   See `Django docs`_ for details.
+        
+        .. _`Django docs`: https://docs.djangoproject.com/en/1.3/topics/db/managers/#controlling-automatic-manager-types
+        """
+        # NOTE: See also Django bug #14891
+        return self.emitted_act_set.all().select_subclasses()
+    
+    
 
 class Company(Body):
     """
@@ -403,6 +420,16 @@ class Mayor(object):
         """
         return self.as_institution.charges[0]
     
+    @property
+    def acts(self):
+        """
+        The QuerySet of all acts emitted by the mayor (as an institution).
+        
+        Note that the objects comprising the resulting QuerySet aren't generic ``Act`` instances,
+        but instances of specific ``Act`` subclasses (i.e. ``Deliberation``, ``Motion``, etc.).
+        """
+        return self.as_institution.emitted_acts
+    
 
 class CityCouncil(object):
     
@@ -465,6 +492,56 @@ class CityCouncil(object):
         qs = Group.objects.filter(groupismajority__end_date__isnull=True).filter(groupismajority__is_majority=False)
         return qs
     
+    @property
+    def acts(self):
+        """
+        The QuerySet of all acts emitted by the City Council.
+        
+        Note that the objects comprising the resulting QuerySet aren't generic ``Act`` instances,
+        but instances of specific ``Act`` subclasses (i.e. ``Deliberation``, ``Motion``, etc.).
+        """
+        return self.as_institution.emitted_acts
+    
+    @property
+    def deliberations(self):
+        """
+        The QuerySet of all deliberations emitted by the City Council.
+        """
+        from open_municipio.acts.models import Deliberation
+        return Deliberation.objects.filter(emitting_institution=self.as_institution)
+    
+    @property
+    def interrogations(self):
+        """
+        The QuerySet of all interrogations emitted by the City Council.
+        """
+        from open_municipio.acts.models import Interrogation
+        return Interrogation.objects.filter(emitting_institution=self.as_institution)
+    
+    @property
+    def interpellations(self):
+        """
+        The QuerySet of all interpellations emitted by the City Council.
+        """
+        from open_municipio.acts.models import Interpellation
+        return Interpellation.objects.filter(emitting_institution=self.as_institution)
+            
+    @property
+    def motions(self):
+        """
+        The QuerySet of all motions emitted by the City Council.
+        """
+        from open_municipio.acts.models import Motion
+        return Motion.objects.filter(emitting_institution=self.as_institution)
+    
+    @property
+    def agendas(self):
+        """
+        The QuerySet of all agendas emitted by the City Council.
+        """
+        from open_municipio.acts.models import Agenda
+        return Agenda.objects.filter(emitting_institution=self.as_institution)
+
 
 class CityGovernment(object):
     @property
@@ -480,6 +557,56 @@ class CityGovernment(object):
         Members of a municipality government (aka *assessors*), as charges.
         """
         return self.as_institution.charges
+
+    @property
+    def acts(self):
+        """
+        The QuerySet of all acts emitted by the city government (as an institution).
+        
+        Note that the objects comprising the resulting QuerySet aren't generic ``Act`` instances,
+        but instances of specific ``Act`` subclasses (i.e. ``Deliberation``, ``Motion``, etc.).
+        """
+        return self.as_institution.emitted_acts
+    
+    @property
+    def deliberations(self):
+        """
+        The QuerySet of all deliberations emitted by the City Government.
+        """
+        from open_municipio.acts.models import Deliberation
+        return Deliberation.objects.filter(emitting_institution=self.as_institution)
+    
+    @property
+    def interrogations(self):
+        """
+        The QuerySet of all interrogations emitted by the City Government.
+        """
+        from open_municipio.acts.models import Interrogation
+        return Interrogation.objects.filter(emitting_institution=self.as_institution)
+    
+    @property
+    def interpellations(self):
+        """
+        The QuerySet of all interpellations emitted by the City Government.
+        """
+        from open_municipio.acts.models import Interpellation
+        return Interpellation.objects.filter(emitting_institution=self.as_institution)
+            
+    @property
+    def motions(self):
+        """
+        The QuerySet of all motions emitted by the City Government.
+        """
+        from open_municipio.acts.models import Motion
+        return Motion.objects.filter(emitting_institution=self.as_institution)
+    
+    @property
+    def agendas(self):
+        """
+        The QuerySet of all agendas emitted by the City Government.
+        """
+        from open_municipio.acts.models import Agenda
+        return Agenda.objects.filter(emitting_institution=self.as_institution)
 
 
 class Municipality(object):
