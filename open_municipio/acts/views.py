@@ -84,26 +84,22 @@ class ActDetailView(DetailView):
 
 class AgendaDetailView(ActDetailView):
     model = Agenda
-    context_object_name = 'agenda'
-
+    
 
 class DeliberationDetailView(ActDetailView):
     model = Deliberation
-    context_object_name = 'deliberation'
 
 
 class InterpellationDetailView(ActDetailView):
     model = Interpellation
-    context_object_name = 'interpellation'
 
 
 class InterrogationDetailView(ActDetailView):
     model = Interrogation
-    context_object_name = 'interrogation'
+
 
 class MotionDetailView(ActDetailView):
     model = Motion
-    context_object_name = 'motion'
     
 
 ## Tag management
