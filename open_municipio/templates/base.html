@@ -70,8 +70,8 @@
         <div class="navbar-inner">
           <div class="container-fluid">
               <ul class="nav">
-                  <li><a href="{% url om_person_list %}">Politici</a></li>
-                  <li><a href="{% url om_tag_list %}">Argomenti</a></li>
+                  <li {% block people_class %}{% endblock %}><a href="{% url om_person_list %}">Politici</a></li>
+                  <li {% block tags_class %}{% endblock %}><a href="{% url om_tag_list %}">Argomenti</a></li>
                   <li {% block users_class %}{% endblock %}><a href="/users/">Cittadini</a></li>
               </ul>
           </div>
