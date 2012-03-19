@@ -156,8 +156,10 @@ $(document).ready(function() {
         </ul>
         
     </section>
-    
 </div>
+
+    {% load web_services_tags %}
+    {% share act.title act %}
 {% endblock content %}
 
 

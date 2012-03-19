@@ -23,8 +23,10 @@
     <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap-dropdown.js"></script>
     {% endblock head_js_includes %}
 
+    <script type="text/javascript" src="{{ STATIC_URL }}js/require.js" data-main="{{ STATIC_URL }}js/"></script>
     <script type="text/javascript" charset="utf-8">
-        var asyncScripts = asyncScripts || [];
+
+        //var asyncScripts = asyncScripts || [];
         // asyncScripts.push(function() { return ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js'; });
 
     {% block extra_js %}{% endblock %}
@@ -117,9 +119,10 @@
 {% block footer_js_includes %}{% endblock %}
 
 <script type="text/javascript">
-/*
+
   // TODO: google analytics code 
   var _gaq = _gaq || [];
+  /*
   _gaq.push(['_setAccount', 'UA-XXXXXX-YY']);
   _gaq.push(['_trackPageview']);
 
@@ -129,14 +132,6 @@
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
   })();
 */
-    (function() {
-        var b = document.getElementsByTagName('body')[0];
-        for ( source in asyncScripts ) {
-            var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true;
-            s.src = (typeof asyncScripts[source] == 'function') ? asyncScripts[source].call() : asyncScripts[source];
-            b.appendChild(s);
-        }
-    })();
 </script>
 </body>
 </html>

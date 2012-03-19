@@ -233,7 +233,10 @@
         </tr>
       </tbody>
     </table>
-  </section><!-- end of #content -->  
+  </section><!-- end of #content -->
+
+    {% load web_services_tags %}
+    {% share 'persona' person %}
 {% endblock %}
 
 {% block sidebar %}
