@@ -162,6 +162,8 @@ URLconfs
 --------
 * URLs MUST end with a ``/`` character
 
+* within URL regexp patterns, *named groups* (e.g. ``(?<pk>\d+)``) should be preferred to un-named ones (e.g. ``(\d+)``)
+
 * Language strings within URLs MUST be in English for *development* setups and in Italian for *production* setups
 
 * URLs pointing to detail pages for objects (e.g. ``DetailView``\ s) SHOULD look like  ``/<object>s/<id>/``, ``/<object>s/<slug>/``, ... (e.g. ``/acts/1/``)
@@ -174,6 +176,11 @@ URLconfs
  * *mount-points* of application-specific URLs (by using Django ``include()`` facility)
 
 * Application-specific URLs go within the ``urls`` module (or package) of the corresponding application
+
+* within URL  patterns, view names:
+
+  * should be prefixed with the string ``om_`` (in order to avoid name clashes with 3-rd party app)
+  * use ``_`` instead of ``-`` for separating words
 
 
 Views
