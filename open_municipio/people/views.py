@@ -16,49 +16,45 @@ class CouncilView(TemplateView):
     """
     template_name = 'people/institution_council.html'
 
-    mayor = municipality.mayor.as_charge.person
-    president = municipality.council.members.get(
-        charge_type=InstitutionCharge.COUNCIL_PRES_CHARGE).person
-    vice_president = municipality.council.members.get(
-        charge_type=InstitutionCharge.COUNCIL_VICE_CHARGE).person
-    groups = municipality.council.groups
-    committees = municipality.committees.as_institution
-    latest_acts_by_council = Act.objects.filter(
-        emitting_institution__institution_type=Institution.COUNCIL
-        ).order_by('-presentation_date')[:3]
-    events = Event.objects.filter(
-        institution__institution_type=Institution.COUNCIL
-        )
-
-    num_acts = dict()
-    act_types = [
-        'Deliberation', 'Motion', 'Interrogation', 'Interpellation',
-        'Motion', 'Agenda'
-        ]
-    for act_type in act_types:
-        # FIXME: I am not sure "eval" is considered a good practice,
-        # check it out
-        current_class = eval(act_type)
-        num_acts[act_type] = current_class.objects.filter(
-            emitting_institution__institution_type=Institution.COUNCIL
-            ).count()
-
-    extra_context = {
-        'mayor': mayor,
-        'president': president,
-        'vice_president': vice_president,
-        'groups': groups,
-        'committees': committees,
-        'latest_acts_by_council': latest_acts_by_council,
-        'num_acts': num_acts,
-        'events': events,
-        }
-
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super(CouncilView, self).get_context_data(**kwargs)
+
+        mayor = municipality.mayor.as_charge.person
+        president = municipality.council.members.get(
+            charge_type=InstitutionCharge.COUNCIL_PRES_CHARGE).person
+        vice_president = municipality.council.members.get(
+            charge_type=InstitutionCharge.COUNCIL_VICE_CHARGE).person
+        groups = municipality.council.groups
+        committees = municipality.committees.as_institution
+        latest_acts = Act.objects.filter(
+            emitting_institution__institution_type=Institution.COUNCIL
+            ).order_by('-presentation_date')[:3]
+        events = Event.objects.filter(
+            institution__institution_type=Institution.COUNCIL
+            )
+        num_acts = dict()
+        act_types = [
+            Deliberation, Motion, Interrogation, Interpellation, Motion, Agenda
+            ]
+        for act_type in act_types:
+            num_acts[act_type.__name__] = act_type.objects.filter(
+                emitting_institution__institution_type=Institution.COUNCIL
+                ).count()
+
+        extra_context = {
+            'mayor': mayor,
+            'president': president,
+            'vice_president': vice_president,
+            'groups': groups,
+            'committees': committees,
+            'latest_acts': latest_acts,
+            'num_acts': num_acts,
+            'events': events,
+            }
+        
         # Update context with extra values we need
-        context.update(self.extra_context)
+        context.update(extra_context)
         return context
 
 
@@ -68,39 +64,35 @@ class CityGovernmentView(TemplateView):
     """
     template_name = 'people/institution_citygov.html'
 
-    citygov = municipality.gov.members
-    latest_acts_by_citygov = Act.objects.filter(
-        emitting_institution__institution_type=Institution.CITY_GOVERNMENT
-        ).order_by('-presentation_date')[:3]
-    events = Event.objects.filter(
-        institution__institution_type=Institution.CITY_GOVERNMENT
-        )
-
-    num_acts = dict()
-    act_types = [
-        'Deliberation', 'Motion', 'Interrogation', 'Interpellation',
-        'Motion', 'Agenda'
-        ]
-    for act_type in act_types:
-        # FIXME: I am not sure "eval" is considered a good practice,
-        # check it out
-        current_class = eval(act_type)
-        num_acts[act_type] = current_class.objects.filter(
-            emitting_institution__institution_type=Institution.CITY_GOVERNMENT
-            ).count()
-
-    extra_context = {
-        'citygov': citygov,
-        'latest_acts_by_citygov': latest_acts_by_citygov,
-        'num_acts': num_acts,
-        'events': events,
-        }
-
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super(CityGovernmentView, self).get_context_data(**kwargs)
+
+        citygov = municipality.gov.members
+        latest_acts = Act.objects.filter(
+            emitting_institution__institution_type=Institution.CITY_GOVERNMENT
+            ).order_by('-presentation_date')[:3]
+        events = Event.objects.filter(
+            institution__institution_type=Institution.CITY_GOVERNMENT
+            )
+        num_acts = dict()
+        act_types = [
+            Deliberation, Motion, Interrogation, Interpellation, Motion, Agenda
+            ]
+        for act_type in act_types:
+            num_acts[act_type.__name__] = act_type.objects.filter(
+                emitting_institution__institution_type=Institution.CITY_GOVERNMENT
+                ).count()
+            
+        extra_context = {
+            'citygov': citygov,
+            'latest_acts': latest_acts,
+            'num_acts': num_acts,
+            'events': events,
+            }
+
         # Update context with extra values we need
-        context.update(self.extra_context)
+        context.update(extra_context)
         return context
 
 
