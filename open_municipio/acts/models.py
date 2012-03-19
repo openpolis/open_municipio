@@ -51,8 +51,7 @@ class Act(TimeStampedModel):
     
     tag_set = TaggableManager(through=TaggedAct, blank=True)
     # manager to handle the list of monitoring having as content_object this instance
-    monitorings = generic.GenericRelation(Monitoring,
-                                          object_id_field='object_pk')
+    monitoring_set = generic.GenericRelation(Monitoring, object_id_field='object_pk')
     
     def __unicode__(self):
         uc = u'%s' % (self.title)
@@ -93,14 +92,26 @@ class Act(TimeStampedModel):
     @property
     def locations(self):
         return self.location_set.all()
-
+    
+    @property
+    def monitorings(self):
+        """
+        Returns the monitorings associated with this act (as a QuerySet).
+        """
+        return self.monitoring_set.all()
+    
+    @property
     def monitoring_users(self):
-        """return list of users monitoring this object"""
-        return [m.user for m in self.monitorings.all()]
+        """
+        Returns the list of users monitoring this act.
+        """
+        return [m.user for m in self.monitorings]
         
     @property
     def content_type_id(self):
-        """return id of the content_type for this instance"""
+        """
+        Returns id of the content type associated with this instance.
+        """
         return ContentType.objects.get_for_model(self).id
 
       

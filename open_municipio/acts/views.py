@@ -2,18 +2,20 @@ from django.views.generic import DetailView, ListView, TemplateView
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
 
-from open_municipio.taxonomy.views import AddTagsView, RemoveTagView
 from open_municipio.acts.models import Act, Agenda, Deliberation, Interpellation, Interrogation, Motion
 from open_municipio.acts.forms import TagAddForm
 from open_municipio.monitoring.forms import MonitoringForm
 from open_municipio.taxonomy.models import Tag
+from open_municipio.taxonomy.views import AddTagsView, RemoveTagView
 
 class ActListView(ListView):
     model = Act
     template_name = 'acts/act_list.html'
 
+
 class ActEditorView(TemplateView):
     pass
+
 
 class ActDetailView(DetailView):
     model = Act

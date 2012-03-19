@@ -68,7 +68,7 @@ class Category(models.Model):
     tag_set = models.ManyToManyField(Tag, related_name='category_set', null=True, blank=True)
   
     # manager to handle the list of monitoring having as content_object this instance
-    monitorings = generic.GenericRelation(Monitoring, object_id_field='object_pk')
+    monitoring_set = generic.GenericRelation(Monitoring, object_id_field='object_pk')
   
     class Meta:
         verbose_name = _('category')
@@ -76,6 +76,12 @@ class Category(models.Model):
         
     def __unicode__(self):
         return u'%s' % self.name
+    
+    def save(self, *args, **kwargs):
+        # auto-generate a slug, if needed 
+        if not self.pk and not self.slug:
+            self.slug = self.calculate_slug()
+        return super(Category, self).save(*args, **kwargs)
     
     def slugify(self, tag, i=None):
         slug = slugify(tag)
@@ -98,17 +104,17 @@ class Category(models.Model):
                 slug = self.slugify(self.name, i)
             except Category.DoesNotExist:
                 return slug
-
-    def save(self, *args, **kwargs):
-        # auto-generate a slug, if needed 
-        if not self.pk and not self.slug:
-            self.slug = self.calculate_slug()
-        return super(Category, self).save(*args, **kwargs)
         
     @property
     def tags(self):
         return self.tag_set.all()
     
+    @property
+    def monitorings(self):
+        """
+        Returns the monitorings associated with this category (as a QuerySet).
+        """
+        return self.monitoring_set.all()
     
 
 class Location(models.Model):
