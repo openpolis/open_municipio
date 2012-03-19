@@ -61,10 +61,6 @@ class Act(TimeStampedModel):
             uc = u'%s (%s)' % (uc, self.adj_title)
         return uc
    
-    @models.permalink
-    def get_absolute_url(self):
-        return ('om_act_detail', (), {'pk': str(self.pk)})
-    
     @property
     def attachments(self):
         return self.attachment_set.all()
@@ -168,6 +164,10 @@ class Agenda(Act):
         verbose_name = _('agenda')
         verbose_name_plural = _('agenda')
 
+    @models.permalink
+    def get_absolute_url(self):
+        return ('om_agenda_detail', (), {'pk': str(self.pk)})
+    
     
 class Deliberation(Act):
     """
@@ -205,6 +205,10 @@ class Deliberation(Act):
         verbose_name = _('deliberation')
         verbose_name_plural = _('deliberations')
 
+    @models.permalink
+    def get_absolute_url(self):
+        return ('om_deliberation_detail', (), {'pk': str(self.pk)})
+    
 
 class Interrogation(Act):
     """
@@ -228,7 +232,11 @@ class Interrogation(Act):
     class Meta:
         verbose_name = _('interrogation')
         verbose_name_plural = _('interrogations')
-
+    
+    @models.permalink
+    def get_absolute_url(self):
+        return ('om_interrogation_detail', (), {'pk': str(self.pk)})
+    
 
 class Interpellation(Act):
     """
@@ -251,7 +259,11 @@ class Interpellation(Act):
     class Meta:
         verbose_name = _('interpellation')
         verbose_name_plural = _('interpellations')
-
+    
+    @models.permalink
+    def get_absolute_url(self):
+        return ('om_interpellation_detail', (), {'pk': str(self.pk)})
+    
 
 class Motion(Act):
     """
@@ -267,6 +279,11 @@ class Motion(Act):
     class Meta:
         verbose_name = _('motion')
         verbose_name_plural = _('motions')
+        
+    @models.permalink
+    def get_absolute_url(self):
+        return ('om_motion_detail', (), {'pk': str(self.pk)})
+    
 
 
 class Emendation(Act):
