@@ -35,7 +35,7 @@ class Person(models.Model):
     op_politician_id = models.IntegerField(_('openpolis politician ID'), blank=True, null=True)
 
     # manager to handle the list of monitoring having as content_object this instance
-    monitorings = generic.GenericRelation(Monitoring, object_id_field='object_pk')
+    monitoring_set = generic.GenericRelation(Monitoring, object_id_field='object_pk')
     
     class Meta:
         verbose_name = _('person')
@@ -52,10 +52,19 @@ class Person(models.Model):
     @permalink
     def get_absolute_url(self):
         return 'om_person_detail', (), { 'slug': self.slug }
-
+    
+    @property
+    def monitorings(self):
+        """
+        Returns the monitorings associated with this person (as a QuerySet).
+        """
+        return self.monitoring_set.all()
+    
     @property
     def content_type_id(self):
-        """return id of the content_type for this instance"""
+        """
+        Return id of the content type associated with this instance.
+        """
         return ContentType.objects.get_for_model(self).id
 
 
