@@ -103,6 +103,12 @@ class DeliberationAdmin(ActAdmin):
 
 
 admin.site.register(Act, ActAdmin)
+
+# inizio patch per codice guglielmo
+admin.site.unregister(Act)
+admin.site.register(Act)
+# fine patch
+
 admin.site.register(Deliberation, DeliberationAdmin)
 admin.site.register(Interrogation)
 admin.site.register(Interpellation)

@@ -137,7 +137,7 @@ class ActRemoveTagView(RemoveTagView):
         return act
 
 ## Bookmark management
-class ActBookmarkSet(View):
+class ActToggleBookmark(View):
     model = Act
 
     def get(self, request, *args, **kwargs):
@@ -147,8 +147,7 @@ class ActBookmarkSet(View):
     def post(self, request, *args, **kwargs):
         act_id = int(self.kwargs.get('pk'))
         act = get_object_or_404(Act, pk=act_id)
-        is_set = (self.kwargs.get('value') == 'set')
-        act.is_key = is_set
+        act.is_key = ! act.is_key
         act.save()
 
         return HttpResponse();
