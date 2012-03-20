@@ -1,5 +1,8 @@
 {% extends "acts/act_section.html" %}
 {% load i18n %}
+{% load om_comments_tags %}
+{% load comments %}
+{% load voting_tags %}
 
 {% block title %}| Dettaglio {{ act }}{% endblock title %}
 {% block content_header %}Dettaglio atto{% endblock %}
@@ -12,23 +15,25 @@
     <link rel="stylesheet" href="{{ STATIC_URL }}css/textboxlist.css" />
     <link type="text/css" href="{{ STATIC_URL }}css/ui-custom-theme/jquery-ui-1.8.16.custom.css" rel="stylesheet" />
     {% endif %}
+    <link href="{{ STATIC_URL }}css/voting.css" rel="stylesheet">    
 {% endblock head_css_includes %}
 
 {% block head_js_includes %}
     {{ block.super }}
-    <!--<script src="{{ STATIC_URL }}js/ajax_csrf.js" type="text/javascript" charset="utf-8"></script>-->
+    <script src="{{ STATIC_URL }}js/ajax_csrf.js" type="text/javascript" charset="utf-8"></script>
     {% if user.is_staff %}
     <!-- required for TextboxList -->
     <script src="{{ STATIC_URL }}js/GrowingInput.js" type="text/javascript" charset="utf-8"></script>
-    <script src="{{ STATIC_URL }}js/TextboxList.js" type="text/javascript" charset="utf-8"></script>		
+    <script src="{{ STATIC_URL }}js/TextboxList.js" type="text/javascript" charset="utf-8"></script>        
     <script src="{{ STATIC_URL }}js/TextboxList.Autocomplete.js" type="text/javascript" charset="utf-8"></script>
     <script src="{{ STATIC_URL }}js/TextboxList.Autocomplete.Binary.js" type="text/javascript" charset="utf-8"></script>
     <script src="{{ STATIC_URL }}js/bootstrap-modal.js" type="text/javascript"></script>
     <script src="{{ STATIC_URL }}js/jquery.cteditor.js" type="text/javascript"></script>
     {% endif %}
+    <script src="{{ STATIC_URL }}js/voting.js" type="text/javascript"></script>
 {% endblock head_js_includes %}
 
-{% block extra_js %} 	
+{% block extra_js %}     
 $(document).ready(function() {
     $('#cteditor-launcher').click(function(event){
         event.preventDefault();
@@ -38,6 +43,7 @@ $(document).ready(function() {
         function() { $('#cteditor-launcher', this).fadeOut(); }
     );
 });
+
 {% endblock extra_js %}
 
 
@@ -219,48 +225,68 @@ $(document).ready(function() {
 </section>
 
 <section><h3>Vota</h3>
-    <table class="table">
-        <tr>
-            <td><span class="okbox">0</span></td>
-            <th class="bg-dark span6"><i class="socialicon-ok"></i> Sono favorevole</th>
-            <td><span class="kobox">1000</span></td>
-            <th class="bg-dark span6"><i class="socialicon-ko"></i> Sono contrario</th>
-        </tr>
-    </table>
+  {% include "acts/act_vote_block.html" %}
 </section>
 
-<section><h3>Commenti (20)</h3>
+{% get_comment_count for act as comment_count %}
+{% get_comment_list for act as comment_list %}
+{% get_comment_form for act as form %}
+<section><h3>Commenti ({{ comment_count }})</h3>
     <ul class="people-list">
-        <li class="bg-light">
+        {% for comment in comment_list %}
+        <li class="bg-light"> <!-- make control for different comment opinion, like positive comment use .bg-lightgreen -->
             <a href="#"><img src="http://placehold.it/50x50" alt="" /></a>
-            <a href="#">JohnDoe</a> Lorem ipsum dolor sit amet,consectetuer adipiscing elit. Suspendisse ut purus.
-            <span class="monitoring">
-                <i class="socialicon-ko"></i> · 14.06.2011 · <a href="#">Condividi</a> · <a href="#">Mi piace</a> · <i class="socialicon-add"></i> 4
+            <a href="#">{{ comment.user.username|capfirst }}</a> {{ comment.comment }}
+            {% if comment.user == request.user and comment|comment_TTL > 0 %}
+            <div class="comment-delete">
+                {% blocktrans with seconds=comment|comment_TTL %}You still have {{ seconds }} seconds to delete this comment{% endblocktrans %}
+                <form action="{% url comments-delete-own-comment comment.id %}" method="post">
+                    {% csrf_token %}
+                    <input type="submit" name="submit" value="{% trans 'Delete' %}">
+                </form>
+                {% comment %}
+                <!-- A simple anchor tag instead of the form can work
+                     too, but the form csrf_token provide some
+                     additional security!  Yep, bit of a paranoyd
+                     thing indeed! ;-) -->
+                <a href="{% url comments-delete-own-comment comment.id %}">Remove comment</a>
+                {% endcomment %}
+            </div>
+            {% endif %}
+            
+            <span id="comments-votebox-{{ comment.id }}" class="monitoring">
+                {% if comment.mood = "+" %}<i class="socialicon-ok"></i>{% else %}
+                {% if comment.mood = "-" %}<i class="socialicon-ko"></i>{% else %}
+                {% if comment.mood = "0" %}<i class="socialicon-five"></i>{% endif %}{% endif %}{% endif %}
+                · {{ comment.submit_date|date:"d M Y" }} · 
+                <a href="#">Condividi</a> · 
+                {% score_for_object comment as comment_score %}
+                {% if request.user.is_authenticated %}
+                {% vote_by_user request.user on comment as vote %}
+                <a href="#" id="comments-vote-{{ comment.id }}-up" class='vote{% if vote.vote and vote.vote > 0 %} up-voted{% endif %}'><span class='notlike'>Non mi piace pi&ugrave</span><span class='like'>Mi piace</span></a> · 
+                {% else %}
+                <a href="#" class="vote"><span class='like'>Mi piace</span></a> ·                 
+                {% endif %}
+                <i class="socialicon-add"></i> <span class="okscore">{{ comment_score.score }}</span>
             </span>
         </li>
-        <li class="bg-lightgreen">
-            <a href="#"><img src="http://placehold.it/50x50" alt="" /></a>
-            <a href="#">JohnDoe</a> Lorem ipsum dolor sit amet,consectetuer adipiscing elit. Suspendisse ut purus.
-            <span class="monitoring">
-                <i class="socialicon-ko"></i> · 14.06.2011 · <a href="#">Condividi</a> · <a href="#">Mi piace</a> · <i class="socialicon-add"></i> 4
-            </span>
-        </li>
-        <li class="bg-light">
-            <a href="#"><img src="http://placehold.it/50x50" alt="" /></a>
-            <a href="#">JohnDoe</a> Lorem ipsum dolor sit amet,consectetuer adipiscing elit. Suspendisse ut purus.
-            <span class="monitoring">
-                <i class="socialicon-ko"></i> · 14.06.2011 · <a href="#">Condividi</a> · <a href="#">Mi piace</a> · <i class="socialicon-add"></i> 4
-            </span>
-        </li>
-        <li class="bg-light">
-            <form action="#" class="form-inline">
-                <i class="socialicon-ok"></i><i class="socialicon-ko"></i><i class="socialicon-five"></i>
-                <input type="text" placeholder="Scrivi un commento..." />
-            </form>
-        </li>
+        {% endfor %}
     </ul>
-    <p class="bg-dark">Leggi tutti (Cronologia) <i class="icon-chevron-down"></i></p>
-
+    {% if request.user.is_authenticated %}
+    <form action="{% comment_form_target %}" method="post" class="form-inline bg-dark">
+        {% csrf_token %}
+        {% for field in form %}
+        {% if field.is_hidden %}{{ field }}{% else %}
+        {% if field.name != "name" and field.name != "email" and field.name != "url" %}{% if field.errors %}{{ field.errors }}{% endif %}{{ field }}{% endif %}{% endif %}
+        {% endfor %}
+        <input type="submit" name="submit" value="{% trans 'Post' %}">
+        
+        <!--<i class="socialicon-ok"></i><i class="socialicon-ko"></i><i class="socialicon-five"></i>-->
+        <!--<input type="text" placeholder="Scrivi un commento..." /> -->               
+    </form>
+    {% endif %}  
+    
+    <p>Leggi tutti (Cronologia) <i class="icon-chevron-down"></i></p>
 </section>
 
 <section>

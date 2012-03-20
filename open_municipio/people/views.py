@@ -1,14 +1,104 @@
-from django.shortcuts import render_to_response
-from django.views.generic import DetailView
-from django.core.exceptions import ObjectDoesNotExist
-from django.template import RequestContext
 from os import sys
-from open_municipio.people.models import Institution, Person, municipality
-from open_municipio.monitoring.forms import MonitoringForm
 
-class InstitutionDetailView(DetailView):
+from django.views.generic import TemplateView, DetailView
+from django.core.exceptions import ObjectDoesNotExist
+from django.shortcuts import render
+
+from open_municipio.people.models import Institution, InstitutionCharge, Person, municipality
+from open_municipio.monitoring.forms import MonitoringForm
+from open_municipio.acts.models import Act, Deliberation, Interrogation, Interpellation, Motion, Agenda
+from open_municipio.events.models import Event
+
+
+class CouncilView(TemplateView):
+    """
+    Renders the Council page
+    """
+    template_name = 'people/institution_council.html'
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(CouncilView, self).get_context_data(**kwargs)
+
+        mayor = municipality.mayor.as_charge.person
+        president = municipality.council.members.get(
+            charge_type=InstitutionCharge.COUNCIL_PRES_CHARGE).person
+        vice_president = municipality.council.members.get(
+            charge_type=InstitutionCharge.COUNCIL_VICE_CHARGE).person
+        groups = municipality.council.groups
+        committees = municipality.committees.as_institution
+        latest_acts = Act.objects.filter(
+            emitting_institution__institution_type=Institution.COUNCIL
+            ).order_by('-presentation_date')[:3]
+        events = Event.objects.filter(
+            institution__institution_type=Institution.COUNCIL
+            )
+        num_acts = dict()
+        act_types = [
+            Deliberation, Motion, Interrogation, Interpellation, Motion, Agenda
+            ]
+        for act_type in act_types:
+            num_acts[act_type.__name__] = act_type.objects.filter(
+                emitting_institution__institution_type=Institution.COUNCIL
+                ).count()
+
+        extra_context = {
+            'mayor': mayor,
+            'president': president,
+            'vice_president': vice_president,
+            'groups': groups,
+            'committees': committees,
+            'latest_acts': latest_acts,
+            'num_acts': num_acts,
+            'events': events,
+            }
+        
+        # Update context with extra values we need
+        context.update(extra_context)
+        return context
+
+
+class CityGovernmentView(TemplateView):
+    """
+    Renders the City Government page
+    """
+    template_name = 'people/institution_citygov.html'
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(CityGovernmentView, self).get_context_data(**kwargs)
+
+        citygov = municipality.gov.members
+        latest_acts = Act.objects.filter(
+            emitting_institution__institution_type=Institution.CITY_GOVERNMENT
+            ).order_by('-presentation_date')[:3]
+        events = Event.objects.filter(
+            institution__institution_type=Institution.CITY_GOVERNMENT
+            )
+        num_acts = dict()
+        act_types = [
+            Deliberation, Motion, Interrogation, Interpellation, Motion, Agenda
+            ]
+        for act_type in act_types:
+            num_acts[act_type.__name__] = act_type.objects.filter(
+                emitting_institution__institution_type=Institution.CITY_GOVERNMENT
+                ).count()
+            
+        extra_context = {
+            'citygov': citygov,
+            'latest_acts': latest_acts,
+            'num_acts': num_acts,
+            'events': events,
+            }
+
+        # Update context with extra values we need
+        context.update(extra_context)
+        return context
+
+
+class CommissionView(DetailView):
     model = Institution
-    context_object_name = 'institution'
+    context_object_name = 'commission'
 
 
 class PersonDetailView(DetailView):
