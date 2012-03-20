@@ -58,7 +58,7 @@ class UserProfile(models.Model):
     city = models.CharField(_(u'location'), max_length=128)
 
     # manager to handle the list of news that have the act as related object
-    related_news = generic.GenericRelation(News,
+    related_news_set = generic.GenericRelation(News,
                                            content_type_field='related_content_type',
                                            object_id_field='related_object_pk')
 
