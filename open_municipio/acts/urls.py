@@ -5,7 +5,7 @@ from open_municipio.acts.views import (ActDetailView, ActListView, AgendaDetailV
                                        DeliberationDetailView, InterpellationDetailView,
                                        InterrogationDetailView, MotionDetailView)
 from open_municipio.acts.views import ActAddTagsView, ActRemoveTagView
-from open_municipio.acts.views import ActBookmarkSet
+from open_municipio.acts.views import ActToggleBookmark
 from voting.views import vote_on_object
 
 
@@ -52,5 +52,5 @@ urlpatterns += patterns('',
 
 ## Bookmark management
 urlpatterns += patterns('',
-    url(r'(?P<pk>\d+)/(?P<value>set|unset)bookmark/?$',ActBookmarkSet.as_view(),name='om_act_bookmark_set'),
+    url(r'(?P<pk>\d+)/togglebookmark/?$',ActToggleBookmark.as_view(),name='om_act_toggle_bookmark'),
 )
