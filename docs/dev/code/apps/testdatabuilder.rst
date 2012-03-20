@@ -1,3 +1,43 @@
+======================
+Working with test data
+======================
+
+.. contents::
+
+
+Bundled test data
+=================
+
+Users
+-----
+
+In order to ease the task of testing how *OpenMunicipio* behaves under different conditions (in particular when pages
+are accessed by users with different privilege levels), a bunch of test ``auth.User`` objects are provided in
+``open_municipio/users/fixtures/test_data.json``.  In order to load these objects in the DB, just issue the command:
+
+.. sourcecode:: bash
+
+   $ django-admin.py loaddata test_data 
+
+
+Currently, the following users are available for testing (for each of these, ``password == username``):
+
+* *admin*:  a superuser
+* *editor*: a staff user
+* *user*:   a unprivileged user
+
+
+.. note
+
+   Any dummy user objects needed for test purposes should be placed within the file
+   ``open_municipio/users/fixtures/test_data.json``.  To generate the fixtures, use the command:
+
+   .. sourcecode:: bash
+
+    $ django-admin.py dumpdata --indent 4 > open_municipio/users/fixtures/test_data.json
+
+
+
 Generating random test data
 ===========================
 
