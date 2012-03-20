@@ -412,7 +412,7 @@ class Sitting(models.Model):
 
 class Mayor(object):
     """
-    A municipality major (both as a charge and an institution).
+    A municipality mayor (both as a charge and an institution).
     """
      
     @property
@@ -441,7 +441,6 @@ class Mayor(object):
     
 
 class CityCouncil(object):
-    
     @property
     def as_institution(self):
         """
@@ -618,6 +617,17 @@ class CityGovernment(object):
         return Agenda.objects.filter(emitting_institution=self.as_institution)
 
 
+class Committees(object):
+    @property
+    def as_institution(self):
+        """
+        Municipality committees, as *institutions*.
+        """
+        # FIXME: Should we include joint committees here?
+        # (Institution.JOINT_COMMITTEE)
+        return Institution.objects.filter(institution_type=Institution.COMMITTEE)
+
+
 class Municipality(object):
     """
     A hierarchy of objects representing a municipality.
@@ -628,6 +638,7 @@ class Municipality(object):
         self.mayor = Mayor()
         self.gov = CityGovernment()
         self.council = CityCouncil()
+        self.committees = Committees()
   
   
 municipality = Municipality()
