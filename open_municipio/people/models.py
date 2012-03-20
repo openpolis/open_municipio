@@ -36,7 +36,7 @@ class Person(models.Model):
     op_politician_id = models.IntegerField(_('openpolis politician ID'), blank=True, null=True)
 
     # manager to handle the list of monitoring having as content_object this instance
-    monitorings = generic.GenericRelation(Monitoring, object_id_field='object_pk')
+    monitoring_set = generic.GenericRelation(Monitoring, object_id_field='object_pk')
     
     class Meta:
         verbose_name = _('person')
@@ -53,10 +53,19 @@ class Person(models.Model):
     @permalink
     def get_absolute_url(self):
         return 'om_person_detail', (), { 'slug': self.slug }
-
+    
+    @property
+    def monitorings(self):
+        """
+        Returns the monitorings associated with this person (as a QuerySet).
+        """
+        return self.monitoring_set.all()
+    
     @property
     def content_type_id(self):
-        """return id of the content_type for this instance"""
+        """
+        Return id of the content type associated with this instance.
+        """
         return ContentType.objects.get_for_model(self).id
 
 
@@ -414,7 +423,7 @@ class Sitting(models.Model):
 
 class Mayor(object):
     """
-    A municipality major (both as a charge and an institution).
+    A municipality mayor (both as a charge and an institution).
     """
      
     @property
@@ -443,7 +452,6 @@ class Mayor(object):
     
 
 class CityCouncil(object):
-    
     @property
     def as_institution(self):
         """
@@ -620,6 +628,17 @@ class CityGovernment(object):
         return Agenda.objects.filter(emitting_institution=self.as_institution)
 
 
+class Committees(object):
+    @property
+    def as_institution(self):
+        """
+        Municipality committees, as *institutions*.
+        """
+        # FIXME: Should we include joint committees here?
+        # (Institution.JOINT_COMMITTEE)
+        return Institution.objects.filter(institution_type=Institution.COMMITTEE)
+
+
 class Municipality(object):
     """
     A hierarchy of objects representing a municipality.
@@ -630,6 +649,7 @@ class Municipality(object):
         self.mayor = Mayor()
         self.gov = CityGovernment()
         self.council = CityCouncil()
+        self.committees = Committees()
   
   
 municipality = Municipality()

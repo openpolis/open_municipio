@@ -45,7 +45,14 @@ class Votation(models.Model):
     class Meta:
         verbose_name = _('votation')
         verbose_name_plural = _('votations')
-        
+    
+    def __unicode__(self):
+        return u'votation %s' % (self.idnum)
+
+    @models.permalink
+    def get_absolute_url(self):
+        return ('om_votation_detail', [str(self.pk)])
+    
     @property
     def group_votes(self):
         return self.group_vote_set.all()
@@ -64,13 +71,6 @@ class Votation(models.Model):
             return False
         else:
             return True
-
-    @models.permalink
-    def get_absolute_url(self):
-        return 'om_votation_detail', [str(self.pk)]
-        
-    def __unicode__(self):
-        return u'votation %s' % self.idnum
 
 
 class GroupVote(TimeStampedModel):

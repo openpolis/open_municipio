@@ -64,15 +64,16 @@ class Act(TimeStampedModel):
     
     tag_set = TaggableManager(through=TaggedAct, blank=True)
 
-    # manager to handle the list of monitoring having as content_object this instance
-    monitorings = generic.GenericRelation(Monitoring, object_id_field='object_pk')
 
     # manager to handle the list of news that have the act as related object
-    related_news = generic.GenericRelation(News,
-                                           content_type_field='related_content_type',
-                                           object_id_field='related_object_pk')
+    related_news_set = generic.GenericRelation(News,
+                                               content_type_field='related_content_type',
+                                               object_id_field='related_object_pk')
 
 
+    # manager to handle the list of monitoring having as content_object this instance
+    monitoring_set = generic.GenericRelation(Monitoring, object_id_field='object_pk')
+    
     def __unicode__(self):
         uc = u'%s' % (self.title, )
         if self.idnum:
@@ -112,14 +113,26 @@ class Act(TimeStampedModel):
     @property
     def locations(self):
         return self.location_set.all()
-
+    
+    @property
+    def monitorings(self):
+        """
+        Returns the monitorings associated with this act (as a QuerySet).
+        """
+        return self.monitoring_set.all()
+    
+    @property
     def monitoring_users(self):
-        """return list of users monitoring this object"""
-        return [m.user for m in self.monitorings.all()]
+        """
+        Returns the list of users monitoring this act.
+        """
+        return [m.user for m in self.monitorings]
         
     @property
     def content_type_id(self):
-        """return id of the content_type for this instance"""
+        """
+        Returns id of the content type associated with this instance.
+        """
         return ContentType.objects.get_for_model(self).id
 
     def status(self):
@@ -141,7 +154,6 @@ class Act(TimeStampedModel):
                 return getattr(self, r.get_accessor_name())
             except models.ObjectDoesNotExist:
                 continue
-
 
       
 class ActSection(models.Model):
@@ -194,6 +206,10 @@ class Agenda(Act):
         verbose_name = _('agenda')
         verbose_name_plural = _('agenda')
 
+    @models.permalink
+    def get_absolute_url(self):
+        return ('om_agenda_detail', (), {'pk': str(self.pk)})
+    
     
 class Deliberation(Act):
     """
@@ -231,6 +247,10 @@ class Deliberation(Act):
         verbose_name = _('deliberation')
         verbose_name_plural = _('deliberations')
 
+    @models.permalink
+    def get_absolute_url(self):
+        return ('om_deliberation_detail', (), {'pk': str(self.pk)})
+    
 
 class Interrogation(Act):
     """
@@ -254,7 +274,11 @@ class Interrogation(Act):
     class Meta:
         verbose_name = _('interrogation')
         verbose_name_plural = _('interrogations')
-
+    
+    @models.permalink
+    def get_absolute_url(self):
+        return ('om_interrogation_detail', (), {'pk': str(self.pk)})
+    
 
 class Interpellation(Act):
     """
@@ -277,7 +301,11 @@ class Interpellation(Act):
     class Meta:
         verbose_name = _('interpellation')
         verbose_name_plural = _('interpellations')
-
+    
+    @models.permalink
+    def get_absolute_url(self):
+        return ('om_interpellation_detail', (), {'pk': str(self.pk)})
+    
 
 class Motion(Act):
     """
@@ -293,6 +321,11 @@ class Motion(Act):
     class Meta:
         verbose_name = _('motion')
         verbose_name_plural = _('motions')
+        
+    @models.permalink
+    def get_absolute_url(self):
+        return ('om_motion_detail', (), {'pk': str(self.pk)})
+    
 
 
 class Emendation(Act):
