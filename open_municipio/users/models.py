@@ -68,7 +68,14 @@ class UserProfile(models.Model):
     @models.permalink
     def get_absolute_url(self):
         return 'profiles_profile_detail', (), { 'username': self.user.username }
-    
+
+    @property
+    def related_news(self):
+        """
+        Returns the related_news_set as a list of objects
+        """
+        return self.related_news_set.all()
+
     @property
     def monitored_objects(self):
         """
