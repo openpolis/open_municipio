@@ -16,7 +16,7 @@
 
 {% block head_js_includes %}
     {{ block.super }}
-    <!--<script src="{{ STATIC_URL }}js/ajax_csrf.js" type="text/javascript" charset="utf-8"></script>-->
+    <script src="{{ STATIC_URL }}js/ajax_csrf.js" type="text/javascript" charset="utf-8"></script>
     {% if user.is_staff %}
     <!-- required for TextboxList -->
     <script src="{{ STATIC_URL }}js/GrowingInput.js" type="text/javascript" charset="utf-8"></script>
@@ -28,6 +28,26 @@
     {% endif %}
 {% endblock head_js_includes %}
 
+{% block footer_js_includes %}
+<script type="text/javascript">
+    require(["bootstrap-modal"], function() {
+        // on scripts loaded...
+        $('a.transaction_edit').each(function() {
+            var link = $(this);
+            link.click(function(e) {
+                e.preventDefault();
+                console.log(link.attr('href'));
+                $(link.attr('href')).modal();
+            });
+            link.parent().hover(
+                    function() { link.fadeIn(); },
+                    function() { link.fadeOut(); }
+            );
+        });
+    });
+</script>
+{% endblock %}
+
 {% block extra_js %} 	
 $(document).ready(function() {
     $('#cteditor-launcher').click(function(event){
@@ -38,6 +58,7 @@ $(document).ready(function() {
         function() { $('#cteditor-launcher', this).fadeOut(); }
     );
 });
+
 {% endblock extra_js %}
 
 
@@ -61,10 +82,10 @@ $(document).ready(function() {
 
 <ul class="nav nav-tabs">
   <li class="active">
-    <a href="#">Stato</a>
+    <a href="{{ act.get_absolute_url }}">Stato</a>
   </li>
   <li><a href="#">Documenti</a></li>
-  <li><a href="#"><strong>Voti</strong></a></li>
+  <li><a href="#"><b>Voti</b></a></li>
 </ul>
 
 <table id="acttable">
@@ -73,8 +94,13 @@ $(document).ready(function() {
             <th class="approved span3">
                 <div>Presentazione<span class="arrow"></span></div>
             </th>
-            <th class="current span3">
+            <th class="past span3">
                 <div>Discussione in Commissione<span class="arrow"></span></div>
+                {% if not act.deliberation.status_is_final %}
+                    <a href="#transaction_form_commission" class="hide transaction_edit pull-right label label-info">
+                        <i class="icon-edit icon-white"></i> Edit
+                    </a>
+                {% endif %}
             </th>
             <th class="span3">
                 <div>Discussione in Consiglio<span class="arrow"></span></div>
@@ -83,6 +109,67 @@ $(document).ready(function() {
                 <div>Approvazione</div></th>
         </tr>
     </thead>
+    {% if perms.acts.can_transition and not act.status_is_final %}
+        <tfoot>
+        <tr>
+            <td></td>
+            <td>
+                {% if act.deliberation.status != act.deliberation.STATUS.commission %}
+                    <div class="modal hide" id="transaction_form_commission">
+                        <form action="">
+                            <div class="modal-header">
+                                <a class="close" data-dismiss="modal">×</a>
+                                <h3>Aggiungi transizione: {{ act.deliberation.STATUS.commission }}</h3>
+                            </div>
+                            <div class="modal-body">
+                                <p>Data : <input type="text" name="data"></p>
+                                <p>Note : <input type="text" name="note"></p>
+                            </div>
+                            <div class="modal-footer">
+                                <input type="hidden" name="act_id" value="{{ act.id }}">
+                                <input type="hidden" name="act_status" value="{{ act.deliberation.STATUS.commission }}" >
+                                <input type="button" value="Close" class="btn">
+                                <input type="submit" value="Salva" class="btn btn-primary">
+                            </div>
+                        </form>
+                    </div>
+
+                {% endif %}
+            </td>
+            <td>
+                {% if act.deliberation.status != act.deliberation.STATUS.council %}
+                    <form action="" class="hide">
+                        <h6>Aggiungi transizione: {{ act.deliberation.STATUS.council }}</h6>
+                        <p>Data : <input type="text" name="data"></p>
+                        <p>Note : <input type="text" name="note"></p>
+                        <input type="hidden" name="act_id" value="{{ act.id }}">
+                        <input type="hidden" name="act_status" value="{{ act.deliberation.STATUS.council }}" >
+                        <input type="submit" value="Salva">
+                    </form>
+                {% endif %}
+            </td>
+            <td>
+                {% if act.deliberation.status != act.deliberation.STATUS.approved and act.deliberation.status != act.deliberation.STATUS.rejected %}
+                <form action=""class="hide">
+                    <h6>Transizione conclusiva</h6>
+                    <p>Data : <input type="text" name="data"></p>
+                    <p>Note : <input type="text" name="note"></p>
+                    <p>Voto : <select name="vote_id">
+                        <option value="">-- seleziona votazione --</option>
+                    </select></p>
+                    <p>
+                        Approvato <input type="radio" name="act_status" value="{{ act.deliberation.STATUS.approved }}">
+                        <br>
+                        Respinto <input type="radio" name="act_status" value="{{ act.deliberation.STATUS.rejected }}">
+                    </p>
+                    <input type="hidden" name="act_id" value="{{ act.id }}">
+                    <input type="submit" value="Salva">
+                </form>
+                {% endif %}
+            </td>
+        </tr>
+        </tfoot>
+    {% endif %}
     <tbody>
         <tr>
             <td>{{ act.presentation_date }}</td>
@@ -181,7 +268,7 @@ $(document).ready(function() {
 </section>
 
 <section><h3>Monitora</h3>
-    <table class="">
+    <table>
         <tr>
             <td><span class="bluebox">{{ act.monitoring_users|length}}</span></td>
             <th class="bg-dark span12">
