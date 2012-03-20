@@ -126,6 +126,7 @@ INSTALLED_APPS = (
     'open_municipio.votations',
     'open_municipio.users',
     'open_municipio.monitoring',
+    'open_municipio.web_services',
 )
 
 COMMENTS_APP = 'open_municipio.om_comments'
@@ -136,3 +137,11 @@ REGISTRATION_AUTO_LOGIN = True
 
 # use app shortcut (app.class)
 AUTH_PROFILE_MODULE = 'users.UserProfile'
+
+# web service configuration
+WEB_SERVICES = {
+    'google_analytics': { 'code' : 'UA-XXXXXX-YY' },
+    'facebook' :        { 'code' : '' },
+    'twitter' : {},
+    'google_plus': {},
+}

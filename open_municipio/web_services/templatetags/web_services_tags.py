@@ -1,7 +1,7 @@
 from django import template
 from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
-from open_municipio import settings_local
+from django.conf import settings
 
 register = template.Library()
 
@@ -29,7 +29,7 @@ def share(context, title, object_or_url="", description=""):
         'title' : title,
         'url' : url,
         'description': description,
-        'services': settings_local.WEB,
+        'services': settings.WEB_SERVICES,
         'server_url': share_save_url,
         'shares' : shares,
         'STATIC_URL': context['STATIC_URL'],
