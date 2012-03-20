@@ -43,6 +43,7 @@ $(document).ready(function() {
 <!-- When the icon whose ID is "key-act-star" it's clicked, its class is toggled -->
 <!-- between "icon-star" and "icon-star-empty", and that visually modify the icon -->
 <!-- The function POST flag/unflag the relative act as a key one -->
+{% if user.is_staff %}
 $(document).ready(function() {
     $("#key-act-star").click(
         function() {
@@ -56,6 +57,7 @@ $(document).ready(function() {
     ); 
 }
 );
+{% endif %}
 <!-- end of toggle function -->
 
 {% endblock extra_js %}
@@ -74,7 +76,7 @@ $(document).ready(function() {
         <strong>{% block act_type %}TIPO ATTO{% endblock %}</strong>
         del Consiglio comunale N° 85 del <span class="date">2.2.2012</span></small>
     </h2>
-    <h1><i id="key-act-star" class="{% if act.is_key %}icon-star{% else %}icon-star-empty{% endif %}"></i><strong>{{ act.title }}</strong> ({{ act.idnum }})</h1>
+    <h1><i id="key-act-star" class="{% if act.is_key %}icon-star{% else %}{% if user.is_staff %}icon-star-empty{% endif %}{% endif %}"></i><strong>{{ act.title }}</strong> ({{ act.idnum }})</h1>
 </hgroup>
 
 <p class="well">{{ act.text|safe }}</p>
