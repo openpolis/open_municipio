@@ -16,7 +16,7 @@
 
 {% block head_js_includes %}
     {{ block.super }}
-    <!--<script src="{{ STATIC_URL }}js/ajax_csrf.js" type="text/javascript" charset="utf-8"></script>-->
+    <script src="{{ STATIC_URL }}js/ajax_csrf.js" type="text/javascript" charset="utf-8"></script>
     {% if user.is_staff %}
     <!-- required for TextboxList -->
     <script src="{{ STATIC_URL }}js/GrowingInput.js" type="text/javascript" charset="utf-8"></script>
@@ -44,14 +44,8 @@ $(document).ready(function() {
 $(document).ready(function() {
     $(document).on("click",".star", 
         function() {
-            {% if act.is_key %}
-                var action = "unsetbookmark";
-                alert ("già flaggato");
-            {% else %}
-                var action = "setbookmark";
-                alert ("non flaggato");
-            {% endif %}
-            $.get("/acts/" + {{ act.pk }} + "/" + action + "/");
+            var action = "togglebookmark";
+            $.post("/acts/" + {{ act.pk }} + "/" + action + "/");
             $(this).toggleClass("bookmarked");
         } 
     ); 
