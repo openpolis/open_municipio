@@ -2,6 +2,9 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect, HttpResponseBadRequest, HttpResponseNotAllowed
 from django.views.generic import FormView
+from django.utils.decorators import method_decorator
+
+from django.contrib.auth.decorators import login_required
 
 from open_municipio.monitoring.models import Monitoring
 from open_municipio.monitoring.forms import MonitoringForm
@@ -9,6 +12,10 @@ from open_municipio.monitoring.forms import MonitoringForm
 class MonitoringToggleBaseView(FormView):
     form_class = MonitoringForm
     
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(MonitoringToggleBaseView, self).dispatch(*args, **kwargs)
+       
     def form_invalid(self, form=None):
         msg = "It appears that the monitoring form has been tampered with !"
         return HttpResponseBadRequest(msg)
@@ -65,6 +72,7 @@ class MonitoringStartView(MonitoringToggleBaseView):
     def form_valid(self, form):
         form.save()
         return HttpResponseRedirect(self.get_success_url())
+
 
 class MonitoringStopView(MonitoringToggleBaseView):
     """

@@ -1,12 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import random
-import lipsum
-import datetime
 import open_municipio.testdatabuilder.random_items_factory as random_factory
-
 from open_municipio.people.models import *
 from open_municipio.acts.models import *
+
+import random, datetime, lipsum
 
 # cleanup
 Act.objects.all().delete()

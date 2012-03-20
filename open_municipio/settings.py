@@ -127,6 +127,8 @@ INSTALLED_APPS = (
     'open_municipio.users',
     'open_municipio.monitoring',
     'open_municipio.web_services',
+    'open_municipio.newscache',
+
 )
 
 COMMENTS_APP = 'open_municipio.om_comments'
