@@ -14,7 +14,6 @@ from model_utils import Choices
 from model_utils.managers import InheritanceManager
 from model_utils.models import TimeStampedModel
 from model_utils.fields import StatusField
-import sys
 
 from taggit.managers import TaggableManager
 from open_municipio.newscache.models import News
