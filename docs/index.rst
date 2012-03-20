@@ -14,6 +14,7 @@ Contents:
    dev/install
    dev/GUIDELINES
    dev/code/queries
+   dev/code/apps/testdatabuilder
 
 Indices and tables
 ==================

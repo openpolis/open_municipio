@@ -1,13 +1,16 @@
 #!/usr/bin/env python
-# -*- coding: utf8 -*-
+# -*- coding: utf-8 -*-
 try:
     import json
 except ImportError:
     import simplejson as json
+    
 import lipsum
+
 from rst2pdf.createpdf import RstToPdf
-import random
-import os
+
+import random, os
+import datetime
 
 from django.core.files import File
 from django.conf import settings
@@ -17,25 +20,24 @@ from open_municipio.acts.models import *
 
 
 def unify(seq, idfun=None):  
-  """
-  remove double elements from the seq list
-  idfun is a callback to the identity function
-  """
-  # order preserving
-  if idfun is None: 
-    def idfun(x): return x 
-  seen = {} 
-  result = [] 
-  for item in seq: 
-    marker = idfun(item) 
-    # in old Python versions: 
-    # if seen.has_key(marker) 
-    # but in new ones: 
-    if marker in seen: continue 
-    seen[marker] = 1 
-    result.append(item) 
-  return result
-
+    """
+    remove double elements from the seq list
+    idfun is a callback to the identity function
+    """
+    # order preserving
+    if idfun is None: 
+        def idfun(x): return x 
+    seen = {} 
+    result = [] 
+    for item in seq: 
+        marker = idfun(item) 
+        # in old Python versions: 
+        # if seen.has_key(marker) 
+        # but in new ones: 
+        if marker in seen: continue 
+        seen[marker] = 1 
+        result.append(item) 
+    return result
 
 
 def create_person():
@@ -74,7 +76,7 @@ def create_person():
         birth_date = random.choice(birth_dates)
         birth_dates.remove(birth_date)
         birth_date = birth_date.strip()
-        birth_date = datetime.strptime(birth_date, "%Y-%m-%d %H:%M:%S").strftime("%Y-%m-%d")
+        birth_date = datetime.datetime.strptime(birth_date, "%Y-%m-%d %H:%M:%S").strftime("%Y-%m-%d")
 
         birth_location = random.choice(birth_locations)
         birth_locations.remove(birth_location)

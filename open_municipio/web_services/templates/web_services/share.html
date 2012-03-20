@@ -1,0 +1,65 @@
+<style type="text/css">
+    .share-button-bar > div {
+        float:left;
+    }
+</style>
+
+<div class="share-button-bar clearfix">
+    <a href="#" class="label"><i class="icon-plus icon-white"></i> Condividi {{ shares|length }}</a>
+
+        <div class="share-facebook"></div>
+        <div class="share-twitter"></div>
+        <div class="share-google_plus"></div>
+</div>
+
+<script type="text/javascript">
+    //asyncScripts.push('{{ STATIC_URL }}js/jquery.socializer.js');
+
+
+    var saveEvent = function(service, action) {
+        $.post('{{ server_url }}', {
+            'service' : service,
+            'action' : action
+        }, function(data) {
+            console.log(data);
+        })
+    }
+    require(["ajax_csrf","jquery.socializer"], function() {
+
+        $('.share-button-bar a.label').click(function(e){
+            e.preventDefault();
+            $(this).fadeOut('slow', function() {
+                $('.share-facebook').fbjlike({
+                    appID: '{{ services.facebook.code }}',
+                    buttonWidth: 150,
+                    showfaces: false,
+                    layout: 'normal',
+                    action: 'recommend',
+                    lang: 'it_IT',
+                    onlike: function(){
+                        saveEvent('facebook', 'like');
+                        _gaq.push(['_trackEvent', 'facebook', 'like']);
+                    },
+                    onunlike: function(){
+                        saveEvent('facebook', 'unlike');
+                        _gaq.push(['_trackEvent', 'facebook', 'unlike']);
+                    }
+                });
+                $('.share-twitter').twitterbutton({
+                    googleanalytics: true,
+                    lang: 'it',
+                    layout: 'horizontal',
+                    ontweet: function() { saveEvent('twitter', 'tweet'); }
+                });
+                $('.share-google_plus').gplusone({
+                    size: 'medium',										//small|medium|standard|tall
+                    lang: 'it-IT',											//en-US|en-GB|de|es|fr|...
+                    googleanalytics:true,
+                    googleanalytics_obj:'_gaq',
+                    onlike: "saveEvent('google_plus', 'plussed');",
+                    onunlike: "saveEvent('google_plus', 'unplussed');"
+                });
+            });
+        });
+    });
+</script>

@@ -106,7 +106,7 @@
             </tr>
             </tfoot>
             <tbody>
-            {% for monitoring in  registered_user.monitorings.all %}
+            {% for monitoring in  registered_user.monitorings %}
                 <tr>
                     <td>{{ monitoring.created_at }}</td>
                     <td>

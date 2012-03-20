@@ -1,9 +1,10 @@
+from django.template.context import RequestContext
 from os import sys
 
 from django.http import Http404
 from django.views.generic import TemplateView, DetailView
 from django.core.exceptions import ObjectDoesNotExist
-from django.shortcuts import render
+from django.shortcuts import render, render_to_response
 
 from open_municipio.people.models import Institution, InstitutionCharge, Person, municipality
 from open_municipio.monitoring.forms import MonitoringForm

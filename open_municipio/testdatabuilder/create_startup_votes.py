@@ -1,4 +1,4 @@
-# -*- coding: utf8 -*-
+# -*- coding: utf-8 -*-
 from open_municipio.people.models import *
 from open_municipio.votations.models import *
 
