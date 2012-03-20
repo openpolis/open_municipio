@@ -103,6 +103,11 @@ class DeliberationAdmin(ActAdmin):
 
 
 admin.site.register(Act, ActAdmin)
+# The following two lines restore the default admin for the class Act 
+# (the function "transition_form_factory" need to be fixed at line 19 of this file!)
+admin.site.unregister(Act)
+admin.site.register(Act)
+# end of our homemade fix!
 admin.site.register(Deliberation, DeliberationAdmin)
 admin.site.register(Interrogation)
 admin.site.register(Interpellation)

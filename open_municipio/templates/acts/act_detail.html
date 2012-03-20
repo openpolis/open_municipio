@@ -39,18 +39,24 @@ $(document).ready(function() {
         function() { $('#cteditor-launcher', this).fadeOut(); }
     );
 });
-<!-- This function adds the "bookmarked" class to the <img> tag that belong to the "star" class, when the image it's clicked -->
-<!-- Now it's a stub !!! -->
+
+<!-- When the icon whose ID is "key-act-star" it's clicked, its class is toggled -->
+<!-- between "icon-star" and "icon-star-empty", and that visually modify the icon -->
+<!-- The function POST flag/unflag the relative act as a key one -->
 $(document).ready(function() {
-    $(document).on("click",".star", 
+    $("#key-act-star").click(
         function() {
             var action = "togglebookmark";
-            $.post("/acts/" + {{ act.pk }} + "/" + action + "/");
-            $(this).toggleClass("bookmarked");
+            $.post("/acts/" + {{ act.pk }} + "/togglebookmark/", 
+                function(data){
+                    $("#key-act-star").toggleClass("icon-star icon-star-empty");
+                }
+            );
         } 
     ); 
 }
 );
+<!-- end of toggle function -->
 
 {% endblock extra_js %}
 
@@ -68,7 +74,7 @@ $(document).ready(function() {
         <strong>{% block act_type %}TIPO ATTO{% endblock %}</strong>
         del Consiglio comunale N° 85 del <span class="date">2.2.2012</span></small>
     </h2>
-    <h1><a href="#" class="star {% if act.is_key %}bookmarked{%endif%}">&nbsp;&nbsp;</a><strong>{{ act.title }}</strong> ({{ act.idnum }})</h1>
+    <h1><i id="key-act-star" class="{% if act.is_key %}icon-star{% else %}icon-star-empty{% endif %}"></i><strong>{{ act.title }}</strong> ({{ act.idnum }})</h1>
 </hgroup>
 
 <p class="well">{{ act.text|safe }}</p>
