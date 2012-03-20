@@ -12,6 +12,9 @@ from django.views.generic import View
 
 from django.http import HttpResponse
 
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+
 class ActListView(ListView):
     model = Act
     template_name = 'acts/act_list.html'
@@ -140,7 +143,15 @@ class ActRemoveTagView(RemoveTagView):
 class ActToggleBookmark(View):
     model = Act
 
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(ActToggleBookmark, self).dispatch(*args, **kwargs)
+
+
     def post(self, request, *args, **kwargs):
+        if (not request.user.is_staff):
+            raise Exception("Only staff user can access this operation")
+
         act_id = int(self.kwargs.get('pk'))
         act = get_object_or_404(Act, pk=act_id)
         act.is_key = not act.is_key
