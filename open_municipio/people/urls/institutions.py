@@ -10,7 +10,7 @@ urlpatterns = patterns('',
            template_name='institution_list.html'
         ), name='om_institution_list'),
 
-    url(r'^committees/(?P<slug>[-\w]+)/$', CommitteeDetailView.as_view(), name='om_institution_commission'),
+    url(r'^committees/(?P<slug>[-\w]+)/$', CommitteeDetailView.as_view(), name='om_institution_committee'),
     url(r'^city-government/$', CityGovernmentView.as_view(), name='om_institution_citigov'),
     url(r'^council/$', CouncilView.as_view(), name='om_institution_council'),
 
