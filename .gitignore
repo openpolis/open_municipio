@@ -10,6 +10,7 @@ fabfile/
 sitestatic
 open_municipio/media
 open_municipio/*/migrations
+uploads/
 docs/_build
 docs/ignored
 docs/dev/data_import/README-it.html
