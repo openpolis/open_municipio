@@ -135,16 +135,22 @@ class Act(TimeStampedModel):
         return ContentType.objects.get_for_model(self).id
 
     def status(self):
-        """returns status of the subclass instance"""
+        """
+        Returns the current status for the downcasted version of this act instance. 
+        """
         return self.downcast().status
 
     def downcast(self):
         """
-        return the instance of the subclassed object
+        Returns the "downcasted"[*]_ version of this model instance.
+        
+        .. [*]: In a multi-table model inheritance scenario, the term "downcasting"
+                refers to the process to retrieve the child model instance given the 
+                parent model instance.
         """
-        if hasattr(self, 'act_ptr'):
+        if hasattr(self, 'act_ptr'): # method is being called from a subclass' instance
             return self
-        cls = self.__class__ #inst is an instance of the base model
+        cls = self.__class__ # ``self`` is an instance of the parent model
         for r in cls._meta.get_all_related_objects():
             if not issubclass(r.model, cls) or\
                not isinstance(r.field, models.OneToOneField):
