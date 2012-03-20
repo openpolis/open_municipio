@@ -1,8 +1,9 @@
+from django.contrib.contenttypes import generic
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from model_utils import Choices
-
 from django.contrib.auth.models import User
+from model_utils import Choices
+from open_municipio.newscache.models import News
 
 
 class UserProfile(models.Model):
@@ -18,17 +19,17 @@ class UserProfile(models.Model):
      * ``is_staff``, ``is_active``, ``is_superuser``
      * ``last_login``, ``date_joined``
     
-    In order to enable user profile management, Django settings file must contain this option: 
+    In order to enable user profile management, Django settings file must contain this option:
     
         ``AUTH_PROFILE_MODULE = 'users.UserProfile'``
-    
-    
+
+
     Usage notes
     -----------
     
     * From user to profile: ``user.get_profile()``
     * From profile to user: ``profile.user``
-    
+
     """
     PRIVACY_LEVELS = Choices(
         (1, 'all', _('all')),
@@ -55,6 +56,11 @@ class UserProfile(models.Model):
     
     # TODO: ``city`` must be a foreign key to a proper, dedicated table of locations
     city = models.CharField(_(u'location'), max_length=128)
+
+    # manager to handle the list of news that have the act as related object
+    related_news = generic.GenericRelation(News,
+                                           content_type_field='related_content_type',
+                                           object_id_field='related_object_pk')
 
     class Meta:
         db_table = u'users_user_profile'

@@ -14,11 +14,9 @@ in order to increase the democratic partecipation level.
 Open municipio is a web platform, fueled by official political and administrative data, provided
 by those municipalities that join the project.
 Open standards and formats are used to distribute these data back to the citizens
-and free services are provided, in order to monitor and partecipate actively to the processes of the insitutions.
-
+in order to keep thing simpler and to possibly re-use applications in other contexts.
 
 Technologies
 ------------
 Open municipio is a **django** project, developed on github, by a small team of experts and developers.
 It uses has been itself subdivided into many **independent applications**,
-in order to keep thing simpler and to possibly re-use applications in other contexts.

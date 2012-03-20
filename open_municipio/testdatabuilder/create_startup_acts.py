@@ -41,7 +41,7 @@ for i in range(1, 5):
     for presenter in presenters[0:nf]:
         act_support = ActSupport(
             charge=presenter, act=d, 
-            support_type=ActSupport.FIRST_SIGNER,
+            support_type=ActSupport.SUPPORT_TYPE.first_signer,
             support_date=d.presentation_date
         )
         print "%s" % presenter
@@ -51,7 +51,7 @@ for i in range(1, 5):
     for presenter in presenters[nf:]:
         act_support = ActSupport(
             charge=presenter, act=d, 
-            support_type=ActSupport.CO_SIGNER,
+            support_type=ActSupport.SUPPORT_TYPE.co_signer,
             support_date=d.presentation_date
         )
         print "%s" % presenter
