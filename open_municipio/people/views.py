@@ -1,3 +1,4 @@
+from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.views.generic import DetailView
 from django.core.exceptions import ObjectDoesNotExist
@@ -47,3 +48,7 @@ def person_list(request):
     return render_to_response('people/person_list.html',{
         'municipality': municipality
     },context_instance=RequestContext(request) )
+
+
+def show_mayor(request):
+    return HttpResponseRedirect( municipality.mayor.as_charge.person.get_absolute_url() )

@@ -10,6 +10,7 @@ urlpatterns = patterns('',
            template_name='institution_list.html'
         ), name='om_institution_list'),
 
+    url(r'^mayor/$', 'open_municipio.people.views.show_mayor' , name='om_institution_mayor'),
     url(r'^commission/$', TemplateView.as_view(template_name='people/institution_commission.html' ) , name='om_institution_commission'),
     url(r'^city-government/$', TemplateView.as_view(template_name='people/institution_citygov.html' ) , name='om_institution_citigov'),
     url(r'^council/$', TemplateView.as_view(template_name='people/institution_council.html') , name='om_institution_council'),
