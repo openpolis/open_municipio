@@ -3,6 +3,7 @@
 {% load om_comments_tags %}
 {% load comments %}
 {% load voting_tags %}
+{% load newscache_tags %}
 
 {% block title %}| Dettaglio {{ act }}{% endblock title %}
 {% block content_header %}Dettaglio atto{% endblock %}
@@ -292,9 +293,10 @@ $(document).ready(function() {
     <h3>Ultime sugli Atti <img src="{{ STATIC_URL }}img/feed-icon-14x14.png" alt="" /></h3>
 
     <ul class="feed-list">
-        <li><a href="#">Mario Rossi ha commentato il voto</a></li>
-        <li><a href="#">Il voto è inserito nell'ordine del giorno N° 13516</a></li>
-        <li><a href="#">Barcaiuolo, Pellacani, Bellei, Morandi, Santoro (PdL) hanno presentato la mozione...</a></li>
+        {% news_for_object act as news %}
+        {% for n in news %}
+            <li>{{ n.created|date:"d/m/Y" }} - {{ n.text }}</li>
+        {% endfor %}
     </ul>
     <p class="bg-dark">Leggi tutti (Cronologia) <i class="icon-chevron-down"></i></p>
 </section>
