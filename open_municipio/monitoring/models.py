@@ -66,7 +66,7 @@ def new_monitoring(**kwargs):
     if not kwargs.get('raw', False) and kwargs.get('created', False):
         generating_item = kwargs['instance']
         monitored_object = generating_item.content_object
-        monitoring_user = generating_item.user
+        monitoring_user = generating_item.user.get_profile()
         # define context for textual representation of the news
         ctx = Context({ 'monitored_object': monitored_object, 'monitoring_user': monitoring_user })
 
@@ -93,7 +93,7 @@ def remove_monitoring(**kwargs):
     """
     generating_item = kwargs['instance']
     monitored_object = generating_item.content_object
-    monitoring_user = generating_item.user
+    monitoring_user = generating_item.user.get_profile()
 
     # first remove news related to the monitored object
     News.objects.filter(
