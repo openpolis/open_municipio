@@ -9,8 +9,8 @@
     {{ block.super }}
     {% if user.is_staff %}
     <!-- required for TextboxList -->
-    <link rel="stylesheet" href="{{ STATIC_URL }}css/textboxlist.css" />
-    <link type="text/css" href="{{ STATIC_URL }}css/ui-custom-theme/jquery-ui-1.8.16.custom.css" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/textboxlist.css" type="text/css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/ui-custom-theme/jquery-ui-1.8.16.custom.css" type="text/css" />
     {% endif %}
 {% endblock head_css_includes %}
 
@@ -72,7 +72,7 @@ $(document).ready(function() {
     </table>
     <h2>
         <strong>{% block act_type %}TIPO ATTO{% endblock %}</strong>
-        del Consiglio comunale N° 85 del <span class="date">2.2.2012</span></small>
+        del Consiglio comunale N° {{ act.idnum }} del <span class="date">{{ act.presentation_date }}</span></small>
     </h2>
     <h1><a href="#" class="star">&nbsp;&nbsp;</a><strong>{{ act.title }}</strong> ({{ act.idnum }})</h1>
 </hgroup>
@@ -80,11 +80,9 @@ $(document).ready(function() {
 <p class="well">{{ act.text|safe }}</p>
 
 <ul class="nav nav-tabs">
-  <li class="active">
-    <a href="#">Stato</a>
-  </li>
-  <li><a href="#">Documenti</a></li>
-  <li><a href="#"><strong>Voti</strong></a></li>
+  <li class="active"> <a href="{{ act.get_absolute_url }}">Stato</a></li>
+  <li><a href="{{ act.get_absolute_url }}documents">Documenti</a></li>
+  <li><a href="{{ act.get_absolute_url }}votes"><strong>Voti</strong></a></li>
 </ul>
 
 <table id="acttable">
@@ -189,8 +187,8 @@ $(document).ready(function() {
     <dl class="tags-cloud">
         {% for category in act.categories %}
         <dt><a href="{{ category.get_absolute_url }}">{{ category.name }}</a></dt>
-        {% for arg in category.tags %}
-            <dd><a href="{{ arg.get_absolute_url }}">{{ arg }}</a></dd>
+        {% for tag in category.tags %}
+            <dd><a href="{{ tag.get_absolute_url }}">{{ tag }}</a></dd>
         {% endfor %}
         {% endfor %}
     </dl>
@@ -203,8 +201,8 @@ $(document).ready(function() {
             <td><span class="bluebox">{{ act.monitoring_users|length}}</span></td>
             <th class="bg-dark span12">
                 utenti che monitorano l'atto<br />
-                {% for u in act.monitoring_users %}
-                  <a href="#">{{ u }}</a>  
+                {% for user in act.monitoring_users %}
+                  <a href="#">{{ user }}</a>  
                   {% if forloop.last %}<br/>{% else %},{% endif %}
                 {% endfor %}
                 
@@ -220,7 +218,6 @@ $(document).ready(function() {
                     <form action="{% url monitoring-start %}" method="post">
                       {% csrf_token %}
                       {{ monitoring_form }}
-                      
                       <button type="submit" class="btn btn-info btn-mini"><i class="socialicon-add"></i> Avvia il monitoraggio</button>
                     </form>
                   {% endif %}
@@ -254,21 +251,21 @@ $(document).ready(function() {
             <a href="#"><img src="http://placehold.it/50x50" alt="" /></a>
             <a href="#">JohnDoe</a> Lorem ipsum dolor sit amet,consectetuer adipiscing elit. Suspendisse ut purus.
             <span class="monitoring">
-                <i class="socialicon-ko"></i> · 14.06.2011 · <a href="#">Condividi</a> · <a href="#">Mi piace</a> · <i class="socialicon-add"></i> 4
+                <i class="socialicon-ko"></i> &middot; 14.06.2011 &middot; <a href="#">Condividi</a> &middot; <a href="#">Mi piace</a> &middot; <i class="socialicon-add"></i> 4
             </span>
         </li>
         <li class="bg-lightgreen">
             <a href="#"><img src="http://placehold.it/50x50" alt="" /></a>
             <a href="#">JohnDoe</a> Lorem ipsum dolor sit amet,consectetuer adipiscing elit. Suspendisse ut purus.
             <span class="monitoring">
-                <i class="socialicon-ko"></i> · 14.06.2011 · <a href="#">Condividi</a> · <a href="#">Mi piace</a> · <i class="socialicon-add"></i> 4
+                <i class="socialicon-ko"></i> &middot; 14.06.2011 &middot; <a href="#">Condividi</a> &middot; <a href="#">Mi piace</a> &middot; <i class="socialicon-add"></i> 4
             </span>
         </li>
         <li class="bg-light">
             <a href="#"><img src="http://placehold.it/50x50" alt="" /></a>
             <a href="#">JohnDoe</a> Lorem ipsum dolor sit amet,consectetuer adipiscing elit. Suspendisse ut purus.
             <span class="monitoring">
-                <i class="socialicon-ko"></i> · 14.06.2011 · <a href="#">Condividi</a> · <a href="#">Mi piace</a> · <i class="socialicon-add"></i> 4
+                <i class="socialicon-ko"></i> &middot; 14.06.2011 &middot; <a href="#">Condividi</a> &middot; <a href="#">Mi piace</a> &middot; <i class="socialicon-add"></i> 4
             </span>
         </li>
         <li class="bg-light">
