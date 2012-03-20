@@ -5,8 +5,9 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from model_utils import Choices
-from model_utils.fields import StatusField
 from model_utils.models import TimeStampedModel
+
+import re
 
 #
 # Newscache
@@ -64,30 +65,11 @@ class News(TimeStampedModel):
         used by signal handlers, to generate textual representation of the news
         """
         template = get_template(template_file)
-        return template.render(context)
+        return re.sub("\s+", " ", template.render(context).strip())
+
 
 
     class Meta:
         verbose_name = _('cached news')
         verbose_name_plural = _('cached news')
 
-class NewsTargetMixin(models.Model):
-    """
-    add this mixin to allow retrieval of news related to the class
-
-    for example, in acts/models.py::
-
-        class Act(TimeStampedModel, NewsTargetMixin):
-
-    then, if d is a Deliberation::
-
-        d.related_news
-
-    is a manager, that allows you to extract the news related to the Deliberation
-    """
-    # manager to handle the list of news that have the act as related object
-    related_news = generic.GenericRelation(News,
-                                           content_type_field='related_content_type',
-                                           object_id_field='related_object_pk')
-    class Meta:
-        abstract = True

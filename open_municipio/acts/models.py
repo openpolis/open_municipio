@@ -17,7 +17,7 @@ from model_utils.fields import StatusField
 import sys
 
 from taggit.managers import TaggableManager
-from open_municipio.newscache.models import News, NewsTargetMixin
+from open_municipio.newscache.models import News
 
 from open_municipio.people.models import Institution, InstitutionCharge, Sitting
 from open_municipio.taxonomy.models import TaggedAct, Category, Location
@@ -29,14 +29,14 @@ from open_municipio.monitoring.models import Monitoring
 # Acts
 #
 
-class Act(TimeStampedModel, NewsTargetMixin):
+class Act(TimeStampedModel):
     """
     This is the base class for all the different act types: it contains the common fields for
     deliberations, interrogations, interpellations, motions, agendas and emendations.
   
     It is a ``TimeStampedModel``, so it tracks creation and modification timestamps for each record.
 
-    It inherits from ``NewsTargetMixin``, that allows the ``related_news`` attribute, to fetch
+    The ``related_news`` attribute can be used  to fetch
     news related to it (or its subclasses) from ``newscache.News``
 
     Inheritance is done through multi-table inheritance, since browsing the whole set of acts may be useful.
@@ -63,8 +63,14 @@ class Act(TimeStampedModel, NewsTargetMixin):
     objects = InheritanceManager()
     
     tag_set = TaggableManager(through=TaggedAct, blank=True)
+
     # manager to handle the list of monitoring having as content_object this instance
     monitorings = generic.GenericRelation(Monitoring, object_id_field='object_pk')
+
+    # manager to handle the list of news that have the act as related object
+    related_news = generic.GenericRelation(News,
+                                           content_type_field='related_content_type',
+                                           object_id_field='related_object_pk')
 
 
     def __unicode__(self):
@@ -116,6 +122,27 @@ class Act(TimeStampedModel, NewsTargetMixin):
         """return id of the content_type for this instance"""
         return ContentType.objects.get_for_model(self).id
 
+    def status(self):
+        """returns status of the subclass instance"""
+        return self.downcast().status
+
+    def downcast(self):
+        """
+        return the instance of the subclassed object
+        """
+        if hasattr(self, 'act_ptr'):
+            return self
+        cls = self.__class__ #inst is an instance of the base model
+        for r in cls._meta.get_all_related_objects():
+            if not issubclass(r.model, cls) or\
+               not isinstance(r.field, models.OneToOneField):
+                continue
+            try:
+                return getattr(self, r.get_accessor_name())
+            except models.ObjectDoesNotExist:
+                continue
+
+
       
 class ActSection(models.Model):
     """
@@ -137,17 +164,14 @@ class ActSupport(models.Model):
     """
     WRITEME
     """
-    FIRST_SIGNER = 1
-    CO_SIGNER = 2
-    RELATOR = 3
-    SUPPORT_TYPE_CHOICES = (
-        (FIRST_SIGNER, _('First signer')),
-        (CO_SIGNER, _('Co signer')),
-        (RELATOR, _('Relator')),
+    SUPPORT_TYPE = Choices(
+        ('FIRSTSIGNER', 'first_signer', _('first signer')),
+        ('COSIGNER', 'co_signer', _('co-signer'))
     )
+
     charge = models.ForeignKey(InstitutionCharge)
     act = models.ForeignKey(Act)
-    support_type = models.IntegerField(_('support type'), choices=SUPPORT_TYPE_CHOICES)    
+    support_type = models.CharField(choices=SUPPORT_TYPE, max_length=12)
     support_date = models.DateField(_('support date'), default=None, blank=True, null=True)
 
     class Meta:
@@ -415,14 +439,14 @@ class Calendar(models.Model):
 
 # TODO: can't find a DRY-way to do it
 @receiver(post_save, sender=Deliberation)
-def new_deliberation_presented(sender, **kwargs):
-    new_act_presented(sender, **kwargs)
+def new_deliberation_published(sender, **kwargs):
+    new_act_published(sender, **kwargs)
 
 @receiver(post_save, sender=Interrogation)
-def new_interrogation_presented(sender, **kwargs):
-    new_act_presented(sender, **kwargs)
+def new_interrogation_published(sender, **kwargs):
+    new_act_published(sender, **kwargs)
 
-def new_act_presented(sender, **kwargs):
+def new_act_published(sender, **kwargs):
     """
     generates a record in newscache when an act is presented (inserted in our DB)
 
@@ -459,7 +483,7 @@ def new_act_presented(sender, **kwargs):
         # generate news in newscache
         News.objects.create(
             generating_object=generating_item, related_object=generating_item, priority=1,
-            text=News.get_text_for_news(ctx, 'newscache/act_presented.html')
+            text=News.get_text_for_news(ctx, 'newscache/act_published.html')
         )
 
 
@@ -476,12 +500,32 @@ def new_signature(**kwargs):
         signer = generating_item.charge
         # define context for textual representation of the news
         ctx = Context({ 'current_site': Site.objects.get(id=settings.SITE_ID),
-                        'act': act })
+                        'signature': generating_item, 'act': act, 'signer': signer })
+        News.objects.create(
+            generating_object=generating_item, related_object=act, priority=3,
+            text=News.get_text_for_news(ctx, 'newscache/act_signed.html')
+        )
         News.objects.create(
             generating_object=generating_item, related_object=signer, priority=1,
-            text=News.get_text_for_news(ctx, 'newscache/act_signed.html')
+            text=News.get_text_for_news(ctx, 'newscache/user_signed.html')
         )
 
 @receiver(post_save, sender=Transition)
 def new_transition(**kwargs):
-    pass
+    if not kwargs.get('raw', False) and kwargs.get('created', False):
+        generating_item = kwargs['instance']
+        act = generating_item.act
+
+        # Presentation is already handled by new_act_published handler
+        if generating_item.final_status != act.STATUS.presented:
+            # set act's status according to transition status
+            act.status = generating_item.final_status
+            act.save()
+
+            # generate news
+            ctx = Context({ 'current_site': Site.objects.get(id=settings.SITE_ID),
+                            'transition': generating_item, 'act': act })
+            News.objects.create(
+                generating_object=generating_item, related_object=act, priority=2,
+                text=News.get_text_for_news(ctx, 'newscache/act_changed_status.html')
+            )

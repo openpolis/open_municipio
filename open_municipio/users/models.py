@@ -1,10 +1,11 @@
+from django.contrib.contenttypes import generic
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
 from model_utils import Choices
-from open_municipio.newscache.models import NewsTargetMixin
+from open_municipio.newscache.models import News
 
-class UserProfile(NewsTargetMixin):
+class UserProfile(models.Model):
     """
     This is the user's profile.
     All infos about the user are here, except for those already in auth.User,
@@ -13,7 +14,7 @@ class UserProfile(NewsTargetMixin):
     
     settings must contain: ``AUTH_PROFILE_MODULE = 'users.UserProfile'``
 
-    It inherits from ``NewsTargetMixin``, that allows the ``related_news`` attribute, to fetch
+    The ``related_news`` attribute can be used  to fetch
     news related to it (or its subclasses) from ``newscache.News``
 
     From user to profile: ``user.get_profile()``
@@ -46,6 +47,11 @@ class UserProfile(NewsTargetMixin):
     
     # TODO: location must be a foreign key to a proper, dedicated table
     city = models.CharField(_(u'location'), max_length=128)
+
+    # manager to handle the list of news that have the act as related object
+    related_news = generic.GenericRelation(News,
+                                           content_type_field='related_content_type',
+                                           object_id_field='related_object_pk')
 
     class Meta:
         db_table = u'users_user_profile'

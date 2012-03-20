@@ -11,7 +11,7 @@ from model_utils import Choices
 from model_utils.managers import PassThroughManager
 
 from open_municipio.monitoring.models import Monitoring
-from open_municipio.newscache.models import NewsTargetMixin
+from open_municipio.newscache.models import News
 from open_municipio.people.managers import TimeFramedQuerySet
 
 import datetime
@@ -60,11 +60,12 @@ class Person(models.Model):
         return ContentType.objects.get_for_model(self).id
 
 
-class Charge(NewsTargetMixin):
+class Charge(models.Model):
     """
     This is the base class for the different macro-types of charges (institution, organization, administration).
 
-    Inheritance here is done through abstract classes, since there is no apparent need to browse all.
+    The ``related_news`` attribute can be used  to fetch
+    news related to it (or its subclasses) from ``newscache.News``
 
     The class inherits from ``NewsTargetMixin``, that allows the ``related_news`` attribute, to fetch
     news related to it (or its subclasses) from ``newscache.News``
@@ -77,8 +78,13 @@ class Charge(NewsTargetMixin):
     description = models.CharField(_('description'), blank=True, max_length=255,
                                    help_text=_('Insert the complete description of the charge, if it gives more information than the charge type'))
     
-    objects = PassThroughManager.for_queryset_class(TimeFramedQuerySet)() 
-    
+    objects = PassThroughManager.for_queryset_class(TimeFramedQuerySet)()
+
+    # manager to handle the list of news that have the act as related object
+    related_news = generic.GenericRelation(News,
+                                           content_type_field='related_content_type',
+                                           object_id_field='related_object_pk')
+
     class Meta:
         abstract = True
 
