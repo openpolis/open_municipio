@@ -148,6 +148,11 @@ class Act(TimeStampedModel):
                 refers to the process to retrieve the child model instance given the 
                 parent model instance.
         """
+        # FIXME: this check is redundant, IMO (seldon)
+        # if this method is called from a "concrete" instance
+        # the lookup machinery either will return the instance itself
+        # or a downcasted version of it (if any), which seems to me 
+        # the right behaviour for a ``downcast()`` method.
         if hasattr(self, 'act_ptr'): # method is being called from a subclass' instance
             return self
         cls = self.__class__ # ``self`` is an instance of the parent model
@@ -388,7 +393,7 @@ class Document(TimeStampedModel):
     * an uploaded internal PDF file
     
     It is possible for a single document to have more than one type of content:
-    for example, a textual and a pdf local versions, or remote links ...
+    for example, a textual and a PDF local versions, or remote links...
     """
     document_date = models.DateField(null=True, blank=True)
     text = models.TextField(blank=True)
@@ -409,14 +414,14 @@ class Attach(Document):
     """
     title = models.CharField(max_length=255)
     act = models.ForeignKey(Act, related_name='attachment_set')
-    
-    def __unicode__(self):
-        return u'%s' % self.title
-    
+
     class Meta(Document.Meta):
         verbose_name = _('attach')
         verbose_name_plural = _('attaches')
-
+    
+    def __unicode__(self):
+        return u'%s' % self.title
+  
 
 class Minute(Document):
     """
