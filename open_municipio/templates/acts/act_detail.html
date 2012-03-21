@@ -48,7 +48,7 @@ $(document).ready(function() {
     $("#key-act-star").click(
         function() {
             var action = "togglebookmark";
-            $.post("/acts/" + {{ act.pk }} + "/togglebookmark/", 
+            $.post("{% url om_act_toggle_bookmark pk=act.pk %}",  
                 function(data){
                     $("#key-act-star").toggleClass("icon-star icon-star-empty");
                 }
