@@ -49,23 +49,17 @@ class MonitoringStartView(MonitoringToggleBaseView):
         # starts a monitoring, by creating an instance,
         # only if non-existing
         if current_user_profile:
-            try:
-                monitoring = Monitoring.objects.get(
-                    content_type=ContentType.objects.get(pk=request.POST['content_type_id']),
-                    object_pk=request.POST['object_pk'],
-                    user=request.user
-                )
-            except ObjectDoesNotExist:
-                monitoring = Monitoring(
+            monitoring, created = Monitoring.objects.get_or_create(
                     content_type_id=request.POST['content_type_id'],
                     object_pk=request.POST['object_pk'],
-                    user=request.user
-                )
-                form = MonitoringForm(request.POST, instance=monitoring)
-                if form.is_valid():
-                    return self.form_valid(form)
-                else:
-                    return self.form_invalid(form)
+                    user=request.user)
+             
+            form = MonitoringForm(request.POST, instance=monitoring)
+            
+            if form.is_valid():
+                return self.form_valid(form)
+            else:
+                return self.form_invalid(form)
         else:
             return HttpResponseRedirect(self.get_success_url())
 
