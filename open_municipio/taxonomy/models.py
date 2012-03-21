@@ -77,6 +77,10 @@ class Category(models.Model):
     def __unicode__(self):
         return u'%s' % self.name
     
+    @permalink
+    def get_absolute_url(self):
+        return 'om_category_detail', (), { 'slug': self.slug }
+    
     def save(self, *args, **kwargs):
         # auto-generate a slug, if needed 
         if not self.pk and not self.slug:

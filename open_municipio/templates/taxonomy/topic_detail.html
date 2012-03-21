@@ -7,9 +7,9 @@
 {% block sub_nav %}
 
     <ul>
-        {% for category in category_list %}
+        {% for t in topics %}
             <li>
-                <a href="{{ category.get_absolute_url }}">{{ category }}</a>
+                <a href="{{ t.get_absolute_url }}">{{ t }}</a>
             </li>
         {% endfor %}
     </ul>
@@ -18,7 +18,7 @@
 
 {% block content %}
 
-    <h1>{{ tag_object|title }}</h1>
+    <h1>{{ topic|title }}</h1>
 
     <section>
         <div class="row-fluid">
@@ -45,7 +45,7 @@
     <hr>
 
     <section>
-        <h3>Atti che trattano di {{ tag_object }}</h3>
+        <h3>Atti che trattano di {{ topic }}</h3>
 
         <table class="data">
             <thead>
