@@ -116,6 +116,17 @@ class Category(models.Model):
         """
         return self.monitoring_set.all()
     
+    @property
+    def monitoring_users(self):
+        """
+        Returns the list of users monitoring this argument (category).
+        """
+        # FIXME: This method should return a QuerySet for efficiency reasons
+        # (an argument could be monitored by a large number of people;
+        # moreover, often we are only interested in the total number of 
+        # monitoring users, so building a list in memory may result in a waste of resources). 
+        return [m.user for m in self.monitorings]
+    
 
 class Location(models.Model):
     """

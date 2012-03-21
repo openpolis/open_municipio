@@ -55,11 +55,40 @@ class Person(models.Model):
         return 'om_person_detail', (), { 'slug': self.slug }
     
     @property
+    def full_name(self):
+        return "%s %s" % (self.first_name, self.last_name)
+   
+    @property
+    def all_institution_charges(self):
+        """
+        Returns the QuerySet of all institution charges held by this person during his/her career.
+        """
+        return self.institutioncharge_set.all()
+    
+    @property
+    def current_institution_charges(self):
+        """
+        Returns a QuerySet of institution charges currently held by this person.
+        """
+        return self.institutioncharge_set.current()
+    
+    @property
     def monitorings(self):
         """
         Returns the monitorings associated with this person (as a QuerySet).
         """
         return self.monitoring_set.all()
+    
+    @property
+    def monitoring_users(self):
+        """
+        Returns the list of users monitoring this person.
+        """
+        # FIXME: This method should return a QuerySet for efficiency reasons
+        # (a politician could be monitored by a large number of people;
+        # moreover, often we are only interested in the total number of 
+        # monitoring users, so building a list in memory may result in a waste of resources). 
+        return [m.user for m in self.monitorings]
     
     @property
     def content_type_id(self):
@@ -97,6 +126,8 @@ class Charge(models.Model):
     class Meta:
         abstract = True
 
+    def get_absolute_url(self):
+        return self.person.get_absolute_url()
 
 class InstitutionCharge(Charge):
     """
@@ -139,7 +170,40 @@ class InstitutionCharge(Charge):
         
     # TODO: model validation: check that ``substitutes`` and ``substituted_by`` fields
     # point to ``InstitutionCharge``s of the same kind
-
+    
+    @property
+    def presented_acts(self):
+        """
+        The QuerySet of acts presented by this charge.
+        """
+        return self.presented_act_set.all()
+    
+    @property
+    def received_acts(self):
+        """
+        The QuerySet of acts received by this charge.
+        """
+        return self.received_act_set.all()
+    
+    @property
+    def council_group(self):
+        """
+        Returns the city council's group this charge currently belongs to (if any).
+        
+        If the charge doesn't belong to any council's group  -- e.g. because (s)he 
+        is not a counselor, return ``None``.  
+        """
+        # this property only make sense for counselors
+        if self.charge_type == InstitutionCharge.COUNSELOR_CHARGE:
+            # This query should return only one record, since a counselor 
+            # may belong to only one council group at a time.
+            # If multiple records match the query, instead, a ``MultipleObjectsReturned``
+            # exception will be raised, providing a useful integrity check for data 
+            group = Group.objects.get(groupcharge__charge__id=self.id, groupcharge__end_date__isnull=True)
+            return group
+        else: 
+            return None
+    
 
 class CompanyCharge(Charge):
     """

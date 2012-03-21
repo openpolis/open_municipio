@@ -118,24 +118,14 @@ $(document).ready(function() {
     <section class="span6">
         <h1>Firmatari</h1>
         <ul class="people-list border-right">
+          {% for signer in act.first_signers %}
             <li>
                 <a href="#"><img src="http://placehold.it/50" /></a>
-                <strong><a href="#"><i class="icon-ok"></i> Mario Rossi</a></strong> <br />
-                Partito Democratico
-                <span class="monitoring">Monitorato da 2 cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a>
+                <strong><a href="{{ signer.get_absolute_url }}"><i class="icon-ok"></i> {{ signer.person.full_name }}</a></strong> <br />
+                {{ signer.council_group }}
+                <span class="monitoring">Monitorato da {{ signer.monitoring_users|length }} cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a>
             </li>
-            <li>
-                <a href="#"><img src="http://placehold.it/50" /></a>
-                <strong><a href="#"><i class="icon-ok"></i> Mario Rossi</a></strong> <br />
-                Partito Democratico
-                <span class="monitoring">Monitorato da 2 cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a>
-            </li>
-            <li>
-                <a href="#"><img src="http://placehold.it/50" /></a>
-                <strong><a href="#"><i class="icon-ok"></i> Mario Rossi</a></strong> <br />
-                Partito Democratico
-                <span class="monitoring">Monitorato da 2 cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a>
-            </li>
+          {% endfor %}
         </ul>
         
     </section>
@@ -143,23 +133,14 @@ $(document).ready(function() {
     <section class="span6">
         <h1>Co-firmatari</h1>
         <ul class="people-list">
+          {% for signer in act.co_signers %}
             <li>
-                <a href="#"><img src="http://placehold.it/50" /></a>
-                <strong><a href="#"><i class="icon-ok"></i> Mario Rossi</a></strong> <br />
-                Partito Democratico
+                <a href="{{ signer.get_absolute_url }}"><img src="http://placehold.it/50" /></a>
+                <strong><a href="#"><i class="icon-ok"></i> {{ signer.person.full_name }} </a></strong> <br />
+                {{ signer.council_group }}
+                <span class="monitoring">Monitorato da {{ signer.monitoring_users|length }} cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a>
             </li>
-            <li>
-                <a href="#"><img src="http://placehold.it/50" /></a>
-                <strong><a href="#"><i class="icon-ok"></i> Mario Rossi</a></strong> <br />
-                Italia dei Valori
-                <span class="monitoring">Monitorato da 2 cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a>
-            </li>
-            <li>
-                <a href="#"><img src="http://placehold.it/50" /></a>
-                <strong><a href="#"><i class="icon-ok"></i> Mario Rossi</a></strong> <br />
-                Italia dei Valori
-                <span class="monitoring">Monitorato da 2 cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a>
-            </li>
+          {% endfor %}
         </ul>
         
     </section>

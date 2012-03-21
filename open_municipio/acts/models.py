@@ -35,8 +35,8 @@ class Act(TimeStampedModel):
   
     It is a ``TimeStampedModel``, so it tracks creation and modification timestamps for each record.
 
-    The ``related_news`` attribute can be used  to fetch
-    news related to it (or its subclasses) from ``newscache.News``
+    The ``related_news`` attribute can be used  to fetch news related to it (or its subclasses) 
+    from ``newscache.News``.
 
     Inheritance is done through multi-table inheritance, since browsing the whole set of acts may be useful.
     The default manager is the ``InheritanceManager`` (from package ``django-model-utils``_),
@@ -52,8 +52,8 @@ class Act(TimeStampedModel):
     adj_title = models.CharField(_('adjoint title'), max_length=255, blank=True, help_text=_("An adjoint title, added to further explain an otherwise cryptic title"))
     presentation_date = models.DateField(_('presentation date'), null=True, help_text=_("Date of presentation, as stated in the act"))
     text = models.TextField(_('text'), blank=True)
-    presenter_set = models.ManyToManyField(InstitutionCharge, blank=True, null=True, through='ActSupport', related_name='presenter_act_set', verbose_name=_('presenters'))
-    recipient_set = models.ManyToManyField(InstitutionCharge, blank=True, null=True, related_name='recipient_act_set', verbose_name=_('recipients'))
+    presenter_set = models.ManyToManyField(InstitutionCharge, blank=True, null=True, through='ActSupport', related_name='presented_act_set', verbose_name=_('presenters'))
+    recipient_set = models.ManyToManyField(InstitutionCharge, blank=True, null=True, related_name='received_act_set', verbose_name=_('recipients'))
     emitting_institution = models.ForeignKey(Institution, related_name='emitted_act_set', verbose_name=_('emitting institution'))
     category_set = models.ManyToManyField(Category, verbose_name=_('categories'), blank=True, null=True)
     location_set = models.ManyToManyField(Location, verbose_name=_('locations'), blank=True, null=True)
@@ -85,61 +85,6 @@ class Act(TimeStampedModel):
     def get_absolute_url(self):
         return 'om_act_detail', (), {'pk': str(self.pk)}
     
-    @property
-    def attachments(self):
-        return self.attachment_set.all()
-
-    @property
-    def transitions(self):
-        return self.transition_set.all()
-
-    @property
-    def presenters(self):
-        return self.presenter_set.all()
-
-    @property
-    def recipients(self):
-        return self.recipient_set.all()
-    
-    @property
-    def tags(self):
-        return self.tag_set.all()
-    
-    @property
-    def categories(self):
-        return self.category_set.all()
-    
-    @property
-    def locations(self):
-        return self.location_set.all()
-    
-    @property
-    def monitorings(self):
-        """
-        Returns the monitorings associated with this act (as a QuerySet).
-        """
-        return self.monitoring_set.all()
-    
-    @property
-    def monitoring_users(self):
-        """
-        Returns the list of users monitoring this act.
-        """
-        return [m.user for m in self.monitorings]
-        
-    @property
-    def content_type_id(self):
-        """
-        Returns id of the content type associated with this instance.
-        """
-        return ContentType.objects.get_for_model(self).id
-
-    def status(self):
-        """
-        Returns the current status for the downcasted version of this act instance. 
-        """
-        return self.downcast().status
-
     def downcast(self):
         """
         Returns the "downcasted"[*]_ version of this model instance.
@@ -164,6 +109,82 @@ class Act(TimeStampedModel):
                 return getattr(self, r.get_accessor_name())
             except models.ObjectDoesNotExist:
                 continue
+    
+    @property
+    def attachments(self):
+        return self.attachment_set.all()
+
+    @property
+    def transitions(self):
+        return self.transition_set.all()
+
+    @property
+    def presenters(self):
+        return self.presenter_set.all()
+
+    @property
+    def recipients(self):
+        return self.recipient_set.all()
+    
+    @property
+    def first_signers(self):
+        return InstitutionCharge.objects.filter(actsupport__act__id = self.pk,
+                                                actsupport__support_type=ActSupport.SUPPORT_TYPE.first_signer)                                            
+    
+    @property
+    def co_signers(self):
+        return self.presenter_set.filter(actsupport__support_type=ActSupport.SUPPORT_TYPE.co_signer)
+        
+    @property
+    def tags(self):
+        return self.tag_set.all()
+    
+    @property
+    def categories(self):
+        return self.category_set.all()
+    
+    @property
+    def locations(self):
+        return self.location_set.all()
+    
+    @property
+    def monitorings(self):
+        """
+        Returns the monitorings associated with this act (as a QuerySet).
+        """
+        return self.monitoring_set.all()
+    
+    @property
+    def monitoring_users(self):
+        """
+        Returns the list of users monitoring this act.
+        """
+        # FIXME: This method should return a QuerySet for efficiency reasons
+        # (an act could be monitored by a large number of people;
+        # moreover, often we are only interested in the total number of 
+        # monitoring users, so building a list in memory may result in a waste of resources). 
+        return [m.user for m in self.monitorings]
+        
+    @property
+    def content_type_id(self):
+        """
+        Returns id of the content type associated with this instance.
+        """
+        return ContentType.objects.get_for_model(self).id
+
+    def status(self):
+        """
+        Returns the current status for the downcasted version of this act instance.
+        
+        Note: it seems that this method cannot be made into a property,
+        since doing that raises a ``AttributeError: can't set attribute``
+        exception during Django initialization. 
+        """
+        return self.downcast().status
+        
+    @property
+    def related_news(self):
+        return self.related_news_set.all()
 
       
 class ActSection(models.Model):
