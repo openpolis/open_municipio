@@ -1,1 +1,6 @@
 {% extends "base_two_columns.html" %}
+
+{% block head_css_includes %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/bookmarking.css" />
+{% endblock head_css_includes %}
