@@ -37,35 +37,15 @@ urlpatterns = patterns('',
     # info page
     (r'^info/$', 'django.views.generic.simple.direct_to_template', {'template': 'om/info.html'}),
 
-    (r'^comments/', include('django.contrib.comments.urls')),
-
+    (r'^comments/', include('open_municipio.om_comments.urls')),
     (r'^people/', include('open_municipio.people.urls.people')),
     (r'^institutions/', include('open_municipio.people.urls.institutions')),
     (r'^offices/', include('open_municipio.people.urls.offices')),
     (r'^companies/', include('open_municipio.people.urls.companies')), 
     (r'^acts/', include('open_municipio.acts.urls')),
     (r'^voting/', include('open_municipio.votations.urls')),
-
     (r'^tag/', include('open_municipio.taxonomy.urls')),
     (r'^webservices/', include('open_municipio.web_services.urls')),
-)
-
-
-act_dict = {
-    'model': Act,
-    'template_object_name': 'act',
-    'allow_xmlhttprequest': 'true',
-}
-
-comment_dict = {
-    'model': CommentWithMood,
-    'template_object_name': 'comment',
-    'allow_xmlhttprequest': 'true',
-}
-
-urlpatterns += patterns('',
-   (r'^atti/(?P<object_id>\d+)/(?P<direction>up|down|clear)vote/?$', vote_on_object, act_dict),
-   (r'^commenti/(?P<object_id>\d+)/(?P<direction>up|down|clear)vote/?$', vote_on_object, comment_dict),
 )
 
 # inline editing
@@ -82,7 +62,6 @@ urlpatterns += patterns('',
 urlpatterns += patterns('',
     url(r'^monitoring/', include('open_municipio.monitoring.urls')),
 )
-
 
 # user registration and profiles
 urlpatterns += patterns('',

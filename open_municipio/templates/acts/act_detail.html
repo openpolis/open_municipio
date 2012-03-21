@@ -1,5 +1,9 @@
 {% extends "acts/act_section.html" %}
 {% load i18n %}
+{% load om_comments_tags %}
+{% load comments %}
+{% load voting_tags %}
+{% load newscache_tags %}
 
 {% block title %}| Dettaglio {{ act }}{% endblock title %}
 {% block content_header %}Dettaglio atto{% endblock %}
@@ -9,9 +13,10 @@
     {{ block.super }}
     {% if user.is_staff %}
     <!-- required for TextboxList -->
-    <link rel="stylesheet" href="{{ STATIC_URL }}css/textboxlist.css" />
-    <link type="text/css" href="{{ STATIC_URL }}css/ui-custom-theme/jquery-ui-1.8.16.custom.css" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/textboxlist.css" type="text/css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/ui-custom-theme/jquery-ui-1.8.16.custom.css" type="text/css" />
     {% endif %}
+    <link href="{{ STATIC_URL }}css/voting.css" rel="stylesheet">    
 {% endblock head_css_includes %}
 
 {% block head_js_includes %}
@@ -20,12 +25,13 @@
     {% if user.is_staff %}
     <!-- required for TextboxList -->
     <script src="{{ STATIC_URL }}js/GrowingInput.js" type="text/javascript" charset="utf-8"></script>
-    <script src="{{ STATIC_URL }}js/TextboxList.js" type="text/javascript" charset="utf-8"></script>		
+    <script src="{{ STATIC_URL }}js/TextboxList.js" type="text/javascript" charset="utf-8"></script>        
     <script src="{{ STATIC_URL }}js/TextboxList.Autocomplete.js" type="text/javascript" charset="utf-8"></script>
     <script src="{{ STATIC_URL }}js/TextboxList.Autocomplete.Binary.js" type="text/javascript" charset="utf-8"></script>
     <script src="{{ STATIC_URL }}js/bootstrap-modal.js" type="text/javascript"></script>
     <script src="{{ STATIC_URL }}js/jquery.cteditor.js" type="text/javascript"></script>
     {% endif %}
+    <script src="{{ STATIC_URL }}js/voting.js" type="text/javascript"></script>
 {% endblock head_js_includes %}
 
 {% block footer_js_includes %}
@@ -48,7 +54,7 @@
 </script>
 {% endblock %}
 
-{% block extra_js %} 	
+{% block extra_js %}
 $(document).ready(function() {
     $('#cteditor-launcher').click(function(event){
         event.preventDefault();
@@ -73,7 +79,7 @@ $(document).ready(function() {
     </table>
     <h2>
         <strong>{% block act_type %}TIPO ATTO{% endblock %}</strong>
-        del Consiglio comunale N° 85 del <span class="date">2.2.2012</span></small>
+        del Consiglio comunale N° {{ act.idnum }} del <span class="date">{{ act.presentation_date }}</span></small>
     </h2>
     <h1><strong>{{ act.title }}</strong> ({{ act.idnum }})</h1>
 </hgroup>
@@ -81,13 +87,12 @@ $(document).ready(function() {
 <p class="well">{{ act.text|safe }}</p>
 
 <ul class="nav nav-tabs">
-  <li class="active">
-    <a href="{{ act.get_absolute_url }}">Stato</a>
-  </li>
-  <li><a href="#">Documenti</a></li>
-  <li><a href="#"><b>Voti</b></a></li>
+  <li {% block act_tab_status_class %}class="active"{% endblock %}> <a href="{{ act.get_absolute_url }}">Stato</a></li>
+  <li {% block act_tab_documents_class %}{% endblock %}><a href="{{ act.get_absolute_url }}documents">Documenti</a></li>
+  <li><a href="{{ act.get_absolute_url }}votes"><strong>Voti</strong></a></li>
 </ul>
 
+{% block act_tab_body %}
 <table id="acttable">
     <thead>
         <tr>
@@ -192,30 +197,21 @@ $(document).ready(function() {
         </tr>
     </tbody>
 </table>
+{% endblock act_tab_body %}
 
 <div class="row-fluid">
     
     <section class="span6">
         <h1>Firmatari</h1>
         <ul class="people-list border-right">
+          {% for signer in act.first_signers %}
             <li>
                 <a href="#"><img src="http://placehold.it/50" /></a>
-                <strong><a href="#"><i class="icon-ok"></i> Mario Rossi</a></strong> <br />
-                Partito Democratico
-                <span class="monitoring">Monitorato da 2 cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a>
+                <strong><a href="{{ signer.get_absolute_url }}"><i class="icon-ok"></i> {{ signer.person.full_name }}</a></strong> <br />
+                {{ signer.council_group }}
+                <span class="monitoring">Monitorato da {{ signer.monitoring_users|length }} cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a>
             </li>
-            <li>
-                <a href="#"><img src="http://placehold.it/50" /></a>
-                <strong><a href="#"><i class="icon-ok"></i> Mario Rossi</a></strong> <br />
-                Partito Democratico
-                <span class="monitoring">Monitorato da 2 cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a>
-            </li>
-            <li>
-                <a href="#"><img src="http://placehold.it/50" /></a>
-                <strong><a href="#"><i class="icon-ok"></i> Mario Rossi</a></strong> <br />
-                Partito Democratico
-                <span class="monitoring">Monitorato da 2 cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a>
-            </li>
+          {% endfor %}
         </ul>
         
     </section>
@@ -223,23 +219,14 @@ $(document).ready(function() {
     <section class="span6">
         <h1>Co-firmatari</h1>
         <ul class="people-list">
+          {% for signer in act.co_signers %}
             <li>
-                <a href="#"><img src="http://placehold.it/50" /></a>
-                <strong><a href="#"><i class="icon-ok"></i> Mario Rossi</a></strong> <br />
-                Partito Democratico
+                <a href="{{ signer.get_absolute_url }}"><img src="http://placehold.it/50" /></a>
+                <strong><a href="#"><i class="icon-ok"></i> {{ signer.person.full_name }} </a></strong> <br />
+                {{ signer.council_group }}
+                <span class="monitoring">Monitorato da {{ signer.monitoring_users|length }} cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a>
             </li>
-            <li>
-                <a href="#"><img src="http://placehold.it/50" /></a>
-                <strong><a href="#"><i class="icon-ok"></i> Mario Rossi</a></strong> <br />
-                Italia dei Valori
-                <span class="monitoring">Monitorato da 2 cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a>
-            </li>
-            <li>
-                <a href="#"><img src="http://placehold.it/50" /></a>
-                <strong><a href="#"><i class="icon-ok"></i> Mario Rossi</a></strong> <br />
-                Italia dei Valori
-                <span class="monitoring">Monitorato da 2 cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a>
-            </li>
+          {% endfor %}
         </ul>
         
     </section>
@@ -259,8 +246,8 @@ $(document).ready(function() {
     <dl class="tags-cloud">
         {% for category in act.categories %}
         <dt><a href="{{ category.get_absolute_url }}">{{ category.name }}</a></dt>
-        {% for arg in category.tags %}
-            <dd><a href="{{ arg.get_absolute_url }}">{{ arg }}</a></dd>
+        {% for tag in category.tags %}
+            <dd><a href="{{ tag.get_absolute_url }}">{{ tag }}</a></dd>
         {% endfor %}
         {% endfor %}
     </dl>
@@ -273,24 +260,23 @@ $(document).ready(function() {
             <td><span class="bluebox">{{ act.monitoring_users|length}}</span></td>
             <th class="bg-dark span12">
                 utenti che monitorano l'atto<br />
-                {% for u in act.monitoring_users %}
-                  <a href="#">{{ u }}</a>  
+                {% for user in act.monitoring_users %}
+                  <a href="#">{{ user }}</a>  
                   {% if forloop.last %}<br/>{% else %},{% endif %}
                 {% endfor %}
                 
                 {% if user.is_authenticated %}
                   {% if is_user_monitoring %}
-                  <form action="{% url monitoring-stop %}" method="post">
+                  <form action="{% url om_monitoring_stop %}" method="post">
                     {% csrf_token %}
                     {{ monitoring_form }}
                     <i class="icon-minus-sign"></i>
                     <button type="submit" class="btn btn-info btn-small">Interrompi il monitoraggio</button>
                   </form>
                   {% else %}
-                    <form action="{% url monitoring-start %}" method="post">
+                    <form action="{% url om_monitoring_start %}" method="post">
                       {% csrf_token %}
                       {{ monitoring_form }}
-                      
                       <button type="submit" class="btn btn-info btn-mini"><i class="socialicon-add"></i> Avvia il monitoraggio</button>
                     </form>
                   {% endif %}
@@ -308,57 +294,78 @@ $(document).ready(function() {
 </section>
 
 <section><h3>Vota</h3>
-    <table class="table">
-        <tr>
-            <td><span class="okbox">0</span></td>
-            <th class="bg-dark span6"><i class="socialicon-ok"></i> Sono favorevole</th>
-            <td><span class="kobox">1000</span></td>
-            <th class="bg-dark span6"><i class="socialicon-ko"></i> Sono contrario</th>
-        </tr>
-    </table>
+  {% include "acts/act_vote_block.html" %}
 </section>
 
-<section><h3>Commenti (20)</h3>
+{% get_comment_count for act as comment_count %}
+{% get_comment_list for act as comment_list %}
+{% get_comment_form for act as form %}
+<section><h3>Commenti ({{ comment_count }})</h3>
     <ul class="people-list">
-        <li class="bg-light">
+        {% for comment in comment_list %}
+        <li class="bg-light"> <!-- make control for different comment opinion, like positive comment use .bg-lightgreen -->
             <a href="#"><img src="http://placehold.it/50x50" alt="" /></a>
-            <a href="#">JohnDoe</a> Lorem ipsum dolor sit amet,consectetuer adipiscing elit. Suspendisse ut purus.
-            <span class="monitoring">
-                <i class="socialicon-ko"></i> · 14.06.2011 · <a href="#">Condividi</a> · <a href="#">Mi piace</a> · <i class="socialicon-add"></i> 4
+            <a href="#">{{ comment.user.username|capfirst }}</a> {{ comment.comment }}
+            {% if comment.user == request.user and comment|comment_TTL > 0 %}
+            <div class="comment-delete">
+                {% blocktrans with seconds=comment|comment_TTL %}You still have {{ seconds }} seconds to delete this comment{% endblocktrans %}
+                <form action="{% url comments-delete-own-comment comment.id %}" method="post">
+                    {% csrf_token %}
+                    <input type="submit" name="submit" value="{% trans 'Delete' %}">
+                </form>
+                {% comment %}
+                <!-- A simple anchor tag instead of the form can work
+                     too, but the form ``csrf_token`` provide some
+                     additional security!  Yep, bit of a paranoyd
+                     thing indeed! ;-) -->
+                <a href="{% url comments-delete-own-comment comment.id %}">Remove comment</a>
+                {% endcomment %}
+            </div>
+            {% endif %}
+            
+            <span id="comments-votebox-{{ comment.id }}" class="monitoring">
+                {% if comment.mood = "+" %}<i class="socialicon-ok"></i>{% else %}
+                {% if comment.mood = "-" %}<i class="socialicon-ko"></i>{% else %}
+                {% if comment.mood = "0" %}<i class="socialicon-five"></i>{% endif %}{% endif %}{% endif %}
+                 &middot; {{ comment.submit_date|date:"d M Y" }}  &middot; 
+                <a href="#">Condividi</a>  &middot; 
+                {% score_for_object comment as comment_score %}
+                {% if request.user.is_authenticated %}
+                {% vote_by_user request.user on comment as vote %}
+                <a href="#" id="comments-vote-{{ comment.id }}-up" class='vote{% if vote.vote and vote.vote > 0 %} up-voted{% endif %}'><span class='notlike'>Non mi piace pi&ugrave</span><span class='like'>Mi piace</span></a>  &middot; 
+                {% else %}
+                <a href="#" class="vote"><span class='like'>Mi piace</span></a>  &middot;                 
+                {% endif %}
+                <i class="socialicon-add"></i> <span class="okscore">{{ comment_score.score }}</span>
             </span>
         </li>
-        <li class="bg-lightgreen">
-            <a href="#"><img src="http://placehold.it/50x50" alt="" /></a>
-            <a href="#">JohnDoe</a> Lorem ipsum dolor sit amet,consectetuer adipiscing elit. Suspendisse ut purus.
-            <span class="monitoring">
-                <i class="socialicon-ko"></i> · 14.06.2011 · <a href="#">Condividi</a> · <a href="#">Mi piace</a> · <i class="socialicon-add"></i> 4
-            </span>
-        </li>
-        <li class="bg-light">
-            <a href="#"><img src="http://placehold.it/50x50" alt="" /></a>
-            <a href="#">JohnDoe</a> Lorem ipsum dolor sit amet,consectetuer adipiscing elit. Suspendisse ut purus.
-            <span class="monitoring">
-                <i class="socialicon-ko"></i> · 14.06.2011 · <a href="#">Condividi</a> · <a href="#">Mi piace</a> · <i class="socialicon-add"></i> 4
-            </span>
-        </li>
-        <li class="bg-light">
-            <form action="#" class="form-inline">
-                <i class="socialicon-ok"></i><i class="socialicon-ko"></i><i class="socialicon-five"></i>
-                <input type="text" placeholder="Scrivi un commento..." />
-            </form>
-        </li>
+        {% endfor %}
     </ul>
-    <p class="bg-dark">Leggi tutti (Cronologia) <i class="icon-chevron-down"></i></p>
-
+    {% if request.user.is_authenticated %}
+    <form action="{% comment_form_target %}" method="post" class="form-inline bg-dark">
+        {% csrf_token %}
+        {% for field in form %}
+        {% if field.is_hidden %}{{ field }}{% else %}
+        {% if field.name != "name" and field.name != "email" and field.name != "url" %}{% if field.errors %}{{ field.errors }}{% endif %}{{ field }}{% endif %}{% endif %}
+        {% endfor %}
+        <input type="submit" name="submit" value="{% trans 'Post' %}">
+        
+        <!--<i class="socialicon-ok"></i><i class="socialicon-ko"></i><i class="socialicon-five"></i>-->
+        <!--<input type="text" placeholder="Scrivi un commento..." /> -->               
+    </form>
+    {% endif %}  
+    
+    <p>Leggi tutti (Cronologia) <i class="icon-chevron-down"></i></p>
 </section>
 
 <section>
     <h3>Ultime sugli Atti <img src="{{ STATIC_URL }}img/feed-icon-14x14.png" alt="" /></h3>
 
     <ul class="feed-list">
-        <li><a href="#">Mario Rossi ha commentato il voto</a></li>
-        <li><a href="#">Il voto è inserito nell'ordine del giorno N° 13516</a></li>
-        <li><a href="#">Barcaiuolo, Pellacani, Bellei, Morandi, Santoro (PdL) hanno presentato la mozione...</a></li>
+        {% institutional_news_for_object act as i_news %}
+        {% for n in i_news %}
+            <li>{{ n.created|date:"d/m/Y" }} - {{ n.text }}</li>
+        {% endfor %}
     </ul>
     <p class="bg-dark">Leggi tutti (Cronologia) <i class="icon-chevron-down"></i></p>
 </section>
@@ -367,10 +374,10 @@ $(document).ready(function() {
     <h3>Ultime dalla community <img src="{{ STATIC_URL }}img/feed-icon-14x14.png" alt="" /></h3>
 
     <ul class="feed-list">
-        <li><a href="#">Mario Rossi ha commentato il voto</a></li>
-        <li><a href="#">Il voto è inserito nell'ordine del giorno N° 13516</a></li>
-        <li><a href="#">Barcaiuolo, Pellacani, Bellei, Morandi, Santoro (PdL) hanno presentato la mozione...</a></li>
-
+        {% community_news_for_object act as c_news %}
+        {% for n in c_news %}
+            <li>{{ n.created|date:"d/m/Y" }} - {{ n.text }}</li>
+        {% endfor %}
     </ul>
     <p class="bg-dark">Leggi tutte (Cronologia) <i class="icon-chevron-down"></i></p>
 </section>

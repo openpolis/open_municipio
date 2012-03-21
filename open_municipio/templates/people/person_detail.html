@@ -254,14 +254,14 @@
 
                     {% if user.is_authenticated %}
                         {% if is_user_monitoring %}
-                            <form action="{% url monitoring-stop %}" method="post">
+                            <form action="{% url om_monitoring_stop %}" method="post">
                                 {% csrf_token %}
                                 {{ monitoring_form }}
                                 <i class="icon-minus-sign"></i>
                                 <button type="submit" class="btn btn-info btn-small">Interrompi il monitoraggio</button>
                             </form>
                         {% else %}
-                            <form action="{% url monitoring-start %}" method="post">
+                            <form action="{% url om_monitoring_start %}" method="post">
                                 {% csrf_token %}
                                 {{ monitoring_form }}
 
