@@ -22,7 +22,7 @@ class ActDetailView(DetailView):
     context_object_name = 'act' 
     
     def get_context_data(self, **kwargs):
-        act = self.get_object().downcast()
+        act = self.get_object()
         # Call the base implementation first to get a context
         context = super(ActDetailView, self).get_context_data(**kwargs)
         # mix-in tab-related context

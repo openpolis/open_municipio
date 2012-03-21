@@ -188,10 +188,10 @@ $(document).ready(function() {
 <section><h3>Monitora</h3>
     <table class="">
         <tr>
-            <td><span class="bluebox">{{ act.downcast.monitoring_users|length}}</span></td>
+            <td><span class="bluebox">{{ act.monitoring_users|length}}</span></td>
             <th class="bg-dark span12">
                 utenti che monitorano l'atto<br />
-                {% for user in act.downcast.monitoring_users %}
+                {% for user in act.monitoring_users %}
                   <a href="#">{{ user }}</a>  
                   {% if forloop.last %}<br/>{% else %},{% endif %}
                 {% endfor %}
