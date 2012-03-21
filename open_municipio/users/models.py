@@ -77,6 +77,16 @@ class UserProfile(models.Model):
         return self.related_news_set.all()
 
     @property
+    def public_name(self):
+        """
+        Returns the public user name, based on the uses_nickname flag
+        """
+        if  self.uses_nickname:
+            return self.user.username
+        else:
+            return self.user.get_full_name()
+
+    @property
     def monitored_objects(self):
         """
         Returns objects monitored by this user (as a list).

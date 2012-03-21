@@ -188,11 +188,11 @@ $(document).ready(function() {
 <section><h3>Monitora</h3>
     <table class="">
         <tr>
-            <td><span class="bluebox">{{ act.downcast.monitoring_users|length}}</span></td>
+            <td><span class="bluebox">{{ act.monitoring_users|length}}</span></td>
             <th class="bg-dark span12">
                 utenti che monitorano l'atto<br />
-                {% for user in act.downcast.monitoring_users %}
-                  <a href="#">{{ user }}</a>  
+                {% for user in act.monitoring_users %}
+                  <a href="{{ user.get_absolute_url }}">{{ user.get_profile.public_name }}</a>
                   {% if forloop.last %}<br/>{% else %},{% endif %}
                 {% endfor %}
                 
@@ -295,7 +295,7 @@ $(document).ready(function() {
     <ul class="feed-list">
         {% institutional_news_for_object act as i_news %}
         {% for n in i_news %}
-            <li>{{ n.created|date:"d/m/Y" }} - {{ n.text }}</li>
+            <li>{{ n.created|date:"d-m-Y" }} - {{ n.text|safe }}</li>
         {% endfor %}
     </ul>
     <p class="bg-dark">Leggi tutti (Cronologia) <i class="icon-chevron-down"></i></p>
@@ -307,7 +307,7 @@ $(document).ready(function() {
     <ul class="feed-list">
         {% community_news_for_object act as c_news %}
         {% for n in c_news %}
-            <li>{{ n.created|date:"d/m/Y" }} - {{ n.text }}</li>
+            <li>{{ n.created|date:"d-m-Y" }} - {{ n.text|safe }}</li>
         {% endfor %}
     </ul>
     <p class="bg-dark">Leggi tutte (Cronologia) <i class="icon-chevron-down"></i></p>

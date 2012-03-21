@@ -2,7 +2,7 @@
 {% load i18n %}
 
 {% block title %}Pagina utente{% endblock %}
-{% block content_header %}Pagina di {{ registered_user }}{% endblock %}
+{% block content_header %}Pagina di {{ registered_user.get_profile.public_name }}{% endblock %}
 {% block users_class %}class="active"{% endblock %}
 
 {% block body_class %}citizen{% endblock %}
@@ -14,8 +14,8 @@
 
 {% block content %}
     <header class="clearfix">
-        <a href="{{ person.get_absolute_url }}" class="thumb"><img src="http://placehold.it/100"></a>
-        <h1><strong>{{ registered_user }}</strong></h1>
+        <a href="{{ registered_user.get_absolute_url }}" class="thumb"><img src="http://placehold.it/100"></a>
+        <h1><strong>{{ registered_user.get_profile.public_name }}</strong></h1>
         <small>da Borgo Molino</small>
         <ul class="unstyled">
             <li>Iscritto dal <strong>14.06.2012</strong></li>

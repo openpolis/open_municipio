@@ -18,11 +18,14 @@ class Monitoring(models.Model):
     
     An example of a user monitoring an object::
     
-        a = Act.objects.get(pk=3)
+        a = Act.objects.select_subclasses().get(pk=3)
         u = User.objects.get(username='guglielmo')
         m = Monitoring(content_object=a, user=u)
         m.save()
- 
+
+    It is important, for acts, to be sure that acts be downcasted before being
+    referenced. The object being monitored MUST be the Deliberation,
+    not the superclass (Act) instance.
     """
     
     # What's being monitored
