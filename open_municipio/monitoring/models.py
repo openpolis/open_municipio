@@ -4,7 +4,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from django.contrib.auth.models import User
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_delete
 from django.dispatch import receiver
 from django.template.context import Context
 from open_municipio.newscache.models import News
@@ -66,7 +66,7 @@ def new_monitoring(**kwargs):
     if not kwargs.get('raw', False) and kwargs.get('created', False):
         generating_item = kwargs['instance']
         monitored_object = generating_item.content_object
-        monitoring_user = generating_item.user
+        monitoring_user = generating_item.user.get_profile()
         # define context for textual representation of the news
         ctx = Context({ 'monitored_object': monitored_object, 'monitoring_user': monitoring_user })
 
@@ -84,3 +84,28 @@ def new_monitoring(**kwargs):
             priority=2, news_type=News.NEWS_TYPE.community,
             text=News.get_text_for_news(ctx, 'newscache/user_monitoring.html')
         )
+
+
+@receiver(pre_delete, sender=Monitoring)
+def remove_monitoring(**kwargs):
+    """
+    removes records in newscache, when someone stops monitoring something
+    """
+    generating_item = kwargs['instance']
+    monitored_object = generating_item.content_object
+    monitoring_user = generating_item.user.get_profile()
+
+    # first remove news related to the monitored object
+    News.objects.filter(
+        generating_content_type=ContentType.objects.get_for_model(generating_item),
+        generating_object_pk = generating_item.pk,
+        related_content_type=ContentType.objects.get_for_model(monitored_object),
+        related_object_pk=monitored_object.pk
+    ).delete()
+    # second remove news related to the monitoring user, with priority 2
+    News.objects.filter(
+        generating_content_type=ContentType.objects.get_for_model(generating_item),
+        generating_object_pk = generating_item.pk,
+        related_content_type=ContentType.objects.get_for_model(monitoring_user),
+        related_object_pk=monitoring_user.pk
+    ).delete()

@@ -3,6 +3,7 @@
 {% load om_comments_tags %}
 {% load comments %}
 {% load voting_tags %}
+{% load newscache_tags %}
 
 {% block title %}| Dettaglio {{ act }}{% endblock title %}
 {% block content_header %}Dettaglio atto{% endblock %}
@@ -187,10 +188,10 @@ $(document).ready(function() {
 <section><h3>Monitora</h3>
     <table class="">
         <tr>
-            <td><span class="bluebox">{{ act.monitoring_users|length}}</span></td>
+            <td><span class="bluebox">{{ act.downcast.monitoring_users|length}}</span></td>
             <th class="bg-dark span12">
                 utenti che monitorano l'atto<br />
-                {% for user in act.monitoring_users %}
+                {% for user in act.downcast.monitoring_users %}
                   <a href="#">{{ user }}</a>  
                   {% if forloop.last %}<br/>{% else %},{% endif %}
                 {% endfor %}
@@ -292,9 +293,10 @@ $(document).ready(function() {
     <h3>Ultime sugli Atti <img src="{{ STATIC_URL }}img/feed-icon-14x14.png" alt="" /></h3>
 
     <ul class="feed-list">
-        <li><a href="#">Mario Rossi ha commentato il voto</a></li>
-        <li><a href="#">Il voto è inserito nell'ordine del giorno N° 13516</a></li>
-        <li><a href="#">Barcaiuolo, Pellacani, Bellei, Morandi, Santoro (PdL) hanno presentato la mozione...</a></li>
+        {% institutional_news_for_object act as i_news %}
+        {% for n in i_news %}
+            <li>{{ n.created|date:"d/m/Y" }} - {{ n.text }}</li>
+        {% endfor %}
     </ul>
     <p class="bg-dark">Leggi tutti (Cronologia) <i class="icon-chevron-down"></i></p>
 </section>
@@ -303,10 +305,10 @@ $(document).ready(function() {
     <h3>Ultime dalla community <img src="{{ STATIC_URL }}img/feed-icon-14x14.png" alt="" /></h3>
 
     <ul class="feed-list">
-        <li><a href="#">Mario Rossi ha commentato il voto</a></li>
-        <li><a href="#">Il voto è inserito nell'ordine del giorno N° 13516</a></li>
-        <li><a href="#">Barcaiuolo, Pellacani, Bellei, Morandi, Santoro (PdL) hanno presentato la mozione...</a></li>
-
+        {% community_news_for_object act as c_news %}
+        {% for n in c_news %}
+            <li>{{ n.created|date:"d/m/Y" }} - {{ n.text }}</li>
+        {% endfor %}
     </ul>
     <p class="bg-dark">Leggi tutte (Cronologia) <i class="icon-chevron-down"></i></p>
 </section>

@@ -58,7 +58,7 @@ class UserProfile(models.Model):
     city = models.CharField(_(u'location'), max_length=128)
 
     # manager to handle the list of news that have the act as related object
-    related_news = generic.GenericRelation(News,
+    related_news_set = generic.GenericRelation(News,
                                            content_type_field='related_content_type',
                                            object_id_field='related_object_pk')
 
@@ -68,7 +68,14 @@ class UserProfile(models.Model):
     @models.permalink
     def get_absolute_url(self):
         return 'profiles_profile_detail', (), { 'username': self.user.username }
-    
+
+    @property
+    def related_news(self):
+        """
+        Returns the related_news_set as a list of objects
+        """
+        return self.related_news_set.all()
+
     @property
     def monitored_objects(self):
         """
