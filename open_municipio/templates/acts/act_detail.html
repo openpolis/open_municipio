@@ -70,167 +70,31 @@ $(document).ready(function() {
 
 
 {% block content %}
-<hgroup>
-    <table class="pull-right">
-        <tr>
-            <th><span class="lightgraybox smallbox">Prossima discussione</span></th>
-            <td><span class="graybox smallbox">3.3.2012</span></td>
-        </tr>
-    </table>
-    <h2>
-        <strong>{% block act_type %}TIPO ATTO{% endblock %}</strong>
-        del Consiglio comunale N° {{ act.idnum }} del <span class="date">{{ act.presentation_date }}</span></small>
-    </h2>
-    <h1><strong>{{ act.title }}</strong> ({{ act.idnum }})</h1>
-</hgroup>
+    <hgroup>
+        <table class="pull-right">
+            <tr>
+                <th><span class="lightgraybox smallbox">Prossima discussione</span></th>
+                <td><span class="graybox smallbox">3.3.2012</span></td>
+            </tr>
+        </table>
+        <h2>
+            <strong>{% block act_type %}TIPO ATTO{% endblock %}</strong>
+            del Consiglio comunale N° {{ act.idnum }} del <span class="date">{{ act.presentation_date }}</span></small>
+        </h2>
+        <h1><strong>{{ act.title }}</strong> ({{ act.idnum }})</h1>
+    </hgroup>
 
-<p class="well">{{ act.text|safe }}</p>
+    <p class="well">{{ act.text|safe }}</p>
 
-<ul class="nav nav-tabs">
-  <li {% block act_tab_status_class %}class="active"{% endblock %}> <a href="{{ act.get_absolute_url }}">Stato</a></li>
-  <li {% block act_tab_documents_class %}{% endblock %}><a href="{{ act.get_absolute_url }}documents">Documenti</a></li>
-  <li><a href="{{ act.get_absolute_url }}votes"><strong>Voti</strong></a></li>
-</ul>
+    <ul class="nav nav-tabs">
+      <li {% block act_tab_status_class %}class="active"{% endblock %}> <a href="{{ act.get_absolute_url }}">Stato</a></li>
+      <li {% block act_tab_documents_class %}{% endblock %}><a href="{{ act.get_absolute_url }}documents">Documenti</a></li>
+      <li><a href="{{ act.get_absolute_url }}votes"><strong>Voti</strong></a></li>
+    </ul>
 
-{% block act_tab_body %}
-<table id="acttable">
-    <thead>
-        <tr>
-            <th class="approved span3">
-                <div>Presentazione<span class="arrow"></span></div>
-            </th>
-            <th class="past span3">
-                <div>Discussione in Commissione<span class="arrow"></span></div>
-                {% if not act.deliberation.status_is_final %}
-                    <a href="#transaction_form_commission" class="hide transaction_edit pull-right label label-info">
-                        <i class="icon-edit icon-white"></i> Edit
-                    </a>
-                {% endif %}
-            </th>
-            <th class="span3">
-                <div>Discussione in Consiglio<span class="arrow"></span></div>
-            </th>
-            <th class="span3">
-                <div>Approvazione</div></th>
-        </tr>
-    </thead>
-    {% if perms.acts.can_transition and not act.status_is_final %}
-        <tfoot>
-        <tr>
-            <td></td>
-            <td>
-                {% if act.deliberation.status != act.deliberation.STATUS.commission %}
-                    <div class="modal hide" id="transaction_form_commission">
-                        <form action="">
-                            <div class="modal-header">
-                                <a class="close" data-dismiss="modal">×</a>
-                                <h3>Aggiungi transizione: {{ act.deliberation.STATUS.commission }}</h3>
-                            </div>
-                            <div class="modal-body">
-                                <p>Data : <input type="text" name="data"></p>
-                                <p>Note : <input type="text" name="note"></p>
-                            </div>
-                            <div class="modal-footer">
-                                <input type="hidden" name="act_id" value="{{ act.id }}">
-                                <input type="hidden" name="act_status" value="{{ act.deliberation.STATUS.commission }}" >
-                                <input type="button" value="Close" class="btn">
-                                <input type="submit" value="Salva" class="btn btn-primary">
-                            </div>
-                        </form>
-                    </div>
-
-                {% endif %}
-            </td>
-            <td>
-                {% if act.deliberation.status != act.deliberation.STATUS.council %}
-                    <form action="" class="hide">
-                        <h6>Aggiungi transizione: {{ act.deliberation.STATUS.council }}</h6>
-                        <p>Data : <input type="text" name="data"></p>
-                        <p>Note : <input type="text" name="note"></p>
-                        <input type="hidden" name="act_id" value="{{ act.id }}">
-                        <input type="hidden" name="act_status" value="{{ act.deliberation.STATUS.council }}" >
-                        <input type="submit" value="Salva">
-                    </form>
-                {% endif %}
-            </td>
-            <td>
-                {% if act.deliberation.status != act.deliberation.STATUS.approved and act.deliberation.status != act.deliberation.STATUS.rejected %}
-                <form action=""class="hide">
-                    <h6>Transizione conclusiva</h6>
-                    <p>Data : <input type="text" name="data"></p>
-                    <p>Note : <input type="text" name="note"></p>
-                    <p>Voto : <select name="vote_id">
-                        <option value="">-- seleziona votazione --</option>
-                    </select></p>
-                    <p>
-                        Approvato <input type="radio" name="act_status" value="{{ act.deliberation.STATUS.approved }}">
-                        <br>
-                        Respinto <input type="radio" name="act_status" value="{{ act.deliberation.STATUS.rejected }}">
-                    </p>
-                    <input type="hidden" name="act_id" value="{{ act.id }}">
-                    <input type="submit" value="Salva">
-                </form>
-                {% endif %}
-            </td>
-        </tr>
-        </tfoot>
-    {% endif %}
-    <tbody>
-        <tr>
-            <td>{{ act.presentation_date }}</td>
-            <td>
-                <ul>
-                    <li>
-                        2.2.2012 - Edilizia <br />
-                        <strong>In esame</strong>
-                    </li>
-                    <li>
-                        12.2.2012 - Edilizia <br />
-                        <strong><i class="icon-check"></i> Approvato</strong> <br />
-                        <a href="#">Emendamenti</a> &middot; <a href="#">Voti</a>
-                    </li>
-                    <li><strong><a href="#">Vedi tutte <i class="icon-chevron-down"></i></a></strong></li>
-                </ul>
-            </td>
-            <td></td>
-            <td></td>
-        </tr>
-    </tbody>
-</table>
-{% endblock act_tab_body %}
-
-<div class="row-fluid">
-    
-    <section class="span6">
-        <h1>Firmatari</h1>
-        <ul class="people-list border-right">
-          {% for signer in act.first_signers %}
-            <li>
-                <a href="#"><img src="http://placehold.it/50" /></a>
-                <strong><a href="{{ signer.get_absolute_url }}"><i class="icon-ok"></i> {{ signer.person.full_name }}</a></strong> <br />
-                {{ signer.council_group }}
-                <span class="monitoring">Monitorato da {{ signer.monitoring_users|length }} cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a>
-            </li>
-          {% endfor %}
-        </ul>
-        
-    </section>
-    
-    <section class="span6">
-        <h1>Co-firmatari</h1>
-        <ul class="people-list">
-          {% for signer in act.co_signers %}
-            <li>
-                <a href="{{ signer.get_absolute_url }}"><img src="http://placehold.it/50" /></a>
-                <strong><a href="#"><i class="icon-ok"></i> {{ signer.person.full_name }} </a></strong> <br />
-                {{ signer.council_group }}
-                <span class="monitoring">Monitorato da {{ signer.monitoring_users|length }} cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a>
-            </li>
-          {% endfor %}
-        </ul>
-        
-    </section>
-</div>
+    {% block act_tab_body %}
+        {% include 'acts/act_table_transitions.html' %}
+    {% endblock act_tab_body %}
 
     {% load web_services_tags %}
     {% share act %}
@@ -287,7 +151,7 @@ $(document).ready(function() {
             <td><span class="greenbox">0</span></td>
             <th class="bg-dark span12">
                 politici che monitorano l'atto <br>
-                <span class="monitoring"><a href="#"><i class="socialicon-add"></i> Monitora</a>
+                <span class="monitoring"><a href="#"><i class="socialicon-add"></i> Monitora</a></span>
             </th>
         </tr>
     </table>

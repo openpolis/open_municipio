@@ -11,6 +11,7 @@ from open_municipio.taxonomy.views import AddTagsView, RemoveTagView
 class ActListView(ListView):
     model = Act
     template_name = 'acts/act_list.html'
+    queryset = Act.objects.select_subclasses()
 
 
 class ActEditorView(TemplateView):
