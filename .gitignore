@@ -25,3 +25,5 @@ docs/_build
 docs/ignored
 docs/dev/data_import/README-it.html
 docs/dev/data_import/style.css
+.project
+.pydevproject
