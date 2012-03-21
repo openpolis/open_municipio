@@ -77,6 +77,10 @@ class Category(models.Model):
     def __unicode__(self):
         return u'%s' % self.name
     
+    @permalink
+    def get_absolute_url(self):
+        return 'om_category_detail', (), { 'slug': self.slug }
+    
     def save(self, *args, **kwargs):
         # auto-generate a slug, if needed 
         if not self.pk and not self.slug:
@@ -115,6 +119,17 @@ class Category(models.Model):
         Returns the monitorings associated with this category (as a QuerySet).
         """
         return self.monitoring_set.all()
+    
+    @property
+    def monitoring_users(self):
+        """
+        Returns the list of users monitoring this argument (category).
+        """
+        # FIXME: This method should return a QuerySet for efficiency reasons
+        # (an argument could be monitored by a large number of people;
+        # moreover, often we are only interested in the total number of 
+        # monitoring users, so building a list in memory may result in a waste of resources). 
+        return [m.user for m in self.monitorings]
     
 
 class Location(models.Model):

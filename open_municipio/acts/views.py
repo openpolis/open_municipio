@@ -23,7 +23,6 @@ class ActDetailView(DetailView):
     context_object_name = 'act'
 
     def get_context_data(self, **kwargs):
-
         # the monitored act
         # it's a deliberation, not an act, from the urls
         act = self.get_object()

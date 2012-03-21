@@ -16,10 +16,6 @@ act_dict = {
 
 urlpatterns = patterns('',
     url(r'^$', ActListView.as_view(),  name='om_act_list'),                
-    # generic acts
-    url(r'^(?P<pk>\d+)/$', ActDetailView.as_view(),  name='om_act_detail'),
-    url(r'^(?P<pk>\d+)/(?P<tab>documents)/$', ActDetailView.as_view(),  name='om_act_detail_documents'),
-    url(r'^(?P<pk>\d+)/(?P<tab>emendations)/$', ActDetailView.as_view(),  name='om_act_detail_emendations'),
     # agendas
     url(r'^agendas/(?P<pk>\d+)/$', AgendaDetailView.as_view(),  name='om_agenda_detail'),
     url(r'^agendas/(?P<pk>\d+)/(?P<tab>documents)/$', AgendaDetailView.as_view(),  name='om_agenda_detail_documents'),
