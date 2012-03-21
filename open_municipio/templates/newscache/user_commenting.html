@@ -1,1 +1,1 @@
-Ha commentato {{ commented_object }}
+Ha commentato <a href="{{ commented_object.get_absolute_url }}">{{ commented_object|truncatewords_html:5 }}</a>

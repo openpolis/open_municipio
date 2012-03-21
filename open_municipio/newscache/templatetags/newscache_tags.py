@@ -21,9 +21,9 @@ class NewsForObjectNode(template.Node):
             return ''
 
         if self.news_type:
-            news = object.downcast().related_news_set.filter(news_type=self.news_type)
+            news = object.related_news_set.filter(news_type=self.news_type)
         else:
-            news = object.downcast().related_news_set.all()
+            news = object.related_news_set.all()
 
         context[self.context_var] = news.order_by('-created').reverse()[0:15]
 
