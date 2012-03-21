@@ -67,11 +67,12 @@ $(document).ready(function() {
 <p class="well">{{ act.text|safe }}</p>
 
 <ul class="nav nav-tabs">
-  <li class="active"> <a href="{{ act.get_absolute_url }}">Stato</a></li>
-  <li><a href="{{ act.get_absolute_url }}documents">Documenti</a></li>
+  <li {% block act_tab_status_class %}class="active"{% endblock %}> <a href="{{ act.get_absolute_url }}">Stato</a></li>
+  <li {% block act_tab_documents_class %}{% endblock %}><a href="{{ act.get_absolute_url }}documents">Documenti</a></li>
   <li><a href="{{ act.get_absolute_url }}votes"><strong>Voti</strong></a></li>
 </ul>
 
+{% block act_tab_body %}
 <table id="acttable">
     <thead>
         <tr>
@@ -110,6 +111,7 @@ $(document).ready(function() {
         </tr>
     </tbody>
 </table>
+{% endblock act_tab_body %}
 
 <div class="row-fluid">
     

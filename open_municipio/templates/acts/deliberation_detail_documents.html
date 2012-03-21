@@ -1,1 +1,20 @@
 {% extends "acts/deliberation_detail.html" %}
+
+{% block act_tab_status_class %}{% endblock %}
+{% block act_tab_documents_class %}class="active"{% endblock %}
+
+{% block act_tab_body %}
+
+{% if act.attachments|length == 0 %}
+Questo atto non contiene nessun allegato
+{% else %}
+    <ul>
+    {% for attach in act.attachments %}
+    <li>{{ attach.title }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+  
+{% endblock act_tab_body %}
+
+
