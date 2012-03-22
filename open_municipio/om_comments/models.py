@@ -4,10 +4,10 @@ from django.db import models
 from django.db.models.signals import post_save, pre_delete
 from django.dispatch.dispatcher import receiver
 from django.template.context import Context
-from django.utils.translation import ugettext, ugettext_lazy as _
-import sys
+from django.utils.translation import ugettext_lazy as _
 from open_municipio.newscache.models import News
 import datetime
+import sys
 
 
 class CommentWithMood(Comment):
@@ -33,8 +33,9 @@ class CommentWithMood(Comment):
 @receiver(post_save, sender=CommentWithMood)
 def new_comment(**kwargs):
     """
-    generates a record in newscache, when someone starts monitoring something
+    generates a record in newscache, when someone comments on something
     """
+
     # generates news only if not in raw mode (fixtures)
     # and for objects creation
     if not kwargs.get('raw', False) and kwargs.get('created', False):
