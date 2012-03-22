@@ -12,7 +12,7 @@ from django.views.generic import View
 
 from django.http import HttpResponse
 
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.utils.decorators import method_decorator
 
 class ActListView(ListView):
@@ -143,20 +143,19 @@ class ActRemoveTagView(RemoveTagView):
         return act
 
 ## Bookmark management
-class ActToggleBookmark(View):
-    model = Act
-
-    @method_decorator(login_required)
+class ActToggleBookmarkView(View):
+ 
+    @method_decorator(user_passes_test(lambda u: u.is_staff))
     def dispatch(self, *args, **kwargs):
-        return super(ActToggleBookmark, self).dispatch(*args, **kwargs)
-
-
+        return super(ActToggleBookmarkView, self).dispatch(*args, **kwargs)
+    
+    def get_object(self):
+        act = get_object_or_404(Act, pk=int(self.kwargs.get('pk')))
+        return act
+    
     def post(self, request, *args, **kwargs):
-        if (not request.user.is_staff):
-            raise Exception("Only staff user can access this operation")
-
-        act_id = int(self.kwargs.get('pk'))
-        act = get_object_or_404(Act, pk=act_id)
+        act = self.get_object()
+        # toggle act's key status
         act.is_key = not act.is_key
         act.save()
 

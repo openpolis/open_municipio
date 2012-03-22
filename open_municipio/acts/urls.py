@@ -1,11 +1,11 @@
 from django.conf.urls.defaults import *
 
 from open_municipio.acts.models import Act
-from open_municipio.acts.views import (ActDetailView, ActListView, AgendaDetailView,
+from open_municipio.acts.views import (ActListView, AgendaDetailView,
                                        DeliberationDetailView, InterpellationDetailView,
                                        InterrogationDetailView, MotionDetailView)
 from open_municipio.acts.views import ActAddTagsView, ActRemoveTagView
-from open_municipio.acts.views import ActToggleBookmark
+from open_municipio.acts.views import ActToggleBookmarkView
 from voting.views import vote_on_object
 
 
@@ -48,5 +48,5 @@ urlpatterns += patterns('',
 
 ## Bookmark management
 urlpatterns += patterns('',
-    url(r'(?P<pk>\d+)/togglebookmark/?$',ActToggleBookmark.as_view(),name='om_act_toggle_bookmark'),
+    url(r'(?P<pk>\d+)/bookmark/toggle/$', ActToggleBookmarkView.as_view(), name='om_act_bookmark_toggle'),
 )
