@@ -2,6 +2,7 @@ from django.views.generic import View
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
+from django.utils import simplejson as json
 
 from django.contrib.contenttypes.models import ContentType 
 from django.contrib.auth.decorators import user_passes_test
@@ -27,5 +28,7 @@ class ToggleBookmarkView(View):
         # FIXME: make this more generic! 
         object.is_key = not object.is_key 
         object.save()
+        # TODO: handle error conditions
+        data = {'success': True}
+        return HttpResponse(json.dumps(data), content_type='application/json')
 
-        return HttpResponse();

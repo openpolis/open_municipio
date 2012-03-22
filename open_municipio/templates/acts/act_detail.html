@@ -72,15 +72,17 @@ $(document).ready(function() {
 $(document).ready(function() {
     $("#key-act-star").click(
         function() {
-            $.post("{% url om_bookmark_toggle content_type_id=act.content_type_id object_pk=act.pk %}",  
+            $.post('{% url om_bookmark_toggle content_type_id=act.content_type_id object_pk=act.pk %}',  
                 function(data){
-                    $("#key-act-star").toggleClass("icon-star icon-star-empty");
-                }
-            );
-        } 
-    ); 
-}
-);
+                    if (data.success == true) {
+                        $("#key-act-star").toggleClass("icon-star icon-star-empty");
+                } else {
+		        alert('ERROR: ' + data.error_message);
+	        }
+        }, 'json');
+       return false;
+                });
+        }); 
 {% endif %}
 <!-- end of toggle function -->
 {% endblock extra_js %}
