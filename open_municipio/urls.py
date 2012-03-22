@@ -68,3 +68,7 @@ urlpatterns += patterns('',
     url(r'^users/', include('open_municipio.users.urls')),
 )
 
+# bookmarking
+urlpatterns += patterns('',
+    url(r'^bookmark/', include('open_municipio.bookmarking.urls')),
+)

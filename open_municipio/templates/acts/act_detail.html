@@ -72,7 +72,7 @@ $(document).ready(function() {
 $(document).ready(function() {
     $("#key-act-star").click(
         function() {
-            $.post("{% url om_act_bookmark_toggle pk=act.pk %}",  
+            $.post("{% url om_bookmark_toggle content_type_id=act.content_type_id object_pk=act.pk %}",  
                 function(data){
                     $("#key-act-star").toggleClass("icon-star icon-star-empty");
                 }

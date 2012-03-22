@@ -8,12 +8,6 @@ from open_municipio.monitoring.forms import MonitoringForm
 from open_municipio.taxonomy.models import Tag
 from open_municipio.taxonomy.views import AddTagsView, RemoveTagView
 
-from django.views.generic import View
-
-from django.http import HttpResponse
-
-from django.contrib.auth.decorators import login_required, user_passes_test
-from django.utils.decorators import method_decorator
 
 class ActListView(ListView):
     model = Act
@@ -141,22 +135,3 @@ class ActRemoveTagView(RemoveTagView):
         """
         act = get_object_or_404(Act, pk=self.kwargs.get('act_pk'))
         return act
-
-## Bookmark management
-class ActToggleBookmarkView(View):
- 
-    @method_decorator(user_passes_test(lambda u: u.is_staff))
-    def dispatch(self, *args, **kwargs):
-        return super(ActToggleBookmarkView, self).dispatch(*args, **kwargs)
-    
-    def get_object(self):
-        act = get_object_or_404(Act, pk=int(self.kwargs.get('pk')))
-        return act
-    
-    def post(self, request, *args, **kwargs):
-        act = self.get_object()
-        # toggle act's key status
-        act.is_key = not act.is_key
-        act.save()
-
-        return HttpResponse();
