@@ -3,10 +3,15 @@ from django.utils.translation import ugettext_lazy as _
 from open_municipio.people.models import *
 from open_municipio.votations.admin import VotationsInline
 
-class PersonAdmin(admin.ModelAdmin):
+class ResourceInline(admin.TabularInline):
+    model = Resource
+    extra = 0
+
+class PersonAdminWithResources(admin.ModelAdmin):
     search_fields = ['^first_name', '^last_name']
     prepopulated_fields = {"slug": ("first_name","last_name","birth_date", "birth_location",)}
-  
+    inlines = [ResourceInline, ]
+
 class ChargeAdmin(admin.ModelAdmin):
     raw_id_fields = ('person', )
 
@@ -105,14 +110,12 @@ class OfficeAdmin(BodyAdmin):
     inlines = [AdministrationChargeInline]
 class InstitutionAdmin(BodyAdmin):
     inlines = [InstitutionChargeInline]
-  
-  
 
 class SittingAdmin(admin.ModelAdmin):
     inlines = [VotationsInline]
     
 admin.site.register(Sitting, SittingAdmin)
-admin.site.register(Person, PersonAdmin)
+admin.site.register(Person, PersonAdminWithResources)
 admin.site.register(Group, GroupAdminWithCharges)
 admin.site.register(InstitutionCharge, InstitutionChargeAdmin)
 admin.site.register(CompanyCharge, CompanyChargeAdmin)

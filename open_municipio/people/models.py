@@ -87,8 +87,17 @@ class Person(models.Model):
         # FIXME: This method should return a QuerySet for efficiency reasons
         # (a politician could be monitored by a large number of people;
         # moreover, often we are only interested in the total number of 
-        # monitoring users, so building a list in memory may result in a waste of resources). 
+        # monitoring users, so building a list in memory may result in a waste of resources).
+        # You can use monitoring_set.count() for counting,
+        # this is just a handle to build quickly a users list.
         return [m.user for m in self.monitorings]
+
+    @property
+    def resources(self):
+        """
+        Returns the list of resources associated with this person
+        """
+        return self.resource_set.all()
     
     @property
     def content_type_id(self):
@@ -96,6 +105,21 @@ class Person(models.Model):
         Return id of the content type associated with this instance.
         """
         return ContentType.objects.get_for_model(self).id
+
+class Resource(models.Model):
+    """
+    This class maps the internet resources (mail, web sites, rss, facebook, twitter, )
+    """
+    RES_TYPE = Choices(
+        ('EMAIL', 'email', _('email')),
+        ('URL', 'url', _('url')),
+        ('PHONE', 'phone', _('phone')),
+        ('SNAIL', 'snail', _('snail mail')),
+    )
+    person = models.ForeignKey('Person', verbose_name=_('person'))
+    resource_type = models.CharField(verbose_name=_('type'), max_length=5, choices=RES_TYPE)
+    value = models.CharField(verbose_name=_('value'), max_length=64)
+    description = models.CharField(verbose_name=_('description'), max_length=255, blank=True)
 
 
 class Charge(models.Model):

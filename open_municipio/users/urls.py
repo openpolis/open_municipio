@@ -1,4 +1,5 @@
 from django.conf.urls.defaults import *
+from open_municipio.users.forms import UserProfileForm
 from open_municipio.users.views import UserDetailView
 from django.contrib.auth.models import User
 
@@ -14,6 +15,7 @@ urlpatterns = patterns('',
 urlpatterns += patterns('profiles.views',
     url(r'^profile/edit/$',
        'edit_profile',
+       { 'form_class': UserProfileForm },
        name='profiles_edit_profile'),
     url(r'^profile/(?P<username>\w+)/$',
        'profile_detail',

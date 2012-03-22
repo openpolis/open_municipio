@@ -1,5 +1,53 @@
 [
     {
+        "pk": 1,
+        "model": "auth.group",
+        "fields": {
+            "name": "editors",
+            "permissions": [
+                54,
+                63,
+                84,
+                93,
+                66,
+                72,
+                69,
+                75,
+                80,
+                82,
+                16,
+                47,
+                48,
+                49,
+                96,
+                98,
+                99,
+                100,
+                137,
+                138,
+                139,
+                140,
+                141,
+                142,
+                131,
+                132,
+                133,
+                153,
+                144
+            ]
+        }
+    },
+    {
+        "pk": 2,
+        "model": "auth.group",
+        "fields": {
+            "name": "politicians",
+            "permissions": [
+                54
+            ]
+        }
+    },
+    {
         "pk":1,
         "model":"registration.registrationprofile",
         "fields":{
@@ -37,14 +85,6 @@
             "wants_newsletter":false,
             "user":4,
             "uses_nickname":true
-        }
-    },
-    {
-        "pk":1,
-        "model":"auth.group",
-        "fields":{
-            "name":"editors",
-            "permissions":[]
         }
     },
     {
