@@ -3700,7 +3700,7 @@ address {
   font-size: 12px;
   line-height: 14px;
 }
-#main {
+#main.two_columns {
   padding-top: 15px;
   background-image: -webkit-gradient(linear, left top, right top, color-stop(0, transparent), color-stop(67%, transparent), color-stop(67%, #f6f4f2), color-stop(100%, #f6f4f2));
   background-image: -webkit-linear-gradient(left, transparent, transparent 67%, #f6f4f2 67%, #f6f4f2 100%);

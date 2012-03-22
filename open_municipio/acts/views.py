@@ -5,7 +5,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from open_municipio.acts.models import Act, Agenda, Deliberation, Interpellation, Interrogation, Motion
 from open_municipio.acts.forms import TagAddForm
 from open_municipio.monitoring.forms import MonitoringForm
-from open_municipio.taxonomy.models import Tag
+from open_municipio.taxonomy.models import Tag, Category
 from open_municipio.taxonomy.views import AddTagsView, RemoveTagView
 
 class ActListView(ListView):
@@ -52,7 +52,10 @@ class ActDetailView(DetailView):
                     context['is_user_monitoring'] = True
         except ObjectDoesNotExist:
             context['is_user_monitoring'] = False
-        
+
+        # all categories
+        context['categories'] = Category.objects.all()
+
         # all arguments
         context['tags'] = Tag.objects.all()
 
