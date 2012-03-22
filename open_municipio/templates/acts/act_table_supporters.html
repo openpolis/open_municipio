@@ -1,0 +1,40 @@
+<div class="row-fluid">
+
+    <section class="span6">
+        <h1>{{ supporter_title|default:"Firmatari" }}</h1>
+        <ul class="people-list border-right">
+            {% for supporter in act_supporters %}
+                <li>
+                    <a href="#"><img src="http://placehold.it/50" /></a>
+                    <strong><a href="{{ supporter.get_absolute_url }}"><i class="icon-ok"></i> {{ supporter.person.full_name }}</a></strong> <br />
+                    {{ supporter.council_group }}
+                    <span class="monitoring">
+                        Monitorato da {{ supporter.monitoring_users|length }} cittadini -
+                        <a href="#"><i class="socialicon-add"></i> Monitora</a>
+                    </span>
+                </li>
+            {% endfor %}
+        </ul>
+
+    </section>
+
+    <section class="span6">
+        {% if act_cosupporters %}
+        <h1>{{ cosupporter_title|default:"Co-firmatari" }}</h1>
+        <ul class="people-list">
+            {% for supporter in act_cosupporters %}
+                <li>
+                    <a href="#"><img src="http://placehold.it/50" /></a>
+                    <strong><a href="{{ supporter.get_absolute_url }}"><i class="icon-ok"></i> {{ supporter.person.full_name }}</a></strong> <br />
+                    {{ supporter.council_group }}
+                    <span class="monitoring">
+                        Monitorato da {{ supporter.monitoring_users|length }} cittadini -
+                        <a href="#"><i class="socialicon-add"></i> Monitora</a>
+                    </span>
+                </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+    </section>
+</div>

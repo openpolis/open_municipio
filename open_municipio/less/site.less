@@ -20,48 +20,15 @@ address { font-size: 12px; line-height: 14px; }
 
 #main {
     padding-top: 15px;
-    background-image: -webkit-gradient(
-        linear,
-        left top,
-        right top,
-        color-stop(0, transparent),
-        color-stop(67%, transparent),
-        color-stop(67%, #f6f4f2),
-        color-stop(100%, #f6f4f2)
-    );
-    background-image: -webkit-linear-gradient(
-        left,
-        transparent,
-        transparent 67%,
-        #f6f4f2 67%,
-        #f6f4f2 100%
-    );
-    background-image: -moz-linear-gradient(
-        left,
-        transparent,
-        transparent 67%,
-        #f6f4f2 67%,
-        #f6f4f2 100%
-    );
-    background-image: -ms-linear-gradient(
-        left,
-        transparent,
-        transparent 67%,
-        #f6f4f2 67%,
-        #f6f4f2 100%
-    );
-    background-image: -o-linear-gradient(
-        left,
-        transparent,
-        transparent 67%,
-        #f6f4f2 67%,
-        #f6f4f2 100%
-    );
-
+    background-image: -webkit-gradient(linear,left top,right top,color-stop(0, transparent),color-stop(67%, transparent),color-stop(67%, #f6f4f2),color-stop(100%, #f6f4f2));
+    background-image: -webkit-linear-gradient(left,transparent,transparent 67%,#f6f4f2 67%,#f6f4f2 100%);
+    background-image: -moz-linear-gradient(left, transparent, transparent 67%, #f6f4f2 67%, #f6f4f2 100% );
+    background-image: -ms-linear-gradient(left,transparent, transparent 67%, #f6f4f2 67%, #f6f4f2 100%);
+    background-image: -o-linear-gradient( left, transparent, transparent 67%, #f6f4f2 67%, #f6f4f2 100% );
 }
 #content { border-bottom: 1px dotted @grayLight; padding-bottom: 10px; }
 #content > * { margin-bottom: 15px; }
-//#sidebar { background-color: @sidebarBackground; }
+
 #wrapper > header { background-color: #c7beb7; }
 body.politician {
     #wrapper > header {
@@ -407,6 +374,7 @@ table#acttable {
             background-color: @darkBackground;
             vertical-align: top;
             border-right: 1px solid @white;
+            min-height: 35px;
             .arrow {
                 position: absolute;
                 top:0; right:-18px;
@@ -416,13 +384,13 @@ table#acttable {
                 background-image: url(../img/act-arrow.png);
             }
 
-            &.approved {
+            &.current {
                 background-color: @greenLight;
 
                 .arrow { background-image: url(../img/act-arrow-approved.png); }
             }
 
-            &.current {
+            &.past {
                 background-color: @greenLighter;
                 .arrow { background-image: url(../img/act-arrow-current.png); }
             }

@@ -140,10 +140,10 @@ REGISTRATION_AUTO_LOGIN = True
 # use app shortcut (app.class)
 AUTH_PROFILE_MODULE = 'users.UserProfile'
 
-# web service configuration
+# external web services configuration
 WEB_SERVICES = {
     'google_analytics': { 'code' : 'UA-XXXXXX-YY' },
-    'facebook' :        { 'code' : '' },
+    'facebook' :        { 'code' : '1234567890' },
     'twitter' : {},
     'google_plus': {},
 }

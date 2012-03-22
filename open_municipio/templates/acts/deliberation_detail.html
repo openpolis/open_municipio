@@ -1,2 +1,8 @@
 {% extends "acts/act_detail.html" %}
+
 {% block act_type %}Proposta di delibera{% endblock %}
+
+{% block act_tab_body %}
+    {{ block.super }}
+    {% include 'acts/act_table_supporters.html' with act_supporters=act.first_signers act_cosupporters=act.co_signers %}
+{% endblock %}

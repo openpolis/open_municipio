@@ -1,28 +1,22 @@
-<style type="text/css">
-    .share-button-bar > div {
-        float:left;
-    }
-</style>
-
+{% if user.is_authenticated %}
 <div class="share-button-bar clearfix">
-    <a href="#" class="label"><i class="icon-plus icon-white"></i> Condividi {{ shares|length }}</a>
+    <a href="#" class="label"><i class="icon-plus icon-white"></i> Condividi {{ sharing_count }}</a>
 
-        <div class="share-facebook"></div>
-        <div class="share-twitter"></div>
-        <div class="share-google_plus"></div>
+        <div class="share-facebook pull-left"></div>
+        <div class="share-twitter pull-left"></div>
+        <div class="share-google_plus pull-left"></div>
+    <div id="share-result"></div>
 </div>
 
 <script type="text/javascript">
-    //asyncScripts.push('{{ STATIC_URL }}js/jquery.socializer.js');
-
 
     var saveEvent = function(service, action) {
-        $.post('{{ server_url }}', {
+        $.post('{{ sharing_save_url }}', {
             'service' : service,
             'action' : action
-        }, function(data) {
-            console.log(data);
-        })
+        }{% if DEBUG %}, function(data) {
+            console.log(data.result, data.message);
+        }{% endif %});
     }
     require(["ajax_csrf","jquery.socializer"], function() {
 
@@ -37,11 +31,11 @@
                     action: 'recommend',
                     lang: 'it_IT',
                     onlike: function(){
-                        saveEvent('facebook', 'like');
+                        saveEvent('facebook', 'add');
                         _gaq.push(['_trackEvent', 'facebook', 'like']);
                     },
                     onunlike: function(){
-                        saveEvent('facebook', 'unlike');
+                        saveEvent('facebook', 'remove');
                         _gaq.push(['_trackEvent', 'facebook', 'unlike']);
                     }
                 });
@@ -49,17 +43,18 @@
                     googleanalytics: true,
                     lang: 'it',
                     layout: 'horizontal',
-                    ontweet: function() { saveEvent('twitter', 'tweet'); }
+                    ontweet: function() { saveEvent('twitter', 'add'); }
                 });
                 $('.share-google_plus').gplusone({
                     size: 'medium',										//small|medium|standard|tall
                     lang: 'it-IT',											//en-US|en-GB|de|es|fr|...
                     googleanalytics:true,
                     googleanalytics_obj:'_gaq',
-                    onlike: "saveEvent('google_plus', 'plussed');",
-                    onunlike: "saveEvent('google_plus', 'unplussed');"
+                    onlike: "saveEvent('google_plus', 'add');",
+                    onunlike: "saveEvent('google_plus', 'remove');"
                 });
             });
         });
     });
 </script>
+{% endif %}

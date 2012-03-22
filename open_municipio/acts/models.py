@@ -35,8 +35,8 @@ class Act(TimeStampedModel):
   
     It is a ``TimeStampedModel``, so it tracks creation and modification timestamps for each record.
 
-    The ``related_news`` attribute can be used  to fetch
-    news related to it (or its subclasses) from ``newscache.News``
+    The ``related_news`` attribute can be used  to fetch news related to it (or its subclasses) 
+    from ``newscache.News``.
 
     Inheritance is done through multi-table inheritance, since browsing the whole set of acts may be useful.
     The default manager is the ``InheritanceManager`` (from package ``django-model-utils``_),
@@ -52,8 +52,8 @@ class Act(TimeStampedModel):
     adj_title = models.CharField(_('adjoint title'), max_length=255, blank=True, help_text=_("An adjoint title, added to further explain an otherwise cryptic title"))
     presentation_date = models.DateField(_('presentation date'), null=True, help_text=_("Date of presentation, as stated in the act"))
     text = models.TextField(_('text'), blank=True)
-    presenter_set = models.ManyToManyField(InstitutionCharge, blank=True, null=True, through='ActSupport', related_name='presenter_act_set', verbose_name=_('presenters'))
-    recipient_set = models.ManyToManyField(InstitutionCharge, blank=True, null=True, related_name='recipient_act_set', verbose_name=_('recipients'))
+    presenter_set = models.ManyToManyField(InstitutionCharge, blank=True, null=True, through='ActSupport', related_name='presented_act_set', verbose_name=_('presenters'))
+    recipient_set = models.ManyToManyField(InstitutionCharge, blank=True, null=True, related_name='received_act_set', verbose_name=_('recipients'))
     emitting_institution = models.ForeignKey(Institution, related_name='emitted_act_set', verbose_name=_('emitting institution'))
     category_set = models.ManyToManyField(Category, verbose_name=_('categories'), blank=True, null=True)
     location_set = models.ManyToManyField(Location, verbose_name=_('locations'), blank=True, null=True)
@@ -85,6 +85,31 @@ class Act(TimeStampedModel):
     def get_absolute_url(self):
         return 'om_act_detail', (), {'pk': str(self.pk)}
     
+    def downcast(self):
+        """
+        Returns the "downcasted"[*]_ version of this model instance.
+        
+        .. [*]: In a multi-table model inheritance scenario, the term "downcasting"
+                refers to the process to retrieve the child model instance given the 
+                parent model instance.
+        """
+        # FIXME: this check is redundant, IMO (seldon)
+        # if this method is called from a "concrete" instance
+        # the lookup machinery either will return the instance itself
+        # or a downcasted version of it (if any), which seems to me 
+        # the right behaviour for a ``downcast()`` method.
+        if hasattr(self, 'act_ptr'): # method is being called from a subclass' instance
+            return self
+        cls = self.__class__ # ``self`` is an instance of the parent model
+        for r in cls._meta.get_all_related_objects():
+            if not issubclass(r.model, cls) or\
+               not isinstance(r.field, models.OneToOneField):
+                continue
+            try:
+                return getattr(self, r.get_accessor_name())
+            except models.ObjectDoesNotExist:
+                continue
+    
     @property
     def attachments(self):
         return self.attachment_set.all()
@@ -101,6 +126,15 @@ class Act(TimeStampedModel):
     def recipients(self):
         return self.recipient_set.all()
     
+    @property
+    def first_signers(self):
+        return InstitutionCharge.objects.filter(actsupport__act__id = self.pk,
+                                                actsupport__support_type=ActSupport.SUPPORT_TYPE.first_signer)                                            
+    
+    @property
+    def co_signers(self):
+        return self.presenter_set.filter(actsupport__support_type=ActSupport.SUPPORT_TYPE.co_signer)
+        
     @property
     def tags(self):
         return self.tag_set.all()
@@ -125,6 +159,10 @@ class Act(TimeStampedModel):
         """
         Returns the list of users monitoring this act.
         """
+        # FIXME: This method should return a QuerySet for efficiency reasons
+        # (an act could be monitored by a large number of people;
+        # moreover, often we are only interested in the total number of 
+        # monitoring users, so building a list in memory may result in a waste of resources). 
         return [m.user for m in self.monitorings]
         
     @property
@@ -135,24 +173,18 @@ class Act(TimeStampedModel):
         return ContentType.objects.get_for_model(self).id
 
     def status(self):
-        """returns status of the subclass instance"""
+        """
+        Returns the current status for the downcasted version of this act instance.
+        
+        Note: it seems that this method cannot be made into a property,
+        since doing that raises a ``AttributeError: can't set attribute``
+        exception during Django initialization. 
+        """
         return self.downcast().status
-
-    def downcast(self):
-        """
-        return the instance of the subclassed object
-        """
-        if hasattr(self, 'act_ptr'):
-            return self
-        cls = self.__class__ #inst is an instance of the base model
-        for r in cls._meta.get_all_related_objects():
-            if not issubclass(r.model, cls) or\
-               not isinstance(r.field, models.OneToOneField):
-                continue
-            try:
-                return getattr(self, r.get_accessor_name())
-            except models.ObjectDoesNotExist:
-                continue
+        
+    @property
+    def related_news(self):
+        return self.related_news_set.all()
 
       
 class ActSection(models.Model):
@@ -382,7 +414,7 @@ class Document(TimeStampedModel):
     * an uploaded internal PDF file
     
     It is possible for a single document to have more than one type of content:
-    for example, a textual and a pdf local versions, or remote links ...
+    for example, a textual and a PDF local versions, or remote links...
     """
     document_date = models.DateField(null=True, blank=True)
     text = models.TextField(blank=True)
@@ -403,14 +435,14 @@ class Attach(Document):
     """
     title = models.CharField(max_length=255)
     act = models.ForeignKey(Act, related_name='attachment_set')
-    
-    def __unicode__(self):
-        return u'%s' % self.title
-    
+
     class Meta(Document.Meta):
         verbose_name = _('attach')
         verbose_name_plural = _('attaches')
-
+    
+    def __unicode__(self):
+        return u'%s' % self.title
+  
 
 class Minute(Document):
     """

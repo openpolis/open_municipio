@@ -20,9 +20,6 @@
 
 from django.conf.urls.defaults import *
 from django.contrib import admin
-from voting.views import vote_on_object
-from open_municipio.acts.models import Act
-from open_municipio.om_comments.models import CommentWithMood
 from open_municipio.inline_edit.views import InlineEditView
 admin.autodiscover()
 
@@ -44,7 +41,9 @@ urlpatterns = patterns('',
     (r'^companies/', include('open_municipio.people.urls.companies')), 
     (r'^acts/', include('open_municipio.acts.urls')),
     (r'^voting/', include('open_municipio.votations.urls')),
-    (r'^tag/', include('open_municipio.taxonomy.urls')),
+    (r'^topics/', include('open_municipio.taxonomy.urls.topics')),
+    (r'^categories/', include('open_municipio.taxonomy.urls.categories')),
+    (r'^tags/', include('open_municipio.taxonomy.urls.tags')),
     (r'^webservices/', include('open_municipio.web_services.urls')),
 )
 

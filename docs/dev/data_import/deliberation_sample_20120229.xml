@@ -5,7 +5,10 @@
     
     Attributi:
     id - identifica l'atto internamente, 
-         secondo le specifiche del sistema informativo che lo genera.
+         secondo le specifiche del sistema informativo che lo genera
+         nel caso di delibere è l'id della proposta
+    
+    final_id - identifica l'atto quando è diventato delibera
     initiative - è il tipo di iniziativa se di consiglio, di giunta o popolare
     approval_date - data di approvazione (se approvata)
     execution_date - data in cui la delibera diventa esecutiva
@@ -15,7 +18,7 @@
     xmlns:om="http://www.openmunicipio.it"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="DataImport.xsd" 
-    initiative="council_member" id="act-001">
+    initiative="council_member" id="2012/D/001" final_id="001">
     
     <!-- Titolo e testo ufficiale dell'atto -->
     <om:Content title="Lorem ipsum dolor sit amet">

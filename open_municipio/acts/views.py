@@ -11,6 +11,7 @@ from open_municipio.taxonomy.views import AddTagsView, RemoveTagView
 class ActListView(ListView):
     model = Act
     template_name = 'acts/act_list.html'
+    queryset = Act.objects.select_subclasses()
 
 
 class ActEditorView(TemplateView):
@@ -19,11 +20,14 @@ class ActEditorView(TemplateView):
 
 class ActDetailView(DetailView):
     model = Act
-    context_object_name = 'act' 
-    
+    context_object_name = 'act'
+
     def get_context_data(self, **kwargs):
+        # the monitored act
+        # it's a deliberation, not an act, from the urls
         act = self.get_object()
-        # Call the base implementation first to get a context
+
+        # call the base implementation first to get a context
         context = super(ActDetailView, self).get_context_data(**kwargs)
         # mix-in tab-related context
         self.tab = self.kwargs.get('tab', 'default')
@@ -42,7 +46,7 @@ class ActDetailView(DetailView):
                 # add a monitoring form, to context,
                 # to switch monitoring on and off
                 context['monitoring_form'] = MonitoringForm(data = {
-                    'content_type_id': act.content_type_id, 
+                    'content_type_id': act.content_type_id,
                     'object_pk': act.id,
                     'user_id': self.request.user.id
                 })

@@ -1,7 +1,7 @@
 from django.template.context import RequestContext
 from os import sys
 
-from django.http import Http404
+from django.http import Http404, HttpResponseRedirect
 from django.views.generic import TemplateView, DetailView
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, render_to_response
@@ -164,3 +164,7 @@ def person_list(request):
     return render_to_response('people/person_list.html',{
         'municipality': municipality
     },context_instance=RequestContext(request) )
+
+
+def show_mayor(request):
+    return HttpResponseRedirect( municipality.mayor.as_charge.person.get_absolute_url() )

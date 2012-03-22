@@ -1,8 +1,9 @@
 {% extends "base_two_columns.html" %}
 {% load i18n %}
+{% load newscache_tags %}
 
 {% block title %}Pagina utente{% endblock %}
-{% block content_header %}Pagina di {{ registered_user }}{% endblock %}
+{% block content_header %}Pagina di {{ registered_user.get_profile.public_name }}{% endblock %}
 {% block users_class %}class="active"{% endblock %}
 
 {% block body_class %}citizen{% endblock %}
@@ -14,8 +15,8 @@
 
 {% block content %}
     <header class="clearfix">
-        <a href="{{ person.get_absolute_url }}" class="thumb"><img src="http://placehold.it/100"></a>
-        <h1><strong>{{ registered_user }}</strong></h1>
+        <a href="{{ registered_user.get_absolute_url }}" class="thumb"><img src="http://placehold.it/100"></a>
+        <h1><strong>{{ registered_user.get_profile.public_name }}</strong></h1>
         <small>da Borgo Molino</small>
         <ul class="unstyled">
             <li>Iscritto dal <strong>14.06.2012</strong></li>
@@ -106,12 +107,11 @@
             </tr>
             </tfoot>
             <tbody>
-            {% for monitoring in  registered_user.monitorings %}
+            {% for monitored in  registered_user.get_profile.monitored_objects %}
                 <tr>
-                    <td>{{ monitoring.created_at }}</td>
+                    <td>{{ monitored.created|date:"d.m.Y" }}</td>
                     <td>
-                        <a href="{{monitoring.get_content_object_url}}"><strong>{{ monitoring.content_object }}</strong> ({{ monitoring.content_object.idnum }})</a><br>
-                        <strong>Delibera di consiglio</strong> del Consiglio Comunale N°<strong>85</strong> del <strong>2.2.2012</strong>
+                        <a href="{{monitored.get_absolute_url}}"><strong>{{ monitored }}</strong> ({{ monitored.idnum }})</a><br>
                     </td>
                 </tr>
             {% endfor %}
@@ -157,9 +157,10 @@
         <h3>Ultime su {{ registered_user }} <img src="{{ STATIC_URL }}img/feed-icon-14x14.png" alt="" /></h3>
 
         <ul class="feed-list">
-            <li><a href="#">Mario Rossi ha commentato il voto</a></li>
-            <li><a href="#">Il voto è inserito nell'ordine del giorno N° 13516</a></li>
-            <li><a href="#">Barcaiuolo, Pellacani, Bellei, Morandi, Santoro (PdL) hanno presentato la mozione...</a></li>
+            {% news_for_object registered_user.get_profile as i_news %}
+            {% for n in i_news %}
+                <li>{{ n.created|date:"d-m-Y" }} - {{ n.text|safe }}</li>
+            {% endfor %}
         </ul>
         <p class="bg-dark">Leggi tutte <i class="icon-chevron-down"></i></p>
     </section>

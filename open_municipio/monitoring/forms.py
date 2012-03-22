@@ -1,8 +1,5 @@
 from django import forms
 from django.forms import ModelForm
-from django.contrib.contenttypes.models import ContentType
-from django.contrib.auth.models import User
-from django.core.exceptions import ObjectDoesNotExist
 
 from open_municipio.monitoring.models import Monitoring
 
