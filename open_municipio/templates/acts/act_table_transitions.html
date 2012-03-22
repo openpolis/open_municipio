@@ -102,3 +102,21 @@
     </tr>
     </tbody>
 </table>
+
+<script type="text/javascript">
+    include(["bootstrap-modal"], function() {
+        // on scripts loaded...
+        $('a.transaction_edit').each(function() {
+            var link = $(this);
+            link.click(function(e) {
+                e.preventDefault();
+                console.log(link.attr('href'));
+                $(link.attr('href')).modal();
+            });
+            link.parent().hover(
+                    function() { link.fadeIn(); },
+                    function() { link.fadeOut(); }
+            );
+        });
+    });
+</script>
