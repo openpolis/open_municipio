@@ -113,8 +113,29 @@ City Government
    the current time. Past records (e.g. expired charges, old groups' composition, etc.) are automatically filtered out.
 
 
+Acts
+====
 
+Featured (aka *key*) acts
+-------------------------
 
+To retrieve a QuerySet of key acts, ordered by ``Act.presentation_date``, use the ``featured`` manager:
+
+.. sourcecode:: python
+   
+   Act.featured.all()
+
+Votations
+=========
+
+Key votations
+-------------
+
+To retrieve a QuerySet of key votations, ordered by ``Votation.sitting.date``, use the ``key`` manager:
+
+.. sourcecode:: python
+   
+   Votation.key.all()
 
 
 

@@ -11,7 +11,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 from model_utils import Choices
-from model_utils.managers import InheritanceManager
+from model_utils.managers import InheritanceManager, QueryManager
 from model_utils.models import TimeStampedModel
 from model_utils.fields import StatusField
 
@@ -61,6 +61,8 @@ class Act(TimeStampedModel):
     is_key = models.BooleanField(default=False, help_text=_("Specify whether this act should be featured"))
 
     objects = InheritanceManager()
+    # use this manager to retrieve only key acts
+    featured = QueryManager(is_key=True).order_by('-presentation_date') 
     
     tag_set = TaggableManager(through=TaggedAct, blank=True)
 
