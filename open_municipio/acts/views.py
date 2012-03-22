@@ -10,10 +10,17 @@ from open_municipio.taxonomy.views import AddTagsView, RemoveTagView
 
 
 class ActListView(ListView):
-    model = Act
     template_name = 'acts/act_list.html'
-    queryset = Act.objects.select_subclasses()
-
+    queryset = Act.objects.select_subclasses().order_by('-presentation_date')
+    context_object_name = 'acts'
+    
+    def get_context_data(self, **kwargs):
+        # call the base implementation first to get a context
+        context = super(ActListView, self).get_context_data(**kwargs)
+        context['key_acts'] = Act.featured.all().order_by('-presentation_date')
+        
+        return context
+    
 
 class ActEditorView(TemplateView):
     pass
