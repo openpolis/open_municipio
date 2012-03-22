@@ -114,16 +114,21 @@ INSTALLED_APPS = (
     'south',
     'taggit',
     'voting',
+    'open_municipio.events',
     'open_municipio.inline_edit',
     'open_municipio.autocomplete',
     'open_municipio.om',
     'open_municipio.om_comments',
+    'open_municipio.om_voting',
     'open_municipio.acts',
     'open_municipio.people',
     'open_municipio.taxonomy',
     'open_municipio.votations',
     'open_municipio.users',
     'open_municipio.monitoring',
+    'open_municipio.web_services',
+    'open_municipio.newscache',
+
 )
 
 COMMENTS_APP = 'open_municipio.om_comments'
@@ -134,3 +139,11 @@ REGISTRATION_AUTO_LOGIN = True
 
 # use app shortcut (app.class)
 AUTH_PROFILE_MODULE = 'users.UserProfile'
+
+# external web services configuration
+WEB_SERVICES = {
+    'google_analytics': { 'code' : 'UA-XXXXXX-YY' },
+    'facebook' :        { 'code' : '1234567890' },
+    'twitter' : {},
+    'google_plus': {},
+}

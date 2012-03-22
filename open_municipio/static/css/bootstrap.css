@@ -2763,7 +2763,7 @@ input[type="submit"].btn.small {
 .navbar-search .search-query :-moz-placeholder {
   color: #eeeeee;
 }
-.navbar-search .search-query ::-webkit-input-placeholder {
+.navbar-search .search-query::-webkit-input-placeholder {
   color: #eeeeee;
 }
 .navbar-search .search-query:hover {
@@ -4368,6 +4368,7 @@ table#acttable thead th {
   background-color: #e1d9d3;
   vertical-align: top;
   border-right: 1px solid #ffffff;
+  min-height: 35px;
 }
 table#acttable thead th .arrow {
   position: absolute;
@@ -4378,16 +4379,16 @@ table#acttable thead th .arrow {
   z-index: 999;
   background-image: url(../img/act-arrow.png);
 }
-table#acttable thead th.approved {
+table#acttable thead th.current {
   background-color: #9bce7e;
 }
-table#acttable thead th.approved .arrow {
+table#acttable thead th.current .arrow {
   background-image: url(../img/act-arrow-approved.png);
 }
-table#acttable thead th.current {
+table#acttable thead th.past {
   background-color: #cde6be;
 }
-table#acttable thead th.current .arrow {
+table#acttable thead th.past .arrow {
   background-image: url(../img/act-arrow-current.png);
 }
 table#acttable thead th > div {

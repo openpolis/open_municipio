@@ -1,9 +1,10 @@
 from django.conf.urls.defaults import *
-from django.views.generic import DetailView
+from open_municipio.users.views import UserDetailView
 from django.contrib.auth.models import User
 
 urlpatterns = patterns('',
-    url(r'^(?P<pk>\d+)/$', DetailView.as_view(
+    url(r'^(?P<username>\w+)/$',
+        UserDetailView.as_view(
          model=User,
          context_object_name='registered_user',
          template_name='users/user_detail.html',

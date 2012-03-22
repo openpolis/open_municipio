@@ -3,9 +3,12 @@
     Una CouncilDeliberation è una proposta di deliberazione,
     che quando è approvata diventa delibera (o deliberazione).
     
-    Attributi:
+   Attributi:
     id - identifica l'atto internamente, 
-         secondo le specifiche del sistema informativo che lo genera.
+         secondo le specifiche del sistema informativo che lo genera
+         nel caso di delibere è l'id della proposta
+    
+    final_id - identifica l'atto quando è diventato delibera
     initiative - è il tipo di iniziativa se di consiglio, di giunta o popolare
     approval_date - data di approvazione (se approvata)
     execution_date - data in cui la delibera diventa esecutiva
@@ -15,7 +18,7 @@
     xmlns:om="http://www.openmunicipio.it"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="DataImport.xsd" 
-    initiative="council_member" id="act-001" approval_date="01-03-2012" execution_date="04-05-2012">
+    initiative="council_member" id="2012/D/002" approval_date="01-03-2012" execution_date="04-05-2012">
     
     <!-- Titolo e testo ufficiale dell'atto -->
     <om:Content title="Lorem ipsum dolor sit amet">

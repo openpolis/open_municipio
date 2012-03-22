@@ -1,20 +1,28 @@
 # -*- coding: utf-8 -*-
+from django.conf import settings
+from django.contrib.sites.models import Site
 from django.db import models
+from django.template.context import Context
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
 
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
 from model_utils import Choices
 from model_utils.managers import InheritanceManager
 from model_utils.models import TimeStampedModel
-from model_utils.fields import StatusField  
+from model_utils.fields import StatusField
 
 from taggit.managers import TaggableManager
+from open_municipio.newscache.models import News
 
 from open_municipio.people.models import Institution, InstitutionCharge, Sitting
-
 from open_municipio.taxonomy.models import TaggedAct, Category, Location
 from open_municipio.monitoring.models import Monitoring
+
+
 
 #
 # Acts
@@ -26,7 +34,10 @@ class Act(TimeStampedModel):
     deliberations, interrogations, interpellations, motions, agendas and emendations.
   
     It is a ``TimeStampedModel``, so it tracks creation and modification timestamps for each record.
-   
+
+    The ``related_news`` attribute can be used  to fetch news related to it (or its subclasses) 
+    from ``newscache.News``.
+
     Inheritance is done through multi-table inheritance, since browsing the whole set of acts may be useful.
     The default manager is the ``InheritanceManager`` (from package ``django-model-utils``_),
     that enables the ``select_subclasses()`` method, allowing the retrieval of subclasses, when needed.
@@ -35,29 +46,35 @@ class Act(TimeStampedModel):
     .. _django-model-utils: https://bitbucket.org/carljm/django-model-utils/src
 
     """
+
     idnum = models.CharField(max_length=64, blank=True, help_text=_("A string representing the identification number or sequence, used internally by the administration."))
     title = models.CharField(_('title'), max_length=255, blank=True)
     adj_title = models.CharField(_('adjoint title'), max_length=255, blank=True, help_text=_("An adjoint title, added to further explain an otherwise cryptic title"))
     presentation_date = models.DateField(_('presentation date'), null=True, help_text=_("Date of presentation, as stated in the act"))
     text = models.TextField(_('text'), blank=True)
-    presenter_set = models.ManyToManyField(InstitutionCharge, blank=True, null=True, through='ActSupport', related_name='presenter_act_set', verbose_name=_('presenters'))
-    recipient_set = models.ManyToManyField(InstitutionCharge, blank=True, null=True, related_name='recipient_act_set', verbose_name=_('recipients'))
+    presenter_set = models.ManyToManyField(InstitutionCharge, blank=True, null=True, through='ActSupport', related_name='presented_act_set', verbose_name=_('presenters'))
+    recipient_set = models.ManyToManyField(InstitutionCharge, blank=True, null=True, related_name='received_act_set', verbose_name=_('recipients'))
     emitting_institution = models.ForeignKey(Institution, related_name='emitted_act_set', verbose_name=_('emitting institution'))
     category_set = models.ManyToManyField(Category, verbose_name=_('categories'), blank=True, null=True)
     location_set = models.ManyToManyField(Location, verbose_name=_('locations'), blank=True, null=True)
     status_is_final = models.BooleanField(default=False)
+    is_key = models.BooleanField(default=False, help_text=_("Specify whether this act should be featured"))
 
     objects = InheritanceManager()
     
     tag_set = TaggableManager(through=TaggedAct, blank=True)
+
+
+    # manager to handle the list of news that have the act as related object
+    related_news_set = generic.GenericRelation(News,
+                                               content_type_field='related_content_type',
+                                               object_id_field='related_object_pk')
+
     # manager to handle the list of monitoring having as content_object this instance
-    monitorings = generic.GenericRelation(Monitoring,
-                                          object_id_field='object_pk')
- 
-    is_key = models.BooleanField(default=False, help_text=_("Specify whether the present Act should be a featured one or not"))
-   
+    monitoring_set = generic.GenericRelation(Monitoring, object_id_field='object_pk')
+
     def __unicode__(self):
-        uc = u'%s' % (self.title)
+        uc = u'%s' % (self.title, )
         if self.idnum:
             uc = u'%s - %s' % (self.idnum, uc)
         if self.adj_title:
@@ -66,7 +83,32 @@ class Act(TimeStampedModel):
    
     @models.permalink
     def get_absolute_url(self):
-        return ('om_act_detail', (), {'pk': str(self.pk)})
+        return 'om_act_detail', (), {'pk': str(self.pk)}
+    
+    def downcast(self):
+        """
+        Returns the "downcasted"[*]_ version of this model instance.
+        
+        .. [*]: In a multi-table model inheritance scenario, the term "downcasting"
+                refers to the process to retrieve the child model instance given the 
+                parent model instance.
+        """
+        # FIXME: this check is redundant, IMO (seldon)
+        # if this method is called from a "concrete" instance
+        # the lookup machinery either will return the instance itself
+        # or a downcasted version of it (if any), which seems to me 
+        # the right behaviour for a ``downcast()`` method.
+        if hasattr(self, 'act_ptr'): # method is being called from a subclass' instance
+            return self
+        cls = self.__class__ # ``self`` is an instance of the parent model
+        for r in cls._meta.get_all_related_objects():
+            if not issubclass(r.model, cls) or\
+               not isinstance(r.field, models.OneToOneField):
+                continue
+            try:
+                return getattr(self, r.get_accessor_name())
+            except models.ObjectDoesNotExist:
+                continue
     
     @property
     def attachments(self):
@@ -85,6 +127,15 @@ class Act(TimeStampedModel):
         return self.recipient_set.all()
     
     @property
+    def first_signers(self):
+        return InstitutionCharge.objects.filter(actsupport__act__id = self.pk,
+                                                actsupport__support_type=ActSupport.SUPPORT_TYPE.first_signer)                                            
+    
+    @property
+    def co_signers(self):
+        return self.presenter_set.filter(actsupport__support_type=ActSupport.SUPPORT_TYPE.co_signer)
+        
+    @property
     def tags(self):
         return self.tag_set.all()
     
@@ -95,15 +146,45 @@ class Act(TimeStampedModel):
     @property
     def locations(self):
         return self.location_set.all()
-
+    
+    @property
+    def monitorings(self):
+        """
+        Returns the monitorings associated with this act (as a QuerySet).
+        """
+        return self.monitoring_set.all()
+    
+    @property
     def monitoring_users(self):
-        """return list of users monitoring this object"""
-        return [m.user for m in self.monitorings.all()]
+        """
+        Returns the list of users monitoring this act.
+        """
+        # FIXME: This method should return a QuerySet for efficiency reasons
+        # (an act could be monitored by a large number of people;
+        # moreover, often we are only interested in the total number of 
+        # monitoring users, so building a list in memory may result in a waste of resources). 
+        return [m.user for m in self.monitorings]
         
     @property
     def content_type_id(self):
-        """return id of the content_type for this instance"""
+        """
+        Returns id of the content type associated with this instance.
+        """
         return ContentType.objects.get_for_model(self).id
+
+    def status(self):
+        """
+        Returns the current status for the downcasted version of this act instance.
+        
+        Note: it seems that this method cannot be made into a property,
+        since doing that raises a ``AttributeError: can't set attribute``
+        exception during Django initialization. 
+        """
+        return self.downcast().status
+        
+    @property
+    def related_news(self):
+        return self.related_news_set.all()
 
       
 class ActSection(models.Model):
@@ -126,17 +207,14 @@ class ActSupport(models.Model):
     """
     WRITEME
     """
-    FIRST_SIGNER = 1
-    CO_SIGNER = 2
-    RELATOR = 3
-    SUPPORT_TYPE_CHOICES = (
-        (FIRST_SIGNER, _('First signer')),
-        (CO_SIGNER, _('Co signer')),
-        (RELATOR, _('Relator')),
+    SUPPORT_TYPE = Choices(
+        ('FIRSTSIGNER', 'first_signer', _('first signer')),
+        ('COSIGNER', 'co_signer', _('co-signer'))
     )
+
     charge = models.ForeignKey(InstitutionCharge)
     act = models.ForeignKey(Act)
-    support_type = models.IntegerField(_('support type'), choices=SUPPORT_TYPE_CHOICES)    
+    support_type = models.CharField(choices=SUPPORT_TYPE, max_length=12)
     support_date = models.DateField(_('support date'), default=None, blank=True, null=True)
 
     class Meta:
@@ -159,6 +237,10 @@ class Agenda(Act):
         verbose_name = _('agenda')
         verbose_name_plural = _('agenda')
 
+    @models.permalink
+    def get_absolute_url(self):
+        return ('om_agenda_detail', (), {'pk': str(self.pk)})
+    
     
 class Deliberation(Act):
     """
@@ -196,6 +278,10 @@ class Deliberation(Act):
         verbose_name = _('deliberation')
         verbose_name_plural = _('deliberations')
 
+    @models.permalink
+    def get_absolute_url(self):
+        return ('om_deliberation_detail', (), {'pk': str(self.pk)})
+    
 
 class Interrogation(Act):
     """
@@ -219,7 +305,11 @@ class Interrogation(Act):
     class Meta:
         verbose_name = _('interrogation')
         verbose_name_plural = _('interrogations')
-
+    
+    @models.permalink
+    def get_absolute_url(self):
+        return ('om_interrogation_detail', (), {'pk': str(self.pk)})
+    
 
 class Interpellation(Act):
     """
@@ -242,7 +332,11 @@ class Interpellation(Act):
     class Meta:
         verbose_name = _('interpellation')
         verbose_name_plural = _('interpellations')
-
+    
+    @models.permalink
+    def get_absolute_url(self):
+        return ('om_interpellation_detail', (), {'pk': str(self.pk)})
+    
 
 class Motion(Act):
     """
@@ -258,6 +352,11 @@ class Motion(Act):
     class Meta:
         verbose_name = _('motion')
         verbose_name_plural = _('motions')
+        
+    @models.permalink
+    def get_absolute_url(self):
+        return ('om_motion_detail', (), {'pk': str(self.pk)})
+    
 
 
 class Emendation(Act):
@@ -286,10 +385,10 @@ class Emendation(Act):
 class Transition(models.Model):
     final_status = models.CharField(_('final status'), max_length=100)
     act = models.ForeignKey(Act, related_name='transition_set')
-    sitting = models.ForeignKey(Sitting, null=True, blank=True, on_delete=models.PROTECT)
+    votation = models.ForeignKey('votations.Votation', null=True, blank=True)
     transition_date = models.DateField(default=None)
-    symbol = models.CharField(_('symbol'), max_length=128, null=True)
-    note = models.CharField(_('note'), max_length=255, null=True)
+    symbol = models.CharField(_('symbol'), max_length=128, blank=True, null=True)
+    note = models.CharField(_('note'), max_length=255, blank=True, null=True)
     
     class Meta:
         db_table = u'acts_transition'
@@ -315,7 +414,7 @@ class Document(TimeStampedModel):
     * an uploaded internal PDF file
     
     It is possible for a single document to have more than one type of content:
-    for example, a textual and a pdf local versions, or remote links ...
+    for example, a textual and a PDF local versions, or remote links...
     """
     document_date = models.DateField(null=True, blank=True)
     text = models.TextField(blank=True)
@@ -336,14 +435,14 @@ class Attach(Document):
     """
     title = models.CharField(max_length=255)
     act = models.ForeignKey(Act, related_name='attachment_set')
-    
-    def __unicode__(self):
-        return u'%s' % self.title
-    
+
     class Meta(Document.Meta):
         verbose_name = _('attach')
         verbose_name_plural = _('attaches')
-
+    
+    def __unicode__(self):
+        return u'%s' % self.title
+  
 
 class Minute(Document):
     """
@@ -395,3 +494,102 @@ class Calendar(models.Model):
     def acts(self):
         return self.act_set.all()
 
+
+
+#
+# Signals handlers
+#
+
+
+# TODO: can't find a DRY-way to do it
+@receiver(post_save, sender=Deliberation)
+def new_deliberation_published(sender, **kwargs):
+    new_act_published(sender, **kwargs)
+
+@receiver(post_save, sender=Interrogation)
+def new_interrogation_published(sender, **kwargs):
+    new_act_published(sender, **kwargs)
+
+def new_act_published(sender, **kwargs):
+    """
+    generates a record in newscache when an act is presented (inserted in our DB)
+
+    the news is generate only when an act is created, not updated
+    and when this happens outside the fixture loading phase
+
+    below, a trick used to handle signals when loading fixtures,
+    it is not used now, but it may be useful, for testing purposes
+    # instance for subclass fix, while loading fixtures
+    # see http://bit.ly/yimn9S and
+    # https://code.djangoproject.com/ticket/13299
+    if kwargs.get('raw', False):
+        instance = kwargs['instance']
+        generating_item = instance.__class__._default_manager.get(pk=instance.pk)
+    else:
+        generating_item = kwargs['instance']
+    """
+
+    # generates news only if not in raw mode (fixtures)
+    # and for objects creation
+    if not kwargs.get('raw', False) and kwargs.get('created', False):
+        generating_item = kwargs['instance']
+
+        # create transition: act is presented
+        generating_item.transition_set.create(
+            act=generating_item.act_ptr,
+            final_status=generating_item.STATUS.presented,
+            transition_date=generating_item.presentation_date,
+            )
+
+        # define context for textual representation of the news
+        ctx = Context({  })
+
+        # generate news in newscache
+        News.objects.create(
+            generating_object=generating_item, related_object=generating_item, priority=1,
+            text=News.get_text_for_news(ctx, 'newscache/act_published.html')
+        )
+
+
+@receiver(post_save, sender=ActSupport)
+def new_signature(**kwargs):
+    """
+    generates a record in newscache, when an act is signed
+    """
+    # generates news only if not in raw mode (fixtures)
+    # and for objects creation
+    if not kwargs.get('raw', False) and kwargs.get('created', False):
+        generating_item = kwargs['instance']
+        act = generating_item.act
+        signer = generating_item.charge
+        # define context for textual representation of the news
+        ctx = Context({ 'current_site': Site.objects.get(id=settings.SITE_ID),
+                        'signature': generating_item, 'act': act, 'signer': signer })
+        News.objects.create(
+            generating_object=generating_item, related_object=act, priority=3,
+            text=News.get_text_for_news(ctx, 'newscache/act_signed.html')
+        )
+        News.objects.create(
+            generating_object=generating_item, related_object=signer, priority=1,
+            text=News.get_text_for_news(ctx, 'newscache/user_signed.html')
+        )
+
+@receiver(post_save, sender=Transition)
+def new_transition(**kwargs):
+    if not kwargs.get('raw', False) and kwargs.get('created', False):
+        generating_item = kwargs['instance']
+        act = generating_item.act
+
+        # Presentation is already handled by new_act_published handler
+        if generating_item.final_status != act.STATUS.presented:
+            # set act's status according to transition status
+            act.status = generating_item.final_status
+            act.save()
+
+            # generate news
+            ctx = Context({ 'current_site': Site.objects.get(id=settings.SITE_ID),
+                            'transition': generating_item, 'act': act })
+            News.objects.create(
+                generating_object=generating_item, related_object=act, priority=2,
+                text=News.get_text_for_news(ctx, 'newscache/act_changed_status.html')
+            )

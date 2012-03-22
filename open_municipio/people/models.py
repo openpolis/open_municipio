@@ -11,6 +11,7 @@ from model_utils import Choices
 from model_utils.managers import PassThroughManager
 
 from open_municipio.monitoring.models import Monitoring
+from open_municipio.newscache.models import News
 from open_municipio.people.managers import TimeFramedQuerySet
 
 import datetime
@@ -35,7 +36,7 @@ class Person(models.Model):
     op_politician_id = models.IntegerField(_('openpolis politician ID'), blank=True, null=True)
 
     # manager to handle the list of monitoring having as content_object this instance
-    monitorings = generic.GenericRelation(Monitoring, object_id_field='object_pk')
+    monitoring_set = generic.GenericRelation(Monitoring, object_id_field='object_pk')
     
     class Meta:
         verbose_name = _('person')
@@ -52,18 +53,61 @@ class Person(models.Model):
     @permalink
     def get_absolute_url(self):
         return 'om_person_detail', (), { 'slug': self.slug }
-
+    
+    @property
+    def full_name(self):
+        return "%s %s" % (self.first_name, self.last_name)
+   
+    @property
+    def all_institution_charges(self):
+        """
+        Returns the QuerySet of all institution charges held by this person during his/her career.
+        """
+        return self.institutioncharge_set.all()
+    
+    @property
+    def current_institution_charges(self):
+        """
+        Returns a QuerySet of institution charges currently held by this person.
+        """
+        return self.institutioncharge_set.current()
+    
+    @property
+    def monitorings(self):
+        """
+        Returns the monitorings associated with this person (as a QuerySet).
+        """
+        return self.monitoring_set.all()
+    
+    @property
+    def monitoring_users(self):
+        """
+        Returns the list of users monitoring this person.
+        """
+        # FIXME: This method should return a QuerySet for efficiency reasons
+        # (a politician could be monitored by a large number of people;
+        # moreover, often we are only interested in the total number of 
+        # monitoring users, so building a list in memory may result in a waste of resources). 
+        return [m.user for m in self.monitorings]
+    
     @property
     def content_type_id(self):
-        """return id of the content_type for this instance"""
+        """
+        Return id of the content type associated with this instance.
+        """
         return ContentType.objects.get_for_model(self).id
 
 
 class Charge(models.Model):
     """
     This is the base class for the different macro-types of charges (institution, organization, administration).
-    
-    Inheritance here is done through abstract classes, since there is no apparent need to browse all.
+
+    The ``related_news`` attribute can be used  to fetch
+    news related to it (or its subclasses) from ``newscache.News``
+
+    The class inherits from ``NewsTargetMixin``, that allows the ``related_news`` attribute, to fetch
+    news related to it (or its subclasses) from ``newscache.News``
+
     """
     person = models.ForeignKey('Person', verbose_name=_('person'))
     start_date = models.DateField(_('start date'))
@@ -72,11 +116,18 @@ class Charge(models.Model):
     description = models.CharField(_('description'), blank=True, max_length=255,
                                    help_text=_('Insert the complete description of the charge, if it gives more information than the charge type'))
     
-    objects = PassThroughManager.for_queryset_class(TimeFramedQuerySet)() 
-    
+    objects = PassThroughManager.for_queryset_class(TimeFramedQuerySet)()
+
+    # manager to handle the list of news that have the act as related object
+    related_news = generic.GenericRelation(News,
+                                           content_type_field='related_content_type',
+                                           object_id_field='related_object_pk')
+
     class Meta:
         abstract = True
 
+    def get_absolute_url(self):
+        return self.person.get_absolute_url()
 
 class InstitutionCharge(Charge):
     """
@@ -107,7 +158,7 @@ class InstitutionCharge(Charge):
     institution = models.ForeignKey('Institution', on_delete=models.PROTECT, verbose_name=_('institution'), related_name='charge_set')
     charge_type = models.IntegerField(_('charge type'), choices=CHARGE_TYPES)
     op_charge_id = models.IntegerField(_('openpolis institution charge ID'), blank=True, null=True)
-  
+
     class Meta(Charge.Meta):
         db_table = u'people_institution_charge'
         verbose_name = _('institution charge')
@@ -119,7 +170,40 @@ class InstitutionCharge(Charge):
         
     # TODO: model validation: check that ``substitutes`` and ``substituted_by`` fields
     # point to ``InstitutionCharge``s of the same kind
-
+    
+    @property
+    def presented_acts(self):
+        """
+        The QuerySet of acts presented by this charge.
+        """
+        return self.presented_act_set.all()
+    
+    @property
+    def received_acts(self):
+        """
+        The QuerySet of acts received by this charge.
+        """
+        return self.received_act_set.all()
+    
+    @property
+    def council_group(self):
+        """
+        Returns the city council's group this charge currently belongs to (if any).
+        
+        If the charge doesn't belong to any council's group  -- e.g. because (s)he 
+        is not a counselor, return ``None``.  
+        """
+        # this property only make sense for counselors
+        if self.charge_type == InstitutionCharge.COUNSELOR_CHARGE:
+            # This query should return only one record, since a counselor 
+            # may belong to only one council group at a time.
+            # If multiple records match the query, instead, a ``MultipleObjectsReturned``
+            # exception will be raised, providing a useful integrity check for data 
+            group = Group.objects.get(groupcharge__charge__id=self.id, groupcharge__end_date__isnull=True)
+            return group
+        else: 
+            return None
+    
 
 class CompanyCharge(Charge):
     """
@@ -403,7 +487,7 @@ class Sitting(models.Model):
 
 class Mayor(object):
     """
-    A municipality major (both as a charge and an institution).
+    A municipality mayor (both as a charge and an institution).
     """
      
     @property
@@ -432,7 +516,6 @@ class Mayor(object):
     
 
 class CityCouncil(object):
-    
     @property
     def as_institution(self):
         """
@@ -609,6 +692,17 @@ class CityGovernment(object):
         return Agenda.objects.filter(emitting_institution=self.as_institution)
 
 
+class Committees(object):
+    @property
+    def as_institution(self):
+        """
+        Municipality committees, as *institutions*.
+        """
+        # FIXME: Should we include joint committees here?
+        # (Institution.JOINT_COMMITTEE)
+        return Institution.objects.filter(institution_type=Institution.COMMITTEE)
+
+
 class Municipality(object):
     """
     A hierarchy of objects representing a municipality.
@@ -619,6 +713,7 @@ class Municipality(object):
         self.mayor = Mayor()
         self.gov = CityGovernment()
         self.council = CityCouncil()
+        self.committees = Committees()
   
   
 municipality = Municipality()

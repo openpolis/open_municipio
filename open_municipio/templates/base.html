@@ -1,19 +1,18 @@
 {% load i18n %}
-
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <title>{% trans "OpenMunicipio" %} - {% block title %}{% endblock %}</title>
-  
-  <!-- To ensure devices display responsive pages properly, include the viewport meta tag. -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8" />
+    <title>{% trans "OpenMunicipio" %} - {% block title %}{% endblock %}</title>
+
+    <!-- To ensure devices display responsive pages properly, include the viewport meta tag. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
     {% block head_css_includes %}
     <link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap-responsive.css" />
     {% endblock head_css_includes %}
-  
+
     <style type="text/css">
     {% block extra_style %}{% endblock %}
     </style>
@@ -23,16 +22,20 @@
     <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-1.7.1.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap-dropdown.js"></script>
     {% endblock head_js_includes %}
-  
+
+    <script type="text/javascript" src="{{ STATIC_URL }}js/require.js" data-main="{{ STATIC_URL }}js/"></script>
     <script type="text/javascript" charset="utf-8">
-    {% block extra_js %}{% endblock %}  
+
+        //var asyncScripts = asyncScripts || [];
+        // asyncScripts.push(function() { return ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js'; });
+
+    {% block extra_js %}{% endblock %}
     </script>
- 
-    {% block extra_head %}{% endblock %}    
+
+    {% block extra_head %}{% endblock %}
 
 </head>
 <body class="{% block body_class %}{% endblock %}">
-
 
 <div id="wrapper"><!-- #wrapper -->
 
@@ -42,7 +45,7 @@
       <section class="navbar" id="topbar">
           <div class="navbar-inner">
               <div class="container-fluid">
-                  <a href="#" class="brand">Open<strong>municipio</strong></a>
+                  <a href="/" class="brand">Open<strong>municipio</strong></a>
 
                   <ul class="nav pull-right">
                     {% if user.is_authenticated %}
@@ -69,8 +72,8 @@
         <div class="navbar-inner">
           <div class="container-fluid">
               <ul class="nav">
-                  <li><a href="{% url om_person_list %}">Politici</a></li>
-                  <li><a href="{% url om_tag_list %}">Argomenti</a></li>
+                  <li {% block people_class %}{% endblock %}><a href="{% url om_person_list %}">Politici</a></li>
+                  <li {% block tags_class %}{% endblock %}><a href="{% url om_topic_list %}">Argomenti</a></li>
                   <li {% block users_class %}{% endblock %}><a href="/users/">Cittadini</a></li>
               </ul>
           </div>
@@ -100,7 +103,7 @@
                             Organi politici <b class="caret caret-up"></b>
                         </a>
                         <ul class="dropdown-menu bottom-up">
-                            <li><a href="#">Sindaco</a></li>
+                            <li><a href="{% url om_institution_mayor %}">Sindaco</a></li>
                             <li><a href="{% url om_institution_council %}">Consiglio</a></li>
                             <li><a href="{% url om_institution_citigov %}">Giunta</a></li>
                         </ul>
@@ -116,9 +119,10 @@
 {% block footer_js_includes %}{% endblock %}
 
 <script type="text/javascript">
-/*
+
   // TODO: google analytics code 
   var _gaq = _gaq || [];
+  /*
   _gaq.push(['_setAccount', 'UA-XXXXXX-YY']);
   _gaq.push(['_trackPageview']);
 

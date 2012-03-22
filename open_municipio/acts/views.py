@@ -2,11 +2,11 @@ from django.views.generic import DetailView, ListView, TemplateView
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
 
-from open_municipio.taxonomy.views import AddTagsView, RemoveTagView
 from open_municipio.acts.models import Act, Agenda, Deliberation, Interpellation, Interrogation, Motion
 from open_municipio.acts.forms import TagAddForm
 from open_municipio.monitoring.forms import MonitoringForm
 from open_municipio.taxonomy.models import Tag
+from open_municipio.taxonomy.views import AddTagsView, RemoveTagView
 
 from django.views.generic import View
 
@@ -18,16 +18,23 @@ from django.utils.decorators import method_decorator
 class ActListView(ListView):
     model = Act
     template_name = 'acts/act_list.html'
+    queryset = Act.objects.select_subclasses()
+
 
 class ActEditorView(TemplateView):
     pass
 
+
 class ActDetailView(DetailView):
     model = Act
-    context_object_name = 'act' 
-    
+    context_object_name = 'act'
+
     def get_context_data(self, **kwargs):
-        # Call the base implementation first to get a context
+        # the monitored act
+        # it's a deliberation, not an act, from the urls
+        act = self.get_object()
+
+        # call the base implementation first to get a context
         context = super(ActDetailView, self).get_context_data(**kwargs)
         # mix-in tab-related context
         self.tab = self.kwargs.get('tab', 'default')
@@ -46,12 +53,12 @@ class ActDetailView(DetailView):
                 # add a monitoring form, to context,
                 # to switch monitoring on and off
                 context['monitoring_form'] = MonitoringForm(data = {
-                    'content_type_id': context['act'].content_type_id, 
-                    'object_pk': context['act'].id,
+                    'content_type_id': act.content_type_id,
+                    'object_pk': act.id,
                     'user_id': self.request.user.id
                 })
                 
-                if context['act'] in self.request.user.get_profile().monitored_objects:
+                if act in self.request.user.get_profile().monitored_objects:
                     context['is_user_monitoring'] = True
         except ObjectDoesNotExist:
             context['is_user_monitoring'] = False
@@ -88,26 +95,22 @@ class ActDetailView(DetailView):
 
 class AgendaDetailView(ActDetailView):
     model = Agenda
-    context_object_name = 'agenda'
-
+    
 
 class DeliberationDetailView(ActDetailView):
     model = Deliberation
-    context_object_name = 'deliberation'
 
 
 class InterpellationDetailView(ActDetailView):
     model = Interpellation
-    context_object_name = 'interpellation'
 
 
 class InterrogationDetailView(ActDetailView):
     model = Interrogation
-    context_object_name = 'interrogation'
+
 
 class MotionDetailView(ActDetailView):
     model = Motion
-    context_object_name = 'motion'
     
 
 ## Tag management

@@ -68,8 +68,7 @@ class Category(models.Model):
     tag_set = models.ManyToManyField(Tag, related_name='category_set', null=True, blank=True)
   
     # manager to handle the list of monitoring having as content_object this instance
-    monitorings = generic.GenericRelation(Monitoring,
-                                          object_id_field='object_pk')
+    monitoring_set = generic.GenericRelation(Monitoring, object_id_field='object_pk')
   
     class Meta:
         verbose_name = _('category')
@@ -77,6 +76,16 @@ class Category(models.Model):
         
     def __unicode__(self):
         return u'%s' % self.name
+    
+    @permalink
+    def get_absolute_url(self):
+        return 'om_category_detail', (), { 'slug': self.slug }
+    
+    def save(self, *args, **kwargs):
+        # auto-generate a slug, if needed 
+        if not self.pk and not self.slug:
+            self.slug = self.calculate_slug()
+        return super(Category, self).save(*args, **kwargs)
     
     def slugify(self, tag, i=None):
         slug = slugify(tag)
@@ -99,17 +108,28 @@ class Category(models.Model):
                 slug = self.slugify(self.name, i)
             except Category.DoesNotExist:
                 return slug
-
-    def save(self, *args, **kwargs):
-        # auto-generate a slug, if needed 
-        if not self.pk and not self.slug:
-            self.slug = self.calculate_slug()
-        return super(Category, self).save(*args, **kwargs)
         
     @property
     def tags(self):
         return self.tag_set.all()
     
+    @property
+    def monitorings(self):
+        """
+        Returns the monitorings associated with this category (as a QuerySet).
+        """
+        return self.monitoring_set.all()
+    
+    @property
+    def monitoring_users(self):
+        """
+        Returns the list of users monitoring this argument (category).
+        """
+        # FIXME: This method should return a QuerySet for efficiency reasons
+        # (an argument could be monitored by a large number of people;
+        # moreover, often we are only interested in the total number of 
+        # monitoring users, so building a list in memory may result in a waste of resources). 
+        return [m.user for m in self.monitorings]
     
 
 class Location(models.Model):
