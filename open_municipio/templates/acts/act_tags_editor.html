@@ -104,18 +104,14 @@
             t.plugins['autocomplete'].setValues(tags);
         }
 
-        var base_path = '{{ STATIC_URL }}/';
+        var base_path = '{{ STATIC_URL }}';
         include([base_path+'js/jquery.textboxlist.js',
             base_path+'js/bootstrap-modal.js',
             base_path+'css/textboxlist.css',
-            base_path+'/css/ui-custom-theme/jquery-ui-1.8.16.custom.css'], function() {
+            base_path+'css/ui-custom-theme/jquery-ui-1.8.16.custom.css'], function() {
 
             $('#cteditor-launcher').click(function(event){
                 event.preventDefault();
-<<<<<<< HEAD
-=======
-                //$('#cteditor').cteditor();
->>>>>>> 1c8b2ef897bb6f97146b8d979bd510ddb2639c6b
 
                 // express a single node as a jQuery object
                 var $t = $(this);
