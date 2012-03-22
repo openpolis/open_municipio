@@ -83,6 +83,7 @@ class RandomItemsFactory(object):
         for act in Act.objects.all():
             if random.random() < conf.KEY_ACTS_RATIO:
                 act.is_key = True
+                act.save()
                 print  "        act #%s is key..." % act.pk
 
     def generate_dataset(self):
