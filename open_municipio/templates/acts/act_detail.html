@@ -84,7 +84,15 @@ $(document).ready(function() {
         <h1><strong>{{ act.title }}</strong> ({{ act.idnum }})</h1>
     </hgroup>
 
-    <p class="well">{{ act.text|safe }}</p>
+        {% if description_form %}
+            <form class="well form-horizontal" action="{% url om_act_description_update pk=act.pk %}" method="post">
+                {% csrf_token %}
+                {{ description_form }}
+                <button type="submit" class="btn btn-info btn-small">Invia</button>
+            </form>
+        {%  else %}
+            <p class="well">{{ act.description|safe }}</p>
+        {% endif %}
 
     <ul class="nav nav-tabs">
       <li {% block act_tab_status_class %}class="active"{% endblock %}> <a href="{{ act.get_absolute_url }}">Stato</a></li>

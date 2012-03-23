@@ -1,9 +1,13 @@
+from django.http import HttpResponseBadRequest, HttpResponseNotAllowed, HttpResponseRedirect
 from django.views.generic import DetailView, ListView, TemplateView
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
+from django.views.generic.edit import FormView
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
 
 from open_municipio.acts.models import Act, Agenda, Deliberation, Interpellation, Interrogation, Motion
-from open_municipio.acts.forms import TagAddForm
+from open_municipio.acts.forms import TagAddForm, ActDescriptionForm
 from open_municipio.monitoring.forms import MonitoringForm
 from open_municipio.taxonomy.models import Tag
 from open_municipio.taxonomy.views import AddTagsView, RemoveTagView
@@ -16,6 +20,38 @@ class ActListView(ListView):
 
 class ActEditorView(TemplateView):
     pass
+
+class ActDescriptionView(FormView):
+    form_class = ActDescriptionForm
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(ActDescriptionView, self).dispatch(*args, **kwargs)
+
+    def form_valid(self, form):
+        """
+        instead of saving the form, just extract the act from the ID
+        and change its description
+        """
+        act = Act.objects.select_subclasses().get(pk=form.cleaned_data['id'])
+        description = form.cleaned_data['description']
+        act.description = description
+        act.save()
+        return HttpResponseRedirect(self.get_success_url())
+
+    def form_invalid(self, form=None):
+        msg = "It appears that the act's description form has been tampered with !"
+        return HttpResponseBadRequest(msg)
+
+    def get_success_url(self):
+        # FIXME: redirects shouldn't rely on the ``Referer`` header,
+        # since it might be missing from the HTTP request,
+        # depending on client's configuration.
+        return self.request.META['HTTP_REFERER']
+
+    def get(self, *args, **kwargs):
+        msg = "This view can be accessed only via POST"
+        return HttpResponseNotAllowed(msg)
 
 
 class ActDetailView(DetailView):
@@ -37,7 +73,16 @@ class ActDetailView(DetailView):
             
         # Add in a form for adding tags
         context['tag_add_form'] = TagAddForm()
-        
+
+        # add a form for the description of the act
+        signers = [p.person for p in act.presenters]
+        if self.request.user.is_authenticated() and \
+           self.request.user.get_profile().person and \
+           self.request.user.get_profile().person in signers:
+            context['description_form'] = ActDescriptionForm(data = {
+                'id': act.pk,
+                'description': act.description,
+            })
         
         # is the user monitoring the act?
         context['is_user_monitoring'] = False
