@@ -9,7 +9,7 @@
             "is_active": true, 
             "is_superuser": true, 
             "is_staff": true, 
-            "last_login": "2012-03-22 17:34:37", 
+            "last_login": "2012-03-23 23:38:32", 
             "groups": [], 
             "user_permissions": [], 
             "password": "sha1$3710f$11f93491df60c5efdc4d23b36253ad5bb21926c3", 
@@ -65,7 +65,7 @@
             "is_active": true, 
             "is_superuser": false, 
             "is_staff": false, 
-            "last_login": "2012-03-22 18:13:34", 
+            "last_login": "2012-03-23 23:39:25", 
             "groups": [
                 2
             ], 
@@ -76,6 +76,26 @@
         }
     }, 
     {
+        "pk": 6, 
+        "model": "auth.user", 
+        "fields": {
+            "username": "puser2", 
+            "first_name": "Cicc", 
+            "last_name": "Ardoisio", 
+            "is_active": true, 
+            "is_superuser": false, 
+            "is_staff": false, 
+            "last_login": "2012-03-23 23:39:50", 
+            "groups": [
+                2
+            ], 
+            "user_permissions": [], 
+            "password": "sha1$01e3b$39fdedd6bf98ace3208122a23fa5943b96be959a", 
+            "email": "puser2@openpolis.it", 
+            "date_joined": "2012-03-23 23:36:51"
+        }
+    }, 
+    {
         "pk": 1, 
         "model": "auth.group", 
         "fields": {
@@ -83,33 +103,33 @@
             "permissions": [
                 54, 
                 63, 
-                84, 
-                93, 
                 66, 
-                72, 
+                96, 
                 69, 
-                75, 
                 80, 
                 82, 
+                75, 
+                72, 
+                93, 
+                84, 
                 16, 
                 47, 
                 48, 
                 49, 
-                96, 
                 98, 
                 99, 
                 100, 
-                137, 
-                138, 
-                139, 
-                140, 
-                141, 
-                142, 
                 131, 
                 132, 
                 133, 
-                153, 
-                144
+                140, 
+                141, 
+                142, 
+                144, 
+                137, 
+                138, 
+                139, 
+                153
             ]
         }
     }, 
@@ -148,6 +168,14 @@
         }
     }, 
     {
+        "pk": 4, 
+        "model": "registration.registrationprofile", 
+        "fields": {
+            "activation_key": "ALREADY_ACTIVATED", 
+            "user": 6
+        }
+    }, 
+    {
         "pk": 1, 
         "model": "users.userprofile", 
         "fields": {
@@ -183,6 +211,19 @@
             "privacy_level": 3, 
             "person": 19, 
             "user": 5, 
+            "uses_nickname": false
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "users.userprofile", 
+        "fields": {
+            "city": "Milano", 
+            "says_is_politician": true, 
+            "wants_newsletter": false, 
+            "privacy_level": 3, 
+            "person": 41, 
+            "user": 6, 
             "uses_nickname": false
         }
     }
