@@ -228,8 +228,12 @@ class Agenda(Act):
     It is specifically used with respect to issues specific to the deliberation process.
     It is submitted to the Council approval and Emendations to it can be presented before the votation.
     """
-    # TODO: add additional statuses allowed for this act type
-    STATUS = Choices(('PRESENTED', 'presented', _('presented')), ('APPROVED', 'approved', _('approved')))
+    STATUS = Choices(
+        ('PRESENTED', 'presented', _('presented')),
+        ('COUNCIL', 'council', _('council')),
+        ('APPROVED', 'approved', _('approved')),
+        ('REJECTED', 'rejected', _('rejected'))
+    )
 
     status = StatusField()
     
@@ -258,7 +262,6 @@ class Deliberation(Act):
         (GOVERNMENT_INIT, _('City Government')),
         (MAYOR_INIT, _('Mayor')),
     )
-    # TODO: add additional statuses allowed for this act type
     STATUS = Choices(
         ('PRESENTED', 'presented', _('presented')),
         ('COMMISSION', 'commission', _('commission')),
@@ -293,8 +296,11 @@ class Interrogation(Act):
         (WRITTEN_ANSWER, _('Written')),
         (VERBAL_ANSWER, _('Verbal')),
     )
-    # TODO: add additional statuses allowed for this act type
-    STATUS = Choices(('PRESENTED', 'presented', _('presented')), ('ANSWERED', 'answered', _('answered')))
+    STATUS = Choices(
+        ('PRESENTED', 'presented', _('presented')),
+        ('ANSWERED', 'answered', _('answered')),
+        ('NOTANSWERED', 'notanswered', _('not answered'))
+    )
     
     status = StatusField()
     answer_type = models.IntegerField(_('answer type'), choices=ANSWER_TYPES)
@@ -321,8 +327,11 @@ class Interpellation(Act):
         (WRITTEN_ANSWER, _('Written')),
         (VERBAL_ANSWER, _('Verbal')),
     )
-    # TODO: add additional statuses allowed for this act type
-    STATUS = Choices(('PRESENTED', 'presented', _('presented')), ('ANSWERED', 'answered', _('answered')))
+    STATUS = Choices(
+        ('PRESENTED', 'presented', _('presented')),
+        ('ANSWERED', 'answered', _('answered')),
+        ('NOTANSWERED', 'notanswered', _('not answered'))
+    )
     
     status = StatusField()
     answer_type = models.IntegerField(_('answer type'), choices=ANSWER_TYPES)
@@ -344,8 +353,12 @@ class Motion(Act):
     on a broad type of issues (specific to the Comune proceedings, or of a more general category)
     It is submitted to the Council approval and Emendations to it can be presented before the votation.
     """
-    # TODO: add additional statuses allowed for this act type
-    STATUS = Choices(('PRESENTED', 'presented', _('presented')), ('APPROVED', 'approved', _('approved')))
+    STATUS = Choices(
+        ('PRESENTED', 'presented', _('presented')),
+        ('COUNCIL', 'council', _('council')),
+        ('APPROVED', 'approved', _('approved')),
+        ('REJECTED', 'rejected', _('rejected'))
+    )
     
     status = StatusField()
     
