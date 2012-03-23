@@ -15,9 +15,12 @@ class ToggleBookmarkView(View):
         return super(ToggleBookmarkView, self).dispatch(*args, **kwargs)
     
     def get_object(self):
-        obj_pk = int(self.kwargs.get('object_pk'))
-        obj_content_type = ContentType.objects.get(pk=int(self.kwargs.get('content_type_id')))
-        model = obj_content_type.model_class()
+        # retrieve params from the URL
+        app_label = self.kwargs.get('app_label')
+        model_name = self.kwargs.get('model_name')
+        obj_pk = int(self.kwargs.get('obj_pk'))
+        # retrieve the content object
+        model = ContentType.objects.get(app_label=app_label, model=model_name).model_class()
         object = get_object_or_404(model, pk=obj_pk)
         return object
     

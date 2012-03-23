@@ -4,3 +4,10 @@
     {{ block.super }}
     <link rel="stylesheet" href="{{ STATIC_URL }}css/bookmarking.css" />
 {% endblock head_css_includes %}
+
+{% block head_js_includes %}
+    {{ block.super }}
+    {% if user.is_staff %}
+        <script src="{{ STATIC_URL }}js/bookmarking.js" type="text/javascript" charset="utf-8"></script>
+    {% endif %}
+{% endblock head_js_includes %}

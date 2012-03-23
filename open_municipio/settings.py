@@ -120,6 +120,7 @@ INSTALLED_APPS = (
     'open_municipio.om',
     'open_municipio.om_comments',
     'open_municipio.om_voting',
+    'open_municipio.bookmarking',
     'open_municipio.acts',
     'open_municipio.people',
     'open_municipio.taxonomy',
