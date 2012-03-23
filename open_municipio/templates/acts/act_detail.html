@@ -121,7 +121,7 @@ $(document).ready(function() {
 <section><h3>Monitora</h3>
     <table>
         <tr>
-            <td><span class="bluebox">{{ act.monitoring_users|length}}</span></td>
+            <td><span class="bluebox">{{ act.monitoring_users_count}}</span></td>
             <th class="bg-dark span12">
                 utenti che monitorano l'atto<br />
                 {% for user in act.monitoring_users %}
@@ -129,7 +129,7 @@ $(document).ready(function() {
                   {% if forloop.last %}<br/>{% else %},{% endif %}
                 {% endfor %}
                 
-                {% if user.is_authenticated %}
+                {% if user.is_authenticated and not user.get_profile.person %}
                   {% if is_user_monitoring %}
                   <form action="{% url om_monitoring_stop %}" method="post">
                     {% csrf_token %}
@@ -148,10 +148,29 @@ $(document).ready(function() {
             </th>
         </tr>
         <tr>
-            <td><span class="greenbox">0</span></td>
+            <td><span class="greenbox">{{ act.monitoring_politicians_count}}</span></td>
             <th class="bg-dark span12">
                 politici che monitorano l'atto <br>
-                <span class="monitoring"><a href="#"><i class="socialicon-add"></i> Monitora</a></span>
+                {% for user in act.monitoring_politicians %}
+                    <a href="{{ user.get_profile.person.get_absolute_url }}">{{ user.get_profile.public_name }}</a>
+                    {% if forloop.last %}<br/>{% else %},{% endif %}
+                {% endfor %}
+                {% if user.is_authenticated and user.get_profile.person %}
+                    {% if is_user_monitoring %}
+                        <form action="{% url om_monitoring_stop %}" method="post">
+                            {% csrf_token %}
+                            {{ monitoring_form }}
+                            <i class="icon-minus-sign"></i>
+                            <button type="submit" class="btn btn-info btn-small">Interrompi il monitoraggio</button>
+                        </form>
+                    {% else %}
+                        <form action="{% url om_monitoring_start %}" method="post">
+                            {% csrf_token %}
+                            {{ monitoring_form }}
+                            <button type="submit" class="btn btn-info btn-mini"><i class="socialicon-add"></i> Avvia il monitoraggio</button>
+                        </form>
+                    {% endif %}
+                {% endif %}
             </th>
         </tr>
     </table>

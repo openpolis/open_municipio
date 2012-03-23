@@ -18,7 +18,7 @@ from model_utils.fields import StatusField
 from taggit.managers import TaggableManager
 from open_municipio.newscache.models import News
 
-from open_municipio.people.models import Institution, InstitutionCharge, Sitting
+from open_municipio.people.models import Institution, InstitutionCharge, Sitting, Person
 from open_municipio.taxonomy.models import TaggedAct, Category, Location
 from open_municipio.monitoring.models import Monitoring
 
@@ -51,6 +51,7 @@ class Act(TimeStampedModel):
     title = models.CharField(_('title'), max_length=255, blank=True)
     adj_title = models.CharField(_('adjoint title'), max_length=255, blank=True, help_text=_("An adjoint title, added to further explain an otherwise cryptic title"))
     presentation_date = models.DateField(_('presentation date'), null=True, help_text=_("Date of presentation, as stated in the act"))
+    description = models.TextField(_('description'), blank=True)
     text = models.TextField(_('text'), blank=True)
     presenter_set = models.ManyToManyField(InstitutionCharge, blank=True, null=True, through='ActSupport', related_name='presented_act_set', verbose_name=_('presenters'))
     recipient_set = models.ManyToManyField(InstitutionCharge, blank=True, null=True, related_name='received_act_set', verbose_name=_('recipients'))
@@ -147,24 +148,61 @@ class Act(TimeStampedModel):
     def locations(self):
         return self.location_set.all()
     
+    def monitorings(self, user_type=None):
+        """
+        Returns the list of monitorings for this act.
+
+        user_type can take None, "simple", "politician" and indicates whether to apply a filter
+
+        """
+        if user_type == "simple":
+            return self.monitoring_set.filter(user__userprofile__person__isnull=True)
+        elif user_type == "politician":
+            return self.monitoring_set.filter(user__userprofile__person__isnull=False)
+        else:
+            return self.monitoring_set.all()
+
+
     @property
-    def monitorings(self):
-        """
-        Returns the monitorings associated with this act (as a QuerySet).
-        """
-        return self.monitoring_set.all()
-    
-    @property
-    def monitoring_users(self):
-        """
-        Returns the list of users monitoring this act.
-        """
+    def all_monitoring_users(self):
         # FIXME: This method should return a QuerySet for efficiency reasons
         # (an act could be monitored by a large number of people;
-        # moreover, often we are only interested in the total number of 
-        # monitoring users, so building a list in memory may result in a waste of resources). 
-        return [m.user for m in self.monitorings]
-        
+        # moreover, often we are only interested in the total number of
+        # monitoring users, so building a list in memory may result in a waste of resources).
+        return [m.user for m in self.monitorings()]
+
+    @property
+    def all_monitoring_count(self):
+        return self.monitorings().count()
+
+    @property
+    def monitoring_users(self):
+        # FIXME: This method should return a QuerySet for efficiency reasons
+        # (an act could be monitored by a large number of people;
+        # moreover, often we are only interested in the total number of
+        # monitoring users, so building a list in memory may result in a waste of resources).
+        return [m.user for m in self.monitorings(user_type='simple')]
+    @property
+    def monitoring_users_count(self):
+        return self.monitorings(user_type='simple').count()
+
+    @property
+    def monitoring_politicians(self):
+        # FIXME: This method should return a QuerySet for efficiency reasons
+        # (an act could be monitored by a large number of people;
+        # moreover, often we are only interested in the total number of
+        # monitoring users, so building a list in memory may result in a waste of resources).
+        return [m.user for m in self.monitorings(user_type='politician')]
+    @property
+    def monitoring_politicians_count(self):
+        return self.monitorings(user_type='politician').count()
+
+
+    @property
+    def act_descriptors(self):
+        """Returns the queryset of all those that modified the description"""
+        return self.actdescriptor_set.all()
+
     @property
     def content_type_id(self):
         """
@@ -205,7 +243,7 @@ class ActSection(models.Model):
 
 class ActSupport(models.Model):
     """
-    WRITEME
+    Maps the signers of the act (supporter)
     """
     SUPPORT_TYPE = Choices(
         ('FIRSTSIGNER', 'first_signer', _('first signer')),
@@ -220,6 +258,16 @@ class ActSupport(models.Model):
     class Meta:
         db_table = u'acts_act_support'
 
+
+class ActDescriptor(TimeStampedModel):
+    """
+    Maps the politicians that added or modified the description of the act.
+    """
+    person = models.ForeignKey(Person)
+    act = models.ForeignKey(Act)
+
+    class Meta:
+        db_table = u'acts_act_descriptor'
 
 class Agenda(Act):
     """

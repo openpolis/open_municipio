@@ -1,0 +1,189 @@
+[
+    {
+        "pk": 1, 
+        "model": "auth.user", 
+        "fields": {
+            "username": "admin", 
+            "first_name": "", 
+            "last_name": "", 
+            "is_active": true, 
+            "is_superuser": true, 
+            "is_staff": true, 
+            "last_login": "2012-03-22 17:34:37", 
+            "groups": [], 
+            "user_permissions": [], 
+            "password": "sha1$3710f$11f93491df60c5efdc4d23b36253ad5bb21926c3", 
+            "email": "admin@openpolis.it", 
+            "date_joined": "2012-03-20 17:32:01"
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "auth.user", 
+        "fields": {
+            "username": "user", 
+            "first_name": "User", 
+            "last_name": "User", 
+            "is_active": true, 
+            "is_superuser": false, 
+            "is_staff": false, 
+            "last_login": "2012-03-20 17:37:42", 
+            "groups": [], 
+            "user_permissions": [], 
+            "password": "sha1$19aee$2505c68c5b3604cd20cb8a286961ef0578f07c13", 
+            "email": "user@openpolis.it", 
+            "date_joined": "2012-03-20 17:37:29"
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "auth.user", 
+        "fields": {
+            "username": "editor", 
+            "first_name": "Editor", 
+            "last_name": "Editor", 
+            "is_active": true, 
+            "is_superuser": false, 
+            "is_staff": true, 
+            "last_login": "2012-03-20 17:39:17", 
+            "groups": [
+                1
+            ], 
+            "user_permissions": [], 
+            "password": "sha1$a0843$8a08c950b91d4edbf7fe1575acb6e985c8f3ec69", 
+            "email": "editor@openpolis.it", 
+            "date_joined": "2012-03-20 17:39:05"
+        }
+    }, 
+    {
+        "pk": 5, 
+        "model": "auth.user", 
+        "fields": {
+            "username": "puser", 
+            "first_name": "Astelvio", 
+            "last_name": "Pappone", 
+            "is_active": true, 
+            "is_superuser": false, 
+            "is_staff": false, 
+            "last_login": "2012-03-22 18:13:34", 
+            "groups": [
+                2
+            ], 
+            "user_permissions": [], 
+            "password": "sha1$12711$18657dbca5a9a132118744cfebd5021d4d001ce3", 
+            "email": "astelvio@comune.ix.it", 
+            "date_joined": "2012-03-22 17:11:36"
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "auth.group", 
+        "fields": {
+            "name": "editors", 
+            "permissions": [
+                54, 
+                63, 
+                84, 
+                93, 
+                66, 
+                72, 
+                69, 
+                75, 
+                80, 
+                82, 
+                16, 
+                47, 
+                48, 
+                49, 
+                96, 
+                98, 
+                99, 
+                100, 
+                137, 
+                138, 
+                139, 
+                140, 
+                141, 
+                142, 
+                131, 
+                132, 
+                133, 
+                153, 
+                144
+            ]
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "auth.group", 
+        "fields": {
+            "name": "politicians", 
+            "permissions": [
+                54
+            ]
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "registration.registrationprofile", 
+        "fields": {
+            "activation_key": "ALREADY_ACTIVATED", 
+            "user": 3
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "registration.registrationprofile", 
+        "fields": {
+            "activation_key": "ALREADY_ACTIVATED", 
+            "user": 4
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "registration.registrationprofile", 
+        "fields": {
+            "activation_key": "ALREADY_ACTIVATED", 
+            "user": 5
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "users.userprofile", 
+        "fields": {
+            "city": "Udine", 
+            "says_is_politician": false, 
+            "wants_newsletter": false, 
+            "privacy_level": 3, 
+            "person": null, 
+            "user": 3, 
+            "uses_nickname": true
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "users.userprofile", 
+        "fields": {
+            "city": "Senigallia", 
+            "says_is_politician": false, 
+            "wants_newsletter": false, 
+            "privacy_level": 3, 
+            "person": null, 
+            "user": 4, 
+            "uses_nickname": true
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "users.userprofile", 
+        "fields": {
+            "city": "Roma", 
+            "says_is_politician": true, 
+            "wants_newsletter": false, 
+            "privacy_level": 3, 
+            "person": 19, 
+            "user": 5, 
+            "uses_nickname": false
+        }
+    }
+]
