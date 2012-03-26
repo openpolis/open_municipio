@@ -22,11 +22,11 @@ class CouncilView(TemplateView):
         # Call the base implementation first to get a context
         context = super(CouncilView, self).get_context_data(**kwargs)
 
-        mayor = municipality.mayor.as_charge.person
+        mayor = municipality.mayor.as_charge
         president = municipality.council.members.get(
-            charge_type=InstitutionCharge.COUNCIL_PRES_CHARGE).person
+            charge_type=InstitutionCharge.COUNCIL_PRES_CHARGE)
         vice_president = municipality.council.members.get(
-            charge_type=InstitutionCharge.COUNCIL_VICE_CHARGE).person
+            charge_type=InstitutionCharge.COUNCIL_VICE_CHARGE)
         groups = municipality.council.groups
         committees = municipality.committees.as_institution
         latest_acts = Act.objects.filter(
