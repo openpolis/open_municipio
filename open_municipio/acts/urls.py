@@ -1,11 +1,16 @@
 from django.conf.urls.defaults import *
+from haystack.forms import FacetedSearchForm
+from haystack.query import SearchQuerySet
 
 from open_municipio.acts.models import Act
-from open_municipio.acts.views import (ActDetailView, ActListView, AgendaDetailView,
+from open_municipio.acts.views import (ExtendedFacetedSearchView, ActListView, AgendaDetailView,
                                        DeliberationDetailView, InterpellationDetailView,
                                        InterrogationDetailView, MotionDetailView, ActDescriptionView)
 from open_municipio.acts.views import ActAddTagsView, ActRemoveTagView
 from voting.views import vote_on_object
+
+
+
 
 
 act_dict = {
@@ -14,8 +19,19 @@ act_dict = {
     'allow_xmlhttprequest': 'true',
 }
 
+sqs = SearchQuerySet().facet('tags').facet('act_type').highlight()
+
 urlpatterns = patterns('',
-    url(r'^$', ActListView.as_view(),  name='om_act_list'),                
+    url(r'^$', ActListView.as_view(),  name='om_act_list'),
+
+    # faceted navigation
+    url(r'^search/$', ExtendedFacetedSearchView(
+            template='acts/act_search.html',
+            form_class=FacetedSearchForm,
+            searchqueryset=sqs,
+        ),
+        name='om_act_search'),
+
     # agendas
     url(r'^agendas/(?P<pk>\d+)/$', AgendaDetailView.as_view(),  name='om_agenda_detail'),
     url(r'^agendas/(?P<pk>\d+)/(?P<tab>documents)/$', AgendaDetailView.as_view(),  name='om_agenda_detail_documents'),

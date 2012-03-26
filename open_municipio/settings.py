@@ -128,7 +128,7 @@ INSTALLED_APPS = (
     'open_municipio.monitoring',
     'open_municipio.web_services',
     'open_municipio.newscache',
-
+    'haystack',
 )
 
 COMMENTS_APP = 'open_municipio.om_comments'
@@ -147,3 +147,8 @@ WEB_SERVICES = {
     'twitter' : {},
     'google_plus': {},
 }
+
+# haystack configuration parameters
+HAYSTACK_SITECONF = 'open_municipio.search_sites'
+HAYSTACK_SEARCH_ENGINE = 'solr'
+HAYSTACK_SOLR_URL = 'http://127.0.0.1:8983/solr/open_municipio'

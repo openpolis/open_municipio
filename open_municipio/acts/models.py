@@ -338,11 +338,9 @@ class Interrogation(Act):
     """
     WRITEME
     """
-    WRITTEN_ANSWER = 1
-    VERBAL_ANSWER = 2
     ANSWER_TYPES = Choices(
-        (WRITTEN_ANSWER, _('Written')),
-        (VERBAL_ANSWER, _('Verbal')),
+        ('WRITTEN', 'written', _('Written')),
+        ('VERBAL', 'verbal', _('Verbal')),
     )
     STATUS = Choices(
         ('PRESENTED', 'presented', _('presented')),
@@ -351,7 +349,7 @@ class Interrogation(Act):
     )
     
     status = StatusField()
-    answer_type = models.IntegerField(_('answer type'), choices=ANSWER_TYPES)
+    answer_type = models.CharField(_('answer type'), max_length=8, choices=ANSWER_TYPES)
     question_motivation = models.TextField(blank=True)
     answer_text = models.TextField(blank=True)
     reply_text = models.TextField(blank=True)
@@ -369,11 +367,9 @@ class Interpellation(Act):
     """
     WRITEME
     """
-    WRITTEN_ANSWER = 1
-    VERBAL_ANSWER = 2
     ANSWER_TYPES = Choices(
-        (WRITTEN_ANSWER, _('Written')),
-        (VERBAL_ANSWER, _('Verbal')),
+        ('WRITTEN', 'written', _('Written')),
+        ('VERBAL', 'verbal', _('Verbal')),
     )
     STATUS = Choices(
         ('PRESENTED', 'presented', _('presented')),
@@ -382,7 +378,7 @@ class Interpellation(Act):
     )
     
     status = StatusField()
-    answer_type = models.IntegerField(_('answer type'), choices=ANSWER_TYPES)
+    answer_type = models.CharField(_('answer type'), max_length=8, choices=ANSWER_TYPES)
     question_motivation = models.TextField(blank=True)
     answer_text = models.TextField(blank=True)
 

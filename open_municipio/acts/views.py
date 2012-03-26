@@ -5,6 +5,9 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic.edit import FormView
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
+from haystack.forms import FacetedSearchForm
+from haystack.views import SearchView
+import sys
 
 from open_municipio.acts.models import Act, Agenda, Deliberation, Interpellation, Interrogation, Motion
 from open_municipio.acts.forms import TagAddForm, ActDescriptionForm
@@ -17,6 +20,94 @@ class ActListView(ListView):
     template_name = 'acts/act_list.html'
     queryset = Act.objects.select_subclasses()
 
+class ExtendedFacetedSearchView(SearchView):
+    """
+
+    Extends the SearchView class, allowing building filters and breadcrumbs
+    for faceted navigation
+
+    """
+    __name__ = 'ExtendedFacetedSearchView'
+
+    def __init__(self, *args, **kwargs):
+        # Needed to switch out the default form class.
+        if kwargs.get('form_class') is None:
+            kwargs['form_class'] = FacetedSearchForm
+
+        super(ExtendedFacetedSearchView, self).__init__(*args, **kwargs)
+
+    def build_form(self, form_kwargs=None):
+        if form_kwargs is None:
+            form_kwargs = {}
+
+        # This way the form can always receive a list containing zero or more
+        # facet expressions:
+        form_kwargs['selected_facets'] = self.request.GET.getlist("selected_facets")
+
+        return super(ExtendedFacetedSearchView, self).build_form(form_kwargs)
+
+    def _get_extended_facets(self):
+        """
+
+        Returns the facets fields information along with a *is_facet_selected*
+        field, that allows easy filtering of the selected facets in the
+        navigation filters
+
+        """
+
+        # TODO: consider date and queries as well
+
+        selected_facets = self.request.GET.getlist('selected_facets')
+        facet_counts = self.results.facet_counts().get('fields', {})
+
+        facets = {'fields': {}}
+        for field, counts in facet_counts.iteritems():
+            facets['fields'][field] = []
+            for count in counts:
+                if count > 0:
+                    facet = list(count)
+                    is_facet_selected = "%s:%s" % (field, facet[0]) in selected_facets
+                    facet.append(is_facet_selected)
+                    facets['fields'][field].append(facet)
+        return facets
+
+    def _get_extended_selected_facets(self):
+        """
+
+        Returns the selected_facets list, in an extended dictionary,
+        in order to make it easy to write faceted navigation breadcrumbs
+        with *unselect* urls
+
+        unselecting a breadcrumb remove all following selections
+
+        """
+
+        ## original selected facets list
+        selected_facets = self.request.GET.getlist('selected_facets')
+
+        extended_selected_facets = []
+        for (c, f) in enumerate(selected_facets, start=1):
+            ## start building unselection url
+            url = "?q=%s" % (self.query)
+            for i in range(1,c):
+                url += "&amp;selected_facets=%s" % (selected_facets[i-1])
+            sf = {'label': f, 'url': url}
+            extended_selected_facets.append(sf)
+
+        return extended_selected_facets
+
+
+    def extra_context(self):
+        """
+
+        Builds extra context, to build facets filters and breadcrumbs
+
+        """
+        extra = super(ExtendedFacetedSearchView, self).extra_context()
+        extra['request'] = self.request
+        extra['selected_facets'] = self._get_extended_selected_facets()
+        extra['facets'] = self._get_extended_facets()
+        return extra
 
 class ActEditorView(TemplateView):
     pass
