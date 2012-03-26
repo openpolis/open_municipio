@@ -18,7 +18,8 @@
             console.log(data.result, data.message);
         }{% endif %});
     }
-    require(["ajax_csrf","jquery.socializer"], function() {
+
+    include(["{{ STATIC_URL }}js/ajax_csrf.js","{{ STATIC_URL }}js/jquery.socializer.js"], function() {
 
         $('.share-button-bar a.label').click(function(e){
             e.preventDefault();
