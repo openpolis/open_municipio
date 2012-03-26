@@ -62,16 +62,13 @@ urlpatterns += patterns('',
     url(r'^(?P<object_id>\d+)/(?P<direction>up|down|clear)vote/?$', vote_on_object, act_dict),
 )
 
-<<<<<<< HEAD
 ## Act's description update
 urlpatterns += patterns('',
     url(r'^(?P<pk>\d+)/description/update/$', ActDescriptionView.as_view(), name='om_act_description_update'),
 )
 
-=======
 ## Transition management
 urlpatterns += patterns('',
     url(r'(?P<pk>\d+)/transition/add/', ActTransitionAddView.as_view(), name='om_act_transition_add'),
     url(r'(?P<pk>\d+)/transition/remove/', ActTransitionRemoveView.as_view(), name='om_act_transition_remove'),
 )
->>>>>>> dan-dev
