@@ -1,105 +1,147 @@
 <table id="acttable">
     <thead>
-    <tr>
-        <th class="approved span3">
-            <div>Presentazione<span class="arrow"></span></div>
-        </th>
-        <th class="past span3">
-            <div>Discussione in Commissione<span class="arrow"></span></div>
-            {% if not act.deliberation.status_is_final %}
-                <a href="#transaction_form_commission" class="hide transaction_edit pull-right label label-info">
-                    <i class="icon-edit icon-white"></i> Edit
-                </a>
-            {% endif %}
-        </th>
-        <th class="span3">
-            <div>Discussione in Consiglio<span class="arrow"></span></div>
-        </th>
-        <th class="span3">
-            <div>Approvazione</div></th>
-    </tr>
+        <tr>
+            <th class="span3{% if act.status == 'PRESENTED' %} current{% else %} past{% endif %}">
+                <div>Presentazione<span class="arrow"></span></div>
+            </th>
+
+        {% if transition_groups|length_is:"5" %}
+            <th class="span3{% if act.status == 'COMMISSION' %} current{% else %}{% if transition_groups.COMMISSION|length > 0 %} past{% endif %}{% endif %}">
+                <div>Discussione in Commissione<span class="arrow"></span></div>
+            </th>
+            <th class="span3{% if act.status == 'COUNCIL' %} current{% else %}{% if transition_groups.COUNCIL|length > 0 %} past{% endif %}{% endif %}">
+                <div>Discussione in Consiglio<span class="arrow"></span></div>
+            </th>
+        {% endif %}
+
+            <th class="span3{% if act.status_is_final %} current{% endif %}">
+                <div>Approvazione</div>
+            </th>
+        </tr>
     </thead>
+
     {% if perms.acts.can_transition and not act.status_is_final %}
-        <tfoot>
+    <tfoot>
         <tr>
             <td></td>
+            {% if transition_groups|length_is:"5" %}
+            <td>{% if act.status != 'COMMISSION' %}
+                <a href="#transaction_form_commission" class="transaction_edit btn btn-mini"><i class="icon-edit"></i></a>
+                <div class="modal hide" id="transaction_form_commission">
+                    <form action="{% url om_act_transition_add act.id %}" method="POST">
+                        {% csrf_token %}
+                        <div class="modal-header">
+                            <a class="close" data-dismiss="modal">×</a>
+                            <h3>Aggiungi transizione in Commissione</h3>
+                        </div>
+                        <div class="modal-body">
+                            {{ transition_to_commission_form.as_p }}
+                        </div>
+                        <div class="modal-footer">
+                            <input type="button" value="Chiudi" data-dismiss="modal" class="btn">
+                            <input type="submit" value="Salva" class="btn btn-primary">
+                        </div>
+                    </form>
+                </div>
+                {% endif %}</td>
+            <td>{% if act.status != 'COUNCIL' %}
+                <a href="#transaction_form_council" class="transaction_edit btn btn-mini"><i class="icon-edit"></i></a>
+                <div class="modal hide" id="transaction_form_council">
+                    <form action="{% url om_act_transition_add act.id  %}" method="POST">
+                        {% csrf_token %}
+                        <div class="modal-header">
+                            <a class="close" data-dismiss="modal">×</a>
+                            <h3>Aggiungi transizione in Consiglio</h3>
+                        </div>
+                        <div class="modal-body">
+                            {{ transition_to_council_form.as_p }}
+                        </div>
+                        <div class="modal-footer">
+                            <input type="button" value="Chiudi" data-dismiss="modal" class="btn">
+                            <input type="submit" value="Salva" class="btn btn-primary">
+                        </div>
+                    </form>
+                </div>
+                {% endif %}</td>
+            {% endif %}
             <td>
-                {% if act.deliberation.status != act.deliberation.STATUS.commission %}
-                    <div class="modal hide" id="transaction_form_commission">
-                        <form action="">
-                            <div class="modal-header">
-                                <a class="close" data-dismiss="modal">×</a>
-                                <h3>Aggiungi transizione: {{ act.deliberation.STATUS.commission }}</h3>
-                            </div>
-                            <div class="modal-body">
-                                <p>Data : <input type="text" name="data"></p>
-                                <p>Note : <input type="text" name="note"></p>
-                            </div>
-                            <div class="modal-footer">
-                                <input type="hidden" name="act_id" value="{{ act.id }}">
-                                <input type="hidden" name="act_status" value="{{ act.deliberation.STATUS.commission }}" >
-                                <input type="button" value="Close" class="btn">
-                                <input type="submit" value="Salva" class="btn btn-primary">
-                            </div>
+                <a href="#transaction_form_final" class="transaction_edit btn btn-mini"><i class="icon-edit"></i></a>
+                <div class="modal hide" id="transaction_form_final">
+                    <form action="{% url om_act_transition_add act.id %}" method="POST">
+                        {% csrf_token %}
+                        <div class="modal-header">
+                            <a class="close" data-dismiss="modal">×</a>
+                            <h3>Transizione finale</h3>
+                        </div>
+                        <div class="modal-body">
+                            {{ transition_to_final_form.as_p }}
+                        </div>
+                        <div class="modal-footer">
+                            <input type="button" value="Chiudi" data-dismiss="modal" class="btn">
+                            <input type="submit" value="Salva" class="btn btn-primary">
+                        </div>
+                    </form>
+                </div>
+            </td>
+        </tr>
+    </tfoot>
+    {% endif %}
+
+    <tbody>
+        <tr>
+            <td>{{ act.presentation_date|date:"j.n.Y" }}</td>
+            {% if transition_groups|length_is:"5" %}
+            <td>
+                <ul>
+                    {% for transition in transition_groups.COMMISSION %}
+                        <li>
+                            {% if transition == act.get_last_transition %}
+                                <form action="{% url om_act_transition_remove act.id %}" class="transition_delete_form" method="post">{% csrf_token %}
+                                    <input type="hidden" name="transition_id" value="{{ transition.id }}" />
+                                    <button class="btn btn-mini"><i class="icon-remove"></i></button>
+                                </form>
+                            {% endif %}
+
+                            {{ transition.transition_date|date:"j.n.Y" }} - {{ transition.note }}</li>
+                    {% endfor %}
+                </ul>
+            </td>
+            <td>
+                <ul>
+                    {% for transition in transition_groups.COUNCIL %}
+                        <li>
+                            {% if transition == act.get_last_transition %}
+                                <form action="{% url om_act_transition_remove act.id %}" class="transition_delete_form" method="post">{% csrf_token %}
+                                    <input type="hidden" name="transition_id" value="{{ transition.id }}" />
+                                    <button class="btn btn-mini"><i class="icon-remove"></i></button>
+                                </form>
+                            {% endif %}
+
+                            {{ transition.transition_date|date:"j.n.Y" }} - {{ transition.note }}</li>
+                    {% endfor %}
+                </ul>
+            </td>
+            {% endif %}
+            <td>
+                {% if act.status_is_final %}
+
+                    {% with transition=act.get_last_transition %}
+
+                    <p class="text-center">
+                        <b>{{ act.status }}</b> <br>
+                        <a href="{{ transition.votation.get_absolute_url }}">{{ transition.votation }}</a>
+                    </p>
+
+                        <form action="{% url om_act_transition_remove act.id %}" class="transition_delete_form" method="post">{% csrf_token %}
+                            <input type="hidden" name="transition_id" value="{{ transition.id }}" />
+                            <button class="btn btn-mini"><i class="icon-remove"></i></button>
                         </form>
-                    </div>
+
+                    {% endwith %}
 
                 {% endif %}
             </td>
-            <td>
-                {% if act.deliberation.status != act.deliberation.STATUS.council %}
-                    <form action="" class="hide">
-                        <h6>Aggiungi transizione: {{ act.deliberation.STATUS.council }}</h6>
-                        <p>Data : <input type="text" name="data"></p>
-                        <p>Note : <input type="text" name="note"></p>
-                        <input type="hidden" name="act_id" value="{{ act.id }}">
-                        <input type="hidden" name="act_status" value="{{ act.deliberation.STATUS.council }}" >
-                        <input type="submit" value="Salva">
-                    </form>
-                {% endif %}
-            </td>
-            <td>
-                {% if act.deliberation.status != act.deliberation.STATUS.approved and act.deliberation.status != act.deliberation.STATUS.rejected %}
-                    <form action=""class="hide">
-                        <h6>Transizione conclusiva</h6>
-                        <p>Data : <input type="text" name="data"></p>
-                        <p>Note : <input type="text" name="note"></p>
-                        <p>Voto : <select name="vote_id">
-                            <option value="">-- seleziona votazione --</option>
-                        </select></p>
-                        <p>
-                            Approvato <input type="radio" name="act_status" value="{{ act.deliberation.STATUS.approved }}">
-                            <br>
-                            Respinto <input type="radio" name="act_status" value="{{ act.deliberation.STATUS.rejected }}">
-                        </p>
-                        <input type="hidden" name="act_id" value="{{ act.id }}">
-                        <input type="submit" value="Salva">
-                    </form>
-                {% endif %}
-            </td>
         </tr>
-        </tfoot>
-    {% endif %}
-    <tbody>
-    <tr>
-        <td>{{ act.presentation_date }}</td>
-        <td>
-            <ul>
-                <li>
-                    2.2.2012 - Edilizia <br />
-                    <strong>In esame</strong>
-                </li>
-                <li>
-                    12.2.2012 - Edilizia <br />
-                    <strong><i class="icon-check"></i> Approvato</strong> <br />
-                    <a href="#">Emendamenti</a> &middot; <a href="#">Voti</a>
-                </li>
-                <li><strong><a href="#">Vedi tutte <i class="icon-chevron-down"></i></a></strong></li>
-            </ul>
-        </td>
-        <td></td>
-        <td></td>
-    </tr>
     </tbody>
 </table>
 
@@ -110,13 +152,13 @@
             var link = $(this);
             link.click(function(e) {
                 e.preventDefault();
-                console.log(link.attr('href'));
                 $(link.attr('href')).modal();
             });
-            link.parent().hover(
+
+            /*link.parent().hover(
                     function() { link.fadeIn(); },
                     function() { link.fadeOut(); }
-            );
+            );*/
         });
     });
 </script>

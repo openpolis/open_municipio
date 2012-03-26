@@ -1,9 +1,14 @@
+from django.core.urlresolvers import reverse
+from django.http import HttpResponseRedirect, HttpResponseBadRequest, HttpResponseNotAllowed
+from django.utils.decorators import method_decorator
 from django.views.generic import DetailView, ListView, TemplateView
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
+from django.views.generic.edit import FormView
+from django.contrib.auth.decorators import login_required
 
-from open_municipio.acts.models import Act, Agenda, Deliberation, Interpellation, Interrogation, Motion
-from open_municipio.acts.forms import TagAddForm
+from open_municipio.acts.models import Act, Agenda, Deliberation, Interpellation, Interrogation, Motion, Transition
+from open_municipio.acts.forms import TagAddForm, ActTransitionForm, ActFinalTransitionForm
 from open_municipio.monitoring.forms import MonitoringForm
 from open_municipio.taxonomy.models import Tag, Category
 from open_municipio.taxonomy.views import AddTagsView, RemoveTagView
@@ -53,11 +58,25 @@ class ActDetailView(DetailView):
         except ObjectDoesNotExist:
             context['is_user_monitoring'] = False
 
-        # all categories
-        context['categories'] = Category.objects.all()
+        # some user can edit categories and tags
+        if self.request.user.has_perm('taxnomy.tag') and self.request.user.has_perm('taxonomy.category'):
+            # all categories and tags
+            context['act_tags_editor'] = {
+                'categories' : Category.objects.all(),
+                'tags' : Tag.objects.all()
+            }
 
-        # all arguments
-        context['tags'] = Tag.objects.all()
+        # retrieve a dictionary with status and its transitions
+        context['transition_groups'] = act.get_transitions_groups()
+
+        context['transition_forms'] = {}
+        # some user can set transitions
+        if self.request.user.has_perm('acts.transition') : #and context['status_list']
+            if len(context['transition_groups']) == 5:
+                context['transition_to_council_form'] = ActTransitionForm(initial={'act': act, 'final_status': 'COUNCIL' })
+                context['transition_to_commission_form'] = ActTransitionForm(initial={'act': act, 'final_status': 'COMMISSION' })
+            context['transition_to_final_form'] = ActFinalTransitionForm(initial={'act': act })
+            context['transition_to_final_form'].fields['final_status'].widget.choices = [('APPROVED','Approvato'),('REJECTED','Rifiutato')]
 
         return context
     
@@ -134,3 +153,50 @@ class ActRemoveTagView(RemoveTagView):
         """
         act = get_object_or_404(Act, pk=self.kwargs.get('act_pk'))
         return act
+
+class ActTransitionToggleBaseView(FormView):
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(ActTransitionToggleBaseView, self).dispatch(*args, **kwargs)
+
+    def form_invalid(self, form=None):
+        msg = "Invalid transition for this act!"
+        return HttpResponseBadRequest(msg)
+
+    def get_success_url(self):
+        return self.act.downcast().get_absolute_url()
+
+    def get(self, *args, **kwargs):
+        msg = "This view can be accessed only via POST"
+        return HttpResponseNotAllowed(msg)
+
+class ActTransitionAddView(ActTransitionToggleBaseView):
+    def post(self, request, *args, **kwargs):
+        self.act = get_object_or_404(Act, pk=kwargs['pk'])
+
+        if 'votation' in request.POST:
+            form = ActFinalTransitionForm(data=request.POST)
+            form.fields['final_status'].widget.choices = [('APPROVED','Approvato'),('REJECTED','Rifiutato')]
+        else:
+            form = ActTransitionForm(data=request.POST)
+
+        if not form.is_valid():
+            return self.form_invalid(form)
+
+        form.save()
+
+        return HttpResponseRedirect( self.get_success_url() )
+
+
+class ActTransitionRemoveView(ActTransitionToggleBaseView):
+    def post(self, request, *args, **kwargs):
+        """
+        TODO: clean transition from news, act's status and status_is_final
+        """
+        self.act = get_object_or_404(Act, pk=kwargs['pk'])
+
+        transition = get_object_or_404(Transition, pk=request.POST['transition_id'])
+        transition.delete()
+
+        return HttpResponseRedirect( self.get_success_url() )

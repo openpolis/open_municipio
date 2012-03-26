@@ -3136,6 +3136,20 @@ input[type="submit"].btn.small {
   margin-left: 5px;
   margin-bottom: 0;
 }
+.modal form {
+  margin: 0;
+}
+.modal form input,
+.modal form textarea,
+.modal form select,
+.modal form .help-inline,
+.modal form .uneditable-input {
+  display: inline-block;
+  margin-bottom: 0;
+}
+.modal form .hide {
+  display: none;
+}
 .tooltip {
   position: absolute;
   z-index: 1020;
@@ -4353,20 +4367,32 @@ table#acttable tbody:last-child tr:last-child td:last-child {
   -moz-border-radius: 0 0 4px 0;
   border-radius: 0 0 4px 0;
 }
+table#acttable tbody {
+  font-size: 12px;
+}
+table#acttable tbody form {
+  display: inline;
+  float: right;
+}
 table#acttable tbody ul {
   margin-left: 0;
   list-style: none;
 }
 table#acttable tbody ul li {
   border-top: 1px dotted #999999;
+  padding: 10px 0;
 }
 table#acttable tbody ul li:first-child {
   border-top: 0;
+}
+table#acttable tfoot {
+  text-align: center;
 }
 table#acttable thead th {
   padding: 0;
   background-color: #e1d9d3;
   vertical-align: top;
+  text-align: center;
   border-right: 1px solid #ffffff;
   min-height: 35px;
 }
@@ -4393,7 +4419,7 @@ table#acttable thead th.past .arrow {
 }
 table#acttable thead th > div {
   position: relative;
-  padding: 8px 8px 8px 22px;
+  padding: 8px /*8px 8px 22px*/;
 }
 .party-people {
   *zoom: 1;

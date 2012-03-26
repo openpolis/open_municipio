@@ -7,7 +7,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
 
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 
 from model_utils import Choices
@@ -185,6 +185,31 @@ class Act(TimeStampedModel):
     @property
     def related_news(self):
         return self.related_news_set.all()
+
+    def get_transitions_groups(self):
+        """
+        retrieve a list of transitions grouped by status
+        """
+        groups = {}
+        this = self.downcast()
+        if not hasattr(this, 'STATUS'):
+            return groups
+
+        # initialize all status with an empty list of transitions
+        for status in this.STATUS:
+            groups[status[0]] = []
+
+        # fill groups with ordered transitions
+        for transition in this.transition_set.all().order_by('-transition_date'):
+            groups.get(transition.final_status).append(transition)
+
+        return groups
+
+    def get_last_transition(self):
+        if self.transitions:
+            return list(self.transitions)[-1]
+        return False
+
 
       
 class ActSection(models.Model):
@@ -389,7 +414,7 @@ class Transition(models.Model):
     transition_date = models.DateField(default=None)
     symbol = models.CharField(_('symbol'), max_length=128, blank=True, null=True)
     note = models.CharField(_('note'), max_length=255, blank=True, null=True)
-    
+
     class Meta:
         db_table = u'acts_transition'
         verbose_name = _('status transition')
@@ -578,12 +603,14 @@ def new_signature(**kwargs):
 def new_transition(**kwargs):
     if not kwargs.get('raw', False) and kwargs.get('created', False):
         generating_item = kwargs['instance']
-        act = generating_item.act
+        act = generating_item.act.downcast()
 
         # Presentation is already handled by new_act_published handler
-        if generating_item.final_status != act.STATUS.presented:
+        if generating_item.final_status != 'PRESENTED':
             # set act's status according to transition status
             act.status = generating_item.final_status
+            if act.status in ['APPROVED', 'REJECTED']:
+                act.status_is_final = True
             act.save()
 
             # generate news
@@ -593,3 +620,14 @@ def new_transition(**kwargs):
                 generating_object=generating_item, related_object=act, priority=2,
                 text=News.get_text_for_news(ctx, 'newscache/act_changed_status.html')
             )
+
+@receiver(post_delete, sender=Transition)
+def delete_transition(**kwargs):
+    if not kwargs.get('raw', False):
+        deleting_item = kwargs['instance']
+        act = deleting_item.act.downcast()
+
+        act.status = act.get_last_transition().final_status
+        if deleting_item.final_status in ['APPROVED', 'REJECTED']:
+            act.status_is_final = False
+        act.save()
