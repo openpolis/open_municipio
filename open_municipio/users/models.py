@@ -1,9 +1,13 @@
 from django.contrib.contenttypes import generic
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch.dispatcher import receiver
 from django.utils.translation import ugettext_lazy as _
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from model_utils import Choices
+import sys
 from open_municipio.newscache.models import News
+from open_municipio.people.models import Person
 
 
 class UserProfile(models.Model):
@@ -46,8 +50,10 @@ class UserProfile(models.Model):
     
     # the user has declared to be a politician in the registration phase
     # this needs to be verified, before assigning the user to the *Politicians* group
+    # and linking the user's profile to a Person instance
     says_is_politician = models.BooleanField(_('i am a politician'), default=False)
-    
+    person = models.OneToOneField(Person, blank=True, null=True)
+
     # user's privacy options
     privacy_level = models.IntegerField(_('privacy level'), choices=PRIVACY_LEVELS, default=PRIVACY_LEVELS.none)
     
@@ -64,6 +70,9 @@ class UserProfile(models.Model):
 
     class Meta:
         db_table = u'users_user_profile'
+
+    def __unicode__(self):
+        return self.public_name
 
     @models.permalink
     def get_absolute_url(self):
@@ -92,4 +101,19 @@ class UserProfile(models.Model):
         Returns objects monitored by this user (as a list).
         """
         return [o.content_object for o in self.user.monitoring_set.all()]
-    
+
+
+@receiver(post_save, sender=UserProfile)
+def update_group(**kwargs):
+    """
+    see if user has been linked/unlinked to a politician and
+    add/remove to politicians group
+    """
+    profile = kwargs['instance']
+
+    politician_group = Group.objects.get(name='politicians')
+
+    if profile.person is None:
+        profile.user.groups.remove(politician_group)
+    else:
+        profile.user.groups.add(politician_group)
