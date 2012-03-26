@@ -37,10 +37,10 @@ class CouncilView(TemplateView):
             )
         num_acts = dict()
         act_types = [
-            Deliberation, Motion, Interrogation, Interpellation, Motion, Agenda
+            Deliberation, Motion, Interrogation, Interpellation, Agenda
             ]
         for act_type in act_types:
-            num_acts[act_type.__name__] = act_type.objects.filter(
+            num_acts[act_type.__name__.lower()] = act_type.objects.filter(
                 emitting_institution__institution_type=Institution.COUNCIL
                 ).count()
 
@@ -70,7 +70,7 @@ class CityGovernmentView(TemplateView):
         # Call the base implementation first to get a context
         context = super(CityGovernmentView, self).get_context_data(**kwargs)
 
-        citygov = municipality.gov.members
+        citygov = municipality.gov
         latest_acts = Act.objects.filter(
             emitting_institution__institution_type=Institution.CITY_GOVERNMENT
             ).order_by('-presentation_date')[:3]
@@ -79,10 +79,10 @@ class CityGovernmentView(TemplateView):
             )
         num_acts = dict()
         act_types = [
-            Deliberation, Motion, Interrogation, Interpellation, Motion, Agenda
+            Deliberation, Motion, Interrogation, Interpellation, Agenda
             ]
         for act_type in act_types:
-            num_acts[act_type.__name__] = act_type.objects.filter(
+            num_acts[act_type.__name__.lower()] = act_type.objects.filter(
                 emitting_institution__institution_type=Institution.CITY_GOVERNMENT
                 ).count()
             

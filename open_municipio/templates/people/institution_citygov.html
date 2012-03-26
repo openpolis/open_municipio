@@ -7,42 +7,19 @@
     <section class="clearfix border-bottom">
         <h1>Giunta</h1>
         <ul class="people-list list-floated">
+            {% for member in citygov.members %}
             <li>
                 <a href="#"><img src="http://placehold.it/50" /></a>
-                <strong><a href="#"><i class="icon-ok"></i> Mario Rossi</a></strong> <br />
+                <strong><a href="#"><i class="icon-ok"></i> {{ member.person.first_name|lower|capfirst }} {{ member.person.last_name|lower|capfirst }}</a></strong> <br />
+                {# FIXME #}
                 Partito Democratico
-                <span class="monitoring">Monitorato da 2 cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a></span>
+                {{ member.council_group }}
+                {# endFIXME #}
+                <span class="monitoring">
+                    {% if not member.person.monitoring_users %}Non monitorato{% else %}Monitorato da {{ member.person.monitoring_users|length }} cittadini{% endif %} - <a href="#"><i class="socialicon-add"></i> Monitora</a>
+                </span>
             </li>
-            <li>
-                <a href="#"><img src="http://placehold.it/50" /></a>
-                <strong><a href="#"><i class="icon-ok"></i> Mario Rossi</a></strong> <br />
-                Partito Democratico
-                <span class="monitoring">Monitorato da 2 cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a></span>
-            </li>
-            <li>
-                <a href="#"><img src="http://placehold.it/50" /></a>
-                <strong><a href="#"><i class="icon-ok"></i> Mario Rossi</a></strong> <br />
-                Partito Democratico
-                <span class="monitoring">Monitorato da 2 cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a></span>
-            </li>
-            <li>
-                <a href="#"><img src="http://placehold.it/50" /></a>
-                <strong><a href="#"><i class="icon-ok"></i> Mario Rossi</a></strong> <br />
-                Partito Democratico
-                <span class="monitoring">Monitorato da 2 cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a></span>
-            </li>
-            <li>
-                <a href="#"><img src="http://placehold.it/50" /></a>
-                <strong><a href="#"><i class="icon-ok"></i> Mario Rossi</a></strong> <br />
-                Partito Democratico
-                <span class="monitoring">Monitorato da 2 cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a></span>
-            </li>
-            <li>
-                <a href="#"><img src="http://placehold.it/50" /></a>
-                <strong><a href="#"><i class="icon-ok"></i> Mario Rossi</a></strong> <br />
-                Partito Democratico
-                <span class="monitoring">Monitorato da 2 cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a></span>
-            </li>
+            {% endfor %}
         </ul>
     </section>
 
@@ -57,13 +34,9 @@
             </div>
             <div class="span8">
                 <ul class="list-floated unstyled">
-                    <li><strong>01.3.2012</strong> <a href="#">Conferenza dei capigruppo</a></li>
-                    <li><strong>02.3.2012</strong> <a href="#">Conferenza dei capigruppo</a></li>
-                    <li><strong>03.3.2012</strong> <a href="#">Conferenza dei capigruppo</a></li>
-                    <li><strong>04.3.2012</strong> <a href="#">Conferenza dei capigruppo</a></li>
-                    <li><strong>05.3.2012</strong> <a href="#">Conferenza dei capigruppo</a></li>
-                    <li><strong>06.3.2012</strong> <a href="#">Conferenza dei capigruppo</a></li>
-                    <li><strong>07.3.2012</strong> <a href="#">Conferenza dei capigruppo</a></li>
+                    {% for event in events %}
+                    <li><strong>{{ event.date|date:"d.m.Y" }}</strong> <a href="#">{{ event.act.title }}</a></li>
+                    {% endfor %}
                 </ul>
             </div>
         </div>
@@ -74,35 +47,37 @@
 {% block sidebar %}
     <h2>Ultimi 3 atti della Giunta</h2>
     <ul class="feed-list">
-
-        <li>Stato idrogeologico della zona
-                <span class="monitoring">Monitorato da 2 cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a>
-            </span></li>
-        <li>Stato idrogeologico della zona
-                <span class="monitoring">Monitorato da 2 cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a>
-            </span></li>
-        <li>Stato idrogeologico della zona
-                <span class="monitoring">Monitorato da 2 cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a>
-            </span></li>
+        {% for act in latest_acts %}
+        <li>{{ act.title }}
+            <span class="monitoring">
+                {% if not act.monitoring_users_count %}
+                Non monitorato
+                {% else %}
+                Monitorato da {{ act.monitoring_users_count }} cittadini
+                {% endif %}
+                - <a href="#"><i class="socialicon-add"></i> Monitora</a>
+            </span>
+        </li>
+        {% endfor %}
     </ul>
     <p class="bg-dark"><a href="#"><i class="icon-play"></i> Vedi tutti</a></p>
 
     <h2>Atti di Giunta</h2>
     <table>
         <tr>
-            <td><span class="graybox">150</span></td>
+            <td><span class="graybox">{{ num_acts.deliberation }}</span></td>
             <th class="bg-dark span6">Delibere</th>
-            <td><span class="graybox">150</span></td>
+            <td><span class="graybox">{{ num_acts.motion }}</span></td>
             <th class="bg-dark span6">Mozioni</th>
         </tr>
         <tr>
-            <td><span class="graybox">150</span></td>
+            <td><span class="graybox">{{ num_acts.agenda }}</span></td>
             <th class="bg-dark span12" colspan="3">Ordini del giorno</th>
         </tr>
         <tr>
-            <td><span class="graybox">150</span></td>
+            <td><span class="graybox">{{ num_acts.interrogation }}</span></td>
             <th class="bg-dark span6">Interrogazioni</th>
-            <td><span class="graybox">150</span></td>
+            <td><span class="graybox">{{ num_acts.interpellation }}</span></td>
             <th class="bg-dark span6">Interpellanze</th>
         </tr>
     </table>
