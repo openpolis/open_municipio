@@ -6,13 +6,19 @@
 
 {% block sub_nav %}
 
-    <ul>
-        {% for t in topics %}
-            <li>
-                <a href="{{ t.get_absolute_url }}">{{ t }}</a>
-            </li>
-        {% endfor %}
-    </ul>
+    <nav class="navbar pipe-separators" id="sub-nav">
+        <div class="navbar-inner">
+            <div class="container-fluid">
+                <ul class="nav">
+                    {% for t in topics %}
+                        <li>
+                            <a href="{{ t.get_absolute_url }}"{% if t == topic %} class="active"{% endif %}>{{ t }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </nav>
 
 {% endblock %}
 
