@@ -4,7 +4,7 @@
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="http://www.openmunicipio.it file:/Users/guglielmo/Workspace/open_municipio/docs/dev/data_import/OpenMunicipioDataImport.xsd">
     <om:Sitting call="1" date="2011-11-23" num="12">
-        <om:Votation seq_n="1" presents="39" partecipants="39" outcome="approved" legal_number="20" date_time="2010-02-15T21:00:00" counter_yes="23" counter_no="16" counter_abs="0">           
+        <om:Votation seq_n="1" votation_type="Palese" presents="39" partecipants="39" outcome="approved" legal_number="20" date_time="2010-02-15T21:00:00" counter_yes="23" counter_no="16" counter_abs="0">
             <om:Subject sintetic="OGG 1">Titolo che descrive l'atto per esteso</om:Subject>
             <om:Votes>
                 <om:ChargeVote cardID="011" componentID="0011" groupID="0001" vote="yes">
@@ -21,7 +21,7 @@
                 </om:ChargeVote>
             </om:Votes>            
         </om:Votation>             
-        <om:Votation seq_n="2" presents="39" partecipants="37" outcome="approved" legal_number="20" date_time="2010-02-15T21:00:00" counter_yes="22" counter_no="15" counter_abs="0">           
+        <om:Votation seq_n="2" votation_type="Palese" presents="39" partecipants="37" outcome="approved" legal_number="20" date_time="2010-02-15T21:00:00" counter_yes="22" counter_no="15" counter_abs="0">
             <om:Subject sintetic="I.E. ogg 1" />
             <om:Votes>
                 <om:ChargeVote cardID="011" componentID="0011" groupID="0001" vote="no">
