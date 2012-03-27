@@ -8,12 +8,20 @@ em {
 {% endblock %}
 
 {% block content %}
-    {% for facet in selected_facets  %}
-        {{ facet.label }} (<a href="{{ facet.url }}">x</a>)
-        {% if not forloop.last %}
-            >
-        {% endif %}
-    {% endfor %}
+    {% if selected_facets %}
+        <ul class="breadcrumb">
+            {% for facet in selected_facets  %}
+                <li>
+                    <a href="{{ facet.url }}"><i class="icon-remove"></i></a>
+                    {{ facet.field }}<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;{{ facet.label }} <a href="#"><i class="icon-chevron-down"></i></a
+                </li>
+                {% if not forloop.last %}
+                    <span class="divider">&nbsp;</span>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    {% endif %}
 
 
     <h2>Search</h2>
@@ -44,7 +52,13 @@ em {
                                 <span class="label">{{ result.act_type }}</span>
                                 <a href="{{ result.url }}">{{ result.title }}</a><br/>
                                 {{ result.highlighted.text.0|safe }}<br/>
-                                {{ result.tags }}
+                                {% if result.categories %}
+                                    <strong>Categorie</strong>: {{ result.categories|join:", " }}<br/>
+                                {% endif %}
+                                {% if result.tags %}
+                                    <strong>Tag</strong>: {{ result.tags|join:", " }}<br/>
+                                {% endif %}
+                                <strong>Pubblicazione:</strong>{{ result.pub_date }}
                             </td>
                         </tr>
                     {% empty %}
@@ -74,34 +88,56 @@ em {
 
         <div>
             <dl>
-                {% if facets.fields.tags %}
-                    <dt>Tag</dt>
-                    {# Provide only the top 5 tags #}
-                    {% for tag in facets.fields.tags|slice:":5" %}
-                        <dd>
-                            {% if not tag.2 %}
-                                <a href="{{ request.get_full_path }}&amp;selected_facets=tags:{{ tag.0|urlencode }}">{{ tag.0 }}</a> ({{ tag.1 }})
-                            {% endif %}
-                        </dd>
-                    {% endfor %}
-                {% else %}
-                    <p>No tag facets.</p>
-                {% endif %}
-            </dl>
-            <dl>
-                {% if facets.fields.act_type %}
+                {% if facets.fields.act_type and not facets.fields.act_type.is_field_selected %}
                     <dt>Tipologia</dt>
                     {# Provide all act types #}
-                    {% for t in facets.fields.act_type %}
+                    {% for t in facets.fields.act_type.counts %}
                         <dd>
                             {% if not t.2 %}
                                 <a href="{{ request.get_full_path }}&amp;selected_facets=act_type:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
                             {% endif %}
                         </dd>
                     {% endfor %}
-                {% else %}
-                    <p>No type facets.</p>
                 {% endif %}
+            </dl>
+            <dl>
+                {% if facets.fields.categories and not facets.fields.categories.is_field_selected %}
+                    <dt>Categorie</dt>
+                    {# Provide only the top 5 categories #}
+                    {% for cat in facets.fields.categories.counts|slice:":5" %}
+                        <dd>
+                            {% if not cat.2 %}
+                                <a href="{{ request.get_full_path }}&amp;selected_facets=categories:{{ cat.0|urlencode }}">{{ cat.0 }}</a> ({{ cat.1 }})
+                            {% endif %}
+                        </dd>
+                    {% endfor %}
+                {% endif %}
+            </dl>
+            <dl>
+                {% if facets.fields.tags %}
+                    <dt>Tag</dt>
+                    {# Provide only the top 5 tags #}
+                    {% for tag in facets.fields.tags.counts|slice:":5" %}
+                        <dd>
+                            {% if not tag.2 %}
+                                <a href="{{ request.get_full_path }}&amp;selected_facets=tags:{{ tag.0|urlencode }}">{{ tag.0 }}</a> ({{ tag.1 }})
+                            {% endif %}
+                        </dd>
+                    {% endfor %}
+                {% endif %}
+            </dl>
+            <dl>
+                <dt>Data di pubblicazione</dt>
+                    <dd>
+                        <a href="{{ request.get_full_path }}&amp;selected_facets={{ facet_queries_pubdate.threedays.key }}">
+                            ultimi tre giorni
+                        </a> ({{ facet_queries_pubdate.threedays.count }})
+                    </dd>
+                    <dd>
+                        <a href="{{ request.get_full_path }}&amp;selected_facets={{ facet_queries_pubdate.onemonth.key }}">
+                            ultimo mese
+                        </a> ({{ facet_queries_pubdate.onemonth.count }})
+                    </dd>
             </dl>
         </div>
         <!-- End faceting -->

@@ -1,9 +1,10 @@
 from django.conf.urls.defaults import *
-from haystack.forms import FacetedSearchForm
 from haystack.query import SearchQuerySet
 
+import datetime
+
 from open_municipio.acts.models import Act
-from open_municipio.acts.views import (ExtendedFacetedSearchView, ActListView, AgendaDetailView,
+from open_municipio.acts.views import (ActSearchView, AgendaDetailView,
                                        DeliberationDetailView, InterpellationDetailView,
                                        InterrogationDetailView, MotionDetailView, ActDescriptionView,
                                        ActTransitionAddView, ActTransitionRemoveView)
@@ -20,18 +21,21 @@ act_dict = {
     'allow_xmlhttprequest': 'true',
 }
 
-sqs = SearchQuerySet().facet('tags').facet('act_type').highlight()
+
+## SearchQuerySet with multiple facets and highlight
+sqs = SearchQuerySet().\
+    facet('act_type').facet('categories').facet('tags').\
+    query_facet('pub_date', ActSearchView.THREEDAYS).\
+    query_facet('pub_date', ActSearchView.ONEMONTH).\
+    highlight()
 
 urlpatterns = patterns('',
-    url(r'^$', ActListView.as_view(),  name='om_act_list'),
-
     # faceted navigation
-    url(r'^search/$', ExtendedFacetedSearchView(
-            template='acts/act_search.html',
-            form_class=FacetedSearchForm,
-            searchqueryset=sqs,
-        ),
-        name='om_act_search'),
+    url(r'^$', ActSearchView(
+                template='acts/act_search.html',
+                searchqueryset=sqs,
+            ),
+        name='om_act_list'),
 
     # agendas
     url(r'^agendas/(?P<pk>\d+)/$', AgendaDetailView.as_view(),  name='om_agenda_detail'),

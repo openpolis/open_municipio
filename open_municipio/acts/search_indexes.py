@@ -6,7 +6,10 @@ from open_municipio.acts.models import Act
 
 class ActIndex(SearchIndex):
     text = CharField(document=True, use_template=True)
-    pub_date = DateTimeField(model_attr='presentation_date')
+
+    # faceting fields
+    pub_date = FacetDateField(model_attr='presentation_date')
+    categories = MultiValueField(indexed=True, stored=True, faceted=True)
     tags = MultiValueField(indexed=True, stored=True, faceted=True)
     act_type = FacetCharField( )
 
@@ -14,6 +17,9 @@ class ActIndex(SearchIndex):
     # while showing results
     url = CharField(indexed=False, stored=True)
     title = CharField(indexed=False, stored=True, model_attr='title')
+
+    def prepare_categories(self, obj):
+        return [c.name for c in obj.categories]
 
     def prepare_tags(self, obj):
         return [tag.name for tag in obj.tags]

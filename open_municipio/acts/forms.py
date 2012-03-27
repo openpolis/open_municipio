@@ -6,6 +6,7 @@ from django.forms.models import ModelForm
 from open_municipio.acts.models import Transition, Deliberation
 
 
+
 class ActDescriptionForm(ModelForm):
     description = forms.Textarea()
     id = forms.IntegerField(widget=forms.HiddenInput)
