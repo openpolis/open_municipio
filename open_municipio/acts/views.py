@@ -6,6 +6,7 @@ from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic.edit import FormView
 from django.contrib.auth.decorators import login_required
+from haystack.query import SearchQuerySet
 
 from open_municipio.acts.models import Act, Agenda, Deliberation, Interpellation, Interrogation, Motion, Transition
 from open_municipio.acts.forms import TagAddForm, ActDescriptionForm, ActTransitionForm, ActFinalTransitionForm

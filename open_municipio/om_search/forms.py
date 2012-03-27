@@ -1,4 +1,5 @@
 from haystack.forms import SearchForm
+import sys
 
 class RangeFacetedSearchForm(SearchForm):
 
@@ -6,8 +7,15 @@ class RangeFacetedSearchForm(SearchForm):
         self.selected_facets = kwargs.pop("selected_facets", [])
         super(RangeFacetedSearchForm, self).__init__(*args, **kwargs)
 
+    def no_query_found(self):
+        """
+        Determines the behavior when no query was found.
+        """
+        return self.searchqueryset.all()
+
     def search(self):
         sqs = super(RangeFacetedSearchForm, self).search()
+
 
         # We need to process each facet to ensure that the field name and the
         # value are quoted correctly and separately:

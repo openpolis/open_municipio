@@ -114,6 +114,7 @@ class ExtendedFacetedSearchView(SearchView):
 
         """
         extra = super(ExtendedFacetedSearchView, self).extra_context()
+        extra['n_results'] = len(self.results)
         extra['request'] = self.request
         extra['selected_facets'] = self._get_extended_selected_facets()
         extra['facets'] = self._get_extended_facets_fields()

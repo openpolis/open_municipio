@@ -24,7 +24,7 @@ em {
     {% endif %}
 
 
-    <h2>Search</h2>
+    <h1>Cerca l'atto</h1>
 
     <form method="get" action=".">
         <table>
@@ -37,11 +37,18 @@ em {
             </tr>
         </table>
 
-        {% if query %}
+        {% if n_results %}
 
+            {% if page.has_previous or page.has_next %}
+                <div style="float:right">
+                    {% if page.has_previous %}<a href="?q={{ query }}&amp;page={{ page.previous_page_number }}">{% endif %}&laquo; Previous{% if page.has_previous %}</a>{% endif %}
+                    |
+                    {% if page.has_next %}<a href="?q={{ query }}&amp;page={{ page.next_page_number }}">{% endif %}Next &raquo;{% if page.has_next %}</a>{% endif %}
+                </div>
+            {% endif %}
 
             <section>
-                <h3>Risultati</h3>
+                <h3>{% if not query %}Tutti i {% endif %} {{ n_results }} documenti</h3>
 
                 <table class="data">
                     <tbody>
@@ -66,13 +73,6 @@ em {
                     {% endfor %}
                     </tbody>
                 </table>
-                {% if page.has_previous or page.has_next %}
-                    <div>
-                        {% if page.has_previous %}<a href="?q={{ query }}&amp;page={{ page.previous_page_number }}">{% endif %}&laquo; Previous{% if page.has_previous %}</a>{% endif %}
-                        |
-                        {% if page.has_next %}<a href="?q={{ query }}&amp;page={{ page.next_page_number }}">{% endif %}Next &raquo;{% if page.has_next %}</a>{% endif %}
-                    </div>
-                {% endif %}
             </section>
 
         {% else %}
@@ -82,7 +82,7 @@ em {
 {% endblock %}
 
 {% block sidebar %}
-    {% if query %}
+    {% if n_results %}
         <!-- Begin faceting. -->
         <h3>Filtra</h3>
 
