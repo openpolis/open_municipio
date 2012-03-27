@@ -30,8 +30,12 @@ address { font-size: 12px; line-height: 14px; }
 #content > * { margin-bottom: 15px; }
 
 #wrapper > header { background-color: #c7beb7; }
+#main-navbar .active a { background-color: @white; }
 body.politician {
     #wrapper > header {
+        background-color: @greenLight;
+    }
+    #main-navbar .active a {
         background-color: @greenLight;
     }
     dl.tags-cloud {
@@ -44,6 +48,9 @@ body.tags {
     #wrapper > header {
         background-color: @yellowLight;
     }
+    #main-navbar .active a {
+        background-color: @yellowLight;
+    }
     dl.tags-cloud {
         dd, dt {
             background-color: @yellowLight;
@@ -52,6 +59,9 @@ body.tags {
 }
 body.citizen {
     #wrapper > header {
+        background-color: @blueLight;
+    }
+    #main-navbar .active a {
         background-color: @blueLight;
     }
     dl.tags-cloud {
@@ -76,17 +86,36 @@ body.citizen {
     background-image: none;
     .nav > li > a {
         color: @gray;
-        &:hover {
-            color: @grayDark;
-            background-color: transparent;
-        }
+        &:hover { color: @grayDark; background-color: transparent; }
     }
     .nav .active > a {
         color: @grayDark;
-        &:hover {
-            color: @gray;
+        &:hover { color: @gray; }
+    }
+}
+.pipe-separators {
+    ul.nav > li + li:before {
+        font-size: 11px;
+        font-weight: bold;
+        float: left;
+        content: ' | ';
+        line-height: 30px;
+        color: @grayDark;
+    }
+}
+#sub-nav {
+    .navbar-inner {
+        background-color: transparent; background-image: none;
+        a {
+            font-weight: normal;
+            font-size: 0.9em;
+            text-shadow: none;
+            color: @grayDark;
+            &:hover { background-color: transparent; text-decoration: underline; }
+            &.active { font-weight: bolder; }
         }
     }
+    .pipe-separators;
 }
 
 .monitoring { color: @grayLight; }
@@ -424,6 +453,8 @@ table#acttable {
 
 }
 
+
+
 /* Utils */
 .calendar_container {
     border: 1px solid @grayLight;
@@ -438,3 +469,29 @@ table#acttable {
 #search-form input[type="submit"] {
     margin-top: 23px;
 }
+
+/* Category with a list of its tags, 3 columns */
+#topic_summary a { text-decoration: underline; }
+#topic_summary > dl { float:left; width: 33%; font-size: 12px; }
+#topic_summary > dl dt { padding: 0 10px; }
+#topic_summary > dl dd { padding: 0 10px; margin: 0; }
+#topic_summary dd {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space:nowrap;
+}
+
+/* Tag cloud */
+#cloud { padding: 2px; line-height: 3em; text-align: center; }
+#cloud li { display: inline; }
+#cloud a { padding: 0px; }
+#cloud a.tag1 { font-size: 0.7em; font-weight: 100; }
+#cloud a.tag2 { font-size: 0.8em; font-weight: 200; }
+#cloud a.tag3 { font-size: 0.9em; font-weight: 300; }
+#cloud a.tag4 { font-size: 1.0em; font-weight: 400; }
+#cloud a.tag5 { font-size: 1.2em; font-weight: 500; }
+#cloud a.tag6 { font-size: 1.4em; font-weight: 600; }
+#cloud a.tag7 { font-size: 1.6em; font-weight: 700; }
+#cloud a.tag8 { font-size: 1.8em; font-weight: 800; }
+#cloud a.tag9 { font-size: 2.2em; font-weight: 900; }
+#cloud a.tag10 { font-size: 2.5em; font-weight: 900; }

@@ -109,13 +109,16 @@ class ActDetailView(DetailView):
 
         # add a form for the description of the act
         signers = [p.person for p in act.presenters]
-        if self.request.user.is_authenticated() and \
-           self.request.user.get_profile().person and \
-           self.request.user.get_profile().person in signers:
-            context['description_form'] = ActDescriptionForm(data = {
-                'id': act.pk,
-                'description': act.description,
-            })
+        try:
+            if self.request.user.is_authenticated() and\
+               self.request.user.get_profile().person and \
+               self.request.user.get_profile().person in signers:
+                context['description_form'] = ActDescriptionForm(data = {
+                    'id': act.pk,
+                    'description': act.description,
+                })
+        except ObjectDoesNotExist:
+            context['description_form'] = False
         
         # is the user monitoring the act?
         context['is_user_monitoring'] = False
