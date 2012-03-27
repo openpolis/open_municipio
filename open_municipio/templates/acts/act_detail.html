@@ -235,6 +235,7 @@ $(document).ready(function() {
     </ul>
     {% if request.user.is_authenticated %}
     <form id="comment-form" action="{% comment_form_target %}" method="post" class="form-inline bg-dark">
+        <input type="hidden" name="next" value="{{ act.get_absolute_url }}" />
         {% csrf_token %}
         {% for field in form %}
         {% if field.is_hidden %}{{ field }}{% else %}
