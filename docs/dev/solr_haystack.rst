@@ -11,7 +11,7 @@ Solr installation
 -----------------
 Solr is a search server built using the Lucene_ java library, it must be installed within a `servlet container`_.
 
-Java 1.6 is needed in order to use solr latest version (3.5), as of this writing.
+Java 1.6 is needed in order to use Solr latest version (3.5), as of this writing.
 
 It's beyond the scope of this documentation to show how to install and configure properly an external
 servlet container in a production environment.
@@ -24,7 +24,7 @@ for testing and development purposes.
    It is strongly recommended not to use this setup in production's environments.
 
 
-To install Solr, download it as a compressed file and decompress it into one of your directories.
+To install Solr, download_ it as a compressed file and decompress it into one of your directories.
 To start Solr, cd into the example directory and invoke the `start.jar` command:
 
  .. sourcecode:: bash
@@ -42,6 +42,7 @@ There are no data, since no indexing process was launched. Proceed to the config
 
 
 .. _Solr: http://lucene.apache.org/solr/
+.. _download: http://lucene.apache.org/solr/mirrors-solr-latest-redir.html
 .. _Lucene: http://lucene.apache.org/
 .. _`servlet container`: http://en.wikipedia.org/wiki/Web_container
 .. _Jetty: http://jetty.codehaus.org/jetty/
@@ -94,8 +95,6 @@ This can be done with **two** django management tasks (added by `django-haystack
 `SOLR_DOWNLOAD` is the directory where you have downloaded and decompressed the Solr `.tgz` package.
 
 The first step is needed only if you want to save Solr's default schema file.
-
-
 
 
 .. _haystack: http://haystacksearch.org/
