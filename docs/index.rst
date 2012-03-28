@@ -12,6 +12,7 @@ Contents:
    :maxdepth: 1
    
    dev/install
+   dev/solr_haystack
    dev/GUIDELINES
    dev/code/queries
    dev/code/apps/testdatabuilder
