@@ -1,20 +1,27 @@
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, HttpResponseBadRequest, HttpResponseNotAllowed
 from django.utils.decorators import method_decorator
-from django.views.generic import DetailView, TemplateView
+from django.views.generic import DetailView, ListView, TemplateView
+from django.views.generic.edit import FormView
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
-from django.views.generic.edit import FormView
+
 from django.contrib.auth.decorators import login_required
+
 from haystack.query import SearchQuerySet
 
 from open_municipio.acts.models import Act, Agenda, Deliberation, Interpellation, Interrogation, Motion, Transition
 from open_municipio.acts.forms import TagAddForm, ActDescriptionForm, ActTransitionForm, ActFinalTransitionForm
+
 from open_municipio.monitoring.forms import MonitoringForm
+
 from open_municipio.om_search.forms import RangeFacetedSearchForm
 from open_municipio.om_search.views import ExtendedFacetedSearchView
+
 from open_municipio.taxonomy.models import Tag, Category
 from open_municipio.taxonomy.views import AddTagsView, RemoveTagView
+
+
 
 class ActSearchView(ExtendedFacetedSearchView):
     """
@@ -52,8 +59,22 @@ class ActSearchView(ExtendedFacetedSearchView):
         return extra
 
 
+class ActListView(ListView):
+    template_name = 'acts/act_list.html'
+    queryset = Act.objects.select_subclasses().order_by('-presentation_date')
+    context_object_name = 'acts'
+    
+    def get_context_data(self, **kwargs):
+        # call the base implementation first to get a context
+        context = super(ActListView, self).get_context_data(**kwargs)
+        context['key_acts'] = Act.featured.all()
+        
+        return context
+    
+
 class ActEditorView(TemplateView):
     pass
+
 
 class ActDescriptionView(FormView):
     form_class = ActDescriptionForm
@@ -231,8 +252,9 @@ class ActRemoveTagView(RemoveTagView):
         """
         Returns the ``Act`` instance being un-tagged.
         """
-        act = get_object_or_404(Act, pk=self.kwargs.get('act_pk'))
+        act = get_object_or_404(Act, pk=self.kwargs.get('act_pk'))        
         return act
+
 
 class ActTransitionToggleBaseView(FormView):
 
@@ -250,6 +272,7 @@ class ActTransitionToggleBaseView(FormView):
     def get(self, *args, **kwargs):
         msg = "This view can be accessed only via POST"
         return HttpResponseNotAllowed(msg)
+
 
 class ActTransitionAddView(ActTransitionToggleBaseView):
     def post(self, request, *args, **kwargs):

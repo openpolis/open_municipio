@@ -186,11 +186,12 @@ URLconfs
 Views
 -----
 * EVERY view SHOULD be **named** (via the ``name`` parameter of the corresponding URL pattern); this is useful for
-  enabling the reverse-lookup mechanisms for URL resolution
+  enabling the reverse-lookup mechanisms for URL resolution;
 
-* **Class-based** view implementations should be preferred to **function-based** ones
+* **Class-based** view implementations should be preferred to **function-based** ones;
 
-
+* Names of view classes should end with ``View``, for consistency with Django built-in views; on the other hand, name of classes
+  intended to be used as *mixin*\ s for view classes should end with ``Mixin``;
             
 
 Markers

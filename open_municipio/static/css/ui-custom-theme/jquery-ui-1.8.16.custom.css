@@ -1318,3 +1318,10 @@ div.wijmo-wijmenu .wijmo-wijmenu-child .wijmo-wijmenu-text
   filter: none;
 }
 
+.star {
+  background-image: url(images/star-blank.png);
+}
+
+.bookmarked {
+  background-image: url(images/star-full.png);
+}
