@@ -1,18 +1,16 @@
 from django.conf.urls.defaults import *
+
+from voting.views import vote_on_object
+
 from haystack.query import SearchQuerySet
 
-import datetime
-
 from open_municipio.acts.models import Act
+
 from open_municipio.acts.views import (ActSearchView, AgendaDetailView,
                                        DeliberationDetailView, InterpellationDetailView,
                                        InterrogationDetailView, MotionDetailView, ActDescriptionView,
-                                       ActTransitionAddView, ActTransitionRemoveView)
-from open_municipio.acts.views import ActAddTagsView, ActRemoveTagView
-from voting.views import vote_on_object
-
-
-
+                                       ActTransitionAddView, ActTransitionRemoveView,
+                                       ActAddTagsView, ActRemoveTagView)
 
 
 act_dict = {
@@ -31,12 +29,7 @@ sqs = SearchQuerySet().\
 
 urlpatterns = patterns('',
     # faceted navigation
-    url(r'^$', ActSearchView(
-                template='acts/act_search.html',
-                searchqueryset=sqs,
-            ),
-        name='om_act_list'),
-
+    url(r'^$', ActSearchView(template='acts/act_search.html', searchqueryset=sqs), name='om_act_search'),
     # agendas
     url(r'^agendas/(?P<pk>\d+)/$', AgendaDetailView.as_view(),  name='om_agenda_detail'),
     url(r'^agendas/(?P<pk>\d+)/(?P<tab>documents)/$', AgendaDetailView.as_view(),  name='om_agenda_detail_documents'),
@@ -57,7 +50,7 @@ urlpatterns = patterns('',
     url(r'^motions/(?P<pk>\d+)/$', MotionDetailView.as_view(),  name='om_motion_detail'),
     url(r'^motions/(?P<pk>\d+)/(?P<tab>documents)/$', MotionDetailView.as_view(),  name='om_motion_detail_documents'),
     url(r'^motions/(?P<pk>\d+)/(?P<tab>emendations)/$', MotionDetailView.as_view(),  name='om_motion_detail_emendations'),
- )
+)
 
 ## Tag management
 urlpatterns += patterns('',

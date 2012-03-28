@@ -32,7 +32,9 @@
             <strong>{% block act_type %}TIPO ATTO{% endblock %}</strong>
             del Consiglio comunale N° {{ act.idnum }} del <span class="date">{{ act.presentation_date }}</span></small>
         </h2>
-        <h1><strong>{{ act.title }}</strong> ({{ act.idnum }})</h1>
+{% load om_utils %}
+{% load bookmarking_tags %}
+ <h1><i id="{{ act|as_token }}" class="bookmarkable {% is_key_class act %}"></i><strong>{{ act.title }}</strong> ({{ act.idnum }})</h1>
     </hgroup>
 
         {% if description_form %}
@@ -148,29 +150,33 @@
         <li class="bg-light"> <!-- make control for different comment opinion, like positive comment use .bg-lightgreen -->
             <a href="#"><img src="http://placehold.it/50x50" alt="" /></a>
             <a href="#">{{ comment.user.username|capfirst }}</a> {{ comment.comment }}
-            {% if comment.user == request.user and comment|comment_TTL > 0 %}
-            <div class="comment-delete">
-                {% blocktrans with seconds=comment|comment_TTL %}You still have {{ seconds }} seconds to delete this comment{% endblocktrans %}
-                <form action="{% url comments-delete-own-comment comment.id %}" method="post">
-                    {% csrf_token %}
-                    <input type="submit" name="submit" value="{% trans 'Delete' %}">
-                </form>
-                {% comment %}
-                <!-- A simple anchor tag instead of the form can work
-                     too, but the form ``csrf_token`` provide some
-                     additional security!  Yep, bit of a paranoyd
-                     thing indeed! ;-) -->
-                <a href="{% url comments-delete-own-comment comment.id %}">Remove comment</a>
-                {% endcomment %}
-            </div>
-            {% endif %}
-            
+
+            <div class="clearfix"></div>
+
             <span id="comments-votebox-{{ comment.id }}" class="monitoring">
-                {% if comment.mood = "+" %}<i class="socialicon-ok"></i>{% else %}
-                {% if comment.mood = "-" %}<i class="socialicon-ko"></i>{% else %}
-                {% if comment.mood = "0" %}<i class="socialicon-five"></i>{% endif %}{% endif %}{% endif %}
-                 &middot; {{ comment.submit_date|date:"d M Y" }}  &middot; 
-                <a href="#">Condividi</a>  &middot; 
+
+                {% if comment.user == request.user and comment|comment_TTL > 0 %}
+                    <div class="pull-right" title="{% blocktrans with seconds=comment|comment_TTL %}You still have {{ seconds }} seconds to delete this comment{% endblocktrans %}">
+                        <form action="{% url comments-delete-own-comment comment.id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger btn-mini">{% trans 'Delete' %}
+                                <small>(-{{ comment|comment_TTL }}s)</small></button>
+                        </form>
+                        {% comment %}
+                    <!-- A simple anchor tag instead of the form can work
+                         too, but the form ``csrf_token`` provide some
+                         additional security!  Yep, bit of a paranoyd
+                         thing indeed! ;-) -->
+                    <a href="{% url comments-delete-own-comment comment.id %}">Remove comment</a>
+                    {% endcomment %}
+                    </div>
+                {% endif %}
+
+
+                {% if comment.mood == "+" %}<i class="socialicon-ok socialicon-active"></i>{% else %}
+                {% if comment.mood == "-" %}<i class="socialicon-ko socialicon-active"></i>{% else %}
+                {% if comment.mood == "0" %}<i class="socialicon-five socialicon-active"></i>{% endif %}{% endif %}{% endif %}
+                 &middot; {{ comment.submit_date|date:"d M Y" }}  &middot;
                 {% score_for_object comment as comment_score %}
                 {% if request.user.is_authenticated %}
                 {% vote_by_user request.user on comment as vote %}
@@ -184,19 +190,83 @@
         {% endfor %}
     </ul>
     {% if request.user.is_authenticated %}
-    <form action="{% comment_form_target %}" method="post" class="form-inline bg-dark">
+    <form action="{% comment_form_target %}" method="post" class="form-inline bg-dark clearfix" id="comment_form">
         {% csrf_token %}
-        {% for field in form %}
-        {% if field.is_hidden %}{{ field }}{% else %}
-        {% if field.name != "name" and field.name != "email" and field.name != "url" %}{% if field.errors %}{{ field.errors }}{% endif %}{{ field }}{% endif %}{% endif %}
+
+        {% for hidden in form.hidden_fields %}
+            {{ hidden }}
         {% endfor %}
-        <input type="submit" name="submit" value="{% trans 'Post' %}">
+
+        <div class="row-fluid">
+            <div class="span8">
+                <textarea name="{{ form.comment.html_name }}" placeholder="{% trans 'Insert a comment' %}" id="" cols="30" rows="1"></textarea>
+            </div>
+            <div class="span4">
+                <button type="submit" class="btn" id="comment_form_submit">{% trans 'Post' %} </button>
+                <div class="radio-group">
+                    {{ form.mood }}
+                </div>
+            </div>
+        </div>
+
+    {% comment %}
+        {% for field in form %}
+            {% if field.is_hidden %}{{ field }}{% else %}
+                {% if field.name != "name" and field.name != "email" and field.name != "url" %}{% if field.errors %}{{ field.errors }}{% endif %}{{ field }}{% endif %}{% endif %}
+        {% endfor %}
         
         <!--<i class="socialicon-ok"></i><i class="socialicon-ko"></i><i class="socialicon-five"></i>-->
-        <!--<input type="text" placeholder="Scrivi un commento..." /> -->               
+        <!--<input type="text" placeholder="Scrivi un commento..." /> -->
+                       {% endcomment %}
     </form>
-    {% endif %}  
-    
+
+        <script type="text/javascript">
+
+            var selectRadio = function() {
+
+                el = $(this);
+
+                // de-activate icon
+                el.parent().find('.socialicon-active').removeClass('socialicon-active');
+
+                // clean send button
+                $('#comment_form_submit i').remove();
+                // inject new hand
+                $('#comment_form_submit').append($('<i class="socialicon-'+el.data('icon')+' socialicon-active"></i>'));
+
+                el.addClass('socialicon-active').find('input').prop('checked', true);
+            }
+
+            include('js/jquery.autogrow.js', function() {
+
+                $('#comment_form .radio-group label').each(function(id,el){
+                    el = $(el);
+                    el.data('icon', el.prop('for') == 'id_mood_0' ? 'ok' : ( el.prop('for') == 'id_mood_1' ? 'ko' : 'five' ));
+                    if ( $('input', el).prop('checked') )
+                    {
+                        $('#comment_form_submit').append($('<i class="socialicon-'+el.data('icon')+' socialicon-active"></i>'))
+                    }
+                    el.css({
+                        'text-indent': '-99999px'
+                    }).addClass('socialicon-'+el.data('icon')).on('click', selectRadio);
+
+                });
+
+                $('#id_comment').autogrow();
+
+                /*
+                $('#comment_form').submit(function(){
+                    if ( $('textarea', this).val().trim() != '' )
+                        $.post( $(this).prop('action'), $(this).serialize(), function(data) {
+                            $('#comment_form').replaceWith( $('<div class="alert alert-info"></div>').html  (data) );
+                        } );
+                    return false;
+                });
+                */
+            })
+
+        </script>
+    {% endif %}
     <p>Leggi tutti (Cronologia) <i class="icon-chevron-down"></i></p>
 </section>
 
@@ -224,3 +294,4 @@
     <p class="bg-dark">Leggi tutte (Cronologia) <i class="icon-chevron-down"></i></p>
 </section>
 {% endblock %}
+

@@ -120,6 +120,7 @@ INSTALLED_APPS = (
     'open_municipio.om',
     'open_municipio.om_comments',
     'open_municipio.om_voting',
+    'open_municipio.bookmarking',
     'open_municipio.acts',
     'open_municipio.people',
     'open_municipio.taxonomy',
@@ -148,3 +149,8 @@ WEB_SERVICES = {
     'google_plus': {},
 }
 
+## settings for the ``open_municipio.bookmarking`` app
+# CSS class used to mark DOM elements associated with bookmarked (key) objects 
+OM_BOOKMARKING_STAR_CLASS = 'icon-star'
+# CSS class used to mark DOM elements associated with bookmarkable (but not-key) objects
+OM_BOOKMARKING_EMPTY_STAR_CLASS = 'icon-star-empty'

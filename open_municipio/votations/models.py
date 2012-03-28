@@ -3,6 +3,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from model_utils import Choices
 from model_utils.models import TimeStampedModel
+from model_utils.managers import QueryManager
 
 from open_municipio.people.models import Group, InstitutionCharge, Sitting 
 from open_municipio.acts.models import Act
@@ -36,6 +37,10 @@ class Votation(models.Model):
     n_abst = models.IntegerField(blank=True, null=True)
     n_maj = models.IntegerField(blank=True, null=True)
     outcome = models.IntegerField(choices=OUTCOMES, blank=True, null=True)
+    is_key = models.BooleanField(default=False, help_text=_("Specify whether this is a key votation"))
+    
+    # use this manager to retrieve only key votations
+    key = QueryManager(is_key=True).order_by('-sitting__date')
     
     # activation of the ``is_linked_filter``
     # add ``act`` to the ``list_filter`` list in ``admin.py``

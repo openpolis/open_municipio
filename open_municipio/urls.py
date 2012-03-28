@@ -68,7 +68,13 @@ urlpatterns += patterns('',
     url(r'^users/', include('open_municipio.users.urls')),
 )
 
+
 # search test
 urlpatterns += patterns('',
     url(r'^search/', include('haystack.urls')),
+)
+
+# bookmarking
+urlpatterns += patterns('',
+    url(r'^bookmark/', include('open_municipio.bookmarking.urls')),
 )

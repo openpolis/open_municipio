@@ -19,7 +19,7 @@
 
     {% block head_js_includes %}
     <!--[if IE]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
-    <script type="text/javascript" src="{{ STATIC_URL }}js/include.js" data-main="{{ STATIC_URL }}js/"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/include.js" data-url="{{ STATIC_URL }}"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-1.7.1.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap-dropdown.js"></script>
     {% endblock head_js_includes %}
@@ -92,7 +92,7 @@
           <div class="navbar-inner">
             <div class="container-fluid">
                 <ul class="nav">
-                    <li {% block acts_class %}{% endblock %}><a href="{% url om_act_list %}">Atti</a></li>
+                    <li {% block acts_class %}{% endblock %}><a href="{% url om_act_search %}">Atti</a></li>
                     <li {% block votations_class %}{% endblock %}><a href="{% url om_votation_list %}">Votazioni</a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">

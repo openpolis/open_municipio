@@ -4063,6 +4063,7 @@ dl.tags-cloud dt {
 /* Generic list of person, with pic, name and short description */
 ul.people-list {
   margin-left: 5px;
+  margin-right: 5px;
   list-style: none;
 }
 ul.people-list li {
@@ -4088,6 +4089,7 @@ ul.people-list li img {
 }
 ul.people-list li .monitoring {
   display: block;
+  padding: 0 10px;
 }
 ul.people-list li form {
   margin: 0;
@@ -4235,33 +4237,11 @@ dl.data-list dt + dd {
   border-spacing: 3px;
   border-collapse: separate;
 }
-#sidebar table th,
-#sidebar table td {
-  padding: 8px;
-  line-height: 18px;
-  vertical-align: top;
-  border-top: 1px solid #ddd;
-}
-#sidebar table th {
-  font-weight: bold;
-}
-#sidebar table thead th {
-  vertical-align: bottom;
-}
-#sidebar table thead:first-child tr th,
-#sidebar table thead:first-child tr td {
-  border-top: 0;
-}
-#sidebar table tbody + tbody {
-  border-top: 2px solid #ddd;
-}
-#sidebar table tbody tr:hover td,
-#sidebar table tbody tr:hover th {
-  background-color: #f5f5f5;
-}
 #sidebar table td,
 #sidebar table th {
   border-top: 0;
+  line-height: 18px;
+  vertical-align: top;
 }
 #sidebar table th {
   font-weight: normal;
@@ -4453,7 +4433,10 @@ table#acttable thead th.past .arrow {
 }
 table#acttable thead th > div {
   position: relative;
-  padding: 8px /*8px 8px 22px*/;
+  padding: 8px 8px 8px 22px;
+}
+table#acttable thead th:first-child > div {
+  padding-left: 8px;
 }
 .party-people {
   *zoom: 1;
@@ -4508,6 +4491,26 @@ table#acttable thead th > div {
 }
 #search-form input[type="submit"] {
   margin-top: 23px;
+}
+/* Commenting form */
+#comment_form {
+  padding: 5px 10px;
+  position: relative;
+}
+#comment_form input[type="submit"] {
+  float: right;
+}
+#comment_form textarea {
+  width: 90%;
+  line-height: 13px;
+  font-size: 13px;
+}
+#comment_form label {
+  font-size: 0.8em;
+}
+#comment_form .radio-group {
+  text-align: center;
+  margin-top: 5px;
 }
 /* Category with a list of its tags, 3 columns */
 #topic_summary a {

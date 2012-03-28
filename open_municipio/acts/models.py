@@ -11,7 +11,7 @@ from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 
 from model_utils import Choices
-from model_utils.managers import InheritanceManager
+from model_utils.managers import InheritanceManager, QueryManager
 from model_utils.models import TimeStampedModel
 from model_utils.fields import StatusField
 
@@ -59,8 +59,11 @@ class Act(TimeStampedModel):
     category_set = models.ManyToManyField(Category, verbose_name=_('categories'), blank=True, null=True)
     location_set = models.ManyToManyField(Location, verbose_name=_('locations'), blank=True, null=True)
     status_is_final = models.BooleanField(default=False)
+    is_key = models.BooleanField(default=False, help_text=_("Specify whether this act should be featured"))
 
     objects = InheritanceManager()
+    # use this manager to retrieve only key acts
+    featured = QueryManager(is_key=True).order_by('-presentation_date') 
     
     tag_set = TaggableManager(through=TaggedAct, blank=True)
 
@@ -70,10 +73,9 @@ class Act(TimeStampedModel):
                                                content_type_field='related_content_type',
                                                object_id_field='related_object_pk')
 
-
     # manager to handle the list of monitoring having as content_object this instance
     monitoring_set = generic.GenericRelation(Monitoring, object_id_field='object_pk')
-    
+
     def __unicode__(self):
         uc = u'%s' % (self.title, )
         if self.idnum:
