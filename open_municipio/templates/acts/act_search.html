@@ -41,9 +41,9 @@ em {
 
             {% if page.has_previous or page.has_next %}
                 <div style="float:right">
-                    {% if page.has_previous %}<a href="?q={{ query }}&amp;page={{ page.previous_page_number }}">{% endif %}&laquo; Previous{% if page.has_previous %}</a>{% endif %}
-                    |
-                    {% if page.has_next %}<a href="?q={{ query }}&amp;page={{ page.next_page_number }}">{% endif %}Next &raquo;{% if page.has_next %}</a>{% endif %}
+                    {% if page.has_previous %}<a href="?q={{ query }}&amp;page={{ page.previous_page_number }}">{% endif %}&laquo; Precedente{% if page.has_previous %}</a>{% endif %}
+                    | pagina {{ page.number }} di {{ page.paginator.num_pages }} |
+                    {% if page.has_next %}<a href="?q={{ query }}&amp;page={{ page.next_page_number }}">{% endif %}Successiva &raquo;{% if page.has_next %}</a>{% endif %}
                 </div>
             {% endif %}
 
@@ -65,7 +65,8 @@ em {
                                 {% if result.tags %}
                                     <strong>Tag</strong>: {{ result.tags|join:", " }}<br/>
                                 {% endif %}
-                                <strong>Pubblicazione:</strong>{{ result.pub_date }}
+                                <strong>Pubblicazione:</strong>{{ result.pub_date }}<br/>
+                                <strong>Score:</strong> {{ result.score }}
                             </td>
                         </tr>
                     {% empty %}
