@@ -212,9 +212,10 @@ dl.tags-cloud {
 .bg-light { background-color: @baseBackground; }
 .bg-lightgreen { background-color: #e3ecda; }
 
+
 /* Generic list of person, with pic, name and short description */
 ul.people-list {
-    margin-left: 5px;
+    margin-left: 5px; margin-right: 5px;
     list-style: none;
     li {
             margin-top: 5px;
@@ -222,7 +223,7 @@ ul.people-list {
             padding-top: 3px; padding-bottom: 3px;
             line-height: 16px;
             img { .pull-left; margin-right:5px; margin-left: 5px; border:0; }
-            .monitoring { display:block; }
+            .monitoring { display:block; padding: 0 10px; }
             form { margin: 0; }
     }
 }
@@ -333,9 +334,12 @@ dl.data-list {
 /* Sidebar styles */
 #sidebar {
     table {
-        .table;
+        width: 100%;
+        margin-bottom: 18px;
+        text-align: left;
         border-spacing: 3px; border-collapse: separate;
-        td, th { border-top:0;  }
+        td, th { border-top:0; line-height: 18px;
+                               vertical-align: top; }
         th { font-weight:normal; padding: 0 8px; vertical-align:middle; }
         td { padding:0; }
         &.stats { font-size:12px; margin-bottom: 0; }
@@ -471,6 +475,15 @@ table#acttable {
 
 #search-form input[type="submit"] {
     margin-top: 23px;
+}
+
+/* Commenting form */
+#comment_form {
+    padding: 5px 10px; position: relative;
+    input[type="submit"] { float:right; }
+    textarea { height: 45px; width: 90%; line-height: 15px; font-size: 15px; }
+    label { font-size: 0.8em; }
+    .radio-group { text-align: center; margin-top: 5px; }
 }
 
 /* Category with a list of its tags, 3 columns */
