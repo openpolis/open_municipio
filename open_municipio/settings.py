@@ -148,3 +148,9 @@ WEB_SERVICES = {
     'twitter' : {},
     'google_plus': {},
 }
+
+## settings for the ``open_municipio.bookmarking`` app
+# CSS class used to mark DOM elements associated with bookmarked (key) objects 
+OM_BOOKMARKING_STAR_CLASS = 'icon-star'
+# CSS class used to mark DOM elements associated with bookmarkable (but not-key) objects
+OM_BOOKMARKING_EMPTY_STAR_CLASS = 'icon-star-empty'
