@@ -24,6 +24,7 @@ displaying different icon images depending on the element's class.
 
 $(document).ready(function() {
     $('.bookmarkable').click(function () {
+      $that = $(this);
       var params = $(this).attr('id').split('-');
       var app_label = params[0];
       var model_name = params [1];
@@ -31,9 +32,9 @@ $(document).ready(function() {
       $.post('/bookmark/' + app_label + '/' + model_name + '/' + obj_pk + '/toggle/', 
         function(data){
           if (data.success == true) {
-              $(this).toggleClass("icon-star icon-star-empty");
+              $that.toggleClass("icon-star icon-star-empty");
           } else {
-		        alert('ERROR: ' + data.error_message);
+		      alert('ERROR: ' + data.error_message);
 	        }
         }, 'json');
       return false;
