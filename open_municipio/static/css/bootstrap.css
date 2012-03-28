@@ -4501,10 +4501,9 @@ table#acttable thead th:first-child > div {
   float: right;
 }
 #comment_form textarea {
-  height: 45px;
   width: 90%;
-  line-height: 15px;
-  font-size: 15px;
+  line-height: 13px;
+  font-size: 13px;
 }
 #comment_form label {
   font-size: 0.8em;

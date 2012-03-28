@@ -199,7 +199,7 @@
 
         <div class="row-fluid">
             <div class="span8">
-                {{ form.comment }}
+                <textarea name="{{ form.comment.html_name }}" placeholder="{% trans 'Insert a comment' %}" id="" cols="30" rows="1"></textarea>
             </div>
             <div class="span4">
                 <button type="submit" class="btn" id="comment_form_submit">{% trans 'Post' %} </button>
@@ -254,14 +254,15 @@
 
                 $('#id_comment').autogrow();
 
+                /*
                 $('#comment_form').submit(function(){
-                    if ( $('textarea', this).text().trim() != '' )
+                    if ( $('textarea', this).val().trim() != '' )
                         $.post( $(this).prop('action'), $(this).serialize(), function(data) {
                             $('#comment_form').replaceWith( $('<div class="alert alert-info"></div>').html  (data) );
                         } );
                     return false;
                 });
-
+                */
             })
 
         </script>
