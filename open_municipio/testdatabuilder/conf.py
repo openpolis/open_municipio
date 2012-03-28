@@ -6,4 +6,6 @@ MAX_CATEGORIES_PER_ACT = 3
 MIN_TAGS_PER_CATEGORY = 0
 # given an act, max number of tags associated with each category
 MAX_TAGS_PER_CATEGORY = 5
+# ratio of key acts over the whole set of acts
+KEY_ACTS_RATIO = 0.25
    

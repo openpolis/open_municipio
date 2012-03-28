@@ -32,7 +32,9 @@
             <strong>{% block act_type %}TIPO ATTO{% endblock %}</strong>
             del Consiglio comunale N° {{ act.idnum }} del <span class="date">{{ act.presentation_date }}</span></small>
         </h2>
-        <h1><strong>{{ act.title }}</strong> ({{ act.idnum }})</h1>
+{% load om_utils %}
+{% load bookmarking_tags %}
+ <h1><i id="{{ act|as_token }}" class="bookmarkable {% is_key_class act %}"></i><strong>{{ act.title }}</strong> ({{ act.idnum }})</h1>
     </hgroup>
 
         {% if description_form %}
@@ -291,3 +293,4 @@
     <p class="bg-dark">Leggi tutte (Cronologia) <i class="icon-chevron-down"></i></p>
 </section>
 {% endblock %}
+

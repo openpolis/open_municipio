@@ -2,8 +2,8 @@ from django.core.files import File
 from django.conf import settings
 
 from open_municipio.testdatabuilder import conf
-from open_municipio.people.models import *
-from open_municipio.acts.models import *
+from open_municipio.people.models import Institution, Person, GroupCharge
+from open_municipio.acts.models import  Act, ActSupport, Attach, Deliberation, Interrogation
 from open_municipio.taxonomy.models import Category, Tag
 
 try:
@@ -101,7 +101,6 @@ class RandomItemsFactory(object):
         print "ok"
 
 
-
     def create_tags(self):
         """
         Create a bunch of tags, loaded from an external file. 
@@ -135,8 +134,9 @@ class RandomItemsFactory(object):
         Classify each act in the database, by adding to it a random number of categories and,
         for each category, a random number of tags.  
         """
+        print  "Classifying acts..."  
         for act in Act.objects.all():
-            print  "Classifying act #%s..." % act.pk
+            print  "        act #%s... " % act.pk
             # draw a random subset of categories            
             population = list(Category.objects.all())
             sample_size = random.randint(conf.MIN_CATEGORIES_PER_ACT, conf.MAX_CATEGORIES_PER_ACT)
@@ -152,6 +152,17 @@ class RandomItemsFactory(object):
                 act.tag_set.add(*tags)
                 # associate tags with the category
                 category.tag_set.add(*tags)
+                
+    def bookmark_acts(self):
+        """
+        Add the "key" status to a random subset of the acts stored within the DB.   
+        """
+        print  "Bookmarkings acts..."
+        for act in Act.objects.all():
+            if random.random() < conf.KEY_ACTS_RATIO:
+                act.is_key = True
+                act.save()
+                print  "        act #%s is key..." % act.pk
 
     def generate_dataset(self):
         """
@@ -159,13 +170,11 @@ class RandomItemsFactory(object):
         """
         ## acts generation
         self.create_acts()
-
         ## taxonomy generation
         self.create_tags()
         self.create_categories()
         self.classify_acts()
-
-
+        self.bookmark_acts()
 
     #
     # utilities
@@ -332,6 +341,7 @@ class RandomItemsFactory(object):
             choice -= w
             if choice < 0:
                 return i
+
 
 
 if __name__ == '__main__':

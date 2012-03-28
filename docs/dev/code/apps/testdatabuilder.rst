@@ -127,6 +127,7 @@ There are a few parameters you may customize to tweak the way the taxonomy is ge
 * ``MAX_CATEGORIES_PER_ACT``: max number of categories associated with an act (default: ``3``)
 * ``MIN_TAGS_PER_CATEGORY``: given an act, min number of tags associated with each category (default: ``0``)
 * ``MAX_TAGS_PER_CATEGORY``: given an act, max number of tags associated with each category (default: ``5``)
+* ``KEY_ACTS_RATIO``: ratio of key acts over the whole set of acts (default: ``0.25``)
 
 
 Todos
