@@ -4453,7 +4453,10 @@ table#acttable thead th.past .arrow {
 }
 table#acttable thead th > div {
   position: relative;
-  padding: 8px /*8px 8px 22px*/;
+  padding: 8px 8px 8px 22px;
+}
+table#acttable thead th:first-child > div {
+  padding-left: 8px;
 }
 .party-people {
   *zoom: 1;
