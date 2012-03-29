@@ -3,10 +3,8 @@ from open_municipio.om_search.forms import RangeFacetedSearchForm
 
 class ExtendedFacetedSearchView(SearchView):
     """
-
     Extends the SearchView class, allowing building filters and breadcrumbs
     for faceted navigation
-
     """
     __name__ = 'ExtendedFacetedSearchView'
 
@@ -34,13 +32,10 @@ class ExtendedFacetedSearchView(SearchView):
 
     def _get_extended_facets_fields(self):
         """
-
         Returns the facets fields information along with a *is_facet_selected*
         field, that allows easy filtering of the selected facets in the
         navigation filters
-
         """
-
         selected_facets = self.request.GET.getlist('selected_facets')
         facet_counts_fields = self.results.facet_counts().get('fields', {})
 
@@ -60,13 +55,10 @@ class ExtendedFacetedSearchView(SearchView):
 
     def _get_extended_selected_facets(self):
         """
-
         Returns the selected_facets list, in an extended dictionary,
         in order to make it easy to write faceted navigation breadcrumbs
         with *unselect* urls
-
         unselecting a breadcrumb remove all following selections
-
         """
 
         ## original selected facets list

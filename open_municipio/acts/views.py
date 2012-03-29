@@ -26,7 +26,7 @@ from open_municipio.taxonomy.views import AddTagsView, RemoveTagView
 class ActSearchView(ExtendedFacetedSearchView):
     """
 
-    This views allows faceted search and navigation of the acts.
+    This view allows faceted search and navigation of the acts.
 
     It extends a n extended version of the basic FacetedSearchView,
     and can be customized whenever
