@@ -71,19 +71,19 @@
         <div class="row-fluid">
             <div class="span4">
                 <div class="calendar_container">
-                    <h3>Agenda della commissione</h3>
-                    <div class="calendar"></div>
+                    <h3>Agenda del Consiglio</h3>
+                    <div class="calendar" data-events=".calendar_events"></div>
                 </div>
             </div>
             <div class="span8">
-                <ul class="list-floated unstyled">
-                    <li><strong>01.3.2012</strong> <a href="#">Conferenza dei capigruppo</a></li>
-                    <li><strong>02.3.2012</strong> <a href="#">Conferenza dei capigruppo</a></li>
-                    <li><strong>03.3.2012</strong> <a href="#">Conferenza dei capigruppo</a></li>
-                    <li><strong>04.3.2012</strong> <a href="#">Conferenza dei capigruppo</a></li>
-                    <li><strong>05.3.2012</strong> <a href="#">Conferenza dei capigruppo</a></li>
-                    <li><strong>06.3.2012</strong> <a href="#">Conferenza dei capigruppo</a></li>
-                    <li><strong>07.3.2012</strong> <a href="#">Conferenza dei capigruppo</a></li>
+                <ul class="list-floated unstyled calendar_events">
+                    <li data-day="03/01/2012"><strong>01.3.2012</strong> <a href="#">Conferenza dei capigruppo</a></li>
+                    <li data-day="03/02/2012"><strong>02.3.2012</strong> <a href="#">Conferenza dei capigruppo</a></li>
+                    <li data-day="03/03/2012"><strong>03.3.2012</strong> <a href="#">Conferenza dei capigruppo</a></li>
+                    <li data-day="03/04/2012"><strong>04.3.2012</strong> <a href="#">Conferenza dei capigruppo</a></li>
+                    <li data-day="03/05/2012"><strong>05.3.2012</strong> <a href="#">Conferenza dei capigruppo</a></li>
+                    <li data-day="03/06/2012"><strong>06.3.2012</strong> <a href="#">Conferenza dei capigruppo</a></li>
+                    <li data-day="03/07/2012"><strong>07.3.2012</strong> <a href="#">Conferenza dei capigruppo</a></li>
                 </ul>
             </div>
         </div>
@@ -159,14 +159,5 @@
 {% block footer_js_includes %}
     {{ block.super }}
     <script src="{{ STATIC_URL }}js/jquery-ui-1.8.18.custom.min.js"></script>
-    <script src="{{ STATIC_URL }}js/jquery.ui.calendar.js"></script>
-{% endblock %}
-
-{% block extra_js %}
-    // initialize events
-    var events = [
-    { Title: "Five K for charity", Date: new Date("02/03/2012") },
-    { Title: "Dinner", Date: new Date("03/03/2012") },
-    { Title: "Meeting with manager", Date: new Date("05/03/2012") }
-    ];
+    <script src="{{ STATIC_URL }}js/jquery-ui.calendar.js"></script>
 {% endblock %}
