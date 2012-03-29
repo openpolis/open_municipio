@@ -16,7 +16,7 @@ Java 1.6 is needed in order to use the latest version of Solr (3.5, as of this w
 It's beyond the scope of this documentation to show how to install and configure properly an external
 servlet container in a production environment.
 
-Solr comes with a self-contained servlet container (Jetty_), which can be safely used
+Solr comes with an embedded servlet container (Jetty_), which can be safely used
 for testing and development purposes.
 
 .. warning::
@@ -91,6 +91,7 @@ This can be done with **two** django management commands (added by ``django-hays
 
   $ mv $SOLR_DOWNLOAD/example/solr/conf/schema.xml $SOLR_DOWNLOAD/example/solr/conf/schema.xml.000
   $ django-admin.py build_solr_schema > $SOLR_DOWNLOAD/example/solr/conf/schema.xml
+  restart the embedded Jetty server, by using CTRL+C and ``java -jar start.jar``
   $ django-admin.py rebuild_index
 
 where ``SOLR_DOWNLOAD`` is the directory where you have downloaded and unpacked the Solr package.
