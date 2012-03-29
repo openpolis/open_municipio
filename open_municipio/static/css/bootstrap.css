@@ -2763,7 +2763,7 @@ input[type="submit"].btn.small {
 .navbar-search .search-query :-moz-placeholder {
   color: #eeeeee;
 }
-.navbar-search .search-query::-webkit-input-placeholder {
+.navbar-search .search-query ::-webkit-input-placeholder {
   color: #eeeeee;
 }
 .navbar-search .search-query:hover {
@@ -4408,7 +4408,7 @@ table#acttable thead th {
   vertical-align: top;
   text-align: center;
   border-right: 1px solid #ffffff;
-  min-height: 35px;
+  min-height: 50px;
 }
 table#acttable thead th .arrow {
   position: absolute;
