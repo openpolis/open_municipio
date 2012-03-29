@@ -20,6 +20,74 @@
     <script src="{{ STATIC_URL }}js/voting.js" type="text/javascript"></script>
 {% endblock head_js_includes %}
 
+{% block footer_js_includes %}
+    {{ block.super }}
+    <script type="text/javascript">
+
+        {% if request.user.is_authenticated %}
+        {% comment %}Send Monitoring form with anchor link{% endcomment %}
+        $(document).ready(function () {
+            $('#monitoring_table form').each(function(){
+                // hide forms
+                $(this).hide();
+                // search button to emulate
+                var button = $('button', this).first();
+                // create ajax sender link
+                var link = $('<a />').prop({
+                    'href' : '#'
+                }).on('click', function() {
+                    $(this).next('form').submit();
+                    return false;
+                });
+                button.contents().each(function(){
+                    link.append(this);
+                });
+                // inject content and insert before the form
+                $(this).before( link );
+            });
+        });
+
+        {% comment %}Build Comment form{% endcomment %}
+        var selectRadio = function() {
+            el = $(this);
+            // de-activate icon
+            el.parent().find('.socialicon-active').removeClass('socialicon-active');
+            // clean send button
+            $('#comment_form_submit i').remove();
+            // inject new hand
+            $('#comment_form_submit').append($('<i class="socialicon-'+el.data('icon')+' socialicon-active"></i>'));
+            // set radiobox as checked
+            el.addClass('socialicon-active').find('input').prop('checked', true);
+        };
+        include('js/jquery.autogrow.js', function() {
+            $('#comment_form .radio-group label').each(function(id,el){
+                el = $(el);
+                el.data('icon', el.prop('for') == 'id_mood_0' ? 'ok' : ( el.prop('for') == 'id_mood_1' ? 'ko' : 'five' ));
+                if ( $('input', el).prop('checked') )
+                {
+                    $('#comment_form_submit').append($('<i class="socialicon-'+el.data('icon')+' socialicon-active"></i>'))
+                }
+                el.css({
+                    'text-indent': '-99999px',
+                    'overflow': 'hidden',
+                    'cursor': 'pointer'
+                }).addClass('socialicon-'+el.data('icon')).on('click', selectRadio);
+            });
+            $('#id_comment').autogrow();
+            // prevent empty submit
+            $('#comment_form').submit(function(){
+                var comment = $('textarea', this);
+                if ( comment.val().trim() == '' ) {
+                    return false;
+                }
+
+            });
+        });
+        {% endif %}
+
+    </script>
+{% endblock %}
+
 {% block content %}
     <hgroup>
         <table class="pull-right">
@@ -80,62 +148,80 @@
 </section>
 
 <section><h3>Monitora</h3>
-    <table>
+    <table id="monitoring_table">
         <tr>
             <td><span class="bluebox">{{ act.monitoring_users_count}}</span></td>
             <th class="bg-dark span12">
-                utenti che monitorano l'atto<br />
-                {% for user in act.monitoring_users %}
-                  <a href="{{ user.get_absolute_url }}">{{ user.get_profile.public_name }}</a>
-                  {% if forloop.last %}<br/>{% else %},{% endif %}
-                {% endfor %}
-                
+                utenti che monitorano l'atto
+                <ul class="unstyled list-inline">
+                    {% for user in act.monitoring_users %}
+                    <li>
+                        <a href="{% url users_user_detail user.username %}">{{ user.get_profile.public_name }}</a>
+                        {% if not forloop.last %},{% endif %}
+                    </li>
+                    {% endfor %}
+                </ul>
+
+                <small>
                 {% if user.is_authenticated and not user.get_profile.person %}
-                  {% if is_user_monitoring %}
-                  <form action="{% url om_monitoring_stop %}" method="post">
-                    {% csrf_token %}
-                    {{ monitoring_form }}
-                    <i class="icon-minus-sign"></i>
-                    <button type="submit" class="btn btn-info btn-small">Interrompi il monitoraggio</button>
-                  </form>
-                  {% else %}
-                    <form action="{% url om_monitoring_start %}" method="post">
-                      {% csrf_token %}
-                      {{ monitoring_form }}
-                      <button type="submit" class="btn btn-info btn-mini"><i class="socialicon-add"></i> Avvia il monitoraggio</button>
-                    </form>
-                  {% endif %}
+                    {% if is_user_monitoring %}
+                        <i class="icon-eye-close"></i>
+                        <form action="{% url om_monitoring_stop %}" method="post">
+                            {% csrf_token %}
+                            {{ monitoring_form }}
+                            <button type="submit" class="btn btn-info btn-mini">Interrompi il monitoraggio</button>
+                        </form>
+                    {% else %}
+                        <i class="icon-eye-open"></i>
+                        <form action="{% url om_monitoring_start %}" method="post">
+                            {% csrf_token %}
+                            {{ monitoring_form }}
+                            <button type="submit" class="btn btn-info btn-mini">Avvia il monitoraggio</button>
+                        </form>
+                    {% endif %}
                 {% endif %}
+                </small>
             </th>
         </tr>
         <tr>
             <td><span class="greenbox">{{ act.monitoring_politicians_count}}</span></td>
             <th class="bg-dark span12">
-                politici che monitorano l'atto <br>
-                {% for user in act.monitoring_politicians %}
-                    <a href="{{ user.get_profile.person.get_absolute_url }}">{{ user.get_profile.public_name }}</a>
-                    {% if forloop.last %}<br/>{% else %},{% endif %}
-                {% endfor %}
+                politici che monitorano l'atto
+                <ul class="unstyled list-inline">
+                    {% for user in act.monitoring_politicians %}
+                    <li>
+                        <a href="{{ user.get_profile.person.get_absolute_url }}">{{ user.get_profile.public_name }}</a>
+                        {% if not forloop.last %},{% endif %}
+                    </li>
+                    {% endfor %}
+                </ul>
+
+                <small>
                 {% if user.is_authenticated and user.get_profile.person %}
                     {% if is_user_monitoring %}
+                        <i class="icon-eye-close"></i>
                         <form action="{% url om_monitoring_stop %}" method="post">
                             {% csrf_token %}
                             {{ monitoring_form }}
-                            <i class="icon-minus-sign"></i>
-                            <button type="submit" class="btn btn-info btn-small">Interrompi il monitoraggio</button>
+                            <button type="submit" class="btn btn-info btn-mini">Interrompi il monitoraggio</button>
                         </form>
                     {% else %}
+                        <i class="icon-eye-open"></i>
                         <form action="{% url om_monitoring_start %}" method="post">
                             {% csrf_token %}
                             {{ monitoring_form }}
-                            <button type="submit" class="btn btn-info btn-mini"><i class="socialicon-add"></i> Avvia il monitoraggio</button>
+                            <button type="submit" class="btn btn-info btn-mini">Avvia il monitoraggio</button>
                         </form>
                     {% endif %}
                 {% endif %}
+                </small>
             </th>
         </tr>
     </table>
 </section>
+
+
+
 
 <section><h3>Vota</h3>
   {% include "acts/act_vote_block.html" %}
@@ -148,8 +234,11 @@
     <ul class="people-list">
         {% for comment in comment_list %}
         <li class="bg-light"> <!-- make control for different comment opinion, like positive comment use .bg-lightgreen -->
-            <a href="#"><img src="http://placehold.it/50x50" alt="" /></a>
-            <a href="#">{{ comment.user.username|capfirst }}</a> {{ comment.comment }}
+            <a href="{% url users_user_detail comment.user.username %}">
+                <img src="http://placehold.it/50x50" />
+                {{ comment.user.username|capfirst }}
+            </a>
+            {{ comment.comment }}
 
             <div class="clearfix"></div>
 
@@ -184,7 +273,7 @@
                 {% else %}
                 <a href="#" class="vote"><span class='like'>Mi piace</span></a>  &middot;                 
                 {% endif %}
-                <i class="socialicon-add"></i> <span class="okscore">{{ comment_score.score }}</span>
+                <i class="socialicon-like"></i> <span class="okscore">{{ comment_score.score }}</span>
             </span>
         </li>
         {% endfor %}
@@ -199,10 +288,10 @@
 
         <div class="row-fluid">
             <div class="span8">
-                <textarea name="{{ form.comment.html_name }}" placeholder="{% trans 'Insert a comment' %}" id="id_comment" cols="30" rows="1"></textarea>
+                <textarea name="{{ form.comment.html_name }}" placeholder="Inserisci un commento" id="id_comment" cols="30" rows="1"></textarea>
             </div>
-            <div class="span4">
-                <button type="submit" class="btn" id="comment_form_submit">{% trans 'Post' %} </button>
+            <div class="span4 text-center">
+                <button type="submit" class="btn btn-mini" id="comment_form_submit">{% trans 'Post' %} </button>
                 <div class="radio-group">
                     {{ form.mood }}
                 </div>
@@ -219,53 +308,6 @@
         <!--<input type="text" placeholder="Scrivi un commento..." /> -->
                        {% endcomment %}
     </form>
-
-        <script type="text/javascript">
-
-            var selectRadio = function() {
-
-                el = $(this);
-
-                // de-activate icon
-                el.parent().find('.socialicon-active').removeClass('socialicon-active');
-
-                // clean send button
-                $('#comment_form_submit i').remove();
-                // inject new hand
-                $('#comment_form_submit').append($('<i class="socialicon-'+el.data('icon')+' socialicon-active"></i>'));
-
-                el.addClass('socialicon-active').find('input').prop('checked', true);
-            }
-
-            include('js/jquery.autogrow.js', function() {
-
-                $('#comment_form .radio-group label').each(function(id,el){
-                    el = $(el);
-                    el.data('icon', el.prop('for') == 'id_mood_0' ? 'ok' : ( el.prop('for') == 'id_mood_1' ? 'ko' : 'five' ));
-                    if ( $('input', el).prop('checked') )
-                    {
-                        $('#comment_form_submit').append($('<i class="socialicon-'+el.data('icon')+' socialicon-active"></i>'))
-                    }
-                    el.css({
-                        'text-indent': '-99999px'
-                    }).addClass('socialicon-'+el.data('icon')).on('click', selectRadio);
-
-                });
-
-                $('#id_comment').autogrow();
-
-                /*
-                $('#comment_form').submit(function(){
-                    if ( $('textarea', this).val().trim() != '' )
-                        $.post( $(this).prop('action'), $(this).serialize(), function(data) {
-                            $('#comment_form').replaceWith( $('<div class="alert alert-info"></div>').html  (data) );
-                        } );
-                    return false;
-                });
-                */
-            })
-
-        </script>
     {% endif %}
     <p>Leggi tutti (Cronologia) <i class="icon-chevron-down"></i></p>
 </section>

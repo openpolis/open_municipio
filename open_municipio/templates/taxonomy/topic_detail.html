@@ -1,5 +1,6 @@
 {% extends 'base_two_columns.html' %}
 
+{% block title %}Argomento {{ topic }}{% endblock title %}
 {% block content_header %}Argomenti{% endblock %}
 {% block body_class %}tags{% endblock %}
 {% block tags_class %}class="active"{% endblock %}
@@ -11,9 +12,9 @@
             <div class="container-fluid">
                 <ul class="nav">
                     {% for t in topics %}
-                        <li>
-                            <a href="{{ t.get_absolute_url }}"{% if t == topic %} class="active"{% endif %}>{{ t }}</a>
-                        </li>
+                    <li>
+                        <a href="{{ t.get_absolute_url }}"{% if t == topic %} class="active"{% endif %}>{{ t }}</a>
+                    </li>
                     {% endfor %}
                 </ul>
             </div>
@@ -31,18 +32,18 @@
             <div class="span4">
                 <div class="calendar_container">
                     <h3>Argomento sull'agenda politica</h3>
-                    <div class="calendar"></div>
+                    <div class="calendar" data-events=".calendar_events"></div>
                 </div>
             </div>
             <div class="span8">
                 <h4>Se ne discute</h4>
 
-                <ul class="data-list">
-                    <li>01.3.2012 in <a href="#">Consiglio comunale</a></li>
-                    <li>02.3.2012 in <a href="#">Commissione Edilizia e urbanistica</a></li>
-                    <li>04.3.2012 in <a href="#">Giunta</a></li>
-                    <li>05.3.2012 in <a href="#">Commissione Edilizia e urbanistica</a></li>
-                    <li>06.3.2012 in <a href="#">Giunta</a></li>
+                <ul class="data-list calendar_events">
+                    <li data-day="01/03/2012">01.3.2012 in <a href="#">Consiglio comunale</a></li>
+                    <li data-day="03/03/2012">02.3.2012 in <a href="#">Commissione Edilizia e urbanistica</a></li>
+                    <li data-day="04/03/2012">04.3.2012 in <a href="#">Giunta</a></li>
+                    <li data-day="05/03/2012">05.3.2012 in <a href="#">Commissione Edilizia e urbanistica</a></li>
+                    <li data-day="06/03/2012">06.3.2012 in <a href="#">Giunta</a></li>
                 </ul>
             </div>
         </div>
@@ -108,7 +109,61 @@
     <section>
         <h3>Politici che si occupano dell'argomento</h3>
 
-        <div class="row-fluid"></div>
+        <div class="row-fluid">
+            {% comment %}
+            {% load list_to_columns %}
+            {% list_to_columns topic.monitoring_users as list 2 %}
+            {% endcomment %}
+            <div class="span6">
+                <ul class="people-list border-right">
+                    <li>
+                        <img src="http://placehold.it/50">
+                        <strong>Roberto Bianchi</strong> <br>
+                        Partito democratico
+                    <span class="monitoring">
+                        Monitorato da 2 cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a>
+                    </span>
+                    </li>
+                </ul>
+            </div>
+            <div class="span6">
+                <ul class="people-list">
+                    <li>
+                        <img src="http://placehold.it/50">
+                        <strong>Roberto Bianchi</strong> <br>
+                        Partito democratico
+                    <span class="monitoring">
+                        Monitorato da 2 cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a>
+                    </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </section>
+
+    {% load web_services_tags %}
+    {% share topic %}
+
+{% endblock %}
+
+{% block sidebar %}
+
+    {% if topic.tags %}
+    <section>
+        <h3>Altri argomenti in {{ topic|title }}</h3>
+
+        <ul class="tags-cloud">
+            {% for tag in topic.tags %}
+                <li><a href="{{ tag.get_absolute_url }}">{{ tag }} <span>1</span></a></li>
+            {% endfor %}
+        </ul>
+        <small>Il numero accanto al tag corrispondente alla quantità di atti taggati con questo argomento</small>
+    </section>
+    {% endif %}
+
+    <section>
+        <h3>Monitora</h3>
 
     </section>
 
@@ -124,14 +179,6 @@
 {% block footer_js_includes %}
     {{ block.super }}
     <script src="{{ STATIC_URL }}js/jquery-ui-1.8.18.custom.min.js"></script>
-    <script src="{{ STATIC_URL }}js/jquery.ui.calendar.js"></script>
+    <script src="{{ STATIC_URL }}js/jquery-ui.calendar.js"></script>
 {% endblock %}
 
-{% block extra_js %}
-    // initialize events
-    var events = [
-    { Title: "Five K for charity", Date: new Date("02/03/2012") },
-    { Title: "Dinner", Date: new Date("03/03/2012") },
-    { Title: "Meeting with manager", Date: new Date("05/03/2012") }
-    ];
-{% endblock %}

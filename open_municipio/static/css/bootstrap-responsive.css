@@ -115,7 +115,7 @@
     width: auto;
     margin: 0;
   }
-  #main {
+  #main.two_columns {
     background-image: none;
   }
 }
