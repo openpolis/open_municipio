@@ -7,9 +7,11 @@
     <table id="acts-votebox-{{ object.id }}">
       <tr>
         <td><span class="okbox okscore">{{ num_votes.upvotes }}</span></td>
-        <th id="acts-vote-{{ object.id }}-up" class="bg-dark span6 vote{% if vote.vote and vote.vote > 0 %} up-voted{% endif %}"><i class="socialicon-ok"></i> Sono favorevole</th>
+        <th id="acts-vote-{{ object.id }}-up" class="bg-dark span6 vote{% if vote.vote and vote.vote > 0 %} up-voted{% endif %}">
+            <i class="socialicon-ok socialicon-active pull-left"></i> Sono favorevole</th>
         <td><span class="kobox koscore">{{ num_votes.downvotes }}</span></td>
-        <th id="acts-vote-{{ object.id }}-down" class="bg-dark span6 vote{% if vote.vote and vote.vote < 0 %} down-voted{% endif %}"><i class="socialicon-ko"></i> Sono contrario</th>
+        <th id="acts-vote-{{ object.id }}-down" class="bg-dark span6 vote{% if vote.vote and vote.vote < 0 %} down-voted{% endif %}">
+            <i class="socialicon-ko socialicon-active pull-left"></i> Sono contrario</th>
       </tr>
     </table>
 {% else %}
@@ -19,9 +21,9 @@
     <table id="acts-votebox-{{ object.id }}">
       <tr>
         <td><span class="okbox">{{ num_votes.upvotes }}</span></td>
-        <th class="bg-dark span6"><i class="socialicon-ok"></i> Sono favorevole</th>
+        <th class="bg-dark span6"><i class="socialicon-ok socialicon-active pull-left"></i> Sono favorevole</th>
         <td><span class="kobox">{{ num_votes.downvotes }}</span></td>
-        <th class="bg-dark span6"><i class="socialicon-ko"></i> Sono contrario</th>
+        <th class="bg-dark span6"><i class="socialicon-ko socialicon-active pull-left"></i> Sono contrario</th>
       </tr>
     </table>
 {% endif %}
