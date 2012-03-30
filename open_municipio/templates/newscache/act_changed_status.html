@@ -1,6 +1,6 @@
 {%  load switch %}
 {% switch act.status %}
-    {% case act.STATUS.commission %}
+    {% case act.STATUS.committee %}
         L'atto è in discussione in commissione{% if transition.note %} {{ transition.note }}{% endif %}.
     {% case act.STATUS.council %}
        L'atto è in discussione al consiglio.
