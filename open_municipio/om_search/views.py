@@ -111,4 +111,16 @@ class ExtendedFacetedSearchView(SearchView):
         extra['selected_facets'] = self._get_extended_selected_facets()
         extra['facets'] = self._get_extended_facets_fields()
         extra['facet_queries_pubdate'] = self._get_custom_facet_queries_pubdate()
+
+        # make get array as mutable QueryDict
+        params = self.request.GET.copy()
+        if 'q' not in params:
+            params.update({'q': ''})
+        if 'page' in params:
+            params.pop('page')
+
+        from django.core.urlresolvers import reverse
+        extra['base_url'] = reverse('om_act_search') + '?' + params.urlencode()
+
         return extra
+
