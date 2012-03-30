@@ -11,6 +11,12 @@ from venv import run_venv
 
 @task
 @roles('web')
+def restart_tomcat():
+    require('tomcat_controller', provided_by=('staging', 'production'))
+    sudo('%(tomcat_controller)s restart' % env)
+
+@task
+@roles('web')
 def make_common_skeleton():
     """
     Create a skeleton directory tree for the solr application
@@ -24,23 +30,24 @@ def make_common_skeleton():
         run('mkdir -p %(solr_home)s/cores' % env)
         run('mkdir -p %(solr_home)s/data' % env)
 
-    with cd(env.solr_home):
-        # change permissions to solr_home dir and data
-        sudo('chown %(tomcat_user)s data' % env)
+        with cd(env.solr_home):
+            # change permissions to solr_home dir and data
+            sudo('chown %(tomcat_user)s data' % env)
 
-        with lcd(os.path.join(env.local_project_root, 'solr')):
-            # copy context.xml
-            source = 'context_%(environment)s.xml' % env
-            dest = 'context.xml'
-            put(source, dest, mode=0644)
+            with lcd(os.path.join(env.local_project_root, 'solr')):
+                # copy context.xml
+                source = 'context_%(environment)s.xml' % env
+                dest = 'context.xml'
+                put(source, dest, mode=0644)
 
-            # publishes the application described in context to Tomcat
-            # by a symlink in Tomcat's context configuration dir
-            ln_dest = '%(catalina_home)s/conf/Catalina/localhost/solr.xml' % env
-            if files.exists(ln_dest):
-                sudo('rm %s' % ln_dest)
-            sudo('ln -s %s/context.xml %s' % (env.solr_home, ln_dest))
+                # publishes the application described in context to Tomcat
+                # by a symlink in Tomcat's context configuration dir
+                ln_dest = '%(catalina_home)s/conf/Catalina/localhost/solr.xml' % env
+                if files.exists(ln_dest):
+                    sudo('rm %s' % ln_dest)
+                sudo('ln -s %s/context.xml %s' % (env.solr_home, ln_dest))
 
+        restart_tomcat()
 
 @task
 @roles('web')

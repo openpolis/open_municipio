@@ -11,10 +11,10 @@ Architecture
 The web server (apache) and the search server (solr) live as two different resources and communicate through the
 http protocol.
 
-.. waring::
+.. warning::
 
-For security reasons it is adviced not to expose the Solr server as a public resource.
-It must be reachable from the eweb application, internally on in a private network.
+    For security reasons it is adviced not to expose the Solr server as a public resource.
+    It must be reachable from the web application, internally on in a private network.
 
 The web application can query the search server through GET requests, receiving XML or Json responses ::
 
