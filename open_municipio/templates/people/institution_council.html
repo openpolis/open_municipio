@@ -43,7 +43,7 @@
             <div class="span8">
                 <ul class="list-floated unstyled">
                     {% for event in events %}
-                    <li><strong>{{ event.date|date:"d.m.Y" }}</strong> <a href="{{ event.act.get_absolute_url }}">{{ event.act.title }}</a></li>
+                    <li><strong>{{ event.date|date:"d.m.Y" }}</strong> <a href="{{ event.act.downcast.get_absolute_url }}">{{ event.act.title }}</a></li>
                     {% endfor %}
                 </ul>
             </div>

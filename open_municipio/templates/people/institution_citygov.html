@@ -11,10 +11,6 @@
             <li>
                 <a href="#"><img src="http://placehold.it/50" /></a>
                 <strong><a href="#"><i class="icon-ok"></i> {{ member.person.first_name|lower|capfirst }} {{ member.person.last_name|lower|capfirst }}</a></strong> <br />
-                {# FIXME #}
-                Partito Democratico
-                {{ member.council_group }}
-                {# endFIXME #}
                 <span class="monitoring">
                     {% if not member.person.monitoring_users %}Non monitorato{% else %}Monitorato da {{ member.person.monitoring_users|length }} cittadini{% endif %} - <a href="#"><i class="socialicon-add"></i> Monitora</a>
                 </span>
@@ -35,7 +31,7 @@
             <div class="span8">
                 <ul class="list-floated unstyled">
                     {% for event in events %}
-                    <li><strong>{{ event.date|date:"d.m.Y" }}</strong> <a href="#">{{ event.act.title }}</a></li>
+                    <li><strong>{{ event.date|date:"d.m.Y" }}</strong> <a href="{{ event.act.downcast.get_absolute_url }}">{{ event.act.title }}</a></li>
                     {% endfor %}
                 </ul>
             </div>
