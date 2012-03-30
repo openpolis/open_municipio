@@ -339,7 +339,7 @@ class Deliberation(Act):
     )
     STATUS = Choices(
         ('PRESENTED', 'presented', _('presented')),
-        ('COMMISSION', 'commission', _('commission')),
+        ('COMMITTEE', 'committee', _('committee')),
         ('COUNCIL', 'council', _('council')),
         ('APPROVED', 'approved', _('approved')),
         ('REJECTED', 'rejected', _('rejected'))

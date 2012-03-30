@@ -98,9 +98,9 @@ class CityGovernmentView(TemplateView):
         return context
 
 
-class CommissionView(DetailView):
+class CommitteeView(DetailView):
     model = Institution
-    context_object_name = 'commission'
+    context_object_name = 'committee'
 
 
 class PersonDetailView(DetailView):

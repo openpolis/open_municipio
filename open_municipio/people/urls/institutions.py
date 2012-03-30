@@ -11,8 +11,7 @@ urlpatterns = patterns('',
         ), name='om_institution_list'),
 
     url(r'^mayor/$', 'open_municipio.people.views.show_mayor' , name='om_institution_mayor'),
-    url(r'^commission/$', TemplateView.as_view(template_name='people/institution_commission.html' ) , name='om_institution_commission'),
-#    url(r'^commission/$', 'people.views.commission_page', name='om_institution_commission'),
+    url(r'^committee/$', TemplateView.as_view(template_name='people/institution_committee.html') , name='om_institution_committee'),
     url(r'^city-government/$', CityGovernmentView.as_view(), name='om_institution_citigov'),
     url(r'^council/$', CouncilView.as_view(), name='om_institution_council'),
 
