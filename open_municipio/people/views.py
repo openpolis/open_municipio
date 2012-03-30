@@ -1,7 +1,7 @@
 from django.template.context import RequestContext
 from os import sys
 
-from django.http import HttpResponseRedirect
+from django.http import Http404, HttpResponseRedirect
 from django.views.generic import TemplateView, DetailView
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, render_to_response
@@ -22,11 +22,11 @@ class CouncilView(TemplateView):
         # Call the base implementation first to get a context
         context = super(CouncilView, self).get_context_data(**kwargs)
 
-        mayor = municipality.mayor.as_charge.person
+        mayor = municipality.mayor.as_charge
         president = municipality.council.members.get(
-            charge_type=InstitutionCharge.COUNCIL_PRES_CHARGE).person
+            charge_type=InstitutionCharge.COUNCIL_PRES_CHARGE)
         vice_president = municipality.council.members.get(
-            charge_type=InstitutionCharge.COUNCIL_VICE_CHARGE).person
+            charge_type=InstitutionCharge.COUNCIL_VICE_CHARGE)
         groups = municipality.council.groups
         committees = municipality.committees.as_institution
         latest_acts = Act.objects.filter(
@@ -37,10 +37,10 @@ class CouncilView(TemplateView):
             )
         num_acts = dict()
         act_types = [
-            Deliberation, Motion, Interrogation, Interpellation, Motion, Agenda
+            Deliberation, Motion, Interrogation, Interpellation, Agenda
             ]
         for act_type in act_types:
-            num_acts[act_type.__name__] = act_type.objects.filter(
+            num_acts[act_type.__name__.lower()] = act_type.objects.filter(
                 emitting_institution__institution_type=Institution.COUNCIL
                 ).count()
 
@@ -70,7 +70,7 @@ class CityGovernmentView(TemplateView):
         # Call the base implementation first to get a context
         context = super(CityGovernmentView, self).get_context_data(**kwargs)
 
-        citygov = municipality.gov.members
+        citygov = municipality.gov
         latest_acts = Act.objects.filter(
             emitting_institution__institution_type=Institution.CITY_GOVERNMENT
             ).order_by('-presentation_date')[:3]
@@ -79,10 +79,10 @@ class CityGovernmentView(TemplateView):
             )
         num_acts = dict()
         act_types = [
-            Deliberation, Motion, Interrogation, Interpellation, Motion, Agenda
+            Deliberation, Motion, Interrogation, Interpellation, Agenda
             ]
         for act_type in act_types:
-            num_acts[act_type.__name__] = act_type.objects.filter(
+            num_acts[act_type.__name__.lower()] = act_type.objects.filter(
                 emitting_institution__institution_type=Institution.CITY_GOVERNMENT
                 ).count()
             
@@ -98,9 +98,35 @@ class CityGovernmentView(TemplateView):
         return context
 
 
-class CommissionView(DetailView):
+class CommitteeDetailView(DetailView):
+    """
+    Renders the Committee page
+    """
     model = Institution
-    context_object_name = 'commission'
+    template_name = 'people/institution_commission.html'
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(CommitteeDetailView, self).get_context_data(**kwargs)
+
+        # Are we given a real Committee institution as input? If no,
+        # raise 404 exception.
+        if self.object.institution_type != Institution.COMMITTEE:
+            raise Http404
+
+        committee = self.object
+        committee_list = Institution.objects.filter(institution_type=Institution.COMMITTEE)
+        events = Event.future.get_by_institution(self.object)
+            
+        extra_context = {
+            'committee': committee,
+            'committee_list': committee_list,
+            'events': events,
+            }
+
+        # Update context with extra values we need
+        context.update(extra_context)
+        return context
 
 
 class PersonDetailView(DetailView):
@@ -132,7 +158,6 @@ class PersonDetailView(DetailView):
         except ObjectDoesNotExist:
             context['is_user_monitoring'] = False
         return context
-
 
 
 def person_list(request):

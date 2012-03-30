@@ -13,8 +13,12 @@
 {% block content %}
     <hgroup>
         <h2>
+            {% if votation.act %}
             <strong>{% block act_type %}TIPO ATTO{% endblock %}</strong>
-            del Consiglio comunale N° 85 del <span class="date">2.2.2012</span></small>
+            del {{ votation.act.emitting_institution }} N° {{ votation.act.idnum }} del <span class="date">{{ votation.act.presentation_date|date:"d.m.Y" }}</span></small>
+            {% else %}
+            {{ votation.act_descr }}
+            {% endif %}
         </h2>
         <h1>{{ votation }}</h1>
     </hgroup>
@@ -31,20 +35,14 @@
         </tr>
         </thead>
         <tbody>
+            {% for group in votation.group_votes %}
             <tr>
-                <td>Coesionie Nazionale - Io Sud</td>
+                <td>{{ group }}</td>
                 <td>8</td><td>2</td><td>1</td><td>0</td><td>0</td>
             </tr>
+            {% endfor %}
             <tr>
                 <td>Gruppo Misto</td>
-                <td>8</td><td>2</td><td>1</td><td>0</td><td>0</td>
-            </tr>
-            <tr>
-                <td>Italia dei Valori</td>
-                <td>8</td><td>2</td><td>1</td><td>0</td><td>0</td>
-            </tr>
-            <tr>
-                <td>Lega Nsord Padania</td>
                 <td>8</td><td>2</td><td>1</td><td>0</td><td>0</td>
             </tr>
         </tbody>
@@ -69,26 +67,29 @@
         </tr>
         </thead>
         <tbody>
-        <tr>
-            <td><a href="#"><strong>Adamo Marilena</strong> (PD)</a></td>
-            <td><span class="label label-success">Favorevole</span></td><td></td><td></td><td></td><td></td>
-        </tr>
-        <tr>
-            <td><a href="#"><strong>Bianchi Gianni</strong> (IDV)</a></td>
-            <td></td><td><span class="label label-important">Contrario</span></td><td></td><td></td><td></td>
-        </tr>
-        <tr>
-            <td><a href="#"><strong>Denni Pino</strong> (PD)</a></td>
-            <td></td><td></td><td></td><td></td><td><span class="label label-info">In Missione</span></td>
-        </tr>
-        <tr>
-            <td><a href="#"><strong>Fiori rita</strong> (PDL)</a></td>
-            <td></td><td></td><td><span class="label">Astenuto</span></td><td></td><td></td>
-        </tr>
-        <tr>
-            <td><a href="#"><strong>Adamo Marilena</strong> (PD)</a></td>
-            <td></td><td></td><td></td><td><span class="label label-white">Assente</span></td><td></td>
-        </tr>
+
+            {% for charge_vote in votation.charge_votes %}
+            {% with charge_vote.charge.person as politician %}
+            <tr>
+                <td>
+                    <a href="{{ politician.get_absolute_url }}">
+                        <strong>{{ politician.full_name }}</strong> ({{ charge_vote.charge.council_group.acronym }})
+                    </a>
+                </td>
+                {% if charge_vote.vote = charge_vote.YES %}
+                <td><span class="label label-success">Favorevole</span></td><td></td><td></td><td></td><td></td>
+                {% else %}{% if charge_vote.vote = charge_vote.NO %}
+                <td></td><td><span class="label label-important">Contrario</span></td><td></td><td></td><td></td>
+                {% else %}{% if charge_vote.vote = charge_vote.ABSTAINED %}
+                <td></td><td></td><td><span class="label">Astenuto</span></td><td></td><td></td>
+                {% else %}{% if charge_vote.vote = charge_vote.MISSION %}
+                <td></td><td></td><td></td><td></td><td><span class="label label-info">In Missione</span></td>
+                {% else %}{% if charge_vote.vote = charge_vote.ABSENT %}
+                <td></td><td></td><td></td><td><span class="label label-white">Assente</span></td><td></td>
+                {% endif %}{% endif %}{% endif %}{% endif %}{% endif %}
+            </tr>
+            {% endwith %}
+            {% endfor %}
         </tbody>
     </table>
 
@@ -123,14 +124,18 @@
 {% endblock %}
 
 {% block sidebar %}
+    {% if votation.outcome = votation.PASSED %}
     <h2 class="text-green"><i class="socialicon-ok socialicon-active"></i> Approvato</h2>
+    {% else %}
+    <h2 class="text-red"><i class="socialicon-ko socialicon-active"></i> Respinto</h2>
+    {% endif %}
     <table class="stats">
         <tr>
-            <td><span class="okbox">150</span></td>
+            <td><span class="okbox">{{ votation.n_yes }}</span></td>
             <th class="bg-dark span6">Favorevoli</th>
-            <td><span class="graybox">150</span></td>
+            <td><span class="graybox">{{ votation.n_abst }}</span></td>
             <th class="bg-dark span6">Astenuti</th>
-            <td><span class="kobox">150</span></td>
+            <td><span class="kobox">{{ votation.n_no }}</span></td>
             <th class="bg-dark span6">Contrari</th>
         </tr>
     </table>

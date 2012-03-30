@@ -18,6 +18,7 @@
     {{ block.super }}
     <script src="{{ STATIC_URL }}js/ajax_csrf.js" type="text/javascript" charset="utf-8"></script>
     <script src="{{ STATIC_URL }}js/voting.js" type="text/javascript"></script>
+    <script src="{{ STATIC_URL }}js/comments.js" type="text/javascript"></script>
 {% endblock head_js_includes %}
 
 {% block footer_js_includes %}
@@ -279,7 +280,8 @@
         {% endfor %}
     </ul>
     {% if request.user.is_authenticated %}
-    <form action="{% comment_form_target %}" method="post" class="form-inline bg-dark clearfix" id="comment_form">
+    <form id="comment-form" action="{% comment_form_target %}" method="post" class="form-inline bg-dark">
+        <input type="hidden" name="next" value="{{ act.get_absolute_url }}" />
         {% csrf_token %}
 
         {% for hidden in form.hidden_fields %}
