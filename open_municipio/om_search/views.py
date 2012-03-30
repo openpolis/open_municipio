@@ -65,12 +65,23 @@ class ExtendedFacetedSearchView(SearchView):
         selected_facets = self.request.GET.getlist('selected_facets')
 
         extended_selected_facets = []
-        for (c, f) in enumerate(selected_facets, start=1):
+        for f in selected_facets:
             ## start building unselection url
             url = "?q=%s" % self.query
-            for i in range(1,c):
-                url += "&amp;selected_facets=%s" % (selected_facets[i-1])
+            for cf in selected_facets:
+                if cf != f:
+                    url += "&amp;selected_facets=%s" % cf
             field, _, label = f.partition(":")
+
+            # TODO: use an associative array
+            if field == 'pub_date':
+                if label == self.THREEDAYS:
+                    label = 'ultimi 3 giorni'
+                elif label == self.ONEMONTH:
+                    label = 'ultimo mese'
+                else:
+                    raise Exception
+
             sf = {'field': field, 'label': label, 'url': url}
             extended_selected_facets.append(sf)
 
@@ -83,18 +94,22 @@ class ExtendedFacetedSearchView(SearchView):
         selected_facets = self.request.GET.getlist('selected_facets')
         facet_counts_queries = self.results.facet_counts().get('queries', {})
 
-        facets = {}
+        facets = {'is_selected': False}
         if "pub_date:%s" % self.THREEDAYS in facet_counts_queries:
             facets['threedays'] = {
                 'key': "pub_date:%s" % self.THREEDAYS,
                 'count': facet_counts_queries["pub_date:%s" % self.THREEDAYS]
             }
+            if (facets['threedays']['key'] in selected_facets):
+                facets['is_selected'] = True
 
         if "pub_date:%s" % self.ONEMONTH in facet_counts_queries:
             facets['onemonth'] = {
                 'key': "pub_date:%s" % self.ONEMONTH,
                 'count': facet_counts_queries["pub_date:%s" % self.ONEMONTH]
             }
+            if (facets['onemonth']['key'] in selected_facets):
+                facets['is_selected'] = True
 
         return facets
 
