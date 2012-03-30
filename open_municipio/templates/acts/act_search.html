@@ -27,11 +27,6 @@ em {
     <h1>Cerca l'atto</h1>
 
     <form method="get" action="{% url om_act_search %}" class="well form-search">
-        {% for hidden in form.hidden_fields %}
-            {{ hidden }}
-        {% endfor %}
-        {% csrf_token %}
-
         <input type="text" class="input-medium search-query" name="{{ form.q.html_name }}" value="{% if form.q.value %}{{ form.q.value }}{% endif %}" placeholder="Testo della ricerca" />
         <button type="submit" class="btn">Cerca</button>
     </form>
