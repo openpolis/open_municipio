@@ -13,8 +13,8 @@ em {
             {% for facet in selected_facets  %}
                 <li>
                     <a href="{{ facet.url }}"><i class="icon-remove"></i></a>
-                    {{ facet.field }}<br/>
-                    &nbsp;&nbsp;&nbsp;&nbsp;{{ facet.label }} <a href="#"><i class="icon-chevron-down"></i></a
+                    <span style="color:gray;">{{ facet.field }}</span>:
+                    {{ facet.label }}
                 </li>
                 {% if not forloop.last %}
                     <span class="divider">&nbsp;</span>
