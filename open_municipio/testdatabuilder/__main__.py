@@ -2,16 +2,17 @@ from django.core.files import File
 from django.conf import settings
 
 from open_municipio.testdatabuilder import conf
-from open_municipio.people.models import Institution, Person, GroupCharge
+from open_municipio.people.models import Institution, Person, GroupCharge, Sitting, InstitutionCharge
 from open_municipio.acts.models import  Act, ActSupport, Attach, Deliberation, Interrogation
 from open_municipio.taxonomy.models import Category, Tag
+from open_municipio.votations.models import Votation, ChargeVote
 
 try:
     import json
 except ImportError:
     import simplejson as json
 
-import random, os, sys, datetime, lipsum
+import random, os, sys, datetime, lipsum, itertools
 from rst2pdf.createpdf import RstToPdf
 
 
@@ -22,7 +23,10 @@ class RandomItemsFactory(object):
     This class is basically a collection of routines allowing automatic generation
     of a random dataset, that may be used to setup a realistic[*]_ testing enviroment
     for the *OpenMunicipio* web application.
-    
+
+    As a pre-requisite, the people models should be populated,
+    either by the create_startup_people.py script, or by loading the test_data fixtures
+
     .. [*]: At least, this is the intended goal ;-)
     """
     
@@ -100,6 +104,99 @@ class RandomItemsFactory(object):
 
         print "ok"
 
+    def create_votations(self):
+        # cleanup
+        Sitting.objects.all().delete()
+        Votation.objects.all().delete()
+
+        council_institution = Institution.objects.get(institution_type=Institution.COUNCIL)
+
+        # TODO:
+        # .. yes and no percentages vary according to group and majority
+
+
+        # generates N sittings and M votes
+        n_sittings = random.randint(3, 4)
+        n_votations = random.randint(5, 7)
+        date_sitting = datetime.date.today() - datetime.timedelta(days=random.randint(n_sittings, 10))
+
+        for s_cnt in range(1, n_sittings):
+
+            date_sitting += datetime.timedelta(days=1)
+
+            s = Sitting(
+                idnum="C/000%s" % s_cnt,
+                number=s_cnt,
+                institution=council_institution,
+                date=date_sitting
+            )
+            s.save()
+            print "Seduta % screata" % s_cnt
+
+            # generates N votations related to the current sitting
+            for i in range(1, n_votations):
+
+                # add a votation
+                v = Votation(
+                    sitting=s,
+                    idnum="%s" % i,
+                    n_legal=20,
+                    )
+                v.save()
+                print "Votazione %s creata"  % i
+
+                # define vote weights
+                # itertools.chain.from_iterable flattens a nested list of lists
+                # [i]*N creates a list of N integers i
+                # choosing randomly from the flattened lists is almost equivalent
+                # to choosing with weighted probabilities
+                vw = list(itertools.chain.from_iterable([
+                    [0]*30,  # 30% NO
+                    [1]*60,  # 60% YES
+                    [2]*5,   #  5% ABSTAINED
+                    [4]*5    #  5% ABSENT
+                ]))
+
+                for charge in council_institution.charge_set.all():
+                    if (charge.charge_type == InstitutionCharge.COUNCIL_PRES_CHARGE or
+                        charge.charge_type == InstitutionCharge.COUNCIL_VICE_CHARGE):
+                        # president and vicepresident do not vote twice
+                        continue
+                    else:
+                        # votings are drawn randomly with weighted probabilities
+                        vote = random.choice(vw)
+
+                    charge_vote = ChargeVote(votation=v, charge=charge, vote=vote)
+                    charge_vote.save()
+                    # print "%s voted %s" % (charge, charge_vote.vote)
+                print "Voti creati"
+
+
+                # compute voting totals
+                v.n_yes = ChargeVote.objects.filter(votation=v, vote=ChargeVote.YES).count()
+                v.n_no = ChargeVote.objects.filter(votation=v, vote=ChargeVote.NO).count()
+                v.n_abst = ChargeVote.objects.filter(votation=v, vote=ChargeVote.ABSTAINED).count()
+                n_president = ChargeVote.objects.filter(votation=v, vote=ChargeVote.PRES).count()
+                v.n_present = v.n_yes + v.n_no + v.n_abst + n_president
+                v.n_maj = int(v.n_present / 2) + 1
+                if v.n_yes >= v.n_maj:
+                    v.outcome = Votation.PASSED
+                else:
+                    v.outcome = Votation.REJECTED
+                v.save()
+
+                # TODO: compute groupvote and rebels
+                # delegate group votes and rebels computations to model methods
+                # so that this logic can be re-used in other contexts
+                # i.e. (data import module)
+                #
+                # v.compute_group_votes()
+                # v.compute_rebels()
+
+                print "Totali"
+                print "  Presenti: %s, Maggioranza: %s" % (v.n_present, v.n_maj)
+                print "  %s YES, %s NO, %s ABSTAINED" % (v.n_yes, v.n_no, v.n_abst)
+                print "  Voto %s" % (v.get_outcome_display())
 
     def create_tags(self):
         """
