@@ -1,7 +1,7 @@
 import datetime
 from haystack.indexes import *
 from haystack import site
-from open_municipio.acts.models import Act
+from open_municipio.acts.models import Act, Deliberation
 
 
 class ActIndex(SearchIndex):
@@ -10,7 +10,7 @@ class ActIndex(SearchIndex):
     # faceting fields
     act_type = FacetCharField( )
     is_key = FacetBooleanField(model_attr='is_key')
-    initiative = FacetBooleanField(model_attr='initiative')
+    initiative = FacetCharField()
     pub_date = FacetDateField(model_attr='presentation_date')
     categories = MultiValueField(indexed=True, stored=True, faceted=True)
     tags = MultiValueField(indexed=True, stored=True, faceted=True)
@@ -29,6 +29,12 @@ class ActIndex(SearchIndex):
 
     def prepare_act_type(self, obj):
         return obj.downcast().__class__.__name__
+
+    def prepare_initiative(self, obj):
+        if obj.downcast().__class__ == Deliberation:
+            return obj.downcast().get_initiative_display()
+        else:
+            return ''
 
     def prepare_url(self, obj):
         return obj.downcast().get_absolute_url()
