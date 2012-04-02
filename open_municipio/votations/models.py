@@ -41,14 +41,15 @@ class Votation(models.Model):
     outcome = models.IntegerField(choices=OUTCOMES, blank=True, null=True)
     is_key = models.BooleanField(default=False, help_text=_("Specify whether this is a key votation"))
     n_rebels = models.IntegerField(default= 0)
-    
-    # use this manager to retrieve only key votations
-    key = QueryManager(is_key=True).order_by('-sitting__date')
 
     # default manager must be explicitly defined, when
     # at least another manager is present
     objects = models.Manager()
-    
+
+    # use this manager to retrieve only key votations
+    key = QueryManager(is_key=True).order_by('-sitting__date')
+
+
     # activation of the ``is_linked_filter``
     # add ``act`` to the ``list_filter`` list in ``admin.py``
     # to filter votations based on the existence of a related act
