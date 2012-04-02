@@ -49,6 +49,8 @@ class Votation(models.Model):
     # use this manager to retrieve only key votations
     key = QueryManager(is_key=True).order_by('-sitting__date')
 
+    # use this manager to retrieve only linked acts
+    is_linked_to_act = QueryManager(act__isnull=False)
 
     # activation of the ``is_linked_filter``
     # add ``act`` to the ``list_filter`` list in ``admin.py``
