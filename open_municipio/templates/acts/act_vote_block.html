@@ -1,29 +1,29 @@
 {% load voting_tags %}
 {% load om_voting_tags %}
-{% votes_for_object act as num_votes %}                                                                                                                                                                                             
+{% votes_for_object act as num_votes %}
 
 {% if request.user.is_authenticated %}
-    {% vote_by_user request.user on act as vote %}
-    <table id="acts-votebox-{{ object.id }}">
-      <tr>
+{% vote_by_user request.user on act as vote %}
+<table id="acts-votebox-{{ object.id }}" class="table">
+    <tr>
         <td><span class="okbox okscore">{{ num_votes.upvotes }}</span></td>
         <th id="acts-vote-{{ object.id }}-up" class="bg-dark span6 vote{% if vote.vote and vote.vote > 0 %} up-voted{% endif %}">
             <i class="socialicon-ok socialicon-active pull-left"></i> Sono favorevole</th>
         <td><span class="kobox koscore">{{ num_votes.downvotes }}</span></td>
-        <th id="acts-vote-{{ object.id }}-down" class="bg-dark span6 vote{% if vote.vote and vote.vote < 0 %} down-voted{% endif %}">
-            <i class="socialicon-ko socialicon-active pull-left"></i> Sono contrario</th>
-      </tr>
-    </table>
+        <th id="acts-vote-{{ object.id }}-down" class="bg-dark span6 vote{% if vote.vote and vote.vote < 0 %} down-voted{% endif %}"><i class="socialicon-ko"></i> Sono contrario</th>
+    </tr>
+</table>
 {% else %}
-    {% comment %}FIXME: when clicking on voting links, non
-    authenticated users must be redirected to registration page or
-    form{% endcomment %}
-    <table id="acts-votebox-{{ object.id }}">
-      <tr>
+{% comment %}
+FIXME: when clicking on voting links, non authenticated users must be
+redirected to registration page or form
+{% endcomment %}
+<table id="acts-votebox-{{ object.id }}" class="table">
+    <tr>
         <td><span class="okbox">{{ num_votes.upvotes }}</span></td>
         <th class="bg-dark span6"><i class="socialicon-ok socialicon-active pull-left"></i> Sono favorevole</th>
         <td><span class="kobox">{{ num_votes.downvotes }}</span></td>
-        <th class="bg-dark span6"><i class="socialicon-ko socialicon-active pull-left"></i> Sono contrario</th>
-      </tr>
-    </table>
+        <th class="bg-dark span6"><i class="socialicon-ko"></i> Sono contrario</th>
+    </tr>
+</table>
 {% endif %}

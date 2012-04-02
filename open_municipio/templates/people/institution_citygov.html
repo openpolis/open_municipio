@@ -24,14 +24,21 @@
         <div class="row-fluid">
             <div class="span4">
                 <div class="calendar_container">
-                    <h3>Agenda della giunta</h3>
-                    <div class="calendar" data-events=".calendar_events"></div>
+                    <h3>Agenda della commissione</h3>
+                    <div class="calendar" data-calendar=".calendar_events"></div>
+                    <ul class="calendar_events">
+                        {% for event in events %}
+                        <li data-day="{{ event.date|date:"d/m/Y" }}"><a href="{{ event.act.downcast.get_absolute_url }}">{{ event.act.title }}</a></li>
+                        {% endfor %}
+                    </ul>
                 </div>
             </div>
             <div class="span8">
                 <ul class="list-floated unstyled">
                     {% for event in events %}
+                    {% if not event.is_past_due %}
                     <li><strong>{{ event.date|date:"d.m.Y" }}</strong> <a href="{{ event.act.downcast.get_absolute_url }}">{{ event.act.title }}</a></li>
+                    {% endif %}
                     {% endfor %}
                 </ul>
             </div>
@@ -98,19 +105,6 @@
 {% block footer_js_includes %}
     {{ block.super }}
     <script src="{{ STATIC_URL }}js/jquery-ui-1.8.18.custom.min.js"></script>
-<<<<<<< HEAD
-    <script src="{{ STATIC_URL }}js/jquery-ui.calendar.js"></script>
-{% endblock %}
-=======
     <script src="{{ STATIC_URL }}js/jquery.ui.calendar.js"></script>
 {% endblock %}
 
-{% block extra_js %}
-    // initialize events
-    var events = [
-    { Title: "Five K for charity", Date: new Date("02/03/2012") },
-    { Title: "Dinner", Date: new Date("03/03/2012") },
-    { Title: "Meeting with manager", Date: new Date("05/03/2012") }
-    ];
-{% endblock %}
->>>>>>> origin/fnstudio-dev

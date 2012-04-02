@@ -104,7 +104,7 @@
                 <tbody>
                     {% for charge_vote in votation.charge_votes %}
                     {% with charge_vote.charge.person as politician %}
-                    {% if charge_vote.rebel %} <!-- check if this is the right property... -->
+                    {% if charge_vote.rebel %}
                     <tr>
                         <td>
                             <a href="{{ politician.get_absolute_url }}">

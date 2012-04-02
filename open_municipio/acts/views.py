@@ -26,7 +26,7 @@ from open_municipio.taxonomy.views import AddTagsView, RemoveTagView
 class ActSearchView(ExtendedFacetedSearchView):
     """
 
-    This views allows faceted search and navigation of the acts.
+    This view allows faceted search and navigation of the acts.
 
     It extends a n extended version of the basic FacetedSearchView,
     and can be customized whenever
@@ -175,7 +175,7 @@ class ActDetailView(DetailView):
         if self.request.user.has_perm('acts.transition') : #and context['status_list']
             if len(context['transition_groups']) == 5:
                 context['transition_to_council_form'] = ActTransitionForm(initial={'act': act, 'final_status': 'COUNCIL' })
-                context['transition_to_commission_form'] = ActTransitionForm(initial={'act': act, 'final_status': 'COMMISSION' })
+                context['transition_to_committee_form'] = ActTransitionForm(initial={'act': act, 'final_status': 'COMMITTEE' })
             context['transition_to_final_form'] = ActFinalTransitionForm(initial={'act': act })
             context['transition_to_final_form'].fields['final_status'].widget.choices = [('APPROVED','Approvato'),('REJECTED','Rifiutato')]
 

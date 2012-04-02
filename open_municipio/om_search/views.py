@@ -3,10 +3,8 @@ from open_municipio.om_search.forms import RangeFacetedSearchForm
 
 class ExtendedFacetedSearchView(SearchView):
     """
-
     Extends the SearchView class, allowing building filters and breadcrumbs
     for faceted navigation
-
     """
     __name__ = 'ExtendedFacetedSearchView'
 
@@ -34,13 +32,10 @@ class ExtendedFacetedSearchView(SearchView):
 
     def _get_extended_facets_fields(self):
         """
-
         Returns the facets fields information along with a *is_facet_selected*
         field, that allows easy filtering of the selected facets in the
         navigation filters
-
         """
-
         selected_facets = self.request.GET.getlist('selected_facets')
         facet_counts_fields = self.results.facet_counts().get('fields', {})
 
@@ -60,25 +55,33 @@ class ExtendedFacetedSearchView(SearchView):
 
     def _get_extended_selected_facets(self):
         """
-
         Returns the selected_facets list, in an extended dictionary,
         in order to make it easy to write faceted navigation breadcrumbs
         with *unselect* urls
-
         unselecting a breadcrumb remove all following selections
-
         """
 
         ## original selected facets list
         selected_facets = self.request.GET.getlist('selected_facets')
 
         extended_selected_facets = []
-        for (c, f) in enumerate(selected_facets, start=1):
+        for f in selected_facets:
             ## start building unselection url
             url = "?q=%s" % self.query
-            for i in range(1,c):
-                url += "&amp;selected_facets=%s" % (selected_facets[i-1])
+            for cf in selected_facets:
+                if cf != f:
+                    url += "&amp;selected_facets=%s" % cf
             field, _, label = f.partition(":")
+
+            # TODO: use an associative array
+            if field == 'pub_date':
+                if label == self.THREEDAYS:
+                    label = 'ultimi 3 giorni'
+                elif label == self.ONEMONTH:
+                    label = 'ultimo mese'
+                else:
+                    raise Exception
+
             sf = {'field': field, 'label': label, 'url': url}
             extended_selected_facets.append(sf)
 
@@ -91,18 +94,22 @@ class ExtendedFacetedSearchView(SearchView):
         selected_facets = self.request.GET.getlist('selected_facets')
         facet_counts_queries = self.results.facet_counts().get('queries', {})
 
-        facets = {}
+        facets = {'is_selected': False}
         if "pub_date:%s" % self.THREEDAYS in facet_counts_queries:
             facets['threedays'] = {
                 'key': "pub_date:%s" % self.THREEDAYS,
                 'count': facet_counts_queries["pub_date:%s" % self.THREEDAYS]
             }
+            if (facets['threedays']['key'] in selected_facets):
+                facets['is_selected'] = True
 
         if "pub_date:%s" % self.ONEMONTH in facet_counts_queries:
             facets['onemonth'] = {
                 'key': "pub_date:%s" % self.ONEMONTH,
                 'count': facet_counts_queries["pub_date:%s" % self.ONEMONTH]
             }
+            if (facets['onemonth']['key'] in selected_facets):
+                facets['is_selected'] = True
 
         return facets
 
@@ -119,4 +126,16 @@ class ExtendedFacetedSearchView(SearchView):
         extra['selected_facets'] = self._get_extended_selected_facets()
         extra['facets'] = self._get_extended_facets_fields()
         extra['facet_queries_pubdate'] = self._get_custom_facet_queries_pubdate()
+
+        # make get array as mutable QueryDict
+        params = self.request.GET.copy()
+        if 'q' not in params:
+            params.update({'q': ''})
+        if 'page' in params:
+            params.pop('page')
+
+        from django.core.urlresolvers import reverse
+        extra['base_url'] = reverse('om_act_search') + '?' + params.urlencode()
+
         return extra
+

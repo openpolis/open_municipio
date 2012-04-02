@@ -6,7 +6,7 @@
             </th>
 
         {% if transition_groups|length_is:"5" %}
-            <th class="span3{% if act.status == 'COMMISSION' %} current{% else %}{% if transition_groups.COMMISSION|length > 0 %} past{% endif %}{% endif %}">
+            <th class="span3{% if act.status == 'COMMITTEE' %} current{% else %}{% if transition_groups.COMMITTEE|length > 0 %} past{% endif %}{% endif %}">
                 <div>Discussione in Commissione<span class="arrow"></span></div>
             </th>
             <th class="span3{% if act.status == 'COUNCIL' %} current{% else %}{% if transition_groups.COUNCIL|length > 0 %} past{% endif %}{% endif %}">
@@ -25,9 +25,9 @@
         <tr>
             <td></td>
             {% if transition_groups|length_is:"5" %}
-            <td>{% if act.status != 'COMMISSION' %}
-                <a href="#transaction_form_commission" class="transaction_edit btn btn-mini"><i class="icon-edit"></i></a>
-                <div class="modal hide" id="transaction_form_commission">
+            <td>{% if act.status != 'COMMITTEE' %}
+                <a href="#transaction_form_committee" class="transaction_edit btn btn-mini"><i class="icon-edit"></i></a>
+                <div class="modal hide" id="transaction_form_committee">
                     <form action="{% url om_act_transition_add act.id %}" method="POST">
                         {% csrf_token %}
                         <div class="modal-header">
@@ -35,7 +35,7 @@
                             <h3>Aggiungi transizione in Commissione</h3>
                         </div>
                         <div class="modal-body">
-                            {{ transition_to_commission_form.as_p }}
+                            {{ transition_to_committee_form.as_p }}
                         </div>
                         <div class="modal-footer">
                             <input type="button" value="Chiudi" data-dismiss="modal" class="btn">
@@ -93,7 +93,7 @@
             {% if transition_groups|length_is:"5" %}
             <td>
                 <ul>
-                    {% for transition in transition_groups.COMMISSION %}
+                    {% for transition in transition_groups.COMMITTEE %}
                         <li>
                             {% if transition == act.get_last_transition %}
                                 <form action="{% url om_act_transition_remove act.id %}" class="transition_delete_form" method="post">{% csrf_token %}

@@ -10,8 +10,7 @@ import os
 def create():
     """Create a virtualenv on remote host"""
     require('virtualenv_root', provided_by=('staging', 'production'))
-    from fabfile import PYTHON_FULL_PATH
-    args = '--clear --python=%s --no-site-packages' % PYTHON_FULL_PATH
+    args = '--clear --python=%s --no-site-packages' % env.python
     run('virtualenv %s %s' % (args, env.virtualenv_root))
 
 
@@ -61,6 +60,7 @@ def update_requirements():
         pip_executable = os.path.join(env.virtualenv_root, 'bin', 'pip')              
         cmd = [pip_executable] # use pip version provided by virtualenv              
         cmd += ['install']
+        # TODO: verify that --upgrade removes files in the src directory
         cmd += ['--upgrade'] # upgrade already installed packages
         cmd += ['--requirement %s' % os.path.join(requirements_dir, 'main.txt')] # specify a requirement file
         run(' '.join(cmd))

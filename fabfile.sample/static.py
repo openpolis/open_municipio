@@ -1,6 +1,6 @@
 from fabric.api import *
 
-from fabfile.venv import run_venv
+from venv import run_venv
 
 import os
 

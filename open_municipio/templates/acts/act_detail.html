@@ -140,7 +140,7 @@
     <dl class="tags-cloud">
         {% for category in act.categories %}
         <dt><a href="{{ category.get_absolute_url }}">{{ category.name }}</a></dt>
-        {% for tag in category.tags %}
+        {% for tag in act.tags %}
             <dd><a href="{{ tag.get_absolute_url }}">{{ tag }}</a></dd>
         {% endfor %}
         {% endfor %}

@@ -3,9 +3,32 @@
 =================
 Solr and Haystack
 =================
-*OpenMunicipio* relies on Solr_ for content indexing, textual search and faceted navigation
+*OpenMunicipio* relies on Solr_, a search server, for content indexing, textual search and faceted navigation
 in some of its main sections.
 
+Architecture
+------------
+The web server (apache) and the search server (solr) live as two different resources and communicate through the
+http protocol.
+
+.. warning::
+
+    For security reasons it is adviced not to expose the Solr server as a public resource.
+    It must be reachable from the web application, internally on in a private network.
+
+The web application can query the search server through GET requests, receiving XML or Json responses ::
+
+    User   --->  Apache (port 80)  <--->  WSGI  <----->  Solr (port 8180)
+
+The search server can also receive instructions to add or remove documents from the index, through POST requests.
+This is usually done through a variety of methods, according to the update policy:
+
+ * real-time, the web application directly updates the index when a change is detected
+ * batch commands, for example a python maangement command
+ * queue and messages, for advanced and complex integrations
+
+To access Solr services within Django, both for write and read access (indexing and querying), you use Haystack_,
+which features a unified API allowing you to plug in different search backends (Solr, Xapian, Woosh).
 
 Solr installation
 -----------------
@@ -50,9 +73,6 @@ There are no data, since no indexing process was launched. Proceed to the config
 
 Haystack installation
 ---------------------
-To access Solr services within Django, both for write and read access (indexing and querying), you use Haystack_,
-which features a unified API allowing you to plug in different search backends (Solr, Xapian, Woosh).
-
 Using Haystack with Solr requires you to install, separately, ``pysolr`` and ``lxml``.
 The ``requirements/main.txt`` ``pip`` requirements file contains instruction for installing the stable release of Haystack, with its
 required dependencies, so all you need to do is to keep up your virtualenv up-to-date.
@@ -102,10 +122,12 @@ The first step is needed only if you want to save Solr's default schema file.
 .. _haystack: http://haystacksearch.org/
 
 
-Production deploy (tomcat)
---------------------------
-To deploy Solr in production, the following instructions are valid for Tomcat_ v. 5.5.
+Deploy (tomcat)
+---------------
+To deploy Solr in production or staging, the following instructions are valid for Tomcat_ v. 5.5.
 For later versions, there should be no problems, but your mileage may vary.
+
+Instructions are condensed in the Fabric_ ``fabfile.sample/solr.py``, used to automate the deploy process.
 
 As a pre-requisite, the Tomcat application server must be up and running.
 How to do this is out of the scope of the current document and `documentation regarding Tomcat`_
@@ -114,18 +136,26 @@ can be found on the official website.
 ``CATALINA_HOME`` is the root directory of the Tomcat server. For a Debian distribution,
 when installed with ``apt-get install tomcat55``, this is ``/usr/share/tomcat55``.
 
-1. Create directory for solr configurations and data (ex: /home/solr).
+1. Create directory for solr configurations and data (ex: ``/home/solr``).
    Hencefort ``SOLR_HOME``. See the tree below.
 
-2. Change permissions so that tomcat user can write into data.
+2. Change permissions so that tomcat user can write into ``$SOLR_HOME/data``.
 
-3. Copy the ``solr.war`` file into ``$SOLR_HOME``.
+3. Create a ``context.xml`` file, under ``$SOLR_HOME``. This defines the Tomcat Context for solr.
 
-4. Create a ``context.xml`` file, under ``$SOLR_HOME``. This defines the Tomcat Context for solr.
+4. Symlink ``$SOLR_HOME/context.xml`` into ``$CATALINA_HOME/conf/Catalina/localhost/solr.xml``.
 
-5. Symlink ``$SOLR_HOME/context.xml`` into ``$CATALINA_HOME/conf/Catalina/localhost/solr.xml``.
+5. Restart tomcat.
 
-6. Start tomcat.
+6. Put solr.xml, containing the configuration for multicore solr indexes, into ``$SOLR_HOME/cores``.
+
+7. Sync ``$SOLR_HOME/cores/open_municipio`` with a valid configuration from the local machine
+(see ``solr.sample`` folder in our distribution).
+
+Alternatively, you may substitute ``$SOLR_HOME/cores/open_municipio`` with a symlink to
+the application specific folder on the remote server (where your web site and code, reside).
+
+That's the technique we've used in our ``fabfile.sample/solr.py`` script.
 
 
 This is the tree structure under  ``$SOLR_HOME``::
@@ -161,7 +191,7 @@ This is the content of ``cores/solr.xml``
   <solr persistent="false" sharedLib="lib">
 
     <cores adminPath="/admin/cores" shareSchema="true">
-      <core name="open_municipio" instanceDir="open_municipio" dataDir="${solr.data.dir:../../data}/open_municipio" />
+      <core name="open_municipio" instanceDir="open_municipio" dataDir="${solr.data.dir:" />
     </cores>
   </solr>
 
@@ -174,5 +204,15 @@ changing the content of the ``dataDir`` element, to look this way:
 
 
 
+These are the Fabric commands to use, to deploy solr into a staging server,
+having ``tomcat`` up and running:
+
+.. sourcecode:: bash
+
+  $ fab staging solr.make_common_skeleton
+  $ fab staging solr.update_app
+  $ fab staging solr.rebuild_index
+
 .. _Tomcat: http://tomcat.apache.org/
 .. _`documentation regarding Tomcat`: http://tomcat.apache.org/tomcat-5.5-doc/index.html
+.. _Fabric: http://docs.fabfile.org/en/1.4.0/index.html
