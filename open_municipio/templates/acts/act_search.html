@@ -38,6 +38,8 @@ em {
                 <ul>
                     {% if page.has_previous %}
                         <li><a href="{{ base_url }}&page={{ page.previous_page_number }}">&larr;</a></li>
+                    {% else %}
+                        <li class="disabled"><span>&larr;</span></li>
                     {% endif %}
 
                     {% for p in paginator.page_range %}
@@ -48,6 +50,8 @@ em {
 
                     {% if page.has_next %}
                         <li><a href="{{ base_url }}&page={{ page.next_page_number }}">&rarr;</a></li>
+                    {% else %}
+                        <li class="disabled"><span>&rarr;</span></li>
                     {% endif %}
                 </ul>
             </div>
@@ -94,6 +98,8 @@ em {
                 <ul>
                     {% if page.has_previous %}
                         <li><a href="{{ base_url }}&page={{ page.previous_page_number }}">&larr;</a></li>
+                    {% else %}
+                        <li class="disabled"><span>&larr;</span></li>
                     {% endif %}
 
                     {% for p in paginator.page_range %}
@@ -104,6 +110,8 @@ em {
 
                     {% if page.has_next %}
                         <li><a href="{{ base_url }}&page={{ page.next_page_number }}">&rarr;</a></li>
+                    {% else %}
+                        <li class="disabled"><span>&rarr;</span></li>
                     {% endif %}
                 </ul>
             </div>

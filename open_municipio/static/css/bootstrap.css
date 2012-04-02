@@ -2956,6 +2956,7 @@ input[type="submit"].btn.small {
 .pagination li {
   display: inline;
 }
+.pagination span,
 .pagination a {
   float: left;
   padding: 0 14px;
@@ -2972,18 +2973,21 @@ input[type="submit"].btn.small {
   color: #999999;
   cursor: default;
 }
+.pagination .disabled span,
 .pagination .disabled a,
 .pagination .disabled a:hover {
   color: #999999;
   background-color: transparent;
   cursor: default;
 }
+.pagination li:first-child span,
 .pagination li:first-child a {
   border-left-width: 1px;
   -webkit-border-radius: 3px 0 0 3px;
   -moz-border-radius: 3px 0 0 3px;
   border-radius: 3px 0 0 3px;
 }
+.pagination li:last-child span,
 .pagination li:last-child a {
   -webkit-border-radius: 0 3px 3px 0;
   -moz-border-radius: 0 3px 3px 0;
