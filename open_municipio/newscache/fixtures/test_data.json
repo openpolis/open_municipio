@@ -2848,5 +2848,2375 @@
             "related_content_type": 24, 
             "related_object_pk": 28
         }
+    }, 
+    {
+        "pk": 191, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 1, 
+            "created": "2012-04-02 21:41:26", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-02 21:41:26", 
+            "priority": 1, 
+            "generating_content_type": 23, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 1
+        }
+    }, 
+    {
+        "pk": 192, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 1, 
+            "created": "2012-04-02 21:41:26", 
+            "text": "MARIA ZACCARELLA - Consigliere dal 08/05/2008 ha presentato l'atto.", 
+            "modified": "2012-04-02 21:41:26", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 1
+        }
+    }, 
+    {
+        "pk": 193, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 1, 
+            "created": "2012-04-02 21:41:27", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/1/\">1 - Urna consectetuer adipiscing cras ...</a>.", 
+            "modified": "2012-04-02 21:41:27", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 35, 
+            "related_object_pk": 6
+        }
+    }, 
+    {
+        "pk": 194, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 2, 
+            "created": "2012-04-02 21:41:27", 
+            "text": "IRIANNA STROLA - Consigliere dal 08/05/2008 ha presentato l'atto.", 
+            "modified": "2012-04-02 21:41:27", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 1
+        }
+    }, 
+    {
+        "pk": 195, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 2, 
+            "created": "2012-04-02 21:41:27", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/1/\">1 - Urna consectetuer adipiscing cras ...</a>.", 
+            "modified": "2012-04-02 21:41:27", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 35, 
+            "related_object_pk": 40
+        }
+    }, 
+    {
+        "pk": 196, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 2, 
+            "created": "2012-04-02 21:41:27", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-02 21:41:27", 
+            "priority": 1, 
+            "generating_content_type": 23, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 2
+        }
+    }, 
+    {
+        "pk": 197, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 3, 
+            "created": "2012-04-02 21:41:27", 
+            "text": "ROBERTO EMPEREUR - Consigliere dal 08/05/2008 ha presentato l'atto.", 
+            "modified": "2012-04-02 21:41:27", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 2
+        }
+    }, 
+    {
+        "pk": 198, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 3, 
+            "created": "2012-04-02 21:41:27", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/2/\">2 - Diam ve mus hendrerit.</a>.", 
+            "modified": "2012-04-02 21:41:27", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 35, 
+            "related_object_pk": 20
+        }
+    }, 
+    {
+        "pk": 199, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 4, 
+            "created": "2012-04-02 21:41:27", 
+            "text": "CICC ADORISIO - Consigliere dal 08/05/2008 ha presentato l'atto.", 
+            "modified": "2012-04-02 21:41:27", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 2
+        }
+    }, 
+    {
+        "pk": 200, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 4, 
+            "created": "2012-04-02 21:41:27", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/2/\">2 - Diam ve mus hendrerit.</a>.", 
+            "modified": "2012-04-02 21:41:27", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 35, 
+            "related_object_pk": 43
+        }
+    }, 
+    {
+        "pk": 201, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 5, 
+            "created": "2012-04-02 21:41:27", 
+            "text": "FAUSTA BORRERI - Consigliere dal 08/05/2008 ha co-firmato l'atto.", 
+            "modified": "2012-04-02 21:41:27", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 2
+        }
+    }, 
+    {
+        "pk": 202, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 5, 
+            "created": "2012-04-02 21:41:27", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/2/\">2 - Diam ve mus hendrerit.</a>.", 
+            "modified": "2012-04-02 21:41:27", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 35, 
+            "related_object_pk": 36
+        }
+    }, 
+    {
+        "pk": 203, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 3, 
+            "created": "2012-04-02 21:41:29", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-02 21:41:29", 
+            "priority": 1, 
+            "generating_content_type": 23, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 3
+        }
+    }, 
+    {
+        "pk": 204, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 6, 
+            "created": "2012-04-02 21:41:29", 
+            "text": "MARIA ZACCARELLA - Consigliere dal 08/05/2008 ha presentato l'atto.", 
+            "modified": "2012-04-02 21:41:29", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 3
+        }
+    }, 
+    {
+        "pk": 205, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 6, 
+            "created": "2012-04-02 21:41:29", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/3/\">3 - Eros est nunc curabitur ...</a>.", 
+            "modified": "2012-04-02 21:41:29", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 35, 
+            "related_object_pk": 6
+        }
+    }, 
+    {
+        "pk": 206, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 7, 
+            "created": "2012-04-02 21:41:29", 
+            "text": "SALOVATORE RISI - Consigliere dal 08/05/2008 ha co-firmato l'atto.", 
+            "modified": "2012-04-02 21:41:29", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 3
+        }
+    }, 
+    {
+        "pk": 207, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 7, 
+            "created": "2012-04-02 21:41:29", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/3/\">3 - Eros est nunc curabitur ...</a>.", 
+            "modified": "2012-04-02 21:41:29", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 35, 
+            "related_object_pk": 5
+        }
+    }, 
+    {
+        "pk": 208, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 4, 
+            "created": "2012-04-02 21:41:31", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-02 21:41:31", 
+            "priority": 1, 
+            "generating_content_type": 23, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 4
+        }
+    }, 
+    {
+        "pk": 209, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 8, 
+            "created": "2012-04-02 21:41:31", 
+            "text": "RICHART SACCARDO - Consigliere dal 08/05/2008 ha presentato l'atto.", 
+            "modified": "2012-04-02 21:41:31", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 4
+        }
+    }, 
+    {
+        "pk": 210, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 8, 
+            "created": "2012-04-02 21:41:31", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/4/\">4 - Sociis non magnis tincidunt ...</a>.", 
+            "modified": "2012-04-02 21:41:31", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 35, 
+            "related_object_pk": 23
+        }
+    }, 
+    {
+        "pk": 211, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 9, 
+            "created": "2012-04-02 21:41:31", 
+            "text": "LUCIANO REDDA - Consigliere dal 08/05/2008 ha presentato l'atto.", 
+            "modified": "2012-04-02 21:41:31", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 4
+        }
+    }, 
+    {
+        "pk": 212, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 9, 
+            "created": "2012-04-02 21:41:31", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/4/\">4 - Sociis non magnis tincidunt ...</a>.", 
+            "modified": "2012-04-02 21:41:31", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 35, 
+            "related_object_pk": 10
+        }
+    }, 
+    {
+        "pk": 213, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 10, 
+            "created": "2012-04-02 21:41:31", 
+            "text": "CICC ADORISIO - Consigliere dal 08/05/2008 ha co-firmato l'atto.", 
+            "modified": "2012-04-02 21:41:31", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 4
+        }
+    }, 
+    {
+        "pk": 214, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 10, 
+            "created": "2012-04-02 21:41:31", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/4/\">4 - Sociis non magnis tincidunt ...</a>.", 
+            "modified": "2012-04-02 21:41:31", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 35, 
+            "related_object_pk": 43
+        }
+    }, 
+    {
+        "pk": 215, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 11, 
+            "created": "2012-04-02 21:41:31", 
+            "text": "Dario MARTINANGELO - Consigliere dal 08/05/2008 ha co-firmato l'atto.", 
+            "modified": "2012-04-02 21:41:31", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 4
+        }
+    }, 
+    {
+        "pk": 216, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 11, 
+            "created": "2012-04-02 21:41:31", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/4/\">4 - Sociis non magnis tincidunt ...</a>.", 
+            "modified": "2012-04-02 21:41:31", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 35, 
+            "related_object_pk": 22
+        }
+    }, 
+    {
+        "pk": 217, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 12, 
+            "created": "2012-04-02 21:41:31", 
+            "text": "IRIANNA STROLA - Consigliere dal 08/05/2008 ha co-firmato l'atto.", 
+            "modified": "2012-04-02 21:41:31", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 4
+        }
+    }, 
+    {
+        "pk": 218, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 12, 
+            "created": "2012-04-02 21:41:31", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/4/\">4 - Sociis non magnis tincidunt ...</a>.", 
+            "modified": "2012-04-02 21:41:31", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 35, 
+            "related_object_pk": 40
+        }
+    }, 
+    {
+        "pk": 219, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 13, 
+            "created": "2012-04-02 21:41:31", 
+            "text": "DANIELE PAIRETTI - Consigliere dal 08/05/2008 ha co-firmato l'atto.", 
+            "modified": "2012-04-02 21:41:31", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 4
+        }
+    }, 
+    {
+        "pk": 220, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 13, 
+            "created": "2012-04-02 21:41:31", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/4/\">4 - Sociis non magnis tincidunt ...</a>.", 
+            "modified": "2012-04-02 21:41:31", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 35, 
+            "related_object_pk": 29
+        }
+    }, 
+    {
+        "pk": 221, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 5, 
+            "created": "2012-04-02 21:41:33", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-02 21:41:33", 
+            "priority": 1, 
+            "generating_content_type": 23, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 5
+        }
+    }, 
+    {
+        "pk": 222, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 14, 
+            "created": "2012-04-02 21:41:33", 
+            "text": "ASTELVIO PAPPONE - Consigliere dal 08/05/2008 ha presentato l'atto.", 
+            "modified": "2012-04-02 21:41:33", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 5
+        }
+    }, 
+    {
+        "pk": 223, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 14, 
+            "created": "2012-04-02 21:41:33", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/5/\">5 - Tempor.</a>.", 
+            "modified": "2012-04-02 21:41:33", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 35, 
+            "related_object_pk": 21
+        }
+    }, 
+    {
+        "pk": 224, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 15, 
+            "created": "2012-04-02 21:41:33", 
+            "text": "DENNI CESARONI - Consigliere dal 08/05/2008 ha presentato l'atto.", 
+            "modified": "2012-04-02 21:41:33", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 5
+        }
+    }, 
+    {
+        "pk": 225, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 15, 
+            "created": "2012-04-02 21:41:33", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/5/\">5 - Tempor.</a>.", 
+            "modified": "2012-04-02 21:41:33", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 35, 
+            "related_object_pk": 32
+        }
+    }, 
+    {
+        "pk": 226, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 16, 
+            "created": "2012-04-02 21:41:33", 
+            "text": "PRIAMO MILO - Consigliere dal 08/05/2008 ha presentato l'atto.", 
+            "modified": "2012-04-02 21:41:33", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 5
+        }
+    }, 
+    {
+        "pk": 227, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 16, 
+            "created": "2012-04-02 21:41:33", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/5/\">5 - Tempor.</a>.", 
+            "modified": "2012-04-02 21:41:33", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 35, 
+            "related_object_pk": 18
+        }
+    }, 
+    {
+        "pk": 228, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 6, 
+            "created": "2012-04-02 21:41:35", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-02 21:41:35", 
+            "priority": 1, 
+            "generating_content_type": 23, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 6
+        }
+    }, 
+    {
+        "pk": 229, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 17, 
+            "created": "2012-04-02 21:41:35", 
+            "text": "LUCILIO Garcia - Consigliere dal 08/05/2008 ha presentato l'atto.", 
+            "modified": "2012-04-02 21:41:35", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 6
+        }
+    }, 
+    {
+        "pk": 230, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 17, 
+            "created": "2012-04-02 21:41:35", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/6/\">6 - Eni, iaculis accumsan class ...</a>.", 
+            "modified": "2012-04-02 21:41:35", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 35, 
+            "related_object_pk": 8
+        }
+    }, 
+    {
+        "pk": 231, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 18, 
+            "created": "2012-04-02 21:41:35", 
+            "text": "Dario MARTINANGELO - Consigliere dal 08/05/2008 ha presentato l'atto.", 
+            "modified": "2012-04-02 21:41:35", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 6
+        }
+    }, 
+    {
+        "pk": 232, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 18, 
+            "created": "2012-04-02 21:41:35", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/6/\">6 - Eni, iaculis accumsan class ...</a>.", 
+            "modified": "2012-04-02 21:41:35", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 35, 
+            "related_object_pk": 22
+        }
+    }, 
+    {
+        "pk": 233, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 19, 
+            "created": "2012-04-02 21:41:35", 
+            "text": "MARIA ZACCARELLA - Consigliere dal 08/05/2008 ha presentato l'atto.", 
+            "modified": "2012-04-02 21:41:35", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 6
+        }
+    }, 
+    {
+        "pk": 234, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 19, 
+            "created": "2012-04-02 21:41:35", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/6/\">6 - Eni, iaculis accumsan class ...</a>.", 
+            "modified": "2012-04-02 21:41:35", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 35, 
+            "related_object_pk": 6
+        }
+    }, 
+    {
+        "pk": 235, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 20, 
+            "created": "2012-04-02 21:41:35", 
+            "text": "Pier ROVIGATTI - Consigliere dal 08/05/2008 ha co-firmato l'atto.", 
+            "modified": "2012-04-02 21:41:35", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 6
+        }
+    }, 
+    {
+        "pk": 236, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 20, 
+            "created": "2012-04-02 21:41:35", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/6/\">6 - Eni, iaculis accumsan class ...</a>.", 
+            "modified": "2012-04-02 21:41:35", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 35, 
+            "related_object_pk": 3
+        }
+    }, 
+    {
+        "pk": 237, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 7, 
+            "created": "2012-04-02 21:41:36", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-02 21:41:36", 
+            "priority": 1, 
+            "generating_content_type": 23, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 7
+        }
+    }, 
+    {
+        "pk": 238, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 21, 
+            "created": "2012-04-02 21:41:36", 
+            "text": "ASTELVIO PAPPONE - Consigliere dal 08/05/2008 ha presentato l'atto.", 
+            "modified": "2012-04-02 21:41:36", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 7
+        }
+    }, 
+    {
+        "pk": 239, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 21, 
+            "created": "2012-04-02 21:41:36", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/7/\">7 - Nibh gravida eni, iaculis.</a>.", 
+            "modified": "2012-04-02 21:41:36", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 35, 
+            "related_object_pk": 21
+        }
+    }, 
+    {
+        "pk": 240, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 22, 
+            "created": "2012-04-02 21:41:36", 
+            "text": "SALOVATORE RISI - Consigliere dal 08/05/2008 ha co-firmato l'atto.", 
+            "modified": "2012-04-02 21:41:36", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 7
+        }
+    }, 
+    {
+        "pk": 241, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 22, 
+            "created": "2012-04-02 21:41:36", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/7/\">7 - Nibh gravida eni, iaculis.</a>.", 
+            "modified": "2012-04-02 21:41:36", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 35, 
+            "related_object_pk": 5
+        }
+    }, 
+    {
+        "pk": 242, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 23, 
+            "created": "2012-04-02 21:41:36", 
+            "text": "Pascal STORTONI - Consigliere dal 08/05/2008 ha co-firmato l'atto.", 
+            "modified": "2012-04-02 21:41:36", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 7
+        }
+    }, 
+    {
+        "pk": 243, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 23, 
+            "created": "2012-04-02 21:41:36", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/7/\">7 - Nibh gravida eni, iaculis.</a>.", 
+            "modified": "2012-04-02 21:41:36", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 35, 
+            "related_object_pk": 13
+        }
+    }, 
+    {
+        "pk": 244, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 24, 
+            "created": "2012-04-02 21:41:36", 
+            "text": "Maria OLMO - Consigliere dal 08/05/2008 ha co-firmato l'atto.", 
+            "modified": "2012-04-02 21:41:36", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 7
+        }
+    }, 
+    {
+        "pk": 245, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 24, 
+            "created": "2012-04-02 21:41:36", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/7/\">7 - Nibh gravida eni, iaculis.</a>.", 
+            "modified": "2012-04-02 21:41:36", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 35, 
+            "related_object_pk": 37
+        }
+    }, 
+    {
+        "pk": 246, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 25, 
+            "created": "2012-04-02 21:41:36", 
+            "text": "LUCILIO Garcia - Consigliere dal 08/05/2008 ha co-firmato l'atto.", 
+            "modified": "2012-04-02 21:41:36", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 7
+        }
+    }, 
+    {
+        "pk": 247, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 25, 
+            "created": "2012-04-02 21:41:36", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/7/\">7 - Nibh gravida eni, iaculis.</a>.", 
+            "modified": "2012-04-02 21:41:36", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 35, 
+            "related_object_pk": 8
+        }
+    }, 
+    {
+        "pk": 248, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 26, 
+            "created": "2012-04-02 21:41:36", 
+            "text": "MARTINO DOMENICHETTI - Consigliere dal 08/05/2008 ha co-firmato l'atto.", 
+            "modified": "2012-04-02 21:41:36", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 7
+        }
+    }, 
+    {
+        "pk": 249, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 26, 
+            "created": "2012-04-02 21:41:36", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/7/\">7 - Nibh gravida eni, iaculis.</a>.", 
+            "modified": "2012-04-02 21:41:36", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 35, 
+            "related_object_pk": 16
+        }
+    }, 
+    {
+        "pk": 250, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 8, 
+            "created": "2012-04-02 21:41:36", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-02 21:41:36", 
+            "priority": 1, 
+            "generating_content_type": 23, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 8
+        }
+    }, 
+    {
+        "pk": 251, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 27, 
+            "created": "2012-04-02 21:41:36", 
+            "text": "Dario MARTINANGELO - Consigliere dal 08/05/2008 ha presentato l'atto.", 
+            "modified": "2012-04-02 21:41:36", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 8
+        }
+    }, 
+    {
+        "pk": 252, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 27, 
+            "created": "2012-04-02 21:41:36", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/8/\">8 - Integer habitant porta purus ...</a>.", 
+            "modified": "2012-04-02 21:41:36", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 35, 
+            "related_object_pk": 22
+        }
+    }, 
+    {
+        "pk": 253, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 28, 
+            "created": "2012-04-02 21:41:36", 
+            "text": "MARTINO DOMENICHETTI - Consigliere dal 08/05/2008 ha presentato l'atto.", 
+            "modified": "2012-04-02 21:41:36", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 8
+        }
+    }, 
+    {
+        "pk": 254, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 28, 
+            "created": "2012-04-02 21:41:36", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/8/\">8 - Integer habitant porta purus ...</a>.", 
+            "modified": "2012-04-02 21:41:36", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 35, 
+            "related_object_pk": 16
+        }
+    }, 
+    {
+        "pk": 255, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 29, 
+            "created": "2012-04-02 21:41:36", 
+            "text": "RICHART SACCARDO - Consigliere dal 08/05/2008 ha presentato l'atto.", 
+            "modified": "2012-04-02 21:41:36", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 8
+        }
+    }, 
+    {
+        "pk": 256, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 29, 
+            "created": "2012-04-02 21:41:36", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/8/\">8 - Integer habitant porta purus ...</a>.", 
+            "modified": "2012-04-02 21:41:36", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 35, 
+            "related_object_pk": 23
+        }
+    }, 
+    {
+        "pk": 257, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 30, 
+            "created": "2012-04-02 21:41:36", 
+            "text": "Pascal STORTONI - Consigliere dal 08/05/2008 ha co-firmato l'atto.", 
+            "modified": "2012-04-02 21:41:36", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 8
+        }
+    }, 
+    {
+        "pk": 258, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 30, 
+            "created": "2012-04-02 21:41:36", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/8/\">8 - Integer habitant porta purus ...</a>.", 
+            "modified": "2012-04-02 21:41:36", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 35, 
+            "related_object_pk": 13
+        }
+    }, 
+    {
+        "pk": 259, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 31, 
+            "created": "2012-04-02 21:41:36", 
+            "text": "ASTELVIO PAPPONE - Consigliere dal 08/05/2008 ha co-firmato l'atto.", 
+            "modified": "2012-04-02 21:41:36", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 8
+        }
+    }, 
+    {
+        "pk": 260, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 31, 
+            "created": "2012-04-02 21:41:36", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/8/\">8 - Integer habitant porta purus ...</a>.", 
+            "modified": "2012-04-02 21:41:36", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 35, 
+            "related_object_pk": 21
+        }
+    }, 
+    {
+        "pk": 261, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 9, 
+            "created": "2012-04-02 21:41:37", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-02 21:41:37", 
+            "priority": 1, 
+            "generating_content_type": 23, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 9
+        }
+    }, 
+    {
+        "pk": 262, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 32, 
+            "created": "2012-04-02 21:41:37", 
+            "text": "ROGER Puorro - Consigliere dal 08/05/2008 ha presentato l'atto.", 
+            "modified": "2012-04-02 21:41:37", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 9
+        }
+    }, 
+    {
+        "pk": 263, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 32, 
+            "created": "2012-04-02 21:41:37", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/9/\">9 - Massa pede purus.</a>.", 
+            "modified": "2012-04-02 21:41:37", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 35, 
+            "related_object_pk": 39
+        }
+    }, 
+    {
+        "pk": 264, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 33, 
+            "created": "2012-04-02 21:41:37", 
+            "text": "CICC ADORISIO - Consigliere dal 08/05/2008 ha presentato l'atto.", 
+            "modified": "2012-04-02 21:41:37", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 9
+        }
+    }, 
+    {
+        "pk": 265, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 33, 
+            "created": "2012-04-02 21:41:37", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/9/\">9 - Massa pede purus.</a>.", 
+            "modified": "2012-04-02 21:41:37", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 35, 
+            "related_object_pk": 43
+        }
+    }, 
+    {
+        "pk": 266, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 34, 
+            "created": "2012-04-02 21:41:37", 
+            "text": "Pascal STORTONI - Consigliere dal 08/05/2008 ha co-firmato l'atto.", 
+            "modified": "2012-04-02 21:41:37", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 9
+        }
+    }, 
+    {
+        "pk": 267, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 34, 
+            "created": "2012-04-02 21:41:37", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/9/\">9 - Massa pede purus.</a>.", 
+            "modified": "2012-04-02 21:41:37", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 35, 
+            "related_object_pk": 13
+        }
+    }, 
+    {
+        "pk": 268, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 10, 
+            "created": "2012-04-02 21:41:38", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-02 21:41:38", 
+            "priority": 1, 
+            "generating_content_type": 23, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 10
+        }
+    }, 
+    {
+        "pk": 269, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 35, 
+            "created": "2012-04-02 21:41:38", 
+            "text": "Maria OLMO - Consigliere dal 08/05/2008 ha presentato l'atto.", 
+            "modified": "2012-04-02 21:41:38", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 10
+        }
+    }, 
+    {
+        "pk": 270, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 35, 
+            "created": "2012-04-02 21:41:38", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/10/\">10 - Fringilla et, donec dictum ...</a>.", 
+            "modified": "2012-04-02 21:41:38", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 35, 
+            "related_object_pk": 37
+        }
+    }, 
+    {
+        "pk": 271, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 36, 
+            "created": "2012-04-02 21:41:38", 
+            "text": "Pier ROVIGATTI - Consigliere dal 08/05/2008 ha presentato l'atto.", 
+            "modified": "2012-04-02 21:41:38", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 10
+        }
+    }, 
+    {
+        "pk": 272, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 36, 
+            "created": "2012-04-02 21:41:38", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/10/\">10 - Fringilla et, donec dictum ...</a>.", 
+            "modified": "2012-04-02 21:41:38", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 35, 
+            "related_object_pk": 3
+        }
+    }, 
+    {
+        "pk": 273, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 37, 
+            "created": "2012-04-02 21:41:38", 
+            "text": "FAUSTA BORRERI - Consigliere dal 08/05/2008 ha presentato l'atto.", 
+            "modified": "2012-04-02 21:41:38", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 10
+        }
+    }, 
+    {
+        "pk": 274, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 37, 
+            "created": "2012-04-02 21:41:38", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/10/\">10 - Fringilla et, donec dictum ...</a>.", 
+            "modified": "2012-04-02 21:41:38", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 35, 
+            "related_object_pk": 36
+        }
+    }, 
+    {
+        "pk": 275, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 38, 
+            "created": "2012-04-02 21:41:38", 
+            "text": "SALOVATORE RISI - Consigliere dal 08/05/2008 ha co-firmato l'atto.", 
+            "modified": "2012-04-02 21:41:38", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 10
+        }
+    }, 
+    {
+        "pk": 276, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 38, 
+            "created": "2012-04-02 21:41:38", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/10/\">10 - Fringilla et, donec dictum ...</a>.", 
+            "modified": "2012-04-02 21:41:38", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 35, 
+            "related_object_pk": 5
+        }
+    }, 
+    {
+        "pk": 277, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 11, 
+            "created": "2012-04-02 21:41:39", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-02 21:41:39", 
+            "priority": 1, 
+            "generating_content_type": 23, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 11
+        }
+    }, 
+    {
+        "pk": 278, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 39, 
+            "created": "2012-04-02 21:41:39", 
+            "text": "LUCILIO Garcia - Consigliere dal 08/05/2008 ha presentato l'atto.", 
+            "modified": "2012-04-02 21:41:39", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 11
+        }
+    }, 
+    {
+        "pk": 279, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 39, 
+            "created": "2012-04-02 21:41:39", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/11/\">11 - Nunc neque quisque hendrerit ...</a>.", 
+            "modified": "2012-04-02 21:41:39", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 35, 
+            "related_object_pk": 8
+        }
+    }, 
+    {
+        "pk": 280, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 40, 
+            "created": "2012-04-02 21:41:39", 
+            "text": "RICHART SACCARDO - Consigliere dal 08/05/2008 ha presentato l'atto.", 
+            "modified": "2012-04-02 21:41:39", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 11
+        }
+    }, 
+    {
+        "pk": 281, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 40, 
+            "created": "2012-04-02 21:41:39", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/11/\">11 - Nunc neque quisque hendrerit ...</a>.", 
+            "modified": "2012-04-02 21:41:39", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 35, 
+            "related_object_pk": 23
+        }
+    }, 
+    {
+        "pk": 282, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 41, 
+            "created": "2012-04-02 21:41:39", 
+            "text": "CICC ADORISIO - Consigliere dal 08/05/2008 ha co-firmato l'atto.", 
+            "modified": "2012-04-02 21:41:39", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 11
+        }
+    }, 
+    {
+        "pk": 283, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 41, 
+            "created": "2012-04-02 21:41:39", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/11/\">11 - Nunc neque quisque hendrerit ...</a>.", 
+            "modified": "2012-04-02 21:41:39", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 35, 
+            "related_object_pk": 43
+        }
+    }, 
+    {
+        "pk": 284, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 42, 
+            "created": "2012-04-02 21:41:39", 
+            "text": "DANIELE PAIRETTI - Consigliere dal 08/05/2008 ha co-firmato l'atto.", 
+            "modified": "2012-04-02 21:41:39", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 11
+        }
+    }, 
+    {
+        "pk": 285, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 42, 
+            "created": "2012-04-02 21:41:39", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/11/\">11 - Nunc neque quisque hendrerit ...</a>.", 
+            "modified": "2012-04-02 21:41:39", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 35, 
+            "related_object_pk": 29
+        }
+    }, 
+    {
+        "pk": 286, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 43, 
+            "created": "2012-04-02 21:41:39", 
+            "text": "Maria OLMO - Consigliere dal 08/05/2008 ha co-firmato l'atto.", 
+            "modified": "2012-04-02 21:41:39", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 11
+        }
+    }, 
+    {
+        "pk": 287, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 43, 
+            "created": "2012-04-02 21:41:39", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/11/\">11 - Nunc neque quisque hendrerit ...</a>.", 
+            "modified": "2012-04-02 21:41:39", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 35, 
+            "related_object_pk": 37
+        }
+    }, 
+    {
+        "pk": 288, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 12, 
+            "created": "2012-04-02 21:41:39", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-02 21:41:39", 
+            "priority": 1, 
+            "generating_content_type": 23, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 12
+        }
+    }, 
+    {
+        "pk": 289, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 13, 
+            "created": "2012-04-02 21:41:39", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-02 21:41:39", 
+            "priority": 1, 
+            "generating_content_type": 23, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 13
+        }
+    }, 
+    {
+        "pk": 290, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 44, 
+            "created": "2012-04-02 21:41:39", 
+            "text": "RICHART SACCARDO - Consigliere dal 08/05/2008 ha presentato l'atto.", 
+            "modified": "2012-04-02 21:41:39", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 13
+        }
+    }, 
+    {
+        "pk": 291, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 44, 
+            "created": "2012-04-02 21:41:39", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/13/\">13 - Elit metus, fames, nam ...</a>.", 
+            "modified": "2012-04-02 21:41:39", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 35, 
+            "related_object_pk": 23
+        }
+    }, 
+    {
+        "pk": 292, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 45, 
+            "created": "2012-04-02 21:41:39", 
+            "text": "Pier ROVIGATTI - Consigliere dal 08/05/2008 ha presentato l'atto.", 
+            "modified": "2012-04-02 21:41:39", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 13
+        }
+    }, 
+    {
+        "pk": 293, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 45, 
+            "created": "2012-04-02 21:41:39", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/13/\">13 - Elit metus, fames, nam ...</a>.", 
+            "modified": "2012-04-02 21:41:39", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 35, 
+            "related_object_pk": 3
+        }
+    }, 
+    {
+        "pk": 294, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 46, 
+            "created": "2012-04-02 21:41:39", 
+            "text": "LUCILIO Garcia - Consigliere dal 08/05/2008 ha co-firmato l'atto.", 
+            "modified": "2012-04-02 21:41:39", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 13
+        }
+    }, 
+    {
+        "pk": 295, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 46, 
+            "created": "2012-04-02 21:41:39", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/13/\">13 - Elit metus, fames, nam ...</a>.", 
+            "modified": "2012-04-02 21:41:39", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 35, 
+            "related_object_pk": 8
+        }
+    }, 
+    {
+        "pk": 296, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 47, 
+            "created": "2012-04-02 21:41:39", 
+            "text": "Dario MARTINANGELO - Consigliere dal 08/05/2008 ha co-firmato l'atto.", 
+            "modified": "2012-04-02 21:41:39", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 13
+        }
+    }, 
+    {
+        "pk": 297, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 47, 
+            "created": "2012-04-02 21:41:39", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/13/\">13 - Elit metus, fames, nam ...</a>.", 
+            "modified": "2012-04-02 21:41:39", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 35, 
+            "related_object_pk": 22
+        }
+    }, 
+    {
+        "pk": 298, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 48, 
+            "created": "2012-04-02 21:41:39", 
+            "text": "PAOLA CIARFAGLIA - Consigliere dal 08/05/2008 ha co-firmato l'atto.", 
+            "modified": "2012-04-02 21:41:39", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 13
+        }
+    }, 
+    {
+        "pk": 299, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 48, 
+            "created": "2012-04-02 21:41:39", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/13/\">13 - Elit metus, fames, nam ...</a>.", 
+            "modified": "2012-04-02 21:41:39", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 35, 
+            "related_object_pk": 41
+        }
+    }, 
+    {
+        "pk": 300, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 49, 
+            "created": "2012-04-02 21:41:39", 
+            "text": "ROGER Puorro - Consigliere dal 08/05/2008 ha co-firmato l'atto.", 
+            "modified": "2012-04-02 21:41:39", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 13
+        }
+    }, 
+    {
+        "pk": 301, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 49, 
+            "created": "2012-04-02 21:41:39", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/13/\">13 - Elit metus, fames, nam ...</a>.", 
+            "modified": "2012-04-02 21:41:39", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 35, 
+            "related_object_pk": 39
+        }
+    }, 
+    {
+        "pk": 302, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 50, 
+            "created": "2012-04-02 21:41:39", 
+            "text": "ASTELVIO PAPPONE - Consigliere dal 08/05/2008 ha co-firmato l'atto.", 
+            "modified": "2012-04-02 21:41:39", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 13
+        }
+    }, 
+    {
+        "pk": 303, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 50, 
+            "created": "2012-04-02 21:41:39", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/13/\">13 - Elit metus, fames, nam ...</a>.", 
+            "modified": "2012-04-02 21:41:39", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 35, 
+            "related_object_pk": 21
+        }
+    }, 
+    {
+        "pk": 304, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 14, 
+            "created": "2012-04-02 21:41:40", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-02 21:41:40", 
+            "priority": 1, 
+            "generating_content_type": 23, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 14
+        }
+    }, 
+    {
+        "pk": 305, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 15, 
+            "created": "2012-04-02 21:41:40", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-02 21:41:40", 
+            "priority": 1, 
+            "generating_content_type": 23, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 15
+        }
+    }, 
+    {
+        "pk": 306, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 51, 
+            "created": "2012-04-02 21:41:40", 
+            "text": "DANIELE PAIRETTI - Consigliere dal 08/05/2008 ha presentato l'atto.", 
+            "modified": "2012-04-02 21:41:40", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 15
+        }
+    }, 
+    {
+        "pk": 307, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 51, 
+            "created": "2012-04-02 21:41:40", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/15/\">15 - Morbi ut auctor senectus ...</a>.", 
+            "modified": "2012-04-02 21:41:40", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 35, 
+            "related_object_pk": 29
+        }
+    }, 
+    {
+        "pk": 308, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 52, 
+            "created": "2012-04-02 21:41:40", 
+            "text": "ROGER Puorro - Consigliere dal 08/05/2008 ha co-firmato l'atto.", 
+            "modified": "2012-04-02 21:41:40", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 15
+        }
+    }, 
+    {
+        "pk": 309, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 52, 
+            "created": "2012-04-02 21:41:40", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/15/\">15 - Morbi ut auctor senectus ...</a>.", 
+            "modified": "2012-04-02 21:41:40", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 35, 
+            "related_object_pk": 39
+        }
+    }, 
+    {
+        "pk": 310, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 53, 
+            "created": "2012-04-02 21:41:40", 
+            "text": "LUCIANO REDDA - Consigliere dal 08/05/2008 ha co-firmato l'atto.", 
+            "modified": "2012-04-02 21:41:40", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 15
+        }
+    }, 
+    {
+        "pk": 311, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 53, 
+            "created": "2012-04-02 21:41:40", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/15/\">15 - Morbi ut auctor senectus ...</a>.", 
+            "modified": "2012-04-02 21:41:40", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 35, 
+            "related_object_pk": 10
+        }
+    }, 
+    {
+        "pk": 312, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 16, 
+            "created": "2012-04-02 21:41:41", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-02 21:41:41", 
+            "priority": 1, 
+            "generating_content_type": 23, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 16
+        }
+    }, 
+    {
+        "pk": 313, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 54, 
+            "created": "2012-04-02 21:41:41", 
+            "text": "SALOVATORE RISI - Consigliere dal 08/05/2008 ha presentato l'atto.", 
+            "modified": "2012-04-02 21:41:41", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 16
+        }
+    }, 
+    {
+        "pk": 314, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 54, 
+            "created": "2012-04-02 21:41:41", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/16/\">16 - Ac porttitor condimentum, lacus ...</a>.", 
+            "modified": "2012-04-02 21:41:41", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 35, 
+            "related_object_pk": 5
+        }
+    }, 
+    {
+        "pk": 315, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 55, 
+            "created": "2012-04-02 21:41:41", 
+            "text": "ASTELVIO PAPPONE - Consigliere dal 08/05/2008 ha presentato l'atto.", 
+            "modified": "2012-04-02 21:41:41", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 16
+        }
+    }, 
+    {
+        "pk": 316, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 55, 
+            "created": "2012-04-02 21:41:41", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/16/\">16 - Ac porttitor condimentum, lacus ...</a>.", 
+            "modified": "2012-04-02 21:41:41", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 35, 
+            "related_object_pk": 21
+        }
+    }, 
+    {
+        "pk": 317, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 56, 
+            "created": "2012-04-02 21:41:41", 
+            "text": "CICC ADORISIO - Consigliere dal 08/05/2008 ha co-firmato l'atto.", 
+            "modified": "2012-04-02 21:41:41", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 16
+        }
+    }, 
+    {
+        "pk": 318, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 56, 
+            "created": "2012-04-02 21:41:41", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/16/\">16 - Ac porttitor condimentum, lacus ...</a>.", 
+            "modified": "2012-04-02 21:41:41", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 35, 
+            "related_object_pk": 43
+        }
+    }, 
+    {
+        "pk": 319, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 57, 
+            "created": "2012-04-02 21:41:41", 
+            "text": "IRIANNA STROLA - Consigliere dal 08/05/2008 ha co-firmato l'atto.", 
+            "modified": "2012-04-02 21:41:41", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 16
+        }
+    }, 
+    {
+        "pk": 320, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 57, 
+            "created": "2012-04-02 21:41:41", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/16/\">16 - Ac porttitor condimentum, lacus ...</a>.", 
+            "modified": "2012-04-02 21:41:41", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 35, 
+            "related_object_pk": 40
+        }
+    }, 
+    {
+        "pk": 321, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 17, 
+            "created": "2012-04-02 21:41:42", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-02 21:41:42", 
+            "priority": 1, 
+            "generating_content_type": 23, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 17
+        }
+    }, 
+    {
+        "pk": 322, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 58, 
+            "created": "2012-04-02 21:41:42", 
+            "text": "DANIELE PAIRETTI - Consigliere dal 08/05/2008 ha presentato l'atto.", 
+            "modified": "2012-04-02 21:41:42", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 17
+        }
+    }, 
+    {
+        "pk": 323, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 58, 
+            "created": "2012-04-02 21:41:42", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/17/\">17 - Fusce sodales.</a>.", 
+            "modified": "2012-04-02 21:41:42", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 35, 
+            "related_object_pk": 29
+        }
+    }, 
+    {
+        "pk": 324, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 59, 
+            "created": "2012-04-02 21:41:42", 
+            "text": "Maria OLMO - Consigliere dal 08/05/2008 ha presentato l'atto.", 
+            "modified": "2012-04-02 21:41:42", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 17
+        }
+    }, 
+    {
+        "pk": 325, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 59, 
+            "created": "2012-04-02 21:41:42", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/17/\">17 - Fusce sodales.</a>.", 
+            "modified": "2012-04-02 21:41:42", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 35, 
+            "related_object_pk": 37
+        }
+    }, 
+    {
+        "pk": 326, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 60, 
+            "created": "2012-04-02 21:41:42", 
+            "text": "SALOVATORE RISI - Consigliere dal 08/05/2008 ha presentato l'atto.", 
+            "modified": "2012-04-02 21:41:42", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 17
+        }
+    }, 
+    {
+        "pk": 327, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 60, 
+            "created": "2012-04-02 21:41:42", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/17/\">17 - Fusce sodales.</a>.", 
+            "modified": "2012-04-02 21:41:42", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 35, 
+            "related_object_pk": 5
+        }
+    }, 
+    {
+        "pk": 328, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 61, 
+            "created": "2012-04-02 21:41:42", 
+            "text": "ASTELVIO PAPPONE - Consigliere dal 08/05/2008 ha co-firmato l'atto.", 
+            "modified": "2012-04-02 21:41:42", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 17
+        }
+    }, 
+    {
+        "pk": 329, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 61, 
+            "created": "2012-04-02 21:41:42", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/17/\">17 - Fusce sodales.</a>.", 
+            "modified": "2012-04-02 21:41:42", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 35, 
+            "related_object_pk": 21
+        }
+    }, 
+    {
+        "pk": 330, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 18, 
+            "created": "2012-04-02 21:41:42", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-02 21:41:42", 
+            "priority": 1, 
+            "generating_content_type": 23, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 18
+        }
+    }, 
+    {
+        "pk": 331, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 62, 
+            "created": "2012-04-02 21:41:42", 
+            "text": "FAUSTA BORRERI - Consigliere dal 08/05/2008 ha presentato l'atto.", 
+            "modified": "2012-04-02 21:41:42", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 18
+        }
+    }, 
+    {
+        "pk": 332, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 62, 
+            "created": "2012-04-02 21:41:42", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/18/\">18 - Risus nisi ullamcorper iaculis ...</a>.", 
+            "modified": "2012-04-02 21:41:42", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 35, 
+            "related_object_pk": 36
+        }
+    }, 
+    {
+        "pk": 333, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 63, 
+            "created": "2012-04-02 21:41:42", 
+            "text": "Pier ROVIGATTI - Consigliere dal 08/05/2008 ha co-firmato l'atto.", 
+            "modified": "2012-04-02 21:41:42", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 18
+        }
+    }, 
+    {
+        "pk": 334, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 63, 
+            "created": "2012-04-02 21:41:42", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/18/\">18 - Risus nisi ullamcorper iaculis ...</a>.", 
+            "modified": "2012-04-02 21:41:42", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 35, 
+            "related_object_pk": 3
+        }
+    }, 
+    {
+        "pk": 335, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 19, 
+            "created": "2012-04-02 21:41:43", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-02 21:41:43", 
+            "priority": 1, 
+            "generating_content_type": 23, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 19
+        }
+    }, 
+    {
+        "pk": 336, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 64, 
+            "created": "2012-04-02 21:41:43", 
+            "text": "ROGER Puorro - Consigliere dal 08/05/2008 ha presentato l'atto.", 
+            "modified": "2012-04-02 21:41:43", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 19
+        }
+    }, 
+    {
+        "pk": 337, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 64, 
+            "created": "2012-04-02 21:41:43", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/19/\">19 - Feugiat imperdiet interdum tempor ...</a>.", 
+            "modified": "2012-04-02 21:41:43", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 35, 
+            "related_object_pk": 39
+        }
+    }, 
+    {
+        "pk": 338, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 65, 
+            "created": "2012-04-02 21:41:43", 
+            "text": "LUCIANO REDDA - Consigliere dal 08/05/2008 ha co-firmato l'atto.", 
+            "modified": "2012-04-02 21:41:43", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 19
+        }
+    }, 
+    {
+        "pk": 339, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 65, 
+            "created": "2012-04-02 21:41:43", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/19/\">19 - Feugiat imperdiet interdum tempor ...</a>.", 
+            "modified": "2012-04-02 21:41:43", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 35, 
+            "related_object_pk": 10
+        }
+    }, 
+    {
+        "pk": 340, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 20, 
+            "created": "2012-04-02 21:41:44", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-02 21:41:44", 
+            "priority": 1, 
+            "generating_content_type": 24, 
+            "news_type": "INST", 
+            "related_content_type": 24, 
+            "related_object_pk": 20
+        }
+    }, 
+    {
+        "pk": 341, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 21, 
+            "created": "2012-04-02 21:41:44", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-02 21:41:44", 
+            "priority": 1, 
+            "generating_content_type": 24, 
+            "news_type": "INST", 
+            "related_content_type": 24, 
+            "related_object_pk": 21
+        }
+    }, 
+    {
+        "pk": 342, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 22, 
+            "created": "2012-04-02 21:41:44", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-02 21:41:44", 
+            "priority": 1, 
+            "generating_content_type": 24, 
+            "news_type": "INST", 
+            "related_content_type": 24, 
+            "related_object_pk": 22
+        }
+    }, 
+    {
+        "pk": 343, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 23, 
+            "created": "2012-04-02 21:41:44", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-02 21:41:44", 
+            "priority": 1, 
+            "generating_content_type": 24, 
+            "news_type": "INST", 
+            "related_content_type": 24, 
+            "related_object_pk": 23
+        }
+    }, 
+    {
+        "pk": 344, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 24, 
+            "created": "2012-04-02 21:41:44", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-02 21:41:44", 
+            "priority": 1, 
+            "generating_content_type": 24, 
+            "news_type": "INST", 
+            "related_content_type": 24, 
+            "related_object_pk": 24
+        }
+    }, 
+    {
+        "pk": 345, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 25, 
+            "created": "2012-04-02 21:41:44", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-02 21:41:44", 
+            "priority": 1, 
+            "generating_content_type": 24, 
+            "news_type": "INST", 
+            "related_content_type": 24, 
+            "related_object_pk": 25
+        }
+    }, 
+    {
+        "pk": 346, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 26, 
+            "created": "2012-04-02 21:41:44", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-02 21:41:44", 
+            "priority": 1, 
+            "generating_content_type": 24, 
+            "news_type": "INST", 
+            "related_content_type": 24, 
+            "related_object_pk": 26
+        }
+    }, 
+    {
+        "pk": 347, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 27, 
+            "created": "2012-04-02 21:41:44", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-02 21:41:44", 
+            "priority": 1, 
+            "generating_content_type": 24, 
+            "news_type": "INST", 
+            "related_content_type": 24, 
+            "related_object_pk": 27
+        }
+    }, 
+    {
+        "pk": 348, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 28, 
+            "created": "2012-04-02 21:41:44", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-02 21:41:44", 
+            "priority": 1, 
+            "generating_content_type": 24, 
+            "news_type": "INST", 
+            "related_content_type": 24, 
+            "related_object_pk": 28
+        }
     }
 ]

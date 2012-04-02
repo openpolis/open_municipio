@@ -8,10 +8,13 @@ class ActIndex(SearchIndex):
     text = CharField(document=True, use_template=True)
 
     # faceting fields
+    act_type = FacetCharField( )
+    is_key = FacetBooleanField(model_attr='is_key')
+    initiative = FacetBooleanField(model_attr='initiative')
     pub_date = FacetDateField(model_attr='presentation_date')
     categories = MultiValueField(indexed=True, stored=True, faceted=True)
     tags = MultiValueField(indexed=True, stored=True, faceted=True)
-    act_type = FacetCharField( )
+
 
     # stored fields, used not to touch DB
     # while showing results

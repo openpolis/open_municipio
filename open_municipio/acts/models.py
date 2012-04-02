@@ -254,7 +254,8 @@ class Act(TimeStampedModel):
       
 class ActSection(models.Model):
     """
-    WRITEME
+    This describes a section (or sub-section) of an act text.
+    This feature will likely be used in future releases.
     """
     act = models.ForeignKey(Act, on_delete=models.PROTECT)
     parent_section = models.ForeignKey('self', on_delete=models.PROTECT)  
@@ -270,7 +271,7 @@ class ActSection(models.Model):
 
 class ActSupport(models.Model):
     """
-    Maps the signers of the act (supporter)
+    Maps the signers of the act (supporters)
     """
     SUPPORT_TYPE = Choices(
         ('FIRSTSIGNER', 'first_signer', _('first signer')),
@@ -325,17 +326,12 @@ class Deliberation(Act):
     """
     WRITEME
     """
-    COUNSELOR_INIT = 1
-    PRESIDENT_INIT = 2
-    ASSESSOR_INIT = 3
-    GOVERNMENT_INIT = 4
-    MAYOR_INIT = 5
-    INIZIATIVE_CHOICES = (
-        (COUNSELOR_INIT, _('Counselor')),
-        (PRESIDENT_INIT, _('President')),
-        (ASSESSOR_INIT, _('City Government Member')),
-        (GOVERNMENT_INIT, _('City Government')),
-        (MAYOR_INIT, _('Mayor')),
+    INIZIATIVE_CHOICES = Choices(
+        ('COUNSELOR', 'counselor', _('Counselor')),
+        ('PRESIDENT', 'president', _('President')),
+        ('ASSESSOR', 'assessor', _('City Government Member')),
+        ('GOVERNMENT', 'government', _('City Government')),
+        ('MAYOR', 'mayor', _('Mayor')),
     )
     STATUS = Choices(
         ('PRESENTED', 'presented', _('presented')),
@@ -349,7 +345,7 @@ class Deliberation(Act):
     approval_date = models.DateField(_('approval date'), null=True, blank=True)
     publication_date = models.DateField(_('publication date'), null=True, blank=True)
     execution_date = models.DateField(_('execution date'), null=True, blank=True)
-    initiative = models.IntegerField(_('initiative'), choices=INIZIATIVE_CHOICES)
+    initiative = models.CharField(_('initiative'), max_length=12, choices=INIZIATIVE_CHOICES)
     approved_text = models.TextField(blank=True)
     
     class Meta:
