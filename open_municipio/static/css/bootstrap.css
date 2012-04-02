@@ -4584,6 +4584,10 @@ table#acttable thead th:first-child > div {
   font-weight: bold;
   color: #285698;
 }
+.calendar_events {
+  height: 230px;
+  overflow: hidden;
+}
 #search-form input[type="submit"] {
   margin-top: 23px;
 }

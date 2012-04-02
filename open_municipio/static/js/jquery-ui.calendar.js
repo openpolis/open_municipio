@@ -31,16 +31,16 @@ jQuery(document).ready(function($) {
         $( $(this).data('events') ).children().each(function() {
             var event = {
                 Title: $(this).text(),
-                'Date': new Date($(this).data('day'))
+                Date: new Date($(this).data('day')),
+                Id: $(this).prop('id')
             };
-            console.log(event);
             events.push(event);
         });
-        console.log('events initialized from',$(this).data('events'), events);
 
         // Load Datepicker
         $(this).datepicker({
             inline: true,
+            minDate: "-1M",
             beforeShowDay: function(date) {
                 var result = [true, '', null];
                 var matching = $.grep(events, function(event) {
@@ -66,9 +66,11 @@ jQuery(document).ready(function($) {
                     }
                     i++;
                 }
-                console.log(event);
+
                 if (event) {
-                    alert(event.Title);
+                    $('#'+event.Id).ScrollTo({
+                        offset: 50
+                    });
                 }
             }
         });
