@@ -55,11 +55,11 @@ class Votation(models.Model):
     
     @property
     def group_votes(self):
-        return self.group_vote_set.all()
+        return self.groupvote_set.all()
     
     @property
     def charge_votes(self):
-        return self.charge_vote_set.all()
+        return self.chargevote_set.all()
 
     @property
     def transitions(self):
