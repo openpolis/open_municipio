@@ -53,7 +53,7 @@ PROJECT_NAME = 'open_municipio'
 # usually is set to the primary domain from which the web application is accessed
 APP_DOMAIN = 'www.openmunicipio.it'
 # filesystem location of project's files on the local machine
-LOCAL_PROJECT_ROOT = '/Users/guglielmo/Workspace/open_municipio'
+LOCAL_PROJECT_ROOT = '/working_dir/open_municipio'
 
 env.project = PROJECT_NAME
 env.app_domain = APP_DOMAIN
@@ -87,6 +87,7 @@ def staging():
     TOMCAT_USER = 'tomcat_user_here'
     SOLR_HOME = '/solr_home_here/'
     CATALINA_HOME = '/catalina_home_here' ## CHANGEME!
+    TOMCAT_CONTROLLER = '/etc/init.d/tomcat'
 
     ## set up Fabric global environment dictionary
     env.web_user = WEB_USER
@@ -100,6 +101,7 @@ def staging():
     env.tomcat_user = TOMCAT_USER
     env.solr_home = SOLR_HOME
     env.catalina_home = CATALINA_HOME
+    env.tomcat_controller = TOMCAT_CONTROLLER
     
     env.roledefs = {
     'tomcat': ['%(tomcat_user)s@host' % env],

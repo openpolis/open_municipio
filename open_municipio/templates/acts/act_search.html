@@ -1,6 +1,10 @@
 {% extends 'base_two_columns.html' %}
 {% load highlight %}
 
+{% block title %}| Elenco atti {% endblock title %}
+{% block content_header %}Elenco atti{% endblock %}
+{% block acts_class %}class="active"{% endblock %}
+
 {% block extra_style %}
 em {
     background-color: yellow;
@@ -8,6 +12,8 @@ em {
 {% endblock %}
 
 {% block content %}
+    <h1>Cerca l'atto</h1>
+
     {% if selected_facets %}
         <ul class="breadcrumb">
             {% for facet in selected_facets  %}
@@ -24,7 +30,6 @@ em {
     {% endif %}
 
 
-    <h1>Cerca l'atto</h1>
 
     <form method="get" action="{% url om_act_search %}" class="well form-search">
         <input type="text" class="input-medium search-query" name="{{ form.q.html_name }}" value="{% if form.q.value %}{{ form.q.value }}{% endif %}" placeholder="Testo della ricerca" />
@@ -170,7 +175,8 @@ em {
                 {% endif %}
             </dl>
             <dl>
-                <dt>Data di pubblicazione</dt>
+                {% if not facet_queries_pubdate.is_selected %}
+                    <dt>Data di pubblicazione</dt>
                     <dd>
                         <a href="{{ base_url }}&selected_facets={{ facet_queries_pubdate.threedays.key }}">
                             ultimi tre giorni
@@ -181,6 +187,7 @@ em {
                             ultimo mese
                         </a> ({{ facet_queries_pubdate.onemonth.count }})
                     </dd>
+                {% endif %}
             </dl>
         </div>
         <!-- End faceting -->
