@@ -139,10 +139,8 @@ class TopicDetailView(DetailView):
     def get_context_data(self, **kwargs):
         # call the base implementation first to get a context
         context = super(TopicDetailView, self).get_context_data(**kwargs)
-        
-        tags = list(Tag.objects.all())
-        categories = list(Category.objects.all())
-        context['topics'] = tags + categories
+
+        context['topics'] = Category.objects.all()
                 
         return context
     

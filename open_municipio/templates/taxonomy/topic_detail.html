@@ -12,7 +12,7 @@
             <div class="container-fluid">
                 <ul class="nav">
                     {% for t in topics %}
-                    <li>
+                    <li{% if t == topic %} class="unpipe"{% endif %}>
                         <a href="{{ t.get_absolute_url }}"{% if t == topic %} class="active"{% endif %}>{{ t }}</a>
                     </li>
                     {% endfor %}
@@ -155,7 +155,7 @@
 
         <ul class="tags-cloud">
             {% for tag in topic.tags %}
-                <li><a href="{{ tag.get_absolute_url }}">{{ tag }} <span>1</span></a></li>
+                <li><a href="{{ tag.get_absolute_url }}">{{ tag }}</a> <span>1</span></li>
             {% endfor %}
         </ul>
         <small>Il numero accanto al tag corrispondente alla quantità di atti taggati con questo argomento</small>

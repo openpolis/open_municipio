@@ -102,6 +102,8 @@ body.citizen {
         line-height: 30px;
         color: @grayDark;
     }
+    ul.nav > li.unpipe + li:before { content: ''; }
+    ul.nav > li + li.unpipe:before { content: ''; }
 }
 #sub-nav {
     .navbar-inner {
@@ -112,7 +114,7 @@ body.citizen {
             text-shadow: none;
             color: @grayDark;
             &:hover { background-color: transparent; text-decoration: underline; }
-            &.active { font-weight: bolder; }
+            &.active { background-color: @white; font-weight: bolder; }
         }
     }
     .pipe-separators;
@@ -169,7 +171,7 @@ dl.stats {
     }
     dd, li { font-weight: normal;  }
     dt { font-size: 16px; text-transform: capitalize; }
-    li span { font-size: 12px; padding:1px 3px; .border-radius(5px); background-color: #fef9e0; }
+    li span { font-size: 12px; padding:1px 3px; .border-radius(5px); background-color: @lightBackground; color: @darkText }
     line-height: 34px;
 }
 
