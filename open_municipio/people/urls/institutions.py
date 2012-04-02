@@ -11,7 +11,7 @@ urlpatterns = patterns('',
         ), name='om_institution_list'),
 
     url(r'^committees/(?P<slug>[-\w]+)/$', CommitteeDetailView.as_view(), name='om_institution_committee'),
-    url(r'^mayor/$', 'open_municipio.people.views.show_mayor' , name='om_institution_mayor'),
+    url(r'^mayor/$', 'open_municipio.people.views.show_mayor', name='om_institution_mayor'),
     url(r'^city-government/$', CityGovernmentView.as_view(), name='om_institution_citigov'),
     url(r'^council/$', CouncilView.as_view(), name='om_institution_council'),
 

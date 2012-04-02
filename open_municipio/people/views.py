@@ -32,7 +32,7 @@ class CouncilView(TemplateView):
         latest_acts = Act.objects.filter(
             emitting_institution__institution_type=Institution.COUNCIL
             ).order_by('-presentation_date')[:3]
-        events = Event.objects.filter(
+        events = Event.future.filter(
             institution__institution_type=Institution.COUNCIL
             )
         num_acts = dict()
@@ -74,7 +74,7 @@ class CityGovernmentView(TemplateView):
         latest_acts = Act.objects.filter(
             emitting_institution__institution_type=Institution.CITY_GOVERNMENT
             ).order_by('-presentation_date')[:3]
-        events = Event.objects.filter(
+        events = Event.future.filter(
             institution__institution_type=Institution.CITY_GOVERNMENT
             )
         num_acts = dict()
