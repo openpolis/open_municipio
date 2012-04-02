@@ -2,7 +2,7 @@ from fabric.api import *
 from fabric.contrib import files, console
 from fabric.context_managers import cd
 
-from fabfile.venv import run_venv
+from venv import run_venv
 
 ## Database management
 @task
@@ -31,6 +31,7 @@ def sync_remote():
     run_venv('django-admin.py syncdb --noinput --settings=%(settings)s' % env)
     
 @task
+@roles('web')
 def update():
     """
     Update remote database (including South migrations, if any).
@@ -38,6 +39,10 @@ def update():
     require('settings','code_root', provided_by=('staging', 'production'))
     drop()
     run_venv('django-admin.py syncdb --all --noinput --settings=%(settings)s' % env)
+    with cd(env.code_root):
+        if files.exists('sqlite.db'):
+            sudo('chgrp www-data sqlite.db')
+            sudo('chmod g+w sqlite.db')
     # if getattr(env, 'initial_deploy', False):
     #     run_venv('django-admin.py syncdb --all --noinput --settings=%(settings)s' % env)
     #     run_venv('django-admin.py migrate --fake --noinput --settings=%(settings)s' % env)

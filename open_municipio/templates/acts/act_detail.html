@@ -11,64 +11,83 @@
 
 {% block head_css_includes %}
     {{ block.super }}
-    {% if user.is_staff %}
-    <!-- required for TextboxList -->
-    <link rel="stylesheet" href="{{ STATIC_URL }}css/textboxlist.css" type="text/css" />
-    <link rel="stylesheet" href="{{ STATIC_URL }}css/ui-custom-theme/jquery-ui-1.8.16.custom.css" type="text/css" />
-    {% endif %}
     <link href="{{ STATIC_URL }}css/voting.css" rel="stylesheet">    
 {% endblock head_css_includes %}
 
 {% block head_js_includes %}
     {{ block.super }}
     <script src="{{ STATIC_URL }}js/ajax_csrf.js" type="text/javascript" charset="utf-8"></script>
-    {% if user.is_staff %}
-    <!-- required for TextboxList -->
-    <script src="{{ STATIC_URL }}js/GrowingInput.js" type="text/javascript" charset="utf-8"></script>
-    <script src="{{ STATIC_URL }}js/TextboxList.js" type="text/javascript" charset="utf-8"></script>        
-    <script src="{{ STATIC_URL }}js/TextboxList.Autocomplete.js" type="text/javascript" charset="utf-8"></script>
-    <script src="{{ STATIC_URL }}js/TextboxList.Autocomplete.Binary.js" type="text/javascript" charset="utf-8"></script>
-    <script src="{{ STATIC_URL }}js/bootstrap-modal.js" type="text/javascript"></script>
-    <script src="{{ STATIC_URL }}js/jquery.cteditor.js" type="text/javascript"></script>
-    {% endif %}
     <script src="{{ STATIC_URL }}js/voting.js" type="text/javascript"></script>
     <script src="{{ STATIC_URL }}js/comments.js" type="text/javascript"></script>
 {% endblock head_js_includes %}
 
 {% block footer_js_includes %}
-<script type="text/javascript">
-    require(["bootstrap-modal"], function() {
-        // on scripts loaded...
-        $('a.transaction_edit').each(function() {
-            var link = $(this);
-            link.click(function(e) {
-                e.preventDefault();
-                console.log(link.attr('href'));
-                $(link.attr('href')).modal();
+    {{ block.super }}
+    <script type="text/javascript">
+
+        {% if request.user.is_authenticated %}
+        {% comment %}Send Monitoring form with anchor link{% endcomment %}
+        $(document).ready(function () {
+            $('#monitoring_table form').each(function(){
+                // hide forms
+                $(this).hide();
+                // search button to emulate
+                var button = $('button', this).first();
+                // create ajax sender link
+                var link = $('<a />').prop({
+                    'href' : '#'
+                }).on('click', function() {
+                    $(this).next('form').submit();
+                    return false;
+                });
+                button.contents().each(function(){
+                    link.append(this);
+                });
+                // inject content and insert before the form
+                $(this).before( link );
             });
-            link.parent().hover(
-                    function() { link.fadeIn(); },
-                    function() { link.fadeOut(); }
-            );
         });
-    });
-</script>
+
+        {% comment %}Build Comment form{% endcomment %}
+        var selectRadio = function() {
+            el = $(this);
+            // de-activate icon
+            el.parent().find('.socialicon-active').removeClass('socialicon-active');
+            // clean send button
+            $('#comment_form_submit i').remove();
+            // inject new hand
+            $('#comment_form_submit').append($('<i class="socialicon-'+el.data('icon')+' socialicon-active"></i>'));
+            // set radiobox as checked
+            el.addClass('socialicon-active').find('input').prop('checked', true);
+        };
+        include('js/jquery.autogrow.js', function() {
+            $('#comment_form .radio-group label').each(function(id,el){
+                el = $(el);
+                el.data('icon', el.prop('for') == 'id_mood_0' ? 'ok' : ( el.prop('for') == 'id_mood_1' ? 'ko' : 'five' ));
+                if ( $('input', el).prop('checked') )
+                {
+                    $('#comment_form_submit').append($('<i class="socialicon-'+el.data('icon')+' socialicon-active"></i>'))
+                }
+                el.css({
+                    'text-indent': '-99999px',
+                    'overflow': 'hidden',
+                    'cursor': 'pointer'
+                }).addClass('socialicon-'+el.data('icon')).on('click', selectRadio);
+            });
+            $('#id_comment').autogrow();
+            // prevent empty submit
+            $('#comment_form').submit(function(){
+                var comment = $('textarea', this);
+                if ( comment.val().trim() == '' ) {
+                    return false;
+                }
+
+            });
+        });
+        {% endif %}
+
+    </script>
 {% endblock %}
-
-{% block extra_js %}
-$(document).ready(function() {
-    $('#cteditor-launcher').click(function(event){
-        event.preventDefault();
-        $('#cteditor').cteditor();
-    }).parent().hover(
-        function() { $('#cteditor-launcher', this).fadeIn(); }, 
-        function() { $('#cteditor-launcher', this).fadeOut(); }
-    );
-});
-
-{% endblock extra_js %}
-
-
 
 {% block content %}
     <hgroup>
@@ -82,7 +101,9 @@ $(document).ready(function() {
             <strong>{% block act_type %}TIPO ATTO{% endblock %}</strong>
             del Consiglio comunale N° {{ act.idnum }} del <span class="date">{{ act.presentation_date }}</span></small>
         </h2>
-        <h1><strong>{{ act.title }}</strong> ({{ act.idnum }})</h1>
+{% load om_utils %}
+{% load bookmarking_tags %}
+ <h1><i id="{{ act|as_token }}" class="bookmarkable {% is_key_class act %}"></i><strong>{{ act.title }}</strong> ({{ act.idnum }})</h1>
     </hgroup>
 
         {% if description_form %}
@@ -119,7 +140,7 @@ $(document).ready(function() {
     <dl class="tags-cloud">
         {% for category in act.categories %}
         <dt><a href="{{ category.get_absolute_url }}">{{ category.name }}</a></dt>
-        {% for tag in category.tags %}
+        {% for tag in act.tags %}
             <dd><a href="{{ tag.get_absolute_url }}">{{ tag }}</a></dd>
         {% endfor %}
         {% endfor %}
@@ -128,62 +149,80 @@ $(document).ready(function() {
 </section>
 
 <section><h3>Monitora</h3>
-    <table>
+    <table id="monitoring_table">
         <tr>
             <td><span class="bluebox">{{ act.monitoring_users_count}}</span></td>
             <th class="bg-dark span12">
-                utenti che monitorano l'atto<br />
-                {% for user in act.monitoring_users %}
-                  <a href="{{ user.get_absolute_url }}">{{ user.get_profile.public_name }}</a>
-                  {% if forloop.last %}<br/>{% else %},{% endif %}
-                {% endfor %}
-                
+                utenti che monitorano l'atto
+                <ul class="unstyled list-inline">
+                    {% for user in act.monitoring_users %}
+                    <li>
+                        <a href="{% url users_user_detail user.username %}">{{ user.get_profile.public_name }}</a>
+                        {% if not forloop.last %},{% endif %}
+                    </li>
+                    {% endfor %}
+                </ul>
+
+                <small>
                 {% if user.is_authenticated and not user.get_profile.person %}
-                  {% if is_user_monitoring %}
-                  <form action="{% url om_monitoring_stop %}" method="post">
-                    {% csrf_token %}
-                    {{ monitoring_form }}
-                    <i class="icon-minus-sign"></i>
-                    <button type="submit" class="btn btn-info btn-small">Interrompi il monitoraggio</button>
-                  </form>
-                  {% else %}
-                    <form action="{% url om_monitoring_start %}" method="post">
-                      {% csrf_token %}
-                      {{ monitoring_form }}
-                      <button type="submit" class="btn btn-info btn-mini"><i class="socialicon-add"></i> Avvia il monitoraggio</button>
-                    </form>
-                  {% endif %}
+                    {% if is_user_monitoring %}
+                        <i class="icon-eye-close"></i>
+                        <form action="{% url om_monitoring_stop %}" method="post">
+                            {% csrf_token %}
+                            {{ monitoring_form }}
+                            <button type="submit" class="btn btn-info btn-mini">Interrompi il monitoraggio</button>
+                        </form>
+                    {% else %}
+                        <i class="icon-eye-open"></i>
+                        <form action="{% url om_monitoring_start %}" method="post">
+                            {% csrf_token %}
+                            {{ monitoring_form }}
+                            <button type="submit" class="btn btn-info btn-mini">Avvia il monitoraggio</button>
+                        </form>
+                    {% endif %}
                 {% endif %}
+                </small>
             </th>
         </tr>
         <tr>
             <td><span class="greenbox">{{ act.monitoring_politicians_count}}</span></td>
             <th class="bg-dark span12">
-                politici che monitorano l'atto <br>
-                {% for user in act.monitoring_politicians %}
-                    <a href="{{ user.get_profile.person.get_absolute_url }}">{{ user.get_profile.public_name }}</a>
-                    {% if forloop.last %}<br/>{% else %},{% endif %}
-                {% endfor %}
+                politici che monitorano l'atto
+                <ul class="unstyled list-inline">
+                    {% for user in act.monitoring_politicians %}
+                    <li>
+                        <a href="{{ user.get_profile.person.get_absolute_url }}">{{ user.get_profile.public_name }}</a>
+                        {% if not forloop.last %},{% endif %}
+                    </li>
+                    {% endfor %}
+                </ul>
+
+                <small>
                 {% if user.is_authenticated and user.get_profile.person %}
                     {% if is_user_monitoring %}
+                        <i class="icon-eye-close"></i>
                         <form action="{% url om_monitoring_stop %}" method="post">
                             {% csrf_token %}
                             {{ monitoring_form }}
-                            <i class="icon-minus-sign"></i>
-                            <button type="submit" class="btn btn-info btn-small">Interrompi il monitoraggio</button>
+                            <button type="submit" class="btn btn-info btn-mini">Interrompi il monitoraggio</button>
                         </form>
                     {% else %}
+                        <i class="icon-eye-open"></i>
                         <form action="{% url om_monitoring_start %}" method="post">
                             {% csrf_token %}
                             {{ monitoring_form }}
-                            <button type="submit" class="btn btn-info btn-mini"><i class="socialicon-add"></i> Avvia il monitoraggio</button>
+                            <button type="submit" class="btn btn-info btn-mini">Avvia il monitoraggio</button>
                         </form>
                     {% endif %}
                 {% endif %}
+                </small>
             </th>
         </tr>
     </table>
 </section>
+
+
+
 
 <section><h3>Vota</h3>
   {% include "acts/act_vote_block.html" %}
@@ -196,31 +235,38 @@ $(document).ready(function() {
     <ul class="people-list">
         {% for comment in comment_list %}
         <li class="bg-light"> <!-- make control for different comment opinion, like positive comment use .bg-lightgreen -->
-            <a href="#"><img src="http://placehold.it/50x50" alt="" /></a>
-            <a href="#">{{ comment.user.username|capfirst }}</a> {{ comment.comment }}
-            {% if comment.user == request.user and comment|comment_TTL > 0 %}
-            <div class="comment-delete">
-                {% blocktrans with seconds=comment|comment_TTL %}You still have {{ seconds }} seconds to delete this comment{% endblocktrans %}
-                <form action="{% url comments-delete-own-comment comment.id %}" method="post">
-                    {% csrf_token %}
-                    <input type="submit" name="submit" value="{% trans 'Delete' %}">
-                </form>
-                {% comment %}
-                <!-- A simple anchor tag instead of the form can work
-                     too, but the form ``csrf_token`` provide some
-                     additional security!  Yep, bit of a paranoyd
-                     thing indeed! ;-) -->
-                <a href="{% url comments-delete-own-comment comment.id %}">Remove comment</a>
-                {% endcomment %}
-            </div>
-            {% endif %}
-            
+            <a href="{% url users_user_detail comment.user.username %}">
+                <img src="http://placehold.it/50x50" />
+                {{ comment.user.username|capfirst }}
+            </a>
+            {{ comment.comment }}
+
+            <div class="clearfix"></div>
+
             <span id="comments-votebox-{{ comment.id }}" class="monitoring">
-                {% if comment.mood = "+" %}<i class="socialicon-ok"></i>{% else %}
-                {% if comment.mood = "-" %}<i class="socialicon-ko"></i>{% else %}
-                {% if comment.mood = "0" %}<i class="socialicon-five"></i>{% endif %}{% endif %}{% endif %}
-                 &middot; {{ comment.submit_date|date:"d M Y" }}  &middot; 
-                <a href="#">Condividi</a>  &middot; 
+
+                {% if comment.user == request.user and comment|comment_TTL > 0 %}
+                    <div class="pull-right" title="{% blocktrans with seconds=comment|comment_TTL %}You still have {{ seconds }} seconds to delete this comment{% endblocktrans %}">
+                        <form action="{% url comments-delete-own-comment comment.id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger btn-mini">{% trans 'Delete' %}
+                                <small>(-{{ comment|comment_TTL }}s)</small></button>
+                        </form>
+                        {% comment %}
+                    <!-- A simple anchor tag instead of the form can work
+                         too, but the form ``csrf_token`` provide some
+                         additional security!  Yep, bit of a paranoyd
+                         thing indeed! ;-) -->
+                    <a href="{% url comments-delete-own-comment comment.id %}">Remove comment</a>
+                    {% endcomment %}
+                    </div>
+                {% endif %}
+
+
+                {% if comment.mood == "+" %}<i class="socialicon-ok socialicon-active"></i>{% else %}
+                {% if comment.mood == "-" %}<i class="socialicon-ko socialicon-active"></i>{% else %}
+                {% if comment.mood == "0" %}<i class="socialicon-five socialicon-active"></i>{% endif %}{% endif %}{% endif %}
+                 &middot; {{ comment.submit_date|date:"d M Y" }}  &middot;
                 {% score_for_object comment as comment_score %}
                 {% if request.user.is_authenticated %}
                 {% vote_by_user request.user on comment as vote %}
@@ -228,7 +274,7 @@ $(document).ready(function() {
                 {% else %}
                 <a href="#" class="vote"><span class='like'>Mi piace</span></a>  &middot;                 
                 {% endif %}
-                <i class="socialicon-add"></i> <span class="okscore">{{ comment_score.score }}</span>
+                <i class="socialicon-like"></i> <span class="okscore">{{ comment_score.score }}</span>
             </span>
         </li>
         {% endfor %}
@@ -237,17 +283,34 @@ $(document).ready(function() {
     <form id="comment-form" action="{% comment_form_target %}" method="post" class="form-inline bg-dark">
         <input type="hidden" name="next" value="{{ act.get_absolute_url }}" />
         {% csrf_token %}
-        {% for field in form %}
-        {% if field.is_hidden %}{{ field }}{% else %}
-        {% if field.name != "name" and field.name != "email" and field.name != "url" %}{% if field.errors %}{{ field.errors }}{% endif %}{{ field }}{% endif %}{% endif %}
+
+        {% for hidden in form.hidden_fields %}
+            {{ hidden }}
         {% endfor %}
-        <input type="submit" name="submit" value="{% trans 'Post' %}">
+
+        <div class="row-fluid">
+            <div class="span8">
+                <textarea name="{{ form.comment.html_name }}" placeholder="Inserisci un commento" id="id_comment" cols="30" rows="1"></textarea>
+            </div>
+            <div class="span4 text-center">
+                <button type="submit" class="btn btn-mini" id="comment_form_submit">{% trans 'Post' %} </button>
+                <div class="radio-group">
+                    {{ form.mood }}
+                </div>
+            </div>
+        </div>
+
+    {% comment %}
+        {% for field in form %}
+            {% if field.is_hidden %}{{ field }}{% else %}
+                {% if field.name != "name" and field.name != "email" and field.name != "url" %}{% if field.errors %}{{ field.errors }}{% endif %}{{ field }}{% endif %}{% endif %}
+        {% endfor %}
         
         <!--<i class="socialicon-ok"></i><i class="socialicon-ko"></i><i class="socialicon-five"></i>-->
-        <!--<input type="text" placeholder="Scrivi un commento..." /> -->               
+        <!--<input type="text" placeholder="Scrivi un commento..." /> -->
+                       {% endcomment %}
     </form>
-    {% endif %}  
-    
+    {% endif %}
     <p>Leggi tutti (Cronologia) <i class="icon-chevron-down"></i></p>
 </section>
 
@@ -275,3 +338,4 @@ $(document).ready(function() {
     <p class="bg-dark">Leggi tutte (Cronologia) <i class="icon-chevron-down"></i></p>
 </section>
 {% endblock %}
+

@@ -6,4 +6,7 @@ django-extensions
 django-voting
 -e hg+https://bitbucket.org/guglielmo/django-registration#egg=django-registration
 -e hg+https://bitbucket.org/ubernostrum/django-profiles#egg=django-profiles
+django-haystack
+pysolr
+lxml
 

@@ -36,7 +36,7 @@
         <div class="row-fluid">
             <div class="span4">
                 <div class="calendar_container">
-                    <h3>Agenda della commissione</h3>
+                    <h3>Agenda del consiglio</h3>
                     <div class="calendar"></div>
                     <div class="calendar" data-calendar=".calendar_events"></div>
                     <ul class="calendar_events">
@@ -127,14 +127,5 @@
 {% block footer_js_includes %}
     {{ block.super }}
     <script src="{{ STATIC_URL }}js/jquery-ui-1.8.18.custom.min.js"></script>
-    <script src="{{ STATIC_URL }}js/jquery.ui.calendar.js"></script>
-{% endblock %}
-
-{% block extra_js %}
-    // initialize events
-    var events = [
-    { Title: "Five K for charity", Date: new Date("02/03/2012") },
-    { Title: "Dinner", Date: new Date("03/03/2012") },
-    { Title: "Meeting with manager", Date: new Date("05/03/2012") }
-    ];
+    <script src="{{ STATIC_URL }}js/jquery-ui.calendar.js"></script>
 {% endblock %}

@@ -182,6 +182,7 @@ class InstitutionCharge(Charge):
     institution = models.ForeignKey('Institution', on_delete=models.PROTECT, verbose_name=_('institution'), related_name='charge_set')
     charge_type = models.IntegerField(_('charge type'), choices=CHARGE_TYPES)
     op_charge_id = models.IntegerField(_('openpolis institution charge ID'), blank=True, null=True)
+    n_rebel_votations = models.IntegerField(default=0)
 
     class Meta(Charge.Meta):
         db_table = u'people_institution_charge'
@@ -225,8 +226,16 @@ class InstitutionCharge(Charge):
             # exception will be raised, providing a useful integrity check for data 
             group = Group.objects.get(groupcharge__charge__id=self.id, groupcharge__end_date__isnull=True)
             return group
-        else: 
+        else:
             return None
+
+    def update_n_rebel_votations(self):
+        """
+        Re-compute the number of votations where the charge has vote differently from her group
+        and update the n_rebel_votations counter
+        """
+        self.n_rebel_votations = self.chargevote_set.filter(rebel=True).count()
+        self.save()
     
 
 class CompanyCharge(Charge):

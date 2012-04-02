@@ -6,25 +6,28 @@
 
 {% block content %}
 
-    <ul>
+    <dl id="topic_summary">
     {% for category in categories %}
-        <li>
-            <a href="{{ category.get_absolute_url }}">{{ category }}</a>
-            <ul>
+        <dl>
+            <dt><h3><a href="{{ category.get_absolute_url }}">{{ category|title }}</a></h3></dt>
+            <dd>
                 {% for tag in category.tags %}
-                <li><a href="{{ tag.get_absolute_url }}">{{ tag }}</a></li>
+                <a href="{{ tag.get_absolute_url }}">{{ tag|title }}</a>
+                    {% if not forloop.last %}, {% endif %}
+                {% empty %}
+                &hellip;
                 {% endfor %}
-            </ul>
-        </li>
+            </dd>
+        </dl>
     {% endfor %}
-    </ul>
+    </dl>
 
     <hr>
 
     <h3>Peso degli argomenti negli atti</h3>
-    <ul>
+    <ul id="cloud">
         {% for tag in tags %}
-        <li><a href="{{ tag.get_absolute_url }}">{{ tag }}</a></li>
+        <li><a href="{{ tag.get_absolute_url }}" class="tag{{ tag.id }}">{{ tag }}</a></li>
         {% endfor %}
     </ul>
 

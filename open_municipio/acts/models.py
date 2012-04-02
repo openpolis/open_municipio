@@ -7,11 +7,11 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
 
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 
 from model_utils import Choices
-from model_utils.managers import InheritanceManager
+from model_utils.managers import InheritanceManager, QueryManager
 from model_utils.models import TimeStampedModel
 from model_utils.fields import StatusField
 
@@ -59,8 +59,11 @@ class Act(TimeStampedModel):
     category_set = models.ManyToManyField(Category, verbose_name=_('categories'), blank=True, null=True)
     location_set = models.ManyToManyField(Location, verbose_name=_('locations'), blank=True, null=True)
     status_is_final = models.BooleanField(default=False)
+    is_key = models.BooleanField(default=False, help_text=_("Specify whether this act should be featured"))
 
     objects = InheritanceManager()
+    # use this manager to retrieve only key acts
+    featured = QueryManager(is_key=True).order_by('-presentation_date') 
     
     tag_set = TaggableManager(through=TaggedAct, blank=True)
 
@@ -70,10 +73,9 @@ class Act(TimeStampedModel):
                                                content_type_field='related_content_type',
                                                object_id_field='related_object_pk')
 
-
     # manager to handle the list of monitoring having as content_object this instance
     monitoring_set = generic.GenericRelation(Monitoring, object_id_field='object_pk')
-    
+
     def __unicode__(self):
         uc = u'%s' % (self.title, )
         if self.idnum:
@@ -224,6 +226,31 @@ class Act(TimeStampedModel):
     def related_news(self):
         return self.related_news_set.all()
 
+    def get_transitions_groups(self):
+        """
+        retrieve a list of transitions grouped by status
+        """
+        groups = {}
+        this = self.downcast()
+        if not hasattr(this, 'STATUS'):
+            return groups
+
+        # initialize all status with an empty list of transitions
+        for status in this.STATUS:
+            groups[status[0]] = []
+
+        # fill groups with ordered transitions
+        for transition in this.transition_set.all().order_by('-transition_date'):
+            groups.get(transition.final_status).append(transition)
+
+        return groups
+
+    def get_last_transition(self):
+        if self.transitions:
+            return list(self.transitions)[-1]
+        return False
+
+
       
 class ActSection(models.Model):
     """
@@ -312,7 +339,7 @@ class Deliberation(Act):
     )
     STATUS = Choices(
         ('PRESENTED', 'presented', _('presented')),
-        ('COMMISSION', 'commission', _('commission')),
+        ('COMMITTEE', 'committee', _('committee')),
         ('COUNCIL', 'council', _('council')),
         ('APPROVED', 'approved', _('approved')),
         ('REJECTED', 'rejected', _('rejected'))
@@ -338,11 +365,9 @@ class Interrogation(Act):
     """
     WRITEME
     """
-    WRITTEN_ANSWER = 1
-    VERBAL_ANSWER = 2
     ANSWER_TYPES = Choices(
-        (WRITTEN_ANSWER, _('Written')),
-        (VERBAL_ANSWER, _('Verbal')),
+        ('WRITTEN', 'written', _('Written')),
+        ('VERBAL', 'verbal', _('Verbal')),
     )
     STATUS = Choices(
         ('PRESENTED', 'presented', _('presented')),
@@ -351,7 +376,7 @@ class Interrogation(Act):
     )
     
     status = StatusField()
-    answer_type = models.IntegerField(_('answer type'), choices=ANSWER_TYPES)
+    answer_type = models.CharField(_('answer type'), max_length=8, choices=ANSWER_TYPES)
     question_motivation = models.TextField(blank=True)
     answer_text = models.TextField(blank=True)
     reply_text = models.TextField(blank=True)
@@ -369,11 +394,9 @@ class Interpellation(Act):
     """
     WRITEME
     """
-    WRITTEN_ANSWER = 1
-    VERBAL_ANSWER = 2
     ANSWER_TYPES = Choices(
-        (WRITTEN_ANSWER, _('Written')),
-        (VERBAL_ANSWER, _('Verbal')),
+        ('WRITTEN', 'written', _('Written')),
+        ('VERBAL', 'verbal', _('Verbal')),
     )
     STATUS = Choices(
         ('PRESENTED', 'presented', _('presented')),
@@ -382,7 +405,7 @@ class Interpellation(Act):
     )
     
     status = StatusField()
-    answer_type = models.IntegerField(_('answer type'), choices=ANSWER_TYPES)
+    answer_type = models.CharField(_('answer type'), max_length=8, choices=ANSWER_TYPES)
     question_motivation = models.TextField(blank=True)
     answer_text = models.TextField(blank=True)
 
@@ -450,7 +473,7 @@ class Transition(models.Model):
     transition_date = models.DateField(default=None)
     symbol = models.CharField(_('symbol'), max_length=128, blank=True, null=True)
     note = models.CharField(_('note'), max_length=255, blank=True, null=True)
-    
+
     class Meta:
         db_table = u'acts_transition'
         verbose_name = _('status transition')
@@ -639,12 +662,14 @@ def new_signature(**kwargs):
 def new_transition(**kwargs):
     if not kwargs.get('raw', False) and kwargs.get('created', False):
         generating_item = kwargs['instance']
-        act = generating_item.act
+        act = generating_item.act.downcast()
 
         # Presentation is already handled by new_act_published handler
-        if generating_item.final_status != act.STATUS.presented:
+        if generating_item.final_status != 'PRESENTED':
             # set act's status according to transition status
             act.status = generating_item.final_status
+            if act.status in ['APPROVED', 'REJECTED']:
+                act.status_is_final = True
             act.save()
 
             # generate news
@@ -654,3 +679,14 @@ def new_transition(**kwargs):
                 generating_object=generating_item, related_object=act, priority=2,
                 text=News.get_text_for_news(ctx, 'newscache/act_changed_status.html')
             )
+
+@receiver(post_delete, sender=Transition)
+def delete_transition(**kwargs):
+    if not kwargs.get('raw', False):
+        deleting_item = kwargs['instance']
+        act = deleting_item.act.downcast()
+
+        act.status = act.get_last_transition().final_status
+        if deleting_item.final_status in ['APPROVED', 'REJECTED']:
+            act.status_is_final = False
+        act.save()

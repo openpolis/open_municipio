@@ -88,11 +88,11 @@ What the scripts mean
 
 create_startup_people
 +++++++++++++++++++++
-Simulates a whole *Comune*, as to the Institutions (Mayor, City government, Council, Commissions and Council Groups).
+Simulates a whole *Comune*, as to the Institutions (Mayor, City government, Council, Committees and Council Groups).
 Names and other anagraphical data are taken randomly from Openpolis.it database and mixed, to form new, unknown persons.
-Commissions and groups are defined in the script's source code.
+Committees and groups are defined in the script's source code.
 
-At the end of this script you'll have the Persons and InstitutionCharges for all the Institution (and Commissions), 
+At the end of this script you'll have the Persons and InstitutionCharges for all the Institution (and Committees), 
 and the Groups will be popolated as well.
 
 create_startup_acts
@@ -127,6 +127,7 @@ There are a few parameters you may customize to tweak the way the taxonomy is ge
 * ``MAX_CATEGORIES_PER_ACT``: max number of categories associated with an act (default: ``3``)
 * ``MIN_TAGS_PER_CATEGORY``: given an act, min number of tags associated with each category (default: ``0``)
 * ``MAX_TAGS_PER_CATEGORY``: given an act, max number of tags associated with each category (default: ``5``)
+* ``KEY_ACTS_RATIO``: ratio of key acts over the whole set of acts (default: ``0.25``)
 
 
 Todos
@@ -134,7 +135,7 @@ Todos
 
 * Add other acts types (motion, interrogation, city government acts ...)
 * Votings weight probabilities expressed by couselors vary according to group and majority
-* Definitions (groups, commissions,probability weights, ...) are moved from the source code to a configuration file
+* Definitions (groups, committees,probability weights, ...) are moved from the source code to a configuration file
 * Integrate with testing framework for testing purposes
 * Implement signals to generate news after new acts or votes are created.
 

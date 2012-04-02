@@ -40,7 +40,7 @@ urlpatterns = patterns('',
     (r'^offices/', include('open_municipio.people.urls.offices')),
     (r'^companies/', include('open_municipio.people.urls.companies')), 
     (r'^acts/', include('open_municipio.acts.urls')),
-    (r'^voting/', include('open_municipio.votations.urls')),
+    (r'^votations/', include('open_municipio.votations.urls')),
     (r'^topics/', include('open_municipio.taxonomy.urls.topics')),
     (r'^categories/', include('open_municipio.taxonomy.urls.categories')),
     (r'^tags/', include('open_municipio.taxonomy.urls.tags')),
@@ -68,3 +68,13 @@ urlpatterns += patterns('',
     url(r'^users/', include('open_municipio.users.urls')),
 )
 
+
+# search test
+urlpatterns += patterns('',
+    url(r'^search/', include('haystack.urls')),
+)
+
+# bookmarking
+urlpatterns += patterns('',
+    url(r'^bookmark/', include('open_municipio.bookmarking.urls')),
+)

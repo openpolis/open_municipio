@@ -1,5 +1,6 @@
 from django.conf.urls.defaults import *
 from django.views.generic import ListView, TemplateView
+
 from open_municipio.votations.models import Votation
 from open_municipio.votations.views import VotationDetailView
 

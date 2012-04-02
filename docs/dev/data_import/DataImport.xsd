@@ -119,7 +119,7 @@
 	<xs:element name="ActSubscribers">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element maxOccurs="unbounded" ref="ChargeXRef"/>
+				<xs:element maxOccurs="unbounded" ref="ChargeXRef" />
 			</xs:sequence>
 			<xs:attribute name="type">
 				<xs:simpleType>

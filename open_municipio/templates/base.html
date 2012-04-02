@@ -19,16 +19,12 @@
 
     {% block head_js_includes %}
     <!--[if IE]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+    <script type="text/javascript" src="{{ STATIC_URL }}js/include.js" data-url="{{ STATIC_URL }}"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-1.7.1.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap-dropdown.js"></script>
     {% endblock head_js_includes %}
 
-    <script type="text/javascript" src="{{ STATIC_URL }}js/require.js" data-main="{{ STATIC_URL }}js/"></script>
     <script type="text/javascript" charset="utf-8">
-
-        //var asyncScripts = asyncScripts || [];
-        // asyncScripts.push(function() { return ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js'; });
-
     {% block extra_js %}{% endblock %}
     </script>
 
@@ -68,7 +64,7 @@
       </hgroup><!-- /AREA-TITLE -->
 
       <!-- MAIN-NAVBAR -->
-      <nav class="navbar">
+      <nav id="main-navbar" class="navbar">
         <div class="navbar-inner">
           <div class="container-fluid">
               <ul class="nav">
@@ -84,7 +80,7 @@
       
   </header>
 
-    <section id="main" class="container-fluid"><!-- #main container for content and sidebar area -->
+    <section id="main" class="{% block container_class %}container-fluid{% endblock %}"><!-- #main container for content and sidebar area -->
 
     {% block container %}{% endblock %}      
 
@@ -96,7 +92,7 @@
           <div class="navbar-inner">
             <div class="container-fluid">
                 <ul class="nav">
-                    <li {% block acts_class %}{% endblock %}><a href="{% url om_act_list %}">Atti</a></li>
+                    <li {% block acts_class %}{% endblock %}><a href="{% url om_act_search %}">Atti</a></li>
                     <li {% block votations_class %}{% endblock %}><a href="{% url om_votation_list %}">Votazioni</a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">

@@ -1,0 +1,190 @@
+{% extends 'base_two_columns.html' %}
+{% load highlight %}
+
+{% block title %}| Elenco atti {% endblock title %}
+{% block content_header %}Elenco atti{% endblock %}
+{% block acts_class %}class="active"{% endblock %}
+
+{% block extra_style %}
+em {
+    background-color: yellow;
+}
+{% endblock %}
+
+{% block content %}
+    <h1>Cerca l'atto</h1>
+
+    {% if selected_facets %}
+        <ul class="breadcrumb">
+            {% for facet in selected_facets  %}
+                <li>
+                    <a href="{{ facet.url }}"><i class="icon-remove"></i></a>
+                    <span style="color:gray;">{{ facet.field }}</span>:
+                    {{ facet.label }}
+                </li>
+                {% if not forloop.last %}
+                    <span class="divider">/</span>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+
+
+    <form method="get" action="{% url om_act_search %}" class="well form-search">
+        <input type="text" class="input-medium search-query" name="{{ form.q.html_name }}" value="{% if form.q.value %}{{ form.q.value }}{% endif %}" placeholder="Testo della ricerca" />
+        <button type="submit" class="btn">Cerca</button>
+    </form>
+    {% if n_results %}
+
+        {% if page.has_previous or page.has_next %}
+
+            <div class="pagination pagination-right">
+                <ul>
+                    {% if page.has_previous %}
+                        <li><a href="{{ base_url }}&page={{ page.previous_page_number }}">&larr;</a></li>
+                    {% endif %}
+
+                    {% for p in paginator.page_range %}
+                    <li{% if p == page.number %} class="active"{% endif %}>
+                        <a href="{{ base_url }}&page={{ p }}">{{ p }}</a>
+                    </li>
+                    {% endfor %}
+
+                    {% if page.has_next %}
+                        <li><a href="{{ base_url }}&page={{ page.next_page_number }}">&rarr;</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+            {% comment %}
+            <div style="float:right">
+                {% if page.has_previous %}<a href="?q={{ query }}&page={{ page.previous_page_number }}">{% endif %}&laquo; Precedente{% if page.has_previous %}</a>{% endif %}
+                | pagina {{ page.number }} di {{ page.paginator.num_pages }} |
+                {% if page.has_next %}<a href="?q={{ query }}&page={{ page.next_page_number }}">{% endif %}Successiva &raquo;{% if page.has_next %}</a>{% endif %}
+            </div>
+            {% endcomment %}
+        {% endif %}
+
+        <section>
+            <h3>{% if not query %}Tutti i {% endif %} {{ n_results }} documenti</h3>
+
+            <table class="data">
+                <tbody>
+                {% for result in page.object_list %}
+                    <tr>
+                        <td>{{ obj.presentation_date}}</td>
+                        <td>
+                            <span class="label">{{ result.act_type }}</span>
+                            <a href="{{ result.url }}">{{ result.title }}</a><br/>
+                            {{ result.highlighted.text.0|safe }}<br/>
+                            {% if result.categories %}
+                                <strong>Categorie</strong>: {{ result.categories|join:", " }}<br/>
+                            {% endif %}
+                            {% if result.tags %}
+                                <strong>Tag</strong>: {{ result.tags|join:", " }}<br/>
+                            {% endif %}
+                            <strong>Pubblicazione:</strong>{{ result.pub_date }}<br/>
+                            <strong>Score:</strong> {{ result.score }}
+                        </td>
+                    </tr>
+                {% empty %}
+                    <p>Nessun risultato trovato.</p>
+                {% endfor %}
+                </tbody>
+            </table>
+        </section>
+
+        {% if page.has_previous or page.has_next %}
+            <div class="pagination pagination-right">
+                <ul>
+                    {% if page.has_previous %}
+                        <li><a href="{{ base_url }}&page={{ page.previous_page_number }}">&larr;</a></li>
+                    {% endif %}
+
+                    {% for p in paginator.page_range %}
+                        <li{% if p == page.number %} class="active"{% endif %}>
+                            <a href="{{ base_url }}&page={{ p }}">{{ p }}</a>
+                        </li>
+                    {% endfor %}
+
+                    {% if page.has_next %}
+                        <li><a href="{{ base_url }}&page={{ page.next_page_number }}">&rarr;</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        {% endif %}
+
+    {% else %}
+        {# Show some example queries to run, maybe query syntax, something else? #}
+    {% endif %}
+
+{% endblock %}
+
+{% block sidebar %}
+
+    {% if n_results %}
+        <!-- Begin faceting. -->
+        <h3>Filtra</h3>
+
+        <div>
+            <dl>
+                {% if facets.fields.act_type and not facets.fields.act_type.is_field_selected %}
+                    <dt>Tipologia</dt>
+                    {# Provide all act types #}
+                    {% for t in facets.fields.act_type.counts %}
+                        <dd>
+                            {% if not t.2 %}
+                                <a href="{{ base_url }}&selected_facets=act_type:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
+                            {% endif %}
+                        </dd>
+                    {% endfor %}
+                {% endif %}
+            </dl>
+            <dl>
+                {% if facets.fields.categories and not facets.fields.categories.is_field_selected %}
+                    <dt>Categorie</dt>
+                    {# Provide only the top 5 categories #}
+                    {% for cat in facets.fields.categories.counts|slice:":5" %}
+                        <dd>
+                            {% if not cat.2 %}
+                                <a href="{{ base_url }}&selected_facets=categories:{{ cat.0|urlencode }}">{{ cat.0 }}</a> ({{ cat.1 }})
+                            {% endif %}
+                        </dd>
+                    {% endfor %}
+                {% endif %}
+            </dl>
+            <dl>
+                {% if facets.fields.tags %}
+                    <dt>Tag</dt>
+                    {# Provide only the top 5 tags #}
+                    {% for tag in facets.fields.tags.counts|slice:":5" %}
+                        <dd>
+                            {% if not tag.2 %}
+                                <a href="{{ base_url }}&selected_facets=tags:{{ tag.0|urlencode }}">{{ tag.0 }}</a> ({{ tag.1 }})
+                            {% endif %}
+                        </dd>
+                    {% endfor %}
+                {% endif %}
+            </dl>
+            <dl>
+                {% if not facet_queries_pubdate.is_selected %}
+                    <dt>Data di pubblicazione</dt>
+                    <dd>
+                        <a href="{{ base_url }}&selected_facets={{ facet_queries_pubdate.threedays.key }}">
+                            ultimi tre giorni
+                        </a> ({{ facet_queries_pubdate.threedays.count }})
+                    </dd>
+                    <dd>
+                        <a href="{{ base_url }}&selected_facets={{ facet_queries_pubdate.onemonth.key }}">
+                            ultimo mese
+                        </a> ({{ facet_queries_pubdate.onemonth.count }})
+                    </dd>
+                {% endif %}
+            </dl>
+        </div>
+        <!-- End faceting -->
+
+    {% endif %}
+
+
+{% endblock %}
