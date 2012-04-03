@@ -79,6 +79,8 @@ class ExtendedFacetedSearchView(SearchView):
                     label = 'ultimi 3 giorni'
                 elif label == self.ONEMONTH:
                     label = 'ultimo mese'
+                elif label == self.ONEYAR:
+                    label = 'ultimo anno'
                 else:
                     raise Exception
 
@@ -109,6 +111,14 @@ class ExtendedFacetedSearchView(SearchView):
                 'count': facet_counts_queries["pub_date:%s" % self.ONEMONTH]
             }
             if (facets['onemonth']['key'] in selected_facets):
+                facets['is_selected'] = True
+
+        if "pub_date:%s" % self.ONEYEAR in facet_counts_queries:
+            facets['oneyear'] = {
+                'key': "pub_date:%s" % self.ONEYEAR,
+                'count': facet_counts_queries["pub_date:%s" % self.ONEYEAR]
+            }
+            if (facets['oneyear']['key'] in selected_facets):
                 facets['is_selected'] = True
 
         return facets
