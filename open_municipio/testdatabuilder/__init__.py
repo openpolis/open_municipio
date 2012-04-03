@@ -145,6 +145,16 @@ class RandomItemsFactory(object):
                 v.save()
                 print "Votazione %s creata"  % i
 
+                # link to a random act
+                # leave some votations unlinked (10%)
+                w = list(itertools.chain.from_iterable([
+                    [False]*1, # 10% Do not link
+                    [True]*9   # 90% Do link
+                ]))
+                if random.choice(w):
+                    v.act = random.choice(Act.objects.all()).downcast()
+                    print "Atto collegato: %s" % v.act
+
                 # define vote weights
                 # itertools.chain.from_iterable flattens a nested list of lists
                 # [i]*N creates a list of N integers i
@@ -156,7 +166,6 @@ class RandomItemsFactory(object):
                     [2]*5,   #  5% ABSTAINED
                     [4]*5    #  5% ABSENT
                 ]))
-
                 for charge in council_institution.charge_set.all():
                     if (charge.charge_type == InstitutionCharge.COUNCIL_PRES_CHARGE or
                         charge.charge_type == InstitutionCharge.COUNCIL_VICE_CHARGE):
@@ -177,8 +186,8 @@ class RandomItemsFactory(object):
                 v.n_no = ChargeVote.objects.filter(votation=v, vote=ChargeVote.NO).count()
                 v.n_abst = ChargeVote.objects.filter(votation=v, vote=ChargeVote.ABSTAINED).count()
                 n_president = ChargeVote.objects.filter(votation=v, vote=ChargeVote.PRES).count()
-                v.n_present = v.n_yes + v.n_no + v.n_abst + n_president
-                v.n_maj = int(v.n_present / 2) + 1
+                v.n_presents = v.n_yes + v.n_no + v.n_abst + n_president
+                v.n_maj = int(v.n_presents / 2) + 1
                 if v.n_yes >= v.n_maj:
                     v.outcome = Votation.PASSED
                 else:
@@ -195,7 +204,7 @@ class RandomItemsFactory(object):
                 print "Cache updated.\n"
 
                 print "Totali"
-                print "  Presenti: %s, Maggioranza: %s" % (v.n_present, v.n_maj)
+                print "  Presenti: %s, Maggioranza: %s" % (v.n_presents, v.n_maj)
                 print "  %s YES, %s NO, %s ABSTAINED" % (v.n_yes, v.n_no, v.n_abst)
                 print "  Voto %s" % (v.get_outcome_display())
 
