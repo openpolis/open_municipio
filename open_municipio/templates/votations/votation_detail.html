@@ -14,7 +14,7 @@
     <hgroup>
         <h2>
             {% if votation.act %}
-            <strong>{% block act_type %}TIPO ATTO{% endblock %}</strong>
+            <strong>{{ votation.act_type }}</strong>
             del {{ votation.act.emitting_institution }} N° {{ votation.act.idnum }} del <span class="date">{{ votation.act.presentation_date|date:"d.m.Y" }}</span></small>
             {% else %}
             {{ votation.act_descr }}
@@ -35,10 +35,14 @@
         </tr>
         </thead>
         <tbody>
-            {% for group in votation.group_votes %}
+            {% for group_vote in votation.group_votes %}
             <tr>
-                <td>{{ group }}</td>
-                <td>8</td><td>2</td><td>1</td><td>0</td><td>0</td>
+                <td><strong>{{ group_vote.group.name }}</strong> ({{ group_vote.group.acronym }})</td>
+                <td>{{ group_vote.n_yes }}</td>
+                <td>{{ group_vote.n_no }}</td>
+                <td>{{ group_vote.n_abst }}</td>
+                <td>{{ group_vote.n_absent }}</td>
+                <td>{{ group_vote.n_mission }}</td>
             </tr>
             {% endfor %}
         </tbody>
