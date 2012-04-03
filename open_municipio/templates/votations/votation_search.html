@@ -63,12 +63,24 @@
                 <tbody>
                 {% for result in page.object_list %}
                     <tr>
-                        <td>{{ result.votation_date}}</td>
                         <td>
-                            <span class="label">{{ result.act_type }}</span>
+                            Votazione n.{{ result.votation_num }}
+                            della seduta n.{{ result.votation_sitting_num }}
+                            del {{ result.votation_date}}<br/>
+                            relativa a: <span class="label">{{ result.act_type }}</span>
                             <a href="{{ result.url }}">{{ result.title }}</a><br/>
-                            {{ result.highlighted.text.0|safe }}<br/>
-                            <strong>Score:</strong> {{ result.score }}
+                            {% if result.highlighted.text %}
+                                {{ result.highlighted.text.0|safe }}<br/>
+                            {% endif %}
+                            Presenti: {{ result.votation_n_presents }},
+                            Maggioranza: {{ result.votation_n_maj }},
+                            Favorevoli: {{ result.votation_n_yes }},
+                            Contrari: {{ result.votation_n_no }},
+                            Astenuti: {{ result.votation_n_abst }},
+                            Esito: {{ result.votation_outcome }},
+                            Ribelli: {{ result.votation_n_rebels }}
+                            <br/>
+                            [<strong>Score:</strong> {{ result.score }}]
                         </td>
                     </tr>
                 {% empty %}
