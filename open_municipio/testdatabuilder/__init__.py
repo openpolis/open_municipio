@@ -152,7 +152,7 @@ class RandomItemsFactory(object):
                     [True]*9   # 90% Do link
                 ]))
                 if random.choice(w):
-                    v.act = random.choice(Act.objects.all()).downcast()
+                    v.act = random.choice(Act.objects.all())
                     print "Atto collegato: %s" % v.act
 
                 # define vote weights

@@ -5,10 +5,9 @@ from django.views.generic import DetailView, ListView, TemplateView
 from django.views.generic.edit import FormView
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.urlresolvers import reverse
 
 from django.contrib.auth.decorators import login_required
-
-from haystack.query import SearchQuerySet
 
 from open_municipio.acts.models import Act, Agenda, Deliberation, Interpellation, Interrogation, Motion, Transition
 from open_municipio.acts.forms import TagAddForm, ActDescriptionForm, ActTransitionForm, ActFinalTransitionForm
@@ -28,7 +27,7 @@ class ActSearchView(ExtendedFacetedSearchView):
 
     This view allows faceted search and navigation of the acts.
 
-    It extends a n extended version of the basic FacetedSearchView,
+    It extends an extended version of the basic FacetedSearchView,
     and can be customized whenever
 
     """
@@ -56,6 +55,9 @@ class ActSearchView(ExtendedFacetedSearchView):
         Add extra content here, when needed
         """
         extra = super(ActSearchView, self).extra_context()
+        extra['base_url'] = reverse('om_act_search') + '?' + extra['params'].urlencode()
+
+
         return extra
 
 

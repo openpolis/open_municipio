@@ -74,12 +74,12 @@ class ExtendedFacetedSearchView(SearchView):
             field, _, label = f.partition(":")
 
             # TODO: use an associative array
-            if field == 'pub_date':
+            if field[-5:] == 'date':
                 if label == self.THREEDAYS:
                     label = 'ultimi 3 giorni'
                 elif label == self.ONEMONTH:
                     label = 'ultimo mese'
-                elif label == self.ONEYAR:
+                elif label == self.ONEYEAR:
                     label = 'ultimo anno'
                 else:
                     raise Exception
@@ -89,7 +89,7 @@ class ExtendedFacetedSearchView(SearchView):
 
         return extended_selected_facets
 
-    def _get_custom_facet_queries_pubdate(self):
+    def _get_custom_facet_queries_date(self):
         """
 
         """
@@ -102,7 +102,7 @@ class ExtendedFacetedSearchView(SearchView):
                 'key': "pub_date:%s" % self.THREEDAYS,
                 'count': facet_counts_queries["pub_date:%s" % self.THREEDAYS]
             }
-            if (facets['threedays']['key'] in selected_facets):
+            if facets['threedays']['key'] in selected_facets:
                 facets['is_selected'] = True
 
         if "pub_date:%s" % self.ONEMONTH in facet_counts_queries:
@@ -110,7 +110,7 @@ class ExtendedFacetedSearchView(SearchView):
                 'key': "pub_date:%s" % self.ONEMONTH,
                 'count': facet_counts_queries["pub_date:%s" % self.ONEMONTH]
             }
-            if (facets['onemonth']['key'] in selected_facets):
+            if facets['onemonth']['key'] in selected_facets:
                 facets['is_selected'] = True
 
         if "pub_date:%s" % self.ONEYEAR in facet_counts_queries:
@@ -118,7 +118,30 @@ class ExtendedFacetedSearchView(SearchView):
                 'key': "pub_date:%s" % self.ONEYEAR,
                 'count': facet_counts_queries["pub_date:%s" % self.ONEYEAR]
             }
-            if (facets['oneyear']['key'] in selected_facets):
+            if facets['oneyear']['key'] in selected_facets:
+                facets['is_selected'] = True
+        if "votation_date:%s" % self.THREEDAYS in facet_counts_queries:
+            facets['threedays'] = {
+                'key': "votation_date:%s" % self.THREEDAYS,
+                'count': facet_counts_queries["votation_date:%s" % self.THREEDAYS]
+            }
+            if facets['threedays']['key'] in selected_facets:
+                facets['is_selected'] = True
+
+        if "votation_date:%s" % self.ONEMONTH in facet_counts_queries:
+            facets['onemonth'] = {
+                'key': "votation_date:%s" % self.ONEMONTH,
+                'count': facet_counts_queries["votation_date:%s" % self.ONEMONTH]
+            }
+            if facets['onemonth']['key'] in selected_facets:
+                facets['is_selected'] = True
+
+        if "votation_date:%s" % self.ONEYEAR in facet_counts_queries:
+            facets['oneyear'] = {
+                'key': "votation_date:%s" % self.ONEYEAR,
+                'count': facet_counts_queries["votation_date:%s" % self.ONEYEAR]
+            }
+            if facets['oneyear']['key'] in selected_facets:
                 facets['is_selected'] = True
 
         return facets
@@ -135,7 +158,7 @@ class ExtendedFacetedSearchView(SearchView):
         extra['request'] = self.request
         extra['selected_facets'] = self._get_extended_selected_facets()
         extra['facets'] = self._get_extended_facets_fields()
-        extra['facet_queries_pubdate'] = self._get_custom_facet_queries_pubdate()
+        extra['facet_queries_date'] = self._get_custom_facet_queries_date()
 
         # make get array as mutable QueryDict
         params = self.request.GET.copy()
@@ -143,9 +166,7 @@ class ExtendedFacetedSearchView(SearchView):
             params.update({'q': ''})
         if 'page' in params:
             params.pop('page')
-
-        from django.core.urlresolvers import reverse
-        extra['base_url'] = reverse('om_act_search') + '?' + params.urlencode()
+        extra['params'] = params
 
         return extra
 

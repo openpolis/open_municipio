@@ -1,18 +1,18 @@
 {% extends 'base_two_columns.html' %}
 {% load highlight %}
 
-{% block title %}| Elenco atti {% endblock title %}
-{% block content_header %}Elenco atti{% endblock %}
-{% block acts_class %}class="active"{% endblock %}
+{% block title %}| Elenco votazioni {% endblock title %}
+{% block content_header %}Elenco votazioni{% endblock %}
+{% block votations_class %}class="active"{% endblock %}
 
 {% block extra_style %}
-em {
+    em {
     background-color: yellow;
-}
+    }
 {% endblock %}
 
 {% block content %}
-    <h1>Cerca l'atto</h1>
+    <h1>Cerca la votazione</h1>
 
     {% if selected_facets %}
         <ul class="breadcrumb">
@@ -31,7 +31,7 @@ em {
 
 
 
-    <form method="get" action="{% url om_act_search %}" class="well form-search">
+    <form method="get" action="{% url om_votation_search %}" class="well form-search">
         <input type="text" class="input-medium search-query" name="{{ form.q.html_name }}" value="{% if form.q.value %}{{ form.q.value }}{% endif %}" placeholder="Testo della ricerca" />
         <button type="submit" class="btn">Cerca</button>
     </form>
@@ -58,23 +58,16 @@ em {
         {% endif %}
 
         <section>
-            <h3>{% if not query %}Tutti i {% endif %} {{ n_results }} documenti</h3>
-
+            <h3>{% if not query %}Tutte le {% endif %} {{ n_results }} votazioni</h3>
             <table class="data">
                 <tbody>
                 {% for result in page.object_list %}
                     <tr>
-                        <td>{{ result.pub_date}}</td>
+                        <td>{{ result.votation_date}}</td>
                         <td>
                             <span class="label">{{ result.act_type }}</span>
                             <a href="{{ result.url }}">{{ result.title }}</a><br/>
                             {{ result.highlighted.text.0|safe }}<br/>
-                            {% if result.categories %}
-                                <strong>Categorie</strong>: {{ result.categories|join:", " }}<br/>
-                            {% endif %}
-                            {% if result.tags %}
-                                <strong>Tag</strong>: {{ result.tags|join:", " }}<br/>
-                            {% endif %}
                             <strong>Score:</strong> {{ result.score }}
                         </td>
                     </tr>
@@ -139,25 +132,12 @@ em {
                     {# Provide both cases (true, false) #}
                     {% for t in facets.fields.is_key.counts %}
                         {% if t.1 %}
-                        <dd>
-                            {% if not t.2 %}
-                                <a href="{{ base_url }}&selected_facets=is_key:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
-                            {% endif %}
-                        </dd>
+                            <dd>
+                                {% if not t.2 %}
+                                    <a href="{{ base_url }}&selected_facets=is_key:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
+                                {% endif %}
+                            </dd>
                         {%  endif %}
-                    {% endfor %}
-                {% endif %}
-            </dl>
-            <dl>
-                {% if facets.fields.initiative and not facets.fields.initiative.is_field_selected %}
-                    <dt>Iniziativa (delibere)</dt>
-                    {# Provide both cases (true, false) #}
-                    {% for t in facets.fields.initiative.counts %}
-                        <dd>
-                            {% if not t.2 %}
-                                <a href="{{ base_url }}&selected_facets=initiative:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
-                            {% endif %}
-                        </dd>
                     {% endfor %}
                 {% endif %}
             </dl>
@@ -176,36 +156,9 @@ em {
                     {% endfor %}
                 {% endif %}
             </dl>
-
-            <dl>
-                {% if facets.fields.categories %}
-                    <dt>Categorie</dt>
-                    {# Provide only the top 5 categories #}
-                    {% for cat in facets.fields.categories.counts|slice:":5" %}
-                        <dd>
-                            {% if not cat.2 %}
-                                <a href="{{ base_url }}&selected_facets=categories:{{ cat.0|urlencode }}">{{ cat.0 }}</a> ({{ cat.1 }})
-                            {% endif %}
-                        </dd>
-                    {% endfor %}
-                {% endif %}
-            </dl>
-            <dl>
-                {% if facets.fields.tags %}
-                    <dt>Tag</dt>
-                    {# Provide only the top 5 tags #}
-                    {% for tag in facets.fields.tags.counts|slice:":5" %}
-                        <dd>
-                            {% if not tag.2 %}
-                                <a href="{{ base_url }}&selected_facets=tags:{{ tag.0|urlencode }}">{{ tag.0 }}</a> ({{ tag.1 }})
-                            {% endif %}
-                        </dd>
-                    {% endfor %}
-                {% endif %}
-            </dl>
             <dl>
                 {% if not facet_queries_date.is_selected %}
-                    <dt>Data di pubblicazione</dt>
+                    <dt>Data della seduta</dt>
                     {% if facet_queries_date.threedays.count %}
                         <dd>
                             <a href="{{ base_url }}&selected_facets={{ facet_queries_date.threedays.key }}">
@@ -229,6 +182,7 @@ em {
                     {% endif %}
                 {% endif %}
             </dl>
+
         </div>
         <!-- End faceting -->
 
