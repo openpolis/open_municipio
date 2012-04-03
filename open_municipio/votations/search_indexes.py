@@ -15,6 +15,7 @@ class VotationIndex(SearchIndex):
     # stored fields, used not to touch DB
     # while showing results
     url = CharField(indexed=False, stored=True)
+    act_url = CharField(indexed=False, stored=True)
     title = CharField(indexed=False, stored=True, model_attr='act__title')
     votation_num = CharField(indexed=False, stored=True, model_attr='idnum')
     votation_sitting_num = IntegerField(indexed=False, stored=True, model_attr='sitting__number')
@@ -26,11 +27,14 @@ class VotationIndex(SearchIndex):
     votation_n_rebels = IntegerField(indexed=False, stored=True, model_attr='n_rebels')
     votation_outcome = CharField(indexed=False, stored=True, model_attr='outcome')
 
+    def prepare_url(self, obj):
+        return obj.get_absolute_url()
+
     def prepare_act_type(self, obj):
         return obj.act.downcast().__class__.__name__
 
-    def prepare_url(self, obj):
-        return obj.get_absolute_url()
+    def prepare_act_url(self, obj):
+        return obj.act.downcast().get_absolute_url()
 
     def index_queryset(self):
         """
