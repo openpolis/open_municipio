@@ -132,16 +132,46 @@ em {
                     <dt>Tipologia</dt>
                     {# Provide all act types #}
                     {% for t in facets.fields.act_type.counts %}
+                        {% if t.1 %}
+                            <dd>
+                                {% if not t.2 %}
+                                    <a href="{{ base_url }}&selected_facets=act_type:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
+                                {% endif %}
+                            </dd>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </dl>
+            <dl>
+                {% if facets.fields.is_key and not facets.fields.is_key.is_field_selected %}
+                    <dt>Atto chiave</dt>
+                    {# Provide both cases (true, false) #}
+                    {% for t in facets.fields.is_key.counts %}
+                        {% if t.1 %}
                         <dd>
                             {% if not t.2 %}
-                                <a href="{{ base_url }}&selected_facets=act_type:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
+                                <a href="{{ base_url }}&selected_facets=is_key:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
+                            {% endif %}
+                        </dd>
+                        {%  endif %}
+                    {% endfor %}
+                {% endif %}
+            </dl>
+            <dl>
+                {% if facets.fields.initiative and not facets.fields.initiative.is_field_selected %}
+                    <dt>Iniziativa (delibere)</dt>
+                    {# Provide both cases (true, false) #}
+                    {% for t in facets.fields.initiative.counts %}
+                        <dd>
+                            {% if not t.2 %}
+                                <a href="{{ base_url }}&selected_facets=initiative:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
                             {% endif %}
                         </dd>
                     {% endfor %}
                 {% endif %}
             </dl>
             <dl>
-                {% if facets.fields.categories and not facets.fields.categories.is_field_selected %}
+                {% if facets.fields.categories %}
                     <dt>Categorie</dt>
                     {# Provide only the top 5 categories #}
                     {% for cat in facets.fields.categories.counts|slice:":5" %}
@@ -169,16 +199,27 @@ em {
             <dl>
                 {% if not facet_queries_pubdate.is_selected %}
                     <dt>Data di pubblicazione</dt>
-                    <dd>
-                        <a href="{{ base_url }}&selected_facets={{ facet_queries_pubdate.threedays.key }}">
-                            ultimi tre giorni
-                        </a> ({{ facet_queries_pubdate.threedays.count }})
-                    </dd>
-                    <dd>
-                        <a href="{{ base_url }}&selected_facets={{ facet_queries_pubdate.onemonth.key }}">
-                            ultimo mese
-                        </a> ({{ facet_queries_pubdate.onemonth.count }})
-                    </dd>
+                    {% if facet_queries_pubdate.threedays.count %}
+                        <dd>
+                            <a href="{{ base_url }}&selected_facets={{ facet_queries_pubdate.threedays.key }}">
+                                ultimi tre giorni
+                            </a> ({{ facet_queries_pubdate.threedays.count }})
+                        </dd>
+                    {% endif %}
+                    {% if facet_queries_pubdate.onemonth.count %}
+                        <dd>
+                            <a href="{{ base_url }}&selected_facets={{ facet_queries_pubdate.onemonth.key }}">
+                                ultimo mese
+                            </a> ({{ facet_queries_pubdate.onemonth.count }})
+                        </dd>
+                    {% endif %}
+                    {% if facet_queries_pubdate.oneyear.count %}
+                        <dd>
+                            <a href="{{ base_url }}&selected_facets={{ facet_queries_pubdate.oneyear.key }}">
+                                ultimo anno
+                            </a> ({{ facet_queries_pubdate.oneyear.count }})
+                        </dd>
+                    {% endif %}
                 {% endif %}
             </dl>
         </div>

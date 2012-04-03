@@ -428,7 +428,14 @@ class Institution(Body):
         super(Institution, self).save(*args, **kwargs)
         
     def get_absolute_url(self):
-        return reverse("om_institution_detail", kwargs={'slug': self.slug})
+        if self.institution_type == self.MAYOR:
+            return reverse("om_institution_mayor")
+        elif self.institution_type == self.CITY_GOVERNMENT:
+            return reverse("om_institution_citygov")
+        elif self.institution_type == self.COUNCIL:
+            return reverse("om_institution_council")
+        elif self.institution_type == self.COMMITTEE:
+            return reverse("om_institution_committee", kwargs={'slug': self.slug})
     
     @property
     def charges(self):

@@ -22,9 +22,11 @@ act_dict = {
 
 ## SearchQuerySet with multiple facets and highlight
 sqs = SearchQuerySet().\
-    facet('act_type').facet('categories').facet('tags').\
+    facet('act_type').facet('is_key').facet('initiative').\
+    facet('categories').facet('tags').\
     query_facet('pub_date', ActSearchView.THREEDAYS).\
     query_facet('pub_date', ActSearchView.ONEMONTH).\
+    query_facet('pub_date', ActSearchView.ONEYEAR).\
     highlight()
 
 urlpatterns = patterns('',

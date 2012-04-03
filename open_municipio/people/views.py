@@ -103,7 +103,8 @@ class CommitteeDetailView(DetailView):
     Renders the Committee page
     """
     model = Institution
-    template_name = 'people/institution_commission.html'
+    template_name = 'people/institution_committee.html'
+    context_object_name = "committee"
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
@@ -114,13 +115,32 @@ class CommitteeDetailView(DetailView):
         if self.object.institution_type != Institution.COMMITTEE:
             raise Http404
 
-        committee = self.object
         committee_list = Institution.objects.filter(institution_type=Institution.COMMITTEE)
-        events = Event.future.get_by_institution(self.object)
+
+        # Under the hood, we make use of a custom manager here, so
+        # that *only* current institution charges are retrieved.
+        members = InstitutionCharge.objects.filter(
+            institution=self.object
+            ).filter(
+            charge_type=InstitutionCharge.COMMITTEE_MEMBER_CHARGE
+            )
+
+        # FIXME: do we really want this? Is that necessary? Is there
+        # any other *smarter* way to do that?
+        for member in members:
+            try:
+                counselor_charge = member.person.current_institution_charges.filter(
+                    charge_type=InstitutionCharge.COUNSELOR_CHARGE
+                    )[0]
+            except IndexError:
+                continue
+            member.counselor_group = counselor_charge.council_group
             
+        events = Event.future.filter(institution=self.object)
+
         extra_context = {
-            'committee': committee,
             'committee_list': committee_list,
+            'members': members,
             'events': events,
             }
 
