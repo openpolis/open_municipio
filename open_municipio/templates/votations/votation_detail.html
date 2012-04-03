@@ -5,22 +5,33 @@
 
 {% block content_header %}Argomenti{% endblock %}
 
+{% block head_css_includes %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/bookmarking.css" />
+{% endblock head_css_includes %}
+
 {% block footer_js_includes %}
     {{ block.super }}
+    <script src="{{ STATIC_URL }}js/ajax_csrf.js" type="text/javascript" charset="utf-8"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap-tab.js"></script>
+    {% if user.is_staff %}
+        <script src="{{ STATIC_URL }}js/bookmarking.js" type="text/javascript" charset="utf-8"></script>
+    {% endif %}
 {% endblock footer_js_includes %}
 
 {% block content %}
     <hgroup>
         <h2>
             {% if votation.act %}
-            <strong>{% block act_type %}TIPO ATTO{% endblock %}</strong>
+            <strong>TIPO DI ATTO</strong>
             del {{ votation.act.emitting_institution }} N° {{ votation.act.idnum }} del <span class="date">{{ votation.act.presentation_date|date:"d.m.Y" }}</span></small>
             {% else %}
             {{ votation.act_descr }}
             {% endif %}
         </h2>
-        <h1>{{ votation.act.title }}</h1>
+{% load om_utils %}
+{% load bookmarking_tags %}
+        <h1><i id="{{ votation|as_token }}" class="bookmarkable {% is_key_class votation %}"></i>{{ votation.act.title }}</h1>
     </hgroup>
 
     <table class="table table-striped table-bordered table-condensed">
