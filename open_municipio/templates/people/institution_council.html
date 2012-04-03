@@ -65,7 +65,7 @@
     <h2>Commissioni</h2>
     <ul class="unstyled">
         {% for committee in committees %}
-        <li><a href="#"><strong>{{ committee.name }}</strong>: {{ committee.description|truncatewords:3 }}</a></li>
+        <li><a href="{{ committee.get_absolute_url }}"><strong>{{ committee.name }}</strong>: {{ committee.description|truncatewords:3 }}</a></li>
         {% endfor %}
     </ul>
 
