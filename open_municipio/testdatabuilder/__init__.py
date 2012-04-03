@@ -192,6 +192,7 @@ class RandomItemsFactory(object):
                 #
                 v.compute_group_votes()
                 v.compute_rebel_votes()
+                print "Cache updated.\n"
 
                 print "Totali"
                 print "  Presenti: %s, Maggioranza: %s" % (v.n_present, v.n_maj)
