@@ -5,9 +5,18 @@
 
 {% block content_header %}Argomenti{% endblock %}
 
+{% block head_css_includes %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/bookmarking.css" />
+{% endblock head_css_includes %}
+
 {% block footer_js_includes %}
     {{ block.super }}
+    <script src="{{ STATIC_URL }}js/ajax_csrf.js" type="text/javascript" charset="utf-8"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap-tab.js"></script>
+    {% if user.is_staff %}
+        <script src="{{ STATIC_URL }}js/bookmarking.js" type="text/javascript" charset="utf-8"></script>
+    {% endif %}
 {% endblock footer_js_includes %}
 
 {% block content %}
@@ -20,7 +29,9 @@
             {{ votation.act_descr }}
             {% endif %}
         </h2>
-        <h1>{{ votation.act.title }}</h1>
+{% load om_utils %}
+{% load bookmarking_tags %}
+        <h1><i id="{{ votation|as_token }}" class="bookmarkable {% is_key_class votation %}"></i>{{ votation.act.title }}</h1>
     </hgroup>
 
     <table class="table table-striped table-bordered table-condensed">
@@ -46,6 +57,16 @@
             </tr>
             {% endfor %}
         </tbody>
+        <tfoot>
+        <tr>
+            <th class="text-center">Totale</th>
+            <th>{{ votation.n_yes }}</th>
+            <th>{{ votation.n_no }}</th>
+            <th>{{ votation.n_abst }}</th>
+            <th>{{ votation.n_absent }}</th>
+            <th>{{ votation.n_mission }}</th>
+        </tr>
+        </tfoot>
     </table>
 
     <ul class="nav nav-tabs">
@@ -156,7 +177,7 @@
         <tr>
             <td><span class="lightgraybox">150</span></td>
             <th class="bg-dark span6">Voti di scarto</th>
-            <td><span class="lightgraybox">150</span></td>
+            <td><span class="lightgraybox">{{ votation.n_rebels }}</span></td>
             <th class="bg-dark span6">Politici ribelli</th>
         </tr>
     </table>
@@ -171,16 +192,16 @@
         </ul>
         <div class="tab-content">
             <div class="tab-pane active" id="favorables_tab">
-                <p><img src="https://chart.googleapis.com/chart?cht=p3&amp;chd=s:Uf9a&amp;chs=400x130&amp;chdl=con oltre 20 anni di incarichi: 2 (0.98%)|da 15 a 20 anni di incarichi: 11 (5.37%)|da 10 a 15 anni di incarichi: 35 (17.07%)|da 5 a 10 anni di incarichi: 74 (36.1%)|con+meno di 5 anni di incarichi: 83 (40.49%)&amp;chd=t:2,11,35,74,83&amp;chco=FF0000,FFFF10"></p>
+                <p><img src="https://chart.googleapis.com/chart?cht=p3&chd=s:Uf9a&chs=400x150&chdl={% for group_vote in votation.group_votes %}{{ group_vote.group.acronym }} {{ group_vote.n_yes }}{% if not forloop.last %}|{% endif %}{% endfor %}&chd=t:{% for group_vote in votation.group_votes %}{{ group_vote.n_yes }}{% if not forloop.last %},{% endif %}{% endfor %}&chco=CC0000,FFFF33"></p>
             </div>
             <div class="tab-pane" id="against_tab">
-                <p><img src="https://chart.googleapis.com/chart?cht=p3&chd=s:Uf9a&chs=400x130&chdl=con%20oltre%2020%20anni%20di%20incarichi:%202%20(4.17%)|da%2015%20a%2020%20anni%20di%20incarichi:%208%20(16.67%)|da%2010%20a%2015%20anni%20di%20incarichi:%2012%20(25%)|da%205%20a%2010%20anni%20di%20incarichi:%2012%20(25%)|con+meno%20di%205%20anni%20di%20incarichi:%2014%20(29.17%)&chd=t:2,8,12,12,14&chco=FF0000,FFFF10"></p>
+                <p><img src="https://chart.googleapis.com/chart?cht=p3&chd=s:Uf9a&chs=400x150&chdl={% for group_vote in votation.group_votes %}{{ group_vote.group.acronym }} {{ group_vote.n_no }}{% if not forloop.last %}|{% endif %}{% endfor %}&chd=t:{% for group_vote in votation.group_votes %}{{ group_vote.n_no }}{% if not forloop.last %},{% endif %}{% endfor %}&chco=CC0000,FFFF33"></p>
             </div>
             <div class="tab-pane" id="abstained_tab">
-                <p><img src="https://chart.googleapis.com/chart?cht=p3&chd=s:Uf9a&chs=400x130&chdl=con%20oltre%2020%20anni%20di%20incarichi:%203%20(7.89%)|da%2015%20a%2020%20anni%20di%20incarichi:%205%20(13.16%)|da%2010%20a%2015%20anni%20di%20incarichi:%207%20(18.42%)|da%205%20a%2010%20anni%20di%20incarichi:%2016%20(42.11%)|con+meno%20di%205%20anni%20di%20incarichi:%207%20(18.42%)&chd=t:3,5,7,16,7&chco=FF0000,FFFF10"></p>
+                <p><img src="https://chart.googleapis.com/chart?cht=p3&chd=s:Uf9a&chs=400x150&chdl={% for group_vote in votation.group_votes %}{{ group_vote.group.acronym }} {{ group_vote.n_abst }}{% if not forloop.last %}|{% endif %}{% endfor %}&chd=t:{% for group_vote in votation.group_votes %}{{ group_vote.n_abst }}{% if not forloop.last %},{% endif %}{% endfor %}&chco=CC0000,FFFF33"></p>
             </div>
             <div class="tab-pane" id="rebels_tab">
-                <p><img src="https://chart.googleapis.com/chart?cht=p3&chd=s:Uf9a&chs=400x130&chdl=con%20oltre%2020%20anni%20di%20incarichi:%202%20(0.95%)|da%2015%20a%2020%20anni%20di%20incarichi:%2045%20(21.33%)|da%2010%20a%2015%20anni%20di%20incarichi:%2041%20(19.43%)|da%205%20a%2010%20anni%20di%20incarichi:%2044%20(20.85%)|con+meno%20di%205%20anni%20di%20incarichi:%2079%20(37.44%)&chd=t:2,45,41,44,79&chco=FF0000,FFFF10"></p>
+                <p><img src="https://chart.googleapis.com/chart?cht=p3&chd=s:Uf9a&chs=400x150&chdl={% for group_vote in votation.group_votes %}{{ group_vote.group.acronym }} {{ group_vote.n_rebel }}{% if not forloop.last %}|{% endif %}{% endfor %}&chd=t:{% for group_vote in votation.group_votes %}{{ group_vote.n_rebel }}{% if not forloop.last %},{% endif %}{% endfor %}&chco=CC0000,FFFF33"></p>
             </div>
         </div>
     </div>
