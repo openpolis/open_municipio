@@ -103,6 +103,8 @@ class CommitteeView(DetailView):
     context_object_name = 'committee'
 
 
+
+# TODO: deprecated - use PoliticianDetailView
 class PersonDetailView(DetailView):
     model = Person
     context_object_name = 'person'
@@ -134,11 +136,61 @@ class PersonDetailView(DetailView):
         return context
 
 
-
+# TODO: deprecated - use PoliticianListView
 def person_list(request):
     return render_to_response('people/person_list.html',{
         'municipality': municipality
     },context_instance=RequestContext(request) )
+
+
+class PoliticianDetailView(DetailView):
+    model = Person
+    context_object_name = 'person'
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(PoliticianDetailView, self).get_context_data(**kwargs)
+        # Add in a QuerySet of all the institutions
+        context['institution_list'] = Institution.objects.all()
+
+        print  >> sys.stderr, "context: %s" % context
+
+        # is the user monitoring the act?
+        context['is_user_monitoring'] = False
+        try:
+            if self.request.user.is_authenticated():
+                # add a monitoring form, to context,
+                # to switch monitoring on and off
+                context['monitoring_form'] = MonitoringForm(data = {
+                    'content_type_id': context['person'].content_type_id,
+                    'object_pk': context['person'].id,
+                    'user_id': self.request.user.id
+                })
+
+                if context['person'] in self.request.user.get_profile().monitored_objects:
+                    context['is_user_monitoring'] = True
+        except ObjectDoesNotExist:
+            context['is_user_monitoring'] = False
+        return context
+
+class PoliticianListView(TemplateView):
+    """
+    Renders the Politicians page
+    """
+    template_name = 'people/politician_list.html'
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(PoliticianListView, self).get_context_data(**kwargs)
+
+        context['municipality'] = municipality
+
+        all_current = InstitutionCharge.objects.current()
+
+        context['most_rebellious'] = all_current.order_by('-n_rebel_votations')[0:3]
+        context['most_present'] = all_current.order_by('-n_present_votations')[0:3]
+        context['most_absent'] = all_current.order_by('-n_absent_votations')[0:3]
+        return context
 
 
 def show_mayor(request):

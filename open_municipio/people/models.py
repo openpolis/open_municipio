@@ -8,11 +8,12 @@ from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
 
 from model_utils import Choices
-from model_utils.managers import PassThroughManager
+from model_utils.managers import PassThroughManager, QueryManager
 
 from open_municipio.monitoring.models import Monitoring
 from open_municipio.newscache.models import News
 from open_municipio.people.managers import TimeFramedQuerySet
+import open_municipio
 
 import datetime
 
@@ -20,6 +21,7 @@ import datetime
 #
 # Persons, charges and groups
 #
+
 class Person(models.Model):
     FEMALE_SEX = 0
     MALE_SEX = 1
@@ -52,7 +54,7 @@ class Person(models.Model):
 
     @permalink
     def get_absolute_url(self):
-        return 'om_person_detail', (), { 'slug': self.slug }
+        return 'om_politician_detail', (), { 'slug': self.slug }
     
     @property
     def full_name(self):
@@ -164,79 +166,92 @@ class InstitutionCharge(Charge):
     COUNCIL_VICE_CHARGE = 5
     COMMITTEE_MEMBER_CHARGE = 6
     CHARGE_TYPES = Choices(
-      (MAYOR_CHARGE, _('Mayor')),    
+      (MAYOR_CHARGE, _('Mayor')),
       (ASSESSOR_CHARGE, _('Town government member')),
       (COUNCIL_PRES_CHARGE, _('Counsil president')),
       (COUNCIL_VICE_CHARGE, _('Counsil vice president')),
-      (COUNSELOR_CHARGE, _('Counselor')),    
+      (COUNSELOR_CHARGE, _('Counselor')),
       (COMMITTEE_MEMBER_CHARGE, _('Committee member')),
     )
-    substitutes = models.OneToOneField('InstitutionCharge', blank=True, null=True, 
-                     related_name='reverse_substitute_set', 
-                     on_delete=models.PROTECT, 
+    substitutes = models.OneToOneField('InstitutionCharge', blank=True, null=True,
+                     related_name='reverse_substitute_set',
+                     on_delete=models.PROTECT,
                      verbose_name=_('in substitution of'))
     substituted_by = models.OneToOneField('InstitutionCharge', blank=True, null=True,
-                     related_name='reverse_substituted_by_set', 
-                     on_delete=models.PROTECT, 
+                     related_name='reverse_substituted_by_set',
+                     on_delete=models.PROTECT,
                      verbose_name=_('substituted by'))
     institution = models.ForeignKey('Institution', on_delete=models.PROTECT, verbose_name=_('institution'), related_name='charge_set')
     charge_type = models.IntegerField(_('charge type'), choices=CHARGE_TYPES)
     op_charge_id = models.IntegerField(_('openpolis institution charge ID'), blank=True, null=True)
     n_rebel_votations = models.IntegerField(default=0)
+    n_present_votations = models.IntegerField(default=0)
+    n_absent_votations = models.IntegerField(default=0)
 
     class Meta(Charge.Meta):
         db_table = u'people_institution_charge'
         verbose_name = _('institution charge')
         verbose_name_plural = _('institution charges')
-      
+
+
     def __unicode__(self):
         # TODO: implement ``get_charge_type_display()`` method
         return u'%s - %s dal %s' % (self.person, self.get_charge_type_display(), self.start_date.strftime('%d/%m/%Y'))
-        
+
     # TODO: model validation: check that ``substitutes`` and ``substituted_by`` fields
     # point to ``InstitutionCharge``s of the same kind
-    
+
     @property
     def presented_acts(self):
         """
         The QuerySet of acts presented by this charge.
         """
         return self.presented_act_set.all()
-    
+
     @property
     def received_acts(self):
         """
         The QuerySet of acts received by this charge.
         """
         return self.received_act_set.all()
-    
+
     @property
     def council_group(self):
         """
         Returns the city council's group this charge currently belongs to (if any).
-        
-        If the charge doesn't belong to any council's group  -- e.g. because (s)he 
-        is not a counselor, return ``None``.  
+
+        If the charge doesn't belong to any council's group  -- e.g. because (s)he
+        is not a counselor, return ``None``.
         """
         # this property only make sense for counselors
         if self.charge_type == InstitutionCharge.COUNSELOR_CHARGE:
-            # This query should return only one record, since a counselor 
+            # This query should return only one record, since a counselor
             # may belong to only one council group at a time.
             # If multiple records match the query, instead, a ``MultipleObjectsReturned``
-            # exception will be raised, providing a useful integrity check for data 
+            # exception will be raised, providing a useful integrity check for data
             group = Group.objects.get(groupcharge__charge__id=self.id, groupcharge__end_date__isnull=True)
             return group
         else:
             return None
 
-    def update_n_rebel_votations(self):
+    def compute_rebellion_cache(self):
         """
         Re-compute the number of votations where the charge has vote differently from her group
         and update the n_rebel_votations counter
         """
-        self.n_rebel_votations = self.chargevote_set.filter(rebel=True).count()
+        self.n_rebel_votations = self.chargevote_set.filter(is_rebel=True).count()
         self.save()
-    
+
+    def compute_presence_cache(self):
+        """
+        Re-compute the number of votations where the charge was present/absent
+        and update the respective counters
+        """
+        absent = open_municipio.votations.models.ChargeVote.ABSENT
+        self.n_present_votations = self.chargevote_set.exclude(vote=absent).count()
+        self.n_absent_votations = self.chargevote_set.filter(vote=absent).count()
+        self.save()
+
 
 class CompanyCharge(Charge):
     """
@@ -297,14 +312,14 @@ class Group(models.Model):
     name = models.CharField(max_length=100)
     acronym = models.CharField(blank=True, max_length=16)
     counselor_set = models.ManyToManyField('InstitutionCharge', through='GroupCharge')
-    
+
     class Meta:
         verbose_name = _('group')
         verbose_name_plural = _('groups')
-    
+
     def __unicode__(self):
         return u'%s (%s)' % (self.name, self.acronym)
-        
+
     @property
     def counselors(self):
         """
@@ -313,17 +328,17 @@ class Group(models.Model):
         """
         now = datetime.datetime.now()
         # filter out non-current ``GroupCharges`` records
-        current_Q = Q(groupcharge__start_date__lte=now) & (Q(groupcharge__end_date__gte=now) | Q(groupcharge__end_date__isnull=True)) 
-        qs = InstitutionCharge.objects.current().filter(current_Q).filter(groupcharge__group__id=self.id) 
+        current_Q = Q(groupcharge__start_date__lte=now) & (Q(groupcharge__end_date__gte=now) | Q(groupcharge__end_date__isnull=True))
+        qs = InstitutionCharge.objects.current().filter(current_Q).filter(groupcharge__group__id=self.id)
         return qs
-    
+
     @property
     def majority_records(self):
         return self.groupismajority_set.all()
-    
+
     @property
     def is_majority_now(self):
-        # only one majority record with no ``end_date`` should exists 
+        # only one majority record with no ``end_date`` should exists
         # at a time (i.e. the current one)
         return self.majority_records.get(end_date__isnull=True).is_majority
 
