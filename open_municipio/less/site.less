@@ -30,13 +30,6 @@ address { font-size: 12px; line-height: 14px; }
 #main.two_columns {
     padding-top: 15px;
     .two_columns_background(66%);
-    /*
-    background-image: -webkit-gradient(linear,left top,right top,color-stop(0, transparent),color-stop(67%, transparent),color-stop(67%, #f6f4f2),color-stop(100%, #f6f4f2));
-    background-image: -webkit-linear-gradient(left,transparent,transparent 67%,#f6f4f2 67%,#f6f4f2 100%);
-    background-image: -moz-linear-gradient(left, transparent, transparent 67%, #f6f4f2 67%, #f6f4f2 100% );
-    background-image: -ms-linear-gradient(left,transparent, transparent 67%, #f6f4f2 67%, #f6f4f2 100%);
-    background-image: -o-linear-gradient( left, transparent, transparent 67%, #f6f4f2 67%, #f6f4f2 100% );
-    */
 }
 #content { border-bottom: 1px dashed @grayLight; padding-bottom: 10px; }
 #content > * { margin-bottom: 15px; }
@@ -172,7 +165,8 @@ dl.stats {
 .tags-cloud {
     dd, dt, li {
         .label;
-        .border-radius(5px); 
+        .border-radius(5px);
+        white-space: nowrap;
         display: inline;
         background-color: @darkBackground;
         font-size: 14px;
