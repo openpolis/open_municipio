@@ -78,7 +78,7 @@
                 {% if not act.monitoring_users_count %}
                 Non monitorato
                 {% else %}
-                Monitorato da {{ act.monitoring_users_count }} cittadini
+                Monitorato da {{ act.monitoring_users_count }} cittadin{{ act.monitoring_users_count|pluralize:"o,i" }}
                 {% endif %}
                 - <a href="#"><i class="socialicon-add"></i> Monitora</a>
             </span>
