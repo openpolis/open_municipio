@@ -9,10 +9,10 @@
         <ul class="people-list list-floated">
             {% for member in citygov.members %}
             <li>
-                <a href="#"><img src="http://placehold.it/50" /></a>
-                <strong><a href="#"><i class="icon-ok"></i> {{ member.person.first_name|lower|capfirst }} {{ member.person.last_name|lower|capfirst }}</a></strong> <br />
+                <a href="{{ member.get_absolute_url }}"><img src="http://placehold.it/50" /></a>
+                <strong><a href="{{ member.get_absolute_url }}"><i class="icon-ok"></i> {{ member.person.first_name|lower|capfirst }} {{ member.person.last_name|lower|capfirst }}</a></strong> <br />
                 <span class="monitoring">
-                    {% if not member.person.monitoring_users %}Non monitorato{% else %}Monitorato da {{ member.person.monitoring_users|length }} cittadini{% endif %} - <a href="#"><i class="socialicon-add"></i> Monitora</a>
+                    {% if not member.person.monitoring_users %}Non monitorato{% else %}Monitorato da {{ member.person.monitoring_users|length }} cittadin{{ member.person.monitoring_users_count|pluralize:"o,i" }}{% endif %} - <a href="#"><i class="socialicon-add"></i> Monitora</a>
                 </span>
             </li>
             {% endfor %}
