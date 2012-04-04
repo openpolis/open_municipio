@@ -2606,14 +2606,6 @@ input[type="submit"].btn.small {
   padding-left: 20px;
   padding-right: 20px;
   background-color: #000000;
-  background-image: -moz-linear-gradient(top, #000000, #000000);
-  background-image: -ms-linear-gradient(top, #000000, #000000);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#000000), to(#000000));
-  background-image: -webkit-linear-gradient(top, #000000, #000000);
-  background-image: -o-linear-gradient(top, #000000, #000000);
-  background-image: linear-gradient(top, #000000, #000000);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#000000', endColorstr='#000000', GradientType=0);
   -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25), inset 0 -1px 0 rgba(0, 0, 0, 0.1);
   -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25), inset 0 -1px 0 rgba(0, 0, 0, 0.1);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25), inset 0 -1px 0 rgba(0, 0, 0, 0.1);
@@ -2829,7 +2821,7 @@ input[type="submit"].btn.small {
 .navbar .nav .active > a:hover {
   color: #555555;
   text-decoration: none;
-  background-color: #000000;
+  background-color: #ffffff;
 }
 .navbar .divider-vertical {
   height: 30px;
@@ -2956,6 +2948,7 @@ input[type="submit"].btn.small {
 .pagination li {
   display: inline;
 }
+.pagination span,
 .pagination a {
   float: left;
   padding: 0 14px;
@@ -2972,18 +2965,21 @@ input[type="submit"].btn.small {
   color: #999999;
   cursor: default;
 }
+.pagination .disabled span,
 .pagination .disabled a,
 .pagination .disabled a:hover {
   color: #999999;
   background-color: transparent;
   cursor: default;
 }
+.pagination li:first-child span,
 .pagination li:first-child a {
   border-left-width: 1px;
   -webkit-border-radius: 3px 0 0 3px;
   -moz-border-radius: 3px 0 0 3px;
   border-radius: 3px 0 0 3px;
 }
+.pagination li:last-child span,
 .pagination li:last-child a {
   -webkit-border-radius: 0 3px 3px 0;
   -moz-border-radius: 0 3px 3px 0;
@@ -3751,11 +3747,11 @@ address {
 }
 #main.two_columns {
   padding-top: 15px;
-  background-image: -webkit-gradient(linear, left top, right top, color-stop(0, transparent), color-stop(67%, transparent), color-stop(67%, #f6f4f2), color-stop(100%, #f6f4f2));
-  background-image: -webkit-linear-gradient(left, transparent, transparent 67%, #f6f4f2 67%, #f6f4f2 100%);
-  background-image: -moz-linear-gradient(left, transparent, transparent 67%, #f6f4f2 67%, #f6f4f2 100%);
-  background-image: -ms-linear-gradient(left, transparent, transparent 67%, #f6f4f2 67%, #f6f4f2 100%);
-  background-image: -o-linear-gradient(left, transparent, transparent 67%, #f6f4f2 67%, #f6f4f2 100%);
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(0, transparent), color-stop(66%, transparent), color-stop(66%, #f6f4f2), color-stop(100%, #f6f4f2));
+  background-image: -webkit-linear-gradient(left, transparent, transparent 66%, #f6f4f2 66%, #f6f4f2 100%);
+  background-image: -moz-linear-gradient(left, transparent, transparent 66%, #f6f4f2 66%, #f6f4f2 100%);
+  background-image: -ms-linear-gradient(left, transparent, transparent 66%, #f6f4f2 66%, #f6f4f2 100%);
+  background-image: -o-linear-gradient(left, transparent, transparent 66%, #f6f4f2 66%, #f6f4f2 100%);
 }
 #content {
   border-bottom: 1px dashed #999999;
@@ -3847,6 +3843,12 @@ body.citizen .tags-cloud li {
   line-height: 30px;
   color: #333333;
 }
+.pipe-separators ul.nav > li.unpipe + li:before {
+  content: '';
+}
+.pipe-separators ul.nav > li + li.unpipe:before {
+  content: '';
+}
 #sub-nav .navbar-inner {
   background-color: transparent;
   background-image: none;
@@ -3862,6 +3864,7 @@ body.citizen .tags-cloud li {
   text-decoration: underline;
 }
 #sub-nav .navbar-inner a.active {
+  background-color: #ffffff;
   font-weight: bolder;
 }
 #sub-nav ul.nav > li + li:before {
@@ -3871,6 +3874,12 @@ body.citizen .tags-cloud li {
   content: ' | ';
   line-height: 30px;
   color: #333333;
+}
+#sub-nav ul.nav > li.unpipe + li:before {
+  content: '';
+}
+#sub-nav ul.nav > li + li.unpipe:before {
+  content: '';
 }
 .monitoring {
   color: #999999;
@@ -3974,6 +3983,7 @@ dl.stats dd {
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
+  white-space: nowrap;
   display: inline;
   background-color: #e1d9d3;
   font-size: 14px;
@@ -4004,7 +4014,8 @@ dl.stats dd {
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
-  background-color: #fef9e0;
+  background-color: #f6f4f2;
+  color: #5e5d5e;
 }
 /* Data boxing */
 .greenbox {
@@ -4476,9 +4487,6 @@ table#acttable tbody ul li {
 table#acttable tbody ul li:first-child {
   border-top: 0;
 }
-table#acttable tfoot {
-  text-align: center;
-}
 table#acttable thead th {
   padding: 0;
   background-color: #e1d9d3;
@@ -4566,8 +4574,17 @@ table#acttable thead th:first-child > div {
   font-weight: bold;
   color: #285698;
 }
+.calendar_events {
+  height: 230px;
+  overflow: scroll;
+}
 #search-form input[type="submit"] {
   margin-top: 23px;
+}
+/* Politician description form */
+#description_form textarea {
+  width: 100%;
+  margin-bottom: 10px;
 }
 /* Commenting form */
 #comment_form {

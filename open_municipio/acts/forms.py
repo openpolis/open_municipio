@@ -1,9 +1,9 @@
 from django import forms
 from open_municipio.acts.models import Act
-from django.forms.widgets import HiddenInput
+from django.forms.widgets import HiddenInput, DateTimeInput
 from taggit.forms import TagField
 from django.forms.models import ModelForm
-from open_municipio.acts.models import Transition, Deliberation
+from open_municipio.acts.models import Transition
 
 
 
@@ -34,7 +34,8 @@ class ActTransitionForm(ModelForm):
         fields = ('transition_date', 'note', 'final_status', 'act')
         widgets = {
             'act': HiddenInput(),
-            'final_status': HiddenInput()
+            'final_status': HiddenInput(),
+            'transition_date': DateTimeInput(attrs={'class':'datepicker'})
         }
 
 
@@ -47,5 +48,6 @@ class ActFinalTransitionForm(ActTransitionForm):
         fields = ('transition_date', 'note', 'final_status', 'act', 'votation')
         widgets = {
             'act': HiddenInput(),
-            'final_status': forms.Select(choices=[])
+            'final_status': forms.Select(choices=[]),
+            'transition_date': DateTimeInput(attrs={'class':'datepicker'})
         }

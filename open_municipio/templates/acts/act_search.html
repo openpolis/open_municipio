@@ -40,9 +40,11 @@ em {
         {% if page.has_previous or page.has_next %}
             <div class="pagination pagination-right">
                 <ul>
-                    <li{% if not page.has_previous %} class="active"{% endif %}>
-                        <a href="{{ base_url }}&page={{ page.previous_page_number }}">&larr;</a>
-                    </li>
+                    {% if page.has_previous %}
+                        <li><a href="{{ base_url }}&page={{ page.previous_page_number }}">&larr;</a></li>
+                    {% else %}
+                        <li class="disabled"><span>&larr;</span></li>
+                    {% endif %}
 
                     {% for p in paginator.page_range %}
                         <li{% if p == page.number %} class="active"{% endif %}>
@@ -50,9 +52,11 @@ em {
                         </li>
                     {% endfor %}
 
-                    <li{% if not page.has_next %} class="active"{% endif %}>
-                        <a href="{{ base_url }}&page={{ page.next_page_number }}">&rarr;</a>
-                    </li>
+                    {% if page.has_next %}
+                        <li><a href="{{ base_url }}&page={{ page.next_page_number }}">&rarr;</a></li>
+                    {% else %}
+                        <li class="disabled"><span>&rarr;</span></li>
+                    {% endif %}
                 </ul>
             </div>
         {% endif %}
@@ -88,9 +92,11 @@ em {
         {% if page.has_previous or page.has_next %}
             <div class="pagination pagination-right">
                 <ul>
-                    <li{% if not page.has_previous %} class="active"{% endif %}>
-                        <a href="{{ base_url }}&page={{ page.previous_page_number }}">&larr;</a>
-                    </li>
+                    {% if page.has_previous %}
+                        <li><a href="{{ base_url }}&page={{ page.previous_page_number }}">&larr;</a></li>
+                    {% else %}
+                        <li class="disabled"><span>&larr;</span></li>
+                    {% endif %}
 
                     {% for p in paginator.page_range %}
                         <li{% if p == page.number %} class="active"{% endif %}>
@@ -98,9 +104,11 @@ em {
                         </li>
                     {% endfor %}
 
-                    <li{% if not page.has_next %} class="active"{% endif %}>
-                        <a href="{{ base_url }}&page={{ page.next_page_number }}">&rarr;</a>
-                    </li>
+                    {% if page.has_next %}
+                        <li><a href="{{ base_url }}&page={{ page.next_page_number }}">&rarr;</a></li>
+                    {% else %}
+                        <li class="disabled"><span>&rarr;</span></li>
+                    {% endif %}
                 </ul>
             </div>
         {% endif %}

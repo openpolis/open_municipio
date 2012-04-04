@@ -241,9 +241,21 @@ class Act(TimeStampedModel):
 
         # fill groups with ordered transitions
         for transition in this.transition_set.all().order_by('-transition_date'):
-            groups.get(transition.final_status).append(transition)
-
+            if groups.has_key(transition.final_status):
+                groups.get(transition.final_status).append(transition)
         return groups
+
+    def is_final_status(self, status):
+        this = self.downcast()
+
+        if not hasattr(this, 'FINAL_STATUSES'):
+            return False
+
+        for final_status in this.FINAL_STATUSES:
+            if status == final_status[0]:
+                return True
+
+        return False
 
     def get_last_transition(self):
         if self.transitions:
@@ -333,12 +345,18 @@ class Deliberation(Act):
         ('GOVERNMENT', 'government', _('City Government')),
         ('MAYOR', 'mayor', _('Mayor')),
     )
+
+    FINAL_STATUSES = [
+        ('APPROVED', _('approved')),
+        ('REJECTED', _('rejected')),
+    ]
+
     STATUS = Choices(
         ('PRESENTED', 'presented', _('presented')),
         ('COMMITTEE', 'committee', _('committee')),
         ('COUNCIL', 'council', _('council')),
-        ('APPROVED', 'approved', _('approved')),
-        ('REJECTED', 'rejected', _('rejected'))
+        (FINAL_STATUSES[0][0], 'approved', FINAL_STATUSES[0][1]),
+        (FINAL_STATUSES[1][0], 'rejected', FINAL_STATUSES[1][1]),
     )
     
     status = StatusField()
@@ -365,10 +383,16 @@ class Interrogation(Act):
         ('WRITTEN', 'written', _('Written')),
         ('VERBAL', 'verbal', _('Verbal')),
     )
+
+    FINAL_STATUSES = [
+        ('ANSWERED', _('answered')),
+        ('NOTANSWERED', _('not answered')),
+    ]
+
     STATUS = Choices(
         ('PRESENTED', 'presented', _('presented')),
-        ('ANSWERED', 'answered', _('answered')),
-        ('NOTANSWERED', 'notanswered', _('not answered'))
+        (FINAL_STATUSES[0][0], 'answered', FINAL_STATUSES[0][1]),
+        (FINAL_STATUSES[1][0], 'notanswered', FINAL_STATUSES[1][1]),
     )
     
     status = StatusField()
@@ -664,8 +688,9 @@ def new_transition(**kwargs):
         if generating_item.final_status != 'PRESENTED':
             # set act's status according to transition status
             act.status = generating_item.final_status
-            if act.status in ['APPROVED', 'REJECTED']:
+            if act.is_final_status(generating_item.final_status):
                 act.status_is_final = True
+
             act.save()
 
             # generate news
@@ -683,6 +708,7 @@ def delete_transition(**kwargs):
         act = deleting_item.act.downcast()
 
         act.status = act.get_last_transition().final_status
-        if deleting_item.final_status in ['APPROVED', 'REJECTED']:
+        if act.is_final_status(deleting_item.final_status):
             act.status_is_final = False
+
         act.save()
