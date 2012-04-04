@@ -33,10 +33,10 @@ class Votation(models.Model):
     group_set = models.ManyToManyField(Group, through='GroupVote')
     charge_set = models.ManyToManyField(InstitutionCharge, through='ChargeVote')
     n_legal = models.IntegerField(blank=True, null=True)
-    n_presents = models.IntegerField(blank=True, null=True)
-    n_yes = models.IntegerField(blank=True, null=True)
-    n_no = models.IntegerField(blank=True, null=True)
-    n_abst = models.IntegerField(blank=True, null=True)
+    n_presents = models.IntegerField(default=0)
+    n_yes = models.IntegerField(default=0)
+    n_no = models.IntegerField(default=0)
+    n_abst = models.IntegerField(default=0)
     n_maj = models.IntegerField(blank=True, null=True)
     outcome = models.IntegerField(choices=OUTCOMES, blank=True, null=True)
     is_key = models.BooleanField(default=False, help_text=_("Specify whether this is a key votation"))
@@ -213,10 +213,10 @@ class GroupVote(TimeStampedModel):
     group = models.ForeignKey(Group)
 
     # cache fields
-    n_presents = models.IntegerField(blank=True, null=True)
-    n_yes = models.IntegerField(blank=True, null=True)
-    n_no = models.IntegerField(blank=True, null=True)
-    n_abst = models.IntegerField(blank=True, null=True)
+    n_presents = models.IntegerField(default=0)
+    n_yes = models.IntegerField(default=0)
+    n_no = models.IntegerField(default=0)
+    n_abst = models.IntegerField(default=0)
 
     class Meta:
         db_table = u'votations_group_vote'    
