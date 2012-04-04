@@ -1,9 +1,11 @@
 from django.db import models
+from django.db.models.aggregates import Count
 from django.utils.translation import ugettext_lazy as _
 
 from model_utils import Choices
 from model_utils.models import TimeStampedModel
 from model_utils.managers import QueryManager
+import sys
 
 from open_municipio.people.models import Group, InstitutionCharge, Sitting 
 from open_municipio.acts.models import Act
@@ -31,17 +33,25 @@ class Votation(models.Model):
     group_set = models.ManyToManyField(Group, through='GroupVote')
     charge_set = models.ManyToManyField(InstitutionCharge, through='ChargeVote')
     n_legal = models.IntegerField(blank=True, null=True)
-    n_presents = models.IntegerField(blank=True, null=True)
-    n_yes = models.IntegerField(blank=True, null=True)
-    n_no = models.IntegerField(blank=True, null=True)
-    n_abst = models.IntegerField(blank=True, null=True)
+    n_presents = models.IntegerField(default=0)
+    n_yes = models.IntegerField(default=0)
+    n_no = models.IntegerField(default=0)
+    n_abst = models.IntegerField(default=0)
     n_maj = models.IntegerField(blank=True, null=True)
     outcome = models.IntegerField(choices=OUTCOMES, blank=True, null=True)
     is_key = models.BooleanField(default=False, help_text=_("Specify whether this is a key votation"))
-    
+    n_rebels = models.IntegerField(default= 0)
+
+    # default manager must be explicitly defined, when
+    # at least another manager is present
+    objects = models.Manager()
+
     # use this manager to retrieve only key votations
     key = QueryManager(is_key=True).order_by('-sitting__date')
-    
+
+    # use this manager to retrieve only linked acts
+    is_linked_to_act = QueryManager(act__isnull=False)
+
     # activation of the ``is_linked_filter``
     # add ``act`` to the ``list_filter`` list in ``admin.py``
     # to filter votations based on the existence of a related act
@@ -52,19 +62,19 @@ class Votation(models.Model):
         verbose_name_plural = _('votations')
     
     def __unicode__(self):
-        return u'votation %s' % (self.idnum)
+        return u'votation %s' % self.idnum
 
     @models.permalink
     def get_absolute_url(self):
-        return ('om_votation_detail', [str(self.pk)])
+        return 'om_votation_detail', [str(self.pk)]
     
     @property
     def group_votes(self):
-        return self.group_vote_set.all()
+        return self.groupvote_set.all()
     
     @property
     def charge_votes(self):
-        return self.charge_vote_set.all()
+        return self.chargevote_set.all()
 
     @property
     def transitions(self):
@@ -76,6 +86,111 @@ class Votation(models.Model):
             return False
         else:
             return True
+
+    def compute_group_votes(self):
+        """
+        once all charges' votes have been stored, the aggregated votations
+        of the groups are stored in GroupVote.vote
+
+        A GroupVote is the same as the majority of the group.
+        Whenever there is no clear majority (50%/50%), then a
+        Not Available vote can be assigned to the Group.
+
+        Other cached values are stored in GroupVote, as well:
+        * n_presents
+        * n_yes
+        * n_no
+        * n_abst
+
+        the number of total group members is len(g.councelors())
+        and it should be cached somewhere,
+        then n_absents = n_group_members - n_presents
+
+        """
+
+        # the computation is done only if ChargeVote is populated,
+        # for this votation
+        if ChargeVote.objects.filter(votation__id=self.id).count() > 0:
+
+            for g in Group.objects.all():
+                # compute votation details for the group
+                annotated_votes = ChargeVote.objects.filter(votation__id=self.id,
+                                                            charge__groupcharge__group=g,
+                                                            charge__groupcharge__end_date__isnull=True).\
+                                                     values('vote').\
+                                                     annotate(Count('vote'))
+                # extract the 2 most voted votes for this group,
+                # in this votation
+                most_voted = annotated_votes.order_by('-vote__count')[0:2]
+
+                # if equal, then set to not available
+                if (len(most_voted) == 1 or
+                    most_voted[0]['vote__count'] > most_voted[1]['vote__count']):
+                    vote = most_voted[0]['vote']
+                else:
+                    vote = GroupVote.NON_COMPUTABLE
+
+                # get or create group votation
+                gv, created = GroupVote.objects.get_or_create(votation=self, group=g, defaults={'vote':vote})
+
+                # update other cached values
+                votes_cnt = 0
+                for v in annotated_votes:
+                    if v['vote'] == ChargeVote.NO:
+                        gv.n_no = v['vote__count']
+                    elif v['vote'] == ChargeVote.YES:
+                        gv.n_yes = v['vote__count']
+                    elif v['vote'] == ChargeVote.ABSTAINED:
+                        gv.n_abst = v['vote__count']
+                    else:
+                        pass
+                    votes_cnt += v['vote__count']
+                # presences = n. of total votes
+                # presidents, mission, and ther are counted
+                gv.n_presents = votes_cnt
+
+                # save updates
+                gv.save()
+
+
+
+
+
+
+    def compute_rebel_votes(self):
+        """
+        A ChargeVote must be marked as ``rebel`` when her vote is different
+        from that of her group.
+
+        The ``rebel`` field can be assigned only if the counselor is present and
+         if her group's vote is clearly defined (i.e., it is not *Not Avaliable*)
+
+        This is only valid for council votations.
+
+        After a rebel vote has been set, the following *caches* should be updated:
+
+        * Votation.n_rebels - counts the total number of rebels for that votation
+        * InstitutionCharge.n_rebel_votations - counts the total number of votations
+          where charge's vote was *rebel*
+        """
+        for v in self.charge_votes:
+            charge_vote = v.vote
+            group_vote = v.charge.council_group.groupvote_set.get(votation=self).vote
+            if charge_vote != group_vote:
+                v.rebel = True
+                v.save()
+
+                # upgrade charge cache
+                v.charge.update_n_rebel_votations()
+
+        self.update_n_rebels()
+
+    def update_n_rebels(self):
+        """
+        Re-compute the number of rebel votes for this votation and update the n_rebels counter
+        """
+        self.n_rebels = self.chargevote_set.filter(rebel=True).count()
+        self.save()
 
 
 class GroupVote(TimeStampedModel):
@@ -96,7 +211,13 @@ class GroupVote(TimeStampedModel):
     votation = models.ForeignKey(Votation)
     vote = models.IntegerField(choices=VOTES)
     group = models.ForeignKey(Group)
-    
+
+    # cache fields
+    n_presents = models.IntegerField(default=0)
+    n_yes = models.IntegerField(default=0)
+    n_no = models.IntegerField(default=0)
+    n_abst = models.IntegerField(default=0)
+
     class Meta:
         db_table = u'votations_group_vote'    
         verbose_name = _('group vote')
