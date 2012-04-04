@@ -2829,7 +2829,7 @@ input[type="submit"].btn.small {
 .navbar .nav .active > a:hover {
   color: #555555;
   text-decoration: none;
-  background-color: #000000;
+  background-color: #ffffff;
 }
 .navbar .divider-vertical {
   height: 30px;
@@ -3755,11 +3755,19 @@ address {
 }
 #main.two_columns {
   padding-top: 15px;
-  background-image: -webkit-gradient(linear, left top, right top, color-stop(0, transparent), color-stop(67%, transparent), color-stop(67%, #f6f4f2), color-stop(100%, #f6f4f2));
-  background-image: -webkit-linear-gradient(left, transparent, transparent 67%, #f6f4f2 67%, #f6f4f2 100%);
-  background-image: -moz-linear-gradient(left, transparent, transparent 67%, #f6f4f2 67%, #f6f4f2 100%);
-  background-image: -ms-linear-gradient(left, transparent, transparent 67%, #f6f4f2 67%, #f6f4f2 100%);
-  background-image: -o-linear-gradient(left, transparent, transparent 67%, #f6f4f2 67%, #f6f4f2 100%);
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(0, transparent), color-stop(66%, transparent), color-stop(66%, #f6f4f2), color-stop(100%, #f6f4f2));
+  background-image: -webkit-linear-gradient(left, transparent, transparent 66%, #f6f4f2 66%, #f6f4f2 100%);
+  background-image: -moz-linear-gradient(left, transparent, transparent 66%, #f6f4f2 66%, #f6f4f2 100%);
+  background-image: -ms-linear-gradient(left, transparent, transparent 66%, #f6f4f2 66%, #f6f4f2 100%);
+  background-image: -o-linear-gradient(left, transparent, transparent 66%, #f6f4f2 66%, #f6f4f2 100%);
+  /*
+    background-image: -webkit-gradient(linear,left top,right top,color-stop(0, transparent),color-stop(67%, transparent),color-stop(67%, #f6f4f2),color-stop(100%, #f6f4f2));
+    background-image: -webkit-linear-gradient(left,transparent,transparent 67%,#f6f4f2 67%,#f6f4f2 100%);
+    background-image: -moz-linear-gradient(left, transparent, transparent 67%, #f6f4f2 67%, #f6f4f2 100% );
+    background-image: -ms-linear-gradient(left,transparent, transparent 67%, #f6f4f2 67%, #f6f4f2 100%);
+    background-image: -o-linear-gradient( left, transparent, transparent 67%, #f6f4f2 67%, #f6f4f2 100% );
+    */
+
 }
 #content {
   border-bottom: 1px dashed #999999;
@@ -4586,7 +4594,7 @@ table#acttable thead th:first-child > div {
 }
 .calendar_events {
   height: 230px;
-  overflow: hidden;
+  overflow: scroll;
 }
 #search-form input[type="submit"] {
   margin-top: 23px;

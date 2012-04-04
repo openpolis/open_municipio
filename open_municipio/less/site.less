@@ -18,13 +18,25 @@
 
 address { font-size: 12px; line-height: 14px; }
 
+.two_columns_background(@percent:67%, @leftcolor:transparent, @rightcolor:#f6f4f2)
+{
+    background-image: -webkit-gradient(linear,left top,right top,color-stop(0, @leftcolor),color-stop(@percent, @leftcolor),color-stop(@percent, @rightcolor),color-stop(100%, @rightcolor));
+    background-image: -webkit-linear-gradient(left,@leftcolor,@leftcolor @percent,@rightcolor @percent,@rightcolor 100%);
+    background-image: -moz-linear-gradient(left, @leftcolor, @leftcolor @percent, @rightcolor @percent, @rightcolor 100% );
+    background-image: -ms-linear-gradient(left,@leftcolor, @leftcolor @percent, @rightcolor @percent, @rightcolor 100%);
+    background-image: -o-linear-gradient( left, @leftcolor, @leftcolor @percent, @rightcolor @percent, @rightcolor 100% );
+}
+
 #main.two_columns {
     padding-top: 15px;
+    .two_columns_background(66%);
+    /*
     background-image: -webkit-gradient(linear,left top,right top,color-stop(0, transparent),color-stop(67%, transparent),color-stop(67%, #f6f4f2),color-stop(100%, #f6f4f2));
     background-image: -webkit-linear-gradient(left,transparent,transparent 67%,#f6f4f2 67%,#f6f4f2 100%);
     background-image: -moz-linear-gradient(left, transparent, transparent 67%, #f6f4f2 67%, #f6f4f2 100% );
     background-image: -ms-linear-gradient(left,transparent, transparent 67%, #f6f4f2 67%, #f6f4f2 100%);
     background-image: -o-linear-gradient( left, transparent, transparent 67%, #f6f4f2 67%, #f6f4f2 100% );
+    */
 }
 #content { border-bottom: 1px dashed @grayLight; padding-bottom: 10px; }
 #content > * { margin-bottom: 15px; }
@@ -483,7 +495,7 @@ table#acttable {
 }
 .calendar_events {
     height: 230px;
-    overflow: hidden;
+    overflow: scroll;
 }
 
 #search-form input[type="submit"] {

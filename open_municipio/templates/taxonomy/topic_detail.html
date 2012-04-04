@@ -39,47 +39,28 @@
                 <h4>Se ne discute</h4>
 
                 <ul class="data-list calendar_events">
-                    <li data-day="04/01/2012" id="04012012">
-                        <b>01.04.2012</b><br>
-                        <a href="#">Consiglio comunale</a>, <a href="#">Consiglio comunale</a>, <a href="#">Consiglio comunale</a>
-                    </li>
-                    <li data-day="04/02/2012" id="04022012">
-                        <b>02.04.2012</b><br>
-                        <a href="#">Consiglio comunale</a>, <a href="#">Consiglio comunale</a>, <a href="#">Consiglio comunale</a>
-                    </li>
-                    <li data-day="04/03/2012" id="04032012">
-                        <b>03.04.2012</b><br>
-                        <a href="#">Consiglio comunale</a>, <a href="#">Consiglio comunale</a>, <a href="#">Consiglio comunale</a>
-                    </li>
-                    <li data-day="04/04/2012" id="04042012">
-                        <b>04.04.2012</b><br>
-                        <a href="#">Consiglio comunale</a>, <a href="#">Consiglio comunale</a>, <a href="#">Consiglio comunale</a>
-                    </li>
-                    <li data-day="04/05/2012" id="04052012">
-                        <b>05.04.2012</b><br>
-                        <a href="#">Consiglio comunale</a>, <a href="#">Consiglio comunale</a>, <a href="#">Consiglio comunale</a>
-                    </li>
-                    <li data-day="04/06/2012" id="04062012">
-                        <b>06.04.2012</b><br>
-                        <a href="#">Consiglio comunale</a>, <a href="#">Consiglio comunale</a>, <a href="#">Consiglio comunale</a>
-                    </li>
-                    <li data-day="04/08/2012" id="04082012">
-                        <b>08.04.2012</b><br>
-                        <a href="#">Consiglio comunale</a>, <a href="#">Consiglio comunale</a>, <a href="#">Consiglio comunale</a>
-                    </li>
-                    <li data-day="04/09/2012" id="04092012">
-                        <b>09.04.2012</b><br>
-                        <a href="#">Consiglio comunale</a>, <a href="#">Consiglio comunale</a>, <a href="#">Consiglio comunale</a>
-                    </li>
-                    <li data-day="04/10/2012" id="04102012">
-                        <b>10.04.2012</b><br>
-                        <a href="#">Consiglio comunale</a>, <a href="#">Consiglio comunale</a>, <a href="#">Consiglio comunale</a>
-                    </li>
-                    <li data-day="04/11/2012" id="04112012">
-                        <b>11.04.2012</b><br>
-                        <a href="#">Consiglio comunale</a>, <a href="#">Consiglio comunale</a>, <a href="#">Consiglio comunale</a>
-                    </li>
+                    <li data-month="03/2012"><h3>Marzo 2012</h3></li>
+                    <li data-day="03/01/2012">01.03.2012 in <a href="#">Consiglio comunale</a></li>
+                    <li data-day="03/02/2012">02.03.2012 in <a href="#">Consiglio comunale</a></li>
+                    <li data-day="03/04/2012">04.03.2012 in <a href="#">Consiglio comunale</a></li>
+                    <li data-day="03/06/2012">06.03.2012 in <a href="#">Consiglio comunale</a></li>
+                    <li data-day="03/08/2012">08.03.2012 in <a href="#">Consiglio comunale</a></li>
+                    <li data-day="03/10/2012">10.03.2012 in <a href="#">Consiglio comunale</a></li>
 
+                    <li data-month="04/2012"><h3>Aprile 2012</h3></li>
+                    <li data-day="04/01/2012">01.04.2012 in <a href="#">Consiglio comunale</a></li>
+                    <li data-day="04/12/2012">12.04.2012 in <a href="#">Consiglio comunale</a></li>
+                    <li data-day="04/20/2012">20.04.2012 in <a href="#">Consiglio comunale</a></li>
+
+                    <li data-month="05/2012"><h3>Maggio 2012</h3></li>
+                    <li data-day="05/01/2012">01.05.2012 in <a href="#">Consiglio comunale</a></li>
+                    <li data-day="05/12/2012">12.05.2012 in <a href="#">Consiglio comunale</a></li>
+                    <li data-day="05/20/2012">20.05.2012 in <a href="#">Consiglio comunale</a></li>
+
+                    <li data-month="06/2012"><h3>Giugno 2012</h3></li>
+                    <li data-day="06/01/2012">01.06.2012 in <a href="#">Consiglio comunale</a></li>
+                    <li data-day="06/12/2012">12.06.2012 in <a href="#">Consiglio comunale</a></li>
+                    <li data-day="06/20/2012">20.06.2012 in <a href="#">Consiglio comunale</a></li>
                 </ul>
             </div>
         </div>
@@ -146,10 +127,28 @@
         <h3>Politici che si occupano dell'argomento</h3>
 
         <div class="row-fluid">
-            {% comment %}
-            {% load list_to_columns %}
-            {% list_to_columns topic.monitoring_users as list 2 %}
-            {% endcomment %}
+{% comment %}{% list_to_columns topic.monitoring_users as list 2 %}
+            {% load list_partition %}
+            {% for list in topic.monitoring_users|partition:5 %}
+                {% for people_list in list %}
+                <div class="span6">
+                    <ul class="people-list{% if forloop.first %} border-right{% endif %}">
+                        {% for person in people_list %}
+                        <li>
+                            <img src="http://placehold.it/50">
+                            <strong>{{ person }}</strong> <br>
+                            Partito democratico
+                            <span class="monitoring">
+                                Monitorato da 2 cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a>
+                            </span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endfor %}
+            {% empty %}
+
+            {% endfor %}{% endcomment %}
             <div class="span6">
                 <ul class="people-list border-right">
                     <li>
@@ -216,6 +215,5 @@
     {{ block.super }}
     <script src="{{ STATIC_URL }}js/jquery-ui-1.8.18.custom.min.js"></script>
     <script src="{{ STATIC_URL }}js/jquery-ui.calendar.js"></script>
-    <script src="{{ STATIC_URL }}js/jquery.scrollto.js"></script>
 {% endblock %}
 
