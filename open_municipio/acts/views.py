@@ -162,7 +162,7 @@ class ActDetailView(DetailView):
             context['is_user_monitoring'] = False
 
         # some user can edit categories and tags
-        if self.request.user.has_perm('taxnomy.tag') and self.request.user.has_perm('taxonomy.category'):
+        if self.request.user.has_perm('taxonomy.change_taggedact'):
             # all categories and tags
             context['act_tags_editor'] = {
                 'categories' : Category.objects.all(),
@@ -174,7 +174,7 @@ class ActDetailView(DetailView):
 
         context['transition_forms'] = {}
         # some user can set transitions
-        if self.request.user.has_perm('acts.transition') : #and context['status_list']
+        if self.request.user.has_perm('acts.add_transition') : #and context['status_list']
             if len(context['transition_groups']) == 5:
                 context['transition_to_council_form'] = ActTransitionForm(initial={'act': act, 'final_status': 'COUNCIL' })
                 context['transition_to_committee_form'] = ActTransitionForm(initial={'act': act, 'final_status': 'COMMITTEE' })

@@ -1,4 +1,4 @@
-{% if perms.taxonomy.can_tag and perms.taxonomy.can_category %}
+{% if perms.taxonomy.change_taggedact %}
     <a href="#" id="cteditor-launcher" class="hide pull-right label label-info">
         <i class="icon-edit icon-white"></i> Edit
     </a>
@@ -122,7 +122,7 @@
 
                 // avoid duplicates
                 if ( $t.data('cteditor') )
-                    return
+                    return;
                 $t.data('cteditor', true );
 
                 // build initial textlistboxes

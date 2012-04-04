@@ -20,7 +20,7 @@
         </tr>
     </thead>
 
-    {% if perms.acts.can_transition and not act.status_is_final %}
+    {% if perms.acts.add_transition and not act.status_is_final %}
     <tfoot>
         <tr>
             <td></td>
@@ -43,7 +43,8 @@
                         </div>
                     </form>
                 </div>
-                {% endif %}</td>
+                {% endif %}
+            </td>
             <td>{% if act.status != 'COUNCIL' %}
                 <a href="#transaction_form_council" class="transaction_edit btn btn-mini"><i class="icon-edit"></i></a>
                 <div class="modal hide" id="transaction_form_council">
@@ -62,7 +63,8 @@
                         </div>
                     </form>
                 </div>
-                {% endif %}</td>
+                {% endif %}
+            </td>
             {% endif %}
             <td>
                 <a href="#transaction_form_final" class="transaction_edit btn btn-mini"><i class="icon-edit"></i></a>
@@ -154,11 +156,6 @@
                 e.preventDefault();
                 $(link.attr('href')).modal();
             });
-
-            /*link.parent().hover(
-                    function() { link.fadeIn(); },
-                    function() { link.fadeOut(); }
-            );*/
         });
     });
 </script>
