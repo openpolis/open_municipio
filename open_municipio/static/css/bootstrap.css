@@ -4487,9 +4487,6 @@ table#acttable tbody ul li {
 table#acttable tbody ul li:first-child {
   border-top: 0;
 }
-table#acttable tfoot {
-  text-align: center;
-}
 table#acttable thead th {
   padding: 0;
   background-color: #e1d9d3;
@@ -4583,6 +4580,11 @@ table#acttable thead th:first-child > div {
 }
 #search-form input[type="submit"] {
   margin-top: 23px;
+}
+/* Politician description form */
+#description_form textarea {
+  width: 100%;
+  margin-bottom: 10px;
 }
 /* Commenting form */
 #comment_form {
