@@ -1,10 +1,10 @@
 from django.template.context import RequestContext
 from os import sys
 
-from django.http import HttpResponseRedirect
+from django.http import Http404, HttpResponseRedirect
 from django.views.generic import TemplateView, DetailView
 from django.core.exceptions import ObjectDoesNotExist
-from django.shortcuts import render, render_to_response
+from django.shortcuts import render_to_response
 
 from open_municipio.people.models import Institution, InstitutionCharge, Person, municipality
 from open_municipio.monitoring.forms import MonitoringForm
@@ -22,25 +22,25 @@ class CouncilView(TemplateView):
         # Call the base implementation first to get a context
         context = super(CouncilView, self).get_context_data(**kwargs)
 
-        mayor = municipality.mayor.as_charge.person
+        mayor = municipality.mayor.as_charge
         president = municipality.council.members.get(
-            charge_type=InstitutionCharge.COUNCIL_PRES_CHARGE).person
+            charge_type=InstitutionCharge.COUNCIL_PRES_CHARGE)
         vice_president = municipality.council.members.get(
-            charge_type=InstitutionCharge.COUNCIL_VICE_CHARGE).person
+            charge_type=InstitutionCharge.COUNCIL_VICE_CHARGE)
         groups = municipality.council.groups
         committees = municipality.committees.as_institution
         latest_acts = Act.objects.filter(
             emitting_institution__institution_type=Institution.COUNCIL
             ).order_by('-presentation_date')[:3]
-        events = Event.objects.filter(
+        events = Event.future.filter(
             institution__institution_type=Institution.COUNCIL
             )
         num_acts = dict()
         act_types = [
-            Deliberation, Motion, Interrogation, Interpellation, Motion, Agenda
+            Deliberation, Motion, Interrogation, Interpellation, Agenda
             ]
         for act_type in act_types:
-            num_acts[act_type.__name__] = act_type.objects.filter(
+            num_acts[act_type.__name__.lower()] = act_type.objects.filter(
                 emitting_institution__institution_type=Institution.COUNCIL
                 ).count()
 
@@ -70,19 +70,19 @@ class CityGovernmentView(TemplateView):
         # Call the base implementation first to get a context
         context = super(CityGovernmentView, self).get_context_data(**kwargs)
 
-        citygov = municipality.gov.members
+        citygov = municipality.gov
         latest_acts = Act.objects.filter(
             emitting_institution__institution_type=Institution.CITY_GOVERNMENT
             ).order_by('-presentation_date')[:3]
-        events = Event.objects.filter(
+        events = Event.future.filter(
             institution__institution_type=Institution.CITY_GOVERNMENT
             )
         num_acts = dict()
         act_types = [
-            Deliberation, Motion, Interrogation, Interpellation, Motion, Agenda
+            Deliberation, Motion, Interrogation, Interpellation, Agenda
             ]
         for act_type in act_types:
-            num_acts[act_type.__name__] = act_type.objects.filter(
+            num_acts[act_type.__name__.lower()] = act_type.objects.filter(
                 emitting_institution__institution_type=Institution.CITY_GOVERNMENT
                 ).count()
             
@@ -98,9 +98,55 @@ class CityGovernmentView(TemplateView):
         return context
 
 
-class CommitteeView(DetailView):
+class CommitteeDetailView(DetailView):
+    """
+    Renders the Committee page
+    """
     model = Institution
-    context_object_name = 'committee'
+    template_name = 'people/institution_committee.html'
+    context_object_name = "committee"
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(CommitteeDetailView, self).get_context_data(**kwargs)
+
+        # Are we given a real Committee institution as input? If no,
+        # raise 404 exception.
+        if self.object.institution_type != Institution.COMMITTEE:
+            raise Http404
+
+        committee_list = Institution.objects.filter(institution_type=Institution.COMMITTEE)
+
+        # Under the hood, we make use of a custom manager here, so
+        # that *only* current institution charges are retrieved.
+        members = InstitutionCharge.objects.filter(
+            institution=self.object
+            ).filter(
+            charge_type=InstitutionCharge.COMMITTEE_MEMBER_CHARGE
+            )
+
+        # FIXME: do we really want this? Is that necessary? Is there
+        # any other *smarter* way to do that?
+        for member in members:
+            try:
+                counselor_charge = member.person.current_institution_charges.filter(
+                    charge_type=InstitutionCharge.COUNSELOR_CHARGE
+                    )[0]
+            except IndexError:
+                continue
+            member.counselor_group = counselor_charge.council_group
+            
+        events = Event.future.filter(institution=self.object)
+
+        extra_context = {
+            'committee_list': committee_list,
+            'members': members,
+            'events': events,
+            }
+
+        # Update context with extra values we need
+        context.update(extra_context)
+        return context
 
 
 
@@ -134,6 +180,7 @@ class PersonDetailView(DetailView):
         except ObjectDoesNotExist:
             context['is_user_monitoring'] = False
         return context
+
 
 
 # TODO: deprecated - use PoliticianListView
@@ -172,6 +219,7 @@ class PoliticianDetailView(DetailView):
         except ObjectDoesNotExist:
             context['is_user_monitoring'] = False
         return context
+
 
 class PoliticianListView(TemplateView):
     """

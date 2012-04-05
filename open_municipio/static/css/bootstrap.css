@@ -4329,6 +4329,9 @@ dl.data-list dt + dd {
   padding: 6px;
   vertical-align: middle;
 }
+#sidebar table th.vote {
+  cursor: pointer;
+}
 #sidebar table td {
   padding: 0;
 }
