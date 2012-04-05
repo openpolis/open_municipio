@@ -5,7 +5,7 @@ from open_municipio.acts.models import Act
 from open_municipio.events.managers import EventManager
 from open_municipio.people.models import Institution
 
-from datetime import datetime
+from datetime import datetime, date
 
 
 class Event(models.Model):
@@ -43,3 +43,8 @@ class Event(models.Model):
         uc = u'%s - %s' % (self.date, self.act)
         return uc
 
+    @property
+    def is_past_due(self):
+        if date.today() > self.date:
+            return True
+        return False

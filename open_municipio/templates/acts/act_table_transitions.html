@@ -199,9 +199,7 @@
 
         include(["js/jquery-ui.calendar.js"], function() {
             // on scripts loaded...
-            console.log('here',$('.datepicker'));
             $('.datepicker').each(function(){
-                console.log('#'+$(this).prop('id'));
                 $('#'+$(this).prop('id')).datepicker();
             });
         });

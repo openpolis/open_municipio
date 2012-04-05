@@ -77,8 +77,9 @@
             $('#id_comment').autogrow();
             // prevent empty submit
             $('#comment_form').submit(function(){
-                var comment = $('textarea', this);
-                if ( comment.val().trim() == '' ) {
+                var field = $(this).find('textarea');
+                if (field.length && (field.val().length == 0) ) {
+                    alert('Attenzione, il commento è vuoto.');
                     return false;
                 }
             });
@@ -288,7 +289,8 @@
         {% endfor %}
     </ul>
     {% if request.user.is_authenticated %}
-    <form action="{% comment_form_target %}" method="post" class="form-inline bg-dark clearfix" id="comment_form">
+    <form id="comment_form" action="{% comment_form_target %}" method="post" class="form-inline bg-dark">
+        <input type="hidden" name="next" value="{{ act.get_absolute_url }}" />
         {% csrf_token %}
 
         {% for hidden in form.hidden_fields %}
@@ -306,16 +308,6 @@
                 </div>
             </div>
         </div>
-
-    {% comment %}
-        {% for field in form %}
-            {% if field.is_hidden %}{{ field }}{% else %}
-                {% if field.name != "name" and field.name != "email" and field.name != "url" %}{% if field.errors %}{{ field.errors }}{% endif %}{{ field }}{% endif %}{% endif %}
-        {% endfor %}
-        
-        <!--<i class="socialicon-ok"></i><i class="socialicon-ko"></i><i class="socialicon-five"></i>-->
-        <!--<input type="text" placeholder="Scrivi un commento..." /> -->
-                       {% endcomment %}
     </form>
     {% endif %}
     <p>Leggi tutti (Cronologia) <i class="icon-chevron-down"></i></p>

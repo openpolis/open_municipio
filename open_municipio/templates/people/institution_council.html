@@ -7,83 +7,52 @@
     <section class="clearfix border-bottom">
         <h1>Consiglio</h1>
         <ul class="people-list list-floated">
-            <li><a href="#"><strong>Mario Rossi</strong> (P)</a><br>Presidente</li>
-            <li><a href="#"><strong>Mario Rossi</strong> (P)</a><br>Vice presidente vicario</li>
-            <li><a href="#"><strong>Mario Rossi</strong> (P)</a><br>Sindaco</li>
-            <li><a href="#"><strong>Mario Rossi</strong> (P)</a><br>Vice presidente</li>
+            <li><a href="{{ president.get_absolute_url }}"><strong>{{ president.person.first_name }} {{ president.person.last_name }}</strong> (P)</a><br>Presidente</li>
+            <li><a href="{{ mayor.get_absolute_url }}"><strong>{{ mayor.person.first_name }} {{ mayor.person.last_name }}</strong> (P)</a><br>Sindaco</li>
+            <li><a href="{{ vice_president.get_absolute_url }}"><strong>{{ vice_president.person.first_name }} {{ vice_president.person.last_name }}</strong> (P)</a><br>Vice presidente</li>
         </ul>
     </section>
 
     <section>
+        {% for group in groups %}
         <div class="party-people">
-            <h2><img src="http://placehold.it/50"> Partito generico</h2>
-
-            <p><a href="#"><strong>Mario Rossi</strong> (P)</a><br>
-                Capogruppo</p>
-
+            <h2><img src="http://placehold.it/50">{{ group.name }}</h2>
+            <p>
+                {# FIXME #}<a href="CORRECT-URL-HERE"><strong>Correct Politician Here</strong> (CPH)</a><br />{# endFIXME #}
+                Capogruppo
+            </p>
+            
             <ul class="list-floated">
-                <li><a href="#"><strong>Mario Rossi I</strong> (P)</a></li>
-                <li><a href="#"><strong>Mario Rossi II</strong> (P)</a></li>
-                <li><a href="#"><strong>Mario Rossi III</strong> (P)</a></li>
-                <li><a href="#"><strong>Mario Rossi IV</strong> (P)</a></li>
-                <li><a href="#"><strong>Mario Rossi ..</strong> (P)</a></li>
-                <li><a href="#"><strong>Mario Rossi</strong> (P)</a></li>
-                <li><a href="#"><strong>Mario Rossi</strong> (P)</a></li>
-                <li><a href="#"><strong>Mario Rossi</strong> (P)</a></li>
-                <li><a href="#"><strong>Mario Rossi</strong> (P)</a></li>
-                <li><a href="#"><strong>Mario Rossi</strong> (P)</a></li>
-                <li><a href="#"><strong>Mario Rossi</strong> (P)</a></li>
-                <li><a href="#"><strong>Mario Rossi</strong> (P)</a></li>
-                <li><a href="#"><strong>Mario Rossi</strong> (P)</a></li>
-                <li><a href="#"><strong>Mario Rossi</strong> (P)</a></li>
-                <li><a href="#"><strong>Mario Rossi</strong> (P)</a></li>
+                {% for counselor in group.counselors %}
+                <li><a href="{{ counselor.get_absolute_url }}"><strong>{{ counselor.person.first_name }} {{ counselor.person.last_name }}</strong> ({{ counselor.council_group.acronym }})</a></li>
+                {% endfor %}
             </ul>
         </div>
-
-        <div class="party-people">
-            <h2><img src="http://placehold.it/50"> Partito generico</h2>
-
-            <p><a href="#"><strong>Mario Rossi</strong> (P)</a><br>
-                Capogruppo</p>
-
-            <ul class="list-floated">
-                <li><a href="#"><strong>Mario Rossi I</strong> (P)</a></li>
-                <li><a href="#"><strong>Mario Rossi II</strong> (P)</a></li>
-                <li><a href="#"><strong>Mario Rossi III</strong> (P)</a></li>
-                <li><a href="#"><strong>Mario Rossi IV</strong> (P)</a></li>
-                <li><a href="#"><strong>Mario Rossi ..</strong> (P)</a></li>
-                <li><a href="#"><strong>Mario Rossi</strong> (P)</a></li>
-                <li><a href="#"><strong>Mario Rossi</strong> (P)</a></li>
-                <li><a href="#"><strong>Mario Rossi</strong> (P)</a></li>
-                <li><a href="#"><strong>Mario Rossi</strong> (P)</a></li>
-                <li><a href="#"><strong>Mario Rossi</strong> (P)</a></li>
-                <li><a href="#"><strong>Mario Rossi</strong> (P)</a></li>
-                <li><a href="#"><strong>Mario Rossi</strong> (P)</a></li>
-                <li><a href="#"><strong>Mario Rossi</strong> (P)</a></li>
-                <li><a href="#"><strong>Mario Rossi</strong> (P)</a></li>
-                <li><a href="#"><strong>Mario Rossi</strong> (P)</a></li>
-            </ul>
-        </div>
+        {% endfor %}
     </section>
-
+    
     <section>
         <h2>Prossimi appuntamenti</h2>
         <div class="row-fluid">
             <div class="span4">
                 <div class="calendar_container">
-                    <h3>Agenda del Consiglio</h3>
-                    <div class="calendar" data-events=".calendar_events"></div>
+                    <h3>Agenda del consiglio</h3>
+                    <div class="calendar"></div>
+                    <div class="calendar" data-calendar=".calendar_events"></div>
+                    <ul class="calendar_events">
+                        {% for event in events %}
+                        <li data-day="{{ event.date|date:"d/m/Y" }}"><a href="{{ event.act.downcast.get_absolute_url }}">{{ event.act.title }}</a></li>
+                        {% endfor %}
+                    </ul>
                 </div>
             </div>
             <div class="span8">
-                <ul class="list-floated unstyled calendar_events">
-                    <li data-day="03/01/2012"><strong>01.3.2012</strong> <a href="#">Conferenza dei capigruppo</a></li>
-                    <li data-day="03/02/2012"><strong>02.3.2012</strong> <a href="#">Conferenza dei capigruppo</a></li>
-                    <li data-day="03/03/2012"><strong>03.3.2012</strong> <a href="#">Conferenza dei capigruppo</a></li>
-                    <li data-day="03/04/2012"><strong>04.3.2012</strong> <a href="#">Conferenza dei capigruppo</a></li>
-                    <li data-day="03/05/2012"><strong>05.3.2012</strong> <a href="#">Conferenza dei capigruppo</a></li>
-                    <li data-day="03/06/2012"><strong>06.3.2012</strong> <a href="#">Conferenza dei capigruppo</a></li>
-                    <li data-day="03/07/2012"><strong>07.3.2012</strong> <a href="#">Conferenza dei capigruppo</a></li>
+                <ul class="list-floated unstyled">
+                    {% for event in events %}
+                    {% if not event.is_past_due %}
+                    <li><strong>{{ event.date|date:"d.m.Y" }}</strong> <a href="{{ event.act.downcast.get_absolute_url }}">{{ event.act.title }}</a></li>
+                    {% endif %}
+                    {% endfor %}
                 </ul>
             </div>
         </div>
@@ -95,46 +64,45 @@
 
     <h2>Commissioni</h2>
     <ul class="unstyled">
-        <li><a href="{% url om_institution_committee %}"><strong>Commissione 1</strong>: edilizia, urbanistica…</a></li>
-        <li><a href="#"><strong>Commissione 2</strong>: ambiente, energie rinnovabili…</a></li>
-        <li><a href="#"><strong>Commissione 3</strong>: cultura, teatro…</a></li>
-        <li><a href="#"><strong>Commissione 1</strong>: edilizia, urbanistica…</a></li>
-        <li><a href="#"><strong>Commissione 2</strong>: ambiente, energie rinnovabili…</a></li>
-        <li><a href="#"><strong>Commissione 3</strong>: cultura, teatro...</a></li>
+        {% for committee in committees %}
+        <li><a href="{{ committee.get_absolute_url }}"><strong>{{ committee.name }}</strong>: {{ committee.description|truncatewords:3 }}</a></li>
+        {% endfor %}
     </ul>
 
 
     <h2>Ultimi 3 atti del Consiglio</h2>
     <ul class="feed-list">
-
-        <li>Stato idrogeologico della zona
-                <span class="monitoring">Monitorato da 2 cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a>
-            </span></li>
-        <li>Stato idrogeologico della zona
-                <span class="monitoring">Monitorato da 2 cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a>
-            </span></li>
-        <li>Stato idrogeologico della zona
-                <span class="monitoring">Monitorato da 2 cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a>
-            </span></li>
+        {% for act in latest_acts %}
+        <li>{{ act.title }}
+            <span class="monitoring">
+                {% if not act.monitoring_users_count %}
+                Non monitorato
+                {% else %}
+                Monitorato da {{ act.monitoring_users_count }} cittadin{{ act.monitoring_users_count|pluralize:"o,i" }}
+                {% endif %}
+                - <a href="#"><i class="socialicon-add"></i> Monitora</a>
+            </span>
+        </li>
+        {% endfor %}
     </ul>
     <p class="bg-dark"><a href="#"><i class="icon-play"></i> Vedi tutti</a></p>
 
     <h2>Atti del Consiglio</h2>
     <table>
         <tr>
-            <td><span class="graybox">150</span></td>
+            <td><span class="graybox">{{ num_acts.deliberation }}</span></td>
             <th class="bg-dark span6">Delibere</th>
-            <td><span class="graybox">150</span></td>
+            <td><span class="graybox">{{ num_acts.motion }}</span></td>
             <th class="bg-dark span6">Mozioni</th>
         </tr>
         <tr>
-            <td><span class="graybox">150</span></td>
+            <td><span class="graybox">{{ num_acts.agenda }}</span></td>
             <th class="bg-dark span12" colspan="3">Ordini del giorno</th>
         </tr>
         <tr>
-            <td><span class="graybox">150</span></td>
+            <td><span class="graybox">{{ num_acts.interrogation }}</span></td>
             <th class="bg-dark span6">Interrogazioni</th>
-            <td><span class="graybox">150</span></td>
+            <td><span class="graybox">{{ num_acts.interpellation }}</span></td>
             <th class="bg-dark span6">Interpellanze</th>
         </tr>
     </table>
