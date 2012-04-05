@@ -16,13 +16,13 @@
         <div class="party-people span4">
             <h2>Sindaco</h2>
 
-            <p><a href="{{ municipality.mayor.as_charge.person.get_absolute_url }}"><strong>{{ municipality.mayor.as_charge.person|title }}</strong> (P)</a></p>
+            <p><a href="{{ municipality.mayor.as_charge.person.get_absolute_url }}"><strong>{{ municipality.mayor.as_charge.person|title }}</strong></a></p>
 
             <h2>Giunta</h2>
 
             <ul>
-                {% for p in municipality.gov.members %}
-                    <li><a href="{{ p.person.get_absolute_url }}"><strong>{{ p.person|title }}</strong> (P)</a></li>
+                {% for p in gov_members %}
+                    <li><a href="{{ p.person.get_absolute_url }}"><strong>{{ p.person|title }}</strong></a></li>
                 {% endfor %}
             </ul>
         </div>
@@ -32,8 +32,8 @@
             <h2>Consiglio</h2>
 
             <ul class="list-floated">
-                {% for p in municipality.council.members %}
-                    <li><a href="{{ p.person.get_absolute_url }}"><strong>{{ p.person|title }}</strong> (P)</a></li>
+                {% for p in counselors %}
+                    <li><a href="{{ p.person.get_absolute_url }}"><strong>{{ p.person|title }}</strong> ({{ p.council_group.acronym }})</a></li>
                 {% endfor %}
             </ul>
         </div>
@@ -79,7 +79,7 @@
                             {{ c.person.first_name }} {{ c.person.last_name }}
                         </a></strong> ({{ c.n_rebel_votations }} ribellioni) <br />
                         {{ c.council_group.name }}
-                <span class="monitoring">Monitorato da 2 cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a>
+                        <span class="monitoring">Monitorato da 2 cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a>
                     </li>
                 {% endfor %}
             </ul>
@@ -95,24 +95,17 @@
         <section class="span6">
             <h2>I meno assenti</h2>
             <ul class="people-list border-right">
-                <li>
-                    <a href="#"><img src="http://placehold.it/50" /></a>
-                    <strong><a href="#"><i class="icon-ok"></i> Mario Rossi</a></strong> <br />
-                    Partito Democratico
-                <span class="monitoring">Monitorato da 2 cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a>
-                </li>
-                <li>
-                    <a href="#"><img src="http://placehold.it/50" /></a>
-                    <strong><a href="#"><i class="icon-ok"></i> Mario Rossi</a></strong> <br />
-                    Partito Democratico
-                <span class="monitoring">Monitorato da 2 cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a>
-                </li>
-                <li>
-                    <a href="#"><img src="http://placehold.it/50" /></a>
-                    <strong><a href="#"><i class="icon-ok"></i> Mario Rossi</a></strong> <br />
-                    Partito Democratico
-                <span class="monitoring">Monitorato da 2 cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a>
-                </li>
+                {% for c in least_absent %}
+                    <li>
+                        <a href="#"><img src="http://placehold.it/50" /></a>
+                        <strong><a href="{{ c.person.get_absolute_url }}">
+                            <i class="icon-ok"></i>
+                            {{ c.person.first_name }} {{ c.person.last_name }}
+                        </a></strong> ({{ c.n_absent_votations }} assenze) <br />
+                        {{ c.council_group.name }}
+                        <span class="monitoring">Monitorato da 2 cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a>
+                    </li>
+                {% endfor %}
             </ul>
 
         </section>
@@ -120,24 +113,17 @@
         <section class="span6">
             <h2>I più assenti</h2>
             <ul class="people-list">
-                <li>
-                    <a href="#"><img src="http://placehold.it/50" /></a>
-                    <strong><a href="#"><i class="icon-ok"></i> Mario Rossi</a></strong> <br />
-                    Partito Democratico
-                <span class="monitoring">Monitorato da 2 cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a>
-                </li>
-                <li>
-                    <a href="#"><img src="http://placehold.it/50" /></a>
-                    <strong><a href="#"><i class="icon-ok"></i> Mario Rossi</a></strong> <br />
-                    Partito Democratico
-                <span class="monitoring">Monitorato da 2 cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a>
-                </li>
-                <li>
-                    <a href="#"><img src="http://placehold.it/50" /></a>
-                    <strong><a href="#"><i class="icon-ok"></i> Mario Rossi</a></strong> <br />
-                    Partito Democratico
-                <span class="monitoring">Monitorato da 2 cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a>
-                </li>
+                {% for c in most_absent %}
+                    <li>
+                        <a href="#"><img src="http://placehold.it/50" /></a>
+                        <strong><a href="{{ c.person.get_absolute_url }}">
+                            <i class="icon-ok"></i>
+                            {{ c.person.first_name }} {{ c.person.last_name }}
+                        </a></strong> ({{ c.n_absent_votations }} assenze) <br />
+                        {{ c.council_group.name }}
+                        <span class="monitoring">Monitorato da 2 cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a>
+                    </li>
+                {% endfor %}
             </ul>
 
         </section>
