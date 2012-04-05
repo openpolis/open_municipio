@@ -152,7 +152,7 @@ class RandomItemsFactory(object):
                     [True]*9   # 90% Do link
                 ]))
                 if random.choice(w):
-                    v.act = random.choice(Act.objects.all()).downcast()
+                    v.act = random.choice(Act.objects.all())
                     print "Atto collegato: %s" % v.act
 
                 # define vote weights
@@ -185,6 +185,7 @@ class RandomItemsFactory(object):
                 v.n_yes = ChargeVote.objects.filter(votation=v, vote=ChargeVote.YES).count()
                 v.n_no = ChargeVote.objects.filter(votation=v, vote=ChargeVote.NO).count()
                 v.n_abst = ChargeVote.objects.filter(votation=v, vote=ChargeVote.ABSTAINED).count()
+                v.n_absents = ChargeVote.objects.filter(votation=v, vote=ChargeVote.ABSENT).count()
                 n_president = ChargeVote.objects.filter(votation=v, vote=ChargeVote.PRES).count()
                 v.n_presents = v.n_yes + v.n_no + v.n_abst + n_president
                 v.n_maj = int(v.n_presents / 2) + 1
@@ -194,13 +195,8 @@ class RandomItemsFactory(object):
                     v.outcome = Votation.REJECTED
                 v.save()
 
-                # TODO: compute groupvote and rebels
-                # delegate group votes and rebels computations to model methods
-                # so that this logic can be re-used in other contexts
-                # i.e. (data import module)
-                #
-                v.compute_group_votes()
-                v.compute_rebel_votes()
+                # update votation caches
+                v.update_caches()
                 print "Cache updated.\n"
 
                 print "Totali"

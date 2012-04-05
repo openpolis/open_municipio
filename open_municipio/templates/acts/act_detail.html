@@ -46,6 +46,7 @@
                 // inject content and insert before the form
                 $(this).before( link );
             });
+
         });
 
         {% comment %}Build Comment form{% endcomment %}
@@ -81,8 +82,10 @@
                 if ( comment.val().trim() == '' ) {
                     return false;
                 }
-
             });
+
+            // politician form grow
+            $('#description_form textarea').autogrow();
         });
         {% endif %}
 
@@ -107,9 +110,13 @@
     </hgroup>
 
         {% if description_form %}
-            <form class="well form-horizontal" action="{% url om_act_description_update pk=act.pk %}" method="post">
+            <form id="description_form" class="well form-horizontal" action="{% url om_act_description_update pk=act.pk %}" method="post">
                 {% csrf_token %}
-                {{ description_form }}
+                <textarea name="{{ description_form.description.html_name }}" id="{{ description_form.description.html_name }}_id" cols="30"
+                          rows="3">{{ description_form.description.value }}</textarea>
+                {% for hidden in description_form.hidden_fields %}
+                    {{ hidden }}
+                {% endfor %}
                 <button type="submit" class="btn btn-info btn-small">Invia</button>
             </form>
         {%  else %}
@@ -140,8 +147,10 @@
     <dl class="tags-cloud">
         {% for category in act.categories %}
         <dt><a href="{{ category.get_absolute_url }}">{{ category.name }}</a></dt>
-        {% for tag in act.tags %}
+        {% for tag in category.tags %}
+            {% if tag in act.tags %}
             <dd><a href="{{ tag.get_absolute_url }}">{{ tag }}</a></dd>
+            {% endif %}
         {% endfor %}
         {% endfor %}
     </dl>
@@ -290,7 +299,7 @@
 
         <div class="row-fluid">
             <div class="span8">
-                <textarea name="{{ form.comment.html_name }}" placeholder="Inserisci un commento" id="id_comment" cols="30" rows="1"></textarea>
+                <textarea name="{{ form.comment.html_name }}" placeholder="Inserisci un commento" id="id_comment" cols="30" rows="3"></textarea>
             </div>
             <div class="span4 text-center">
                 <button type="submit" class="btn btn-mini" id="comment_form_submit">{% trans 'Post' %} </button>

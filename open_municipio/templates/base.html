@@ -46,10 +46,10 @@
                   <ul class="nav pull-right">
                     {% if user.is_authenticated %}
                       <li><a href="/users/profile/edit/">Logged in as {{ user.username }}</a></li>
-                      <li><a style="margin-right: 0;" href="/accounts/logout/?next=/">Log out</a></li>
+                      <li><a style="margin-right: 0;" href="/accounts/logout/?next={% if "/accounts" in request.path %}/{% else %}{{ request.path }}{% endif %}">Log out</a></li>
                     {% else %}
                       <li><a href="/accounts/register/">Registrati</a></li>
-                      <li><a href="/accounts/login/?next={% ifequal request.path "/accounts/logout/" %}/{% else %}{{ request.path }}{% endifequal %}">Log in</a></li>
+                      <li><a href="/accounts/login/?next={% if "/accounts" in request.path %}/{% else %}{{ request.path }}{% endif %}">Log in</a></li>
                     {% endif %}
                   </ul>
               </div>
@@ -68,7 +68,7 @@
         <div class="navbar-inner">
           <div class="container-fluid">
               <ul class="nav">
-                  <li {% block people_class %}{% endblock %}><a href="{% url om_person_list %}">Politici</a></li>
+                  <li {% block people_class %}{% endblock %}><a href="{% url om_politician_list %}">Politici</a></li>
                   <li {% block tags_class %}{% endblock %}><a href="{% url om_topic_list %}">Argomenti</a></li>
                   <li {% block users_class %}{% endblock %}><a href="/users/">Cittadini</a></li>
               </ul>
@@ -93,7 +93,7 @@
             <div class="container-fluid">
                 <ul class="nav">
                     <li {% block acts_class %}{% endblock %}><a href="{% url om_act_search %}">Atti</a></li>
-                    <li {% block votations_class %}{% endblock %}><a href="{% url om_votation_list %}">Votazioni</a></li>
+                    <li {% block votations_class %}{% endblock %}><a href="{% url om_votation_search %}">Votazioni</a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             Organi politici <b class="caret caret-up"></b>

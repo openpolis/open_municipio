@@ -21,8 +21,9 @@ act_dict = {
 
 
 ## SearchQuerySet with multiple facets and highlight
-sqs = SearchQuerySet().\
+sqs = SearchQuerySet().filter(django_ct='acts.act').\
     facet('act_type').facet('is_key').facet('initiative').\
+    facet('organ').\
     facet('categories').facet('tags').\
     query_facet('pub_date', ActSearchView.THREEDAYS).\
     query_facet('pub_date', ActSearchView.ONEMONTH).\
