@@ -21,6 +21,10 @@ class Tag(TagBase):
     def get_absolute_url(self):
         return 'om_tag_detail', (), { 'slug': self.slug }
 
+    @property
+    def tagged_acts(self):
+        return self.tagged_act_set.all()
+
 
 class TaggedAct(ItemBase):
     """
@@ -37,7 +41,7 @@ class TaggedAct(ItemBase):
     .. _`custom version`: http://readthedocs.org/docs/django-taggit/en/latest/custom_tagging.html
     """
     content_object = models.ForeignKey('acts.Act')
-    tag = models.ForeignKey(Tag, related_name='tagged_acts')
+    tag = models.ForeignKey(Tag, related_name='tagged_act_set')
     tagger = models.ForeignKey(User, null=True, blank=True, editable=False)
     tagging_time = models.DateTimeField(null=True, auto_now_add=True)    
                                        
