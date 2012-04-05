@@ -154,3 +154,15 @@ WEB_SERVICES = {
 OM_BOOKMARKING_STAR_CLASS = 'icon-star'
 # CSS class used to mark DOM elements associated with bookmarkable (but not-key) objects
 OM_BOOKMARKING_EMPTY_STAR_CLASS = 'icon-star-empty'
+
+## settings for ``django-taggit``
+# model used to represent a tag object
+TAGGIT_TAG_MODEL = 'taxonomy.Tag' 
+# model used to represent a tagged item
+TAGGIT_TAGGED_ITEM_MODEL = 'taxonomy.TaggedAct'
+# attribute used to access tagged items associated with a given tag
+TAGGIT_TAG_FIELD_RELATED_NAME = 'tagged_act_set' 
+# minimum weight for a tag in a tagcloud 
+TAGGIT_TAGCLOUD_MIN_ = 1.0
+# maximum weight for a tag in a tagcloud 
+TAGGIT_TAGCLOUD_MAX_WEIGHT = 6.0
