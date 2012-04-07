@@ -1,639 +1,1159 @@
 [
     {
+        "pk": 17, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "commentwithmood", 
+            "name": "Comment", 
+            "app_label": "om_comments"
+        }
+    }, 
+    {
+        "pk": 13, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "tag", 
+            "name": "Tag", 
+            "app_label": "taggit"
+        }
+    }, 
+    {
+        "pk": 47, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "tag", 
+            "name": "Tag", 
+            "app_label": "taxonomy"
+        }
+    }, 
+    {
+        "pk": 14, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "taggeditem", 
+            "name": "Tagged Item", 
+            "app_label": "taggit"
+        }
+    }, 
+    {
+        "pk": 18, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "act", 
+            "name": "act", 
+            "app_label": "acts"
+        }
+    }, 
+    {
+        "pk": 21, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "actdescriptor", 
+            "name": "act descriptor", 
+            "app_label": "acts"
+        }
+    }, 
+    {
+        "pk": 19, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "actsection", 
+            "name": "act section", 
+            "app_label": "acts"
+        }
+    }, 
+    {
+        "pk": 20, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "actsupport", 
+            "name": "act support", 
+            "app_label": "acts"
+        }
+    }, 
+    {
+        "pk": 38, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "administrationcharge", 
+            "name": "administration charge", 
+            "app_label": "people"
+        }
+    }, 
+    {
+        "pk": 22, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "agenda", 
+            "name": "agenda", 
+            "app_label": "acts"
+        }
+    }, 
+    {
+        "pk": 29, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "attach", 
+            "name": "attach", 
+            "app_label": "acts"
+        }
+    }, 
+    {
+        "pk": 57, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "news", 
+            "name": "cached news", 
+            "app_label": "newscache"
+        }
+    }, 
+    {
+        "pk": 32, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "calendar", 
+            "name": "calendar", 
+            "app_label": "acts"
+        }
+    }, 
+    {
+        "pk": 49, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "category", 
+            "name": "category", 
+            "app_label": "taxonomy"
+        }
+    }, 
+    {
+        "pk": 53, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "chargevote", 
+            "name": "charge vote", 
+            "app_label": "votations"
+        }
+    }, 
+    {
+        "pk": 5, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "comment", 
+            "name": "comment", 
+            "app_label": "comments"
+        }
+    }, 
+    {
+        "pk": 6, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "commentflag", 
+            "name": "comment flag", 
+            "app_label": "comments"
+        }
+    }, 
+    {
+        "pk": 44, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "company", 
+            "name": "company", 
+            "app_label": "people"
+        }
+    }, 
+    {
+        "pk": 7, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "contenttype", 
+            "name": "content type", 
+            "app_label": "contenttypes"
+        }
+    }, 
+    {
+        "pk": 23, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "deliberation", 
+            "name": "deliberation", 
+            "app_label": "acts"
+        }
+    }, 
+    {
+        "pk": 27, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "emendation", 
+            "name": "emendation", 
+            "app_label": "acts"
+        }
+    }, 
+    {
+        "pk": 16, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "event", 
+            "name": "event", 
+            "app_label": "events"
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "group", 
+            "name": "group", 
+            "app_label": "auth"
+        }
+    }, 
+    {
+        "pk": 39, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "group", 
+            "name": "group", 
+            "app_label": "people"
+        }
+    }, 
+    {
+        "pk": 40, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "groupcharge", 
+            "name": "group charge", 
+            "app_label": "people"
+        }
+    }, 
+    {
+        "pk": 42, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "groupismajority", 
+            "name": "group majority", 
+            "app_label": "people"
+        }
+    }, 
+    {
+        "pk": 41, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "groupresponsability", 
+            "name": "group responsability", 
+            "app_label": "people"
+        }
+    }, 
+    {
+        "pk": 52, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "groupvote", 
+            "name": "group vote", 
+            "app_label": "votations"
+        }
+    }, 
+    {
+        "pk": 43, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "institution", 
+            "name": "institution", 
+            "app_label": "people"
+        }
+    }, 
+    {
+        "pk": 35, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "institutioncharge", 
+            "name": "institution charge", 
+            "app_label": "people"
+        }
+    }, 
+    {
+        "pk": 36, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "institutionresponsability", 
+            "name": "institution responsability", 
+            "app_label": "people"
+        }
+    }, 
+    {
+        "pk": 25, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "interpellation", 
+            "name": "interpellation", 
+            "app_label": "acts"
+        }
+    }, 
+    {
+        "pk": 24, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "interrogation", 
+            "name": "interrogation", 
+            "app_label": "acts"
+        }
+    }, 
+    {
+        "pk": 50, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "location", 
+            "name": "location", 
+            "app_label": "taxonomy"
+        }
+    }, 
+    {
+        "pk": 10, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "logentry", 
+            "name": "log entry", 
+            "app_label": "admin"
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "message", 
+            "name": "message", 
+            "app_label": "auth"
+        }
+    }, 
+    {
+        "pk": 12, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "migrationhistory", 
+            "name": "migration history", 
+            "app_label": "south"
+        }
+    }, 
+    {
+        "pk": 30, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "minute", 
+            "name": "minute", 
+            "app_label": "acts"
+        }
+    }, 
+    {
+        "pk": 55, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "monitoring", 
+            "name": "monitoring", 
+            "app_label": "monitoring"
+        }
+    }, 
+    {
+        "pk": 26, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "motion", 
+            "name": "motion", 
+            "app_label": "acts"
+        }
+    }, 
+    {
+        "pk": 45, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "office", 
+            "name": "office", 
+            "app_label": "people"
+        }
+    }, 
+    {
+        "pk": 37, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "companycharge", 
+            "name": "organization charge", 
+            "app_label": "people"
+        }
+    }, 
+    {
+        "pk": 31, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "outcome", 
+            "name": "outcome", 
+            "app_label": "acts"
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "permission", 
+            "name": "permission", 
+            "app_label": "auth"
+        }
+    }, 
+    {
+        "pk": 33, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "person", 
+            "name": "person", 
+            "app_label": "people"
+        }
+    }, 
+    {
+        "pk": 11, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "registrationprofile", 
+            "name": "registration profile", 
+            "app_label": "registration"
+        }
+    }, 
+    {
+        "pk": 34, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "resource", 
+            "name": "resource", 
+            "app_label": "people"
+        }
+    }, 
+    {
+        "pk": 8, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "session", 
+            "name": "session", 
+            "app_label": "sessions"
+        }
+    }, 
+    {
+        "pk": 56, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "sharing", 
+            "name": "sharing", 
+            "app_label": "web_services"
+        }
+    }, 
+    {
+        "pk": 9, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "site", 
+            "name": "site", 
+            "app_label": "sites"
+        }
+    }, 
+    {
+        "pk": 46, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "sitting", 
+            "name": "sitting", 
+            "app_label": "people"
+        }
+    }, 
+    {
+        "pk": 28, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "transition", 
+            "name": "status transition", 
+            "app_label": "acts"
+        }
+    }, 
+    {
+        "pk": 48, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "taggedact", 
+            "name": "tagged act", 
+            "app_label": "taxonomy"
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "user", 
+            "name": "user", 
+            "app_label": "auth"
+        }
+    }, 
+    {
+        "pk": 54, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "userprofile", 
+            "name": "user profile", 
+            "app_label": "users"
+        }
+    }, 
+    {
+        "pk": 51, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "votation", 
+            "name": "votation", 
+            "app_label": "votations"
+        }
+    }, 
+    {
+        "pk": 15, 
+        "model": "contenttypes.contenttype", 
+        "fields": {
+            "model": "vote", 
+            "name": "vote", 
+            "app_label": "voting"
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "sites.site", 
+        "fields": {
+            "domain": "local.openmunicipio.it:8000", 
+            "name": "local.openmunicipio.it"
+        }
+    }, 
+    {
         "pk": 1, 
         "model": "people.person", 
         "fields": {
-            "first_name": "ELDA", 
-            "last_name": "GEROSOLIMO", 
-            "birth_location": "Castelpagano (BN)", 
+            "first_name": "Anna", 
+            "last_name": "BUGETTI IN PAOLETTI", 
+            "birth_location": "Ligonchio (RE)", 
             "op_politician_id": null, 
             "sex": 0, 
-            "birth_date": "1965-12-15", 
-            "slug": "elda-gerosolimo-1965-12-15"
+            "birth_date": "1970-04-07", 
+            "slug": "anna-bugetti-in-paoletti-1970-04-07"
         }
     }, 
     {
         "pk": 2, 
         "model": "people.person", 
         "fields": {
-            "first_name": "CARMELO", 
-            "last_name": "MARCANDALLI", 
-            "birth_location": "FRAZZANO'", 
+            "first_name": "Dalmazio", 
+            "last_name": "TIERO", 
+            "birth_location": "Magomadas (OR)", 
             "op_politician_id": null, 
-            "sex": 0, 
-            "birth_date": "1944-01-26", 
-            "slug": "carmelo-marcandalli-1944-01-26"
+            "sex": 1, 
+            "birth_date": "1964-04-01", 
+            "slug": "dalmazio-tiero-1964-04-01"
         }
     }, 
     {
         "pk": 3, 
         "model": "people.person", 
         "fields": {
-            "first_name": "Pier", 
-            "last_name": "ROVIGATTI", 
-            "birth_location": "Airuno (LC)", 
+            "first_name": "FRANCESCO", 
+            "last_name": "Verdicchia", 
+            "birth_location": "SAN LEONARDO DI CUTRO", 
             "op_politician_id": null, 
             "sex": 1, 
-            "birth_date": "1970-03-10", 
-            "slug": "pier-rovigatti-1970-03-10"
+            "birth_date": "1932-02-24", 
+            "slug": "francesco-verdicchia-1932-02-24"
         }
     }, 
     {
         "pk": 4, 
         "model": "people.person", 
         "fields": {
-            "first_name": "SALOVATORE", 
-            "last_name": "RISI", 
-            "birth_location": "San Giuliano Terme", 
+            "first_name": "TOSCO", 
+            "last_name": "CEREDA", 
+            "birth_location": "Vallecrosia (IM)", 
             "op_politician_id": null, 
             "sex": 1, 
-            "birth_date": "1945-08-30", 
-            "slug": "salovatore-risi-1945-08-30"
+            "birth_date": "1981-12-11", 
+            "slug": "tosco-cereda-1981-12-11"
         }
     }, 
     {
         "pk": 5, 
         "model": "people.person", 
         "fields": {
-            "first_name": "MARIA", 
-            "last_name": "ZACCARELLA", 
-            "birth_location": "Monselice", 
+            "first_name": "Angelo", 
+            "last_name": "GERLI", 
+            "birth_location": "Franvailla Fontana", 
             "op_politician_id": null, 
-            "sex": 0, 
-            "birth_date": "1952-02-15", 
-            "slug": "maria-zaccarella-1952-02-15"
+            "sex": 1, 
+            "birth_date": "1937-07-19", 
+            "slug": "angelo-gerli-1937-07-19"
         }
     }, 
     {
         "pk": 6, 
         "model": "people.person", 
         "fields": {
-            "first_name": "BIAGIO", 
-            "last_name": "DECOSTANZI", 
-            "birth_location": "Torre d'Arese (PV)", 
+            "first_name": "ALGHISIO", 
+            "last_name": "FAVRE", 
+            "birth_location": "Camporosso (IM)", 
             "op_politician_id": null, 
             "sex": 1, 
-            "birth_date": "1968-02-23", 
-            "slug": "biagio-decostanzi-1968-02-23"
+            "birth_date": "1950-03-03", 
+            "slug": "alghisio-favre-1950-03-03"
         }
     }, 
     {
         "pk": 7, 
         "model": "people.person", 
         "fields": {
-            "first_name": "LUCILIO", 
-            "last_name": "Garcia", 
-            "birth_location": "High Wicombe", 
+            "first_name": "ROSETTA", 
+            "last_name": "TRESOLDI IN CERATI", 
+            "birth_location": "Adelaide Ausralia (EE)", 
             "op_politician_id": null, 
-            "sex": 1, 
-            "birth_date": "1967-04-07", 
-            "slug": "lucilio-garcia-1967-04-07"
+            "sex": 0, 
+            "birth_date": "1930-05-29", 
+            "slug": "rosetta-tresoldi-in-cerati-1930-05-29"
         }
     }, 
     {
         "pk": 8, 
         "model": "people.person", 
         "fields": {
-            "first_name": "St", 
-            "last_name": "PROVERBIO", 
-            "birth_location": "SAN GIORGIO DEL SANNO", 
+            "first_name": "Emanuele", 
+            "last_name": "Baghini", 
+            "birth_location": "San Valentino In A.c. (PE)", 
             "op_politician_id": null, 
             "sex": 1, 
-            "birth_date": "1972-03-23", 
-            "slug": "st-proverbio-1972-03-23"
+            "birth_date": "1944-12-07", 
+            "slug": "emanuele-baghini-1944-12-07"
         }
     }, 
     {
         "pk": 9, 
         "model": "people.person", 
         "fields": {
-            "first_name": "LUCIANO", 
-            "last_name": "REDDA", 
-            "birth_location": "Spigno Monferrato (AL)", 
+            "first_name": "Nicola", 
+            "last_name": "BECCALOSSI", 
+            "birth_location": "Venezia", 
             "op_politician_id": null, 
             "sex": 1, 
-            "birth_date": "1973-02-01", 
-            "slug": "luciano-redda-1973-02-01"
+            "birth_date": "1953-04-08", 
+            "slug": "nicola-beccalossi-1953-04-08"
         }
     }, 
     {
         "pk": 10, 
         "model": "people.person", 
         "fields": {
-            "first_name": "SILVANA", 
-            "last_name": "VELTRO", 
-            "birth_location": "Remanzacco (UD)", 
+            "first_name": "MARIA", 
+            "last_name": "Celauro", 
+            "birth_location": "San Giorgio a Liri (FR)", 
             "op_politician_id": null, 
             "sex": 0, 
-            "birth_date": "1952-02-16", 
-            "slug": "silvana-veltro-1952-02-16"
+            "birth_date": "1983-12-09", 
+            "slug": "maria-celauro-1983-12-09"
         }
     }, 
     {
         "pk": 11, 
         "model": "people.person", 
         "fields": {
-            "first_name": "Giuseppa", 
-            "last_name": "BELGIOIOSO", 
-            "birth_location": "Cernusco S/n (MI)", 
+            "first_name": "GILDO", 
+            "last_name": "DI GLERIA", 
+            "birth_location": "Meana Sardo (NU)", 
             "op_politician_id": null, 
-            "sex": 0, 
-            "birth_date": "1967-05-25", 
-            "slug": "giuseppa-belgioioso-1967-05-25"
+            "sex": 1, 
+            "birth_date": "1929-02-03", 
+            "slug": "gildo-di-gleria-1929-02-03"
         }
     }, 
     {
         "pk": 12, 
         "model": "people.person", 
         "fields": {
-            "first_name": "Pascal", 
-            "last_name": "STORTONI", 
-            "birth_location": "Avise (AO)", 
+            "first_name": "Adolfo", 
+            "last_name": "LO RE", 
+            "birth_location": "Lourdes Francia (EE)", 
             "op_politician_id": null, 
             "sex": 1, 
-            "birth_date": "1947-11-11", 
-            "slug": "pascal-stortoni-1947-11-11"
+            "birth_date": "1964-10-07", 
+            "slug": "adolfo-lo-re-1964-10-07"
         }
     }, 
     {
         "pk": 13, 
         "model": "people.person", 
         "fields": {
-            "first_name": "GREGORIO", 
-            "last_name": "DI GRACI", 
-            "birth_location": "Corfinio (AQ)", 
+            "first_name": "M.", 
+            "last_name": "GAMBARETTO", 
+            "birth_location": "Bastida De' Dossi (PV)", 
             "op_politician_id": null, 
-            "sex": 1, 
-            "birth_date": "1955-12-30", 
-            "slug": "gregorio-di-graci-1955-12-30"
+            "sex": 0, 
+            "birth_date": "1943-02-15", 
+            "slug": "m-gambaretto-1943-02-15"
         }
     }, 
     {
         "pk": 14, 
         "model": "people.person", 
         "fields": {
-            "first_name": "MARTINO", 
-            "last_name": "DOMENICHETTI", 
-            "birth_location": "Monte Grimano Terme (PU)", 
+            "first_name": "BIANCO", 
+            "last_name": "DAZZAN", 
+            "birth_location": "Ussassai (OG)", 
             "op_politician_id": null, 
             "sex": 1, 
-            "birth_date": "1946-12-01", 
-            "slug": "martino-domenichetti-1946-12-01"
+            "birth_date": "1965-05-05", 
+            "slug": "bianco-dazzan-1965-05-05"
         }
     }, 
     {
         "pk": 15, 
         "model": "people.person", 
         "fields": {
-            "first_name": "Mimma", 
-            "last_name": "FRANCARDI", 
-            "birth_location": "Quarrata (PT)", 
+            "first_name": "FRANCESCOANTONIO", 
+            "last_name": "FOTI", 
+            "birth_location": "CASSANO DELLO IONIO", 
             "op_politician_id": null, 
-            "sex": 0, 
-            "birth_date": "1941-07-04", 
-            "slug": "mimma-francardi-1941-07-04"
+            "sex": 1, 
+            "birth_date": "1953-06-01", 
+            "slug": "francescoantonio-foti-1953-06-01"
         }
     }, 
     {
         "pk": 16, 
         "model": "people.person", 
         "fields": {
-            "first_name": "PRIAMO", 
-            "last_name": "MILO", 
-            "birth_location": "TRAVAC\u00ca SICCOMARIO", 
+            "first_name": "CRUCIANO", 
+            "last_name": "CANGI", 
+            "birth_location": "San Romano G.na (LU)", 
             "op_politician_id": null, 
             "sex": 1, 
-            "birth_date": "1941-03-02", 
-            "slug": "priamo-milo-1941-03-02"
+            "birth_date": "1957-09-18", 
+            "slug": "cruciano-cangi-1957-09-18"
         }
     }, 
     {
         "pk": 17, 
         "model": "people.person", 
         "fields": {
-            "first_name": "DEBORA", 
-            "last_name": "CERELLA", 
-            "birth_location": "Muro Lucano (PZ)", 
+            "first_name": "PAOLINO", 
+            "last_name": "Casarollo", 
+            "birth_location": "S.STEFANO", 
             "op_politician_id": null, 
-            "sex": 0, 
-            "birth_date": "1948-12-22", 
-            "slug": "debora-cerella-1948-12-22"
+            "sex": 1, 
+            "birth_date": "1950-02-15", 
+            "slug": "paolino-casarollo-1950-02-15"
         }
     }, 
     {
         "pk": 18, 
         "model": "people.person", 
         "fields": {
-            "first_name": "ROBERTO", 
-            "last_name": "EMPEREUR", 
-            "birth_location": "Morro d'Oro (TE)", 
+            "first_name": "LORENZA", 
+            "last_name": "ARISTOTILE", 
+            "birth_location": "Pescina (AQ)", 
             "op_politician_id": null, 
-            "sex": 1, 
-            "birth_date": "1961-12-01", 
-            "slug": "roberto-empereur-1961-12-01"
+            "sex": 0, 
+            "birth_date": "1950-08-16", 
+            "slug": "lorenza-aristotile-1950-08-16"
         }
     }, 
     {
         "pk": 19, 
         "model": "people.person", 
         "fields": {
-            "first_name": "ASTELVIO", 
-            "last_name": "PAPPONE", 
-            "birth_location": "LIDORIKION GRECIA", 
+            "first_name": "RODOLFO", 
+            "last_name": "CIBRA", 
+            "birth_location": "Formia (LT)", 
             "op_politician_id": null, 
             "sex": 1, 
-            "birth_date": "1945-10-06", 
-            "slug": "astelvio-pappone-1945-10-06"
+            "birth_date": "1960-07-06", 
+            "slug": "rodolfo-cibra-1960-07-06"
         }
     }, 
     {
         "pk": 20, 
         "model": "people.person", 
         "fields": {
-            "first_name": "Dario", 
-            "last_name": "MARTINANGELO", 
-            "birth_location": "Sant'Olcese (GE)", 
+            "first_name": "PATRIZIO", 
+            "last_name": "LUPI", 
+            "birth_location": "Forl\u00ec (FC)", 
             "op_politician_id": null, 
             "sex": 1, 
-            "birth_date": "1951-04-12", 
-            "slug": "dario-martinangelo-1951-04-12"
+            "birth_date": "1955-07-19", 
+            "slug": "patrizio-lupi-1955-07-19"
         }
     }, 
     {
         "pk": 21, 
         "model": "people.person", 
         "fields": {
-            "first_name": "RICHART", 
-            "last_name": "SACCARDO", 
-            "birth_location": "Bene Vagienna (CN)", 
+            "first_name": "GIOVANNA", 
+            "last_name": "PINGITORE", 
+            "birth_location": "Lamon (BL)", 
             "op_politician_id": null, 
-            "sex": 1, 
-            "birth_date": "1961-12-30", 
-            "slug": "richart-saccardo-1961-12-30"
+            "sex": 0, 
+            "birth_date": "1980-09-09", 
+            "slug": "giovanna-pingitore-1980-09-09"
         }
     }, 
     {
         "pk": 22, 
         "model": "people.person", 
         "fields": {
-            "first_name": "VALERIO", 
-            "last_name": "DROGO", 
-            "birth_location": "San Romano G.na (LU)", 
+            "first_name": "REMO", 
+            "last_name": "CANTELLI", 
+            "birth_location": "Vernole (LE)", 
             "op_politician_id": null, 
             "sex": 1, 
-            "birth_date": "1958-10-11", 
-            "slug": "valerio-drogo-1958-10-11"
+            "birth_date": "1971-09-07", 
+            "slug": "remo-cantelli-1971-09-07"
         }
     }, 
     {
         "pk": 23, 
         "model": "people.person", 
         "fields": {
-            "first_name": "Donatuccio", 
-            "last_name": "KASSLATTER MUR", 
-            "birth_location": "Escalaplano (CA)", 
+            "first_name": "Graziano", 
+            "last_name": "POSSENTI", 
+            "birth_location": "Monte San Giacomo (SA)", 
             "op_politician_id": null, 
             "sex": 1, 
-            "birth_date": "1958-12-17", 
-            "slug": "donatuccio-kasslatter-mur-1958-12-17"
+            "birth_date": "1943-03-19", 
+            "slug": "graziano-possenti-1943-03-19"
         }
     }, 
     {
         "pk": 24, 
         "model": "people.person", 
         "fields": {
-            "first_name": "MARGHERITA", 
-            "last_name": "GHILARDELLI", 
-            "birth_location": "Vivaro (PN)", 
+            "first_name": "FIORANGELO", 
+            "last_name": "SPIGNOLI", 
+            "birth_location": "Roccabianca (PR)", 
             "op_politician_id": null, 
-            "sex": 0, 
-            "birth_date": "1983-07-27", 
-            "slug": "margherita-ghilardelli-1983-07-27"
+            "sex": 1, 
+            "birth_date": "1977-12-26", 
+            "slug": "fiorangelo-spignoli-1977-12-26"
         }
     }, 
     {
         "pk": 25, 
         "model": "people.person", 
         "fields": {
-            "first_name": "Maxim", 
-            "last_name": "MOBILIO", 
-            "birth_location": "Palanzano Parma", 
+            "first_name": "Sergio", 
+            "last_name": "LARCI", 
+            "birth_location": "LUCERNA", 
             "op_politician_id": null, 
             "sex": 1, 
-            "birth_date": "1946-12-18", 
-            "slug": "maxim-mobilio-1946-12-18"
+            "birth_date": "1949-09-26", 
+            "slug": "sergio-larci-1949-09-26"
         }
     }, 
     {
         "pk": 26, 
         "model": "people.person", 
         "fields": {
-            "first_name": "ANNA", 
-            "last_name": "DE CANDIDO", 
-            "birth_location": "ROCCA S.CASCIANO", 
+            "first_name": "PIERCARLO", 
+            "last_name": "PUNTAIER", 
+            "birth_location": "Bernareggio (MI)", 
             "op_politician_id": null, 
-            "sex": 0, 
-            "birth_date": "1968-06-30", 
-            "slug": "anna-de-candido-1968-06-30"
+            "sex": 1, 
+            "birth_date": "1983-09-09", 
+            "slug": "piercarlo-puntaier-1983-09-09"
         }
     }, 
     {
         "pk": 27, 
         "model": "people.person", 
         "fields": {
-            "first_name": "DANIELE", 
-            "last_name": "PAIRETTI", 
-            "birth_location": "Bagnolo Piemonte (CN)", 
+            "first_name": "BRUNO", 
+            "last_name": "TRENTACOSTE", 
+            "birth_location": "Griante (CO)", 
             "op_politician_id": null, 
             "sex": 1, 
-            "birth_date": "1949-09-15", 
-            "slug": "daniele-pairetti-1949-09-15"
+            "birth_date": "1977-08-31", 
+            "slug": "bruno-trentacoste-1977-08-31"
         }
     }, 
     {
         "pk": 28, 
         "model": "people.person", 
         "fields": {
-            "first_name": "IVA", 
-            "last_name": "CREVACORE", 
-            "birth_location": "Valtournenche (AO)", 
+            "first_name": "Gino", 
+            "last_name": "VALERI", 
+            "birth_location": "LODIVECCHIO", 
             "op_politician_id": null, 
-            "sex": 0, 
-            "birth_date": "1951-05-09", 
-            "slug": "iva-crevacore-1951-05-09"
+            "sex": 1, 
+            "birth_date": "1944-05-09", 
+            "slug": "gino-valeri-1944-05-09"
         }
     }, 
     {
         "pk": 29, 
         "model": "people.person", 
         "fields": {
-            "first_name": "CARLO", 
-            "last_name": "BRIATA", 
-            "birth_location": "Chiusanico (IM)", 
+            "first_name": "FABRIZIO", 
+            "last_name": "MAGALINI", 
+            "birth_location": "Caccuri (CZ)", 
             "op_politician_id": null, 
             "sex": 1, 
-            "birth_date": "1940-06-30", 
-            "slug": "carlo-briata-1940-06-30"
+            "birth_date": "1985-12-04", 
+            "slug": "fabrizio-magalini-1985-12-04"
         }
     }, 
     {
         "pk": 30, 
         "model": "people.person", 
         "fields": {
-            "first_name": "DENNI", 
-            "last_name": "CESARONI", 
-            "birth_location": "Chiusano di San Domenico (AV)", 
+            "first_name": "Rebecca", 
+            "last_name": "RAMORINI", 
+            "birth_location": "Farigliano (CN)", 
             "op_politician_id": null, 
-            "sex": 1, 
-            "birth_date": "1948-10-31", 
-            "slug": "denni-cesaroni-1948-10-31"
+            "sex": 0, 
+            "birth_date": "1983-04-01", 
+            "slug": "rebecca-ramorini-1983-04-01"
         }
     }, 
     {
         "pk": 31, 
         "model": "people.person", 
         "fields": {
-            "first_name": "FRANCA", 
-            "last_name": "Melorio", 
-            "birth_location": "Pastena (FR)", 
+            "first_name": "GINO", 
+            "last_name": "MIAN", 
+            "birth_location": "Serino (AV)", 
             "op_politician_id": null, 
-            "sex": 0, 
-            "birth_date": "1950-01-08", 
-            "slug": "franca-melorio-1950-01-08"
+            "sex": 1, 
+            "birth_date": "1972-10-29", 
+            "slug": "gino-mian-1972-10-29"
         }
     }, 
     {
         "pk": 32, 
         "model": "people.person", 
         "fields": {
-            "first_name": "DPMENICO", 
-            "last_name": "NOGAROLE", 
-            "birth_location": "Salussola (BI)", 
+            "first_name": "PATRIZIO", 
+            "last_name": "Armistizio", 
+            "birth_location": "Siegen Germania (EE)", 
             "op_politician_id": null, 
             "sex": 1, 
-            "birth_date": "1934-02-20", 
-            "slug": "dpmenico-nogarole-1934-02-20"
+            "birth_date": "1939-07-01", 
+            "slug": "patrizio-armistizio-1939-07-01"
         }
     }, 
     {
         "pk": 33, 
         "model": "people.person", 
         "fields": {
-            "first_name": "GIUSEPPANTONIO", 
-            "last_name": "DANIELI", 
-            "birth_location": "Opera (MI)", 
+            "first_name": "DOVILIA", 
+            "last_name": "D'AMMARIO", 
+            "birth_location": "Dogliani (CN)", 
             "op_politician_id": null, 
-            "sex": 1, 
-            "birth_date": "1978-12-05", 
-            "slug": "giuseppantonio-danieli-1978-12-05"
+            "sex": 0, 
+            "birth_date": "1966-12-27", 
+            "slug": "dovilia-dammario-1966-12-27"
         }
     }, 
     {
         "pk": 34, 
         "model": "people.person", 
         "fields": {
-            "first_name": "FAUSTA", 
-            "last_name": "BORRERI", 
-            "birth_location": "Selci (RI)", 
+            "first_name": "FIORANGELO", 
+            "last_name": "BUCCOLIERO", 
+            "birth_location": "PODENZANA MASSA-CARRARA", 
             "op_politician_id": null, 
-            "sex": 0, 
-            "birth_date": "1981-10-05", 
-            "slug": "fausta-borreri-1981-10-05"
+            "sex": 1, 
+            "birth_date": "1968-09-11", 
+            "slug": "fiorangelo-buccoliero-1968-09-11"
         }
     }, 
     {
         "pk": 35, 
         "model": "people.person", 
         "fields": {
-            "first_name": "Maria", 
-            "last_name": "OLMO", 
-            "birth_location": "Vita (TP)", 
+            "first_name": "ANT", 
+            "last_name": "SOLDOVIERI", 
+            "birth_location": "Mulazzano (LO)", 
             "op_politician_id": null, 
-            "sex": 0, 
-            "birth_date": "1964-07-30", 
-            "slug": "maria-olmo-1964-07-30"
+            "sex": 1, 
+            "birth_date": "1950-01-15", 
+            "slug": "ant-soldovieri-1950-01-15"
         }
     }, 
     {
         "pk": 36, 
         "model": "people.person", 
         "fields": {
-            "first_name": "LUIGI", 
-            "last_name": "BOSETTI", 
-            "birth_location": "San Gregorio di Catania (CT)", 
+            "first_name": "DOMENICO", 
+            "last_name": "FALCHERO", 
+            "birth_location": "Cavedago (TN)", 
             "op_politician_id": null, 
             "sex": 1, 
-            "birth_date": "1938-11-10", 
-            "slug": "luigi-bosetti-1938-11-10"
+            "birth_date": "1982-10-15", 
+            "slug": "domenico-falchero-1982-10-15"
         }
     }, 
     {
         "pk": 37, 
         "model": "people.person", 
         "fields": {
-            "first_name": "ROGER", 
-            "last_name": "Puorro", 
-            "birth_location": "Casciago (VA)", 
+            "first_name": "ENEMESIO", 
+            "last_name": "DEBENJAK", 
+            "birth_location": "Ballao (CA)", 
             "op_politician_id": null, 
             "sex": 1, 
-            "birth_date": "1978-04-05", 
-            "slug": "roger-puorro-1978-04-05"
+            "birth_date": "1985-04-05", 
+            "slug": "enemesio-debenjak-1985-04-05"
         }
     }, 
     {
         "pk": 38, 
         "model": "people.person", 
         "fields": {
-            "first_name": "IRIANNA", 
-            "last_name": "STROLA", 
-            "birth_location": "Ferentillo (TR)", 
+            "first_name": "PIER", 
+            "last_name": "Robiglio", 
+            "birth_location": "Zeri (MS)", 
             "op_politician_id": null, 
             "sex": 0, 
-            "birth_date": "1982-04-09", 
-            "slug": "irianna-strola-1982-04-09"
+            "birth_date": "1954-01-23", 
+            "slug": "pier-robiglio-1954-01-23"
         }
     }, 
     {
         "pk": 39, 
         "model": "people.person", 
         "fields": {
-            "first_name": "PAOLA", 
-            "last_name": "CIARFAGLIA", 
-            "birth_location": "MONTANDO DORA", 
+            "first_name": "Gerardo", 
+            "last_name": "BALLI'", 
+            "birth_location": "Calcio (BG)", 
             "op_politician_id": null, 
-            "sex": 0, 
-            "birth_date": "1967-07-10", 
-            "slug": "paola-ciarfaglia-1967-07-10"
+            "sex": 1, 
+            "birth_date": "1941-01-22", 
+            "slug": "gerardo-balli-1941-01-22"
         }
     }, 
     {
         "pk": 40, 
         "model": "people.person", 
         "fields": {
-            "first_name": "VOLMER", 
-            "last_name": "CATALUDDI", 
-            "birth_location": "Valsecca (BG)", 
+            "first_name": "SALVATORE", 
+            "last_name": "DELLO SBARBA", 
+            "birth_location": "Cupra Marittima (AP)", 
             "op_politician_id": null, 
             "sex": 1, 
-            "birth_date": "1949-05-11", 
-            "slug": "volmer-cataluddi-1949-05-11"
+            "birth_date": "1946-01-17", 
+            "slug": "salvatore-dello-sbarba-1946-01-17"
         }
     }, 
     {
         "pk": 41, 
         "model": "people.person", 
         "fields": {
-            "first_name": "CICC", 
-            "last_name": "ADORISIO", 
-            "birth_location": "Calabritto (AV)", 
+            "first_name": "Gaetano", 
+            "last_name": "CASTALDELLO", 
+            "birth_location": "Brunico (BZ)", 
             "op_politician_id": null, 
             "sex": 1, 
-            "birth_date": "1968-12-25", 
-            "slug": "cicc-adorisio-1968-12-25"
+            "birth_date": "1977-04-08", 
+            "slug": "gaetano-castaldello-1977-04-08"
         }
     }, 
     {
         "pk": 42, 
         "model": "people.person", 
         "fields": {
-            "first_name": "ANNIBALE", 
-            "last_name": "VELASCO", 
-            "birth_location": "Spadola (CZ)", 
+            "first_name": "ALOISIA", 
+            "last_name": "SMACCHIA", 
+            "birth_location": "TRESCORE B.", 
             "op_politician_id": null, 
-            "sex": 1, 
-            "birth_date": "1942-10-12", 
-            "slug": "annibale-velasco-1942-10-12"
+            "sex": 0, 
+            "birth_date": "1953-05-20", 
+            "slug": "aloisia-smacchia-1953-05-20"
         }
     }, 
     {
         "pk": 43, 
         "model": "people.person", 
         "fields": {
-            "first_name": "RINALDO", 
-            "last_name": "CERBINO", 
-            "birth_location": "FRANKENBERG GERMANIA", 
+            "first_name": "CARLO", 
+            "last_name": "COSOLO", 
+            "birth_location": "Barcellona (ME)", 
             "op_politician_id": null, 
             "sex": 1, 
-            "birth_date": "1924-04-03", 
-            "slug": "rinaldo-cerbino-1924-04-03"
+            "birth_date": "1969-08-24", 
+            "slug": "carlo-cosolo-1969-08-24"
         }
     }, 
     {
         "pk": 44, 
         "model": "people.person", 
         "fields": {
-            "first_name": "ALEKSANDAR", 
-            "last_name": "BERENGO", 
-            "birth_location": "Budrio (BO)", 
+            "first_name": "FALVIO", 
+            "last_name": "Zarrelli", 
+            "birth_location": "Romano Canavese (TO)", 
             "op_politician_id": null, 
             "sex": 1, 
-            "birth_date": "1975-03-18", 
-            "slug": "aleksandar-berengo-1975-03-18"
+            "birth_date": "1942-10-04", 
+            "slug": "falvio-zarrelli-1942-10-04"
         }
     }, 
     {
         "pk": 45, 
         "model": "people.person", 
         "fields": {
-            "first_name": "MASIMILIANO", 
-            "last_name": "PAU", 
-            "birth_location": "Lanzada (SO)", 
+            "first_name": "SATURNINO", 
+            "last_name": "VENNARI", 
+            "birth_location": "PIRANO", 
             "op_politician_id": null, 
             "sex": 1, 
-            "birth_date": "1989-02-05", 
-            "slug": "masimiliano-pau-1989-02-05"
+            "birth_date": "1954-03-23", 
+            "slug": "saturnino-vennari-1954-03-23"
         }
     }, 
     {
         "pk": 46, 
         "model": "people.person", 
         "fields": {
-            "first_name": "VITTOTIO", 
-            "last_name": "CINQUESANTI", 
-            "birth_location": "Castegnato (BS)", 
+            "first_name": "BONAVENTURA", 
+            "last_name": "SAITTO", 
+            "birth_location": "San Nicola la Strada (CE)", 
             "op_politician_id": null, 
             "sex": 1, 
-            "birth_date": "1965-02-12", 
-            "slug": "vittotio-cinquesanti-1965-02-12"
+            "birth_date": "1974-07-23", 
+            "slug": "bonaventura-saitto-1974-07-23"
         }
     }, 
     {
         "pk": 47, 
         "model": "people.person", 
         "fields": {
-            "first_name": "SILVIO", 
-            "last_name": "PIERAMI", 
-            "birth_location": "Ruvo di Puglia (BA)", 
+            "first_name": "ARMENIO", 
+            "last_name": "MAGGINI", 
+            "birth_location": "Cosenza (CS)", 
             "op_politician_id": null, 
             "sex": 1, 
-            "birth_date": "1966-08-02", 
-            "slug": "silvio-pierami-1966-08-02"
+            "birth_date": "1962-06-10", 
+            "slug": "armenio-maggini-1962-06-10"
         }
     }, 
     {
         "pk": 48, 
         "model": "people.person", 
         "fields": {
-            "first_name": "EZECHIA", 
-            "last_name": "ZIVERI", 
-            "birth_location": "Sanzeno (TN)", 
+            "first_name": "A.", 
+            "last_name": "POSATI", 
+            "birth_location": "Ponte Buggianese (PT)", 
             "op_politician_id": null, 
             "sex": 1, 
-            "birth_date": "1958-11-14", 
-            "slug": "ezechia-ziveri-1958-11-14"
+            "birth_date": "1948-07-03", 
+            "slug": "a-posati-1948-07-03"
         }
     }, 
     {
         "pk": 1, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 1, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
             "description": "Descrizione incarico di sindaco", 
             "end_date": null, 
-            "n_present_votations": 0, 
             "n_absent_votations": 0, 
             "n_rebel_votations": 0, 
             "institution": 1, 
@@ -646,15 +1166,14 @@
         "pk": 2, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 3, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
-            "description": "Consigliere semplice", 
+            "description": "", 
             "end_date": null, 
-            "n_present_votations": 10, 
-            "n_absent_votations": 2, 
-            "n_rebel_votations": 7, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
             "institution": 3, 
             "person": 2, 
             "end_reason": "", 
@@ -665,15 +1184,14 @@
         "pk": 3, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 3, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
-            "description": "Consigliere semplice", 
+            "description": "", 
             "end_date": null, 
-            "n_present_votations": 11, 
-            "n_absent_votations": 1, 
-            "n_rebel_votations": 5, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
             "institution": 3, 
             "person": 3, 
             "end_reason": "", 
@@ -684,17 +1202,16 @@
         "pk": 4, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 4, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
-            "description": "Presidente del Consiglio Comunale", 
+            "description": "", 
             "end_date": null, 
-            "n_present_votations": 0, 
             "n_absent_votations": 0, 
             "n_rebel_votations": 0, 
             "institution": 3, 
-            "person": 3, 
+            "person": 4, 
             "end_reason": "", 
             "start_date": "2008-05-08"
         }
@@ -703,17 +1220,16 @@
         "pk": 5, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 3, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
-            "description": "Consigliere semplice", 
+            "description": "", 
             "end_date": null, 
-            "n_present_votations": 11, 
-            "n_absent_votations": 1, 
-            "n_rebel_votations": 4, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
             "institution": 3, 
-            "person": 4, 
+            "person": 5, 
             "end_reason": "", 
             "start_date": "2008-05-08"
         }
@@ -722,17 +1238,16 @@
         "pk": 6, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 3, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
-            "description": "Consigliere semplice", 
+            "description": "", 
             "end_date": null, 
-            "n_present_votations": 11, 
-            "n_absent_votations": 1, 
-            "n_rebel_votations": 6, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
             "institution": 3, 
-            "person": 5, 
+            "person": 6, 
             "end_reason": "", 
             "start_date": "2008-05-08"
         }
@@ -741,17 +1256,16 @@
         "pk": 7, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 3, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
-            "description": "Consigliere semplice", 
+            "description": "", 
             "end_date": null, 
-            "n_present_votations": 12, 
             "n_absent_votations": 0, 
-            "n_rebel_votations": 6, 
+            "n_rebel_votations": 0, 
             "institution": 3, 
-            "person": 6, 
+            "person": 7, 
             "end_reason": "", 
             "start_date": "2008-05-08"
         }
@@ -760,17 +1274,16 @@
         "pk": 8, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 3, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
-            "description": "Consigliere semplice", 
+            "description": "", 
             "end_date": null, 
-            "n_present_votations": 11, 
-            "n_absent_votations": 1, 
-            "n_rebel_votations": 7, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
             "institution": 3, 
-            "person": 7, 
+            "person": 8, 
             "end_reason": "", 
             "start_date": "2008-05-08"
         }
@@ -779,17 +1292,16 @@
         "pk": 9, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 3, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
-            "description": "Consigliere semplice", 
+            "description": "", 
             "end_date": null, 
-            "n_present_votations": 11, 
-            "n_absent_votations": 1, 
-            "n_rebel_votations": 2, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
             "institution": 3, 
-            "person": 8, 
+            "person": 9, 
             "end_reason": "", 
             "start_date": "2008-05-08"
         }
@@ -798,17 +1310,16 @@
         "pk": 10, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 3, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
-            "description": "Consigliere semplice", 
+            "description": "", 
             "end_date": null, 
-            "n_present_votations": 12, 
             "n_absent_votations": 0, 
-            "n_rebel_votations": 6, 
+            "n_rebel_votations": 0, 
             "institution": 3, 
-            "person": 9, 
+            "person": 10, 
             "end_reason": "", 
             "start_date": "2008-05-08"
         }
@@ -817,17 +1328,16 @@
         "pk": 11, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 3, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
-            "description": "Consigliere semplice", 
+            "description": "", 
             "end_date": null, 
-            "n_present_votations": 11, 
-            "n_absent_votations": 1, 
-            "n_rebel_votations": 2, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
             "institution": 3, 
-            "person": 10, 
+            "person": 11, 
             "end_reason": "", 
             "start_date": "2008-05-08"
         }
@@ -836,17 +1346,16 @@
         "pk": 12, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 3, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
-            "description": "Consigliere semplice", 
+            "description": "", 
             "end_date": null, 
-            "n_present_votations": 12, 
             "n_absent_votations": 0, 
-            "n_rebel_votations": 4, 
+            "n_rebel_votations": 0, 
             "institution": 3, 
-            "person": 11, 
+            "person": 12, 
             "end_reason": "", 
             "start_date": "2008-05-08"
         }
@@ -855,51 +1364,12 @@
         "pk": 13, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 3, 
             "op_charge_id": null, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "Consigliere semplice", 
-            "end_date": null, 
-            "n_present_votations": 11, 
-            "n_absent_votations": 1, 
-            "n_rebel_votations": 3, 
-            "institution": 3, 
-            "person": 12, 
-            "end_reason": "", 
-            "start_date": "2008-05-08"
-        }
-    }, 
-    {
-        "pk": 14, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "charge_type": 3, 
-            "op_charge_id": null, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "Consigliere semplice", 
-            "end_date": null, 
-            "n_present_votations": 12, 
-            "n_absent_votations": 0, 
-            "n_rebel_votations": 3, 
-            "institution": 3, 
-            "person": 13, 
-            "end_reason": "", 
-            "start_date": "2008-05-08"
-        }
-    }, 
-    {
-        "pk": 15, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "charge_type": 5, 
-            "op_charge_id": null, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "Vicepresidente del Consiglio Comunale", 
-            "end_date": null, 
             "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "", 
+            "end_date": null, 
             "n_absent_votations": 0, 
             "n_rebel_votations": 0, 
             "institution": 3, 
@@ -909,20 +1379,55 @@
         }
     }, 
     {
+        "pk": 14, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "", 
+            "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 3, 
+            "person": 14, 
+            "end_reason": "", 
+            "start_date": "2008-05-08"
+        }
+    }, 
+    {
+        "pk": 15, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "", 
+            "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 3, 
+            "person": 15, 
+            "end_reason": "", 
+            "start_date": "2008-05-08"
+        }
+    }, 
+    {
         "pk": 16, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 3, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
-            "description": "Consigliere semplice", 
+            "description": "", 
             "end_date": null, 
-            "n_present_votations": 11, 
-            "n_absent_votations": 1, 
-            "n_rebel_votations": 7, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
             "institution": 3, 
-            "person": 14, 
+            "person": 16, 
             "end_reason": "", 
             "start_date": "2008-05-08"
         }
@@ -931,17 +1436,16 @@
         "pk": 17, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 3, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
-            "description": "Consigliere semplice", 
+            "description": "", 
             "end_date": null, 
-            "n_present_votations": 11, 
-            "n_absent_votations": 1, 
-            "n_rebel_votations": 5, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
             "institution": 3, 
-            "person": 15, 
+            "person": 17, 
             "end_reason": "", 
             "start_date": "2008-05-08"
         }
@@ -950,17 +1454,16 @@
         "pk": 18, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 3, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
-            "description": "Consigliere semplice", 
+            "description": "", 
             "end_date": null, 
-            "n_present_votations": 11, 
-            "n_absent_votations": 1, 
-            "n_rebel_votations": 7, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
             "institution": 3, 
-            "person": 16, 
+            "person": 18, 
             "end_reason": "", 
             "start_date": "2008-05-08"
         }
@@ -969,17 +1472,16 @@
         "pk": 19, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 3, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
-            "description": "Consigliere semplice", 
+            "description": "", 
             "end_date": null, 
-            "n_present_votations": 12, 
             "n_absent_votations": 0, 
-            "n_rebel_votations": 6, 
+            "n_rebel_votations": 0, 
             "institution": 3, 
-            "person": 17, 
+            "person": 19, 
             "end_reason": "", 
             "start_date": "2008-05-08"
         }
@@ -988,17 +1490,16 @@
         "pk": 20, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 3, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
-            "description": "Consigliere semplice", 
+            "description": "", 
             "end_date": null, 
-            "n_present_votations": 11, 
-            "n_absent_votations": 1, 
-            "n_rebel_votations": 7, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
             "institution": 3, 
-            "person": 18, 
+            "person": 20, 
             "end_reason": "", 
             "start_date": "2008-05-08"
         }
@@ -1007,17 +1508,16 @@
         "pk": 21, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 3, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
-            "description": "Consigliere semplice", 
+            "description": "", 
             "end_date": null, 
-            "n_present_votations": 12, 
             "n_absent_votations": 0, 
-            "n_rebel_votations": 6, 
+            "n_rebel_votations": 0, 
             "institution": 3, 
-            "person": 19, 
+            "person": 21, 
             "end_reason": "", 
             "start_date": "2008-05-08"
         }
@@ -1026,17 +1526,16 @@
         "pk": 22, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 3, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
-            "description": "Consigliere semplice", 
+            "description": "", 
             "end_date": null, 
-            "n_present_votations": 9, 
-            "n_absent_votations": 3, 
-            "n_rebel_votations": 6, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
             "institution": 3, 
-            "person": 20, 
+            "person": 22, 
             "end_reason": "", 
             "start_date": "2008-05-08"
         }
@@ -1045,17 +1544,16 @@
         "pk": 23, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 3, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
-            "description": "Consigliere semplice", 
+            "description": "", 
             "end_date": null, 
-            "n_present_votations": 12, 
             "n_absent_votations": 0, 
-            "n_rebel_votations": 4, 
+            "n_rebel_votations": 0, 
             "institution": 3, 
-            "person": 21, 
+            "person": 23, 
             "end_reason": "", 
             "start_date": "2008-05-08"
         }
@@ -1064,17 +1562,16 @@
         "pk": 24, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 3, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
-            "description": "Consigliere semplice", 
+            "description": "", 
             "end_date": null, 
-            "n_present_votations": 12, 
             "n_absent_votations": 0, 
-            "n_rebel_votations": 8, 
+            "n_rebel_votations": 0, 
             "institution": 3, 
-            "person": 22, 
+            "person": 24, 
             "end_reason": "", 
             "start_date": "2008-05-08"
         }
@@ -1083,17 +1580,16 @@
         "pk": 25, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 3, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
-            "description": "Consigliere semplice", 
+            "description": "", 
             "end_date": null, 
-            "n_present_votations": 10, 
-            "n_absent_votations": 2, 
-            "n_rebel_votations": 5, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
             "institution": 3, 
-            "person": 23, 
+            "person": 25, 
             "end_reason": "", 
             "start_date": "2008-05-08"
         }
@@ -1102,17 +1598,16 @@
         "pk": 26, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 3, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
-            "description": "Consigliere semplice", 
+            "description": "", 
             "end_date": null, 
-            "n_present_votations": 12, 
             "n_absent_votations": 0, 
-            "n_rebel_votations": 5, 
+            "n_rebel_votations": 0, 
             "institution": 3, 
-            "person": 24, 
+            "person": 26, 
             "end_reason": "", 
             "start_date": "2008-05-08"
         }
@@ -1121,17 +1616,16 @@
         "pk": 27, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 3, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
-            "description": "Consigliere semplice", 
+            "description": "", 
             "end_date": null, 
-            "n_present_votations": 12, 
             "n_absent_votations": 0, 
-            "n_rebel_votations": 7, 
+            "n_rebel_votations": 0, 
             "institution": 3, 
-            "person": 25, 
+            "person": 27, 
             "end_reason": "", 
             "start_date": "2008-05-08"
         }
@@ -1140,17 +1634,16 @@
         "pk": 28, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 3, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
-            "description": "Consigliere semplice", 
+            "description": "", 
             "end_date": null, 
-            "n_present_votations": 11, 
-            "n_absent_votations": 1, 
-            "n_rebel_votations": 9, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
             "institution": 3, 
-            "person": 26, 
+            "person": 28, 
             "end_reason": "", 
             "start_date": "2008-05-08"
         }
@@ -1159,17 +1652,16 @@
         "pk": 29, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 3, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
-            "description": "Consigliere semplice", 
+            "description": "", 
             "end_date": null, 
-            "n_present_votations": 11, 
-            "n_absent_votations": 1, 
-            "n_rebel_votations": 6, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
             "institution": 3, 
-            "person": 27, 
+            "person": 29, 
             "end_reason": "", 
             "start_date": "2008-05-08"
         }
@@ -1178,17 +1670,16 @@
         "pk": 30, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 3, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
-            "description": "Consigliere semplice", 
+            "description": "", 
             "end_date": null, 
-            "n_present_votations": 11, 
-            "n_absent_votations": 1, 
-            "n_rebel_votations": 7, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
             "institution": 3, 
-            "person": 28, 
+            "person": 30, 
             "end_reason": "", 
             "start_date": "2008-05-08"
         }
@@ -1197,17 +1688,16 @@
         "pk": 31, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 3, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
-            "description": "Consigliere semplice", 
+            "description": "", 
             "end_date": null, 
-            "n_present_votations": 12, 
             "n_absent_votations": 0, 
-            "n_rebel_votations": 5, 
+            "n_rebel_votations": 0, 
             "institution": 3, 
-            "person": 29, 
+            "person": 31, 
             "end_reason": "", 
             "start_date": "2008-05-08"
         }
@@ -1216,17 +1706,16 @@
         "pk": 32, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 3, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
-            "description": "Consigliere semplice", 
+            "description": "", 
             "end_date": null, 
-            "n_present_votations": 11, 
-            "n_absent_votations": 1, 
-            "n_rebel_votations": 5, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
             "institution": 3, 
-            "person": 30, 
+            "person": 32, 
             "end_reason": "", 
             "start_date": "2008-05-08"
         }
@@ -1235,17 +1724,16 @@
         "pk": 33, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 3, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
-            "description": "Consigliere semplice", 
+            "description": "", 
             "end_date": null, 
-            "n_present_votations": 9, 
-            "n_absent_votations": 3, 
-            "n_rebel_votations": 7, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
             "institution": 3, 
-            "person": 31, 
+            "person": 33, 
             "end_reason": "", 
             "start_date": "2008-05-08"
         }
@@ -1254,17 +1742,16 @@
         "pk": 34, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 3, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
-            "description": "Consigliere semplice", 
+            "description": "", 
             "end_date": null, 
-            "n_present_votations": 12, 
             "n_absent_votations": 0, 
-            "n_rebel_votations": 6, 
+            "n_rebel_votations": 0, 
             "institution": 3, 
-            "person": 32, 
+            "person": 34, 
             "end_reason": "", 
             "start_date": "2008-05-08"
         }
@@ -1273,17 +1760,16 @@
         "pk": 35, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 3, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
-            "description": "Consigliere semplice", 
+            "description": "", 
             "end_date": null, 
-            "n_present_votations": 12, 
             "n_absent_votations": 0, 
-            "n_rebel_votations": 6, 
+            "n_rebel_votations": 0, 
             "institution": 3, 
-            "person": 33, 
+            "person": 35, 
             "end_reason": "", 
             "start_date": "2008-05-08"
         }
@@ -1292,17 +1778,16 @@
         "pk": 36, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 3, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
-            "description": "Consigliere semplice", 
+            "description": "", 
             "end_date": null, 
-            "n_present_votations": 11, 
-            "n_absent_votations": 1, 
-            "n_rebel_votations": 6, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
             "institution": 3, 
-            "person": 34, 
+            "person": 36, 
             "end_reason": "", 
             "start_date": "2008-05-08"
         }
@@ -1311,17 +1796,16 @@
         "pk": 37, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 3, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
-            "description": "Consigliere semplice", 
+            "description": "", 
             "end_date": null, 
-            "n_present_votations": 12, 
             "n_absent_votations": 0, 
-            "n_rebel_votations": 6, 
+            "n_rebel_votations": 0, 
             "institution": 3, 
-            "person": 35, 
+            "person": 37, 
             "end_reason": "", 
             "start_date": "2008-05-08"
         }
@@ -1330,17 +1814,16 @@
         "pk": 38, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 3, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
-            "description": "Consigliere semplice", 
+            "description": "", 
             "end_date": null, 
-            "n_present_votations": 12, 
             "n_absent_votations": 0, 
-            "n_rebel_votations": 4, 
+            "n_rebel_votations": 0, 
             "institution": 3, 
-            "person": 36, 
+            "person": 38, 
             "end_reason": "", 
             "start_date": "2008-05-08"
         }
@@ -1349,17 +1832,16 @@
         "pk": 39, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 3, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
-            "description": "Consigliere semplice", 
+            "description": "", 
             "end_date": null, 
-            "n_present_votations": 12, 
             "n_absent_votations": 0, 
-            "n_rebel_votations": 5, 
+            "n_rebel_votations": 0, 
             "institution": 3, 
-            "person": 37, 
+            "person": 39, 
             "end_reason": "", 
             "start_date": "2008-05-08"
         }
@@ -1368,17 +1850,16 @@
         "pk": 40, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 3, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
-            "description": "Consigliere semplice", 
+            "description": "", 
             "end_date": null, 
-            "n_present_votations": 12, 
             "n_absent_votations": 0, 
-            "n_rebel_votations": 4, 
+            "n_rebel_votations": 0, 
             "institution": 3, 
-            "person": 38, 
+            "person": 40, 
             "end_reason": "", 
             "start_date": "2008-05-08"
         }
@@ -1387,17 +1868,16 @@
         "pk": 41, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 3, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
-            "description": "Consigliere semplice", 
+            "description": "", 
             "end_date": null, 
-            "n_present_votations": 11, 
-            "n_absent_votations": 1, 
-            "n_rebel_votations": 6, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
             "institution": 3, 
-            "person": 39, 
+            "person": 41, 
             "end_reason": "", 
             "start_date": "2008-05-08"
         }
@@ -1406,51 +1886,12 @@
         "pk": 42, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 3, 
             "op_charge_id": null, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "Consigliere semplice", 
-            "end_date": null, 
-            "n_present_votations": 12, 
-            "n_absent_votations": 0, 
-            "n_rebel_votations": 7, 
-            "institution": 3, 
-            "person": 40, 
-            "end_reason": "", 
-            "start_date": "2008-05-08"
-        }
-    }, 
-    {
-        "pk": 43, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "charge_type": 3, 
-            "op_charge_id": null, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "Consigliere semplice", 
-            "end_date": null, 
-            "n_present_votations": 12, 
-            "n_absent_votations": 0, 
-            "n_rebel_votations": 4, 
-            "institution": 3, 
-            "person": 41, 
-            "end_reason": "", 
-            "start_date": "2008-05-08"
-        }
-    }, 
-    {
-        "pk": 44, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "charge_type": 2, 
-            "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
             "description": "Citt\u00e0 Sostenibile (Ambiente, Mobilit\u00e0, Trasporto Pubblico), Sport, Politiche Giovanili, Frazioni", 
             "end_date": null, 
-            "n_present_votations": 0, 
             "n_absent_votations": 0, 
             "n_rebel_votations": 0, 
             "institution": 2, 
@@ -1460,16 +1901,15 @@
         }
     }, 
     {
-        "pk": 45, 
+        "pk": 43, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 2, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
             "description": "Urbanistica", 
             "end_date": null, 
-            "n_present_votations": 0, 
             "n_absent_votations": 0, 
             "n_rebel_votations": 0, 
             "institution": 2, 
@@ -1479,16 +1919,15 @@
         }
     }, 
     {
-        "pk": 46, 
+        "pk": 44, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 2, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
             "description": "Attivit\u00e0 Economiche, Pari Opportunit\u00e0, Partecipazione", 
             "end_date": null, 
-            "n_present_votations": 0, 
             "n_absent_votations": 0, 
             "n_rebel_votations": 0, 
             "institution": 2, 
@@ -1498,16 +1937,15 @@
         }
     }, 
     {
-        "pk": 47, 
+        "pk": 45, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 2, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
             "description": "Lavori Pubblici", 
             "end_date": null, 
-            "n_present_votations": 0, 
             "n_absent_votations": 0, 
             "n_rebel_votations": 0, 
             "institution": 2, 
@@ -1517,16 +1955,15 @@
         }
     }, 
     {
-        "pk": 48, 
+        "pk": 46, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 2, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
             "description": "Risorse Finanziarie e Patrimoniali", 
             "end_date": null, 
-            "n_present_votations": 0, 
             "n_absent_votations": 0, 
             "n_rebel_votations": 0, 
             "institution": 2, 
@@ -1536,16 +1973,15 @@
         }
     }, 
     {
-        "pk": 49, 
+        "pk": 47, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 2, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
             "description": "Cultura e Pubblica Istruzione", 
             "end_date": null, 
-            "n_present_votations": 0, 
             "n_absent_votations": 0, 
             "n_rebel_votations": 0, 
             "institution": 2, 
@@ -1555,16 +1991,15 @@
         }
     }, 
     {
-        "pk": 50, 
+        "pk": 48, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 2, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
             "description": "Servizi alla Persona, Sanit\u00e0, Politiche per l\u2019Integrazione ed Edilizia Residenziale Pubblica", 
             "end_date": null, 
-            "n_present_votations": 0, 
             "n_absent_votations": 0, 
             "n_rebel_votations": 0, 
             "institution": 2, 
@@ -1574,16 +2009,87 @@
         }
     }, 
     {
-        "pk": 51, 
+        "pk": 49, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 6, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
             "description": "Membro della commissione", 
             "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 4, 
+            "person": 18, 
+            "end_reason": "", 
+            "start_date": "2008-05-08"
+        }
+    }, 
+    {
+        "pk": 50, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
             "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "Membro della commissione", 
+            "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 4, 
+            "person": 34, 
+            "end_reason": "", 
+            "start_date": "2008-05-08"
+        }
+    }, 
+    {
+        "pk": 51, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "Membro della commissione", 
+            "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 4, 
+            "person": 39, 
+            "end_reason": "", 
+            "start_date": "2008-05-08"
+        }
+    }, 
+    {
+        "pk": 52, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "Membro della commissione", 
+            "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 4, 
+            "person": 31, 
+            "end_reason": "", 
+            "start_date": "2008-05-08"
+        }
+    }, 
+    {
+        "pk": 53, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "Membro della commissione", 
+            "end_date": null, 
             "n_absent_votations": 0, 
             "n_rebel_votations": 0, 
             "institution": 4, 
@@ -1593,58 +2099,19 @@
         }
     }, 
     {
-        "pk": 52, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "charge_type": 6, 
-            "op_charge_id": null, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "Membro della commissione", 
-            "end_date": null, 
-            "n_present_votations": 0, 
-            "n_absent_votations": 0, 
-            "n_rebel_votations": 0, 
-            "institution": 4, 
-            "person": 24, 
-            "end_reason": "", 
-            "start_date": "2008-05-08"
-        }
-    }, 
-    {
-        "pk": 53, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "charge_type": 6, 
-            "op_charge_id": null, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "Membro della commissione", 
-            "end_date": null, 
-            "n_present_votations": 0, 
-            "n_absent_votations": 0, 
-            "n_rebel_votations": 0, 
-            "institution": 4, 
-            "person": 13, 
-            "end_reason": "", 
-            "start_date": "2008-05-08"
-        }
-    }, 
-    {
         "pk": 54, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 6, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
             "description": "Membro della commissione", 
             "end_date": null, 
-            "n_present_votations": 0, 
             "n_absent_votations": 0, 
             "n_rebel_votations": 0, 
             "institution": 4, 
-            "person": 22, 
+            "person": 37, 
             "end_reason": "", 
             "start_date": "2008-05-08"
         }
@@ -1653,127 +2120,12 @@
         "pk": 55, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 6, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
             "description": "Membro della commissione", 
             "end_date": null, 
-            "n_present_votations": 0, 
-            "n_absent_votations": 0, 
-            "n_rebel_votations": 0, 
-            "institution": 4, 
-            "person": 35, 
-            "end_reason": "", 
-            "start_date": "2008-05-08"
-        }
-    }, 
-    {
-        "pk": 56, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "charge_type": 6, 
-            "op_charge_id": null, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "Membro della commissione", 
-            "end_date": null, 
-            "n_present_votations": 0, 
-            "n_absent_votations": 0, 
-            "n_rebel_votations": 0, 
-            "institution": 4, 
-            "person": 20, 
-            "end_reason": "", 
-            "start_date": "2008-05-08"
-        }
-    }, 
-    {
-        "pk": 57, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "charge_type": 6, 
-            "op_charge_id": null, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "Membro della commissione", 
-            "end_date": null, 
-            "n_present_votations": 0, 
-            "n_absent_votations": 0, 
-            "n_rebel_votations": 0, 
-            "institution": 4, 
-            "person": 5, 
-            "end_reason": "", 
-            "start_date": "2008-05-08"
-        }
-    }, 
-    {
-        "pk": 58, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "charge_type": 6, 
-            "op_charge_id": null, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "Membro della commissione", 
-            "end_date": null, 
-            "n_present_votations": 0, 
-            "n_absent_votations": 0, 
-            "n_rebel_votations": 0, 
-            "institution": 4, 
-            "person": 21, 
-            "end_reason": "", 
-            "start_date": "2008-05-08"
-        }
-    }, 
-    {
-        "pk": 59, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "charge_type": 6, 
-            "op_charge_id": null, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "Membro della commissione", 
-            "end_date": null, 
-            "n_present_votations": 0, 
-            "n_absent_votations": 0, 
-            "n_rebel_votations": 0, 
-            "institution": 4, 
-            "person": 36, 
-            "end_reason": "", 
-            "start_date": "2008-05-08"
-        }
-    }, 
-    {
-        "pk": 60, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "charge_type": 6, 
-            "op_charge_id": null, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "Membro della commissione", 
-            "end_date": null, 
-            "n_present_votations": 0, 
-            "n_absent_votations": 0, 
-            "n_rebel_votations": 0, 
-            "institution": 4, 
-            "person": 16, 
-            "end_reason": "", 
-            "start_date": "2008-05-08"
-        }
-    }, 
-    {
-        "pk": 61, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "charge_type": 6, 
-            "op_charge_id": null, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "Membro della commissione", 
-            "end_date": null, 
-            "n_present_votations": 0, 
             "n_absent_votations": 0, 
             "n_rebel_votations": 0, 
             "institution": 4, 
@@ -1783,20 +2135,127 @@
         }
     }, 
     {
-        "pk": 62, 
+        "pk": 56, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 6, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
             "description": "Membro della commissione", 
             "end_date": null, 
-            "n_present_votations": 0, 
             "n_absent_votations": 0, 
             "n_rebel_votations": 0, 
             "institution": 4, 
-            "person": 11, 
+            "person": 13, 
+            "end_reason": "", 
+            "start_date": "2008-05-08"
+        }
+    }, 
+    {
+        "pk": 57, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "Membro della commissione", 
+            "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 4, 
+            "person": 3, 
+            "end_reason": "", 
+            "start_date": "2008-05-08"
+        }
+    }, 
+    {
+        "pk": 58, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "Membro della commissione", 
+            "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 4, 
+            "person": 14, 
+            "end_reason": "", 
+            "start_date": "2008-05-08"
+        }
+    }, 
+    {
+        "pk": 59, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "Membro della commissione", 
+            "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 4, 
+            "person": 41, 
+            "end_reason": "", 
+            "start_date": "2008-05-08"
+        }
+    }, 
+    {
+        "pk": 60, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "Membro della commissione", 
+            "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 4, 
+            "person": 19, 
+            "end_reason": "", 
+            "start_date": "2008-05-08"
+        }
+    }, 
+    {
+        "pk": 61, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "Membro della commissione", 
+            "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 5, 
+            "person": 29, 
+            "end_reason": "", 
+            "start_date": "2008-05-08"
+        }
+    }, 
+    {
+        "pk": 62, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "Membro della commissione", 
+            "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 5, 
+            "person": 28, 
             "end_reason": "", 
             "start_date": "2008-05-08"
         }
@@ -1805,17 +2264,16 @@
         "pk": 63, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 6, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
             "description": "Membro della commissione", 
             "end_date": null, 
-            "n_present_votations": 0, 
             "n_absent_votations": 0, 
             "n_rebel_votations": 0, 
             "institution": 5, 
-            "person": 31, 
+            "person": 20, 
             "end_reason": "", 
             "start_date": "2008-05-08"
         }
@@ -1824,17 +2282,16 @@
         "pk": 64, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 6, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
             "description": "Membro della commissione", 
             "end_date": null, 
-            "n_present_votations": 0, 
             "n_absent_votations": 0, 
             "n_rebel_votations": 0, 
             "institution": 5, 
-            "person": 13, 
+            "person": 34, 
             "end_reason": "", 
             "start_date": "2008-05-08"
         }
@@ -1843,17 +2300,16 @@
         "pk": 65, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 6, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
             "description": "Membro della commissione", 
             "end_date": null, 
-            "n_present_votations": 0, 
             "n_absent_votations": 0, 
             "n_rebel_votations": 0, 
             "institution": 5, 
-            "person": 28, 
+            "person": 36, 
             "end_reason": "", 
             "start_date": "2008-05-08"
         }
@@ -1862,17 +2318,16 @@
         "pk": 66, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 6, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
             "description": "Membro della commissione", 
             "end_date": null, 
-            "n_present_votations": 0, 
             "n_absent_votations": 0, 
             "n_rebel_votations": 0, 
             "institution": 5, 
-            "person": 22, 
+            "person": 25, 
             "end_reason": "", 
             "start_date": "2008-05-08"
         }
@@ -1881,17 +2336,16 @@
         "pk": 67, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 6, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
             "description": "Membro della commissione", 
             "end_date": null, 
-            "n_present_votations": 0, 
             "n_absent_votations": 0, 
             "n_rebel_votations": 0, 
             "institution": 5, 
-            "person": 12, 
+            "person": 21, 
             "end_reason": "", 
             "start_date": "2008-05-08"
         }
@@ -1900,17 +2354,16 @@
         "pk": 68, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 6, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
             "description": "Membro della commissione", 
             "end_date": null, 
-            "n_present_votations": 0, 
             "n_absent_votations": 0, 
             "n_rebel_votations": 0, 
             "institution": 5, 
-            "person": 27, 
+            "person": 23, 
             "end_reason": "", 
             "start_date": "2008-05-08"
         }
@@ -1919,17 +2372,16 @@
         "pk": 69, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 6, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
             "description": "Membro della commissione", 
             "end_date": null, 
-            "n_present_votations": 0, 
             "n_absent_votations": 0, 
             "n_rebel_votations": 0, 
             "institution": 5, 
-            "person": 3, 
+            "person": 40, 
             "end_reason": "", 
             "start_date": "2008-05-08"
         }
@@ -1938,17 +2390,16 @@
         "pk": 70, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 6, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
             "description": "Membro della commissione", 
             "end_date": null, 
-            "n_present_votations": 0, 
             "n_absent_votations": 0, 
             "n_rebel_votations": 0, 
             "institution": 5, 
-            "person": 35, 
+            "person": 41, 
             "end_reason": "", 
             "start_date": "2008-05-08"
         }
@@ -1957,17 +2408,16 @@
         "pk": 71, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 6, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
             "description": "Membro della commissione", 
             "end_date": null, 
-            "n_present_votations": 0, 
             "n_absent_votations": 0, 
             "n_rebel_votations": 0, 
             "institution": 5, 
-            "person": 10, 
+            "person": 11, 
             "end_reason": "", 
             "start_date": "2008-05-08"
         }
@@ -1976,17 +2426,16 @@
         "pk": 72, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 6, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
             "description": "Membro della commissione", 
             "end_date": null, 
-            "n_present_votations": 0, 
             "n_absent_votations": 0, 
             "n_rebel_votations": 0, 
             "institution": 5, 
-            "person": 14, 
+            "person": 24, 
             "end_reason": "", 
             "start_date": "2008-05-08"
         }
@@ -1995,17 +2444,16 @@
         "pk": 73, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 6, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
             "description": "Membro della commissione", 
             "end_date": null, 
-            "n_present_votations": 0, 
             "n_absent_votations": 0, 
             "n_rebel_votations": 0, 
-            "institution": 5, 
-            "person": 4, 
+            "institution": 6, 
+            "person": 8, 
             "end_reason": "", 
             "start_date": "2008-05-08"
         }
@@ -2014,17 +2462,16 @@
         "pk": 74, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 6, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
             "description": "Membro della commissione", 
             "end_date": null, 
-            "n_present_votations": 0, 
             "n_absent_votations": 0, 
             "n_rebel_votations": 0, 
-            "institution": 5, 
-            "person": 8, 
+            "institution": 6, 
+            "person": 31, 
             "end_reason": "", 
             "start_date": "2008-05-08"
         }
@@ -2033,17 +2480,16 @@
         "pk": 75, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 6, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
             "description": "Membro della commissione", 
             "end_date": null, 
-            "n_present_votations": 0, 
             "n_absent_votations": 0, 
             "n_rebel_votations": 0, 
             "institution": 6, 
-            "person": 24, 
+            "person": 30, 
             "end_reason": "", 
             "start_date": "2008-05-08"
         }
@@ -2052,17 +2498,16 @@
         "pk": 76, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 6, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
             "description": "Membro della commissione", 
             "end_date": null, 
-            "n_present_votations": 0, 
             "n_absent_votations": 0, 
             "n_rebel_votations": 0, 
             "institution": 6, 
-            "person": 22, 
+            "person": 39, 
             "end_reason": "", 
             "start_date": "2008-05-08"
         }
@@ -2071,108 +2516,12 @@
         "pk": 77, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 6, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
             "description": "Membro della commissione", 
             "end_date": null, 
-            "n_present_votations": 0, 
-            "n_absent_votations": 0, 
-            "n_rebel_votations": 0, 
-            "institution": 6, 
-            "person": 17, 
-            "end_reason": "", 
-            "start_date": "2008-05-08"
-        }
-    }, 
-    {
-        "pk": 78, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "charge_type": 6, 
-            "op_charge_id": null, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "Membro della commissione", 
-            "end_date": null, 
-            "n_present_votations": 0, 
-            "n_absent_votations": 0, 
-            "n_rebel_votations": 0, 
-            "institution": 6, 
-            "person": 28, 
-            "end_reason": "", 
-            "start_date": "2008-05-08"
-        }
-    }, 
-    {
-        "pk": 79, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "charge_type": 6, 
-            "op_charge_id": null, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "Membro della commissione", 
-            "end_date": null, 
-            "n_present_votations": 0, 
-            "n_absent_votations": 0, 
-            "n_rebel_votations": 0, 
-            "institution": 6, 
-            "person": 20, 
-            "end_reason": "", 
-            "start_date": "2008-05-08"
-        }
-    }, 
-    {
-        "pk": 80, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "charge_type": 6, 
-            "op_charge_id": null, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "Membro della commissione", 
-            "end_date": null, 
-            "n_present_votations": 0, 
-            "n_absent_votations": 0, 
-            "n_rebel_votations": 0, 
-            "institution": 6, 
-            "person": 41, 
-            "end_reason": "", 
-            "start_date": "2008-05-08"
-        }
-    }, 
-    {
-        "pk": 81, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "charge_type": 6, 
-            "op_charge_id": null, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "Membro della commissione", 
-            "end_date": null, 
-            "n_present_votations": 0, 
-            "n_absent_votations": 0, 
-            "n_rebel_votations": 0, 
-            "institution": 6, 
-            "person": 18, 
-            "end_reason": "", 
-            "start_date": "2008-05-08"
-        }
-    }, 
-    {
-        "pk": 82, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "charge_type": 6, 
-            "op_charge_id": null, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "Membro della commissione", 
-            "end_date": null, 
-            "n_present_votations": 0, 
             "n_absent_votations": 0, 
             "n_rebel_votations": 0, 
             "institution": 6, 
@@ -2182,20 +2531,109 @@
         }
     }, 
     {
-        "pk": 83, 
+        "pk": 78, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 6, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
             "description": "Membro della commissione", 
             "end_date": null, 
-            "n_present_votations": 0, 
             "n_absent_votations": 0, 
             "n_rebel_votations": 0, 
             "institution": 6, 
-            "person": 10, 
+            "person": 25, 
+            "end_reason": "", 
+            "start_date": "2008-05-08"
+        }
+    }, 
+    {
+        "pk": 79, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "Membro della commissione", 
+            "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 6, 
+            "person": 37, 
+            "end_reason": "", 
+            "start_date": "2008-05-08"
+        }
+    }, 
+    {
+        "pk": 80, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "Membro della commissione", 
+            "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 6, 
+            "person": 33, 
+            "end_reason": "", 
+            "start_date": "2008-05-08"
+        }
+    }, 
+    {
+        "pk": 81, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "Membro della commissione", 
+            "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 6, 
+            "person": 40, 
+            "end_reason": "", 
+            "start_date": "2008-05-08"
+        }
+    }, 
+    {
+        "pk": 82, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "Membro della commissione", 
+            "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 6, 
+            "person": 41, 
+            "end_reason": "", 
+            "start_date": "2008-05-08"
+        }
+    }, 
+    {
+        "pk": 83, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "Membro della commissione", 
+            "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 6, 
+            "person": 15, 
             "end_reason": "", 
             "start_date": "2008-05-08"
         }
@@ -2204,17 +2642,16 @@
         "pk": 84, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 6, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
             "description": "Membro della commissione", 
             "end_date": null, 
-            "n_present_votations": 0, 
             "n_absent_votations": 0, 
             "n_rebel_votations": 0, 
             "institution": 6, 
-            "person": 14, 
+            "person": 24, 
             "end_reason": "", 
             "start_date": "2008-05-08"
         }
@@ -2223,17 +2660,16 @@
         "pk": 85, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 6, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
             "description": "Membro della commissione", 
             "end_date": null, 
-            "n_present_votations": 0, 
             "n_absent_votations": 0, 
             "n_rebel_votations": 0, 
-            "institution": 6, 
-            "person": 23, 
+            "institution": 7, 
+            "person": 30, 
             "end_reason": "", 
             "start_date": "2008-05-08"
         }
@@ -2242,17 +2678,16 @@
         "pk": 86, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 6, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
             "description": "Membro della commissione", 
             "end_date": null, 
-            "n_present_votations": 0, 
             "n_absent_votations": 0, 
             "n_rebel_votations": 0, 
-            "institution": 6, 
-            "person": 11, 
+            "institution": 7, 
+            "person": 39, 
             "end_reason": "", 
             "start_date": "2008-05-08"
         }
@@ -2261,13 +2696,84 @@
         "pk": 87, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 6, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
             "description": "Membro della commissione", 
             "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 7, 
+            "person": 22, 
+            "end_reason": "", 
+            "start_date": "2008-05-08"
+        }
+    }, 
+    {
+        "pk": 88, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
             "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "Membro della commissione", 
+            "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 7, 
+            "person": 29, 
+            "end_reason": "", 
+            "start_date": "2008-05-08"
+        }
+    }, 
+    {
+        "pk": 89, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "Membro della commissione", 
+            "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 7, 
+            "person": 37, 
+            "end_reason": "", 
+            "start_date": "2008-05-08"
+        }
+    }, 
+    {
+        "pk": 90, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "Membro della commissione", 
+            "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 7, 
+            "person": 21, 
+            "end_reason": "", 
+            "start_date": "2008-05-08"
+        }
+    }, 
+    {
+        "pk": 91, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "Membro della commissione", 
+            "end_date": null, 
             "n_absent_votations": 0, 
             "n_rebel_votations": 0, 
             "institution": 7, 
@@ -2277,96 +2783,19 @@
         }
     }, 
     {
-        "pk": 88, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "charge_type": 6, 
-            "op_charge_id": null, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "Membro della commissione", 
-            "end_date": null, 
-            "n_present_votations": 0, 
-            "n_absent_votations": 0, 
-            "n_rebel_votations": 0, 
-            "institution": 7, 
-            "person": 24, 
-            "end_reason": "", 
-            "start_date": "2008-05-08"
-        }
-    }, 
-    {
-        "pk": 89, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "charge_type": 6, 
-            "op_charge_id": null, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "Membro della commissione", 
-            "end_date": null, 
-            "n_present_votations": 0, 
-            "n_absent_votations": 0, 
-            "n_rebel_votations": 0, 
-            "institution": 7, 
-            "person": 31, 
-            "end_reason": "", 
-            "start_date": "2008-05-08"
-        }
-    }, 
-    {
-        "pk": 90, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "charge_type": 6, 
-            "op_charge_id": null, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "Membro della commissione", 
-            "end_date": null, 
-            "n_present_votations": 0, 
-            "n_absent_votations": 0, 
-            "n_rebel_votations": 0, 
-            "institution": 7, 
-            "person": 29, 
-            "end_reason": "", 
-            "start_date": "2008-05-08"
-        }
-    }, 
-    {
-        "pk": 91, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "charge_type": 6, 
-            "op_charge_id": null, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "Membro della commissione", 
-            "end_date": null, 
-            "n_present_votations": 0, 
-            "n_absent_votations": 0, 
-            "n_rebel_votations": 0, 
-            "institution": 7, 
-            "person": 38, 
-            "end_reason": "", 
-            "start_date": "2008-05-08"
-        }
-    }, 
-    {
         "pk": 92, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 6, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
             "description": "Membro della commissione", 
             "end_date": null, 
-            "n_present_votations": 0, 
             "n_absent_votations": 0, 
             "n_rebel_votations": 0, 
             "institution": 7, 
-            "person": 18, 
+            "person": 25, 
             "end_reason": "", 
             "start_date": "2008-05-08"
         }
@@ -2375,17 +2804,16 @@
         "pk": 93, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 6, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
             "description": "Membro della commissione", 
             "end_date": null, 
-            "n_present_votations": 0, 
             "n_absent_votations": 0, 
             "n_rebel_votations": 0, 
             "institution": 7, 
-            "person": 3, 
+            "person": 40, 
             "end_reason": "", 
             "start_date": "2008-05-08"
         }
@@ -2394,17 +2822,16 @@
         "pk": 94, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 6, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
             "description": "Membro della commissione", 
             "end_date": null, 
-            "n_present_votations": 0, 
             "n_absent_votations": 0, 
             "n_rebel_votations": 0, 
             "institution": 7, 
-            "person": 27, 
+            "person": 15, 
             "end_reason": "", 
             "start_date": "2008-05-08"
         }
@@ -2413,17 +2840,16 @@
         "pk": 95, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 6, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
             "description": "Membro della commissione", 
             "end_date": null, 
-            "n_present_votations": 0, 
             "n_absent_votations": 0, 
             "n_rebel_votations": 0, 
             "institution": 7, 
-            "person": 36, 
+            "person": 14, 
             "end_reason": "", 
             "start_date": "2008-05-08"
         }
@@ -2432,32 +2858,12 @@
         "pk": 96, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 6, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
             "description": "Membro della commissione", 
             "end_date": null, 
-            "n_present_votations": 0, 
-            "n_absent_votations": 0, 
-            "n_rebel_votations": 0, 
-            "institution": 7, 
-            "person": 23, 
-            "end_reason": "", 
-            "start_date": "2008-05-08"
-        }
-    }, 
-    {
-        "pk": 97, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "charge_type": 6, 
-            "op_charge_id": null, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "Membro della commissione", 
-            "end_date": null, 
-            "n_present_votations": 0, 
             "n_absent_votations": 0, 
             "n_rebel_votations": 0, 
             "institution": 7, 
@@ -2467,130 +2873,33 @@
         }
     }, 
     {
+        "pk": 97, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "Membro della commissione", 
+            "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 8, 
+            "person": 22, 
+            "end_reason": "", 
+            "start_date": "2008-05-08"
+        }
+    }, 
+    {
         "pk": 98, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 6, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
             "description": "Membro della commissione", 
             "end_date": null, 
-            "n_present_votations": 0, 
-            "n_absent_votations": 0, 
-            "n_rebel_votations": 0, 
-            "institution": 7, 
-            "person": 8, 
-            "end_reason": "", 
-            "start_date": "2008-05-08"
-        }
-    }, 
-    {
-        "pk": 99, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "charge_type": 6, 
-            "op_charge_id": null, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "Membro della commissione", 
-            "end_date": null, 
-            "n_present_votations": 0, 
-            "n_absent_votations": 0, 
-            "n_rebel_votations": 0, 
-            "institution": 8, 
-            "person": 31, 
-            "end_reason": "", 
-            "start_date": "2008-05-08"
-        }
-    }, 
-    {
-        "pk": 100, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "charge_type": 6, 
-            "op_charge_id": null, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "Membro della commissione", 
-            "end_date": null, 
-            "n_present_votations": 0, 
-            "n_absent_votations": 0, 
-            "n_rebel_votations": 0, 
-            "institution": 8, 
-            "person": 25, 
-            "end_reason": "", 
-            "start_date": "2008-05-08"
-        }
-    }, 
-    {
-        "pk": 101, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "charge_type": 6, 
-            "op_charge_id": null, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "Membro della commissione", 
-            "end_date": null, 
-            "n_present_votations": 0, 
-            "n_absent_votations": 0, 
-            "n_rebel_votations": 0, 
-            "institution": 8, 
-            "person": 32, 
-            "end_reason": "", 
-            "start_date": "2008-05-08"
-        }
-    }, 
-    {
-        "pk": 102, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "charge_type": 6, 
-            "op_charge_id": null, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "Membro della commissione", 
-            "end_date": null, 
-            "n_present_votations": 0, 
-            "n_absent_votations": 0, 
-            "n_rebel_votations": 0, 
-            "institution": 8, 
-            "person": 17, 
-            "end_reason": "", 
-            "start_date": "2008-05-08"
-        }
-    }, 
-    {
-        "pk": 103, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "charge_type": 6, 
-            "op_charge_id": null, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "Membro della commissione", 
-            "end_date": null, 
-            "n_present_votations": 0, 
-            "n_absent_votations": 0, 
-            "n_rebel_votations": 0, 
-            "institution": 8, 
-            "person": 38, 
-            "end_reason": "", 
-            "start_date": "2008-05-08"
-        }
-    }, 
-    {
-        "pk": 104, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "charge_type": 6, 
-            "op_charge_id": null, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "Membro della commissione", 
-            "end_date": null, 
-            "n_present_votations": 0, 
             "n_absent_votations": 0, 
             "n_rebel_votations": 0, 
             "institution": 8, 
@@ -2600,92 +2909,51 @@
         }
     }, 
     {
-        "pk": 105, 
+        "pk": 99, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 6, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
             "description": "Membro della commissione", 
             "end_date": null, 
-            "n_present_votations": 0, 
             "n_absent_votations": 0, 
             "n_rebel_votations": 0, 
             "institution": 8, 
-            "person": 41, 
+            "person": 30, 
             "end_reason": "", 
             "start_date": "2008-05-08"
         }
     }, 
     {
-        "pk": 106, 
+        "pk": 100, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 6, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
             "description": "Membro della commissione", 
             "end_date": null, 
-            "n_present_votations": 0, 
             "n_absent_votations": 0, 
             "n_rebel_votations": 0, 
             "institution": 8, 
-            "person": 39, 
+            "person": 20, 
             "end_reason": "", 
             "start_date": "2008-05-08"
         }
     }, 
     {
-        "pk": 107, 
+        "pk": 101, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 6, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
             "description": "Membro della commissione", 
             "end_date": null, 
-            "n_present_votations": 0, 
-            "n_absent_votations": 0, 
-            "n_rebel_votations": 0, 
-            "institution": 8, 
-            "person": 10, 
-            "end_reason": "", 
-            "start_date": "2008-05-08"
-        }
-    }, 
-    {
-        "pk": 108, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "charge_type": 6, 
-            "op_charge_id": null, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "Membro della commissione", 
-            "end_date": null, 
-            "n_present_votations": 0, 
-            "n_absent_votations": 0, 
-            "n_rebel_votations": 0, 
-            "institution": 8, 
-            "person": 14, 
-            "end_reason": "", 
-            "start_date": "2008-05-08"
-        }
-    }, 
-    {
-        "pk": 109, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "charge_type": 6, 
-            "op_charge_id": null, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "Membro della commissione", 
-            "end_date": null, 
-            "n_present_votations": 0, 
             "n_absent_votations": 0, 
             "n_rebel_votations": 0, 
             "institution": 8, 
@@ -2695,35 +2963,159 @@
         }
     }, 
     {
-        "pk": 110, 
+        "pk": 102, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 6, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
             "description": "Membro della commissione", 
             "end_date": null, 
-            "n_present_votations": 0, 
             "n_absent_votations": 0, 
             "n_rebel_votations": 0, 
             "institution": 8, 
-            "person": 8, 
+            "person": 5, 
             "end_reason": "", 
             "start_date": "2008-05-08"
         }
     }, 
     {
-        "pk": 111, 
+        "pk": 103, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 6, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
             "description": "Membro della commissione", 
             "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 8, 
+            "person": 32, 
+            "end_reason": "", 
+            "start_date": "2008-05-08"
+        }
+    }, 
+    {
+        "pk": 104, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
             "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "Membro della commissione", 
+            "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 8, 
+            "person": 21, 
+            "end_reason": "", 
+            "start_date": "2008-05-08"
+        }
+    }, 
+    {
+        "pk": 105, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "Membro della commissione", 
+            "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 8, 
+            "person": 40, 
+            "end_reason": "", 
+            "start_date": "2008-05-08"
+        }
+    }, 
+    {
+        "pk": 106, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "Membro della commissione", 
+            "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 8, 
+            "person": 6, 
+            "end_reason": "", 
+            "start_date": "2008-05-08"
+        }
+    }, 
+    {
+        "pk": 107, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "Membro della commissione", 
+            "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 8, 
+            "person": 15, 
+            "end_reason": "", 
+            "start_date": "2008-05-08"
+        }
+    }, 
+    {
+        "pk": 108, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "Membro della commissione", 
+            "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 8, 
+            "person": 19, 
+            "end_reason": "", 
+            "start_date": "2008-05-08"
+        }
+    }, 
+    {
+        "pk": 109, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "Membro della commissione", 
+            "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 9, 
+            "person": 18, 
+            "end_reason": "", 
+            "start_date": "2008-05-08"
+        }
+    }, 
+    {
+        "pk": 110, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "Membro della commissione", 
+            "end_date": null, 
             "n_absent_votations": 0, 
             "n_rebel_votations": 0, 
             "institution": 9, 
@@ -2733,35 +3125,33 @@
         }
     }, 
     {
-        "pk": 112, 
+        "pk": 111, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 6, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
             "description": "Membro della commissione", 
             "end_date": null, 
-            "n_present_votations": 0, 
             "n_absent_votations": 0, 
             "n_rebel_votations": 0, 
             "institution": 9, 
-            "person": 32, 
+            "person": 9, 
             "end_reason": "", 
             "start_date": "2008-05-08"
         }
     }, 
     {
-        "pk": 113, 
+        "pk": 112, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 6, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
             "description": "Membro della commissione", 
             "end_date": null, 
-            "n_present_votations": 0, 
             "n_absent_votations": 0, 
             "n_rebel_votations": 0, 
             "institution": 9, 
@@ -2771,16 +3161,51 @@
         }
     }, 
     {
-        "pk": 114, 
+        "pk": 113, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 6, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
             "description": "Membro della commissione", 
             "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 9, 
+            "person": 5, 
+            "end_reason": "", 
+            "start_date": "2008-05-08"
+        }
+    }, 
+    {
+        "pk": 114, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
             "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "Membro della commissione", 
+            "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 9, 
+            "person": 37, 
+            "end_reason": "", 
+            "start_date": "2008-05-08"
+        }
+    }, 
+    {
+        "pk": 115, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "Membro della commissione", 
+            "end_date": null, 
             "n_absent_votations": 0, 
             "n_rebel_votations": 0, 
             "institution": 9, 
@@ -2790,39 +3215,19 @@
         }
     }, 
     {
-        "pk": 115, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "charge_type": 6, 
-            "op_charge_id": null, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "Membro della commissione", 
-            "end_date": null, 
-            "n_present_votations": 0, 
-            "n_absent_votations": 0, 
-            "n_rebel_votations": 0, 
-            "institution": 9, 
-            "person": 39, 
-            "end_reason": "", 
-            "start_date": "2008-05-08"
-        }
-    }, 
-    {
         "pk": 116, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 6, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
             "description": "Membro della commissione", 
             "end_date": null, 
-            "n_present_votations": 0, 
             "n_absent_votations": 0, 
             "n_rebel_votations": 0, 
             "institution": 9, 
-            "person": 12, 
+            "person": 26, 
             "end_reason": "", 
             "start_date": "2008-05-08"
         }
@@ -2831,17 +3236,16 @@
         "pk": 117, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 6, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
             "description": "Membro della commissione", 
             "end_date": null, 
-            "n_present_votations": 0, 
             "n_absent_votations": 0, 
             "n_rebel_votations": 0, 
             "institution": 9, 
-            "person": 41, 
+            "person": 17, 
             "end_reason": "", 
             "start_date": "2008-05-08"
         }
@@ -2850,51 +3254,12 @@
         "pk": 118, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 6, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
             "description": "Membro della commissione", 
             "end_date": null, 
-            "n_present_votations": 0, 
-            "n_absent_votations": 0, 
-            "n_rebel_votations": 0, 
-            "institution": 9, 
-            "person": 38, 
-            "end_reason": "", 
-            "start_date": "2008-05-08"
-        }
-    }, 
-    {
-        "pk": 119, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "charge_type": 6, 
-            "op_charge_id": null, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "Membro della commissione", 
-            "end_date": null, 
-            "n_present_votations": 0, 
-            "n_absent_votations": 0, 
-            "n_rebel_votations": 0, 
-            "institution": 9, 
-            "person": 6, 
-            "end_reason": "", 
-            "start_date": "2008-05-08"
-        }
-    }, 
-    {
-        "pk": 120, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "charge_type": 6, 
-            "op_charge_id": null, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "Membro della commissione", 
-            "end_date": null, 
-            "n_present_votations": 0, 
             "n_absent_votations": 0, 
             "n_rebel_votations": 0, 
             "institution": 9, 
@@ -2904,41 +3269,61 @@
         }
     }, 
     {
-        "pk": 121, 
+        "pk": 119, 
         "model": "people.institutioncharge", 
         "fields": {
-            "charge_type": 6, 
             "op_charge_id": null, 
+            "n_present_votations": 0, 
             "substituted_by": null, 
             "substitutes": null, 
             "description": "Membro della commissione", 
             "end_date": null, 
-            "n_present_votations": 0, 
-            "n_absent_votations": 0, 
-            "n_rebel_votations": 0, 
-            "institution": 9, 
-            "person": 19, 
-            "end_reason": "", 
-            "start_date": "2008-05-08"
-        }
-    }, 
-    {
-        "pk": 122, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "charge_type": 6, 
-            "op_charge_id": null, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "Membro della commissione", 
-            "end_date": null, 
-            "n_present_votations": 0, 
             "n_absent_votations": 0, 
             "n_rebel_votations": 0, 
             "institution": 9, 
             "person": 11, 
             "end_reason": "", 
             "start_date": "2008-05-08"
+        }
+    }, 
+    {
+        "pk": 120, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "Membro della commissione", 
+            "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 9, 
+            "person": 24, 
+            "end_reason": "", 
+            "start_date": "2008-05-08"
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "people.institutionresponsability", 
+        "fields": {
+            "charge_type": "PRESIDENT", 
+            "charge": 5, 
+            "start_date": "2008-05-08", 
+            "end_date": null, 
+            "description": "Presidente del Consiglio Comunale"
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "people.institutionresponsability", 
+        "fields": {
+            "charge_type": "VICE", 
+            "charge": 9, 
+            "start_date": "2008-05-08", 
+            "end_date": null, 
+            "description": "Vicepresidente del Consiglio Comunale"
         }
     }, 
     {
@@ -3001,7 +3386,7 @@
         "pk": 1, 
         "model": "people.groupcharge", 
         "fields": {
-            "group": 6, 
+            "group": 2, 
             "end_date": null, 
             "start_date": "2008-05-08", 
             "charge": 2, 
@@ -3013,7 +3398,7 @@
         "pk": 2, 
         "model": "people.groupcharge", 
         "fields": {
-            "group": 2, 
+            "group": 3, 
             "end_date": null, 
             "start_date": "2008-05-08", 
             "charge": 3, 
@@ -3025,10 +3410,10 @@
         "pk": 3, 
         "model": "people.groupcharge", 
         "fields": {
-            "group": 4, 
+            "group": 7, 
             "end_date": null, 
             "start_date": "2008-05-08", 
-            "charge": 5, 
+            "charge": 4, 
             "end_reason": "", 
             "charge_description": ""
         }
@@ -3040,7 +3425,7 @@
             "group": 2, 
             "end_date": null, 
             "start_date": "2008-05-08", 
-            "charge": 6, 
+            "charge": 5, 
             "end_reason": "", 
             "charge_description": ""
         }
@@ -3049,10 +3434,10 @@
         "pk": 5, 
         "model": "people.groupcharge", 
         "fields": {
-            "group": 3, 
+            "group": 4, 
             "end_date": null, 
             "start_date": "2008-05-08", 
-            "charge": 7, 
+            "charge": 6, 
             "end_reason": "", 
             "charge_description": ""
         }
@@ -3061,10 +3446,10 @@
         "pk": 6, 
         "model": "people.groupcharge", 
         "fields": {
-            "group": 2, 
+            "group": 5, 
             "end_date": null, 
             "start_date": "2008-05-08", 
-            "charge": 8, 
+            "charge": 7, 
             "end_reason": "", 
             "charge_description": ""
         }
@@ -3073,10 +3458,10 @@
         "pk": 7, 
         "model": "people.groupcharge", 
         "fields": {
-            "group": 7, 
+            "group": 1, 
             "end_date": null, 
             "start_date": "2008-05-08", 
-            "charge": 9, 
+            "charge": 8, 
             "end_reason": "", 
             "charge_description": ""
         }
@@ -3085,10 +3470,10 @@
         "pk": 8, 
         "model": "people.groupcharge", 
         "fields": {
-            "group": 5, 
+            "group": 1, 
             "end_date": null, 
             "start_date": "2008-05-08", 
-            "charge": 10, 
+            "charge": 9, 
             "end_reason": "", 
             "charge_description": ""
         }
@@ -3097,10 +3482,10 @@
         "pk": 9, 
         "model": "people.groupcharge", 
         "fields": {
-            "group": 3, 
+            "group": 6, 
             "end_date": null, 
             "start_date": "2008-05-08", 
-            "charge": 11, 
+            "charge": 10, 
             "end_reason": "", 
             "charge_description": ""
         }
@@ -3109,7 +3494,19 @@
         "pk": 10, 
         "model": "people.groupcharge", 
         "fields": {
-            "group": 7, 
+            "group": 4, 
+            "end_date": null, 
+            "start_date": "2008-05-08", 
+            "charge": 11, 
+            "end_reason": "", 
+            "charge_description": ""
+        }
+    }, 
+    {
+        "pk": 11, 
+        "model": "people.groupcharge", 
+        "fields": {
+            "group": 1, 
             "end_date": null, 
             "start_date": "2008-05-08", 
             "charge": 12, 
@@ -3118,7 +3515,7 @@
         }
     }, 
     {
-        "pk": 11, 
+        "pk": 12, 
         "model": "people.groupcharge", 
         "fields": {
             "group": 2, 
@@ -3130,10 +3527,10 @@
         }
     }, 
     {
-        "pk": 12, 
+        "pk": 13, 
         "model": "people.groupcharge", 
         "fields": {
-            "group": 1, 
+            "group": 4, 
             "end_date": null, 
             "start_date": "2008-05-08", 
             "charge": 14, 
@@ -3142,25 +3539,13 @@
         }
     }, 
     {
-        "pk": 13, 
+        "pk": 14, 
         "model": "people.groupcharge", 
         "fields": {
             "group": 4, 
             "end_date": null, 
             "start_date": "2008-05-08", 
-            "charge": 16, 
-            "end_reason": "", 
-            "charge_description": ""
-        }
-    }, 
-    {
-        "pk": 14, 
-        "model": "people.groupcharge", 
-        "fields": {
-            "group": 7, 
-            "end_date": null, 
-            "start_date": "2008-05-08", 
-            "charge": 17, 
+            "charge": 15, 
             "end_reason": "", 
             "charge_description": ""
         }
@@ -3172,7 +3557,7 @@
             "group": 4, 
             "end_date": null, 
             "start_date": "2008-05-08", 
-            "charge": 18, 
+            "charge": 16, 
             "end_reason": "", 
             "charge_description": ""
         }
@@ -3181,10 +3566,10 @@
         "pk": 16, 
         "model": "people.groupcharge", 
         "fields": {
-            "group": 1, 
+            "group": 3, 
             "end_date": null, 
             "start_date": "2008-05-08", 
-            "charge": 19, 
+            "charge": 17, 
             "end_reason": "", 
             "charge_description": ""
         }
@@ -3193,10 +3578,10 @@
         "pk": 17, 
         "model": "people.groupcharge", 
         "fields": {
-            "group": 2, 
+            "group": 1, 
             "end_date": null, 
             "start_date": "2008-05-08", 
-            "charge": 20, 
+            "charge": 18, 
             "end_reason": "", 
             "charge_description": ""
         }
@@ -3205,10 +3590,10 @@
         "pk": 18, 
         "model": "people.groupcharge", 
         "fields": {
-            "group": 4, 
+            "group": 7, 
             "end_date": null, 
             "start_date": "2008-05-08", 
-            "charge": 21, 
+            "charge": 19, 
             "end_reason": "", 
             "charge_description": ""
         }
@@ -3217,10 +3602,10 @@
         "pk": 19, 
         "model": "people.groupcharge", 
         "fields": {
-            "group": 2, 
+            "group": 1, 
             "end_date": null, 
             "start_date": "2008-05-08", 
-            "charge": 22, 
+            "charge": 20, 
             "end_reason": "", 
             "charge_description": ""
         }
@@ -3232,7 +3617,7 @@
             "group": 2, 
             "end_date": null, 
             "start_date": "2008-05-08", 
-            "charge": 23, 
+            "charge": 21, 
             "end_reason": "", 
             "charge_description": ""
         }
@@ -3244,7 +3629,7 @@
             "group": 1, 
             "end_date": null, 
             "start_date": "2008-05-08", 
-            "charge": 24, 
+            "charge": 22, 
             "end_reason": "", 
             "charge_description": ""
         }
@@ -3253,10 +3638,10 @@
         "pk": 22, 
         "model": "people.groupcharge", 
         "fields": {
-            "group": 4, 
+            "group": 2, 
             "end_date": null, 
             "start_date": "2008-05-08", 
-            "charge": 25, 
+            "charge": 23, 
             "end_reason": "", 
             "charge_description": ""
         }
@@ -3265,10 +3650,10 @@
         "pk": 23, 
         "model": "people.groupcharge", 
         "fields": {
-            "group": 1, 
+            "group": 7, 
             "end_date": null, 
             "start_date": "2008-05-08", 
-            "charge": 26, 
+            "charge": 24, 
             "end_reason": "", 
             "charge_description": ""
         }
@@ -3277,10 +3662,10 @@
         "pk": 24, 
         "model": "people.groupcharge", 
         "fields": {
-            "group": 1, 
+            "group": 2, 
             "end_date": null, 
             "start_date": "2008-05-08", 
-            "charge": 27, 
+            "charge": 25, 
             "end_reason": "", 
             "charge_description": ""
         }
@@ -3289,10 +3674,10 @@
         "pk": 25, 
         "model": "people.groupcharge", 
         "fields": {
-            "group": 1, 
+            "group": 2, 
             "end_date": null, 
             "start_date": "2008-05-08", 
-            "charge": 28, 
+            "charge": 26, 
             "end_reason": "", 
             "charge_description": ""
         }
@@ -3304,7 +3689,7 @@
             "group": 2, 
             "end_date": null, 
             "start_date": "2008-05-08", 
-            "charge": 29, 
+            "charge": 27, 
             "end_reason": "", 
             "charge_description": ""
         }
@@ -3316,7 +3701,7 @@
             "group": 1, 
             "end_date": null, 
             "start_date": "2008-05-08", 
-            "charge": 30, 
+            "charge": 28, 
             "end_reason": "", 
             "charge_description": ""
         }
@@ -3328,7 +3713,7 @@
             "group": 1, 
             "end_date": null, 
             "start_date": "2008-05-08", 
-            "charge": 31, 
+            "charge": 29, 
             "end_reason": "", 
             "charge_description": ""
         }
@@ -3337,10 +3722,10 @@
         "pk": 29, 
         "model": "people.groupcharge", 
         "fields": {
-            "group": 2, 
+            "group": 1, 
             "end_date": null, 
             "start_date": "2008-05-08", 
-            "charge": 32, 
+            "charge": 30, 
             "end_reason": "", 
             "charge_description": ""
         }
@@ -3352,13 +3737,37 @@
             "group": 1, 
             "end_date": null, 
             "start_date": "2008-05-08", 
-            "charge": 33, 
+            "charge": 31, 
             "end_reason": "", 
             "charge_description": ""
         }
     }, 
     {
         "pk": 31, 
+        "model": "people.groupcharge", 
+        "fields": {
+            "group": 2, 
+            "end_date": null, 
+            "start_date": "2008-05-08", 
+            "charge": 32, 
+            "end_reason": "", 
+            "charge_description": ""
+        }
+    }, 
+    {
+        "pk": 32, 
+        "model": "people.groupcharge", 
+        "fields": {
+            "group": 2, 
+            "end_date": null, 
+            "start_date": "2008-05-08", 
+            "charge": 33, 
+            "end_reason": "", 
+            "charge_description": ""
+        }
+    }, 
+    {
+        "pk": 33, 
         "model": "people.groupcharge", 
         "fields": {
             "group": 1, 
@@ -3370,10 +3779,10 @@
         }
     }, 
     {
-        "pk": 32, 
+        "pk": 34, 
         "model": "people.groupcharge", 
         "fields": {
-            "group": 1, 
+            "group": 2, 
             "end_date": null, 
             "start_date": "2008-05-08", 
             "charge": 35, 
@@ -3382,37 +3791,13 @@
         }
     }, 
     {
-        "pk": 33, 
-        "model": "people.groupcharge", 
-        "fields": {
-            "group": 5, 
-            "end_date": null, 
-            "start_date": "2008-05-08", 
-            "charge": 36, 
-            "end_reason": "", 
-            "charge_description": ""
-        }
-    }, 
-    {
-        "pk": 34, 
+        "pk": 35, 
         "model": "people.groupcharge", 
         "fields": {
             "group": 2, 
             "end_date": null, 
             "start_date": "2008-05-08", 
-            "charge": 37, 
-            "end_reason": "", 
-            "charge_description": ""
-        }
-    }, 
-    {
-        "pk": 35, 
-        "model": "people.groupcharge", 
-        "fields": {
-            "group": 3, 
-            "end_date": null, 
-            "start_date": "2008-05-08", 
-            "charge": 38, 
+            "charge": 36, 
             "end_reason": "", 
             "charge_description": ""
         }
@@ -3424,7 +3809,7 @@
             "group": 2, 
             "end_date": null, 
             "start_date": "2008-05-08", 
-            "charge": 39, 
+            "charge": 37, 
             "end_reason": "", 
             "charge_description": ""
         }
@@ -3436,7 +3821,7 @@
             "group": 2, 
             "end_date": null, 
             "start_date": "2008-05-08", 
-            "charge": 40, 
+            "charge": 38, 
             "end_reason": "", 
             "charge_description": ""
         }
@@ -3445,10 +3830,10 @@
         "pk": 38, 
         "model": "people.groupcharge", 
         "fields": {
-            "group": 2, 
+            "group": 1, 
             "end_date": null, 
             "start_date": "2008-05-08", 
-            "charge": 41, 
+            "charge": 39, 
             "end_reason": "", 
             "charge_description": ""
         }
@@ -3457,10 +3842,10 @@
         "pk": 39, 
         "model": "people.groupcharge", 
         "fields": {
-            "group": 6, 
+            "group": 3, 
             "end_date": null, 
             "start_date": "2008-05-08", 
-            "charge": 42, 
+            "charge": 40, 
             "end_reason": "", 
             "charge_description": ""
         }
@@ -3469,12 +3854,89 @@
         "pk": 40, 
         "model": "people.groupcharge", 
         "fields": {
-            "group": 2, 
+            "group": 4, 
             "end_date": null, 
             "start_date": "2008-05-08", 
-            "charge": 43, 
+            "charge": 41, 
             "end_reason": "", 
             "charge_description": ""
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "people.groupresponsability", 
+        "fields": {
+            "charge_type": "LEADER", 
+            "charge": 1, 
+            "start_date": "2008-05-08", 
+            "end_date": null, 
+            "description": "Capogruppo"
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "people.groupresponsability", 
+        "fields": {
+            "charge_type": "LEADER", 
+            "charge": 2, 
+            "start_date": "2008-05-08", 
+            "end_date": null, 
+            "description": "Capogruppo"
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "people.groupresponsability", 
+        "fields": {
+            "charge_type": "LEADER", 
+            "charge": 3, 
+            "start_date": "2008-05-08", 
+            "end_date": null, 
+            "description": "Capogruppo"
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "people.groupresponsability", 
+        "fields": {
+            "charge_type": "LEADER", 
+            "charge": 5, 
+            "start_date": "2008-05-08", 
+            "end_date": null, 
+            "description": "Capogruppo"
+        }
+    }, 
+    {
+        "pk": 5, 
+        "model": "people.groupresponsability", 
+        "fields": {
+            "charge_type": "LEADER", 
+            "charge": 6, 
+            "start_date": "2008-05-08", 
+            "end_date": null, 
+            "description": "Capogruppo"
+        }
+    }, 
+    {
+        "pk": 6, 
+        "model": "people.groupresponsability", 
+        "fields": {
+            "charge_type": "LEADER", 
+            "charge": 7, 
+            "start_date": "2008-05-08", 
+            "end_date": null, 
+            "description": "Capogruppo"
+        }
+    }, 
+    {
+        "pk": 7, 
+        "model": "people.groupresponsability", 
+        "fields": {
+            "charge_type": "LEADER", 
+            "charge": 9, 
+            "start_date": "2008-05-08", 
+            "end_date": null, 
+            "description": "Capogruppo"
         }
     }, 
     {
@@ -3644,6 +4106,1554 @@
             "name": "6^ commissione", 
             "parent": 3, 
             "slug": "6-commissione"
+        }
+    }, 
+    {
+        "pk": 53, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_act", 
+            "name": "Can add act", 
+            "content_type": 18
+        }
+    }, 
+    {
+        "pk": 54, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_act", 
+            "name": "Can change act", 
+            "content_type": 18
+        }
+    }, 
+    {
+        "pk": 55, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_act", 
+            "name": "Can delete act", 
+            "content_type": 18
+        }
+    }, 
+    {
+        "pk": 62, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_actdescriptor", 
+            "name": "Can add act descriptor", 
+            "content_type": 21
+        }
+    }, 
+    {
+        "pk": 63, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_actdescriptor", 
+            "name": "Can change act descriptor", 
+            "content_type": 21
+        }
+    }, 
+    {
+        "pk": 64, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_actdescriptor", 
+            "name": "Can delete act descriptor", 
+            "content_type": 21
+        }
+    }, 
+    {
+        "pk": 56, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_actsection", 
+            "name": "Can add act section", 
+            "content_type": 19
+        }
+    }, 
+    {
+        "pk": 57, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_actsection", 
+            "name": "Can change act section", 
+            "content_type": 19
+        }
+    }, 
+    {
+        "pk": 58, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_actsection", 
+            "name": "Can delete act section", 
+            "content_type": 19
+        }
+    }, 
+    {
+        "pk": 59, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_actsupport", 
+            "name": "Can add act support", 
+            "content_type": 20
+        }
+    }, 
+    {
+        "pk": 60, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_actsupport", 
+            "name": "Can change act support", 
+            "content_type": 20
+        }
+    }, 
+    {
+        "pk": 61, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_actsupport", 
+            "name": "Can delete act support", 
+            "content_type": 20
+        }
+    }, 
+    {
+        "pk": 65, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_agenda", 
+            "name": "Can add agenda", 
+            "content_type": 22
+        }
+    }, 
+    {
+        "pk": 66, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_agenda", 
+            "name": "Can change agenda", 
+            "content_type": 22
+        }
+    }, 
+    {
+        "pk": 67, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_agenda", 
+            "name": "Can delete agenda", 
+            "content_type": 22
+        }
+    }, 
+    {
+        "pk": 86, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_attach", 
+            "name": "Can add attach", 
+            "content_type": 29
+        }
+    }, 
+    {
+        "pk": 87, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_attach", 
+            "name": "Can change attach", 
+            "content_type": 29
+        }
+    }, 
+    {
+        "pk": 88, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_attach", 
+            "name": "Can delete attach", 
+            "content_type": 29
+        }
+    }, 
+    {
+        "pk": 95, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_calendar", 
+            "name": "Can add calendar", 
+            "content_type": 32
+        }
+    }, 
+    {
+        "pk": 96, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_calendar", 
+            "name": "Can change calendar", 
+            "content_type": 32
+        }
+    }, 
+    {
+        "pk": 97, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_calendar", 
+            "name": "Can delete calendar", 
+            "content_type": 32
+        }
+    }, 
+    {
+        "pk": 68, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_deliberation", 
+            "name": "Can add deliberation", 
+            "content_type": 23
+        }
+    }, 
+    {
+        "pk": 69, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_deliberation", 
+            "name": "Can change deliberation", 
+            "content_type": 23
+        }
+    }, 
+    {
+        "pk": 70, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_deliberation", 
+            "name": "Can delete deliberation", 
+            "content_type": 23
+        }
+    }, 
+    {
+        "pk": 80, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_emendation", 
+            "name": "Can add emendation", 
+            "content_type": 27
+        }
+    }, 
+    {
+        "pk": 81, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_emendation", 
+            "name": "Can change emendation", 
+            "content_type": 27
+        }
+    }, 
+    {
+        "pk": 82, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_emendation", 
+            "name": "Can delete emendation", 
+            "content_type": 27
+        }
+    }, 
+    {
+        "pk": 74, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_interpellation", 
+            "name": "Can add interpellation", 
+            "content_type": 25
+        }
+    }, 
+    {
+        "pk": 75, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_interpellation", 
+            "name": "Can change interpellation", 
+            "content_type": 25
+        }
+    }, 
+    {
+        "pk": 76, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_interpellation", 
+            "name": "Can delete interpellation", 
+            "content_type": 25
+        }
+    }, 
+    {
+        "pk": 71, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_interrogation", 
+            "name": "Can add interrogation", 
+            "content_type": 24
+        }
+    }, 
+    {
+        "pk": 72, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_interrogation", 
+            "name": "Can change interrogation", 
+            "content_type": 24
+        }
+    }, 
+    {
+        "pk": 73, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_interrogation", 
+            "name": "Can delete interrogation", 
+            "content_type": 24
+        }
+    }, 
+    {
+        "pk": 89, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_minute", 
+            "name": "Can add minute", 
+            "content_type": 30
+        }
+    }, 
+    {
+        "pk": 90, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_minute", 
+            "name": "Can change minute", 
+            "content_type": 30
+        }
+    }, 
+    {
+        "pk": 91, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_minute", 
+            "name": "Can delete minute", 
+            "content_type": 30
+        }
+    }, 
+    {
+        "pk": 77, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_motion", 
+            "name": "Can add motion", 
+            "content_type": 26
+        }
+    }, 
+    {
+        "pk": 78, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_motion", 
+            "name": "Can change motion", 
+            "content_type": 26
+        }
+    }, 
+    {
+        "pk": 79, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_motion", 
+            "name": "Can delete motion", 
+            "content_type": 26
+        }
+    }, 
+    {
+        "pk": 92, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_outcome", 
+            "name": "Can add outcome", 
+            "content_type": 31
+        }
+    }, 
+    {
+        "pk": 93, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_outcome", 
+            "name": "Can change outcome", 
+            "content_type": 31
+        }
+    }, 
+    {
+        "pk": 94, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_outcome", 
+            "name": "Can delete outcome", 
+            "content_type": 31
+        }
+    }, 
+    {
+        "pk": 83, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_transition", 
+            "name": "Can add status transition", 
+            "content_type": 28
+        }
+    }, 
+    {
+        "pk": 84, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_transition", 
+            "name": "Can change status transition", 
+            "content_type": 28
+        }
+    }, 
+    {
+        "pk": 85, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_transition", 
+            "name": "Can delete status transition", 
+            "content_type": 28
+        }
+    }, 
+    {
+        "pk": 29, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_logentry", 
+            "name": "Can add log entry", 
+            "content_type": 10
+        }
+    }, 
+    {
+        "pk": 30, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_logentry", 
+            "name": "Can change log entry", 
+            "content_type": 10
+        }
+    }, 
+    {
+        "pk": 31, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_logentry", 
+            "name": "Can delete log entry", 
+            "content_type": 10
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_group", 
+            "name": "Can add group", 
+            "content_type": 2
+        }
+    }, 
+    {
+        "pk": 5, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_group", 
+            "name": "Can change group", 
+            "content_type": 2
+        }
+    }, 
+    {
+        "pk": 6, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_group", 
+            "name": "Can delete group", 
+            "content_type": 2
+        }
+    }, 
+    {
+        "pk": 10, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_message", 
+            "name": "Can add message", 
+            "content_type": 4
+        }
+    }, 
+    {
+        "pk": 11, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_message", 
+            "name": "Can change message", 
+            "content_type": 4
+        }
+    }, 
+    {
+        "pk": 12, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_message", 
+            "name": "Can delete message", 
+            "content_type": 4
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_permission", 
+            "name": "Can add permission", 
+            "content_type": 1
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_permission", 
+            "name": "Can change permission", 
+            "content_type": 1
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_permission", 
+            "name": "Can delete permission", 
+            "content_type": 1
+        }
+    }, 
+    {
+        "pk": 7, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_user", 
+            "name": "Can add user", 
+            "content_type": 3
+        }
+    }, 
+    {
+        "pk": 8, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_user", 
+            "name": "Can change user", 
+            "content_type": 3
+        }
+    }, 
+    {
+        "pk": 9, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_user", 
+            "name": "Can delete user", 
+            "content_type": 3
+        }
+    }, 
+    {
+        "pk": 13, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_comment", 
+            "name": "Can add comment", 
+            "content_type": 5
+        }
+    }, 
+    {
+        "pk": 16, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "can_moderate", 
+            "name": "Can moderate comments", 
+            "content_type": 5
+        }
+    }, 
+    {
+        "pk": 14, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_comment", 
+            "name": "Can change comment", 
+            "content_type": 5
+        }
+    }, 
+    {
+        "pk": 15, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_comment", 
+            "name": "Can delete comment", 
+            "content_type": 5
+        }
+    }, 
+    {
+        "pk": 17, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_commentflag", 
+            "name": "Can add comment flag", 
+            "content_type": 6
+        }
+    }, 
+    {
+        "pk": 18, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_commentflag", 
+            "name": "Can change comment flag", 
+            "content_type": 6
+        }
+    }, 
+    {
+        "pk": 19, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_commentflag", 
+            "name": "Can delete comment flag", 
+            "content_type": 6
+        }
+    }, 
+    {
+        "pk": 20, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_contenttype", 
+            "name": "Can add content type", 
+            "content_type": 7
+        }
+    }, 
+    {
+        "pk": 21, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_contenttype", 
+            "name": "Can change content type", 
+            "content_type": 7
+        }
+    }, 
+    {
+        "pk": 22, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_contenttype", 
+            "name": "Can delete content type", 
+            "content_type": 7
+        }
+    }, 
+    {
+        "pk": 47, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_event", 
+            "name": "Can add event", 
+            "content_type": 16
+        }
+    }, 
+    {
+        "pk": 48, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_event", 
+            "name": "Can change event", 
+            "content_type": 16
+        }
+    }, 
+    {
+        "pk": 49, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_event", 
+            "name": "Can delete event", 
+            "content_type": 16
+        }
+    }, 
+    {
+        "pk": 164, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_monitoring", 
+            "name": "Can add monitoring", 
+            "content_type": 55
+        }
+    }, 
+    {
+        "pk": 165, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_monitoring", 
+            "name": "Can change monitoring", 
+            "content_type": 55
+        }
+    }, 
+    {
+        "pk": 166, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_monitoring", 
+            "name": "Can delete monitoring", 
+            "content_type": 55
+        }
+    }, 
+    {
+        "pk": 170, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_news", 
+            "name": "Can add cached news", 
+            "content_type": 57
+        }
+    }, 
+    {
+        "pk": 171, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_news", 
+            "name": "Can change cached news", 
+            "content_type": 57
+        }
+    }, 
+    {
+        "pk": 172, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_news", 
+            "name": "Can delete cached news", 
+            "content_type": 57
+        }
+    }, 
+    {
+        "pk": 50, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_commentwithmood", 
+            "name": "Can add Comment", 
+            "content_type": 17
+        }
+    }, 
+    {
+        "pk": 51, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_commentwithmood", 
+            "name": "Can change Comment", 
+            "content_type": 17
+        }
+    }, 
+    {
+        "pk": 52, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_commentwithmood", 
+            "name": "Can delete Comment", 
+            "content_type": 17
+        }
+    }, 
+    {
+        "pk": 113, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_administrationcharge", 
+            "name": "Can add administration charge", 
+            "content_type": 38
+        }
+    }, 
+    {
+        "pk": 114, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_administrationcharge", 
+            "name": "Can change administration charge", 
+            "content_type": 38
+        }
+    }, 
+    {
+        "pk": 115, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_administrationcharge", 
+            "name": "Can delete administration charge", 
+            "content_type": 38
+        }
+    }, 
+    {
+        "pk": 131, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_company", 
+            "name": "Can add company", 
+            "content_type": 44
+        }
+    }, 
+    {
+        "pk": 132, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_company", 
+            "name": "Can change company", 
+            "content_type": 44
+        }
+    }, 
+    {
+        "pk": 133, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_company", 
+            "name": "Can delete company", 
+            "content_type": 44
+        }
+    }, 
+    {
+        "pk": 110, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_companycharge", 
+            "name": "Can add organization charge", 
+            "content_type": 37
+        }
+    }, 
+    {
+        "pk": 111, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_companycharge", 
+            "name": "Can change organization charge", 
+            "content_type": 37
+        }
+    }, 
+    {
+        "pk": 112, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_companycharge", 
+            "name": "Can delete organization charge", 
+            "content_type": 37
+        }
+    }, 
+    {
+        "pk": 116, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_group", 
+            "name": "Can add group", 
+            "content_type": 39
+        }
+    }, 
+    {
+        "pk": 117, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_group", 
+            "name": "Can change group", 
+            "content_type": 39
+        }
+    }, 
+    {
+        "pk": 118, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_group", 
+            "name": "Can delete group", 
+            "content_type": 39
+        }
+    }, 
+    {
+        "pk": 119, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_groupcharge", 
+            "name": "Can add group charge", 
+            "content_type": 40
+        }
+    }, 
+    {
+        "pk": 120, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_groupcharge", 
+            "name": "Can change group charge", 
+            "content_type": 40
+        }
+    }, 
+    {
+        "pk": 121, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_groupcharge", 
+            "name": "Can delete group charge", 
+            "content_type": 40
+        }
+    }, 
+    {
+        "pk": 125, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_groupismajority", 
+            "name": "Can add group majority", 
+            "content_type": 42
+        }
+    }, 
+    {
+        "pk": 126, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_groupismajority", 
+            "name": "Can change group majority", 
+            "content_type": 42
+        }
+    }, 
+    {
+        "pk": 127, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_groupismajority", 
+            "name": "Can delete group majority", 
+            "content_type": 42
+        }
+    }, 
+    {
+        "pk": 122, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_groupresponsability", 
+            "name": "Can add group responsability", 
+            "content_type": 41
+        }
+    }, 
+    {
+        "pk": 123, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_groupresponsability", 
+            "name": "Can change group responsability", 
+            "content_type": 41
+        }
+    }, 
+    {
+        "pk": 124, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_groupresponsability", 
+            "name": "Can delete group responsability", 
+            "content_type": 41
+        }
+    }, 
+    {
+        "pk": 128, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_institution", 
+            "name": "Can add institution", 
+            "content_type": 43
+        }
+    }, 
+    {
+        "pk": 129, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_institution", 
+            "name": "Can change institution", 
+            "content_type": 43
+        }
+    }, 
+    {
+        "pk": 130, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_institution", 
+            "name": "Can delete institution", 
+            "content_type": 43
+        }
+    }, 
+    {
+        "pk": 104, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_institutioncharge", 
+            "name": "Can add institution charge", 
+            "content_type": 35
+        }
+    }, 
+    {
+        "pk": 105, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_institutioncharge", 
+            "name": "Can change institution charge", 
+            "content_type": 35
+        }
+    }, 
+    {
+        "pk": 106, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_institutioncharge", 
+            "name": "Can delete institution charge", 
+            "content_type": 35
+        }
+    }, 
+    {
+        "pk": 107, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_institutionresponsability", 
+            "name": "Can add institution responsability", 
+            "content_type": 36
+        }
+    }, 
+    {
+        "pk": 108, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_institutionresponsability", 
+            "name": "Can change institution responsability", 
+            "content_type": 36
+        }
+    }, 
+    {
+        "pk": 109, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_institutionresponsability", 
+            "name": "Can delete institution responsability", 
+            "content_type": 36
+        }
+    }, 
+    {
+        "pk": 134, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_office", 
+            "name": "Can add office", 
+            "content_type": 45
+        }
+    }, 
+    {
+        "pk": 135, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_office", 
+            "name": "Can change office", 
+            "content_type": 45
+        }
+    }, 
+    {
+        "pk": 136, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_office", 
+            "name": "Can delete office", 
+            "content_type": 45
+        }
+    }, 
+    {
+        "pk": 98, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_person", 
+            "name": "Can add person", 
+            "content_type": 33
+        }
+    }, 
+    {
+        "pk": 99, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_person", 
+            "name": "Can change person", 
+            "content_type": 33
+        }
+    }, 
+    {
+        "pk": 100, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_person", 
+            "name": "Can delete person", 
+            "content_type": 33
+        }
+    }, 
+    {
+        "pk": 101, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_resource", 
+            "name": "Can add resource", 
+            "content_type": 34
+        }
+    }, 
+    {
+        "pk": 102, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_resource", 
+            "name": "Can change resource", 
+            "content_type": 34
+        }
+    }, 
+    {
+        "pk": 103, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_resource", 
+            "name": "Can delete resource", 
+            "content_type": 34
+        }
+    }, 
+    {
+        "pk": 137, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_sitting", 
+            "name": "Can add sitting", 
+            "content_type": 46
+        }
+    }, 
+    {
+        "pk": 138, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_sitting", 
+            "name": "Can change sitting", 
+            "content_type": 46
+        }
+    }, 
+    {
+        "pk": 139, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_sitting", 
+            "name": "Can delete sitting", 
+            "content_type": 46
+        }
+    }, 
+    {
+        "pk": 32, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_registrationprofile", 
+            "name": "Can add registration profile", 
+            "content_type": 11
+        }
+    }, 
+    {
+        "pk": 33, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_registrationprofile", 
+            "name": "Can change registration profile", 
+            "content_type": 11
+        }
+    }, 
+    {
+        "pk": 34, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_registrationprofile", 
+            "name": "Can delete registration profile", 
+            "content_type": 11
+        }
+    }, 
+    {
+        "pk": 23, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_session", 
+            "name": "Can add session", 
+            "content_type": 8
+        }
+    }, 
+    {
+        "pk": 24, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_session", 
+            "name": "Can change session", 
+            "content_type": 8
+        }
+    }, 
+    {
+        "pk": 25, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_session", 
+            "name": "Can delete session", 
+            "content_type": 8
+        }
+    }, 
+    {
+        "pk": 26, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_site", 
+            "name": "Can add site", 
+            "content_type": 9
+        }
+    }, 
+    {
+        "pk": 27, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_site", 
+            "name": "Can change site", 
+            "content_type": 9
+        }
+    }, 
+    {
+        "pk": 28, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_site", 
+            "name": "Can delete site", 
+            "content_type": 9
+        }
+    }, 
+    {
+        "pk": 35, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_migrationhistory", 
+            "name": "Can add migration history", 
+            "content_type": 12
+        }
+    }, 
+    {
+        "pk": 36, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_migrationhistory", 
+            "name": "Can change migration history", 
+            "content_type": 12
+        }
+    }, 
+    {
+        "pk": 37, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_migrationhistory", 
+            "name": "Can delete migration history", 
+            "content_type": 12
+        }
+    }, 
+    {
+        "pk": 38, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_tag", 
+            "name": "Can add Tag", 
+            "content_type": 13
+        }
+    }, 
+    {
+        "pk": 39, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_tag", 
+            "name": "Can change Tag", 
+            "content_type": 13
+        }
+    }, 
+    {
+        "pk": 40, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_tag", 
+            "name": "Can delete Tag", 
+            "content_type": 13
+        }
+    }, 
+    {
+        "pk": 41, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_taggeditem", 
+            "name": "Can add Tagged Item", 
+            "content_type": 14
+        }
+    }, 
+    {
+        "pk": 42, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_taggeditem", 
+            "name": "Can change Tagged Item", 
+            "content_type": 14
+        }
+    }, 
+    {
+        "pk": 43, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_taggeditem", 
+            "name": "Can delete Tagged Item", 
+            "content_type": 14
+        }
+    }, 
+    {
+        "pk": 146, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_category", 
+            "name": "Can add category", 
+            "content_type": 49
+        }
+    }, 
+    {
+        "pk": 147, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_category", 
+            "name": "Can change category", 
+            "content_type": 49
+        }
+    }, 
+    {
+        "pk": 148, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_category", 
+            "name": "Can delete category", 
+            "content_type": 49
+        }
+    }, 
+    {
+        "pk": 149, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_location", 
+            "name": "Can add location", 
+            "content_type": 50
+        }
+    }, 
+    {
+        "pk": 150, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_location", 
+            "name": "Can change location", 
+            "content_type": 50
+        }
+    }, 
+    {
+        "pk": 151, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_location", 
+            "name": "Can delete location", 
+            "content_type": 50
+        }
+    }, 
+    {
+        "pk": 140, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_tag", 
+            "name": "Can add Tag", 
+            "content_type": 47
+        }
+    }, 
+    {
+        "pk": 141, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_tag", 
+            "name": "Can change Tag", 
+            "content_type": 47
+        }
+    }, 
+    {
+        "pk": 142, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_tag", 
+            "name": "Can delete Tag", 
+            "content_type": 47
+        }
+    }, 
+    {
+        "pk": 143, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_taggedact", 
+            "name": "Can add tagged act", 
+            "content_type": 48
+        }
+    }, 
+    {
+        "pk": 144, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_taggedact", 
+            "name": "Can change tagged act", 
+            "content_type": 48
+        }
+    }, 
+    {
+        "pk": 145, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_taggedact", 
+            "name": "Can delete tagged act", 
+            "content_type": 48
+        }
+    }, 
+    {
+        "pk": 161, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_userprofile", 
+            "name": "Can add user profile", 
+            "content_type": 54
+        }
+    }, 
+    {
+        "pk": 162, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_userprofile", 
+            "name": "Can change user profile", 
+            "content_type": 54
+        }
+    }, 
+    {
+        "pk": 163, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_userprofile", 
+            "name": "Can delete user profile", 
+            "content_type": 54
+        }
+    }, 
+    {
+        "pk": 158, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_chargevote", 
+            "name": "Can add charge vote", 
+            "content_type": 53
+        }
+    }, 
+    {
+        "pk": 159, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_chargevote", 
+            "name": "Can change charge vote", 
+            "content_type": 53
+        }
+    }, 
+    {
+        "pk": 160, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_chargevote", 
+            "name": "Can delete charge vote", 
+            "content_type": 53
+        }
+    }, 
+    {
+        "pk": 155, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_groupvote", 
+            "name": "Can add group vote", 
+            "content_type": 52
+        }
+    }, 
+    {
+        "pk": 156, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_groupvote", 
+            "name": "Can change group vote", 
+            "content_type": 52
+        }
+    }, 
+    {
+        "pk": 157, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_groupvote", 
+            "name": "Can delete group vote", 
+            "content_type": 52
+        }
+    }, 
+    {
+        "pk": 152, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_votation", 
+            "name": "Can add votation", 
+            "content_type": 51
+        }
+    }, 
+    {
+        "pk": 153, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_votation", 
+            "name": "Can change votation", 
+            "content_type": 51
+        }
+    }, 
+    {
+        "pk": 154, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_votation", 
+            "name": "Can delete votation", 
+            "content_type": 51
+        }
+    }, 
+    {
+        "pk": 44, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_vote", 
+            "name": "Can add vote", 
+            "content_type": 15
+        }
+    }, 
+    {
+        "pk": 45, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_vote", 
+            "name": "Can change vote", 
+            "content_type": 15
+        }
+    }, 
+    {
+        "pk": 46, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_vote", 
+            "name": "Can delete vote", 
+            "content_type": 15
+        }
+    }, 
+    {
+        "pk": 167, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "add_sharing", 
+            "name": "Can add sharing", 
+            "content_type": 56
+        }
+    }, 
+    {
+        "pk": 168, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "change_sharing", 
+            "name": "Can change sharing", 
+            "content_type": 56
+        }
+    }, 
+    {
+        "pk": 169, 
+        "model": "auth.permission", 
+        "fields": {
+            "codename": "delete_sharing", 
+            "name": "Can delete sharing", 
+            "content_type": 56
         }
     }
 ]

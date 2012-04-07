@@ -33,7 +33,7 @@ class ChargeInline(admin.StackedInline):
     raw_id_fields = ('person', )
     fieldsets = (
         (None, {
-            'fields': (('person', 'charge_type', 'start_date', 'end_date'), )
+            'fields': (('person', 'start_date', 'end_date'), )
         }),
         (_('Advanced options'), {
             'classes': ('collapse',),
@@ -53,7 +53,7 @@ class InstitutionChargeInline(ChargeInline):
     raw_id_fields = ('person', 'substitutes', 'substituted_by')
     fieldsets = (
         (None, {
-            'fields': (('person', 'charge_type', 'op_charge_id', 'start_date', 'end_date'), )
+            'fields': (('person', 'op_charge_id', 'start_date', 'end_date'), )
         }),
         (_('Advanced options'), {
             'classes': ('collapse',),
@@ -71,7 +71,7 @@ class CompanyChargeAdmin(ChargeAdmin):
     raw_id_fields = ('person', 'company')
     fieldsets = (
         (None, {
-            'fields': (('person', 'charge_type', 'company'), 
+            'fields': (('person', 'company'),
                 ('start_date', 'end_date', 'end_reason'), 
                  'description')
         }),
@@ -82,7 +82,7 @@ class AdministrationChargeAdmin(ChargeAdmin):
     raw_id_fields = ('person', 'office')
     fieldsets = (
         (None, {
-            'fields': (('person', 'charge_type', 'office'), 
+            'fields': (('person', 'office'),
                  ('start_date', 'end_date', 'end_reason'), 
                  'description')
         }),
@@ -93,7 +93,7 @@ class InstitutionChargeAdmin(ChargeAdmin):
     raw_id_fields = ('person', 'substitutes', 'substituted_by', 'institution')
     fieldsets = (
         (None, {
-            'fields': (('person', 'charge_type', 'op_charge_id', 'institution'), 
+            'fields': (('person', 'op_charge_id', 'institution'),
                  ('start_date', 'end_date', 'end_reason'), 
                  'description',
                  ('substitutes', 'substituted_by'))

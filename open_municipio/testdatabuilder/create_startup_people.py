@@ -100,8 +100,7 @@ sindaco_charge = InstitutionCharge(
     description="Descrizione incarico di sindaco",
     start_date = election_date,
     person = sindaco_pers,
-    institution = sindaco_inst,
-    charge_type = InstitutionCharge.MAYOR_CHARGE
+    institution = sindaco_inst
 )
 sindaco_charge.save()
 
@@ -113,12 +112,10 @@ vice_created = False
 for i in range(0, n_consiglieri):
     pers = random_factory.create_person()
     charge = InstitutionCharge(
-        description="Consigliere semplice",
         start_date = election_date,
         person = pers,
-        institution = consiglio_inst,
-        charge_type = InstitutionCharge.COUNSELOR_CHARGE
-        )
+        institution = consiglio_inst
+    )
     charge.save()
     consiglieri.append(charge)
     
@@ -132,35 +129,50 @@ for i in range(0, n_consiglieri):
         cnt += 1
         if group['remaining_perc'] > 0 or cnt > 10:
             break
-    
-    # presidente
-    if not pres_created and group['acronym'] == 'PDL':
-        pres_charge = InstitutionCharge(
+
+    group['n_members'] = group['obj'].charge_set.count()
+
+    # council president (second member of PDL group)
+    if not pres_created and \
+       group['acronym'] == 'PDL' and group['n_members'] == 1:
+        pres_resp = InstitutionResponsability(
             description="Presidente del Consiglio Comunale",
-            start_date = election_date,
-            person = pers,
-            institution = consiglio_inst,
-            charge_type = InstitutionCharge.COUNCIL_PRES_CHARGE
+            start_date=election_date,
+            charge=charge,
+            charge_type=InstitutionResponsability.CHARGE_TYPES.president
         )
-        pres_charge.save()
+        pres_resp.save()
         pres_created = True
-    
-    # vice presidente
-    if not vice_created and group['acronym'] == 'PD':
-        vice_charge = InstitutionCharge(
+        print "Council president created"
+
+    # council vice president (second member of PD group)
+    if not vice_created and \
+       group['acronym'] == 'PD' and group['n_members'] == 1:
+        vice_resp = InstitutionResponsability(
             description="Vicepresidente del Consiglio Comunale",
-            start_date = election_date,
-            person = pers,
-            institution = consiglio_inst,
-            charge_type = InstitutionCharge.COUNCIL_VICE_CHARGE
+            start_date=election_date,
+            charge=charge,
+            charge_type=InstitutionResponsability.CHARGE_TYPES.vice
         )
-        vice_charge.save()
+        vice_resp.save()
         vice_created = True
-        
+        print "Council vice president created"
+
     gc = GroupCharge.objects.create(group=group['obj'], charge=charge, start_date=election_date)
-    if group['obj'].counselor_set.count == 0:
-        gc.charge_description = "Capogruppo"
     gc.save()
+
+    # group leader creation (first member of each group)
+    print "%s: " % group['n_members']
+    if group['n_members'] == 0:
+        group_resp = GroupResponsability(
+            description="Capogruppo",
+            start_date=election_date,
+            charge=gc,
+            charge_type=GroupResponsability.CHARGE_TYPES.leader
+        )
+        group_resp.save()
+        print "Group leader created"
+
     print "    %s - %s (%s)" % (i, pers, group['acronym'])
 
 
@@ -183,8 +195,7 @@ for i in range(0, len(assessorati)):
         start_date = election_date,
         person = pers,
         institution = giunta_inst,
-        charge_type = InstitutionCharge.ASSESSOR_CHARGE
-        )
+    )
     charge.save()
     print "    %s - %s (%s)" % (i, pers, assessorati[i])
     
@@ -192,6 +203,10 @@ for i in range(0, len(assessorati)):
 # assegnazione posti in commissioni (pesata con percentuali per gruppi)
 print "  commissioni"
 for c_inst in commissioni:
+    pres_created = False
+    vice_created = False
+    g_pres = choice(gruppi)
+    g_vice = choice(gruppi)
     print "    %s" % c_inst.name
     for g in gruppi:
         n_choices = int(g['perc'] * n_membri_commissione / 100)
@@ -207,8 +222,33 @@ for c_inst in commissioni:
                     start_date = election_date,
                     person = pers,
                     institution = c_inst,
-                    charge_type = InstitutionCharge.COMMITTEE_MEMBER_CHARGE
-                    )
+                )
+                charge.original_charge = pers.current_institution_charges[0]
                 charge.save()
                 print "        %s - %s" % (i, pers)
-            
+
+                # commission president (first choice)
+                if g == g_pres and not pres_created:
+                    pres_resp = InstitutionResponsability(
+                        description="Presidente",
+                        start_date=election_date,
+                        charge=charge,
+                        charge_type=InstitutionResponsability.CHARGE_TYPES.president
+                    )
+                    pres_resp.save()
+                    pres_created = True
+                    print "Commission president created"
+
+                # commission vice president (first choice after president)
+                if g==g_vice and not vice_created:
+                    vice_resp = InstitutionResponsability(
+                        description="Vicepresidente",
+                        start_date=election_date,
+                        charge=charge,
+                        charge_type=InstitutionResponsability.CHARGE_TYPES.vice
+                    )
+                    vice_resp.save()
+                    vice_created = True
+                    print "Commission vice president created"
+
+

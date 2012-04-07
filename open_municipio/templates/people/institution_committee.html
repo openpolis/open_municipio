@@ -13,14 +13,32 @@
     <section class="row-fluid">
         <div class="span6">
             <p>
-                <a href="#"><strong>Giovanna Verdi</strong> (PD)</a><br>
-                Presidente
+                {% if president %}
+                    <a href="{{ president.charge.person.get_absolute_url }}">
+                        <strong>{{ president.charge.person.full_name }}</strong>
+                        {% if president.charge.original_charge.council_group %}
+                            ({{ president.charge.original_charge.council_group.acronym }})
+                        {% endif %}
+                    </a><br/>
+                    {{ president.get_charge_type_display }}
+                {% else %}
+                    Presidente non definito
+                {% endif %}
             </p>
 
-            <p>
-                <a href="#"><strong>Mario Verdi</strong> (PD)</a><br>
-                Vice Presidente
-            </p>
+            {% for vp in vice_presidents %}
+                <p>
+                    <a href="{{ vp.charge.person.get_absolute_url }}">
+                        <strong>{{ vp.charge.person.full_name }}</strong>
+                        {% if vp.charge.original_charge.council_group %}
+                            ({{ vp.charge.original_charge.council_group.acronym }})
+                        {% endif %}
+                    </a><br/>
+                    {{ vp.get_charge_type_display }}
+
+                </p>
+            {% endfor %}
+
 
             <address>
                 Segreteria: Enrico Bianchi<br>
@@ -32,7 +50,10 @@
         <div class="span6">
             <ul>
                 {% for member in members %}
-                <li><a href="{{ member.person.get_absolute_url }}"><strong>{{ member.person.full_name }}</strong>{% if member.counselor_group %} ({{ member.counselor_group.acronym }}){% endif %}</a></li>
+                <li><a href="{{ member.person.get_absolute_url }}"><strong>{{ member.person.full_name }}</strong>
+                    {% if member.original_charge.council_group %}
+                        ({{ member.original_charge.council_group.acronym }})
+                    {% endif %}</a></li>
                 {% endfor %}
             </ul>
         </div>

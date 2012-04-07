@@ -6,7 +6,7 @@ from django.views.generic import TemplateView, DetailView
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render_to_response
 
-from open_municipio.people.models import Institution, InstitutionCharge, Person, municipality
+from open_municipio.people.models import Institution, InstitutionCharge, Person, municipality, InstitutionResponsability
 from open_municipio.monitoring.forms import MonitoringForm
 from open_municipio.acts.models import Act, Deliberation, Interrogation, Interpellation, Motion, Agenda
 from open_municipio.events.models import Event
@@ -23,10 +23,8 @@ class CouncilView(TemplateView):
         context = super(CouncilView, self).get_context_data(**kwargs)
 
         mayor = municipality.mayor.as_charge
-        president = municipality.council.members.get(
-            charge_type=InstitutionCharge.COUNCIL_PRES_CHARGE)
-        vice_president = municipality.council.members.get(
-            charge_type=InstitutionCharge.COUNCIL_VICE_CHARGE)
+        president = municipality.council.president
+        vicepresidents = municipality.council.vicepresidents
         groups = municipality.council.groups
         committees = municipality.committees.as_institution
         latest_acts = Act.objects.filter(
@@ -47,7 +45,7 @@ class CouncilView(TemplateView):
         extra_context = {
             'mayor': mayor,
             'president': president,
-            'vice_president': vice_president,
+            'vicepresidents': vicepresidents,
             'groups': groups,
             'committees': committees,
             'latest_acts': latest_acts,
@@ -115,32 +113,19 @@ class CommitteeDetailView(DetailView):
         if self.object.institution_type != Institution.COMMITTEE:
             raise Http404
 
-        committee_list = Institution.objects.filter(institution_type=Institution.COMMITTEE)
+        committee_list = municipality.committees.as_institution()
 
-        # Under the hood, we make use of a custom manager here, so
-        # that *only* current institution charges are retrieved.
-        members = InstitutionCharge.objects.filter(
-            institution=self.object
-            ).filter(
-            charge_type=InstitutionCharge.COMMITTEE_MEMBER_CHARGE
-            )
+        members = self.object.members
+        president = self.object.president
+        vicepresidents = self.object.vicepresidents
 
-        # FIXME: do we really want this? Is that necessary? Is there
-        # any other *smarter* way to do that?
-        for member in members:
-            try:
-                counselor_charge = member.person.current_institution_charges.filter(
-                    charge_type=InstitutionCharge.COUNSELOR_CHARGE
-                    )[0]
-            except IndexError:
-                continue
-            member.counselor_group = counselor_charge.council_group
-            
         events = Event.future.filter(institution=self.object)
 
         extra_context = {
             'committee_list': committee_list,
             'members': members,
+            'president': president,
+            'vice_presidents': vicepresidents,
             'events': events,
             }
 
@@ -236,7 +221,7 @@ class PoliticianListView(TemplateView):
 
         # fetch most or least
         gov_members = municipality.gov.members
-        counselors = municipality.council.members.filter(charge_type=InstitutionCharge.COUNSELOR_CHARGE)
+        counselors = municipality.council.members
         context['gov_members'] = gov_members
         context['counselors'] = counselors
         context['most_rebellious'] = counselors.order_by('-n_rebel_votations')[0:3]
