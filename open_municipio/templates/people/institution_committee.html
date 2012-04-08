@@ -16,8 +16,8 @@
                 {% if president %}
                     <a href="{{ president.charge.person.get_absolute_url }}">
                         <strong>{{ president.charge.person.full_name }}</strong>
-                        {% if president.charge.original_charge.council_group %}
-                            ({{ president.charge.original_charge.council_group.acronym }})
+                        {% if president.group %}
+                            ({{ president.group.acronym }})
                         {% endif %}
                     </a><br/>
                     {{ president.get_charge_type_display }}
@@ -30,8 +30,8 @@
                 <p>
                     <a href="{{ vp.charge.person.get_absolute_url }}">
                         <strong>{{ vp.charge.person.full_name }}</strong>
-                        {% if vp.charge.original_charge.council_group %}
-                            ({{ vp.charge.original_charge.council_group.acronym }})
+                        {% if vp.group %}
+                            ({{ vp.group.acronym }})
                         {% endif %}
                     </a><br/>
                     {{ vp.get_charge_type_display }}
@@ -39,21 +39,22 @@
                 </p>
             {% endfor %}
 
-
             <address>
                 Segreteria: Enrico Bianchi<br>
                 tel 041 274.8170/8874<br>
                 fax 041 274.8865<br>
                 <a href="#">commissione_1@comune.senigallia.it</a>
             </address>
+
+
         </div>
         <div class="span6">
             <ul>
                 {% for member in members %}
-                <li><a href="{{ member.person.get_absolute_url }}"><strong>{{ member.person.full_name }}</strong>
-                    {% if member.original_charge.council_group %}
-                        ({{ member.original_charge.council_group.acronym }})
-                    {% endif %}</a></li>
+                    <li><a href="{{ member.person.get_absolute_url }}"><strong>{{ member.person.full_name }}</strong>
+                        {% if member.group %}
+                            ({{ member.group.acronym }})
+                        {% endif %}</a></li>
                 {% endfor %}
             </ul>
         </div>
@@ -70,7 +71,7 @@
                     <div class="calendar" data-calendar=".calendar_events"></div>
                     <ul class="calendar_events">
                         {% for event in events %}
-                        <li data-day="{{ event.date|date:"d/m/Y" }}"><a href="{{ event.act.downcast.get_absolute_url }}">{{ event.act.title }}</a></li>
+                            <li data-day="{{ event.date|date:"d/m/Y" }}"><a href="{{ event.act.downcast.get_absolute_url }}">{{ event.act.title }}</a></li>
                         {% endfor %}
                     </ul>
                 </div>
@@ -78,9 +79,9 @@
             <div class="span8">
                 <ul class="list-floated unstyled">
                     {% for event in events %}
-                    {% if not event.is_past_due %}
-                    <li><strong>{{ event.date|date:"d.m.Y" }}</strong> <a href="{{ event.act.downcast.get_absolute_url }}">{{ event.act.title }}</a></li>
-                    {% endif %}
+                        {% if not event.is_past_due %}
+                            <li><strong>{{ event.date|date:"d.m.Y" }}</strong> <a href="{{ event.act.downcast.get_absolute_url }}">{{ event.act.title }}</a></li>
+                        {% endif %}
                     {% endfor %}
                 </ul>
             </div>
@@ -93,11 +94,11 @@
     <h2>Commissioni</h2>
     <ul class="unstyled">
         {% for committee_iter in committee_list %}
-        {% if committee_iter = committee %}
-        <li><strong>{{ committee_iter.name }}</strong>: {{ committee_iter.description|truncatewords:3 }}</li>
-        {% else %}
-        <li><a href="{{ committee_iter.get_absolute_url }}"><strong>{{ committee_iter.name }}</strong>: {{ committee_iter.description|truncatewords:3 }}</a></li>
-        {% endif %}
+            {% if committee_iter = committee %}
+                <li><strong>{{ committee_iter.name }}</strong>: {{ committee_iter.description|truncatewords:3 }}</li>
+            {% else %}
+                <li><a href="{{ committee_iter.get_absolute_url }}"><strong>{{ committee_iter.name }}</strong>: {{ committee_iter.description|truncatewords:3 }}</a></li>
+            {% endif %}
         {% endfor %}
     </ul>
 

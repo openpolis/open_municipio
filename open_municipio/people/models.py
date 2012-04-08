@@ -410,6 +410,13 @@ class Group(models.Model):
         )
 
     @property
+    def alpha_members(self):
+        """
+        Alphabetically sorted members
+        """
+        return self.members.order_by('person__last_name')
+
+    @property
     def charges(self):
         """
         All current institution charges in the group, leader **included**
@@ -606,7 +613,7 @@ class Institution(Body):
                 InstitutionResponsability.CHARGE_TYPES.vice,
                 ),
             institutionresponsability__end_date__isnull=True
-        )
+        ).select_related()
 
 
     @property
@@ -699,14 +706,14 @@ class Mayor(object):
         """
         A municipality mayor, as an *institution*.
         """
-        return Institution.objects.get(institution_type=Institution.MAYOR)
+        return Institution.objects.select_related().get(institution_type=Institution.MAYOR)
     
     @property
     def as_charge(self):
         """
         A municipality mayor, as a *charge*.
         """
-        return self.as_institution.charges[0]
+        return InstitutionCharge.objects.select_related().get(institution__institution_type=Institution.MAYOR)
     
     @property
     def acts(self):
@@ -733,7 +740,7 @@ class CityCouncil(object):
         All current members of the municipality council (aka *counselors*), as charges.
         President and vice-presidents **included**.
         """
-        return self.as_institution.charges
+        return self.as_institution.charges.select_related()
 
     @property
     def president(self):
@@ -751,7 +758,7 @@ class CityCouncil(object):
 
         There can be more than one vicepresident
         """
-        return self.as_institution.vicepresidents
+        return self.as_institution.vicepresidents.select_related()
 
     @property
     def members(self):
@@ -759,7 +766,7 @@ class CityCouncil(object):
         Members of the municipality council (aka *counselors*), as charges.
         Current president and vice presidents **excluded**.
         """
-        return self.as_institution.members
+        return self.as_institution.members.select_related()
 
     @property
     def majority_members(self):
@@ -788,14 +795,14 @@ class CityCouncil(object):
         """
         Groups of counselors within of a municipality council.
         """
-        return Group.objects.all()
+        return Group.objects.select_related().all()
     
     @property
     def majority_groups(self):
         """
         Counselors' groups belonging to majority.
         """
-        qs = Group.objects.filter(groupismajority__end_date__isnull=True).filter(groupismajority__is_majority=True)
+        qs = Group.objects.select_related().filter(groupismajority__end_date__isnull=True).filter(groupismajority__is_majority=True)
         return qs
     
     @property
@@ -803,7 +810,7 @@ class CityCouncil(object):
         """
         Counselors' groups belonging to minority.
         """
-        qs = Group.objects.filter(groupismajority__end_date__isnull=True).filter(groupismajority__is_majority=False)
+        qs = Group.objects.select_related().filter(groupismajority__end_date__isnull=True).filter(groupismajority__is_majority=False)
         return qs
 
     @property
@@ -814,7 +821,7 @@ class CityCouncil(object):
         Note that the objects comprising the resulting QuerySet aren't generic ``Act`` instances,
         but instances of specific ``Act`` subclasses (i.e. ``Deliberation``, ``Motion``, etc.).
         """
-        return self.as_institution.emitted_acts
+        return self.as_institution.select_related().emitted_acts
     
     @property
     def deliberations(self):
@@ -822,7 +829,7 @@ class CityCouncil(object):
         The QuerySet of all deliberations emitted by the City Council.
         """
         from open_municipio.acts.models import Deliberation
-        return Deliberation.objects.filter(emitting_institution=self.as_institution)
+        return Deliberation.objects.select_related().filter(emitting_institution=self.as_institution)
     
     @property
     def interrogations(self):
@@ -830,7 +837,7 @@ class CityCouncil(object):
         The QuerySet of all interrogations emitted by the City Council.
         """
         from open_municipio.acts.models import Interrogation
-        return Interrogation.objects.filter(emitting_institution=self.as_institution)
+        return Interrogation.objects.select_related().filter(emitting_institution=self.as_institution)
     
     @property
     def interpellations(self):
@@ -838,7 +845,7 @@ class CityCouncil(object):
         The QuerySet of all interpellations emitted by the City Council.
         """
         from open_municipio.acts.models import Interpellation
-        return Interpellation.objects.filter(emitting_institution=self.as_institution)
+        return Interpellation.objects.select_related().filter(emitting_institution=self.as_institution)
             
     @property
     def motions(self):
@@ -846,7 +853,7 @@ class CityCouncil(object):
         The QuerySet of all motions emitted by the City Council.
         """
         from open_municipio.acts.models import Motion
-        return Motion.objects.filter(emitting_institution=self.as_institution)
+        return Motion.objects.select_related().filter(emitting_institution=self.as_institution)
     
     @property
     def agendas(self):
@@ -854,7 +861,7 @@ class CityCouncil(object):
         The QuerySet of all agendas emitted by the City Council.
         """
         from open_municipio.acts.models import Agenda
-        return Agenda.objects.filter(emitting_institution=self.as_institution)
+        return Agenda.objects.select_related().filter(emitting_institution=self.as_institution)
 
 
 class CityGovernment(object):
@@ -870,7 +877,7 @@ class CityGovernment(object):
         """
         Members of a municipality government (aka *assessors*), as charges.
         """
-        return self.as_institution.charges
+        return self.as_institution.charges.select_related()
 
     @property
     def members(self):
@@ -896,7 +903,7 @@ class CityGovernment(object):
         The QuerySet of all deliberations emitted by the City Government.
         """
         from open_municipio.acts.models import Deliberation
-        return Deliberation.objects.filter(emitting_institution=self.as_institution)
+        return Deliberation.objects.select_related().filter(emitting_institution=self.as_institution)
     
     @property
     def interrogations(self):
@@ -904,7 +911,7 @@ class CityGovernment(object):
         The QuerySet of all interrogations emitted by the City Government.
         """
         from open_municipio.acts.models import Interrogation
-        return Interrogation.objects.filter(emitting_institution=self.as_institution)
+        return Interrogation.objects.select_related().filter(emitting_institution=self.as_institution)
     
     @property
     def interpellations(self):
@@ -912,7 +919,7 @@ class CityGovernment(object):
         The QuerySet of all interpellations emitted by the City Government.
         """
         from open_municipio.acts.models import Interpellation
-        return Interpellation.objects.filter(emitting_institution=self.as_institution)
+        return Interpellation.objects.select_related().filter(emitting_institution=self.as_institution)
             
     @property
     def motions(self):
@@ -920,7 +927,7 @@ class CityGovernment(object):
         The QuerySet of all motions emitted by the City Government.
         """
         from open_municipio.acts.models import Motion
-        return Motion.objects.filter(emitting_institution=self.as_institution)
+        return Motion.objects.select_related().filter(emitting_institution=self.as_institution)
     
     @property
     def agendas(self):
@@ -928,7 +935,7 @@ class CityGovernment(object):
         The QuerySet of all agendas emitted by the City Government.
         """
         from open_municipio.acts.models import Agenda
-        return Agenda.objects.filter(emitting_institution=self.as_institution)
+        return Agenda.objects.select_related().filter(emitting_institution=self.as_institution)
 
 
 class Committees(object):
@@ -938,7 +945,7 @@ class Committees(object):
         """
         # FIXME: Should we include joint committees here?
         # (Institution.JOINT_COMMITTEE)
-        return Institution.objects.filter(
+        return Institution.objects.select_related().filter(
             institution_type__in=(Institution.COMMITTEE, Institution.JOINT_COMMITTEE)
         )
 

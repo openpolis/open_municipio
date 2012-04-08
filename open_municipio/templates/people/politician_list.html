@@ -15,27 +15,26 @@
     <section class="row-fluid">
         <div class="party-people span4">
             <h2>Sindaco</h2>
-
-            <p><a href="{{ municipality.mayor.as_charge.person.get_absolute_url }}"><strong>{{ municipality.mayor.as_charge.person|title }}</strong></a></p>
+            <p><a href="{{ mayor.person.get_absolute_url }}"><strong>{{ mayor.person|title }}</strong></a></p>
 
             <h2>Giunta</h2>
-
             <ul>
-                {% for p in gov_members %}
-                    <li><a href="{{ p.person.get_absolute_url }}"><strong>{{ p.person|title }}</strong></a></li>
+                {% for c in gov_members %}
+                    <li><a href="{{ c.person.get_absolute_url }}"><strong>{{ c.person|title }}</strong></a></li>
                 {% endfor %}
             </ul>
+
         </div>
 
         <div class="party-people span8">
 
             <h2>Consiglio</h2>
-
             <ul class="list-floated">
-                {% for p in counselors %}
-                    <li><a href="{{ p.person.get_absolute_url }}"><strong>{{ p.person|title }}</strong> ({{ p.council_group.acronym }})</a></li>
+                {% for c in counselors %}
+                    <li><a href="{{ c.person.get_absolute_url }}"><strong>{{ c.person|title }}</strong> ({{ c.council_group.acronym }})</a></li>
                 {% endfor %}
             </ul>
+
         </div>
     </section>
 

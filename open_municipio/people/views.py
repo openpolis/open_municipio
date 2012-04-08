@@ -115,9 +115,20 @@ class CommitteeDetailView(DetailView):
 
         committee_list = municipality.committees.as_institution()
 
-        members = self.object.members
+        # fetch charges and add group
         president = self.object.president
+        if president:
+            president.group = InstitutionCharge.objects.select_related().\
+                                  get(pk=president.charge.original_charge_id).council_group
         vicepresidents = self.object.vicepresidents
+        for vp in vicepresidents:
+            if vp:
+                vp.group = InstitutionCharge.objects.select_related().\
+                    get(pk=vp.charge.original_charge_id).council_group
+        members = self.object.members
+        for m in members:
+            m.group = InstitutionCharge.objects.select_related().\
+                get(pk=m.original_charge_id).council_group
 
         events = Event.future.filter(institution=self.object)
 
@@ -127,7 +138,7 @@ class CommitteeDetailView(DetailView):
             'president': president,
             'vice_presidents': vicepresidents,
             'events': events,
-            }
+        }
 
         # Update context with extra values we need
         context.update(extra_context)
@@ -185,8 +196,6 @@ class PoliticianDetailView(DetailView):
         # Add in a QuerySet of all the institutions
         context['institution_list'] = Institution.objects.all()
 
-        print  >> sys.stderr, "context: %s" % context
-
         # is the user monitoring the act?
         context['is_user_monitoring'] = False
         try:
@@ -220,10 +229,9 @@ class PoliticianListView(TemplateView):
         context['municipality'] = municipality
 
         # fetch most or least
-        gov_members = municipality.gov.members
-        counselors = municipality.council.members
-        context['gov_members'] = gov_members
-        context['counselors'] = counselors
+        context['mayor'] = municipality.mayor.as_charge
+        context['gov_members'] = municipality.gov.charges.order_by('person__last_name')
+        counselors = context['counselors'] = municipality.council.members.order_by('person__last_name')
         context['most_rebellious'] = counselors.order_by('-n_rebel_votations')[0:3]
         context['least_absent'] = counselors.order_by('n_absent_votations')[0:3]
         context['most_absent'] = counselors.order_by('-n_absent_votations')[0:3]
