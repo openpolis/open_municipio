@@ -66,14 +66,14 @@ class Person(models.Model):
         """
         Returns the QuerySet of all institution charges held by this person during his/her career.
         """
-        return self.institutioncharge_set.all()
+        return self.institutioncharge_set.select_related().all()
     
     @property
     def current_institution_charges(self):
         """
         Returns a QuerySet of institution charges currently held by this person.
         """
-        return self.institutioncharge_set.current()
+        return self.institutioncharge_set.select_related().current()
     
     @property
     def monitorings(self):
@@ -124,6 +124,7 @@ class Resource(models.Model):
         ('EMAIL', 'email', _('email')),
         ('URL', 'url', _('url')),
         ('PHONE', 'phone', _('phone')),
+        ('FAX', 'fax', _('fax')),
         ('SNAIL', 'snail', _('snail mail')),
         ('PERSON', 'person', _('person')),
     )
