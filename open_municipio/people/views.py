@@ -125,7 +125,7 @@ class CommitteeDetailView(DetailView):
             if vp:
                 vp.group = InstitutionCharge.objects.select_related().\
                     get(pk=vp.charge.original_charge_id).council_group
-        members = self.object.members
+        members = self.object.members.order_by('person__last_name')
         for m in members:
             m.group = InstitutionCharge.objects.select_related().\
                 get(pk=m.original_charge_id).council_group
