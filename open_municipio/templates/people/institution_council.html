@@ -40,7 +40,13 @@
     <section>
         {% for group in groups %}
         <div class="party-people">
-            <h2><img src="http://placehold.it/50">{{ group.name }}</h2>
+            <h2><img src="http://placehold.it/50">{{ group.name }} ({{ group.acronym }})</h2>
+            <address>
+                {% for r in group.resources %}
+                    {{ r.description }}: {{ r.value }}<br/>
+                {% endfor %}
+            </address>
+
             <p>
                 <a href="{{ group.leader.charge.charge.get_absolute_url }}">
                     <strong>{{ group.leader.charge.charge.person.first_name }} {{ group.leader.charge.charge.person.last_name }}</strong>

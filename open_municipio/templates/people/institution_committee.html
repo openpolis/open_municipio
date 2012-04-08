@@ -40,10 +40,21 @@
             {% endfor %}
 
             <address>
-                Segreteria: Enrico Bianchi<br>
-                tel 041 274.8170/8874<br>
-                fax 041 274.8865<br>
-                <a href="#">commissione_1@comune.senigallia.it</a>
+                {% for r in resources %}
+                    {% if r.resource_type == 'URL' %}
+                        {% if 'http://' not in r.value %}
+                            {{ r.description }}: <a href="http://{{ r.value }}">{{ r.value }}</a><br/>
+                        {%  else %}
+                            {{ r.description }}: <a href="{{ r.value }}">{{ r.value }}</a><br/>
+                        {% endif %}
+                    {% else %}
+                        {% if r.resource_type == 'EMAIL' %}
+                            {{ r.description }}: <a href="mailto:{{ r.value }}">{{ r.value }}</a><br/>
+                        {%  else %}
+                            {{ r.description }}: {{ r.value }}<br/>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
             </address>
 
 

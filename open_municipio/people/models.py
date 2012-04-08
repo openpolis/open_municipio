@@ -112,18 +112,37 @@ class Person(models.Model):
 class Resource(models.Model):
     """
     This class maps the internet resources (mail, web sites, rss, facebook, twitter, )
+    It must be subclassed, by a PersonResource, InstitutionResource or GroupResource class.
+
+    The `value` field contains the resource.
+    The `description` field may be used to specify the context.
+
+    A `PERSON` resource may be a secretary, a responsible. We're interested only in
+    her name, it must not be mapped into the system.
     """
     RES_TYPE = Choices(
         ('EMAIL', 'email', _('email')),
         ('URL', 'url', _('url')),
         ('PHONE', 'phone', _('phone')),
         ('SNAIL', 'snail', _('snail mail')),
+        ('PERSON', 'person', _('person')),
     )
-    person = models.ForeignKey('Person', verbose_name=_('person'))
-    resource_type = models.CharField(verbose_name=_('type'), max_length=5, choices=RES_TYPE)
+    resource_type = models.CharField(verbose_name=_('type'), max_length=10, choices=RES_TYPE)
     value = models.CharField(verbose_name=_('value'), max_length=64)
     description = models.CharField(verbose_name=_('description'), max_length=255, blank=True)
 
+    class Meta:
+        abstract = True
+        verbose_name = _('Resource')
+
+class PersonResource(Resource):
+    person = models.ForeignKey('Person', verbose_name=_('person'), related_name='resource_set')
+
+class InstitutionResource(Resource):
+    institution = models.ForeignKey('Institution', verbose_name=_('institution'), related_name='resource_set')
+
+class GroupResource(Resource):
+    group = models.ForeignKey('Group', verbose_name=_('group'), related_name='resource_set')
 
 
 class Charge(models.Model):
@@ -433,6 +452,9 @@ class Group(models.Model):
         # at a time (i.e. the current one)
         return self.majority_records.get(end_date__isnull=True).is_majority
 
+    @property
+    def resources(self):
+        return self.resource_set.all()
 
 class GroupCharge(models.Model):
     """
@@ -631,7 +653,11 @@ class Institution(Body):
         """
         # NOTE: See also Django bug #14891
         return self.emitted_act_set.all().select_subclasses()
-    
+
+    @property
+    def resources(self):
+        return self.resource_set.all()
+
     
 
 class Company(Body):

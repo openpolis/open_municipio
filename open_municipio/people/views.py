@@ -6,7 +6,7 @@ from django.views.generic import TemplateView, DetailView
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render_to_response
 
-from open_municipio.people.models import Institution, InstitutionCharge, Person, municipality, InstitutionResponsability
+from open_municipio.people.models import Institution, InstitutionCharge, Person, municipality, InstitutionResponsability, Resource
 from open_municipio.monitoring.forms import MonitoringForm
 from open_municipio.acts.models import Act, Deliberation, Interrogation, Interpellation, Motion, Agenda
 from open_municipio.events.models import Event
@@ -130,12 +130,16 @@ class CommitteeDetailView(DetailView):
             m.group = InstitutionCharge.objects.select_related().\
                 get(pk=m.original_charge_id).council_group
 
+
+        resources = self.object.resource_set.all()
+
         events = Event.future.filter(institution=self.object)
 
         extra_context = {
             'committee_list': committee_list,
             'members': members,
             'president': president,
+            'resources': resources,
             'vice_presidents': vicepresidents,
             'events': events,
         }

@@ -3,17 +3,21 @@ from django.utils.translation import ugettext_lazy as _
 from open_municipio.people.models import *
 from open_municipio.votations.admin import VotationsInline
 
-class ResourceInline(admin.TabularInline):
-    model = Resource
+class PersonResourceInline(admin.TabularInline):
+    model = PersonResource
     extra = 0
 
 class PersonAdminWithResources(admin.ModelAdmin):
     search_fields = ['^first_name', '^last_name']
     prepopulated_fields = {"slug": ("first_name","last_name","birth_date", "birth_location",)}
-    inlines = [ResourceInline, ]
+    inlines = [PersonResourceInline, ]
 
 class ChargeAdmin(admin.ModelAdmin):
     raw_id_fields = ('person', )
+
+class GroupResourceInline(admin.TabularInline):
+    model = GroupResource
+    extra = 0
 
 class GroupChargeInline(admin.TabularInline):
     model = GroupCharge
@@ -26,7 +30,7 @@ class GroupIsMajorityInline(admin.TabularInline):
 
 class GroupAdminWithCharges(admin.ModelAdmin):
     list_display = ('name', 'acronym', 'is_majority_now')
-    inlines = [GroupIsMajorityInline, GroupChargeInline]
+    inlines = [GroupResourceInline, GroupIsMajorityInline, GroupChargeInline]
     
 
 class ChargeInline(admin.StackedInline):
@@ -47,6 +51,10 @@ class CompanyChargeInline(ChargeInline):
 
 class AdministrationChargeInline(ChargeInline):
     model = AdministrationCharge
+
+class InstitutionResourceInline(admin.TabularInline):
+    model = InstitutionResource
+    extra = 0
 
 class InstitutionChargeInline(ChargeInline):
     model = InstitutionCharge
@@ -109,7 +117,7 @@ class CompanyAdmin(BodyAdmin):
 class OfficeAdmin(BodyAdmin):
     inlines = [AdministrationChargeInline]
 class InstitutionAdmin(BodyAdmin):
-    inlines = [InstitutionChargeInline]
+    inlines = [InstitutionResourceInline, InstitutionChargeInline]
 
 class SittingAdmin(admin.ModelAdmin):
     inlines = [VotationsInline]
