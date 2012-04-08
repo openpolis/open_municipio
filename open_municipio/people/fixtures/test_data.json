@@ -625,6 +625,86 @@
     }, 
     {
         "pk": 1, 
+        "model": "people.institutionresource", 
+        "fields": {
+            "institution": 4, 
+            "value": "Pietro Bianchi", 
+            "resource_type": "PERSON", 
+            "description": "Segreteria"
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "people.institutionresource", 
+        "fields": {
+            "institution": 4, 
+            "value": "segreteria@commissione_bilancio.comune.it", 
+            "resource_type": "EMAIL", 
+            "description": "Mail ufficiale"
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "people.institutionresource", 
+        "fields": {
+            "institution": 4, 
+            "value": "03499178467", 
+            "resource_type": "PHONE", 
+            "description": "Telefono"
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "people.institutionresource", 
+        "fields": {
+            "institution": 4, 
+            "value": "0875176412", 
+            "resource_type": "PHONE", 
+            "description": "Fax"
+        }
+    }, 
+    {
+        "pk": 5, 
+        "model": "people.institutionresource", 
+        "fields": {
+            "institution": 4, 
+            "value": "http://www.guglielmo.com", 
+            "resource_type": "URL", 
+            "description": "Sito della commissione"
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "people.groupresource", 
+        "fields": {
+            "group": 2, 
+            "value": "Marina Rossi", 
+            "resource_type": "PERSON", 
+            "description": "Segreteria"
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "people.groupresource", 
+        "fields": {
+            "group": 2, 
+            "value": "pdl@comune.it", 
+            "resource_type": "EMAIL", 
+            "description": "Email"
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "people.groupresource", 
+        "fields": {
+            "group": 2, 
+            "value": "3939134087", 
+            "resource_type": "PHONE", 
+            "description": "Tel"
+        }
+    }, 
+    {
+        "pk": 1, 
         "model": "people.institutioncharge", 
         "fields": {
             "op_charge_id": null, 
