@@ -200,6 +200,11 @@ class PoliticianDetailView(DetailView):
         # Add in a QuerySet of all the institutions
         context['institution_list'] = Institution.objects.all()
 
+        context['resources'] = dict(
+            (r['resource_type'], {'value': r['value'], 'descritpion': r['description']})
+            for r in self.object.resource_set.all().values('resource_type', 'value', 'description')
+        )
+
         # is the user monitoring the act?
         context['is_user_monitoring'] = False
         try:

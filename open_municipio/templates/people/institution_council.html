@@ -43,7 +43,19 @@
             <h2><img src="http://placehold.it/50">{{ group.name }} ({{ group.acronym }})</h2>
             <address>
                 {% for r in group.resources %}
-                    {{ r.description }}: {{ r.value }}<br/>
+                    {% if r.resource_type == 'URL' %}
+                        {% if 'http://' not in r.value %}
+                            {{ r.description }}: <a href="http://{{ r.value }}">{{ r.value }}</a><br/>
+                        {%  else %}
+                            {{ r.description }}: <a href="{{ r.value }}">{{ r.value }}</a><br/>
+                        {% endif %}
+                    {% else %}
+                        {% if r.resource_type == 'EMAIL' %}
+                            <a href="mailto:{{ r.value }}">{{ r.value }}</a><br/>
+                        {%  else %}
+                            {{ r.value }}<br/>
+                        {% endif %}
+                    {% endif %}
                 {% endfor %}
             </address>
 

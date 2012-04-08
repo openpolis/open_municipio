@@ -18,8 +18,17 @@
         <small><i class="icon-ok"></i> {{ person }} è iscritto a Open municipio</small>
         <ul class="unstyled">
             <li><small>Sindaco</small></li>
-            <li><a href="mailto:sindaco@email.it">sindaco@email.it</a></li>
-            <li>T. 076107610761 F. 076107610761</li>
+            {% if resources.EMAIL %}
+                <li><a href="mailto:{{ resources.EMAIL.value }}">{{ resources.EMAIL.value }}</a></li>
+            {% endif %}
+            <li>
+                {% if resources.PHONE %}
+                    T.{{ resources.PHONE.value }}
+                {% endif %}
+                {% if resources.FAX %}
+                    F.{{ resources.FAX.value }}
+                {% endif %}
+            </li>
         </ul>
     </header>
 

@@ -49,9 +49,9 @@
                         {% endif %}
                     {% else %}
                         {% if r.resource_type == 'EMAIL' %}
-                            {{ r.description }}: <a href="mailto:{{ r.value }}">{{ r.value }}</a><br/>
+                            <a href="mailto:{{ r.value }}">{{ r.value }}</a><br/>
                         {%  else %}
-                            {{ r.description }}: {{ r.value }}<br/>
+                            {{ r.value }}<br/>
                         {% endif %}
                     {% endif %}
                 {% endfor %}
