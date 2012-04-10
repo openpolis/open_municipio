@@ -1,12 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from datetime import *
 from random import choice
-
 import open_municipio.testdatabuilder.random_items_factory as random_factory
-
 from open_municipio.people.models import *
-from django.conf import settings
 
 # cleanup
 Person.objects.all().delete()
@@ -74,7 +70,7 @@ gruppi = [
     { 'name': u"Raggruppamento civico", 'acronym': 'RCIV', 'is_maj': True, 'perc': 4 },
     { 'name': u"Nostalgia dei bei tempi", 'acronym': 'NBT', 'is_maj': False, 'perc': 5 },
     { 'name': u"Gruppo misto", 'acronym': 'GM', 'is_maj': None, 'perc': 8 }
-]    
+]
 
 # creazione gruppi
 print "Gruppi"
