@@ -1,12 +1,13 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from django.template.defaultfilters import slugify
 
 from django.contrib.auth.models import User
 
+from open_municipio.om_utils.models import SlugModel
 
 
-class Location(models.Model):
+
+class Location(SlugModel):
     """
     A concise description of a town's location.
     
@@ -27,35 +28,7 @@ class Location(models.Model):
     
     def __unicode__(self):
         return u'%s' % self.name
-    
-    def slugify(self, name, i=None):
-        slug = slugify(name)
-        if i is not None:
-            slug += "_%d" % i
-        return slug
-     
-    def calculate_slug(self):
-        """
-        Calculate a slug for a given location name.
         
-        If a calculated slug already exists in the DB, add a numerical prefix until is OK.
-        """
-        slug = self.slugify(self.name)
-        i = 0
-        while True:
-            i += 1
-            try:
-                Location.objects.get(slug=slug)
-                slug = self.slugify(self.name, i)
-            except Location.DoesNotExist:
-                return slug
-
-    def save(self, *args, **kwargs):
-        # auto-generate a slug, if needed 
-        if not self.pk and not self.slug:
-            self.slug = self.calculate_slug()
-        return super(Location, self).save(*args, **kwargs)
-    
     @property
     def acts(self):
         """

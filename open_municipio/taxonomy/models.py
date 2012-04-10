@@ -1,12 +1,14 @@
 from django.db import models
 from django.db.models import permalink
 from django.utils.translation import ugettext_lazy as _
-from django.template.defaultfilters import slugify
+
 from django.contrib.auth.models import User
 from django.contrib.contenttypes import generic
 
 from taggit.models import TagBase, ItemBase
+
 from open_municipio.monitoring.models import Monitoring
+from open_municipio.om_utils.models import SlugModel
 
 
 class Tag(TagBase):
@@ -56,7 +58,7 @@ class TaggedAct(ItemBase):
         }).distinct()
 
 
-class Category(models.Model):
+class Category(SlugModel):
     """
     A label that can be used to categorize content objects.
     
@@ -80,35 +82,7 @@ class Category(models.Model):
     @permalink
     def get_absolute_url(self):
         return 'om_category_detail', (), { 'slug': self.slug }
-    
-    def save(self, *args, **kwargs):
-        # auto-generate a slug, if needed 
-        if not self.pk and not self.slug:
-            self.slug = self.calculate_slug()
-        return super(Category, self).save(*args, **kwargs)
-    
-    def slugify(self, tag, i=None):
-        slug = slugify(tag)
-        if i is not None:
-            slug += "_%d" % i
-        return slug
-     
-    def calculate_slug(self):
-        """
-        Calculate a slug for a given category name.
-        
-        If a calculated slug already exists in the DB, add a numerical prefix until is OK.
-        """
-        slug = self.slugify(self.name)
-        i = 0
-        while True:
-            i += 1
-            try:
-                Category.objects.get(slug=slug)
-                slug = self.slugify(self.name, i)
-            except Category.DoesNotExist:
-                return slug
-        
+           
     @property
     def tags(self):
         return self.tag_set.all()

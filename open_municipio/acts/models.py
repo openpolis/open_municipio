@@ -202,7 +202,9 @@ class Act(TimeStampedModel):
 
     @property
     def act_descriptors(self):
-        """Returns the queryset of all those that modified the description"""
+        """
+        Returns the queryset of all those that modified the description
+        """
         return self.actdescriptor_set.all()
 
     @property
