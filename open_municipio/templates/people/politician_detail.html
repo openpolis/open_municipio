@@ -15,9 +15,11 @@
     <header class="clearfix">
         <a href="{{ person.get_absolute_url }}" class="thumb"><img src="http://placehold.it/100"></a>
         <h1>{{ person }}</h1>
-        <small><i class="icon-ok"></i> {{ person }} è iscritto a Open municipio</small>
+        {% if person.is_om_user %}
+            <small><i class="icon-ok"></i> {{ person }} è iscritto a Open municipio</small>
+        {% endif %}
         <ul class="unstyled">
-            <li><small>Sindaco</small></li>
+            <li><small>{{ current_charge.denomination }}</small></li>
             {% if resources.EMAIL %}
                 <li><a href="mailto:{{ resources.EMAIL.value }}">{{ resources.EMAIL.value }}</a></li>
             {% endif %}
@@ -36,18 +38,26 @@
         <div class="row-fluid">
             <div class="span6">
                 <ul class="data-list">
-                    <li>In carica dal <strong>29.04.2008</strong></li>
-                    <li>Lista di elezione <strong>Solidarietà e giustizia</strong></li>
+                    <li>In carica dal <strong>{{ current_charge.start_date|date:"d.m.Y" }}</strong></li>
+                    <li>Lista di elezione <strong>TODO</strong></li>
                     <li>
                         <ul>
-                            <li>Gruppo <strong>PD</strong></li>
+                            {% if current_charge.current_groupcharge %}
+                                <li>dal {{ current_charge.current_groupcharge.start_date|date:"d.m.Y" }}
+                                    Gruppo <strong>{{ current_charge.current_groupcharge.group }}</strong></li>
+                            {% endif %}
+                            {% for gc in current_charge.historical_groupcharges %}
+                                <li>dal {{ gc.start_date|date:"d.m.Y" }}
+                                    al {{ gc.end_date|date:"d.m.Y" }}: Gruppo {{ gc.group.acronym }}</li>
+                            {% endfor %}
                             <li>(le altre appartenenze <i class="icon-chevron-down"></i>)</li>
                         </ul>
                     </li>
                     <li>
                         <ul>
-                            <li>Presidente <strong>Commissione permanente Edilizia e urbanistica</strong></li>
-                            <li>(le altre presenze in commissione <i class="icon-chevron-down"></i>)</li>
+                            {% for c in current_committee_charges %}
+                                <li>{{ c.denomination }}</li>
+                            {% endfor %}
                         </ul>
                     </li>
                     <li>
@@ -57,8 +67,8 @@
                             <li>(altri incarichi <i class="icon-chevron-down"></i>)</li>
                         </ul>
                     </li>
-                    <li>Pensione d'invalidità</li>
-                    <li>Dichiarazione patrimoniale <i class="icon-download-alt"></i></li>
+                    <li>Pensione d'invalidità (TODO)</li>
+                    <li>Dichiarazione patrimoniale (TODO)<i class="icon-download-alt"></i></li>
                 </ul>
 
             </div>

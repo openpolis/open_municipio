@@ -204,6 +204,8 @@ class PoliticianDetailView(DetailView):
             (r['resource_type'], {'value': r['value'], 'descritpion': r['description']})
             for r in self.object.resource_set.all().values('resource_type', 'value', 'description')
         )
+        context['current_charge'] = self.object.current_institution_charge
+        context['current_committee_charges'] = self.object.current_committee_charges
 
         # is the user monitoring the act?
         context['is_user_monitoring'] = False

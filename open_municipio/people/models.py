@@ -56,7 +56,18 @@ class Person(models.Model):
     @permalink
     def get_absolute_url(self):
         return 'om_politician_detail', (), { 'slug': self.slug }
-    
+
+    @property
+    def is_om_user(self):
+        """
+        check whether the person is a registered om user
+        """
+        try:
+            prof = self.userprofile
+            return True
+        except ObjectDoesNotExist:
+            return False
+
     @property
     def full_name(self):
         return "%s %s" % (self.first_name, self.last_name)
@@ -69,11 +80,27 @@ class Person(models.Model):
         return self.institutioncharge_set.select_related().all()
     
     @property
-    def current_institution_charges(self):
+    def current_institution_charge(self):
         """
-        Returns a QuerySet of institution charges currently held by this person.
+        Returns the current institution charge (no committees).
+        There must be only one institution charge.
+
+        Else, exceptions are thrown.
         """
-        return self.institutioncharge_set.select_related().current()
+        charges = self.institutioncharge_set.select_related().current().exclude(
+            institution__institution_type__in=(Institution.COMMITTEE, Institution.JOINT_COMMITTEE)
+        )
+        if len(charges) == 0:
+            raise Exception("No current institution charge found")
+        elif len(charges) == 1:
+            return charges[0]
+        else:
+            raise Exception("Too many current charges found")
+
+    def current_committee_charges(self):
+        return self.institutioncharge_set.select_related().current().filter(
+            institution__institution_type__in=(Institution.COMMITTEE, Institution.JOINT_COMMITTEE)
+        ).order_by('-institutionresponsability__charge_type')
     
     @property
     def monitorings(self):
@@ -241,6 +268,25 @@ class InstitutionCharge(Charge):
     # point to ``InstitutionCharge``s of the same kind
 
     @property
+    def denomination(self):
+        if self.institution.institution_type == Institution.MAYOR:
+            return _('Mayor')
+        elif self.institution.institution_type == Institution.CITY_GOVERNMENT:
+            return _('Assessor') + " %s" % self.description
+        elif self.institution.institution_type == Institution.COUNCIL:
+            if self.responsabilities.count():
+                return "%s Consiglio Comunale" % self.responsabilities[0].get_charge_type_display()
+            else:
+                return _('Counselor')
+        elif self.institution.institution_type == Institution.COMMITTEE:
+            if self.responsabilities.count():
+                return "%s %s: %s" % (self.responsabilities[0].get_charge_type_display(), self.institution.name, self.institution.description)
+            else:
+                return _('Member') + " %s: %s" % (self.institution.name, self.institution.description)
+        else:
+            return ''
+
+    @property
     def committee_charges(self):
         return self.committee_charge_set.all()
 
@@ -284,21 +330,36 @@ class InstitutionCharge(Charge):
     @property
     def council_group(self):
         """
-        Returns the city council's group this charge currently belongs to (if any).
+        DEPRECATED: use `self.council_current_groupcharge.group`
 
-        If the charge doesn't belong to any council's group  -- e.g. because (s)he
-        is not a counselor, return ``None``.
+        Returns the city council's group this charge currently belongs to (if any).
         """
-        # this property only make sense for counselors
+        return self.current_groupcharge.group
+
+    @property
+    def current_groupcharge(self):
+        """
+        Returns the current group related to a council charge (end_date is null).
+        A single GroupCharge object is returned. The group may be accessed by the `.group` attribute
+
+        A Council Institution charge MUST have one group.
+        Other types of charge do not have a group, so None is returned.
+        """
         if self.institution.institution_type == Institution.COUNCIL:
-            # This query should return only one record, since a counselor
-            # may belong to only one council group at a time.
-            # If multiple records match the query, instead, a ``MultipleObjectsReturned``
-            # exception will be raised, providing a useful integrity check for data
-            group = Group.objects.get(groupcharge__charge__id=self.id, groupcharge__end_date__isnull=True)
-            return group
+            return GroupCharge.objects.select_related().get(charge__id=self.id, end_date__isnull=True)
         else:
             return None
+
+    @property
+    def historical_groupcharges(self):
+        """
+        Returns the list of past groups related to a council charge (end_date is not null).
+        A list of GroupCharge objects is returned. The group may be accessed by the `.group` attribute
+        """
+        if self.institution.institution_type == Institution.COUNCIL:
+            return GroupCharge.objects.select_related().filter(charge__id=self.id, end_date__isnull=False)
+        else:
+            return []
 
     def compute_rebellion_cache(self):
         """
