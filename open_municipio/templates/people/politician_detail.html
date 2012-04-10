@@ -19,7 +19,10 @@
             <small><i class="icon-ok"></i> {{ person }} è iscritto a Open municipio</small>
         {% endif %}
         <ul class="unstyled">
-            <li><small>{{ current_charge.denomination }}</small></li>
+            {% for c in current_charges %}
+                <li><small>{{ c.denomination }} dal {{ c.start_date|date:"d.m.Y" }}</small></li>
+            {% endfor %}
+
             {% if resources.EMAIL %}
                 <li><a href="mailto:{{ resources.EMAIL.value }}">{{ resources.EMAIL.value }}</a></li>
             {% endif %}
@@ -38,19 +41,20 @@
         <div class="row-fluid">
             <div class="span6">
                 <ul class="data-list">
-                    <li>In carica dal <strong>{{ current_charge.start_date|date:"d.m.Y" }}</strong></li>
                     <li>Lista di elezione <strong>TODO</strong></li>
                     <li>
                         <ul>
-                            {% if current_charge.current_groupcharge %}
-                                <li>dal {{ current_charge.current_groupcharge.start_date|date:"d.m.Y" }}
-                                    Gruppo <strong>{{ current_charge.current_groupcharge.group }}</strong></li>
-                            {% endif %}
-                            {% for gc in current_charge.historical_groupcharges %}
-                                <li>dal {{ gc.start_date|date:"d.m.Y" }}
-                                    al {{ gc.end_date|date:"d.m.Y" }}: Gruppo {{ gc.group.acronym }}</li>
+                            {% for c in current_charges %}
+                                {% if c.current_groupcharge %}
+                                    <li>dal {{ c.current_groupcharge.start_date|date:"d.m.Y" }}
+                                        Gruppo <strong>{{ c.current_groupcharge.group }}</strong></li>
+                                {% endif %}
+                                {% for gc in c.historical_groupcharges %}
+                                    <li>dal {{ gc.start_date|date:"d.m.Y" }}
+                                        al {{ gc.end_date|date:"d.m.Y" }}: Gruppo {{ gc.group.acronym }}</li>
+                                {% endfor %}
                             {% endfor %}
-                            <li>(le altre appartenenze <i class="icon-chevron-down"></i>)</li>
+
                         </ul>
                     </li>
                     <li>

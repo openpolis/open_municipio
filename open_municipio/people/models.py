@@ -1,7 +1,6 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.db.models import permalink
-from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
 from django.template.defaultfilters import slugify
 from django.core.urlresolvers import reverse
@@ -9,14 +8,12 @@ from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
 
 from model_utils import Choices
-from model_utils.managers import PassThroughManager, QueryManager
+from model_utils.managers import PassThroughManager
 
 from open_municipio.monitoring.models import Monitoring
 from open_municipio.newscache.models import News
 from open_municipio.people.managers import TimeFramedQuerySet
 import open_municipio
-
-import datetime
 
 
 #
@@ -80,22 +77,13 @@ class Person(models.Model):
         return self.institutioncharge_set.select_related().all()
     
     @property
-    def current_institution_charge(self):
+    def current_institution_charges(self):
         """
-        Returns the current institution charge (no committees).
-        There must be only one institution charge.
-
-        Else, exceptions are thrown.
+        Returns the current institution charges (no committees).
         """
-        charges = self.institutioncharge_set.select_related().current().exclude(
+        return self.institutioncharge_set.select_related().current().exclude(
             institution__institution_type__in=(Institution.COMMITTEE, Institution.JOINT_COMMITTEE)
         )
-        if len(charges) == 0:
-            raise Exception("No current institution charge found")
-        elif len(charges) == 1:
-            return charges[0]
-        else:
-            raise Exception("Too many current charges found")
 
     def current_committee_charges(self):
         return self.institutioncharge_set.select_related().current().filter(
@@ -216,6 +204,7 @@ class ChargeResponsability(models.Model):
     the context (institution charge or group charge)
     """
     CHARGE_TYPES = Choices(
+        ('MAYOR', 'mayor', _('Mayor')),
         ('PRESIDENT', 'president', _('President')),
         ('VICE', 'vice', _('Vice president')),
         ('VICEVICE', 'vicevice', _('Vice vice precident')),
