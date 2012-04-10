@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 
 from open_municipio.acts.models import Act
 
-from open_municipio.locations.models import Location
+from open_municipio.locations.models import Location, TaggedActByLocation
 from open_municipio.locations.forms import ActLocationsAddForm
 
 
@@ -30,7 +30,12 @@ class ActTagByLocationView(FormView):
         return act
     
     def form_valid(self, form):
-        self.act.location_set = form.cleaned_data['locations']
+        # clear any existing location-based taxonomy for this act
+        TaggedActByLocation.objects.filter(act=self.act).delete()
+        # record new taxonomy, including tagging metadata (tagger, tagging time, ..)
+        for location in form.cleaned_data['locations']:
+            TaggedActByLocation.objects.create(act=self.act, location=location, tagger=self.request.user)
+            
         return HttpResponseRedirect(self.get_success_url())
        
     def form_invalid(self, form=None):

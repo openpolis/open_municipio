@@ -57,9 +57,7 @@ class Act(TimeStampedModel):
     recipient_set = models.ManyToManyField(InstitutionCharge, blank=True, null=True, related_name='received_act_set', verbose_name=_('recipients'))
     emitting_institution = models.ForeignKey(Institution, related_name='emitted_act_set', verbose_name=_('emitting institution'))
     category_set = models.ManyToManyField(Category, verbose_name=_('categories'), blank=True, null=True)
-    # FIXME: enable more general version
-    # location_set = models.ManyToManyField(Location, through=TaggedActByLocation, verbose_name=_('locations'), blank=True, null=True)
-    location_set = models.ManyToManyField(Location, verbose_name=_('locations'), blank=True, null=True)
+    location_set = models.ManyToManyField(Location, through=TaggedActByLocation, verbose_name=_('locations'), blank=True, null=True)
     status_is_final = models.BooleanField(default=False)
     is_key = models.BooleanField(default=False, help_text=_("Specify whether this act should be featured"))
 

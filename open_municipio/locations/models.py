@@ -83,3 +83,12 @@ class TaggedActByLocation(models.Model):
     class Meta:
         verbose_name = _("tagged act by location")
         verbose_name_plural = _("tagged acts by location")
+        
+    def __unicode__(self):
+        params = {
+                  'tagger': self.tagger, 
+                  'location': self.location,
+                  'act_id': self.act.pk,
+                  'time': self.tagging_time,
+                  }
+        return u"User '%(tagger)s' added location '%(location)s' to act #%(act_id)s at %(time)s" % params 
