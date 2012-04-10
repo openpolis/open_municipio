@@ -1,18 +1,27 @@
-from django.template.context import RequestContext
-from os import sys
-
-from django.http import Http404, HttpResponseRedirect
-from django.views.generic import TemplateView, DetailView
+from django.http import Http404
+from django.views.generic import TemplateView, DetailView, ListView, RedirectView
 from django.core.exceptions import ObjectDoesNotExist
-from django.shortcuts import render_to_response
 
 from open_municipio.people.models import Institution, InstitutionCharge, Person, municipality
 from open_municipio.monitoring.forms import MonitoringForm
 from open_municipio.acts.models import Act, Deliberation, Interrogation, Interpellation, Motion, Agenda
 from open_municipio.events.models import Event
 
+from os import sys
 
-class CouncilView(TemplateView):
+
+
+class InstitutionListView(ListView):
+    model = Institution
+    template_name = 'people/institution_list.html'
+    
+    
+class MayorDetailView(RedirectView):
+    def get_redirect_url(self, **kwargs):
+        return municipality.mayor.as_charge.person.get_absolute_url()
+
+
+class CouncilDetailView(TemplateView):
     """
     Renders the Council page
     """
@@ -20,7 +29,7 @@ class CouncilView(TemplateView):
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
-        context = super(CouncilView, self).get_context_data(**kwargs)
+        context = super(CouncilDetailView, self).get_context_data(**kwargs)
 
         mayor = municipality.mayor.as_charge
         president = municipality.council.members.get(
@@ -149,58 +158,16 @@ class CommitteeDetailView(DetailView):
         return context
 
 
-
-# TODO: deprecated - use PoliticianDetailView
-class PersonDetailView(DetailView):
-    model = Person
-    context_object_name = 'person'
-
-    def get_context_data(self, **kwargs):
-        # Call the base implementation first to get a context
-        context = super(PersonDetailView, self).get_context_data(**kwargs)
-        # Add in a QuerySet of all the institutions
-        context['institution_list'] = Institution.objects.all()
-
-        print  >> sys.stderr, "context: %s" % context
-
-        # is the user monitoring the act?
-        context['is_user_monitoring'] = False
-        try:
-            if self.request.user.is_authenticated():
-                # add a monitoring form, to context,
-                # to switch monitoring on and off
-                context['monitoring_form'] = MonitoringForm(data = {
-                    'content_type_id': context['person'].content_type_id,
-                    'object_pk': context['person'].id,
-                    'user_id': self.request.user.id
-                })
-
-                if context['person'] in self.request.user.get_profile().monitored_objects:
-                    context['is_user_monitoring'] = True
-        except ObjectDoesNotExist:
-            context['is_user_monitoring'] = False
-        return context
-
-
-
-# TODO: deprecated - use PoliticianListView
-def person_list(request):
-    return render_to_response('people/person_list.html',{
-        'municipality': municipality
-    },context_instance=RequestContext(request) )
-
-
 class PoliticianDetailView(DetailView):
     model = Person
     context_object_name = 'person'
+    template_name='people/politician_detail.html'
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super(PoliticianDetailView, self).get_context_data(**kwargs)
         # Add in a QuerySet of all the institutions
         context['institution_list'] = Institution.objects.all()
-
-        print  >> sys.stderr, "context: %s" % context
 
         # is the user monitoring the act?
         context['is_user_monitoring'] = False
@@ -239,7 +206,3 @@ class PoliticianListView(TemplateView):
         context['most_present'] = all_current.order_by('-n_present_votations')[0:3]
         context['most_absent'] = all_current.order_by('-n_absent_votations')[0:3]
         return context
-
-
-def show_mayor(request):
-    return HttpResponseRedirect( municipality.mayor.as_charge.person.get_absolute_url() )
