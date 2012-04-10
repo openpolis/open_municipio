@@ -12,6 +12,8 @@ from open_municipio.acts.views import (ActSearchView, AgendaDetailView,
                                        ActTransitionAddView, ActTransitionRemoveView,
                                        ActAddTagsView, ActRemoveTagView)
 
+from open_municipio.locations.views import ActTagByLocationView
+
 
 act_dict = {
     'model': Act,
@@ -60,6 +62,11 @@ urlpatterns += patterns('',
     url(r'^(?P<pk>\d+)/tags/add/$', ActAddTagsView.as_view(),  name='om_act_tags_add'),
     url(r'^(?P<act_pk>\d+)/tags/remove/(?P<tag_slug>[-\w]+)/$', ActRemoveTagView.as_view(),  name='om_act_tags_remove'),
     url(r'^(?P<object_id>\d+)/(?P<direction>up|down|clear)vote/?$', vote_on_object, act_dict),
+)
+
+## Location management
+urlpatterns += patterns('',
+    url(r'^(?P<pk>\d+)/locations/add/$', ActTagByLocationView.as_view(),  name='om_act_locations_add'),
 )
 
 ## Act's description update

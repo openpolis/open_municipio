@@ -1,7 +1,6 @@
 from django.http import HttpResponseRedirect, HttpResponseForbidden
-from django.template.context import RequestContext
 from django.views.generic import DetailView, FormView, ListView, TemplateView
-from django.shortcuts import get_object_or_404, render_to_response
+from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
 
 from django.contrib.auth.decorators import login_required
