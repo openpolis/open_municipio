@@ -3,7 +3,7 @@ from django.utils.decorators import method_decorator
 from django.http import HttpResponseBadRequest, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import user_passes_test
 
 from open_municipio.acts.models import Act
 
@@ -19,9 +19,8 @@ class LocationDetailView(DetailView):
 
 class ActTagByLocationView(FormView):
     form_class = ActLocationsAddForm
-    
-    # FIXME: restrict access to editor users    
-    @method_decorator(login_required)
+        
+    @method_decorator(user_passes_test(lambda u: u.is_staff))
     def dispatch(self, *args, **kwargs):
         return super(ActTagByLocationView, self).dispatch(*args, **kwargs)
     

@@ -132,11 +132,12 @@ class ActDetailView(DetailView):
         # add a form for adding tags
         context['tag_add_form'] = TagAddForm()
         
-        # add a form for classifying an act using locations
-        context['location_form'] = ActLocationsAddForm(initial = {
-            'act': act,
-            'locations': act.locations,
-        })
+        if self.request.user.is_staff:
+            # add a form for classifying an act using locations
+            context['location_form'] = ActLocationsAddForm(initial = {
+                'act': act,
+                'locations': act.locations,
+                })
         
         # add a form for the description of the act
         signers = [p.person for p in act.presenters]
