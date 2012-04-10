@@ -9,7 +9,11 @@ class MonitoringForm(ModelForm):
     
     It contains two hidden fields, that must take value when the form is created.
     """
+    # FIXME: should be a ``ModelChoiceField``;
+    # this way, further validation would be performed
     content_type_id = forms.IntegerField(widget=forms.HiddenInput)
+    # FIXME: should be a ``ModelChoiceField``;
+    # this way, further validation would be performed
     object_pk = forms.IntegerField(widget=forms.HiddenInput)
 
     class Meta:
