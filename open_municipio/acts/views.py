@@ -5,7 +5,6 @@ from django.views.generic import DetailView, ListView, TemplateView
 from django.views.generic.edit import FormView
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
-from django.core.urlresolvers import reverse
 
 from django.contrib.auth.decorators import login_required
 
@@ -19,6 +18,8 @@ from open_municipio.om_search.views import ExtendedFacetedSearchView
 
 from open_municipio.taxonomy.models import Tag, Category
 from open_municipio.taxonomy.views import AddTagsView, RemoveTagView
+
+from open_municipio.locations.forms import ActLocationsAddForm          
 
 
 
@@ -128,9 +129,16 @@ class ActDetailView(DetailView):
         if extra_context:
             context.update(extra_context)
             
-        # Add in a form for adding tags
+        # add a form for adding tags
         context['tag_add_form'] = TagAddForm()
-
+        
+        if self.request.user.is_staff:
+            # add a form for classifying an act using locations
+            context['location_form'] = ActLocationsAddForm(initial = {
+                'act': act,
+                'locations': act.locations,
+                })
+        
         # add a form for the description of the act
         signers = [p.person for p in act.presenters]
         try:
@@ -259,7 +267,6 @@ class ActRemoveTagView(RemoveTagView):
 
 
 class ActTransitionToggleBaseView(FormView):
-
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super(ActTransitionToggleBaseView, self).dispatch(*args, **kwargs)
