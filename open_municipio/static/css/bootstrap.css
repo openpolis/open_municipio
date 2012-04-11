@@ -4609,6 +4609,9 @@ table#acttable thead th:first-child > div {
   text-align: center;
   margin-top: 5px;
 }
+#location-form ul {
+  list-style: none;
+}
 /* Category with a list of its tags, 3 columns */
 #topic_summary a {
   text-decoration: underline;

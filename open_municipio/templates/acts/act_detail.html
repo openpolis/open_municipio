@@ -156,7 +156,7 @@
     </dl>
  
     {% if location_form %}
-    	<form id="location-form" class="" action="{% url om_act_locations_add pk=act.act_ptr.pk %}" method="post">
+    	<form id="location-form" class="form-inline" action="{% url om_act_locations_add pk=act.act_ptr.pk %}" method="post">
     		{% csrf_token %}
 	        {{ location_form.as_p }}
             <button type="submit" class="btn btn-info btn-small">Applica</button>
