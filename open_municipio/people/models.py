@@ -205,6 +205,7 @@ class ChargeResponsability(models.Model):
     """
     CHARGE_TYPES = Choices(
         ('MAYOR', 'mayor', _('Mayor')),
+        ('FIRSTDEPUTYMAYOR', 'firstdeputymayor', _('First deputy mayor')),
         ('PRESIDENT', 'president', _('President')),
         ('VICE', 'vice', _('Vice president')),
         ('VICEVICE', 'vicevice', _('Vice vice precident')),
@@ -261,7 +262,13 @@ class InstitutionCharge(Charge):
         if self.institution.institution_type == Institution.MAYOR:
             return _('Mayor')
         elif self.institution.institution_type == Institution.CITY_GOVERNMENT:
-            return _('Assessor') + " %s" % self.description
+            if self.responsabilities.count():
+                s = "%s" % self.responsabilities[0].get_charge_type_display()
+                if self.responsabilities[0].charge_type == InstitutionResponsability.CHARGE_TYPES.firstdeputymayor:
+                    s += ", %s" % self.description
+                return s
+            else:
+                return " %s" % self.description
         elif self.institution.institution_type == Institution.COUNCIL:
             if self.responsabilities.count():
                 return "%s Consiglio Comunale" % self.responsabilities[0].get_charge_type_display()
@@ -269,7 +276,8 @@ class InstitutionCharge(Charge):
                 return _('Counselor')
         elif self.institution.institution_type == Institution.COMMITTEE:
             if self.responsabilities.count():
-                return "%s %s: %s" % (self.responsabilities[0].get_charge_type_display(), self.institution.name, self.institution.description)
+                return "%s %s: %s" % (self.responsabilities[0].get_charge_type_display(),
+                                      self.institution.name, self.institution.description)
             else:
                 return _('Member') + " %s: %s" % (self.institution.name, self.institution.description)
         else:
@@ -641,6 +649,23 @@ class Institution(Body):
         return self.charge_set.current()
 
     @property
+    def firstdeputy(self):
+        """
+        The current firstdeputy mayor of the institution as InstitutionResponsability.
+        None if not found.
+
+        To access the charge: firstdeputy.charge
+        """
+        try:
+            return InstitutionResponsability.objects.select_related().get(
+                charge__institution=self,
+                charge_type=InstitutionResponsability.CHARGE_TYPES.firstdeputymayor,
+                end_date__isnull=True
+            )
+        except ObjectDoesNotExist:
+            return None
+
+    @property
     def president(self):
         """
         The current president of the institution as InstitutionResponsability.
@@ -678,10 +703,12 @@ class Institution(Body):
     def members(self):
         """
         Members of the institution, as charges.
-        Current president and vice presidents **excluded**.
+        Current mayor, first deputy, president and vice presidents **excluded**.
         """
         return self.charges.exclude(
             institutionresponsability__charge_type__in=(
+                InstitutionResponsability.CHARGE_TYPES.mayor,
+                InstitutionResponsability.CHARGE_TYPES.firstdeputymayor,
                 InstitutionResponsability.CHARGE_TYPES.president,
                 InstitutionResponsability.CHARGE_TYPES.vice,
                 ),
@@ -952,17 +979,23 @@ class CityGovernment(object):
     @property
     def charges(self):
         """
-        Members of a municipality government (aka *assessors*), as charges.
+        Members of a municipality government (mayor and first deputy included), as charges.
         """
         return self.as_institution.charges.select_related()
 
     @property
+    def firstdeputy(self):
+        """
+        Returns the first deputy mayor, if existing, None if not existing
+        """
+        return  self.as_institution.firstdeputy
+
+    @property
     def members(self):
         """
-        DEPRECATED
-        Alias for self.charges for backward compatibility
+        Members of a municipality government (mayor and first deputy excluded), as charges.
         """
-        return self.charges
+        return self.as_institution.members.select_related()
 
     @property
     def acts(self):

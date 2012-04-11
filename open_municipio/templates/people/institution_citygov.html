@@ -7,10 +7,32 @@
     <section class="clearfix border-bottom">
         <h1>Giunta</h1>
         <ul class="people-list list-floated">
+            <!-- mayor -->
+            <li>
+                <a href="{{ mayor.get_absolute_url }}"><img src="http://placehold.it/50" /></a>
+                <strong><a href="{{ mayor.get_absolute_url }}"><i class="icon-ok"></i> {{ mayor.person.first_name|lower|capfirst }} {{ mayor.person.last_name|lower|capfirst }}</a></strong> <br />
+                {{ mayor.denomination }}<br/>
+                <span class="monitoring">
+                    {% if not mayor.person.monitoring_users %}Non monitorato{% else %}Monitorato da {{ mayor.person.monitoring_users|length }} cittadin{{ member.person.monitoring_users_count|pluralize:"o,i" }}{% endif %} - <a href="#"><i class="socialicon-add"></i> Monitora</a>
+                </span>
+            </li>
+            <!-- first deputy -->
+            {% if firstdeputy %}
+                <li>
+                    <a href="{{ firstdeputy.get_absolute_url }}"><img src="http://placehold.it/50" /></a>
+                    <strong><a href="{{ firstdeputy.get_absolute_url }}"><i class="icon-ok"></i> {{ firstdeputy.person.first_name|lower|capfirst }} {{ firstdeputy.person.last_name|lower|capfirst }}</a></strong> <br />
+                    {{ firstdeputy.denomination }}<br/>
+                    <span class="monitoring">
+                        {% if not firstdeputy.person.monitoring_users %}Non monitorato{% else %}Monitorato da {{ firstdeputy.person.monitoring_users|length }} cittadin{{ member.person.monitoring_users_count|pluralize:"o,i" }}{% endif %} - <a href="#"><i class="socialicon-add"></i> Monitora</a>
+                    </span>
+                </li>
+            {% endif %}
+
             {% for member in citygov.members %}
             <li>
                 <a href="{{ member.get_absolute_url }}"><img src="http://placehold.it/50" /></a>
                 <strong><a href="{{ member.get_absolute_url }}"><i class="icon-ok"></i> {{ member.person.first_name|lower|capfirst }} {{ member.person.last_name|lower|capfirst }}</a></strong> <br />
+                {{ member.denomination }}<br/>
                 <span class="monitoring">
                     {% if not member.person.monitoring_users %}Non monitorato{% else %}Monitorato da {{ member.person.monitoring_users|length }} cittadin{{ member.person.monitoring_users_count|pluralize:"o,i" }}{% endif %} - <a href="#"><i class="socialicon-add"></i> Monitora</a>
                 </span>

@@ -68,6 +68,8 @@ class CityGovernmentView(TemplateView):
         # Call the base implementation first to get a context
         context = super(CityGovernmentView, self).get_context_data(**kwargs)
 
+        mayor = municipality.mayor.as_charge
+        firstdeputy = municipality.gov.firstdeputy.charge
         citygov = municipality.gov
         latest_acts = Act.objects.filter(
             emitting_institution__institution_type=Institution.CITY_GOVERNMENT
@@ -85,6 +87,8 @@ class CityGovernmentView(TemplateView):
                 ).count()
             
         extra_context = {
+            'mayor': mayor,
+            'firstdeputy': firstdeputy,
             'citygov': citygov,
             'latest_acts': latest_acts,
             'num_acts': num_acts,
@@ -204,7 +208,12 @@ class PoliticianDetailView(DetailView):
             (r['resource_type'], {'value': r['value'], 'descritpion': r['description']})
             for r in self.object.resource_set.all().values('resource_type', 'value', 'description')
         )
-        context['current_charges'] = self.object.current_institution_charges
+        context['current_charges'] = self.object.current_institution_charges.exclude(
+            institutionresponsability__charge_type__in=(
+                InstitutionResponsability.CHARGE_TYPES.mayor,
+            ),
+            institutionresponsability__end_date__isnull=True
+        )
         context['current_committee_charges'] = self.object.current_committee_charges
 
         # is the user monitoring the act?
@@ -239,10 +248,24 @@ class PoliticianListView(TemplateView):
         # municipality access point to internal API
         context['municipality'] = municipality
 
-        # fetch most or least
+        # fetch mayor
         context['mayor'] = municipality.mayor.as_charge
-        context['gov_members'] = municipality.gov.charges.order_by('person__last_name')
-        counselors = context['counselors'] = municipality.council.members.order_by('person__last_name')
+        # exclude mayor from gov members
+        context['gov_members'] = municipality.gov.charges.exclude(
+            institutionresponsability__charge_type__in=(
+                InstitutionResponsability.CHARGE_TYPES.mayor,
+            ),
+            institutionresponsability__end_date__isnull=True
+        ).select_related().order_by('person__last_name')
+        # exclude mayor from council members
+        counselors = context['counselors'] = municipality.council.members.exclude(
+            institutionresponsability__charge_type__in=(
+                InstitutionResponsability.CHARGE_TYPES.mayor,
+            ),
+            institutionresponsability__end_date__isnull=True
+        ).select_related().order_by('person__last_name')
+
+        # fetch most or least
         context['most_rebellious'] = counselors.order_by('-n_rebel_votations')[0:3]
         context['least_absent'] = counselors.order_by('n_absent_votations')[0:3]
         context['most_absent'] = counselors.order_by('-n_absent_votations')[0:3]

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.core.management.base import BaseCommand, CommandError, LabelCommand
 from django.conf import settings
 from optparse import make_option
@@ -88,17 +89,7 @@ class Command(LabelCommand):
                             acronym=group[0:15]
                         )
 
-                    # sindaco exception
-                    if organ == 'giunta' and member['charge'] == 'Sindaco':
-                        sindaco_charge = InstitutionCharge(
-                            description="Sindaco",
-                            start_date = start_date,
-                            person = p,
-                            institution = Institution.objects.get(institution_type=Institution.MAYOR)
-                        )
-                        sindaco_charge.save()
-
-                    # create city government charge
+                    # create charge description
                     if organ == 'giunta':
                         charge_description = "Assessore %s" % member['charge_descr']
                         charge_institution = Institution.objects.get(institution_type=Institution.CITY_GOVERNMENT)
@@ -106,17 +97,38 @@ class Command(LabelCommand):
                         charge_description = ""
                         charge_institution = Institution.objects.get(institution_type=Institution.COUNCIL)
 
+                    # membership charge (do not insert vicesindaco now, do that at the end)
+                    if member['charge'] != 'Vicesindaco':
+                        charge = InstitutionCharge(
+                            description=charge_description,
+                            start_date = start_date,
+                            person = p,
+                            institution = charge_institution
+                        )
+                        charge.save()
 
-                    charge = InstitutionCharge(
-                        description=charge_description,
-                        start_date = start_date,
-                        person = p,
-                        institution = charge_institution
-                    )
-                    charge.save()
+                    if organ == 'giunta':
+                        # sindaco è membro di giunta con responsability
+                        if member['charge'] == 'Sindaco':
+                            resp = InstitutionResponsability(
+                                description="Sindaco",
+                                start_date=start_date,
+                                charge=charge,
+                                charge_type=InstitutionResponsability.CHARGE_TYPES.mayor
+                            )
+                            resp.save()
+                            # sindaco è anche membro di istituzione sindaco
+                            sindaco_charge = InstitutionCharge(
+                                description="Sindaco",
+                                start_date = start_date,
+                                person = p,
+                                institution = Institution.objects.get(institution_type=Institution.MAYOR)
+                            )
+                            sindaco_charge.save()
+
 
                     if organ == 'consiglio':
-                        # presidente exception
+                        # presidente del consiglio è consigliere con responsability
                         if member['charge'] == 'Presidente':
                             resp = InstitutionResponsability(
                                 description="Presidente del Consiglio Comunale",
@@ -126,7 +138,7 @@ class Command(LabelCommand):
                             )
                             resp.save()
 
-                        # vice president exception
+                        # vice presidente del consiglio è consigliere con responsability
                         if member['charge'] == 'Vicepresidente':
                             resp = InstitutionResponsability(
                                 description="Vicepresidente del Consiglio Comunale",
@@ -136,8 +148,8 @@ class Command(LabelCommand):
                             )
                             resp.save()
 
-                        # sindaco exception
-                        if not p.p_created and sindaco_charge.person == p:
+                        # nel consiglio il sindaco è consigliere con responsability
+                        if not p_created and sindaco_charge.person == p:
                             resp = InstitutionResponsability(
                                 description="Sindaco",
                                 start_date=start_date,
@@ -151,12 +163,69 @@ class Command(LabelCommand):
                         gc.save()
 
 
-                    self.stdout.write("%s %s - %s (%s): %s\n" %
-                                      (member['first_name'], member['last_name'],
-                                       member['birth_date'], member['birth_location'],
-                                       member['textual_rep']))
+                    # output line must be encoded explicitly into utf-8
+                    # before being sent to stdout
+                    output_line = "%s %s - %s - %s: %s\n" % \
+                                (member['first_name'], member['last_name'],
+                                 member['birth_date'][0:10], member['birth_location'],
+                                 member['textual_rep'])
+                    self.stdout.write(output_line.encode('utf-8'))
 
                 self.stdout.write("\n")
+
+                # add vicesindaco now, at the end
+                # this is done here, because the Vicesindaco may come with two charges
+                # assessore and vicesindaco
+                #
+                # it would be wrong to have both institutional charges, since
+                # vicesindaco is better mapped as a ResponsabilityCharge
+                #
+                # the following code binds the vicesindaco to a previous
+                # assessore charge, if existing, or create a new assessore charge,
+                #and binds the responsability to it
+                fd = None
+                for m in members:
+                    if m['charge'] == 'Vicesindaco':
+                        fd = m
+                        break
+
+                if fd is not None:
+                    # get the person (already created)
+                    fd_person = Person.objects.get(
+                        first_name=fd['first_name'],
+                        last_name=fd['last_name'],
+                        birth_date=fd['birth_date'][0:10],
+                        birth_location=fd['birth_location']
+                    )
+                    # define institution (city government)
+                    fd_charge_institution = Institution.objects.get(institution_type=Institution.CITY_GOVERNMENT)
+
+                    # get or create a city gov charge for the person
+                    fd_charge, created = InstitutionCharge.objects.get_or_create(
+                        person=fd_person,
+                        institution=fd_charge_institution,
+                    )
+
+                    # if newly created, then it is starting along with the Vicesindaco
+                    # responsability and it is simply marked as Assessore
+                    if created:
+                        fd_charge.description="Assessore"
+                        fd_charge.start_date=fd['date_start'][0:10]
+                        fd_charge.save()
+
+                    # responsability added to the charge
+                    resp = InstitutionResponsability(
+                        description="Vicesindaco",
+                        start_date=fd_charge.start_date,
+                        charge=fd_charge,
+                        charge_type=InstitutionResponsability.CHARGE_TYPES.firstdeputymayor
+                    )
+                    resp.save()
+
+                    self.stdout.write("Vicesindaco created\n")
+
+
+
 
 
 
