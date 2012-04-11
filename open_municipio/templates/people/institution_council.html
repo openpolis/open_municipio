@@ -16,7 +16,7 @@
     <section>
         {% for group in groups %}
         <div class="party-people">
-            <h2><img src="http://placehold.it/50">{{ group.name }}</h2>
+            <h2><img src="{{ STATIC_URL }}img/placehold/50.gif">{{ group.name }}</h2>
             <p>
                 {# FIXME #}<a href="CORRECT-URL-HERE"><strong>Correct Politician Here</strong> (CPH)</a><br />{# endFIXME #}
                 Capogruppo

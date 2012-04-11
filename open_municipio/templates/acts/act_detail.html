@@ -253,7 +253,7 @@
         {% for comment in comment_list %}
         <li class="bg-light"> <!-- make control for different comment opinion, like positive comment use .bg-lightgreen -->
             <a href="{% url users_user_detail comment.user.username %}">
-                <img src="http://placehold.it/50x50" />
+                <img src="{{ STATIC_URL }}img/placehold/50.gif" />
                 {{ comment.user.username|capfirst }}
             </a>
             {{ comment.comment }}
