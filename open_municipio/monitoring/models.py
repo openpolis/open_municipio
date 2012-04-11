@@ -55,6 +55,58 @@ class Monitoring(models.Model):
         return reverse('om_monitoring_url_redirect', args=(), kwargs=(self.content_type.pk, self.object_pk))
 
 
+class MonitorizedItem():
+
+    def monitorings(self, user_type=None):
+        """
+        Returns the list of monitorings for this act.
+
+        user_type can take None, "simple", "politician" and indicates whether to apply a filter
+
+        """
+        if user_type == "simple":
+            return self.monitoring_set.filter(user__userprofile__person__isnull=True)
+        elif user_type == "politician":
+            return self.monitoring_set.filter(user__userprofile__person__isnull=False)
+        else:
+            return self.monitoring_set.all()
+
+    @property
+    def all_monitoring_users(self):
+        # FIXME: This method should return a QuerySet for efficiency reasons
+        # (an act could be monitored by a large number of people;
+        # moreover, often we are only interested in the total number of
+        # monitoring users, so building a list in memory may result in a waste of resources).
+        return [m.user for m in self.monitorings()]
+
+    @property
+    def all_monitoring_count(self):
+        return self.monitorings().count()
+
+    @property
+    def monitoring_users(self):
+        # FIXME: This method should return a QuerySet for efficiency reasons
+        # (an act could be monitored by a large number of people;
+        # moreover, often we are only interested in the total number of
+        # monitoring users, so building a list in memory may result in a waste of resources).
+        return [m.user for m in self.monitorings(user_type='simple')]
+
+    @property
+    def monitoring_users_count(self):
+        return self.monitorings(user_type='simple').count()
+
+    @property
+    def monitoring_politicians(self):
+        # FIXME: This method should return a QuerySet for efficiency reasons
+        # (an act could be monitored by a large number of people;
+        # moreover, often we are only interested in the total number of
+        # monitoring users, so building a list in memory may result in a waste of resources).
+        return [m.user for m in self.monitorings(user_type='politician')]
+
+    @property
+    def monitoring_politicians_count(self):
+        return self.monitorings(user_type='politician').count()
+
 #
 # Signals handlers
 #

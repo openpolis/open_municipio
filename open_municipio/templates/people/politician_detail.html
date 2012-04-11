@@ -242,36 +242,7 @@
 {% block sidebar %}
 
     <section><h3>Monitora</h3>
-        <table>
-            <tr>
-                <td><span class="bluebox">{{ person.monitoring_users|length }}</span></td>
-                <th class="bg-dark span12">
-                    utenti che monitorano il politico<br />
-                    {% for u in person.monitoring_users %}
-                        <a href="#">{{ u }}</a>
-                        {% if forloop.last %}<br/>{% else %},{% endif %}
-                    {% endfor %}
-
-                    {% if user.is_authenticated %}
-                        {% if is_user_monitoring %}
-                            <form action="{% url om_monitoring_stop %}" method="post">
-                                {% csrf_token %}
-                                {{ monitoring_form }}
-                                <i class="icon-minus-sign"></i>
-                                <button type="submit" class="btn btn-info btn-small">Interrompi il monitoraggio</button>
-                            </form>
-                        {% else %}
-                            <form action="{% url om_monitoring_start %}" method="post">
-                                {% csrf_token %}
-                                {{ monitoring_form }}
-
-                                <button type="submit" class="btn btn-info btn-mini"><i class="socialicon-add"></i> Avvia il monitoraggio</button>
-                            </form>
-                        {% endif %}
-                    {% endif %}
-                </th>
-            </tr>
-        </table>
+        {% include 'monitoring/summary.html' with object=person show_politicians=0 %}
     </section>
 
     <section><h3>Argomenti di cui si occupa</h3>

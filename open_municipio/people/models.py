@@ -10,7 +10,7 @@ from django.contrib.contenttypes.models import ContentType
 from model_utils import Choices
 from model_utils.managers import PassThroughManager
 
-from open_municipio.monitoring.models import Monitoring
+from open_municipio.monitoring.models import Monitoring, MonitorizedItem
 from open_municipio.newscache.models import News
 from open_municipio.people.managers import TimeFramedQuerySet
 from open_municipio.om_utils.models import SlugModel
@@ -23,7 +23,7 @@ import datetime
 # Persons, charges and groups
 #
 
-class Person(models.Model):
+class Person(models.Model, MonitorizedItem):
     FEMALE_SEX = 0
     MALE_SEX = 1
     SEX = Choices(
@@ -74,26 +74,6 @@ class Person(models.Model):
         Returns a QuerySet of institution charges currently held by this person.
         """
         return self.institutioncharge_set.current()
-    
-    @property
-    def monitorings(self):
-        """
-        Returns the monitorings associated with this person (as a QuerySet).
-        """
-        return self.monitoring_set.all()
-    
-    @property
-    def monitoring_users(self):
-        """
-        Returns the list of users monitoring this person.
-        """
-        # FIXME: This method should return a QuerySet for efficiency reasons
-        # (a politician could be monitored by a large number of people;
-        # moreover, often we are only interested in the total number of 
-        # monitoring users, so building a list in memory may result in a waste of resources).
-        # You can use monitoring_set.count() for counting,
-        # this is just a handle to build quickly a users list.
-        return [m.user for m in self.monitorings]
 
     @property
     def resources(self):
