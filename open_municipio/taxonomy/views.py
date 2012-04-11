@@ -1,13 +1,11 @@
 from django.http import HttpResponseRedirect, HttpResponseForbidden
-from django.template.context import RequestContext
-from django.views.generic import FormView, TemplateView
-from django.shortcuts import get_object_or_404, render_to_response
+from django.views.generic import DetailView, FormView, ListView, TemplateView
+from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
 
 from django.contrib.auth.decorators import login_required
 
-from taggit.models import Tag
-from open_municipio.taxonomy.models import Category
+from open_municipio.taxonomy.models import Tag, Category
 
 
 class AddTagsView(FormView):
@@ -117,23 +115,38 @@ class RemoveTagView(TemplateView):
             return HttpResponseForbidden
 
 
-def tag_list(request):
+class TopicListView(ListView):
+    model = Category
+    template_name = 'taxonomy/topic_list.html'
+    
+    def get_context_data(self, **kwargs):
+        # call the base implementation first to get a context
+        context = super(TopicListView, self).get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()
+        context['tags'] = Tag.objects.all()
+        
+        return context
+    
+    
+class TopicDetailView(DetailView):
     """
-    TODO: fetch top monitorized tags
+    Abstract base class for displaying detail pages of topics (tags + categories).
     """
-    return render_to_response('taxonomy/tag_list.html',{
-        'category_list': Category.objects.all(),
-        'tag_list': Tag.objects.all(),
-        'top_monitorized_tag':  Tag.objects.all(),
-        },context_instance=RequestContext(request) )
+    context_object_name = 'topic'
+    template_name = 'taxonomy/topic_detail.html'
+    
+    def get_context_data(self, **kwargs):
+        # call the base implementation first to get a context
+        context = super(TopicDetailView, self).get_context_data(**kwargs)
 
-def tag_detail(request, *args, **kwargs):
-    """
-
-    """
-    tag = get_object_or_404(Tag, slug=kwargs.get('slug'))
-
-    return render_to_response('taxonomy/tag_detail.html',{
-        'category_list': Category.objects.all(),
-        'tag_object': tag,
-        },context_instance=RequestContext(request) )
+        context['topics'] = Category.objects.all()
+                
+        return context
+    
+    
+class TagDetailView(TopicDetailView):
+    model = Tag
+  
+    
+class CategoryDetailView(TopicDetailView):
+    model = Category

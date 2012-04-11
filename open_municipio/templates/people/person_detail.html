@@ -2,10 +2,9 @@
 {% load i18n %}
 
 {% block title %}| Dettaglio {{ person }}{% endblock %}
-
 {% block content_header %}{% trans 'politicians' %}{% endblock %}
-
 {% block body_class %}politician{% endblock %}
+{% block people_class %}class="active"{% endblock %}
 
 {% block head_css_includes %}
     {{ block.super }}
@@ -234,7 +233,10 @@
         </tr>
       </tbody>
     </table>
-  </section><!-- end of #content -->  
+  </section><!-- end of #content -->
+
+    {% load web_services_tags %}
+    {% share person %}
 {% endblock %}
 
 {% block sidebar %}

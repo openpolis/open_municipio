@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<solr persistent="false" sharedLib="lib">
+
+  <cores adminPath="/admin/cores" shareSchema="true">
+    <core name="open_municipio" instanceDir="open_municipio" dataDir="${solr.data.dir:}" />
+  </cores>
+</solr>

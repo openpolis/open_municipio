@@ -1,7 +1,53 @@
 from django import forms
-
+from open_municipio.acts.models import Act
+from django.forms.widgets import HiddenInput, DateTimeInput
 from taggit.forms import TagField
+from django.forms.models import ModelForm
+from open_municipio.acts.models import Transition
+
+
+
+class ActDescriptionForm(ModelForm):
+    description = forms.Textarea()
+    id = forms.IntegerField(widget=forms.HiddenInput)
+
+    class Meta:
+        model = Act
+        fields = ('id', 'description',)
 
 class TagAddForm(forms.Form):
     tags = TagField()
 
+class ActTransitionForm(ModelForm):
+    """
+    A form to change status of act
+    """
+    def save(self, commit=True):
+        instance = super(ModelForm, self).save(commit=False)
+        instance.act = instance.act.downcast()
+        if commit:
+            instance.save()
+        return instance
+
+    class Meta:
+        model = Transition
+        fields = ('transition_date', 'note', 'final_status', 'act')
+        widgets = {
+            'act': HiddenInput(),
+            'final_status': HiddenInput(),
+            'transition_date': DateTimeInput(attrs={'class':'datepicker'})
+        }
+
+
+class ActFinalTransitionForm(ActTransitionForm):
+    """
+    Extends ActTransitionForm to provide a vote selection
+    """
+
+    class Meta(ActTransitionForm.Meta):
+        fields = ('transition_date', 'note', 'final_status', 'act', 'votation')
+        widgets = {
+            'act': HiddenInput(),
+            'final_status': forms.Select(choices=[]),
+            'transition_date': DateTimeInput(attrs={'class':'datepicker'})
+        }

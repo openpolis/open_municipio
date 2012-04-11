@@ -1,0 +1,3 @@
+{{ object.act.title }}
+{{ object.act.text }}
+{{ object.act.description }}

@@ -18,57 +18,33 @@
 
 address { font-size: 12px; line-height: 14px; }
 
-#main {
-    padding-top: 15px;
-    background-image: -webkit-gradient(
-        linear,
-        left top,
-        right top,
-        color-stop(0, transparent),
-        color-stop(67%, transparent),
-        color-stop(67%, #f6f4f2),
-        color-stop(100%, #f6f4f2)
-    );
-    background-image: -webkit-linear-gradient(
-        left,
-        transparent,
-        transparent 67%,
-        #f6f4f2 67%,
-        #f6f4f2 100%
-    );
-    background-image: -moz-linear-gradient(
-        left,
-        transparent,
-        transparent 67%,
-        #f6f4f2 67%,
-        #f6f4f2 100%
-    );
-    background-image: -ms-linear-gradient(
-        left,
-        transparent,
-        transparent 67%,
-        #f6f4f2 67%,
-        #f6f4f2 100%
-    );
-    background-image: -o-linear-gradient(
-        left,
-        transparent,
-        transparent 67%,
-        #f6f4f2 67%,
-        #f6f4f2 100%
-    );
-
+.two_columns_background(@percent:67%, @leftcolor:transparent, @rightcolor:#f6f4f2)
+{
+    background-image: -webkit-gradient(linear,left top,right top,color-stop(0, @leftcolor),color-stop(@percent, @leftcolor),color-stop(@percent, @rightcolor),color-stop(100%, @rightcolor));
+    background-image: -webkit-linear-gradient(left,@leftcolor,@leftcolor @percent,@rightcolor @percent,@rightcolor 100%);
+    background-image: -moz-linear-gradient(left, @leftcolor, @leftcolor @percent, @rightcolor @percent, @rightcolor 100% );
+    background-image: -ms-linear-gradient(left,@leftcolor, @leftcolor @percent, @rightcolor @percent, @rightcolor 100%);
+    background-image: -o-linear-gradient( left, @leftcolor, @leftcolor @percent, @rightcolor @percent, @rightcolor 100% );
 }
-#content { border-bottom: 1px dotted @grayLight; padding-bottom: 10px; }
+
+#main.two_columns {
+    padding-top: 15px;
+    .two_columns_background(66%);
+}
+#content { border-bottom: 1px dashed @grayLight; padding-bottom: 10px; }
 #content > * { margin-bottom: 15px; }
-//#sidebar { background-color: @sidebarBackground; }
+
 #wrapper > header { background-color: #c7beb7; }
+#main-navbar .active a { background-color: @white; }
 body.politician {
     #wrapper > header {
         background-color: @greenLight;
     }
-    dl.tags-cloud {
-        dd, dt {
+    #main-navbar .active a {
+        background-color: @greenLight;
+    }
+    .tags-cloud {
+        dd, dt, li {
             background-color: @greenLight;
         }
     }
@@ -77,8 +53,11 @@ body.tags {
     #wrapper > header {
         background-color: @yellowLight;
     }
-    dl.tags-cloud {
-        dd, dt {
+    #main-navbar .active a {
+        background-color: @yellowLight;
+    }
+    .tags-cloud {
+        dd, dt, li {
             background-color: @yellowLight;
         }
     }
@@ -87,8 +66,11 @@ body.citizen {
     #wrapper > header {
         background-color: @blueLight;
     }
-    dl.tags-cloud {
-        dd, dt {
+    #main-navbar .active a {
+        background-color: @blueLight;
+    }
+    .tags-cloud {
+        dd, dt, li {
             background-color: @blueLight;
         }
     }
@@ -109,17 +91,38 @@ body.citizen {
     background-image: none;
     .nav > li > a {
         color: @gray;
-        &:hover {
-            color: @grayDark;
-            background-color: transparent;
-        }
+        &:hover { color: @grayDark; background-color: transparent; }
     }
     .nav .active > a {
         color: @grayDark;
-        &:hover {
-            color: @gray;
+        &:hover { color: @gray; }
+    }
+}
+.pipe-separators {
+    ul.nav > li + li:before {
+        font-size: 11px;
+        font-weight: bold;
+        float: left;
+        content: ' | ';
+        line-height: 30px;
+        color: @grayDark;
+    }
+    ul.nav > li.unpipe + li:before { content: ''; }
+    ul.nav > li + li.unpipe:before { content: ''; }
+}
+#sub-nav {
+    .navbar-inner {
+        background-color: transparent; background-image: none;
+        a {
+            font-weight: normal;
+            font-size: 0.9em;
+            text-shadow: none;
+            color: @grayDark;
+            &:hover { background-color: transparent; text-decoration: underline; }
+            &.active { background-color: @white; font-weight: bolder; }
         }
     }
+    .pipe-separators;
 }
 
 .monitoring { color: @grayLight; }
@@ -159,20 +162,22 @@ dl.stats {
 }
 
 /* Arguments cloud */
-dl.tags-cloud {
-    dd, dt {
+.tags-cloud {
+    dd, dt, li {
         .label;
-        .border-radius(5px); 
+        .border-radius(5px);
+        white-space: nowrap;
         display: inline;
         background-color: @darkBackground;
         font-size: 14px;
         margin: 0; 
         text-transform: lowercase;
-        padding: 4px;
+        padding: 4px 8px;
         a, a:hover { color: @darkText; text-shadow: 0 0 0 transparent; }
     }
-    dd { font-weight: normal;  }
+    dd, li { font-weight: normal;  }
     dt { font-size: 16px; text-transform: capitalize; }
+    li span { font-size: 12px; padding:1px 3px; .border-radius(5px); background-color: @lightBackground; color: @darkText }
     line-height: 34px;
 }
 
@@ -206,19 +211,20 @@ dl.tags-cloud {
 }
 
 /* Dotted Bordering */
-.border-right { border-right: 1px dotted @grayLight; }
-.border-left { border-left: 1px dotted @grayLight; }
-.border-top { border-top: 1px dotted @grayLight; }
-.border-bottom { border-bottom: 1px dotted @grayLight; }
+.border-right { border-right: 1px dashed @grayLight; }
+.border-left { border-left: 1px dashed @grayLight; }
+.border-top { border-top: 1px dashed @grayLight; }
+.border-bottom { border-bottom: 1px dashed @grayLight; }
 
 /* Backgrounding */
 .bg-dark { background-color: @darkBackground; }
 .bg-light { background-color: @baseBackground; }
 .bg-lightgreen { background-color: #e3ecda; }
 
+
 /* Generic list of person, with pic, name and short description */
 ul.people-list {
-    margin-left: 5px;
+    margin-left: 5px; margin-right: 5px;
     list-style: none;
     li {
             margin-top: 5px;
@@ -226,7 +232,7 @@ ul.people-list {
             padding-top: 3px; padding-bottom: 3px;
             line-height: 16px;
             img { .pull-left; margin-right:5px; margin-left: 5px; border:0; }
-            .monitoring { display:block; }
+            .monitoring { display:block; padding: 0 10px; }
             form { margin: 0; }
     }
 }
@@ -244,6 +250,10 @@ ul.feed-list {
 }
 
 /* Data lists */
+ul.list-inline {
+    margin: 8px 0;
+    li { display: inline; }
+}
 ul.list-floated {
     li { width: 48%; float:left; margin-bottom: 10px; padding-right: 1%; }
 }
@@ -292,16 +302,17 @@ dl.data-list {
 .socialicon-ok                { background-position: -20px  0; }
 .socialicon-ko                { background-position: -40px  0; }
 .socialicon-add               { background-position: -60px  0; }
+.socialicon-like              { background-position: -80px  0; }
 
 .socialicon-five:hover, .socialicon-five.socialicon-active    { background-position: 0      -20px; }
 .socialicon-ok:hover, .socialicon-ok.socialicon-active        { background-position: -20px  -20px; }
 .socialicon-ko:hover, .socialicon-ko.socialicon-active        { background-position: -40px  -20px; }
 .socialicon-add:hover, .socialicon-add.socialicon-active      { background-position: -60px  -20px; }
 
-.socialicon-five.used             { background-position: 0      -40px; }
-.socialicon-ok.used                { background-position: -20px  -40px; }
-.socialicon-ko.used               { background-position: -40px  -40px; }
-.socialicon-add.used               { background-position: -60px  -40px; }
+.socialicon-five.socialicon-used             { background-position: 0      -40px; }
+.socialicon-ok.socialicon-used                { background-position: -20px  -40px; }
+.socialicon-ko.socialicon-used               { background-position: -40px  -40px; }
+.socialicon-add.socialicon-used               { background-position: -60px  -40px; }
 
 /* Sticky Footer Navbar */
 #wrapper { padding-bottom: @navbarHeight; }
@@ -337,12 +348,17 @@ dl.data-list {
 /* Sidebar styles */
 #sidebar {
     table {
-        .table;
+        width: 100%;
+        margin-bottom: 18px;
+        text-align: left;
         border-spacing: 3px; border-collapse: separate;
-        td, th { border-top:0;  }
-        th { font-weight:normal; padding: 0 8px; vertical-align:middle; }
+        td, th { border-top:0; line-height: 18px;
+                               vertical-align: top; }
+        th { font-weight:normal; padding: 6px; vertical-align:middle; }
+        th.vote { cursor: pointer; }
         td { padding:0; }
         &.stats { font-size:12px; margin-bottom: 0; }
+        form { margin-bottom:5px; }
     }
 
     .tabbable { margin-top: 18px; margin-bottom: 18px;
@@ -354,7 +370,7 @@ dl.data-list {
     h1, h2, h3 {
         margin-top: 30px;
         margin-bottom: 15px;
-        font-color: @darkText;
+        color: @darkText;
     }
 
     h2 { font-size: 28px; }
@@ -362,7 +378,8 @@ dl.data-list {
 
     p.bg-dark { padding: 5px; }
 
-    li .monitoring { display: block; margin-top: 5px; }
+    li .monitoring { display: block; margin-top: 5px; font-size: 0.8em; }
+    small { font-size: 0.8em; }
 }
 
 #content {
@@ -395,17 +412,23 @@ dl.data-list {
 table#acttable {
     .table;
     .table-bordered;
-    tbody ul {
-        margin-left: 0;
-        list-style: none;
-        li { .border-top; }
-        li:first-child { border-top: 0; }
+    tbody {
+        font-size: 12px;
+        form { display: inline; float: right; }
+        ul {
+            margin-left: 0;
+            list-style: none;
+            li { .border-top; padding: 10px 0; }
+            li:first-child { border-top: 0; }
+        }
     }
+    tfoot {}
     thead {
         th {
             padding: 0;
             background-color: @darkBackground;
             vertical-align: top;
+            text-align: center;
             border-right: 1px solid @white;
             .arrow {
                 position: absolute;
@@ -416,18 +439,21 @@ table#acttable {
                 background-image: url(../img/act-arrow.png);
             }
 
-            &.approved {
+            &.current {
                 background-color: @greenLight;
 
                 .arrow { background-image: url(../img/act-arrow-approved.png); }
             }
 
-            &.current {
+            &.past {
                 background-color: @greenLighter;
                 .arrow { background-image: url(../img/act-arrow-current.png); }
             }
 
-            > div { position: relative; padding: 8px 8px 8px 22px; }
+            > div { position: relative; padding: 8px 8px 8px 22px; min-height: 50px; }
+        }
+        th:first-child > div {
+            padding-left: 8px;
         }
     }
 
@@ -450,6 +476,8 @@ table#acttable {
 
 }
 
+
+
 /* Utils */
 .calendar_container {
     border: 1px solid @grayLight;
@@ -460,7 +488,54 @@ table#acttable {
     .ui-datepicker { width: auto; }
     .ui-datepicker-calendar tbody td.highlight > a { font-weight: bold; color: @linkColor; }
 }
+.calendar_events {
+    height: 230px;
+    overflow: scroll;
+}
 
 #search-form input[type="submit"] {
     margin-top: 23px;
 }
+
+/* Politician description form */
+#description_form {
+    textarea {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}
+
+/* Commenting form */
+#comment_form {
+    padding: 5px 10px; position: relative;
+    input[type="submit"] { float:right; }
+    textarea { width: 90%; line-height: 13px; font-size: 13px; }
+    label { font-size: 0.8em; }
+    .radio-group { text-align: center; margin-top: 5px; }
+}
+
+/* Category with a list of its tags, 3 columns */
+#topic_summary a { text-decoration: underline; }
+#topic_summary > dl { float:left; width: 33%; font-size: 12px; }
+#topic_summary > dl dt { padding: 0 10px; }
+#topic_summary > dl dd { padding: 0 10px; margin: 0; }
+#topic_summary dd {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space:nowrap;
+}
+
+/* Tag cloud */
+#cloud { padding: 2px; line-height: 3em; text-align: center; }
+#cloud li { display: inline; }
+#cloud a { padding: 0px; }
+#cloud a.tag1 { font-size: 0.7em; font-weight: 100; }
+#cloud a.tag2 { font-size: 0.8em; font-weight: 200; }
+#cloud a.tag3 { font-size: 0.9em; font-weight: 300; }
+#cloud a.tag4 { font-size: 1.0em; font-weight: 400; }
+#cloud a.tag5 { font-size: 1.2em; font-weight: 500; }
+#cloud a.tag6 { font-size: 1.4em; font-weight: 600; }
+#cloud a.tag7 { font-size: 1.6em; font-weight: 700; }
+#cloud a.tag8 { font-size: 1.8em; font-weight: 800; }
+#cloud a.tag9 { font-size: 2.2em; font-weight: 900; }
+#cloud a.tag10 { font-size: 2.5em; font-weight: 900; }

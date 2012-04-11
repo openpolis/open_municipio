@@ -1,0 +1,123 @@
+#comment-area {
+    width: 600px;
+}
+
+.comment-box {
+    margin: 10px 0;
+    padding: 0;
+    background: #eee;
+    overflow: hidden;
+    border: 2px solid #ddd;
+}
+
+.comment-content {
+    width: 300px;
+    margin: 6px;
+    padding: 6px;
+    display: block;
+    float: left;
+}
+
+.comment-author {
+    font-weight: bold;
+    font-size: 16px;
+    color: #aaa;
+}
+
+.comment-date {
+    font-size: 10px;
+}
+
+.comment-text {
+    border-top: 2px solid #ddd;
+    margin-top: 2px;
+    padding-top: 10px;
+}
+
+.comment-delete {
+    border: 1px solid #aaa;
+    background: #f88;
+    margin-top: 2px;
+    padding: 4px;
+    font-size: 10px;
+}
+
+.comment-delete input {
+    font-size: 10px;
+}
+
+#comment-form-wrapper {
+    margin: 10px 0;
+    padding: 6px;
+    background: #eee;
+    overflow: hidden;
+    border: 2px solid #ddd;
+}
+
+#comment-form-wrapper h1 {
+    font-weight: bold;
+    font-size: 16px;
+    color: #aaa !important;
+    border-bottom: 2px solid #ddd;
+}
+
+label[for=id_honeypot] {
+    display: none;
+}
+
+#id_honeypot {
+    display: none;
+}
+
+.voting-box {
+    width: 240px;
+    float: right;
+    margin: 6px;
+    padding: 6px;
+    border: 2px solid #ddd;
+    background: #fff;
+}
+
+.voting-box h1 {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0 !important;
+    padding: 0;
+}
+
+.voting-score {
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.voting-box ul {
+    width: 300px;
+    overflow: hidden;
+    margin: 0 !important;
+    padding: 0;
+}
+
+.voting-box ul li {
+    float: left;
+}
+
+.voting-box img {
+    width: 30px;
+    cursor: pointer;
+}
+
+.vote .like{
+	display:inline;
+}
+
+.vote .notlike{
+	display:none;
+}
+
+.up-voted .like{
+	display:none;
+}
+
+.up-voted .notlike{
+	display:inline;
+}

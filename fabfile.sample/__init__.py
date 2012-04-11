@@ -6,16 +6,16 @@ All the settings marked with ``CHANGEME`` MUST be changed to reflect
 project-specific setup.  Other settings MAY be changed, but their values should be
 generic enough to provide for sensible defaults.
 """
-
+from fabric import utils
 from fabric.api import *
 from fabric.context_managers import cd, lcd, settings
 
-from fabfile import code, database as db, venv, static, webserver
+import code, database as db, venv, static, webserver, solr
 
 import os
 
 # Python interpreter executable to use on virtualenv creation
-PYTHON_BIN = 'python2.6' ## CHANGEME!
+PYTHON_BIN = 'python' #pyhton 2.7
 PYTHON_PREFIX = '' # e.g. ``/usr``, ``/usr/local``; leave empty for default.
 PYTHON_FULL_PATH = "%s/bin/%s" % (PYTHON_PREFIX, PYTHON_BIN) if PYTHON_PREFIX else PYTHON_BIN
 
@@ -25,16 +25,25 @@ RSYNC_EXCLUDE = (
     '*~',
     '.git',
     '.gitignore',
+    '.idea',
+    '.DS_Store',
     '*.pyc',
     '*.sample',
-    '*.db',
     'docs/',
     '*.markdown',
-    'fabfile/*',
+    'fabfile',
     'apache/*',
+    'solr',
+    'solr.example',
     'open_municipio/settings_*.py',
     'open_municipio/urls_*.py',
-    'open_municipio/sitestatic',
+    'sitestatic',
+    'uploads',
+    'open_municipio/*.sqlite',
+    'open_municipio/*.db',
+    'open_municipio/manage.py',
+    'open_municipio/*/fixtures/*',
+    'smtp_sink_server.py',
 )
 
 ## TODO: these constants should be read from an external configuration file
@@ -42,14 +51,15 @@ RSYNC_EXCLUDE = (
 PROJECT_NAME = 'open_municipio' 
 # a unique identifier for this web application instance
 # usually is set to the primary domain from which the web application is accessed
-APP_DOMAIN = 'www.example.com' 
+APP_DOMAIN = 'www.openmunicipio.it'
 # filesystem location of project's files on the local machine
-LOCAL_PROJECT_ROOT = '/local/path/to/open_municipio'
+LOCAL_PROJECT_ROOT = '/working_dir/open_municipio'
 
 env.project = PROJECT_NAME
 env.app_domain = APP_DOMAIN
 env.local_project_root = LOCAL_PROJECT_ROOT
-
+env.rsync_exclude = RSYNC_EXCLUDE
+env.python = PYTHON_FULL_PATH
 ## Environment-specific setup
 @task
 def staging():
@@ -57,15 +67,15 @@ def staging():
     env.environment = 'staging'
     ## TODO: these constants should be read from an external configuration file
     # the system user (on the server machine) used for managing websites
-    WEB_USER = 'webuser' ##CHANGEME!
+    WEB_USER = 'webmaster'
     # the parent directory of domain-specific directories (on the server machine) 
-    WEB_ROOT = os.path.join('/home', WEB_USER, 'websites') 
+    WEB_ROOT = '/home/' #I keep it simple, here
     # the root directory for domain-specific files (on the server machine)
     DOMAIN_ROOT = os.path.join(WEB_ROOT, env.app_domain) 
     # the root directory of application-specific Python virtual environment (on the server machine)
     VIRTUALENV_ROOT = os.path.join(DOMAIN_ROOT, 'private', 'venv') 
     # the root directory for project-specific files (on the server machine)
-    PROJECT_ROOT = os.path.join(DOMAIN_ROOT, 'private', env.project) 
+    PROJECT_ROOT = os.path.join(DOMAIN_ROOT, 'private', 'python')
     # the root directory for application-specific Python code (on the server machine)
     CODE_ROOT = os.path.join(PROJECT_ROOT, env.project) ##CHANGEME!
     # import path of Django settings file for the staging environment
@@ -73,6 +83,12 @@ def staging():
     # Directory where static files should be collected.  This MUST equal the value
     # of ``STATIC_ROOT`` attribute of the Django settings module used on the server.
     STATIC_ROOT =  os.path.join(DOMAIN_ROOT, 'public', 'static') ## CHANGEME!
+
+    TOMCAT_USER = 'tomcat_user_here'
+    SOLR_HOME = '/solr_home_here/'
+    CATALINA_HOME = '/catalina_home_here' ## CHANGEME!
+    TOMCAT_CONTROLLER = '/etc/init.d/tomcat'
+
     ## set up Fabric global environment dictionary
     env.web_user = WEB_USER
     env.web_root = WEB_ROOT
@@ -82,10 +98,15 @@ def staging():
     env.code_root = CODE_ROOT
     env.settings = DJANGO_SETTINGS_MODULE
     env.static_root = STATIC_ROOT
+    env.tomcat_user = TOMCAT_USER
+    env.solr_home = SOLR_HOME
+    env.catalina_home = CATALINA_HOME
+    env.tomcat_controller = TOMCAT_CONTROLLER
     
     env.roledefs = {
-    'web': ['webuser@www.example.com'],
-    'db': ['dbuser@db.example.com'],
+    'tomcat': ['%(tomcat_user)s@host' % env],
+    'web': ['webmaster@host'],
+    'db': ['dba@host'],
     }
  
 @task
@@ -123,6 +144,7 @@ def deploy():
     ## TODO: early initialization steps go here  
     if env.get('initial_deploy'):
         code.copy_website_skeleton()
+        solr.make_common_skeleton()
 
     with settings(warn_only=True):
         webserver.stop()
@@ -130,8 +152,9 @@ def deploy():
     code.update()
     venv.update_requirements()
     db.update()
+    solr.update_app()
+    solr.update_index()
     static.collect_files()
-    adjust_permissions()
     webserver.clear_logs()
 
     webserver.start()

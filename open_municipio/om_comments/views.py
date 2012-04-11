@@ -34,4 +34,4 @@ def delete_own_comment(request, message_id):
         comment.save()
 
     # Whatever happened, just get back to the act page
-    return redirect('om_act_detail', comment.content_object.id)
+    return redirect(comment.content_object.get_absolute_url() )

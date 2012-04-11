@@ -16,7 +16,7 @@ def transition_form_factory(act):
     passed inside the get_formset method
     """
     class RuntimeTransitionForm(forms.ModelForm):
-        final_status = forms.ChoiceField(label='Status', choices=act.STATUS)
+        final_status = forms.ChoiceField(label='Status', choices=act.downcast().STATUS)
 
         class Meta:
             model = Transition
@@ -77,7 +77,7 @@ class ActAdmin(admin.ModelAdmin):
             inline_instance = inline_class(self.model, self.admin_site)
             self.inline_instances.append(inline_instance)
 
-        return super(ActAdmin, self).change_view(request, object_id)
+        return super(ActAdmin, self).change_view(request, object_id, extra_context)
 
 
 class ActAdminWithAttaches(admin.ModelAdmin):
@@ -103,12 +103,11 @@ class DeliberationAdmin(ActAdmin):
 
 
 admin.site.register(Act, ActAdmin)
-
-# inizio patch per codice guglielmo
+# The following two lines restore the default admin for the class Act 
+# (the function "transition_form_factory" need to be fixed at line 19 of this file!)
 admin.site.unregister(Act)
 admin.site.register(Act)
-# fine patch
-
+# end of our homemade fix!
 admin.site.register(Deliberation, DeliberationAdmin)
 admin.site.register(Interrogation)
 admin.site.register(Interpellation)

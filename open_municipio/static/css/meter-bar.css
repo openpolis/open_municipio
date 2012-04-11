@@ -4,7 +4,7 @@
 
 .meter-bar { padding: 20px 10px 10px 10px; position: relative; }
 .meter-bar-container { padding-bottom: 5px;  }
-.meter-average { position: absolute; top: -8px; z-index: 10; background: transparent url(/images/line-meter.png) no-repeat top left; height: 28px; width: 10px; margin-left: -2px; }
+.meter-average { position: absolute; top: -8px; z-index: 10; background: transparent url(../img/line-meter.png) no-repeat top left; height: 28px; width: 10px; margin-left: -2px; }
 .meter-bar .meter-average label { margin-top: 29px; margin-left: 2px; padding: 2px; background-color: #fff; display: none; font-size: 12px; font-weight: bold; color: #000; border: 1px solid #7e858b; -moz-border-radius: 3px; -webkit-border-radius: 3px; border-radius: 3px; position: relative; left: -50%; text-align: center; width: 150px;}
 .meter-bar:hover .meter-average { height: 40px; width: 150px;}
 .meter-bar:hover .meter-average label { display: block; }

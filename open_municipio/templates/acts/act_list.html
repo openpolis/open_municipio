@@ -71,11 +71,11 @@
             </tr>
             </tfoot>
             <tbody>
-            {% for obj in object_list %}
+            {% for act in key_acts %}
             <tr>
-                <td>{{ obj.presentation_date}}</td>
+                <td>{{ act.presentation_date}}</td>
                 <td>
-                    <a href="{{ obj.get_absolute_url }}"><strong>{{ obj }}</strong> ({{ obj.idnum }})</a><br>
+                    <a href="{{ act.get_absolute_url }}"><strong>{{ act }}</strong> ({{ act.idnum }})</a><br>
                     <strong>Delibera di consiglio</strong> del Consiglio Comunale N°<strong>85</strong> del <strong>2.2.2012</strong>
                 </td>
             </tr>
@@ -94,11 +94,11 @@
             </tr>
             </tfoot>
             <tbody>
-            {% for obj in object_list %}
+            {% for act in acts %}
                 <tr>
-                    <td>{{ obj.presentation_date}}</td>
+                    <td>{{ act.presentation_date}}</td>
                     <td>
-                        <a href="{{ obj.get_absolute_url }}"><strong>{{ obj }}</strong> ({{ obj.idnum }})</a><br>
+                        <a href="{{ act.get_absolute_url }}"><strong>{{ act }}</strong> ({{ act.idnum }})</a><br>
                         <strong>Delibera di consiglio</strong> del Consiglio Comunale N°<strong>85</strong> del <strong>2.2.2012</strong>
                     </td>
                 </tr>

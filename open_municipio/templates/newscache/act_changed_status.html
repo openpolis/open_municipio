@@ -1,0 +1,13 @@
+{%  load switch %}
+{% switch act.status %}
+    {% case act.STATUS.committee %}
+        L'atto è in discussione in commissione{% if transition.note %} {{ transition.note }}{% endif %}.
+    {% case act.STATUS.council %}
+       L'atto è in discussione al consiglio.
+    {% case act.STATUS.approved %}
+        L'atto è stato approvato.
+    {% case act.STATUS.rejected %}
+        L'atto è stato respinto.
+    {%  else %}
+        Lo stato dell'atto è sconosciuto
+{% endswitch %}

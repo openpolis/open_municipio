@@ -1,12 +1,18 @@
 from django.conf.urls.defaults import *
 
-from open_municipio.acts.models import Act
-from open_municipio.acts.views import (ActDetailView, ActListView, AgendaDetailView,
-                                       DeliberationDetailView, InterpellationDetailView,
-                                       InterrogationDetailView, MotionDetailView)
-from open_municipio.acts.views import ActAddTagsView, ActRemoveTagView
-from open_municipio.acts.views import ActToggleBookmark
 from voting.views import vote_on_object
+
+from haystack.query import SearchQuerySet
+
+from open_municipio.acts.models import Act
+
+from open_municipio.acts.views import (ActSearchView, AgendaDetailView,
+                                       DeliberationDetailView, InterpellationDetailView,
+                                       InterrogationDetailView, MotionDetailView, ActDescriptionView,
+                                       ActTransitionAddView, ActTransitionRemoveView,
+                                       ActAddTagsView, ActRemoveTagView)
+
+from open_municipio.locations.views import ActTagByLocationView
 
 
 act_dict = {
@@ -15,12 +21,20 @@ act_dict = {
     'allow_xmlhttprequest': 'true',
 }
 
+
+## SearchQuerySet with multiple facets and highlight
+sqs = SearchQuerySet().filter(django_ct='acts.act').\
+    facet('act_type').facet('is_key').facet('initiative').\
+    facet('organ').\
+    facet('categories').facet('tags').\
+    query_facet('pub_date', ActSearchView.THREEDAYS).\
+    query_facet('pub_date', ActSearchView.ONEMONTH).\
+    query_facet('pub_date', ActSearchView.ONEYEAR).\
+    highlight()
+
 urlpatterns = patterns('',
-    url(r'^$', ActListView.as_view(),  name='om_act_list'),                
-    # generic acts
-    url(r'^(?P<pk>\d+)/$', ActDetailView.as_view(),  name='om_act_detail'),
-    url(r'^(?P<pk>\d+)/(?P<tab>documents)/$', ActDetailView.as_view(),  name='om_act_detail_documents'),
-    url(r'^(?P<pk>\d+)/(?P<tab>emendations)/$', ActDetailView.as_view(),  name='om_act_detail_emendations'),
+    # faceted navigation
+    url(r'^$', ActSearchView(template='acts/act_search.html', searchqueryset=sqs), name='om_act_search'),
     # agendas
     url(r'^agendas/(?P<pk>\d+)/$', AgendaDetailView.as_view(),  name='om_agenda_detail'),
     url(r'^agendas/(?P<pk>\d+)/(?P<tab>documents)/$', AgendaDetailView.as_view(),  name='om_agenda_detail_documents'),
@@ -41,7 +55,7 @@ urlpatterns = patterns('',
     url(r'^motions/(?P<pk>\d+)/$', MotionDetailView.as_view(),  name='om_motion_detail'),
     url(r'^motions/(?P<pk>\d+)/(?P<tab>documents)/$', MotionDetailView.as_view(),  name='om_motion_detail_documents'),
     url(r'^motions/(?P<pk>\d+)/(?P<tab>emendations)/$', MotionDetailView.as_view(),  name='om_motion_detail_emendations'),
- )
+)
 
 ## Tag management
 urlpatterns += patterns('',
@@ -50,7 +64,18 @@ urlpatterns += patterns('',
     url(r'^(?P<object_id>\d+)/(?P<direction>up|down|clear)vote/?$', vote_on_object, act_dict),
 )
 
-## Bookmark management
+## Location management
 urlpatterns += patterns('',
-    url(r'(?P<pk>\d+)/togglebookmark/?$',ActToggleBookmark.as_view(),name='om_act_bookmark_set'),
+    url(r'^(?P<pk>\d+)/locations/add/$', ActTagByLocationView.as_view(),  name='om_act_locations_add'),
+)
+
+## Act's description update
+urlpatterns += patterns('',
+    url(r'^(?P<pk>\d+)/description/update/$', ActDescriptionView.as_view(), name='om_act_description_update'),
+)
+
+## Transition management
+urlpatterns += patterns('',
+    url(r'(?P<pk>\d+)/transition/add/', ActTransitionAddView.as_view(), name='om_act_transition_add'),
+    url(r'(?P<pk>\d+)/transition/remove/', ActTransitionRemoveView.as_view(), name='om_act_transition_remove'),
 )

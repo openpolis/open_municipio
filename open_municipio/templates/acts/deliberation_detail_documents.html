@@ -1,1 +1,28 @@
 {% extends "acts/deliberation_detail.html" %}
+
+{% block act_tab_status_class %}{% endblock %}
+{% block act_tab_documents_class %}class="active"{% endblock %}
+
+{% block act_tab_body %}
+
+{% if act.attachments|length == 0 %}
+
+    <div class="alert alert-info">
+        Questo atto non contiene nessun allegato
+    </div>
+
+{% else %}
+    <ul class="unstyled">
+        {% for attach in act.attachments %}
+        <li>
+            <img src="{{ STATIC_URL }}img/pdf-icon-16x16.png" alt="PDF">
+            <a href="{{ attach.pdf_file.url }}">{{ attach.title }}</a>
+        </li>
+        {% endfor %}
+    </ul>
+
+{% endif %}
+  
+{% endblock act_tab_body %}
+
+

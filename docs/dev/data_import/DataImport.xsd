@@ -191,6 +191,7 @@
 	<xs:element name="OpenMunicipio">
 		<xs:complexType>
 			<xs:sequence>
+				<xs:element ref="Scheduling"/>
 				<xs:element minOccurs="0" maxOccurs="1" ref="People"/>
 				<xs:element ref="Acts" minOccurs="0" maxOccurs="1"/>
 				<xs:element maxOccurs="1" minOccurs="0" ref="Sittings"/>
@@ -586,6 +587,7 @@
 						<xs:element minOccurs="0" name="CouncilBallot" type="actBallot"/>
 						<xs:element ref="Attachment" minOccurs="0" maxOccurs="unbounded"/>
 					</xs:sequence>
+					<xs:attribute name="final_id" type="xs:string"/>
 					<xs:attribute name="approval_date" type="xs:date" use="optional"/>
 					<!-- publication_date is the same as presentation_date, see actType -->
 					<xs:attribute name="execution_date" type="xs:date" use="optional"/>
@@ -978,4 +980,28 @@
 			<xs:attribute ref="xlink:type" fixed="simple"/>
 		</xs:complexType>
 	</xs:element>
+	<xs:element name="Scheduling">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element maxOccurs="unbounded" ref="Event"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Event">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="ActXRef"/>
+				<xs:element ref="Description"/>
+			</xs:sequence>
+			<xs:attribute name="date" type="dateType"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ActXRef">
+		<xs:complexType>
+			<xs:attribute ref="xlink:href" use="required"/>
+			<xs:attribute ref="xlink:type" fixed="simple"/>
+			<xs:attribute name="description" type="xs:string"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Description" type="contentType"/>
 </xs:schema>

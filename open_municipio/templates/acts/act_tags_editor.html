@@ -1,37 +1,177 @@
-<a href="#" id="cteditor-launcher" class="hide pull-right label label-info"><i class="icon-edit icon-white"></i> Edit</a>
-<div id="cteditor" class="hide">
-    
-    <div class="modal" id="modal-container">
-      <div class="modal-header">
-        <a class="close" data-dismiss="modal">×</a>
-        <h3>Editor Argomenti</h3>
-      </div>
-      <form action="#" method="get" class="form-horizontal">{% csrf_token %}
-          <div class="modal-body">
+{% if perms.taxonomy.change_taggedact %}
+    <a href="#" id="cteditor-launcher" class="hide pull-right label label-info">
+        <i class="icon-edit icon-white"></i> Edit
+    </a>
+    <div id="cteditor" class="hide">
 
-                {% for cat in act.categories %}
-                <fieldset>
-                    <div class="control-group">
-                        <label class="control-label" for="category_{{ cat.id }}">
-                            <a href="#"><i class="icon-remove"></i></a> <span class="label">{{ cat.name }}</span>
-                        </label>
-                        <div class="controls">
-                            <select name="categories[{{ cat.id }}]" id="category_{{ cat.id }}" multiple="multiple">
-                                {% for tag in cat.tags %}
-                                <option value="{{ tag.id }}"{% if tag in act.tags %} selected="selected"{% endif %}>{{ tag.name }}</option>
-                                {% endfor %}
-                            </select>
+        <div class="modal" id="modal-container">
+            <div class="modal-header">
+                <a class="close" data-dismiss="modal">×</a>
+
+                <h3>Editor Argomenti</h3>
+            </div>
+            <form action="#" method="get" class="form-horizontal">{% csrf_token %}
+                <div class="modal-body">
+                    {% for cat in act.categories %}
+                    <fieldset>
+                        <div class="control-group">
+                            <label class="control-label" for="category_{{ cat.id }}">
+                                <a href="#"><i class="icon-remove"></i></a> <span
+                                    class="label">{{ cat.name }}</span>
+                            </label>
+
+                            <div class="controls">
+                                <select name="categories[{{ cat.id }}]" id="category_{{ cat.id }}"
+                                        multiple="multiple">
+                                    {% for tag in act_tags_editor.tags %}
+                                        <option value="{{ tag.id }}"{% if tag in act.tags %}
+                                                selected="selected"{% endif %}>{{ tag.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
                         </div>
-                    </div>
-                </fieldset>
-                {% endfor %}
+                    </fieldset>
+                    {% endfor %}
 
-          </div>
-          <div class="modal-footer">
-              <input type="submit" value="Salva" class="btn btn-primary" />
-              <input type="reset" value="Reset" class="btn" />
-          </div>
-      </form>
+                    <fieldset class="hide" id="category_skeleton">
+                        <div class="control-group">
+                            <label class="control-label" for="category_{{ cat.id }}">
+                                <a href="#"><i class="icon-remove"></i></a> <span class="label"></span>
+                            </label>
+
+                            <div class="controls">
+                                <select multiple="multiple">
+                                    {% for tag in act_tags_editor.tags %}<option value="{{ tag.id }}">{{ tag.name }}</option>{% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <div class="control-group">
+                        <select id="category_list">
+                            <option value=""></option>
+                            {% for cat in act_tags_editor.categories %}
+                                <option value="{{ cat.id }}">{{ cat.name }}</option>
+                            {% endfor %}
+                        </select>
+                        <a href="#" class="btn btn-mini btn-success" id="category_add"><i class="icon-plus icon-white"></i> Aggiungi</a>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <input type="submit" value="Salva" class="btn btn-primary"/>
+                    <input type="reset" value="Reset" class="btn"/>
+                </div>
+            </form>
+        </div>
     </div>
-    
-</div>
+
+    <script type="text/javascript">
+
+
+        var buildTextList = function(select) {
+
+            if ( select.data('active') )
+                return;
+            select.data('active');
+
+            // create el
+            var el = $('<input />').attr({
+                name: select.attr('name'),
+                value: '',
+                'class': 'cteditor-input'
+            })
+
+            // fill input after multiple-select
+            select.attr('name', '_'+ select.attr('name') ).hide().after( el );
+
+            // initialize textboxlist
+            var t = new $.TextboxList(el, {unique: true, plugins: {autocomplete: {
+                minLength: 1,
+                onlyFromValues: true
+            }}});
+
+            // retrieve available tags
+            var tags = [];
+            select.children('option').each(function(){
+                tags.push([ $(this).val(), $(this).text() ]);
+                if ( $(this).attr('selected') )
+                    t.add( $(this).text(), $(this).val() );
+            });
+
+            // adds to autocompleter
+            t.plugins['autocomplete'].setValues(tags);
+        }
+
+        include([
+            'js/jquery.growinginput.js',
+            'js/jquery.textboxlist.js',
+            'js/bootstrap-modal.js',
+            'css/textboxlist.css',
+            'css/ui-custom-theme/jquery-ui-1.8.16.custom.css'], function() {
+
+            $('#cteditor-launcher').click(function(event){
+                event.preventDefault();
+
+                // express a single node as a jQuery object
+                var $t = $(this);
+
+                // open modal with editor
+                $('#cteditor').modal();
+
+                // avoid duplicates
+                if ( $t.data('cteditor') )
+                    return;
+                $t.data('cteditor', true );
+
+                // build initial textlistboxes
+                $('#category_skeleton').prevAll('fieldset').each(function() {
+                    buildTextList( $('select',this) );
+                });
+
+                $('#category_add').click(function(e){
+                    e.preventDefault();
+
+                    var new_cat = $('#category_list').children('option:selected');
+
+                    if ( !new_cat.val() )
+                        return;
+
+                    var fieldset = $('#category_skeleton').clone();
+
+                    fieldset.removeClass('hide').attr({'id' : '' });
+
+                    // setting label with category name
+                    $('label span', fieldset).text(new_cat.text());
+
+                    // setting select field with category id
+                    $('select', fieldset).attr({
+                        'id' : 'category_' + new_cat.val(),
+                        'name' : 'category['+ new_cat.val() +']'
+                    });
+
+                    // activate close button
+                    $('a', fieldset).click(function(e) {
+                        e.preventDefault();
+                        // add category to re-add
+                        $('#category_list').append( fieldset.data('option') );
+                        fieldset.remove();
+                    });
+
+                    // inject it
+                    fieldset.insertBefore( $('#category_skeleton') );
+
+                    // build textlistbox
+                    buildTextList( $('select',fieldset) );
+
+                    // remove from selectable
+                    fieldset.data('option', new_cat.remove());
+                });
+            }).parent().hover(
+                function() { $('#cteditor-launcher', this).fadeIn(); },     // in
+                function() { $('#cteditor-launcher', this).fadeOut(); }     // out
+            );
+        });
+    </script>
+{% endif %}
