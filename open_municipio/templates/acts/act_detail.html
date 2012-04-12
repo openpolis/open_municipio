@@ -46,13 +46,12 @@
                 {
                     $('#comment_form_submit').append($('<i class="socialicon-'+el.data('icon')+' socialicon-active"></i>'))
                 }
-                el.css({
+                el.prop('title',el.text().trim()).css({
                     'text-indent': '-99999px',
                     'overflow': 'hidden',
                     'cursor': 'pointer'
                 }).addClass('socialicon-'+el.data('icon')).on('click', selectRadio);
             });
-            $('#id_comment').autogrow();
             // prevent empty submit
             $('#comment_form').submit(function(){
                 var field = $(this).find('textarea');
@@ -61,6 +60,9 @@
                     return false;
                 }
             });
+
+            // textarea form
+            $('#id_comment').autogrow();
 
             // politician form grow
             $('#description_form textarea').autogrow();
@@ -119,7 +121,9 @@
 {% block sidebar %}
 
 <section>
+    {% if perms.taxonomy.change_taggedact %}
     {% include 'acts/act_tags_editor.html' %}
+    {% endif %}
     <h3>Argomenti dell'atto</h3>
     
     <dl class="tags-cloud">
