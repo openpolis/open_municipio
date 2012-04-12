@@ -60,7 +60,8 @@
                     <li>
                         <ul>
                             {% for c in current_committee_charges %}
-                                <li>{{ c.denomination }}</li>
+                                <li>{{ c.denomination }} {{ c.institution }}:
+                                    <em>{{ c.institution.description }}</em></li>
                             {% endfor %}
                         </ul>
                     </li>

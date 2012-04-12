@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.db.models import permalink
@@ -43,7 +44,7 @@ class Person(models.Model):
         verbose_name_plural = _('people')
    
     def __unicode__(self):
-        return u'%s %s' % (self.first_name, self.last_name)
+        return '%s %s' % (self.first_name, self.last_name)
 
     def save(self, *args, **kwargs):
         if self.slug is None:
@@ -209,7 +210,7 @@ class ChargeResponsability(models.Model):
         ('PRESIDENT', 'president', _('President')),
         ('VICE', 'vice', _('Vice president')),
         ('VICEVICE', 'vicevice', _('Vice vice precident')),
-                                                  )
+    )
 
     charge_type = models.CharField(_('charge type'), max_length=16, choices=CHARGE_TYPES)
     start_date = models.DateField(_('start date'))
@@ -251,8 +252,11 @@ class InstitutionCharge(Charge):
 
 
     def __unicode__(self):
-        # TODO: implement ``get_charge_type_display()`` method
-        return u'%s - %s dal %s' % (self.person, self.charge_type, self.start_date.strftime('%d/%m/%Y'))
+        if self.denomination:
+            return "%s - %s" % (self.person, self.denomination.encode('utf-8'))
+        else:
+            return "%s" % self.person
+
 
     # TODO: model validation: check that ``substitutes`` and ``substituted_by`` fields
     # point to ``InstitutionCharge``s of the same kind
@@ -260,10 +264,10 @@ class InstitutionCharge(Charge):
     @property
     def denomination(self):
         if self.institution.institution_type == Institution.MAYOR:
-            return _('Mayor')
+            return _('Mayor').translate(settings.LANGUAGE_CODE)
         elif self.institution.institution_type == Institution.CITY_GOVERNMENT:
             if self.responsabilities.count():
-                s = "%s" % self.responsabilities[0].get_charge_type_display()
+                s = self.responsabilities[0].get_charge_type_display()
                 if self.responsabilities[0].charge_type == InstitutionResponsability.CHARGE_TYPES.firstdeputymayor:
                     s += ", %s" % self.description
                 return s
@@ -273,13 +277,12 @@ class InstitutionCharge(Charge):
             if self.responsabilities.count():
                 return "%s Consiglio Comunale" % self.responsabilities[0].get_charge_type_display()
             else:
-                return _('Counselor')
+                return _('Counselor').translate(settings.LANGUAGE_CODE)
         elif self.institution.institution_type == Institution.COMMITTEE:
             if self.responsabilities.count():
-                return "%s %s: %s" % (self.responsabilities[0].get_charge_type_display(),
-                                      self.institution.name, self.institution.description)
+                return "%s" % (self.responsabilities[0].get_charge_type_display(),)
             else:
-                return _('Member') + " %s: %s" % (self.institution.name, self.institution.description)
+                return _('Member').translate(settings.LANGUAGE_CODE)
         else:
             return ''
 
@@ -383,6 +386,9 @@ class InstitutionResponsability(ChargeResponsability):
     Responsability for institutional charges.
     """
     charge = models.ForeignKey(InstitutionCharge, verbose_name=_('charge'))
+    class Meta:
+        verbose_name = _('institutional responsability')
+        verbose_name_plural = _('institutional responsabilities')
 
 
 class CompanyCharge(Charge):
@@ -534,20 +540,29 @@ class GroupCharge(models.Model):
     def responsabilities(self):
         return self.groupresponsability_set.all()
 
+    @property
+    def denomination(self):
+        if self.responsabilities.count():
+            s = "%s" % self.responsabilities[0].get_charge_type_display()
+            return s
+        else:
+            return ""
+
     class Meta:
         db_table = u'people_group_charge'
         verbose_name = _('group charge')
         verbose_name_plural = _('group charges')
 
+    def __unicode__(self):
+        if self.denomination:
+            return ("%s - %s - %s" % (self.group.acronym, self.charge.person, self.denomination)).encode('utf-8')
+        else:
+            return ("%s - %s" % (self.group.acronym, self.charge.person)).encode('utf-8')
 
 class GroupResponsability(ChargeResponsability):
     """
     Responsability for group charges.
     """
-    CHARGE_TYPES = Choices(
-        ('LEADER', 'leader', _('Group leader')),
-    )
-
     charge = models.ForeignKey(GroupCharge, verbose_name=_('charge'))
 
 
