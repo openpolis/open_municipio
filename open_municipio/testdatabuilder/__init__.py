@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.files import File
 from django.conf import settings
 
@@ -38,7 +39,10 @@ class RandomItemsFactory(object):
         Create a bunch of acts.
         """
         # cleanup
-        Act.objects.all().delete()
+        try:
+            Act.objects.all().delete()
+        except ObjectDoesNotExist:
+            pass
 
         election_date = '2010-06-14'
 
