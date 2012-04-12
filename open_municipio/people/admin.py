@@ -8,6 +8,8 @@ class PersonResourceInline(admin.TabularInline):
     extra = 0
 
 class PersonAdminWithResources(admin.ModelAdmin):
+    list_display = ('id', '__unicode__', )
+    list_display_links = ('__unicode__',)
     search_fields = ['^first_name', '^last_name']
     prepopulated_fields = {"slug": ("first_name","last_name","birth_date", "birth_location",)}
     inlines = [PersonResourceInline, ]
@@ -70,6 +72,17 @@ class InstitutionChargeInline(ChargeInline):
     )
 
 
+class ResponsabilityInline(admin.TabularInline):
+    raw_id_fields = ('charge',)
+    fields = ('charge', 'charge_type', 'start_date', 'end_date', 'description')
+    extra = 0
+
+class InstitutionResponsabilityInline(ResponsabilityInline):
+    model = InstitutionResponsability
+
+class GroupResponsabilityInline(ResponsabilityInline):
+    model = GroupResponsability
+
 
 class ChargeAdmin(admin.ModelAdmin):
     pass
@@ -98,15 +111,27 @@ class AdministrationChargeAdmin(ChargeAdmin):
 
 class InstitutionChargeAdmin(ChargeAdmin):
     model = InstitutionCharge
-    raw_id_fields = ('person', 'substitutes', 'substituted_by', 'institution')
+    raw_id_fields = ('person', 'substitutes', 'substituted_by', 'original_charge')
     fieldsets = (
         (None, {
-            'fields': (('person', 'op_charge_id', 'institution'),
+            'fields': (('person', 'op_charge_id', 'institution', 'original_charge'),
                  ('start_date', 'end_date', 'end_reason'), 
                  'description',
                  ('substitutes', 'substituted_by'))
         }),
     )
+    list_display = ('__unicode__', 'institution', 'start_date', 'end_date')
+    list_select_related = True
+    list_filter = ['institution__name', ]
+    inlines = [InstitutionResponsabilityInline]
+
+class GroupChargeAdmin(admin.ModelAdmin):
+    raw_id_fields = ('charge', )
+    list_display = ('__unicode__', 'start_date', 'end_date')
+    list_select_related = True
+    list_filter = ['group']
+    inlines = [GroupResponsabilityInline]
+
 
 
 class BodyAdmin(admin.ModelAdmin):
@@ -125,6 +150,7 @@ class SittingAdmin(admin.ModelAdmin):
 admin.site.register(Sitting, SittingAdmin)
 admin.site.register(Person, PersonAdminWithResources)
 admin.site.register(Group, GroupAdminWithCharges)
+admin.site.register(GroupCharge, GroupChargeAdmin)
 admin.site.register(InstitutionCharge, InstitutionChargeAdmin)
 admin.site.register(CompanyCharge, CompanyChargeAdmin)
 admin.site.register(AdministrationCharge, AdministrationChargeAdmin)
