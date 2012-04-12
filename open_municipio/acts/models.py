@@ -83,11 +83,7 @@ class Act(TimeStampedModel, MonitorizedItem):
         if self.adj_title:
             uc = u'%s (%s)' % (uc, self.adj_title)
         return uc
-   
-    @models.permalink
-    def get_absolute_url(self):
-        return 'om_act_detail', (), {'pk': str(self.pk)}
-    
+     
     def downcast(self):
         """
         Returns the "downcasted"[*]_ version of this model instance.
