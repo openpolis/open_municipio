@@ -260,10 +260,11 @@ class ActTagEditorView(View):
                 category = get_object_or_404(Category, pk=int(m.group(1)))
                 new_topics[category] = []
                 tag_ids = self.request.POST[param].split(',')
-                new_tags_ids |= set(tag_ids) 
-                for tag_id in tag_ids:
-                    tag = get_object_or_404(Tag, id=int(tag_id))
-                    new_topics[category].append(tag)
+                if len(tag_ids) > 0: # if this category has been associated to at least one tag
+                    new_tags_ids |= set(tag_ids) 
+                    for tag_id in tag_ids:
+                        tag = get_object_or_404(Tag, id=int(tag_id))
+                        new_topics[category].append(tag)
         # assign new categories to the act
         new_categories = new_topics.keys()
         tagged_act.category_set = new_categories
