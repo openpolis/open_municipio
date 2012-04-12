@@ -4,7 +4,7 @@ from django.core.files import File
 from django.conf import settings
 
 from open_municipio.testdatabuilder import conf
-from open_municipio.people.models import Institution, Person, GroupCharge, Sitting, InstitutionCharge
+from open_municipio.people.models import Institution, Person, GroupCharge, Sitting, InstitutionCharge, municipality
 from open_municipio.acts.models import  Act, ActSupport, Attach, Deliberation, Interrogation
 from open_municipio.taxonomy.models import Category, Tag
 from open_municipio.votations.models import Votation, ChargeVote
@@ -171,15 +171,9 @@ class RandomItemsFactory(object):
                     [2]*5,   #  5% ABSTAINED
                     [4]*5    #  5% ABSENT
                 ]))
-                for charge in council_institution.charge_set.all():
-                    if (charge.charge_type == InstitutionCharge.COUNCIL_PRES_CHARGE or
-                        charge.charge_type == InstitutionCharge.COUNCIL_VICE_CHARGE):
-                        # president and vicepresident do not vote twice
-                        continue
-                    else:
-                        # votings are drawn randomly with weighted probabilities
-                        vote = random.choice(vw)
-
+                for charge in municipality.council.members:
+                    # votings are drawn randomly with weighted probabilities
+                    vote = random.choice(vw)
                     charge_vote = ChargeVote(votation=v, charge=charge, vote=vote)
                     charge_vote.save()
                     # print "%s voted %s" % (charge, charge_vote.vote)

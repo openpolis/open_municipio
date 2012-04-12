@@ -555,9 +555,9 @@ class GroupCharge(models.Model):
 
     def __unicode__(self):
         if self.denomination:
-            return ("%s - %s - %s" % (self.group.acronym, self.charge.person, self.denomination)).encode('utf-8')
+            return "%s - %s - %s" % (self.group.acronym, self.charge.person, self.denomination)
         else:
-            return ("%s - %s" % (self.group.acronym, self.charge.person)).encode('utf-8')
+            return "%s - %s" % (self.group.acronym, self.charge.person)
 
 class GroupResponsability(ChargeResponsability):
     """
