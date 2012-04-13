@@ -87,6 +87,7 @@ TEMPLATE_DIRS = (
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
+    "open_municipio.om.context_processor.defaults",
     "django.contrib.auth.context_processors.auth",
     "django.core.context_processors.debug",
     "django.core.context_processors.i18n",
@@ -155,3 +156,9 @@ WEB_SERVICES = {
 OM_BOOKMARKING_STAR_CLASS = 'icon-star'
 # CSS class used to mark DOM elements associated with bookmarkable (but not-key) objects
 OM_BOOKMARKING_EMPTY_STAR_CLASS = 'icon-star-empty'
+
+# Site templates globals variables
+SITE_INFO = {
+    'main_city': 'Roma'
+}
+

@@ -15,7 +15,7 @@
 
 {% block content %}
     <header class="clearfix">
-        <a href="{{ registered_user.get_absolute_url }}" class="thumb"><img src="http://placehold.it/100"></a>
+        <a href="{{ registered_user.get_absolute_url }}" class="thumb"><img src="{{ STATIC_URL }}img/placehold/100.gif"></a>
         <h1><strong>{{ registered_user.get_profile.public_name }}</strong></h1>
         <small>da Borgo Molino</small>
         <ul class="unstyled">

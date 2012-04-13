@@ -3803,8 +3803,10 @@ body.citizen .tags-cloud li {
   margin-bottom: 0;
 }
 #area-title {
-  margin: 30px auto;
+  padding-top: 30px;
+  padding-bottom: 30px;
   font-size: 40px;
+  background: transparent url('../img/logo-city.png') no-repeat right center;
 }
 #content > hgroup h1 {
   margin-top: 10px;
@@ -4608,6 +4610,9 @@ table#acttable thead th:first-child > div {
 #comment_form .radio-group {
   text-align: center;
   margin-top: 5px;
+}
+#location-form ul {
+  list-style: none;
 }
 /* Category with a list of its tags, 3 columns */
 #topic_summary a {

@@ -5,7 +5,7 @@
         <ul class="people-list border-right">
             {% for supporter in act_supporters %}
                 <li>
-                    <a href="#"><img src="http://placehold.it/50" /></a>
+                    <a href="#"><img src="{{ STATIC_URL }}img/placehold/50.gif" /></a>
                     <strong><a href="{{ supporter.get_absolute_url }}"><i class="icon-ok"></i> {{ supporter.person.full_name }}</a></strong> <br />
                     {{ supporter.council_group }}
                     <span class="monitoring">
@@ -24,7 +24,7 @@
         <ul class="people-list">
             {% for supporter in act_cosupporters %}
                 <li>
-                    <a href="#"><img src="http://placehold.it/50" /></a>
+                    <a href="#"><img src="{{ STATIC_URL }}img/placehold/50.gif" /></a>
                     <strong><a href="{{ supporter.get_absolute_url }}"><i class="icon-ok"></i> {{ supporter.person.full_name }}</a></strong> <br />
                     {{ supporter.council_group }}
                     <span class="monitoring">

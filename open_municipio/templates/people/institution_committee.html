@@ -46,20 +46,15 @@
             <div class="span4">
                 <div class="calendar_container">
                     <h3>Agenda della commissione</h3>
-                    <div class="calendar" data-calendar=".calendar_events"></div>
-                    <ul class="calendar_events">
-                        {% for event in events %}
-                        <li data-day="{{ event.date|date:"d/m/Y" }}"><a href="{{ event.act.downcast.get_absolute_url }}">{{ event.act.title }}</a></li>
-                        {% endfor %}
-                    </ul>
+                    <div class="calendar" data-events=".calendar_events"></div>
                 </div>
             </div>
             <div class="span8">
-                <ul class="list-floated unstyled">
+                <ul class="list-floated unstyled calendar_events">
                     {% for event in events %}
-                    {% if not event.is_past_due %}
-                    <li><strong>{{ event.date|date:"d.m.Y" }}</strong> <a href="{{ event.act.downcast.get_absolute_url }}">{{ event.act.title }}</a></li>
-                    {% endif %}
+                        {% if not event.is_past_due %}
+                            <li data-day="{{ event.date|date:"d/m/Y" }}"><strong>{{ event.date|date:"d.m.Y" }}</strong> <a href="{{ event.act.downcast.get_absolute_url }}">{{ event.act.title }}</a></li>
+                        {% endif %}
                     {% endfor %}
                 </ul>
             </div>

@@ -21,14 +21,14 @@ from open_municipio.newscache.models import News
 from open_municipio.people.models import Institution, InstitutionCharge, Sitting, Person
 from open_municipio.taxonomy.models import Category, TaggedAct
 from open_municipio.locations.models import Location, TaggedActByLocation
-from open_municipio.monitoring.models import Monitoring
+from open_municipio.monitoring.models import Monitoring, MonitorizedItem
 
 
 #
 # Acts
 #
 
-class Act(TimeStampedModel):
+class Act(TimeStampedModel, MonitorizedItem):
     """
     This is the base class for all the different act types: it contains the common fields for
     deliberations, interrogations, interpellations, motions, agendas and emendations.
@@ -83,11 +83,7 @@ class Act(TimeStampedModel):
         if self.adj_title:
             uc = u'%s (%s)' % (uc, self.adj_title)
         return uc
-   
-    @models.permalink
-    def get_absolute_url(self):
-        return 'om_act_detail', (), {'pk': str(self.pk)}
-    
+     
     def downcast(self):
         """
         Returns the "downcasted"[*]_ version of this model instance.
@@ -150,56 +146,6 @@ class Act(TimeStampedModel):
     def locations(self):
         return self.location_set.all()
     
-    def monitorings(self, user_type=None):
-        """
-        Returns the list of monitorings for this act.
-
-        user_type can take None, "simple", "politician" and indicates whether to apply a filter
-
-        """
-        if user_type == "simple":
-            return self.monitoring_set.filter(user__userprofile__person__isnull=True)
-        elif user_type == "politician":
-            return self.monitoring_set.filter(user__userprofile__person__isnull=False)
-        else:
-            return self.monitoring_set.all()
-
-
-    @property
-    def all_monitoring_users(self):
-        # FIXME: This method should return a QuerySet for efficiency reasons
-        # (an act could be monitored by a large number of people;
-        # moreover, often we are only interested in the total number of
-        # monitoring users, so building a list in memory may result in a waste of resources).
-        return [m.user for m in self.monitorings()]
-
-    @property
-    def all_monitoring_count(self):
-        return self.monitorings().count()
-
-    @property
-    def monitoring_users(self):
-        # FIXME: This method should return a QuerySet for efficiency reasons
-        # (an act could be monitored by a large number of people;
-        # moreover, often we are only interested in the total number of
-        # monitoring users, so building a list in memory may result in a waste of resources).
-        return [m.user for m in self.monitorings(user_type='simple')]
-    @property
-    def monitoring_users_count(self):
-        return self.monitorings(user_type='simple').count()
-
-    @property
-    def monitoring_politicians(self):
-        # FIXME: This method should return a QuerySet for efficiency reasons
-        # (an act could be monitored by a large number of people;
-        # moreover, often we are only interested in the total number of
-        # monitoring users, so building a list in memory may result in a waste of resources).
-        return [m.user for m in self.monitorings(user_type='politician')]
-    @property
-    def monitoring_politicians_count(self):
-        return self.monitorings(user_type='politician').count()
-
-
     @property
     def act_descriptors(self):
         """

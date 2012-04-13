@@ -198,11 +198,21 @@ class PoliticianListView(TemplateView):
         # Call the base implementation first to get a context
         context = super(PoliticianListView, self).get_context_data(**kwargs)
 
+        # municipality access point to internal API
         context['municipality'] = municipality
 
-        all_current = InstitutionCharge.objects.current()
+        # fetch most or least
+        gov_members = municipality.gov.members
+        counselors = municipality.council.members.filter(charge_type=InstitutionCharge.COUNSELOR_CHARGE)
+        context['gov_members'] = gov_members
+        context['counselors'] = counselors
 
+        all_current = InstitutionCharge.objects.current()
         context['most_rebellious'] = all_current.order_by('-n_rebel_votations')[0:3]
         context['most_present'] = all_current.order_by('-n_present_votations')[0:3]
         context['most_absent'] = all_current.order_by('-n_absent_votations')[0:3]
         return context
+
+
+def show_mayor(request):
+    return HttpResponseRedirect( municipality.mayor.as_charge.person.get_absolute_url() )
