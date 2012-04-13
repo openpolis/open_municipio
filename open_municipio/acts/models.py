@@ -19,16 +19,16 @@ from taggit.managers import TaggableManager
 from open_municipio.newscache.models import News
 
 from open_municipio.people.models import Institution, InstitutionCharge, Sitting, Person
-from open_municipio.taxonomy.models import TaggedAct, Category, Location
-from open_municipio.monitoring.models import Monitoring
-
+from open_municipio.taxonomy.models import Category, TaggedAct
+from open_municipio.locations.models import Location, TaggedActByLocation
+from open_municipio.monitoring.models import Monitoring, MonitorizedItem
 
 
 #
 # Acts
 #
 
-class Act(TimeStampedModel):
+class Act(TimeStampedModel, MonitorizedItem):
     """
     This is the base class for all the different act types: it contains the common fields for
     deliberations, interrogations, interpellations, motions, agendas and emendations.
@@ -57,7 +57,7 @@ class Act(TimeStampedModel):
     recipient_set = models.ManyToManyField(InstitutionCharge, blank=True, null=True, related_name='received_act_set', verbose_name=_('recipients'))
     emitting_institution = models.ForeignKey(Institution, related_name='emitted_act_set', verbose_name=_('emitting institution'))
     category_set = models.ManyToManyField(Category, verbose_name=_('categories'), blank=True, null=True)
-    location_set = models.ManyToManyField(Location, verbose_name=_('locations'), blank=True, null=True)
+    location_set = models.ManyToManyField(Location, through=TaggedActByLocation, verbose_name=_('locations'), blank=True, null=True)
     status_is_final = models.BooleanField(default=False)
     is_key = models.BooleanField(default=False, help_text=_("Specify whether this act should be featured"))
 
@@ -83,11 +83,7 @@ class Act(TimeStampedModel):
         if self.adj_title:
             uc = u'%s (%s)' % (uc, self.adj_title)
         return uc
-   
-    @models.permalink
-    def get_absolute_url(self):
-        return 'om_act_detail', (), {'pk': str(self.pk)}
-    
+     
     def downcast(self):
         """
         Returns the "downcasted"[*]_ version of this model instance.
@@ -150,59 +146,11 @@ class Act(TimeStampedModel):
     def locations(self):
         return self.location_set.all()
     
-    def monitorings(self, user_type=None):
-        """
-        Returns the list of monitorings for this act.
-
-        user_type can take None, "simple", "politician" and indicates whether to apply a filter
-
-        """
-        if user_type == "simple":
-            return self.monitoring_set.filter(user__userprofile__person__isnull=True)
-        elif user_type == "politician":
-            return self.monitoring_set.filter(user__userprofile__person__isnull=False)
-        else:
-            return self.monitoring_set.all()
-
-
-    @property
-    def all_monitoring_users(self):
-        # FIXME: This method should return a QuerySet for efficiency reasons
-        # (an act could be monitored by a large number of people;
-        # moreover, often we are only interested in the total number of
-        # monitoring users, so building a list in memory may result in a waste of resources).
-        return [m.user for m in self.monitorings()]
-
-    @property
-    def all_monitoring_count(self):
-        return self.monitorings().count()
-
-    @property
-    def monitoring_users(self):
-        # FIXME: This method should return a QuerySet for efficiency reasons
-        # (an act could be monitored by a large number of people;
-        # moreover, often we are only interested in the total number of
-        # monitoring users, so building a list in memory may result in a waste of resources).
-        return [m.user for m in self.monitorings(user_type='simple')]
-    @property
-    def monitoring_users_count(self):
-        return self.monitorings(user_type='simple').count()
-
-    @property
-    def monitoring_politicians(self):
-        # FIXME: This method should return a QuerySet for efficiency reasons
-        # (an act could be monitored by a large number of people;
-        # moreover, often we are only interested in the total number of
-        # monitoring users, so building a list in memory may result in a waste of resources).
-        return [m.user for m in self.monitorings(user_type='politician')]
-    @property
-    def monitoring_politicians_count(self):
-        return self.monitorings(user_type='politician').count()
-
-
     @property
     def act_descriptors(self):
-        """Returns the queryset of all those that modified the description"""
+        """
+        Returns the queryset of all those that modified the description
+        """
         return self.actdescriptor_set.all()
 
     @property
@@ -241,9 +189,21 @@ class Act(TimeStampedModel):
 
         # fill groups with ordered transitions
         for transition in this.transition_set.all().order_by('-transition_date'):
-            groups.get(transition.final_status).append(transition)
-
+            if groups.has_key(transition.final_status):
+                groups.get(transition.final_status).append(transition)
         return groups
+
+    def is_final_status(self, status):
+        this = self.downcast()
+
+        if not hasattr(this, 'FINAL_STATUSES'):
+            return False
+
+        for final_status in this.FINAL_STATUSES:
+            if status == final_status[0]:
+                return True
+
+        return False
 
     def get_last_transition(self):
         if self.transitions:
@@ -333,12 +293,18 @@ class Deliberation(Act):
         ('GOVERNMENT', 'government', _('City Government')),
         ('MAYOR', 'mayor', _('Mayor')),
     )
+
+    FINAL_STATUSES = [
+        ('APPROVED', _('approved')),
+        ('REJECTED', _('rejected')),
+    ]
+
     STATUS = Choices(
         ('PRESENTED', 'presented', _('presented')),
         ('COMMITTEE', 'committee', _('committee')),
         ('COUNCIL', 'council', _('council')),
-        ('APPROVED', 'approved', _('approved')),
-        ('REJECTED', 'rejected', _('rejected'))
+        (FINAL_STATUSES[0][0], 'approved', FINAL_STATUSES[0][1]),
+        (FINAL_STATUSES[1][0], 'rejected', FINAL_STATUSES[1][1]),
     )
     
     status = StatusField()
@@ -365,10 +331,16 @@ class Interrogation(Act):
         ('WRITTEN', 'written', _('Written')),
         ('VERBAL', 'verbal', _('Verbal')),
     )
+
+    FINAL_STATUSES = [
+        ('ANSWERED', _('answered')),
+        ('NOTANSWERED', _('not answered')),
+    ]
+
     STATUS = Choices(
         ('PRESENTED', 'presented', _('presented')),
-        ('ANSWERED', 'answered', _('answered')),
-        ('NOTANSWERED', 'notanswered', _('not answered'))
+        (FINAL_STATUSES[0][0], 'answered', FINAL_STATUSES[0][1]),
+        (FINAL_STATUSES[1][0], 'notanswered', FINAL_STATUSES[1][1]),
     )
     
     status = StatusField()
@@ -664,8 +636,9 @@ def new_transition(**kwargs):
         if generating_item.final_status != 'PRESENTED':
             # set act's status according to transition status
             act.status = generating_item.final_status
-            if act.status in ['APPROVED', 'REJECTED']:
+            if act.is_final_status(generating_item.final_status):
                 act.status_is_final = True
+
             act.save()
 
             # generate news
@@ -683,6 +656,7 @@ def delete_transition(**kwargs):
         act = deleting_item.act.downcast()
 
         act.status = act.get_last_transition().final_status
-        if deleting_item.final_status in ['APPROVED', 'REJECTED']:
+        if act.is_final_status(deleting_item.final_status):
             act.status_is_final = False
+
         act.save()

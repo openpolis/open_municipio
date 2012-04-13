@@ -1,6 +1,6 @@
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import HttpResponseRedirect, HttpResponseBadRequest, HttpResponseNotAllowed
+from django.http import HttpResponseRedirect, HttpResponseBadRequest
 from django.views.generic import FormView
 from django.utils.decorators import method_decorator
 
@@ -26,10 +26,6 @@ class MonitoringToggleBaseView(FormView):
         # depending on client's configuration.  
         return self.request.META['HTTP_REFERER']
     
-    def get(self, *args, **kwargs):
-        msg = "This view can be accessed only via POST"
-        return HttpResponseNotAllowed(msg)
-        
 
 class MonitoringStartView(MonitoringToggleBaseView):
     """
@@ -54,7 +50,7 @@ class MonitoringStartView(MonitoringToggleBaseView):
                     object_pk=request.POST['object_pk'],
                     user=request.user)
              
-            form = MonitoringForm(request.POST, instance=monitoring)
+            form = self.form_class(request.POST, instance=monitoring)
             
             if form.is_valid():
                 return self.form_valid(form)

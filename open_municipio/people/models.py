@@ -1,6 +1,7 @@
+from django.conf import settings
+from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.db.models import permalink
-from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
 from django.template.defaultfilters import slugify
 from django.core.urlresolvers import reverse
@@ -10,17 +11,18 @@ from django.contrib.contenttypes.models import ContentType
 from model_utils import Choices
 from model_utils.managers import PassThroughManager
 
-from open_municipio.monitoring.models import Monitoring
+from open_municipio.monitoring.models import Monitoring, MonitorizedItem
 from open_municipio.newscache.models import News
 from open_municipio.people.managers import TimeFramedQuerySet
+from open_municipio.om_utils.models import SlugModel
 
-import datetime
 
 
 #
 # Persons, charges and groups
 #
-class Person(models.Model):
+
+class Person(models.Model, MonitorizedItem):
     FEMALE_SEX = 0
     MALE_SEX = 1
     SEX = Choices(
@@ -43,7 +45,7 @@ class Person(models.Model):
         verbose_name_plural = _('people')
    
     def __unicode__(self):
-        return u'%s %s' % (self.first_name, self.last_name)
+        return '%s %s' % (self.first_name, self.last_name)
 
     def save(self, *args, **kwargs):
         if self.slug is None:
@@ -52,8 +54,19 @@ class Person(models.Model):
 
     @permalink
     def get_absolute_url(self):
-        return 'om_person_detail', (), { 'slug': self.slug }
-    
+        return 'om_politician_detail', (), { 'slug': self.slug }
+
+    @property
+    def is_om_user(self):
+        """
+        check whether the person is a registered om user
+        """
+        try:
+            prof = self.userprofile
+            return True
+        except ObjectDoesNotExist:
+            return False
+
     @property
     def full_name(self):
         return "%s %s" % (self.first_name, self.last_name)
@@ -63,14 +76,21 @@ class Person(models.Model):
         """
         Returns the QuerySet of all institution charges held by this person during his/her career.
         """
-        return self.institutioncharge_set.all()
+        return self.institutioncharge_set.select_related().all()
     
     @property
     def current_institution_charges(self):
         """
-        Returns a QuerySet of institution charges currently held by this person.
+        Returns the current institution charges (no committees).
         """
-        return self.institutioncharge_set.current()
+        return self.institutioncharge_set.select_related().current().exclude(
+            institution__institution_type__in=(Institution.COMMITTEE, Institution.JOINT_COMMITTEE)
+        )
+
+    def current_committee_charges(self):
+        return self.institutioncharge_set.select_related().current().filter(
+            institution__institution_type__in=(Institution.COMMITTEE, Institution.JOINT_COMMITTEE)
+        ).order_by('-institutionresponsability__charge_type')
     
     @property
     def monitorings(self):
@@ -109,17 +129,38 @@ class Person(models.Model):
 class Resource(models.Model):
     """
     This class maps the internet resources (mail, web sites, rss, facebook, twitter, )
+    It must be subclassed, by a PersonResource, InstitutionResource or GroupResource class.
+
+    The `value` field contains the resource.
+    The `description` field may be used to specify the context.
+
+    A `PERSON` resource may be a secretary, a responsible. We're interested only in
+    her name, it must not be mapped into the system.
     """
     RES_TYPE = Choices(
         ('EMAIL', 'email', _('email')),
         ('URL', 'url', _('url')),
         ('PHONE', 'phone', _('phone')),
+        ('FAX', 'fax', _('fax')),
         ('SNAIL', 'snail', _('snail mail')),
+        ('PERSON', 'person', _('person')),
     )
-    person = models.ForeignKey('Person', verbose_name=_('person'))
-    resource_type = models.CharField(verbose_name=_('type'), max_length=5, choices=RES_TYPE)
+    resource_type = models.CharField(verbose_name=_('type'), max_length=10, choices=RES_TYPE)
     value = models.CharField(verbose_name=_('value'), max_length=64)
     description = models.CharField(verbose_name=_('description'), max_length=255, blank=True)
+
+    class Meta:
+        abstract = True
+        verbose_name = _('Resource')
+
+class PersonResource(Resource):
+    person = models.ForeignKey('Person', verbose_name=_('person'), related_name='resource_set')
+
+class InstitutionResource(Resource):
+    institution = models.ForeignKey('Institution', verbose_name=_('institution'), related_name='resource_set')
+
+class GroupResource(Resource):
+    group = models.ForeignKey('Group', verbose_name=_('group'), related_name='resource_set')
 
 
 class Charge(models.Model):
@@ -153,90 +194,205 @@ class Charge(models.Model):
     def get_absolute_url(self):
         return self.person.get_absolute_url()
 
+
+class ChargeResponsability(models.Model):
+    """
+    Describes a responsability that the  charge has
+    inside the charge's *container*. It integrates the composition relation.
+
+    For example: a counselor may be the president of the council.
+
+    This is an abstract class, that must be subclassed, in order to specify
+    the context (institution charge or group charge)
+    """
+    start_date = models.DateField(_('start date'))
+    end_date = models.DateField(_('end date'), blank=True, null=True)
+    description = models.CharField(_('description'), blank=True, max_length=255,
+                                   help_text=_('Insert an extended description of the responsability'))
+
+    objects = PassThroughManager.for_queryset_class(TimeFramedQuerySet)()
+
+    class Meta:
+        abstract = True
+
+
 class InstitutionCharge(Charge):
     """
-    This is a charge in the institution (city council, city government, mayor).
+    This is a charge in the institution (city council, city government, mayor, committee).
     """
-    MAYOR_CHARGE = 1
-    ASSESSOR_CHARGE = 2
-    COUNSELOR_CHARGE = 3
-    COUNCIL_PRES_CHARGE = 4
-    COUNCIL_VICE_CHARGE = 5
-    COMMITTEE_MEMBER_CHARGE = 6
-    CHARGE_TYPES = Choices(
-      (MAYOR_CHARGE, _('Mayor')),    
-      (ASSESSOR_CHARGE, _('Town government member')),
-      (COUNCIL_PRES_CHARGE, _('Counsil president')),
-      (COUNCIL_VICE_CHARGE, _('Counsil vice president')),
-      (COUNSELOR_CHARGE, _('Counselor')),    
-      (COMMITTEE_MEMBER_CHARGE, _('Committee member')),
-    )
-    substitutes = models.OneToOneField('InstitutionCharge', blank=True, null=True, 
-                     related_name='reverse_substitute_set', 
-                     on_delete=models.PROTECT, 
+    substitutes = models.OneToOneField('InstitutionCharge', blank=True, null=True,
+                     related_name='reverse_substitute_set',
+                     on_delete=models.PROTECT,
                      verbose_name=_('in substitution of'))
     substituted_by = models.OneToOneField('InstitutionCharge', blank=True, null=True,
-                     related_name='reverse_substituted_by_set', 
-                     on_delete=models.PROTECT, 
+                     related_name='reverse_substituted_by_set',
+                     on_delete=models.PROTECT,
                      verbose_name=_('substituted by'))
     institution = models.ForeignKey('Institution', on_delete=models.PROTECT, verbose_name=_('institution'), related_name='charge_set')
-    charge_type = models.IntegerField(_('charge type'), choices=CHARGE_TYPES)
     op_charge_id = models.IntegerField(_('openpolis institution charge ID'), blank=True, null=True)
+    original_charge = models.ForeignKey('InstitutionCharge', blank=True, null=True,
+                                           related_name='committee_charge_set',
+                                           verbose_name=_('original institution charge'))
     n_rebel_votations = models.IntegerField(default=0)
+    n_present_votations = models.IntegerField(default=0)
+    n_absent_votations = models.IntegerField(default=0)
 
     class Meta(Charge.Meta):
         db_table = u'people_institution_charge'
         verbose_name = _('institution charge')
         verbose_name_plural = _('institution charges')
-      
+
+
     def __unicode__(self):
-        # TODO: implement ``get_charge_type_display()`` method
-        return u'%s - %s dal %s' % (self.person, self.get_charge_type_display(), self.start_date.strftime('%d/%m/%Y'))
-        
+        if self.denomination:
+            return "%s - %s" % (self.person, self.denomination.encode('utf-8'))
+        else:
+            return "%s" % self.person
+
+
     # TODO: model validation: check that ``substitutes`` and ``substituted_by`` fields
     # point to ``InstitutionCharge``s of the same kind
-    
+
+    @property
+    def denomination(self):
+        if self.institution.institution_type == Institution.MAYOR:
+            return _('Mayor').translate(settings.LANGUAGE_CODE)
+        elif self.institution.institution_type == Institution.CITY_GOVERNMENT:
+            if self.responsabilities.count():
+                s = self.responsabilities[0].get_charge_type_display()
+                if self.responsabilities[0].charge_type == InstitutionResponsability.CHARGE_TYPES.firstdeputymayor:
+                    s += ", %s" % self.description
+                return s
+            else:
+                return " %s" % self.description
+        elif self.institution.institution_type == Institution.COUNCIL:
+            if self.responsabilities.count():
+                return "%s Consiglio Comunale" % self.responsabilities[0].get_charge_type_display()
+            else:
+                return _('Counselor').translate(settings.LANGUAGE_CODE)
+        elif self.institution.institution_type == Institution.COMMITTEE:
+            if self.responsabilities.count():
+                return "%s" % (self.responsabilities[0].get_charge_type_display(),)
+            else:
+                return _('Member').translate(settings.LANGUAGE_CODE)
+        else:
+            return ''
+
+    @property
+    def committee_charges(self):
+        return self.committee_charge_set.all()
+
+    @property
+    def responsabilities(self):
+        return self.institutionresponsability_set.all()
+
+
     @property
     def presented_acts(self):
         """
         The QuerySet of acts presented by this charge.
         """
         return self.presented_act_set.all()
-    
+
     @property
     def received_acts(self):
         """
         The QuerySet of acts received by this charge.
         """
         return self.received_act_set.all()
-    
+
+    @property
+    def charge_type(self):
+        """
+        Returns the basic charge type translated string, according to the institution.
+
+        For example: the council president's basic type is counselor.
+        """
+        if self.institution.institution_type == Institution.MAYOR:
+            return _('Mayor')
+        elif self.institution.institution_type == Institution.CITY_GOVERNMENT:
+            return _('City government member')
+        elif self.institution.institution_type == Institution.COUNCIL:
+            return _('Counselor')
+        elif self.institution.institution_type == Institution.COMMITTEE:
+            return _('Committee member')
+        else:
+            return 'Unknown charge type!'
+
     @property
     def council_group(self):
         """
+        DEPRECATED: use `self.council_current_groupcharge.group`
+
         Returns the city council's group this charge currently belongs to (if any).
-        
-        If the charge doesn't belong to any council's group  -- e.g. because (s)he 
-        is not a counselor, return ``None``.  
         """
-        # this property only make sense for counselors
-        if self.charge_type == InstitutionCharge.COUNSELOR_CHARGE:
-            # This query should return only one record, since a counselor 
-            # may belong to only one council group at a time.
-            # If multiple records match the query, instead, a ``MultipleObjectsReturned``
-            # exception will be raised, providing a useful integrity check for data 
-            group = Group.objects.get(groupcharge__charge__id=self.id, groupcharge__end_date__isnull=True)
-            return group
+        return self.current_groupcharge.group
+
+    @property
+    def current_groupcharge(self):
+        """
+        Returns the current group related to a council charge (end_date is null).
+        A single GroupCharge object is returned. The group may be accessed by the `.group` attribute
+
+        A Council Institution charge MUST have one group.
+        Other types of charge do not have a group, so None is returned.
+        """
+        if self.institution.institution_type == Institution.COUNCIL:
+            return GroupCharge.objects.select_related().get(charge__id=self.id, end_date__isnull=True)
         else:
             return None
 
-    def update_n_rebel_votations(self):
+    @property
+    def historical_groupcharges(self):
+        """
+        Returns the list of past groups related to a council charge (end_date is not null).
+        A list of GroupCharge objects is returned. The group may be accessed by the `.group` attribute
+        """
+        if self.institution.institution_type == Institution.COUNCIL:
+            return GroupCharge.objects.select_related().filter(charge__id=self.id, end_date__isnull=False)
+        else:
+            return []
+
+    def compute_rebellion_cache(self):
         """
         Re-compute the number of votations where the charge has vote differently from her group
         and update the n_rebel_votations counter
         """
-        self.n_rebel_votations = self.chargevote_set.filter(rebel=True).count()
+        self.n_rebel_votations = self.chargevote_set.filter(is_rebel=True).count()
         self.save()
-    
+
+    def compute_presence_cache(self):
+        """
+        Re-compute the number of votations where the charge was present/absent
+        and update the respective counters
+        """
+        from open_municipio.votations.models import ChargeVote
+         
+        absent = ChargeVote.ABSENT
+        self.n_present_votations = self.chargevote_set.exclude(vote=absent).count()
+        self.n_absent_votations = self.chargevote_set.filter(vote=absent).count()
+        self.save()
+
+
+
+class InstitutionResponsability(ChargeResponsability):
+    """
+    Responsability for institutional charges.
+    """
+    CHARGE_TYPES = Choices(
+        ('MAYOR', 'mayor', _('Mayor')),
+        ('FIRSTDEPUTYMAYOR', 'firstdeputymayor', _('First deputy mayor')),
+        ('PRESIDENT', 'president', _('President')),
+        ('VICE', 'vice', _('Vice president')),
+        ('VICEVICE', 'vicevice', _('Vice vice precident')),
+                                      )
+
+    charge = models.ForeignKey(InstitutionCharge, verbose_name=_('charge'))
+    charge_type = models.CharField(_('charge type'), max_length=16, choices=CHARGE_TYPES)
+    class Meta:
+        verbose_name = _('institutional responsability')
+        verbose_name_plural = _('institutional responsabilities')
+
 
 class CompanyCharge(Charge):
     """
@@ -296,37 +452,95 @@ class Group(models.Model):
     """
     name = models.CharField(max_length=100)
     acronym = models.CharField(blank=True, max_length=16)
-    counselor_set = models.ManyToManyField('InstitutionCharge', through='GroupCharge')
-    
+    charge_set = models.ManyToManyField('InstitutionCharge', through='GroupCharge')
+
     class Meta:
         verbose_name = _('group')
         verbose_name_plural = _('groups')
-    
+
     def __unicode__(self):
         return u'%s (%s)' % (self.name, self.acronym)
-        
+
     @property
-    def counselors(self):
+    def leader(self):
         """
-        Return a QuerySet containing the counselors (as charges) currently
-        belonging to this group.
+        The current leader of the Group as GroupResponsability.
+        None if not found.
+
+        To fetch the InstitutionCharge, .groupcharge.charge.
         """
-        now = datetime.datetime.now()
-        # filter out non-current ``GroupCharges`` records
-        current_Q = Q(groupcharge__start_date__lte=now) & (Q(groupcharge__end_date__gte=now) | Q(groupcharge__end_date__isnull=True)) 
-        qs = InstitutionCharge.objects.current().filter(current_Q).filter(groupcharge__group__id=self.id) 
-        return qs
-    
+        try:
+            leader = GroupResponsability.objects.select_related().get(
+                charge__group=self,
+                charge_type=GroupResponsability.CHARGE_TYPES.leader
+            )
+            return leader
+        except ObjectDoesNotExist:
+            return None
+
+    @property
+    def deputy(self):
+        """
+        The current deputy leader of the Group as GroupResponsability.
+        None if not found.
+
+        To fetch the InstitutionCharge, .groupcharge.charge.
+        """
+        try:
+            deputy = GroupResponsability.objects.select_related().get(
+                charge__group=self,
+                charge_type=GroupResponsability.CHARGE_TYPES.deputy
+            )
+            return deputy
+        except ObjectDoesNotExist:
+            return None
+
+    @property
+    def members(self):
+        """
+        Current members of the group, as institution charges, leader and
+        council president and vice presidents **excluded**.
+        """
+        return self.charges.select_related().exclude(
+            groupcharge__groupresponsability__charge_type__in=(
+                GroupResponsability.CHARGE_TYPES.leader,
+                GroupResponsability.CHARGE_TYPES.deputy
+                ),
+            groupcharge__groupresponsability__end_date__isnull=True
+        ).exclude(
+            groupcharge__charge__institutionresponsability__charge_type__in=(
+                InstitutionResponsability.CHARGE_TYPES.president,
+                InstitutionResponsability.CHARGE_TYPES.vice
+            )
+        )
+
+    @property
+    def alpha_members(self):
+        """
+        Alphabetically sorted members
+        """
+        return self.members.order_by('person__last_name')
+
+    @property
+    def charges(self):
+        """
+        All current institution charges in the group, leader **included**
+        """
+        return self.charge_set.current()
+
     @property
     def majority_records(self):
         return self.groupismajority_set.all()
-    
+
     @property
     def is_majority_now(self):
-        # only one majority record with no ``end_date`` should exists 
+        # only one majority record with no ``end_date`` should exists
         # at a time (i.e. the current one)
         return self.majority_records.get(end_date__isnull=True).is_majority
 
+    @property
+    def resources(self):
+        return self.resource_set.all()
 
 class GroupCharge(models.Model):
     """
@@ -342,11 +556,42 @@ class GroupCharge(models.Model):
     end_reason = models.CharField(blank=True, max_length=255)
     
     objects = PassThroughManager.for_queryset_class(TimeFramedQuerySet)()    
-    
+
+    @property
+    def responsabilities(self):
+        return self.groupresponsability_set.all()
+
+    @property
+    def denomination(self):
+        if self.responsabilities.count():
+            s = "%s" % self.responsabilities[0].get_charge_type_display()
+            return s
+        else:
+            return ""
+
     class Meta:
         db_table = u'people_group_charge'
         verbose_name = _('group charge')
         verbose_name_plural = _('group charges')
+
+    def __unicode__(self):
+        if self.denomination:
+            return "%s - %s - %s" % (self.group.acronym, self.charge.person, self.denomination)
+        else:
+            return "%s - %s" % (self.group.acronym, self.charge.person)
+
+class GroupResponsability(ChargeResponsability):
+    """
+    Responsability for group charges.
+    """
+    CHARGE_TYPES = Choices(
+        ('MAYOR', 'mayor', _('Mayor')),
+        ('LEADER', 'leader', _('Group leader')),
+        ('DEPUTY', 'deputy', _('Group deputy leader')),
+    )
+    charge_type = models.CharField(_('charge type'), max_length=16, choices=CHARGE_TYPES)
+    charge = models.ForeignKey(GroupCharge, verbose_name=_('charge'))
+
 
 
 class GroupIsMajority(models.Model):
@@ -377,7 +622,7 @@ class GroupIsMajority(models.Model):
 #
 # Bodies
 #
-class Body(models.Model):
+class Body(SlugModel):
     """
     The base model for bodies. 
     
@@ -444,7 +689,75 @@ class Institution(Body):
         associated with this institution.  
         """
         return self.charge_set.current()
-    
+
+    @property
+    def firstdeputy(self):
+        """
+        The current firstdeputy mayor of the institution as InstitutionResponsability.
+        None if not found.
+
+        To access the charge: firstdeputy.charge
+        """
+        try:
+            return InstitutionResponsability.objects.select_related().get(
+                charge__institution=self,
+                charge_type=InstitutionResponsability.CHARGE_TYPES.firstdeputymayor,
+                end_date__isnull=True
+            )
+        except ObjectDoesNotExist:
+            return None
+
+    @property
+    def president(self):
+        """
+        The current president of the institution as InstitutionResponsability.
+        None if not found.
+
+        To access the charge: pres.charge
+        """
+        try:
+            pres = InstitutionResponsability.objects.select_related().get(
+                charge__institution=self,
+                charge_type=InstitutionResponsability.CHARGE_TYPES.president,
+                end_date__isnull=True
+            )
+            return pres
+        except ObjectDoesNotExist:
+            return None
+
+
+    @property
+    def vicepresidents(self):
+        """
+        The current vice presidents of the institution, as InstitutionResponsabilities
+
+        There can be more than one vicepresident.
+
+        To access the charge: vp.charge
+        """
+        return InstitutionResponsability.objects.select_related().filter(
+            charge__institution=self,
+            charge_type=InstitutionResponsability.CHARGE_TYPES.vice,
+            end_date__isnull=True
+        )
+
+    @property
+    def members(self):
+        """
+        Members of the institution, as charges.
+        Current mayor, first deputy, president and vice presidents **excluded**.
+        """
+        return self.charges.exclude(
+            institutionresponsability__charge_type__in=(
+                InstitutionResponsability.CHARGE_TYPES.mayor,
+                InstitutionResponsability.CHARGE_TYPES.firstdeputymayor,
+                InstitutionResponsability.CHARGE_TYPES.president,
+                InstitutionResponsability.CHARGE_TYPES.vice,
+                ),
+            institutionresponsability__end_date__isnull=True
+        ).select_related()
+
+
     @property
     def emitted_acts(self):
         """
@@ -460,7 +773,11 @@ class Institution(Body):
         """
         # NOTE: See also Django bug #14891
         return self.emitted_act_set.all().select_subclasses()
-    
+
+    @property
+    def resources(self):
+        return self.resource_set.all()
+
     
 
 class Company(Body):
@@ -535,14 +852,14 @@ class Mayor(object):
         """
         A municipality mayor, as an *institution*.
         """
-        return Institution.objects.get(institution_type=Institution.MAYOR)
+        return Institution.objects.select_related().get(institution_type=Institution.MAYOR)
     
     @property
     def as_charge(self):
         """
         A municipality mayor, as a *charge*.
         """
-        return self.as_institution.charges[0]
+        return InstitutionCharge.objects.select_related().get(institution__institution_type=Institution.MAYOR)
     
     @property
     def acts(self):
@@ -564,12 +881,39 @@ class CityCouncil(object):
         return Institution.objects.get(institution_type=Institution.COUNCIL)
     
     @property
+    def charges(self):
+        """
+        All current members of the municipality council (aka *counselors*), as charges.
+        President and vice-presidents **included**.
+        """
+        return self.as_institution.charges.select_related()
+
+    @property
+    def president(self):
+        """
+        The current president of the city council as InstitutionResponsability
+        None if not found.
+        """
+        return  self.as_institution.president
+
+
+    @property
+    def vicepresidents(self):
+        """
+        The current vice presidents of the city council, as InstitutionResponsabilities
+
+        There can be more than one vicepresident
+        """
+        return self.as_institution.vicepresidents.select_related()
+
+    @property
     def members(self):
         """
-        Members of a municipality council (aka *counselors*), as charges.
+        Members of the municipality council (aka *counselors*), as charges.
+        Current president and vice presidents **excluded**.
         """
-        return self.as_institution.charges
-    
+        return self.as_institution.members.select_related()
+
     @property
     def majority_members(self):
         """
@@ -597,14 +941,14 @@ class CityCouncil(object):
         """
         Groups of counselors within of a municipality council.
         """
-        return Group.objects.all()
+        return Group.objects.select_related().all()
     
     @property
     def majority_groups(self):
         """
         Counselors' groups belonging to majority.
         """
-        qs = Group.objects.filter(groupismajority__end_date__isnull=True).filter(groupismajority__is_majority=True)
+        qs = Group.objects.select_related().filter(groupismajority__end_date__isnull=True).filter(groupismajority__is_majority=True)
         return qs
     
     @property
@@ -612,9 +956,9 @@ class CityCouncil(object):
         """
         Counselors' groups belonging to minority.
         """
-        qs = Group.objects.filter(groupismajority__end_date__isnull=True).filter(groupismajority__is_majority=False)
+        qs = Group.objects.select_related().filter(groupismajority__end_date__isnull=True).filter(groupismajority__is_majority=False)
         return qs
-    
+
     @property
     def acts(self):
         """
@@ -623,7 +967,7 @@ class CityCouncil(object):
         Note that the objects comprising the resulting QuerySet aren't generic ``Act`` instances,
         but instances of specific ``Act`` subclasses (i.e. ``Deliberation``, ``Motion``, etc.).
         """
-        return self.as_institution.emitted_acts
+        return self.as_institution.select_related().emitted_acts
     
     @property
     def deliberations(self):
@@ -631,7 +975,7 @@ class CityCouncil(object):
         The QuerySet of all deliberations emitted by the City Council.
         """
         from open_municipio.acts.models import Deliberation
-        return Deliberation.objects.filter(emitting_institution=self.as_institution)
+        return Deliberation.objects.select_related().filter(emitting_institution=self.as_institution)
     
     @property
     def interrogations(self):
@@ -639,7 +983,7 @@ class CityCouncil(object):
         The QuerySet of all interrogations emitted by the City Council.
         """
         from open_municipio.acts.models import Interrogation
-        return Interrogation.objects.filter(emitting_institution=self.as_institution)
+        return Interrogation.objects.select_related().filter(emitting_institution=self.as_institution)
     
     @property
     def interpellations(self):
@@ -647,7 +991,7 @@ class CityCouncil(object):
         The QuerySet of all interpellations emitted by the City Council.
         """
         from open_municipio.acts.models import Interpellation
-        return Interpellation.objects.filter(emitting_institution=self.as_institution)
+        return Interpellation.objects.select_related().filter(emitting_institution=self.as_institution)
             
     @property
     def motions(self):
@@ -655,7 +999,7 @@ class CityCouncil(object):
         The QuerySet of all motions emitted by the City Council.
         """
         from open_municipio.acts.models import Motion
-        return Motion.objects.filter(emitting_institution=self.as_institution)
+        return Motion.objects.select_related().filter(emitting_institution=self.as_institution)
     
     @property
     def agendas(self):
@@ -663,7 +1007,7 @@ class CityCouncil(object):
         The QuerySet of all agendas emitted by the City Council.
         """
         from open_municipio.acts.models import Agenda
-        return Agenda.objects.filter(emitting_institution=self.as_institution)
+        return Agenda.objects.select_related().filter(emitting_institution=self.as_institution)
 
 
 class CityGovernment(object):
@@ -675,11 +1019,25 @@ class CityGovernment(object):
         return Institution.objects.get(institution_type=Institution.CITY_GOVERNMENT)
     
     @property
+    def charges(self):
+        """
+        Members of a municipality government (mayor and first deputy included), as charges.
+        """
+        return self.as_institution.charges.select_related()
+
+    @property
+    def firstdeputy(self):
+        """
+        Returns the first deputy mayor, if existing, None if not existing
+        """
+        return  self.as_institution.firstdeputy
+
+    @property
     def members(self):
         """
-        Members of a municipality government (aka *assessors*), as charges.
+        Members of a municipality government (mayor and first deputy excluded), as charges.
         """
-        return self.as_institution.charges
+        return self.as_institution.members.select_related()
 
     @property
     def acts(self):
@@ -697,7 +1055,7 @@ class CityGovernment(object):
         The QuerySet of all deliberations emitted by the City Government.
         """
         from open_municipio.acts.models import Deliberation
-        return Deliberation.objects.filter(emitting_institution=self.as_institution)
+        return Deliberation.objects.select_related().filter(emitting_institution=self.as_institution)
     
     @property
     def interrogations(self):
@@ -705,7 +1063,7 @@ class CityGovernment(object):
         The QuerySet of all interrogations emitted by the City Government.
         """
         from open_municipio.acts.models import Interrogation
-        return Interrogation.objects.filter(emitting_institution=self.as_institution)
+        return Interrogation.objects.select_related().filter(emitting_institution=self.as_institution)
     
     @property
     def interpellations(self):
@@ -713,7 +1071,7 @@ class CityGovernment(object):
         The QuerySet of all interpellations emitted by the City Government.
         """
         from open_municipio.acts.models import Interpellation
-        return Interpellation.objects.filter(emitting_institution=self.as_institution)
+        return Interpellation.objects.select_related().filter(emitting_institution=self.as_institution)
             
     @property
     def motions(self):
@@ -721,7 +1079,7 @@ class CityGovernment(object):
         The QuerySet of all motions emitted by the City Government.
         """
         from open_municipio.acts.models import Motion
-        return Motion.objects.filter(emitting_institution=self.as_institution)
+        return Motion.objects.select_related().filter(emitting_institution=self.as_institution)
     
     @property
     def agendas(self):
@@ -729,18 +1087,20 @@ class CityGovernment(object):
         The QuerySet of all agendas emitted by the City Government.
         """
         from open_municipio.acts.models import Agenda
-        return Agenda.objects.filter(emitting_institution=self.as_institution)
+        return Agenda.objects.select_related().filter(emitting_institution=self.as_institution)
 
 
 class Committees(object):
-    @property
     def as_institution(self):
         """
         Municipality committees, as *institutions*.
         """
         # FIXME: Should we include joint committees here?
         # (Institution.JOINT_COMMITTEE)
-        return Institution.objects.filter(institution_type=Institution.COMMITTEE)
+        return Institution.objects.select_related().filter(
+            institution_type__in=(Institution.COMMITTEE, Institution.JOINT_COMMITTEE)
+        )
+
 
 
 class Municipality(object):

@@ -1,18 +1,27 @@
-from django.template.context import RequestContext
-from os import sys
-
-from django.http import Http404, HttpResponseRedirect
-from django.views.generic import TemplateView, DetailView
+from django.http import Http404
+from django.views.generic import TemplateView, DetailView, ListView, RedirectView
 from django.core.exceptions import ObjectDoesNotExist
-from django.shortcuts import render, render_to_response
 
-from open_municipio.people.models import Institution, InstitutionCharge, Person, municipality
+from open_municipio.people.models import Institution, InstitutionCharge, Person, municipality, InstitutionResponsability, Resource
 from open_municipio.monitoring.forms import MonitoringForm
 from open_municipio.acts.models import Act, Deliberation, Interrogation, Interpellation, Motion, Agenda
 from open_municipio.events.models import Event
 
+from os import sys
 
-class CouncilView(TemplateView):
+
+
+class InstitutionListView(ListView):
+    model = Institution
+    template_name = 'people/institution_list.html'
+    
+    
+class MayorDetailView(RedirectView):
+    def get_redirect_url(self, **kwargs):
+        return municipality.mayor.as_charge.person.get_absolute_url()
+
+
+class CouncilDetailView(TemplateView):
     """
     Renders the Council page
     """
@@ -20,13 +29,11 @@ class CouncilView(TemplateView):
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
-        context = super(CouncilView, self).get_context_data(**kwargs)
+        context = super(CouncilDetailView, self).get_context_data(**kwargs)
 
         mayor = municipality.mayor.as_charge
-        president = municipality.council.members.get(
-            charge_type=InstitutionCharge.COUNCIL_PRES_CHARGE)
-        vice_president = municipality.council.members.get(
-            charge_type=InstitutionCharge.COUNCIL_VICE_CHARGE)
+        president = municipality.council.president
+        vicepresidents = municipality.council.vicepresidents
         groups = municipality.council.groups
         committees = municipality.committees.as_institution
         latest_acts = Act.objects.filter(
@@ -47,7 +54,7 @@ class CouncilView(TemplateView):
         extra_context = {
             'mayor': mayor,
             'president': president,
-            'vice_president': vice_president,
+            'vicepresidents': vicepresidents,
             'groups': groups,
             'committees': committees,
             'latest_acts': latest_acts,
@@ -70,6 +77,8 @@ class CityGovernmentView(TemplateView):
         # Call the base implementation first to get a context
         context = super(CityGovernmentView, self).get_context_data(**kwargs)
 
+        mayor = municipality.mayor.as_charge
+        firstdeputy = municipality.gov.firstdeputy.charge
         citygov = municipality.gov
         latest_acts = Act.objects.filter(
             emitting_institution__institution_type=Institution.CITY_GOVERNMENT
@@ -87,6 +96,8 @@ class CityGovernmentView(TemplateView):
                 ).count()
             
         extra_context = {
+            'mayor': mayor,
+            'firstdeputy': firstdeputy,
             'citygov': citygov,
             'latest_acts': latest_acts,
             'num_acts': num_acts,
@@ -115,51 +126,64 @@ class CommitteeDetailView(DetailView):
         if self.object.institution_type != Institution.COMMITTEE:
             raise Http404
 
-        committee_list = Institution.objects.filter(institution_type=Institution.COMMITTEE)
+        committee_list = municipality.committees.as_institution()
 
-        # Under the hood, we make use of a custom manager here, so
-        # that *only* current institution charges are retrieved.
-        members = InstitutionCharge.objects.filter(
-            institution=self.object
-            ).filter(
-            charge_type=InstitutionCharge.COMMITTEE_MEMBER_CHARGE
-            )
+        # fetch charges and add group
+        president = self.object.president
+        if president:
+            president.group = InstitutionCharge.objects.select_related().\
+                                  get(pk=president.charge.original_charge_id).council_group
+        vicepresidents = self.object.vicepresidents
+        for vp in vicepresidents:
+            if vp:
+                vp.group = InstitutionCharge.objects.select_related().\
+                    get(pk=vp.charge.original_charge_id).council_group
+        members = self.object.members.order_by('person__last_name')
+        for m in members:
+            m.group = InstitutionCharge.objects.select_related().\
+                get(pk=m.original_charge_id).council_group
 
-        # FIXME: do we really want this? Is that necessary? Is there
-        # any other *smarter* way to do that?
-        for member in members:
-            try:
-                counselor_charge = member.person.current_institution_charges.filter(
-                    charge_type=InstitutionCharge.COUNSELOR_CHARGE
-                    )[0]
-            except IndexError:
-                continue
-            member.counselor_group = counselor_charge.council_group
-            
+
+        resources = self.object.resource_set.all()
+
         events = Event.future.filter(institution=self.object)
 
         extra_context = {
             'committee_list': committee_list,
             'members': members,
+            'president': president,
+            'resources': resources,
+            'vice_presidents': vicepresidents,
             'events': events,
-            }
+        }
 
         # Update context with extra values we need
         context.update(extra_context)
         return context
 
 
-class PersonDetailView(DetailView):
+class PoliticianDetailView(DetailView):
     model = Person
     context_object_name = 'person'
+    template_name='people/politician_detail.html'
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
-        context = super(PersonDetailView, self).get_context_data(**kwargs)
+        context = super(PoliticianDetailView, self).get_context_data(**kwargs)
         # Add in a QuerySet of all the institutions
         context['institution_list'] = Institution.objects.all()
 
-        print  >> sys.stderr, "context: %s" % context
+        context['resources'] = dict(
+            (r['resource_type'], {'value': r['value'], 'descritpion': r['description']})
+            for r in self.object.resource_set.all().values('resource_type', 'value', 'description')
+        )
+        context['current_charges'] = self.object.current_institution_charges.exclude(
+            institutionresponsability__charge_type__in=(
+                InstitutionResponsability.CHARGE_TYPES.mayor,
+            ),
+            institutionresponsability__end_date__isnull=True
+        )
+        context['current_committee_charges'] = self.object.current_committee_charges
 
         # is the user monitoring the act?
         context['is_user_monitoring'] = False
@@ -180,10 +204,41 @@ class PersonDetailView(DetailView):
         return context
 
 
-def person_list(request):
-    return render_to_response('people/person_list.html',{
-        'municipality': municipality
-    },context_instance=RequestContext(request) )
+class PoliticianListView(TemplateView):
+    """
+    Renders the Politicians page
+    """
+    template_name = 'people/politician_list.html'
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(PoliticianListView, self).get_context_data(**kwargs)
+
+        # municipality access point to internal API
+        context['municipality'] = municipality
+
+        # fetch mayor
+        context['mayor'] = municipality.mayor.as_charge
+        # exclude mayor from gov members
+        context['gov_members'] = municipality.gov.charges.exclude(
+            institutionresponsability__charge_type__in=(
+                InstitutionResponsability.CHARGE_TYPES.mayor,
+            ),
+            institutionresponsability__end_date__isnull=True
+        ).select_related().order_by('person__last_name')
+        # exclude mayor from council members
+        counselors = context['counselors'] = municipality.council.members.exclude(
+            institutionresponsability__charge_type__in=(
+                InstitutionResponsability.CHARGE_TYPES.mayor,
+            ),
+            institutionresponsability__end_date__isnull=True
+        ).select_related().order_by('person__last_name')
+
+        # fetch most or least
+        context['most_rebellious'] = counselors.order_by('-n_rebel_votations')[0:3]
+        context['least_absent'] = counselors.order_by('n_absent_votations')[0:3]
+        context['most_absent'] = counselors.order_by('-n_absent_votations')[0:3]
+        return context
 
 
 def show_mayor(request):

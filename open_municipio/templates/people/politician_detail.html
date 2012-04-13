@@ -1,0 +1,308 @@
+{% extends "base_two_columns.html" %}
+{% load i18n %}
+
+{% block title %}| Dettaglio {{ person }}{% endblock %}
+{% block content_header %}{% trans 'politicians' %}{% endblock %}
+{% block body_class %}politician{% endblock %}
+{% block people_class %}class="active"{% endblock %}
+
+{% block head_css_includes %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/meter-bar.css" />
+{% endblock head_css_includes %}
+
+{% block content %}
+    <header class="clearfix">
+        <a href="{{ person.get_absolute_url }}" class="thumb"><img src="{{ STATIC_URL }}img/placehold/100.gif"></a>
+        <h1>{{ person }}</h1>
+        {% if person.is_om_user %}
+            <small><i class="icon-ok"></i> {{ person }} è iscritto a Open municipio</small>
+        {% endif %}
+        <ul class="unstyled">
+            {% for c in current_charges %}
+                <li><small>{{ c.denomination }} dal {{ c.start_date|date:"d.m.Y" }}</small></li>
+            {% endfor %}
+
+            {% if resources.EMAIL %}
+                <li><a href="mailto:{{ resources.EMAIL.value }}">{{ resources.EMAIL.value }}</a></li>
+            {% endif %}
+            <li>
+                {% if resources.PHONE %}
+                    T.{{ resources.PHONE.value }}
+                {% endif %}
+                {% if resources.FAX %}
+                    F.{{ resources.FAX.value }}
+                {% endif %}
+            </li>
+        </ul>
+    </header>
+
+    <section class="container-fluid">
+        <div class="row-fluid">
+            <div class="span6">
+                <ul class="data-list">
+                    <li>Lista di elezione <strong>TODO</strong></li>
+                    <li>
+                        <ul>
+                            {% for c in current_charges %}
+                                {% if c.current_groupcharge %}
+                                    <li>dal {{ c.current_groupcharge.start_date|date:"d.m.Y" }}
+                                        Gruppo <strong>{{ c.current_groupcharge.group }}</strong></li>
+                                {% endif %}
+                                {% for gc in c.historical_groupcharges %}
+                                    <li>dal {{ gc.start_date|date:"d.m.Y" }}
+                                        al {{ gc.end_date|date:"d.m.Y" }}: Gruppo {{ gc.group.acronym }}</li>
+                                {% endfor %}
+                            {% endfor %}
+
+                        </ul>
+                    </li>
+                    <li>
+                        <ul>
+                            {% for c in current_committee_charges %}
+                                <li>{{ c.denomination }} {{ c.institution }}:
+                                    <em>{{ c.institution.description }}</em></li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                    <li>
+                        <ul>
+                            <li>Vicepresidente Conorobus SpA</li>
+                            <li>Presidente Mario Rossi SpA</li>
+                            <li>(altri incarichi <i class="icon-chevron-down"></i>)</li>
+                        </ul>
+                    </li>
+                    <li>Pensione d'invalidità (TODO)</li>
+                    <li>Dichiarazione patrimoniale (TODO)<i class="icon-download-alt"></i></li>
+                </ul>
+
+            </div>
+
+            <div class="span6">
+                <dl class="data-list">
+                    <dt><i class="icon-picture">News</i></dt>
+                    <dd>(2.2.2012) <a href="#">Adesso siano i senigalliesi a reagire!</a></dd>
+                    <dd>(2.2.2012) <a href="#">Adesso siano i senigalliesi a reagire!</a></dd>
+
+                    <dt><i class="icon-retweet">Tweets</i></dt>
+                    <dd>(2.2.2012) <a href="#">Una nuova piazza Verdi a #senigallia http://bit</a></dd>
+                    <dd>(2.2.2012) <a href="#">@gbianchi ci stiamo lavorando, dovrebbe ... </a></dd>
+
+                    <dt><i class="icon-retweet">Facebook posts</i></dt>
+                    <dd>(2.2.2012) <a href="#">Una nuova piazza Verdi a #senigallia http://bit</a></dd>
+                    <dd>(2.2.2012) <a href="#">@gbianchi ci stiamo lavorando, dovrebbe ... </a></dd>
+
+                    <dt><i class="icon-retweet">Openpolitici</i></dt>
+                    <dd><a href="#">Una nuova piazza Verdi a #senigallia http://bit</a></dd>
+
+                </dl>
+
+            </div>
+        </div>
+    </section>
+
+    <hr>
+
+    <section>
+        <h2>Presenze (400 votazioni)</h2>
+
+        <div class="meter-bar float-container">
+            <div class="meter-bar-container">
+                <div class="meter-label"><strong class="green">89.60%</strong>&nbsp;(4,953)</div>
+                <label>Presenze:</label>
+                <div class="green-meter-bar">
+                    <div style="left: 79.89%;" class="meter-average"><label>valore medio: 79.89%</label>&nbsp;</div>
+                    <div style="width: 89.60%;" class="meter-value">&nbsp;</div>
+                </div>
+            </div>
+            <div class="meter-bar-container">
+                <label>Assenze:</label>
+                <div class="meter-label"><strong class="red">10.13%</strong>&nbsp;(560)</div>
+                <div class="red-meter-bar">
+                    <div style="left: 12.59%;" class="meter-average"><label>valore medio: 12.59%</label>&nbsp;</div>
+                    <div style="width: 10.13%;" class="meter-value">&nbsp;</div>
+                </div>
+            </div>
+            <div class="meter-bar-container">
+                <label>Missioni:</label>
+                <div class="meter-label"><strong class="blue">0.27%</strong>&nbsp;(15)</div>
+                <div class="blue-meter-bar">
+                    <div style="left: 7.53%;" class="meter-average"><label>valore medio: 7.53%</label>&nbsp;</div>
+                    <div style="width: 0.271345875543%;" class="meter-value">&nbsp;</div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <section>
+        <h2>Voti nelle votazioni chiave</h2>
+
+        <table class="data">
+            <thead>
+            <tr>
+                <th>Data</th>
+                <th>Atto</th>
+                <th class="text-center">Voto</th>
+            </tr>
+            </thead>
+            <tfoot>
+            <tr>
+                <td colspan="3"><a href="#"><i class="icon-play"></i> Vedi tutti i voti chiave</a></td>
+            </tr>
+            </tfoot>
+            <tbody>
+            <tr>
+                <td>oggi</td>
+                <td><a href="#"><i class="icon-star"></i> <strong>Titolo di una votazione effettuata</strong> (19374)</a></td>
+                <td class="text-center"><span class="label label-success">Approvato</span></td>
+            </tr>
+            <tr>
+                <td>ieri</td>
+                <td><a href="#"><i class="icon-star"></i> <strong>Titolo di una votazione effettuata</strong> (19374)</a></td>
+                <td class="text-center"><span class="label label-success">Approvato</span></td>
+            </tr>
+            <tr>
+                <td>25.02.2012</td>
+                <td><a href="#"><i class="icon-star"></i> <strong>Titolo di una votazione effettuata </strong> (19374)</a></td>
+                <td class="text-center"><span class="label label-success">Approvato</span></td>
+            </tr>
+            <tr>
+                <td>21.02.2012</td>
+                <td><a href="#"><i class="icon-star"></i> <strong>Titolo di una votazione effettuata</strong> (19374)</a></td>
+                <td class="text-center"><span class="label label-important">Respinto</span></td>
+            </tr>
+            <tr>
+                <td>10.02.2012</td>
+                <td><a href="#"><i class="icon-star"></i> <strong>Titolo di una votazione effettuata</strong> (19374)</a></td>
+                <td class="text-center"><span class="label label-success">Approvato</span></td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section>
+        <h2>Atti su cui lavora</h2>
+
+        <table class="data">
+            <thead>
+            <tr>
+                <th>Atto</th>
+                <th class="text-center">Stato</th>
+                <th class="text-center">Voti degli utenti</th>
+                <th class="text-center">Commenti</th>
+            </tr>
+            </thead>
+            <tfoot>
+            <tr>
+                <td colspan="4"><a href="#"><i class="icon-play"></i> Vedi tutti gli atti su cui lavora</a></td>
+            </tr>
+            </tfoot>
+            <tbody>
+            <tr>
+                <td><a href="#"><strong>Titolo di una votazione effettuata</strong> (94756)</a></td>
+                <td class="text-center"><span class="label label-success">Approvato</span></td>
+                <td class="text-center"><span class="okbox">10</span> <span class="kobox">25</span></td>
+                <td class="text-center"><a href="#"><strong>25</strong></a></td>
+            </tr>
+            <tr>
+                <td><a href="#"><strong>Titolo di una votazione effettuata</strong> (94756)</a></td>
+                <td class="text-center"><span class="label label-important">Respinta</span></td>
+                <td class="text-center"><span class="okbox">10</span> <span class="kobox">25</span></td>
+                <td class="text-center"><a href="#"><strong>25</strong></a></td>
+            </tr>
+            <tr>
+                <td><a href="#"><strong>Titolo di una votazione effettuata</strong> (94756)</a></td>
+                <td class="text-center"><span class="label">In esame</span></td>
+                <td class="text-center"><span class="okbox">10</span> <span class="kobox">25</span></td>
+                <td class="text-center"><a href="#"><strong>25</strong></a></td>
+            </tr>
+            </tbody>
+
+
+        </table>
+
+    </section>
+
+
+    <section><!-- #content -->
+
+        <h3>Incarichi Istituzionali</h3>
+        <table id="complete-chart" class="chart tablesorter">
+            <thead>
+            <tr>
+                <th>{% trans "institution" %}</th>
+                <th>{% trans "charge_type" %}</th>
+                <th>{% trans "from" %}</th>
+                <th>{% trans "to" %}</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for charge in person.institutioncharge_set.all %}
+                <tr>
+                    <td>
+                        <p class="politician-id">
+                            <a href="{{ charge.institution.get_absolute_url }}">
+                                {{ charge.institution }}
+                            </a>
+                        </p>
+                    </td>
+                    <td class="centered">{{ charge.get_charge_type_display }}</td>
+                    <td class="centered">{{ charge.start_date|date:'d/m/Y' }}</td>
+                    <td class="centered">{{ charge.end_date|date:'d/m/Y' }}</td>
+                </tr>
+            {% endfor %}
+
+            </tr>
+            </tbody>
+        </table>
+    </section><!-- end of #content -->
+
+    {% load web_services_tags %}
+    {% share person %}
+{% endblock %}
+
+{% block sidebar %}
+
+    <section><h3>Monitora</h3>
+        {% include 'monitoring/summary.html' with object=person show_politicians=0 %}
+    </section>
+
+    <section><h3>Argomenti di cui si occupa</h3>
+        <dl class="tags-cloud">
+
+            <dt><a href="#">Urbanistica</a></dt>
+            <dd><a href="#">infrastrutture</a></dd>
+            <dd><a href="#">acqua</a></dd>
+            <dd><a href="#">gas</a></dd>
+
+            <dt><a href="#">Ambiente</a></dt>
+            <dd><a href="#">casa</a></dd>
+            <dd><a href="#">ambiente</a></dd>
+            <dd><a href="#">inquinamento</a></dd>
+        </dl>
+    </section>
+
+    <section>
+        <h3>Ultime su {{ person }} <img src="{{ STATIC_URL }}img/feed-icon-14x14.png" alt="" /></h3>
+
+        <ul class="feed-list">
+            <li><a href="#">Mario Rossi ha commentato il voto</a></li>
+            <li><a href="#">Il voto è inserito nell'ordine del giorno N° 13516</a></li>
+            <li><a href="#">Barcaiuolo, Pellacani, Bellei, Morandi, Santoro (PdL) hanno presentato la mozione...</a></li>
+        </ul>
+        <p class="bg-dark">Leggi tutte <i class="icon-chevron-down"></i></p>
+    </section>
+
+    <section>
+        <h3>Ultime dalla community <img src="{{ STATIC_URL }}img/feed-icon-14x14.png" alt="" /></h3>
+
+        <ul class="feed-list">
+            <li><a href="#">Mario Rossi ha commentato il voto</a></li>
+            <li><a href="#">Il voto è inserito nell'ordine del giorno N° 13516</a></li>
+            <li><a href="#">Barcaiuolo, Pellacani, Bellei, Morandi, Santoro (PdL) hanno presentato la mozione...</a></li>
+        </ul>
+        <p class="bg-dark">Leggi tutte <i class="icon-chevron-down"></i></p>
+    </section>
+{% endblock %}

@@ -7,7 +7,7 @@ from model_utils.models import TimeStampedModel
 from model_utils.managers import QueryManager
 import sys
 
-from open_municipio.people.models import Group, InstitutionCharge, Sitting 
+from open_municipio.people.models import Group, InstitutionCharge, Sitting
 from open_municipio.acts.models import Act
 
 
@@ -34,6 +34,7 @@ class Votation(models.Model):
     charge_set = models.ManyToManyField(InstitutionCharge, through='ChargeVote')
     n_legal = models.IntegerField(blank=True, null=True)
     n_presents = models.IntegerField(default=0)
+    n_absents = models.IntegerField(default=0)
     n_yes = models.IntegerField(default=0)
     n_no = models.IntegerField(default=0)
     n_abst = models.IntegerField(default=0)
@@ -86,6 +87,55 @@ class Votation(models.Model):
             return False
         else:
             return True
+
+    def update_caches(self):
+        """
+        Computes and update caches for this votation.
+
+        Firstly, the group votes are computed and stored,
+        then the rebel votes, and presence data are cached,
+        both for the votation and the charge.
+
+        A ChargeVote must be marked as ``rebel`` when her vote is different
+        from that of her group.
+
+        The ``rebel`` field can be assigned only if the counselor is present and
+         if her group's vote is clearly defined (i.e., it is not *Not Avaliable*)
+
+        This is only valid for council votations.
+
+        After a rebel vote has been set, the following *caches* should be updated:
+
+        * Votation.n_rebels - counts the total number of rebels for that votation
+        * InstitutionCharge.n_absent_votations - total number of votations
+                                                 where charge was not present
+        * InstitutionCharge.n_present_votations - total number of votations
+                                                  where charge was present
+        * InstitutionCharge.n_rebel_votations - total number of votations
+                                                where charge's vote was *rebel*
+
+        An absence MUST be explicitly set as a vote type (ChargeVote.ABSENT)
+        """
+
+        # computes and caches group votes
+        self.compute_group_votes()
+
+        # compute rebel votes and presence caches
+        for vc in self.charge_votes:
+            charge_vote = vc.vote
+            group_vote = vc.charge.current_groupcharge.group.groupvote_set.get(votation=self).vote
+            if charge_vote != group_vote:
+                vc.is_rebel = True
+                vc.save()
+
+            # compute new cache for the single charge
+            vc.charge.compute_rebellion_cache()
+            vc.charge.compute_presence_cache()
+
+        self.n_rebels = self.chargevote_set.filter(is_rebel=True).count()
+        self.save()
+
+
 
     def compute_group_votes(self):
         """
@@ -153,46 +203,6 @@ class Votation(models.Model):
                 gv.save()
 
 
-
-
-
-
-    def compute_rebel_votes(self):
-        """
-        A ChargeVote must be marked as ``rebel`` when her vote is different
-        from that of her group.
-
-        The ``rebel`` field can be assigned only if the counselor is present and
-         if her group's vote is clearly defined (i.e., it is not *Not Avaliable*)
-
-        This is only valid for council votations.
-
-        After a rebel vote has been set, the following *caches* should be updated:
-
-        * Votation.n_rebels - counts the total number of rebels for that votation
-        * InstitutionCharge.n_rebel_votations - counts the total number of votations
-          where charge's vote was *rebel*
-        """
-        for v in self.charge_votes:
-            charge_vote = v.vote
-            group_vote = v.charge.council_group.groupvote_set.get(votation=self).vote
-            if charge_vote != group_vote:
-                v.rebel = True
-                v.save()
-
-                # upgrade charge cache
-                v.charge.update_n_rebel_votations()
-
-        self.update_n_rebels()
-
-    def update_n_rebels(self):
-        """
-        Re-compute the number of rebel votes for this votation and update the n_rebels counter
-        """
-        self.n_rebels = self.chargevote_set.filter(rebel=True).count()
-        self.save()
-
-
 class GroupVote(TimeStampedModel):
     """
     WRITEME
@@ -254,7 +264,7 @@ class ChargeVote(TimeStampedModel):
     votation = models.ForeignKey(Votation)
     vote = models.IntegerField(choices=VOTES)
     charge = models.ForeignKey(InstitutionCharge)
-    rebel = models.BooleanField(default=False)
+    is_rebel = models.BooleanField(default=False)
     
     class Meta:
         db_table = u'votations_charge_vote'    

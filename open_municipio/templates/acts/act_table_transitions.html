@@ -20,22 +20,35 @@
         </tr>
     </thead>
 
-    {% if perms.acts.can_transition and not act.status_is_final %}
+    {% if perms.acts.change_transition and not act.status_is_final %}
     <tfoot>
         <tr>
             <td></td>
             {% if transition_groups|length_is:"5" %}
             <td>{% if act.status != 'COMMITTEE' %}
-                <a href="#transaction_form_committee" class="transaction_edit btn btn-mini"><i class="icon-edit"></i></a>
+                <a href="#transaction_form_committee" class="transaction_edit btn btn-mini"><i class="icon-edit"></i> Imposta in Commissione</a>
                 <div class="modal hide" id="transaction_form_committee">
-                    <form action="{% url om_act_transition_add act.id %}" method="POST">
+                    <form action="{% url om_act_transition_add act.id %}" class="form-horizontal" method="post">
                         {% csrf_token %}
                         <div class="modal-header">
                             <a class="close" data-dismiss="modal">×</a>
                             <h3>Aggiungi transizione in Commissione</h3>
                         </div>
                         <div class="modal-body">
-                            {{ transition_to_committee_form.as_p }}
+                            {% with transition_to_committee_form as form %}
+                                {% for field in form.visible_fields %}
+                                    <div class="control-group">
+                                        <label class="control-label" for="{{ field.auto_id }}">{{ field.label }}</label>
+                                        <div class="controls">
+                                            {{ field }}
+                                            {% if field.help_text %}<p class="help-block">{{ field.help_text }}</p>{% endif %}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                                {% for hidden in form.hidden_fields %}
+                                    {{ hidden }}
+                                {% endfor %}
+                            {% endwith %}
                         </div>
                         <div class="modal-footer">
                             <input type="button" value="Chiudi" data-dismiss="modal" class="btn">
@@ -43,18 +56,32 @@
                         </div>
                     </form>
                 </div>
-                {% endif %}</td>
+                {% endif %}
+            </td>
             <td>{% if act.status != 'COUNCIL' %}
-                <a href="#transaction_form_council" class="transaction_edit btn btn-mini"><i class="icon-edit"></i></a>
+                <a href="#transaction_form_council" class="transaction_edit btn btn-mini"><i class="icon-edit"></i> Imposta in Consiglio</a>
                 <div class="modal hide" id="transaction_form_council">
-                    <form action="{% url om_act_transition_add act.id  %}" method="POST">
+                    <form action="{% url om_act_transition_add act.id  %}" class="form-horizontal" method="post">
                         {% csrf_token %}
                         <div class="modal-header">
                             <a class="close" data-dismiss="modal">×</a>
                             <h3>Aggiungi transizione in Consiglio</h3>
                         </div>
                         <div class="modal-body">
-                            {{ transition_to_council_form.as_p }}
+                            {% with transition_to_council_form as form %}
+                                {% for field in form.visible_fields %}
+                                    <div class="control-group">
+                                        <label class="control-label" for="{{ field.auto_id }}">{{ field.label }}</label>
+                                        <div class="controls">
+                                            {{ field }}
+                                            {% if field.help_text %}<p class="help-block">{{ field.help_text }}</p>{% endif %}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                                {% for hidden in form.hidden_fields %}
+                                    {{ hidden }}
+                                {% endfor %}
+                            {% endwith %}
                         </div>
                         <div class="modal-footer">
                             <input type="button" value="Chiudi" data-dismiss="modal" class="btn">
@@ -62,19 +89,33 @@
                         </div>
                     </form>
                 </div>
-                {% endif %}</td>
+                {% endif %}
+            </td>
             {% endif %}
             <td>
-                <a href="#transaction_form_final" class="transaction_edit btn btn-mini"><i class="icon-edit"></i></a>
+                <a href="#transaction_form_final" class="transaction_edit btn btn-mini"><i class="icon-edit"></i> Chiusura atto</a>
                 <div class="modal hide" id="transaction_form_final">
-                    <form action="{% url om_act_transition_add act.id %}" method="POST">
+                    <form action="{% url om_act_transition_add act.id %}" class="form-horizontal" method="post">
                         {% csrf_token %}
                         <div class="modal-header">
                             <a class="close" data-dismiss="modal">×</a>
                             <h3>Transizione finale</h3>
                         </div>
                         <div class="modal-body">
-                            {{ transition_to_final_form.as_p }}
+                            {% with transition_to_final_form as form %}
+                                {% for field in form.visible_fields %}
+                                    <div class="control-group">
+                                        <label class="control-label" for="{{ field.auto_id }}">{{ field.label }}</label>
+                                        <div class="controls">
+                                            {{ field }}
+                                            {% if field.help_text %}<p class="help-block">{{ field.help_text }}</p>{% endif %}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                                {% for hidden in form.hidden_fields %}
+                                    {{ hidden }}
+                                {% endfor %}
+                            {% endwith %}
                         </div>
                         <div class="modal-footer">
                             <input type="button" value="Chiudi" data-dismiss="modal" class="btn">
@@ -146,19 +187,21 @@
 </table>
 
 <script type="text/javascript">
-    include(["{{ STATIC_URL }}js/bootstrap-modal.js"], function() {
-        // on scripts loaded...
+    include(["js/bootstrap-modal.js","js/jquery-ui-1.8.18.custom.min.js"], function() {
+
         $('a.transaction_edit').each(function() {
             var link = $(this);
             link.click(function(e) {
                 e.preventDefault();
                 $(link.attr('href')).modal();
             });
+        });
 
-            /*link.parent().hover(
-                    function() { link.fadeIn(); },
-                    function() { link.fadeOut(); }
-            );*/
+        include(["js/jquery-ui.calendar.js"], function() {
+            // on scripts loaded...
+            $('.datepicker').each(function(){
+                $('#'+$(this).prop('id')).datepicker();
+            });
         });
     });
 </script>

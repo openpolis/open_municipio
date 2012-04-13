@@ -38,31 +38,27 @@ em {
     {% if n_results %}
 
         {% if page.has_previous or page.has_next %}
-
             <div class="pagination pagination-right">
                 <ul>
                     {% if page.has_previous %}
                         <li><a href="{{ base_url }}&page={{ page.previous_page_number }}">&larr;</a></li>
+                    {% else %}
+                        <li class="disabled"><span>&larr;</span></li>
                     {% endif %}
 
                     {% for p in paginator.page_range %}
-                    <li{% if p == page.number %} class="active"{% endif %}>
-                        <a href="{{ base_url }}&page={{ p }}">{{ p }}</a>
-                    </li>
+                        <li{% if p == page.number %} class="active"{% endif %}>
+                            <a href="{{ base_url }}&page={{ p }}">{{ p }}</a>
+                        </li>
                     {% endfor %}
 
                     {% if page.has_next %}
                         <li><a href="{{ base_url }}&page={{ page.next_page_number }}">&rarr;</a></li>
+                    {% else %}
+                        <li class="disabled"><span>&rarr;</span></li>
                     {% endif %}
                 </ul>
             </div>
-            {% comment %}
-            <div style="float:right">
-                {% if page.has_previous %}<a href="?q={{ query }}&page={{ page.previous_page_number }}">{% endif %}&laquo; Precedente{% if page.has_previous %}</a>{% endif %}
-                | pagina {{ page.number }} di {{ page.paginator.num_pages }} |
-                {% if page.has_next %}<a href="?q={{ query }}&page={{ page.next_page_number }}">{% endif %}Successiva &raquo;{% if page.has_next %}</a>{% endif %}
-            </div>
-            {% endcomment %}
         {% endif %}
 
         <section>
@@ -72,7 +68,7 @@ em {
                 <tbody>
                 {% for result in page.object_list %}
                     <tr>
-                        <td>{{ obj.presentation_date}}</td>
+                        <td>{{ result.pub_date}}</td>
                         <td>
                             <span class="label">{{ result.act_type }}</span>
                             <a href="{{ result.url }}">{{ result.title }}</a><br/>
@@ -83,7 +79,6 @@ em {
                             {% if result.tags %}
                                 <strong>Tag</strong>: {{ result.tags|join:", " }}<br/>
                             {% endif %}
-                            <strong>Pubblicazione:</strong>{{ result.pub_date }}<br/>
                             <strong>Score:</strong> {{ result.score }}
                         </td>
                     </tr>
@@ -99,6 +94,8 @@ em {
                 <ul>
                     {% if page.has_previous %}
                         <li><a href="{{ base_url }}&page={{ page.previous_page_number }}">&larr;</a></li>
+                    {% else %}
+                        <li class="disabled"><span>&larr;</span></li>
                     {% endif %}
 
                     {% for p in paginator.page_range %}
@@ -109,6 +106,8 @@ em {
 
                     {% if page.has_next %}
                         <li><a href="{{ base_url }}&page={{ page.next_page_number }}">&rarr;</a></li>
+                    {% else %}
+                        <li class="disabled"><span>&rarr;</span></li>
                     {% endif %}
                 </ul>
             </div>
@@ -171,6 +170,22 @@ em {
                 {% endif %}
             </dl>
             <dl>
+                {% if facets.fields.organ and not facets.fields.organ.is_field_selected %}
+                    <dt>Organo</dt>
+                    {# Provide both cases (true, false) #}
+                    {% for t in facets.fields.organ.counts %}
+                        {% if t.1 %}
+                            <dd>
+                                {% if not t.2 %}
+                                    <a href="{{ base_url }}&selected_facets=organ:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
+                                {% endif %}
+                            </dd>
+                        {%  endif %}
+                    {% endfor %}
+                {% endif %}
+            </dl>
+
+            <dl>
                 {% if facets.fields.categories %}
                     <dt>Categorie</dt>
                     {# Provide only the top 5 categories #}
@@ -197,27 +212,27 @@ em {
                 {% endif %}
             </dl>
             <dl>
-                {% if not facet_queries_pubdate.is_selected %}
+                {% if not facet_queries_date.is_selected %}
                     <dt>Data di pubblicazione</dt>
-                    {% if facet_queries_pubdate.threedays.count %}
+                    {% if facet_queries_date.threedays.count %}
                         <dd>
-                            <a href="{{ base_url }}&selected_facets={{ facet_queries_pubdate.threedays.key }}">
+                            <a href="{{ base_url }}&selected_facets={{ facet_queries_date.threedays.key }}">
                                 ultimi tre giorni
-                            </a> ({{ facet_queries_pubdate.threedays.count }})
+                            </a> ({{ facet_queries_date.threedays.count }})
                         </dd>
                     {% endif %}
-                    {% if facet_queries_pubdate.onemonth.count %}
+                    {% if facet_queries_date.onemonth.count %}
                         <dd>
-                            <a href="{{ base_url }}&selected_facets={{ facet_queries_pubdate.onemonth.key }}">
+                            <a href="{{ base_url }}&selected_facets={{ facet_queries_date.onemonth.key }}">
                                 ultimo mese
-                            </a> ({{ facet_queries_pubdate.onemonth.count }})
+                            </a> ({{ facet_queries_date.onemonth.count }})
                         </dd>
                     {% endif %}
-                    {% if facet_queries_pubdate.oneyear.count %}
+                    {% if facet_queries_date.oneyear.count %}
                         <dd>
-                            <a href="{{ base_url }}&selected_facets={{ facet_queries_pubdate.oneyear.key }}">
+                            <a href="{{ base_url }}&selected_facets={{ facet_queries_date.oneyear.key }}">
                                 ultimo anno
-                            </a> ({{ facet_queries_pubdate.oneyear.count }})
+                            </a> ({{ facet_queries_date.oneyear.count }})
                         </dd>
                     {% endif %}
                 {% endif %}

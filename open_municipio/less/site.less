@@ -18,13 +18,18 @@
 
 address { font-size: 12px; line-height: 14px; }
 
+.two_columns_background(@percent:67%, @leftcolor:transparent, @rightcolor:#f6f4f2)
+{
+    background-image: -webkit-gradient(linear,left top,right top,color-stop(0, @leftcolor),color-stop(@percent, @leftcolor),color-stop(@percent, @rightcolor),color-stop(100%, @rightcolor));
+    background-image: -webkit-linear-gradient(left,@leftcolor,@leftcolor @percent,@rightcolor @percent,@rightcolor 100%);
+    background-image: -moz-linear-gradient(left, @leftcolor, @leftcolor @percent, @rightcolor @percent, @rightcolor 100% );
+    background-image: -ms-linear-gradient(left,@leftcolor, @leftcolor @percent, @rightcolor @percent, @rightcolor 100%);
+    background-image: -o-linear-gradient( left, @leftcolor, @leftcolor @percent, @rightcolor @percent, @rightcolor 100% );
+}
+
 #main.two_columns {
     padding-top: 15px;
-    background-image: -webkit-gradient(linear,left top,right top,color-stop(0, transparent),color-stop(67%, transparent),color-stop(67%, #f6f4f2),color-stop(100%, #f6f4f2));
-    background-image: -webkit-linear-gradient(left,transparent,transparent 67%,#f6f4f2 67%,#f6f4f2 100%);
-    background-image: -moz-linear-gradient(left, transparent, transparent 67%, #f6f4f2 67%, #f6f4f2 100% );
-    background-image: -ms-linear-gradient(left,transparent, transparent 67%, #f6f4f2 67%, #f6f4f2 100%);
-    background-image: -o-linear-gradient( left, transparent, transparent 67%, #f6f4f2 67%, #f6f4f2 100% );
+    .two_columns_background(66%);
 }
 #content { border-bottom: 1px dashed @grayLight; padding-bottom: 10px; }
 #content > * { margin-bottom: 15px; }
@@ -72,7 +77,7 @@ body.citizen {
 }
 
 #wrapper > header > .navbar { margin-bottom: 0; }
-#area-title { margin: 30px auto; font-size: 40px; }
+#area-title { padding-top: 30px; padding-bottom: 30px; font-size: 40px; background: transparent url('../img/logo-city.png') no-repeat right center; }
 #content > hgroup {
     h1 { margin-top: 10px; margin-bottom: 10px; }
     h2 {
@@ -102,6 +107,8 @@ body.citizen {
         line-height: 30px;
         color: @grayDark;
     }
+    ul.nav > li.unpipe + li:before { content: ''; }
+    ul.nav > li + li.unpipe:before { content: ''; }
 }
 #sub-nav {
     .navbar-inner {
@@ -112,7 +119,7 @@ body.citizen {
             text-shadow: none;
             color: @grayDark;
             &:hover { background-color: transparent; text-decoration: underline; }
-            &.active { font-weight: bolder; }
+            &.active { background-color: @white; font-weight: bolder; }
         }
     }
     .pipe-separators;
@@ -158,7 +165,8 @@ dl.stats {
 .tags-cloud {
     dd, dt, li {
         .label;
-        .border-radius(5px); 
+        .border-radius(5px);
+        white-space: nowrap;
         display: inline;
         background-color: @darkBackground;
         font-size: 14px;
@@ -169,7 +177,7 @@ dl.stats {
     }
     dd, li { font-weight: normal;  }
     dt { font-size: 16px; text-transform: capitalize; }
-    li span { font-size: 12px; padding:1px 3px; .border-radius(5px); background-color: #fef9e0; }
+    li span { font-size: 12px; padding:1px 3px; .border-radius(5px); background-color: @lightBackground; color: @darkText }
     line-height: 34px;
 }
 
@@ -414,7 +422,7 @@ table#acttable {
             li:first-child { border-top: 0; }
         }
     }
-    tfoot { text-align: center; }
+    tfoot {}
     thead {
         th {
             padding: 0;
@@ -480,9 +488,21 @@ table#acttable {
     .ui-datepicker { width: auto; }
     .ui-datepicker-calendar tbody td.highlight > a { font-weight: bold; color: @linkColor; }
 }
+.calendar_events {
+    height: 230px;
+    overflow: scroll;
+}
 
 #search-form input[type="submit"] {
     margin-top: 23px;
+}
+
+/* Politician description form */
+#description_form {
+    textarea {
+        width: 100%;
+        margin-bottom: 10px;
+    }
 }
 
 /* Commenting form */
@@ -492,6 +512,10 @@ table#acttable {
     textarea { width: 90%; line-height: 13px; font-size: 13px; }
     label { font-size: 0.8em; }
     .radio-group { text-align: center; margin-top: 5px; }
+}
+
+#location-form {
+    ul { list-style: none; }
 }
 
 /* Category with a list of its tags, 3 columns */
