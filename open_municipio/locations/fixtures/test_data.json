@@ -1,0 +1,57 @@
+[
+    {
+        "pk": 1,
+        "model": "locations.location",
+        "fields": {
+            "latitude": null,
+            "address": "",
+            "name": "Scapezzano",
+            "longitude": null,
+            "slug": "scapezzano"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "locations.location",
+        "fields": {
+            "latitude": null,
+            "address": "",
+            "name": "Quartiere Saline",
+            "longitude": null,
+            "slug": "quartiere-saline"
+        }
+    },
+    {
+        "pk": 3,
+        "model": "locations.location",
+        "fields": {
+            "latitude": null,
+            "address": "",
+            "name": "Borgo Bicchia",
+            "longitude": null,
+            "slug": "borgo-bicchia"
+        }
+    },
+    {
+        "pk": 4,
+        "model": "locations.location",
+        "fields": {
+            "latitude": null,
+            "address": "",
+            "name": "Borgo Ribeca",
+            "longitude": null,
+            "slug": "borgo-ribeca"
+        }
+    },
+    {
+        "pk": 5,
+        "model": "locations.location",
+        "fields": {
+            "latitude": null,
+            "address": "",
+            "name": "Borgo Coltellone",
+            "longitude": null,
+            "slug": "borgo-coltellone"
+        }
+    }
+]

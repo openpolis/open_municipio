@@ -5218,5 +5218,5240 @@
             "related_content_type": 24, 
             "related_object_pk": 28
         }
+    }, 
+    {
+        "pk": 349, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 1, 
+            "created": "2012-04-12 09:08:32", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-12 09:08:32", 
+            "priority": 1, 
+            "generating_content_type": 23, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 1
+        }
+    }, 
+    {
+        "pk": 350, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 1, 
+            "created": "2012-04-12 19:13:19", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-12 19:13:19", 
+            "priority": 1, 
+            "generating_content_type": 23, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 1
+        }
+    }, 
+    {
+        "pk": 351, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 1, 
+            "created": "2012-04-12 19:13:19", 
+            "text": "Claudio Freschi - Consigliere ha presentato l'atto.", 
+            "modified": "2012-04-12 19:13:19", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 1
+        }
+    }, 
+    {
+        "pk": 352, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 1, 
+            "created": "2012-04-12 19:13:21", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/1/\">1 - Primis luctus nascetur ante ...</a>.", 
+            "modified": "2012-04-12 19:13:21", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 29
+        }
+    }, 
+    {
+        "pk": 353, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 2, 
+            "created": "2012-04-12 19:13:21", 
+            "text": "Chiara Franceschini - Consigliere ha presentato l'atto.", 
+            "modified": "2012-04-12 19:13:21", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 1
+        }
+    }, 
+    {
+        "pk": 354, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 2, 
+            "created": "2012-04-12 19:13:21", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/1/\">1 - Primis luctus nascetur ante ...</a>.", 
+            "modified": "2012-04-12 19:13:21", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 28
+        }
+    }, 
+    {
+        "pk": 355, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 3, 
+            "created": "2012-04-12 19:13:21", 
+            "text": "Daniele Cortolezzis - Presidente Consiglio Comunale ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:13:21", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 1
+        }
+    }, 
+    {
+        "pk": 356, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 3, 
+            "created": "2012-04-12 19:13:21", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/1/\">1 - Primis luctus nascetur ante ...</a>.", 
+            "modified": "2012-04-12 19:13:21", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 13
+        }
+    }, 
+    {
+        "pk": 357, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 4, 
+            "created": "2012-04-12 19:13:21", 
+            "text": "Alessandro Venanzi - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:13:21", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 1
+        }
+    }, 
+    {
+        "pk": 358, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 4, 
+            "created": "2012-04-12 19:13:21", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/1/\">1 - Primis luctus nascetur ante ...</a>.", 
+            "modified": "2012-04-12 19:13:21", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 51
+        }
+    }, 
+    {
+        "pk": 359, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 5, 
+            "created": "2012-04-12 19:13:21", 
+            "text": "Claudio Romano - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:13:21", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 1
+        }
+    }, 
+    {
+        "pk": 360, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 5, 
+            "created": "2012-04-12 19:13:21", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/1/\">1 - Primis luctus nascetur ante ...</a>.", 
+            "modified": "2012-04-12 19:13:21", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 47
+        }
+    }, 
+    {
+        "pk": 361, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 6, 
+            "created": "2012-04-12 19:13:21", 
+            "text": "Maria Marion - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:13:21", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 1
+        }
+    }, 
+    {
+        "pk": 362, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 6, 
+            "created": "2012-04-12 19:13:21", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/1/\">1 - Primis luctus nascetur ante ...</a>.", 
+            "modified": "2012-04-12 19:13:21", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 36
+        }
+    }, 
+    {
+        "pk": 363, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 2, 
+            "created": "2012-04-12 19:13:21", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-12 19:13:21", 
+            "priority": 1, 
+            "generating_content_type": 23, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 2
+        }
+    }, 
+    {
+        "pk": 364, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 7, 
+            "created": "2012-04-12 19:13:21", 
+            "text": "Carlo Giacomello - Consigliere ha presentato l'atto.", 
+            "modified": "2012-04-12 19:13:21", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 2
+        }
+    }, 
+    {
+        "pk": 365, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 7, 
+            "created": "2012-04-12 19:13:21", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/2/\">2 - Aliquam placerat.</a>.", 
+            "modified": "2012-04-12 19:13:21", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 31
+        }
+    }, 
+    {
+        "pk": 366, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 8, 
+            "created": "2012-04-12 19:13:21", 
+            "text": "Daniele Cortolezzis - Presidente Consiglio Comunale ha presentato l'atto.", 
+            "modified": "2012-04-12 19:13:21", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 2
+        }
+    }, 
+    {
+        "pk": 367, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 8, 
+            "created": "2012-04-12 19:13:21", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/2/\">2 - Aliquam placerat.</a>.", 
+            "modified": "2012-04-12 19:13:21", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 13
+        }
+    }, 
+    {
+        "pk": 368, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 9, 
+            "created": "2012-04-12 19:13:21", 
+            "text": "Cinzia Del Torre - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:13:21", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 2
+        }
+    }, 
+    {
+        "pk": 369, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 9, 
+            "created": "2012-04-12 19:13:21", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/2/\">2 - Aliquam placerat.</a>.", 
+            "modified": "2012-04-12 19:13:21", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 25
+        }
+    }, 
+    {
+        "pk": 370, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 10, 
+            "created": "2012-04-12 19:13:21", 
+            "text": "Antonella Nonino - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:13:21", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 2
+        }
+    }, 
+    {
+        "pk": 371, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 10, 
+            "created": "2012-04-12 19:13:22", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/2/\">2 - Aliquam placerat.</a>.", 
+            "modified": "2012-04-12 19:13:22", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 38
+        }
+    }, 
+    {
+        "pk": 372, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 11, 
+            "created": "2012-04-12 19:13:22", 
+            "text": "Claudio Freschi - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:13:22", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 2
+        }
+    }, 
+    {
+        "pk": 373, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 11, 
+            "created": "2012-04-12 19:13:22", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/2/\">2 - Aliquam placerat.</a>.", 
+            "modified": "2012-04-12 19:13:22", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 29
+        }
+    }, 
+    {
+        "pk": 374, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 3, 
+            "created": "2012-04-12 19:13:22", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-12 19:13:22", 
+            "priority": 1, 
+            "generating_content_type": 23, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 3
+        }
+    }, 
+    {
+        "pk": 375, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 12, 
+            "created": "2012-04-12 19:13:22", 
+            "text": "Michele Vicario - Consigliere ha presentato l'atto.", 
+            "modified": "2012-04-12 19:13:22", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 3
+        }
+    }, 
+    {
+        "pk": 376, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 12, 
+            "created": "2012-04-12 19:13:22", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/3/\">3 - Curae, praesent quam euismod ...</a>.", 
+            "modified": "2012-04-12 19:13:22", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 52
+        }
+    }, 
+    {
+        "pk": 377, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 13, 
+            "created": "2012-04-12 19:13:22", 
+            "text": "Claudio Romano - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:13:22", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 3
+        }
+    }, 
+    {
+        "pk": 378, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 13, 
+            "created": "2012-04-12 19:13:22", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/3/\">3 - Curae, praesent quam euismod ...</a>.", 
+            "modified": "2012-04-12 19:13:22", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 47
+        }
+    }, 
+    {
+        "pk": 379, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 4, 
+            "created": "2012-04-12 19:13:23", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-12 19:13:23", 
+            "priority": 1, 
+            "generating_content_type": 23, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 4
+        }
+    }, 
+    {
+        "pk": 380, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 14, 
+            "created": "2012-04-12 19:13:23", 
+            "text": "Franco Della Rossa - Consigliere ha presentato l'atto.", 
+            "modified": "2012-04-12 19:13:23", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 4
+        }
+    }, 
+    {
+        "pk": 381, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 14, 
+            "created": "2012-04-12 19:13:23", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/4/\">4 - Augue at aenean risus ...</a>.", 
+            "modified": "2012-04-12 19:13:23", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 26
+        }
+    }, 
+    {
+        "pk": 382, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 5, 
+            "created": "2012-04-12 19:13:24", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-12 19:13:24", 
+            "priority": 1, 
+            "generating_content_type": 23, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 5
+        }
+    }, 
+    {
+        "pk": 383, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 15, 
+            "created": "2012-04-12 19:13:25", 
+            "text": "Carlo Giacomello - Consigliere ha presentato l'atto.", 
+            "modified": "2012-04-12 19:13:25", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 5
+        }
+    }, 
+    {
+        "pk": 384, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 15, 
+            "created": "2012-04-12 19:13:25", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/5/\">5 - Condimentum aliquam per ornare ...</a>.", 
+            "modified": "2012-04-12 19:13:25", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 31
+        }
+    }, 
+    {
+        "pk": 385, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 16, 
+            "created": "2012-04-12 19:13:25", 
+            "text": "Maria Marion - Consigliere ha presentato l'atto.", 
+            "modified": "2012-04-12 19:13:25", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 5
+        }
+    }, 
+    {
+        "pk": 386, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 16, 
+            "created": "2012-04-12 19:13:25", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/5/\">5 - Condimentum aliquam per ornare ...</a>.", 
+            "modified": "2012-04-12 19:13:25", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 36
+        }
+    }, 
+    {
+        "pk": 387, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 17, 
+            "created": "2012-04-12 19:13:25", 
+            "text": "Alessandro Venanzi - Consigliere ha presentato l'atto.", 
+            "modified": "2012-04-12 19:13:25", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 5
+        }
+    }, 
+    {
+        "pk": 388, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 17, 
+            "created": "2012-04-12 19:13:25", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/5/\">5 - Condimentum aliquam per ornare ...</a>.", 
+            "modified": "2012-04-12 19:13:25", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 51
+        }
+    }, 
+    {
+        "pk": 389, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 18, 
+            "created": "2012-04-12 19:13:25", 
+            "text": "Matteo Mansi - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:13:25", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 5
+        }
+    }, 
+    {
+        "pk": 390, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 18, 
+            "created": "2012-04-12 19:13:25", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/5/\">5 - Condimentum aliquam per ornare ...</a>.", 
+            "modified": "2012-04-12 19:13:25", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 34
+        }
+    }, 
+    {
+        "pk": 391, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 19, 
+            "created": "2012-04-12 19:13:25", 
+            "text": "Mario Canciano Canciani - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:13:25", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 5
+        }
+    }, 
+    {
+        "pk": 392, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 19, 
+            "created": "2012-04-12 19:13:25", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/5/\">5 - Condimentum aliquam per ornare ...</a>.", 
+            "modified": "2012-04-12 19:13:25", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 23
+        }
+    }, 
+    {
+        "pk": 393, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 20, 
+            "created": "2012-04-12 19:13:25", 
+            "text": "Pierenrico Scalettaris - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:13:25", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 5
+        }
+    }, 
+    {
+        "pk": 394, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 20, 
+            "created": "2012-04-12 19:13:25", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/5/\">5 - Condimentum aliquam per ornare ...</a>.", 
+            "modified": "2012-04-12 19:13:25", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 48
+        }
+    }, 
+    {
+        "pk": 395, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 21, 
+            "created": "2012-04-12 19:13:25", 
+            "text": "Michele Vicario - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:13:25", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 5
+        }
+    }, 
+    {
+        "pk": 396, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 21, 
+            "created": "2012-04-12 19:13:25", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/5/\">5 - Condimentum aliquam per ornare ...</a>.", 
+            "modified": "2012-04-12 19:13:25", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 52
+        }
+    }, 
+    {
+        "pk": 397, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 6, 
+            "created": "2012-04-12 19:13:26", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-12 19:13:26", 
+            "priority": 1, 
+            "generating_content_type": 23, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 6
+        }
+    }, 
+    {
+        "pk": 398, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 22, 
+            "created": "2012-04-12 19:13:26", 
+            "text": "Franco Della Rossa - Consigliere ha presentato l'atto.", 
+            "modified": "2012-04-12 19:13:26", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 6
+        }
+    }, 
+    {
+        "pk": 399, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 22, 
+            "created": "2012-04-12 19:13:26", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/6/\">6 - Litora sociis, donec adipiscing ...</a>.", 
+            "modified": "2012-04-12 19:13:26", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 26
+        }
+    }, 
+    {
+        "pk": 400, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 23, 
+            "created": "2012-04-12 19:13:26", 
+            "text": "Maria Marion - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:13:26", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 6
+        }
+    }, 
+    {
+        "pk": 401, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 23, 
+            "created": "2012-04-12 19:13:26", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/6/\">6 - Litora sociis, donec adipiscing ...</a>.", 
+            "modified": "2012-04-12 19:13:26", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 36
+        }
+    }, 
+    {
+        "pk": 402, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 24, 
+            "created": "2012-04-12 19:13:26", 
+            "text": "Carlo Giacomello - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:13:26", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 6
+        }
+    }, 
+    {
+        "pk": 403, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 24, 
+            "created": "2012-04-12 19:13:26", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/6/\">6 - Litora sociis, donec adipiscing ...</a>.", 
+            "modified": "2012-04-12 19:13:26", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 31
+        }
+    }, 
+    {
+        "pk": 404, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 25, 
+            "created": "2012-04-12 19:13:26", 
+            "text": "Mario Canciano Canciani - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:13:26", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 6
+        }
+    }, 
+    {
+        "pk": 405, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 25, 
+            "created": "2012-04-12 19:13:26", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/6/\">6 - Litora sociis, donec adipiscing ...</a>.", 
+            "modified": "2012-04-12 19:13:26", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 23
+        }
+    }, 
+    {
+        "pk": 406, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 7, 
+            "created": "2012-04-12 19:13:27", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-12 19:13:27", 
+            "priority": 1, 
+            "generating_content_type": 23, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 7
+        }
+    }, 
+    {
+        "pk": 407, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 26, 
+            "created": "2012-04-12 19:13:28", 
+            "text": "Claudio Galluzzo - Consigliere ha presentato l'atto.", 
+            "modified": "2012-04-12 19:13:28", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 7
+        }
+    }, 
+    {
+        "pk": 408, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 26, 
+            "created": "2012-04-12 19:13:28", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/7/\">7 - Tempor non iaculis nullam ...</a>.", 
+            "modified": "2012-04-12 19:13:28", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 30
+        }
+    }, 
+    {
+        "pk": 409, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 27, 
+            "created": "2012-04-12 19:13:28", 
+            "text": "Antonella Nonino - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:13:28", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 7
+        }
+    }, 
+    {
+        "pk": 410, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 27, 
+            "created": "2012-04-12 19:13:28", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/7/\">7 - Tempor non iaculis nullam ...</a>.", 
+            "modified": "2012-04-12 19:13:28", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 38
+        }
+    }, 
+    {
+        "pk": 411, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 28, 
+            "created": "2012-04-12 19:13:28", 
+            "text": "Carlo Giacomello - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:13:28", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 7
+        }
+    }, 
+    {
+        "pk": 412, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 28, 
+            "created": "2012-04-12 19:13:28", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/7/\">7 - Tempor non iaculis nullam ...</a>.", 
+            "modified": "2012-04-12 19:13:28", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 31
+        }
+    }, 
+    {
+        "pk": 413, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 29, 
+            "created": "2012-04-12 19:13:28", 
+            "text": "Cinzia Del Torre - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:13:28", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 7
+        }
+    }, 
+    {
+        "pk": 414, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 29, 
+            "created": "2012-04-12 19:13:28", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/7/\">7 - Tempor non iaculis nullam ...</a>.", 
+            "modified": "2012-04-12 19:13:28", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 25
+        }
+    }, 
+    {
+        "pk": 415, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 8, 
+            "created": "2012-04-12 19:13:29", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-12 19:13:29", 
+            "priority": 1, 
+            "generating_content_type": 23, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 8
+        }
+    }, 
+    {
+        "pk": 416, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 30, 
+            "created": "2012-04-12 19:13:29", 
+            "text": "Franco Della Rossa - Consigliere ha presentato l'atto.", 
+            "modified": "2012-04-12 19:13:29", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 8
+        }
+    }, 
+    {
+        "pk": 417, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 30, 
+            "created": "2012-04-12 19:13:29", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/8/\">8 - Diam sodales ad, porttitor ...</a>.", 
+            "modified": "2012-04-12 19:13:29", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 26
+        }
+    }, 
+    {
+        "pk": 418, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 31, 
+            "created": "2012-04-12 19:13:29", 
+            "text": "Cinzia Del Torre - Consigliere ha presentato l'atto.", 
+            "modified": "2012-04-12 19:13:29", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 8
+        }
+    }, 
+    {
+        "pk": 419, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 31, 
+            "created": "2012-04-12 19:13:29", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/8/\">8 - Diam sodales ad, porttitor ...</a>.", 
+            "modified": "2012-04-12 19:13:29", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 25
+        }
+    }, 
+    {
+        "pk": 420, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 32, 
+            "created": "2012-04-12 19:13:29", 
+            "text": "Luciana Perissinotto - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:13:29", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 8
+        }
+    }, 
+    {
+        "pk": 421, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 32, 
+            "created": "2012-04-12 19:13:29", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/8/\">8 - Diam sodales ad, porttitor ...</a>.", 
+            "modified": "2012-04-12 19:13:29", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 40
+        }
+    }, 
+    {
+        "pk": 422, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 33, 
+            "created": "2012-04-12 19:13:29", 
+            "text": "Alessandro Venanzi - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:13:29", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 8
+        }
+    }, 
+    {
+        "pk": 423, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 33, 
+            "created": "2012-04-12 19:13:29", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/8/\">8 - Diam sodales ad, porttitor ...</a>.", 
+            "modified": "2012-04-12 19:13:29", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 51
+        }
+    }, 
+    {
+        "pk": 424, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 34, 
+            "created": "2012-04-12 19:13:29", 
+            "text": "Michele Vicario - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:13:29", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 8
+        }
+    }, 
+    {
+        "pk": 425, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 34, 
+            "created": "2012-04-12 19:13:29", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/8/\">8 - Diam sodales ad, porttitor ...</a>.", 
+            "modified": "2012-04-12 19:13:29", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 52
+        }
+    }, 
+    {
+        "pk": 426, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 35, 
+            "created": "2012-04-12 19:13:29", 
+            "text": "Chiara Franceschini - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:13:29", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 8
+        }
+    }, 
+    {
+        "pk": 427, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 35, 
+            "created": "2012-04-12 19:13:29", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/8/\">8 - Diam sodales ad, porttitor ...</a>.", 
+            "modified": "2012-04-12 19:13:29", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 28
+        }
+    }, 
+    {
+        "pk": 428, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 36, 
+            "created": "2012-04-12 19:13:29", 
+            "text": "Matteo Mansi - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:13:29", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 8
+        }
+    }, 
+    {
+        "pk": 429, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 36, 
+            "created": "2012-04-12 19:13:29", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/8/\">8 - Diam sodales ad, porttitor ...</a>.", 
+            "modified": "2012-04-12 19:13:29", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 34
+        }
+    }, 
+    {
+        "pk": 430, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 9, 
+            "created": "2012-04-12 19:13:30", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-12 19:13:30", 
+            "priority": 1, 
+            "generating_content_type": 23, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 9
+        }
+    }, 
+    {
+        "pk": 431, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 37, 
+            "created": "2012-04-12 19:13:30", 
+            "text": "Carmelo Spiga - Consigliere ha presentato l'atto.", 
+            "modified": "2012-04-12 19:13:30", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 9
+        }
+    }, 
+    {
+        "pk": 432, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 37, 
+            "created": "2012-04-12 19:13:30", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/9/\">9 - Commodo ut vitae at ...</a>.", 
+            "modified": "2012-04-12 19:13:30", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 49
+        }
+    }, 
+    {
+        "pk": 433, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 38, 
+            "created": "2012-04-12 19:13:30", 
+            "text": "Franco Della Rossa - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:13:30", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 9
+        }
+    }, 
+    {
+        "pk": 434, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 38, 
+            "created": "2012-04-12 19:13:30", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/9/\">9 - Commodo ut vitae at ...</a>.", 
+            "modified": "2012-04-12 19:13:30", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 26
+        }
+    }, 
+    {
+        "pk": 435, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 39, 
+            "created": "2012-04-12 19:13:30", 
+            "text": "Claudio Galluzzo - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:13:30", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 9
+        }
+    }, 
+    {
+        "pk": 436, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 39, 
+            "created": "2012-04-12 19:13:30", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/9/\">9 - Commodo ut vitae at ...</a>.", 
+            "modified": "2012-04-12 19:13:30", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 30
+        }
+    }, 
+    {
+        "pk": 437, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 10, 
+            "created": "2012-04-12 19:13:31", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-12 19:13:31", 
+            "priority": 1, 
+            "generating_content_type": 23, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 10
+        }
+    }, 
+    {
+        "pk": 438, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 40, 
+            "created": "2012-04-12 19:13:31", 
+            "text": "Carmelo Spiga - Consigliere ha presentato l'atto.", 
+            "modified": "2012-04-12 19:13:31", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 10
+        }
+    }, 
+    {
+        "pk": 439, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 40, 
+            "created": "2012-04-12 19:13:31", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/10/\">10 - Turpis.</a>.", 
+            "modified": "2012-04-12 19:13:31", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 49
+        }
+    }, 
+    {
+        "pk": 440, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 41, 
+            "created": "2012-04-12 19:13:31", 
+            "text": "Cinzia Del Torre - Consigliere ha presentato l'atto.", 
+            "modified": "2012-04-12 19:13:31", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 10
+        }
+    }, 
+    {
+        "pk": 441, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 41, 
+            "created": "2012-04-12 19:13:31", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/10/\">10 - Turpis.</a>.", 
+            "modified": "2012-04-12 19:13:31", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 25
+        }
+    }, 
+    {
+        "pk": 442, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 42, 
+            "created": "2012-04-12 19:13:31", 
+            "text": "Alessandro Venanzi - Consigliere ha presentato l'atto.", 
+            "modified": "2012-04-12 19:13:31", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 10
+        }
+    }, 
+    {
+        "pk": 443, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 42, 
+            "created": "2012-04-12 19:13:31", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/10/\">10 - Turpis.</a>.", 
+            "modified": "2012-04-12 19:13:31", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 51
+        }
+    }, 
+    {
+        "pk": 444, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 43, 
+            "created": "2012-04-12 19:13:31", 
+            "text": "Pierenrico Scalettaris - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:13:31", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 10
+        }
+    }, 
+    {
+        "pk": 445, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 43, 
+            "created": "2012-04-12 19:13:31", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/10/\">10 - Turpis.</a>.", 
+            "modified": "2012-04-12 19:13:31", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 48
+        }
+    }, 
+    {
+        "pk": 446, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 44, 
+            "created": "2012-04-12 19:13:31", 
+            "text": "Carlo Giacomello - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:13:31", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 10
+        }
+    }, 
+    {
+        "pk": 447, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 44, 
+            "created": "2012-04-12 19:13:31", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/10/\">10 - Turpis.</a>.", 
+            "modified": "2012-04-12 19:13:31", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 31
+        }
+    }, 
+    {
+        "pk": 448, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 11, 
+            "created": "2012-04-12 19:13:33", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-12 19:13:33", 
+            "priority": 1, 
+            "generating_content_type": 23, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 11
+        }
+    }, 
+    {
+        "pk": 449, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 45, 
+            "created": "2012-04-12 19:13:33", 
+            "text": "Daniele Cortolezzis - Presidente Consiglio Comunale ha presentato l'atto.", 
+            "modified": "2012-04-12 19:13:33", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 11
+        }
+    }, 
+    {
+        "pk": 450, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 45, 
+            "created": "2012-04-12 19:13:33", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/11/\">11 - Cras.</a>.", 
+            "modified": "2012-04-12 19:13:33", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 13
+        }
+    }, 
+    {
+        "pk": 451, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 46, 
+            "created": "2012-04-12 19:13:33", 
+            "text": "Carlo Giacomello - Consigliere ha presentato l'atto.", 
+            "modified": "2012-04-12 19:13:33", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 11
+        }
+    }, 
+    {
+        "pk": 452, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 46, 
+            "created": "2012-04-12 19:13:33", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/11/\">11 - Cras.</a>.", 
+            "modified": "2012-04-12 19:13:33", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 31
+        }
+    }, 
+    {
+        "pk": 453, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 47, 
+            "created": "2012-04-12 19:13:33", 
+            "text": "Luciana Perissinotto - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:13:33", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 11
+        }
+    }, 
+    {
+        "pk": 454, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 47, 
+            "created": "2012-04-12 19:13:33", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/11/\">11 - Cras.</a>.", 
+            "modified": "2012-04-12 19:13:33", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 40
+        }
+    }, 
+    {
+        "pk": 455, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 12, 
+            "created": "2012-04-12 19:13:33", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-12 19:13:33", 
+            "priority": 1, 
+            "generating_content_type": 23, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 12
+        }
+    }, 
+    {
+        "pk": 456, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 48, 
+            "created": "2012-04-12 19:13:34", 
+            "text": "Alessandro Venanzi - Consigliere ha presentato l'atto.", 
+            "modified": "2012-04-12 19:13:34", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 12
+        }
+    }, 
+    {
+        "pk": 457, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 48, 
+            "created": "2012-04-12 19:13:34", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/12/\">12 - Ac, sapien.</a>.", 
+            "modified": "2012-04-12 19:13:34", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 51
+        }
+    }, 
+    {
+        "pk": 458, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 49, 
+            "created": "2012-04-12 19:13:34", 
+            "text": "Antonella Nonino - Consigliere ha presentato l'atto.", 
+            "modified": "2012-04-12 19:13:34", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 12
+        }
+    }, 
+    {
+        "pk": 459, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 49, 
+            "created": "2012-04-12 19:13:34", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/12/\">12 - Ac, sapien.</a>.", 
+            "modified": "2012-04-12 19:13:34", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 38
+        }
+    }, 
+    {
+        "pk": 460, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 13, 
+            "created": "2012-04-12 19:13:35", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-12 19:13:35", 
+            "priority": 1, 
+            "generating_content_type": 23, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 13
+        }
+    }, 
+    {
+        "pk": 461, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 14, 
+            "created": "2012-04-12 19:13:35", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-12 19:13:35", 
+            "priority": 1, 
+            "generating_content_type": 23, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 14
+        }
+    }, 
+    {
+        "pk": 462, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 50, 
+            "created": "2012-04-12 19:13:36", 
+            "text": "Franco Della Rossa - Consigliere ha presentato l'atto.", 
+            "modified": "2012-04-12 19:13:36", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 14
+        }
+    }, 
+    {
+        "pk": 463, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 50, 
+            "created": "2012-04-12 19:13:36", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/14/\">14 - Primis at bibendum proin.</a>.", 
+            "modified": "2012-04-12 19:13:36", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 26
+        }
+    }, 
+    {
+        "pk": 464, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 51, 
+            "created": "2012-04-12 19:13:36", 
+            "text": "Alessandro Venanzi - Consigliere ha presentato l'atto.", 
+            "modified": "2012-04-12 19:13:36", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 14
+        }
+    }, 
+    {
+        "pk": 465, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 51, 
+            "created": "2012-04-12 19:13:36", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/14/\">14 - Primis at bibendum proin.</a>.", 
+            "modified": "2012-04-12 19:13:36", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 51
+        }
+    }, 
+    {
+        "pk": 466, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 15, 
+            "created": "2012-04-12 19:13:36", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-12 19:13:36", 
+            "priority": 1, 
+            "generating_content_type": 23, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 15
+        }
+    }, 
+    {
+        "pk": 467, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 52, 
+            "created": "2012-04-12 19:13:36", 
+            "text": "Daniele Cortolezzis - Presidente Consiglio Comunale ha presentato l'atto.", 
+            "modified": "2012-04-12 19:13:36", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 15
+        }
+    }, 
+    {
+        "pk": 468, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 52, 
+            "created": "2012-04-12 19:13:36", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/15/\">15 - Metus ve rutrum morbi ...</a>.", 
+            "modified": "2012-04-12 19:13:36", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 13
+        }
+    }, 
+    {
+        "pk": 469, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 53, 
+            "created": "2012-04-12 19:13:36", 
+            "text": "Mario Canciano Canciani - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:13:36", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 15
+        }
+    }, 
+    {
+        "pk": 470, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 53, 
+            "created": "2012-04-12 19:13:36", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/15/\">15 - Metus ve rutrum morbi ...</a>.", 
+            "modified": "2012-04-12 19:13:36", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 23
+        }
+    }, 
+    {
+        "pk": 471, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 54, 
+            "created": "2012-04-12 19:13:36", 
+            "text": "Franco Della Rossa - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:13:36", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 15
+        }
+    }, 
+    {
+        "pk": 472, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 54, 
+            "created": "2012-04-12 19:13:36", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/15/\">15 - Metus ve rutrum morbi ...</a>.", 
+            "modified": "2012-04-12 19:13:36", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 26
+        }
+    }, 
+    {
+        "pk": 473, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 55, 
+            "created": "2012-04-12 19:13:36", 
+            "text": "Carlo Giacomello - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:13:36", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 15
+        }
+    }, 
+    {
+        "pk": 474, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 55, 
+            "created": "2012-04-12 19:13:36", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/15/\">15 - Metus ve rutrum morbi ...</a>.", 
+            "modified": "2012-04-12 19:13:36", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 31
+        }
+    }, 
+    {
+        "pk": 475, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 56, 
+            "created": "2012-04-12 19:13:36", 
+            "text": "Maria Marion - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:13:36", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 15
+        }
+    }, 
+    {
+        "pk": 476, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 56, 
+            "created": "2012-04-12 19:13:36", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/15/\">15 - Metus ve rutrum morbi ...</a>.", 
+            "modified": "2012-04-12 19:13:36", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 36
+        }
+    }, 
+    {
+        "pk": 477, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 57, 
+            "created": "2012-04-12 19:13:36", 
+            "text": "Antonella Nonino - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:13:36", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 15
+        }
+    }, 
+    {
+        "pk": 478, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 57, 
+            "created": "2012-04-12 19:13:36", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/15/\">15 - Metus ve rutrum morbi ...</a>.", 
+            "modified": "2012-04-12 19:13:36", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 38
+        }
+    }, 
+    {
+        "pk": 479, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 16, 
+            "created": "2012-04-12 19:13:36", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-12 19:13:36", 
+            "priority": 1, 
+            "generating_content_type": 23, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 16
+        }
+    }, 
+    {
+        "pk": 480, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 17, 
+            "created": "2012-04-12 19:13:37", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-12 19:13:37", 
+            "priority": 1, 
+            "generating_content_type": 23, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 17
+        }
+    }, 
+    {
+        "pk": 481, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 58, 
+            "created": "2012-04-12 19:13:37", 
+            "text": "Matteo Mansi - Consigliere ha presentato l'atto.", 
+            "modified": "2012-04-12 19:13:37", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 17
+        }
+    }, 
+    {
+        "pk": 482, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 58, 
+            "created": "2012-04-12 19:13:37", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/17/\">17 - Metus dignissim nonummy hac ...</a>.", 
+            "modified": "2012-04-12 19:13:37", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 34
+        }
+    }, 
+    {
+        "pk": 483, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 59, 
+            "created": "2012-04-12 19:13:37", 
+            "text": "Carmelo Spiga - Consigliere ha presentato l'atto.", 
+            "modified": "2012-04-12 19:13:37", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 17
+        }
+    }, 
+    {
+        "pk": 484, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 59, 
+            "created": "2012-04-12 19:13:37", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/17/\">17 - Metus dignissim nonummy hac ...</a>.", 
+            "modified": "2012-04-12 19:13:37", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 49
+        }
+    }, 
+    {
+        "pk": 485, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 60, 
+            "created": "2012-04-12 19:13:37", 
+            "text": "Maria Marion - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:13:37", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 17
+        }
+    }, 
+    {
+        "pk": 486, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 60, 
+            "created": "2012-04-12 19:13:37", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/17/\">17 - Metus dignissim nonummy hac ...</a>.", 
+            "modified": "2012-04-12 19:13:37", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 36
+        }
+    }, 
+    {
+        "pk": 487, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 61, 
+            "created": "2012-04-12 19:13:37", 
+            "text": "Mario Canciano Canciani - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:13:37", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 17
+        }
+    }, 
+    {
+        "pk": 488, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 61, 
+            "created": "2012-04-12 19:13:37", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/17/\">17 - Metus dignissim nonummy hac ...</a>.", 
+            "modified": "2012-04-12 19:13:37", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 23
+        }
+    }, 
+    {
+        "pk": 489, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 62, 
+            "created": "2012-04-12 19:13:37", 
+            "text": "Claudio Freschi - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:13:37", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 17
+        }
+    }, 
+    {
+        "pk": 490, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 62, 
+            "created": "2012-04-12 19:13:37", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/17/\">17 - Metus dignissim nonummy hac ...</a>.", 
+            "modified": "2012-04-12 19:13:37", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 29
+        }
+    }, 
+    {
+        "pk": 491, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 63, 
+            "created": "2012-04-12 19:13:37", 
+            "text": "Agostino Maio - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:13:37", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 17
+        }
+    }, 
+    {
+        "pk": 492, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 63, 
+            "created": "2012-04-12 19:13:37", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/17/\">17 - Metus dignissim nonummy hac ...</a>.", 
+            "modified": "2012-04-12 19:13:37", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 33
+        }
+    }, 
+    {
+        "pk": 493, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 64, 
+            "created": "2012-04-12 19:13:37", 
+            "text": "Michele Vicario - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:13:37", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 17
+        }
+    }, 
+    {
+        "pk": 494, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 64, 
+            "created": "2012-04-12 19:13:37", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/17/\">17 - Metus dignissim nonummy hac ...</a>.", 
+            "modified": "2012-04-12 19:13:37", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 52
+        }
+    }, 
+    {
+        "pk": 495, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 18, 
+            "created": "2012-04-12 19:13:37", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-12 19:13:37", 
+            "priority": 1, 
+            "generating_content_type": 23, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 18
+        }
+    }, 
+    {
+        "pk": 496, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 65, 
+            "created": "2012-04-12 19:13:37", 
+            "text": "Luciana Perissinotto - Consigliere ha presentato l'atto.", 
+            "modified": "2012-04-12 19:13:37", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 18
+        }
+    }, 
+    {
+        "pk": 497, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 65, 
+            "created": "2012-04-12 19:13:37", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/18/\">18 - Dignissim felis.</a>.", 
+            "modified": "2012-04-12 19:13:37", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 40
+        }
+    }, 
+    {
+        "pk": 498, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 66, 
+            "created": "2012-04-12 19:13:37", 
+            "text": "Cinzia Del Torre - Consigliere ha presentato l'atto.", 
+            "modified": "2012-04-12 19:13:37", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 18
+        }
+    }, 
+    {
+        "pk": 499, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 66, 
+            "created": "2012-04-12 19:13:37", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/18/\">18 - Dignissim felis.</a>.", 
+            "modified": "2012-04-12 19:13:37", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 25
+        }
+    }, 
+    {
+        "pk": 500, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 67, 
+            "created": "2012-04-12 19:13:37", 
+            "text": "Matteo Mansi - Consigliere ha presentato l'atto.", 
+            "modified": "2012-04-12 19:13:37", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 18
+        }
+    }, 
+    {
+        "pk": 501, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 67, 
+            "created": "2012-04-12 19:13:37", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/18/\">18 - Dignissim felis.</a>.", 
+            "modified": "2012-04-12 19:13:37", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 34
+        }
+    }, 
+    {
+        "pk": 502, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 68, 
+            "created": "2012-04-12 19:13:37", 
+            "text": "Agostino Maio - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:13:37", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 18
+        }
+    }, 
+    {
+        "pk": 503, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 68, 
+            "created": "2012-04-12 19:13:37", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/18/\">18 - Dignissim felis.</a>.", 
+            "modified": "2012-04-12 19:13:37", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 33
+        }
+    }, 
+    {
+        "pk": 504, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 69, 
+            "created": "2012-04-12 19:13:37", 
+            "text": "Alessandro Venanzi - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:13:37", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 18
+        }
+    }, 
+    {
+        "pk": 505, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 69, 
+            "created": "2012-04-12 19:13:37", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/18/\">18 - Dignissim felis.</a>.", 
+            "modified": "2012-04-12 19:13:37", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 51
+        }
+    }, 
+    {
+        "pk": 506, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 70, 
+            "created": "2012-04-12 19:13:37", 
+            "text": "Carlo Giacomello - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:13:37", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 18
+        }
+    }, 
+    {
+        "pk": 507, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 70, 
+            "created": "2012-04-12 19:13:37", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/18/\">18 - Dignissim felis.</a>.", 
+            "modified": "2012-04-12 19:13:37", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 31
+        }
+    }, 
+    {
+        "pk": 508, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 71, 
+            "created": "2012-04-12 19:13:37", 
+            "text": "Furio Honsell - Sindaco Consiglio Comunale ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:13:37", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 18
+        }
+    }, 
+    {
+        "pk": 509, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 71, 
+            "created": "2012-04-12 19:13:37", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/18/\">18 - Dignissim felis.</a>.", 
+            "modified": "2012-04-12 19:13:37", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 32
+        }
+    }, 
+    {
+        "pk": 510, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 19, 
+            "created": "2012-04-12 19:13:38", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-12 19:13:38", 
+            "priority": 1, 
+            "generating_content_type": 23, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 19
+        }
+    }, 
+    {
+        "pk": 511, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 72, 
+            "created": "2012-04-12 19:13:38", 
+            "text": "Pierenrico Scalettaris - Consigliere ha presentato l'atto.", 
+            "modified": "2012-04-12 19:13:38", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 19
+        }
+    }, 
+    {
+        "pk": 512, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 72, 
+            "created": "2012-04-12 19:13:38", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/19/\">19 - Massa condimentum vehicula, magna ...</a>.", 
+            "modified": "2012-04-12 19:13:38", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 48
+        }
+    }, 
+    {
+        "pk": 513, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 73, 
+            "created": "2012-04-12 19:13:38", 
+            "text": "Antonella Nonino - Consigliere ha presentato l'atto.", 
+            "modified": "2012-04-12 19:13:38", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 19
+        }
+    }, 
+    {
+        "pk": 514, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 73, 
+            "created": "2012-04-12 19:13:38", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/19/\">19 - Massa condimentum vehicula, magna ...</a>.", 
+            "modified": "2012-04-12 19:13:38", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 38
+        }
+    }, 
+    {
+        "pk": 515, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 74, 
+            "created": "2012-04-12 19:13:38", 
+            "text": "Michele Vicario - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:13:38", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 19
+        }
+    }, 
+    {
+        "pk": 516, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 74, 
+            "created": "2012-04-12 19:13:38", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/19/\">19 - Massa condimentum vehicula, magna ...</a>.", 
+            "modified": "2012-04-12 19:13:38", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 52
+        }
+    }, 
+    {
+        "pk": 517, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 75, 
+            "created": "2012-04-12 19:13:38", 
+            "text": "Carlo Giacomello - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:13:38", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 19
+        }
+    }, 
+    {
+        "pk": 518, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 75, 
+            "created": "2012-04-12 19:13:38", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/19/\">19 - Massa condimentum vehicula, magna ...</a>.", 
+            "modified": "2012-04-12 19:13:38", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 31
+        }
+    }, 
+    {
+        "pk": 519, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 76, 
+            "created": "2012-04-12 19:13:38", 
+            "text": "Alessandro Venanzi - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:13:38", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 19
+        }
+    }, 
+    {
+        "pk": 520, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 76, 
+            "created": "2012-04-12 19:13:38", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/19/\">19 - Massa condimentum vehicula, magna ...</a>.", 
+            "modified": "2012-04-12 19:13:38", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 51
+        }
+    }, 
+    {
+        "pk": 521, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 77, 
+            "created": "2012-04-12 19:13:38", 
+            "text": "Furio Honsell - Sindaco Consiglio Comunale ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:13:38", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 19
+        }
+    }, 
+    {
+        "pk": 522, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 77, 
+            "created": "2012-04-12 19:13:38", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/19/\">19 - Massa condimentum vehicula, magna ...</a>.", 
+            "modified": "2012-04-12 19:13:38", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 32
+        }
+    }, 
+    {
+        "pk": 523, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 20, 
+            "created": "2012-04-12 19:13:38", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-12 19:13:38", 
+            "priority": 1, 
+            "generating_content_type": 24, 
+            "news_type": "INST", 
+            "related_content_type": 24, 
+            "related_object_pk": 20
+        }
+    }, 
+    {
+        "pk": 524, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 21, 
+            "created": "2012-04-12 19:13:38", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-12 19:13:38", 
+            "priority": 1, 
+            "generating_content_type": 24, 
+            "news_type": "INST", 
+            "related_content_type": 24, 
+            "related_object_pk": 21
+        }
+    }, 
+    {
+        "pk": 525, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 22, 
+            "created": "2012-04-12 19:13:38", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-12 19:13:38", 
+            "priority": 1, 
+            "generating_content_type": 24, 
+            "news_type": "INST", 
+            "related_content_type": 24, 
+            "related_object_pk": 22
+        }
+    }, 
+    {
+        "pk": 526, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 23, 
+            "created": "2012-04-12 19:13:38", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-12 19:13:38", 
+            "priority": 1, 
+            "generating_content_type": 24, 
+            "news_type": "INST", 
+            "related_content_type": 24, 
+            "related_object_pk": 23
+        }
+    }, 
+    {
+        "pk": 527, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 24, 
+            "created": "2012-04-12 19:13:38", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-12 19:13:38", 
+            "priority": 1, 
+            "generating_content_type": 24, 
+            "news_type": "INST", 
+            "related_content_type": 24, 
+            "related_object_pk": 24
+        }
+    }, 
+    {
+        "pk": 528, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 25, 
+            "created": "2012-04-12 19:13:38", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-12 19:13:38", 
+            "priority": 1, 
+            "generating_content_type": 24, 
+            "news_type": "INST", 
+            "related_content_type": 24, 
+            "related_object_pk": 25
+        }
+    }, 
+    {
+        "pk": 529, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 26, 
+            "created": "2012-04-12 19:13:38", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-12 19:13:38", 
+            "priority": 1, 
+            "generating_content_type": 24, 
+            "news_type": "INST", 
+            "related_content_type": 24, 
+            "related_object_pk": 26
+        }
+    }, 
+    {
+        "pk": 530, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 27, 
+            "created": "2012-04-12 19:13:38", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-12 19:13:38", 
+            "priority": 1, 
+            "generating_content_type": 24, 
+            "news_type": "INST", 
+            "related_content_type": 24, 
+            "related_object_pk": 27
+        }
+    }, 
+    {
+        "pk": 531, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 28, 
+            "created": "2012-04-12 19:13:38", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-12 19:13:38", 
+            "priority": 1, 
+            "generating_content_type": 24, 
+            "news_type": "INST", 
+            "related_content_type": 24, 
+            "related_object_pk": 28
+        }
+    }, 
+    {
+        "pk": 532, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 1, 
+            "created": "2012-04-12 19:14:21", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-12 19:14:21", 
+            "priority": 1, 
+            "generating_content_type": 23, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 1
+        }
+    }, 
+    {
+        "pk": 533, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 1, 
+            "created": "2012-04-12 19:14:21", 
+            "text": "Pierenrico Scalettaris - Consigliere ha presentato l'atto.", 
+            "modified": "2012-04-12 19:14:21", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 1
+        }
+    }, 
+    {
+        "pk": 534, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 1, 
+            "created": "2012-04-12 19:14:21", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/1/\">1 - A, sagittis.</a>.", 
+            "modified": "2012-04-12 19:14:21", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 48
+        }
+    }, 
+    {
+        "pk": 535, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 2, 
+            "created": "2012-04-12 19:14:21", 
+            "text": "Carmelo Spiga - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:14:21", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 1
+        }
+    }, 
+    {
+        "pk": 536, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 2, 
+            "created": "2012-04-12 19:14:21", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/1/\">1 - A, sagittis.</a>.", 
+            "modified": "2012-04-12 19:14:21", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 49
+        }
+    }, 
+    {
+        "pk": 537, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 2, 
+            "created": "2012-04-12 19:14:21", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-12 19:14:21", 
+            "priority": 1, 
+            "generating_content_type": 23, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 2
+        }
+    }, 
+    {
+        "pk": 538, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 3, 
+            "created": "2012-04-12 19:14:21", 
+            "text": "Claudio Galluzzo - Consigliere ha presentato l'atto.", 
+            "modified": "2012-04-12 19:14:21", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 2
+        }
+    }, 
+    {
+        "pk": 539, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 3, 
+            "created": "2012-04-12 19:14:21", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/2/\">2 - Nisl suspendisse conubia fusce ...</a>.", 
+            "modified": "2012-04-12 19:14:21", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 30
+        }
+    }, 
+    {
+        "pk": 540, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 4, 
+            "created": "2012-04-12 19:14:21", 
+            "text": "Pierenrico Scalettaris - Consigliere ha presentato l'atto.", 
+            "modified": "2012-04-12 19:14:21", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 2
+        }
+    }, 
+    {
+        "pk": 541, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 4, 
+            "created": "2012-04-12 19:14:21", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/2/\">2 - Nisl suspendisse conubia fusce ...</a>.", 
+            "modified": "2012-04-12 19:14:21", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 48
+        }
+    }, 
+    {
+        "pk": 542, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 3, 
+            "created": "2012-04-12 19:14:22", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-12 19:14:22", 
+            "priority": 1, 
+            "generating_content_type": 23, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 3
+        }
+    }, 
+    {
+        "pk": 543, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 4, 
+            "created": "2012-04-12 19:14:23", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-12 19:14:23", 
+            "priority": 1, 
+            "generating_content_type": 23, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 4
+        }
+    }, 
+    {
+        "pk": 544, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 5, 
+            "created": "2012-04-12 19:14:23", 
+            "text": "Alessandro Venanzi - Consigliere ha presentato l'atto.", 
+            "modified": "2012-04-12 19:14:23", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 4
+        }
+    }, 
+    {
+        "pk": 545, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 5, 
+            "created": "2012-04-12 19:14:23", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/4/\">4 - Quis, integer tempus, in ...</a>.", 
+            "modified": "2012-04-12 19:14:23", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 51
+        }
+    }, 
+    {
+        "pk": 546, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 6, 
+            "created": "2012-04-12 19:14:23", 
+            "text": "Antonella Nonino - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:14:23", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 4
+        }
+    }, 
+    {
+        "pk": 547, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 6, 
+            "created": "2012-04-12 19:14:23", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/4/\">4 - Quis, integer tempus, in ...</a>.", 
+            "modified": "2012-04-12 19:14:23", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 38
+        }
+    }, 
+    {
+        "pk": 548, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 7, 
+            "created": "2012-04-12 19:14:23", 
+            "text": "Carlo Giacomello - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:14:23", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 4
+        }
+    }, 
+    {
+        "pk": 549, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 7, 
+            "created": "2012-04-12 19:14:23", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/4/\">4 - Quis, integer tempus, in ...</a>.", 
+            "modified": "2012-04-12 19:14:23", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 31
+        }
+    }, 
+    {
+        "pk": 550, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 8, 
+            "created": "2012-04-12 19:14:23", 
+            "text": "Luciana Perissinotto - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:14:23", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 4
+        }
+    }, 
+    {
+        "pk": 551, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 8, 
+            "created": "2012-04-12 19:14:23", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/4/\">4 - Quis, integer tempus, in ...</a>.", 
+            "modified": "2012-04-12 19:14:23", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 40
+        }
+    }, 
+    {
+        "pk": 552, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 5, 
+            "created": "2012-04-12 19:14:24", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-12 19:14:24", 
+            "priority": 1, 
+            "generating_content_type": 23, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 5
+        }
+    }, 
+    {
+        "pk": 553, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 9, 
+            "created": "2012-04-12 19:14:24", 
+            "text": "Maria Marion - Consigliere ha presentato l'atto.", 
+            "modified": "2012-04-12 19:14:24", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 5
+        }
+    }, 
+    {
+        "pk": 554, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 9, 
+            "created": "2012-04-12 19:14:24", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/5/\">5 - Elit, varius vitae suspendisse ...</a>.", 
+            "modified": "2012-04-12 19:14:24", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 36
+        }
+    }, 
+    {
+        "pk": 555, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 10, 
+            "created": "2012-04-12 19:14:24", 
+            "text": "Carmelo Spiga - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:14:24", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 5
+        }
+    }, 
+    {
+        "pk": 556, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 10, 
+            "created": "2012-04-12 19:14:24", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/5/\">5 - Elit, varius vitae suspendisse ...</a>.", 
+            "modified": "2012-04-12 19:14:24", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 49
+        }
+    }, 
+    {
+        "pk": 557, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 6, 
+            "created": "2012-04-12 19:14:24", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-12 19:14:24", 
+            "priority": 1, 
+            "generating_content_type": 23, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 6
+        }
+    }, 
+    {
+        "pk": 558, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 11, 
+            "created": "2012-04-12 19:14:24", 
+            "text": "Claudio Romano - Consigliere ha presentato l'atto.", 
+            "modified": "2012-04-12 19:14:24", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 6
+        }
+    }, 
+    {
+        "pk": 559, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 11, 
+            "created": "2012-04-12 19:14:24", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/6/\">6 - Class vulputate.</a>.", 
+            "modified": "2012-04-12 19:14:24", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 47
+        }
+    }, 
+    {
+        "pk": 560, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 12, 
+            "created": "2012-04-12 19:14:24", 
+            "text": "Cinzia Del Torre - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:14:24", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 6
+        }
+    }, 
+    {
+        "pk": 561, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 12, 
+            "created": "2012-04-12 19:14:24", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/6/\">6 - Class vulputate.</a>.", 
+            "modified": "2012-04-12 19:14:24", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 25
+        }
+    }, 
+    {
+        "pk": 562, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 7, 
+            "created": "2012-04-12 19:14:25", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-12 19:14:25", 
+            "priority": 1, 
+            "generating_content_type": 23, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 7
+        }
+    }, 
+    {
+        "pk": 563, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 13, 
+            "created": "2012-04-12 19:14:25", 
+            "text": "Carlo Giacomello - Consigliere ha presentato l'atto.", 
+            "modified": "2012-04-12 19:14:25", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 7
+        }
+    }, 
+    {
+        "pk": 564, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 13, 
+            "created": "2012-04-12 19:14:25", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/7/\">7 - Porta lacus.</a>.", 
+            "modified": "2012-04-12 19:14:25", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 31
+        }
+    }, 
+    {
+        "pk": 565, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 14, 
+            "created": "2012-04-12 19:14:25", 
+            "text": "Agostino Maio - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:14:25", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 7
+        }
+    }, 
+    {
+        "pk": 566, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 14, 
+            "created": "2012-04-12 19:14:25", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/7/\">7 - Porta lacus.</a>.", 
+            "modified": "2012-04-12 19:14:25", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 33
+        }
+    }, 
+    {
+        "pk": 567, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 15, 
+            "created": "2012-04-12 19:14:25", 
+            "text": "Franco Della Rossa - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:14:25", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 7
+        }
+    }, 
+    {
+        "pk": 568, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 15, 
+            "created": "2012-04-12 19:14:25", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/7/\">7 - Porta lacus.</a>.", 
+            "modified": "2012-04-12 19:14:25", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 26
+        }
+    }, 
+    {
+        "pk": 569, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 16, 
+            "created": "2012-04-12 19:14:25", 
+            "text": "Pierenrico Scalettaris - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:14:25", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 7
+        }
+    }, 
+    {
+        "pk": 570, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 16, 
+            "created": "2012-04-12 19:14:25", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/7/\">7 - Porta lacus.</a>.", 
+            "modified": "2012-04-12 19:14:25", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 48
+        }
+    }, 
+    {
+        "pk": 571, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 17, 
+            "created": "2012-04-12 19:14:25", 
+            "text": "Claudio Romano - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:14:25", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 7
+        }
+    }, 
+    {
+        "pk": 572, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 17, 
+            "created": "2012-04-12 19:14:25", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/7/\">7 - Porta lacus.</a>.", 
+            "modified": "2012-04-12 19:14:25", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 47
+        }
+    }, 
+    {
+        "pk": 573, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 18, 
+            "created": "2012-04-12 19:14:25", 
+            "text": "Mario Canciano Canciani - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:14:25", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 7
+        }
+    }, 
+    {
+        "pk": 574, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 18, 
+            "created": "2012-04-12 19:14:25", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/7/\">7 - Porta lacus.</a>.", 
+            "modified": "2012-04-12 19:14:25", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 23
+        }
+    }, 
+    {
+        "pk": 575, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 8, 
+            "created": "2012-04-12 19:14:25", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-12 19:14:25", 
+            "priority": 1, 
+            "generating_content_type": 23, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 8
+        }
+    }, 
+    {
+        "pk": 576, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 19, 
+            "created": "2012-04-12 19:14:25", 
+            "text": "Chiara Franceschini - Consigliere ha presentato l'atto.", 
+            "modified": "2012-04-12 19:14:25", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 8
+        }
+    }, 
+    {
+        "pk": 577, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 19, 
+            "created": "2012-04-12 19:14:25", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/8/\">8 - Ve litora nonummy congue ...</a>.", 
+            "modified": "2012-04-12 19:14:25", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 28
+        }
+    }, 
+    {
+        "pk": 578, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 20, 
+            "created": "2012-04-12 19:14:25", 
+            "text": "Matteo Mansi - Consigliere ha presentato l'atto.", 
+            "modified": "2012-04-12 19:14:25", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 8
+        }
+    }, 
+    {
+        "pk": 579, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 20, 
+            "created": "2012-04-12 19:14:25", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/8/\">8 - Ve litora nonummy congue ...</a>.", 
+            "modified": "2012-04-12 19:14:25", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 34
+        }
+    }, 
+    {
+        "pk": 580, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 21, 
+            "created": "2012-04-12 19:14:25", 
+            "text": "Pierenrico Scalettaris - Consigliere ha presentato l'atto.", 
+            "modified": "2012-04-12 19:14:25", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 8
+        }
+    }, 
+    {
+        "pk": 581, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 21, 
+            "created": "2012-04-12 19:14:26", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/8/\">8 - Ve litora nonummy congue ...</a>.", 
+            "modified": "2012-04-12 19:14:26", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 48
+        }
+    }, 
+    {
+        "pk": 582, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 22, 
+            "created": "2012-04-12 19:14:26", 
+            "text": "Carlo Giacomello - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:14:26", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 8
+        }
+    }, 
+    {
+        "pk": 583, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 22, 
+            "created": "2012-04-12 19:14:26", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/8/\">8 - Ve litora nonummy congue ...</a>.", 
+            "modified": "2012-04-12 19:14:26", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 31
+        }
+    }, 
+    {
+        "pk": 584, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 23, 
+            "created": "2012-04-12 19:14:26", 
+            "text": "Claudio Galluzzo - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:14:26", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 8
+        }
+    }, 
+    {
+        "pk": 585, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 23, 
+            "created": "2012-04-12 19:14:26", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/8/\">8 - Ve litora nonummy congue ...</a>.", 
+            "modified": "2012-04-12 19:14:26", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 30
+        }
+    }, 
+    {
+        "pk": 586, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 24, 
+            "created": "2012-04-12 19:14:26", 
+            "text": "Agostino Maio - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:14:26", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 8
+        }
+    }, 
+    {
+        "pk": 587, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 24, 
+            "created": "2012-04-12 19:14:26", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/8/\">8 - Ve litora nonummy congue ...</a>.", 
+            "modified": "2012-04-12 19:14:26", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 33
+        }
+    }, 
+    {
+        "pk": 588, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 25, 
+            "created": "2012-04-12 19:14:26", 
+            "text": "Furio Honsell - Sindaco Consiglio Comunale ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:14:26", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 8
+        }
+    }, 
+    {
+        "pk": 589, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 25, 
+            "created": "2012-04-12 19:14:26", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/8/\">8 - Ve litora nonummy congue ...</a>.", 
+            "modified": "2012-04-12 19:14:26", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 32
+        }
+    }, 
+    {
+        "pk": 590, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 9, 
+            "created": "2012-04-12 19:14:26", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-12 19:14:26", 
+            "priority": 1, 
+            "generating_content_type": 23, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 9
+        }
+    }, 
+    {
+        "pk": 591, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 26, 
+            "created": "2012-04-12 19:14:26", 
+            "text": "Daniele Cortolezzis - Presidente Consiglio Comunale ha presentato l'atto.", 
+            "modified": "2012-04-12 19:14:26", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 9
+        }
+    }, 
+    {
+        "pk": 592, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 26, 
+            "created": "2012-04-12 19:14:26", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/9/\">9 - In, quis rutrum venenatis ...</a>.", 
+            "modified": "2012-04-12 19:14:26", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 13
+        }
+    }, 
+    {
+        "pk": 593, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 27, 
+            "created": "2012-04-12 19:14:26", 
+            "text": "Carlo Giacomello - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:14:26", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 9
+        }
+    }, 
+    {
+        "pk": 594, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 27, 
+            "created": "2012-04-12 19:14:26", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/9/\">9 - In, quis rutrum venenatis ...</a>.", 
+            "modified": "2012-04-12 19:14:26", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 31
+        }
+    }, 
+    {
+        "pk": 595, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 28, 
+            "created": "2012-04-12 19:14:26", 
+            "text": "Furio Honsell - Sindaco Consiglio Comunale ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:14:26", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 9
+        }
+    }, 
+    {
+        "pk": 596, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 28, 
+            "created": "2012-04-12 19:14:26", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/9/\">9 - In, quis rutrum venenatis ...</a>.", 
+            "modified": "2012-04-12 19:14:26", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 32
+        }
+    }, 
+    {
+        "pk": 597, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 10, 
+            "created": "2012-04-12 19:14:26", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-12 19:14:26", 
+            "priority": 1, 
+            "generating_content_type": 23, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 10
+        }
+    }, 
+    {
+        "pk": 598, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 29, 
+            "created": "2012-04-12 19:14:26", 
+            "text": "Cinzia Del Torre - Consigliere ha presentato l'atto.", 
+            "modified": "2012-04-12 19:14:26", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 10
+        }
+    }, 
+    {
+        "pk": 599, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 29, 
+            "created": "2012-04-12 19:14:26", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/10/\">10 - Cras condimentum iaculis ullamcorper.</a>.", 
+            "modified": "2012-04-12 19:14:26", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 25
+        }
+    }, 
+    {
+        "pk": 600, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 30, 
+            "created": "2012-04-12 19:14:26", 
+            "text": "Antonella Nonino - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:14:26", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 10
+        }
+    }, 
+    {
+        "pk": 601, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 30, 
+            "created": "2012-04-12 19:14:26", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/10/\">10 - Cras condimentum iaculis ullamcorper.</a>.", 
+            "modified": "2012-04-12 19:14:26", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 38
+        }
+    }, 
+    {
+        "pk": 602, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 31, 
+            "created": "2012-04-12 19:14:26", 
+            "text": "Agostino Maio - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:14:26", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 10
+        }
+    }, 
+    {
+        "pk": 603, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 31, 
+            "created": "2012-04-12 19:14:26", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/10/\">10 - Cras condimentum iaculis ullamcorper.</a>.", 
+            "modified": "2012-04-12 19:14:26", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 33
+        }
+    }, 
+    {
+        "pk": 604, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 32, 
+            "created": "2012-04-12 19:14:26", 
+            "text": "Maria Marion - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:14:26", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 10
+        }
+    }, 
+    {
+        "pk": 605, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 32, 
+            "created": "2012-04-12 19:14:26", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/10/\">10 - Cras condimentum iaculis ullamcorper.</a>.", 
+            "modified": "2012-04-12 19:14:26", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 36
+        }
+    }, 
+    {
+        "pk": 606, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 33, 
+            "created": "2012-04-12 19:14:26", 
+            "text": "Claudio Freschi - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:14:26", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 10
+        }
+    }, 
+    {
+        "pk": 607, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 33, 
+            "created": "2012-04-12 19:14:26", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/10/\">10 - Cras condimentum iaculis ullamcorper.</a>.", 
+            "modified": "2012-04-12 19:14:26", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 29
+        }
+    }, 
+    {
+        "pk": 608, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 11, 
+            "created": "2012-04-12 19:14:27", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-12 19:14:27", 
+            "priority": 1, 
+            "generating_content_type": 23, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 11
+        }
+    }, 
+    {
+        "pk": 609, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 34, 
+            "created": "2012-04-12 19:14:27", 
+            "text": "Antonella Nonino - Consigliere ha presentato l'atto.", 
+            "modified": "2012-04-12 19:14:27", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 11
+        }
+    }, 
+    {
+        "pk": 610, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 34, 
+            "created": "2012-04-12 19:14:27", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/11/\">11 - Elit primis ut libero ...</a>.", 
+            "modified": "2012-04-12 19:14:27", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 38
+        }
+    }, 
+    {
+        "pk": 611, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 35, 
+            "created": "2012-04-12 19:14:27", 
+            "text": "Mario Canciano Canciani - Consigliere ha presentato l'atto.", 
+            "modified": "2012-04-12 19:14:27", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 11
+        }
+    }, 
+    {
+        "pk": 612, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 35, 
+            "created": "2012-04-12 19:14:27", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/11/\">11 - Elit primis ut libero ...</a>.", 
+            "modified": "2012-04-12 19:14:27", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 23
+        }
+    }, 
+    {
+        "pk": 613, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 36, 
+            "created": "2012-04-12 19:14:27", 
+            "text": "Alessandro Venanzi - Consigliere ha presentato l'atto.", 
+            "modified": "2012-04-12 19:14:27", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 11
+        }
+    }, 
+    {
+        "pk": 614, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 36, 
+            "created": "2012-04-12 19:14:27", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/11/\">11 - Elit primis ut libero ...</a>.", 
+            "modified": "2012-04-12 19:14:27", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 51
+        }
+    }, 
+    {
+        "pk": 615, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 37, 
+            "created": "2012-04-12 19:14:27", 
+            "text": "Furio Honsell - Sindaco Consiglio Comunale ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:14:27", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 11
+        }
+    }, 
+    {
+        "pk": 616, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 37, 
+            "created": "2012-04-12 19:14:27", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/11/\">11 - Elit primis ut libero ...</a>.", 
+            "modified": "2012-04-12 19:14:27", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 32
+        }
+    }, 
+    {
+        "pk": 617, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 38, 
+            "created": "2012-04-12 19:14:27", 
+            "text": "Carmelo Spiga - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:14:27", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 11
+        }
+    }, 
+    {
+        "pk": 618, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 38, 
+            "created": "2012-04-12 19:14:27", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/11/\">11 - Elit primis ut libero ...</a>.", 
+            "modified": "2012-04-12 19:14:27", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 49
+        }
+    }, 
+    {
+        "pk": 619, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 39, 
+            "created": "2012-04-12 19:14:27", 
+            "text": "Pierenrico Scalettaris - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:14:27", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 11
+        }
+    }, 
+    {
+        "pk": 620, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 39, 
+            "created": "2012-04-12 19:14:27", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/11/\">11 - Elit primis ut libero ...</a>.", 
+            "modified": "2012-04-12 19:14:27", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 48
+        }
+    }, 
+    {
+        "pk": 621, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 40, 
+            "created": "2012-04-12 19:14:27", 
+            "text": "Matteo Mansi - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:14:27", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 11
+        }
+    }, 
+    {
+        "pk": 622, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 40, 
+            "created": "2012-04-12 19:14:27", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/11/\">11 - Elit primis ut libero ...</a>.", 
+            "modified": "2012-04-12 19:14:27", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 34
+        }
+    }, 
+    {
+        "pk": 623, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 12, 
+            "created": "2012-04-12 19:14:28", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-12 19:14:28", 
+            "priority": 1, 
+            "generating_content_type": 23, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 12
+        }
+    }, 
+    {
+        "pk": 624, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 41, 
+            "created": "2012-04-12 19:14:28", 
+            "text": "Chiara Franceschini - Consigliere ha presentato l'atto.", 
+            "modified": "2012-04-12 19:14:28", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 12
+        }
+    }, 
+    {
+        "pk": 625, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 41, 
+            "created": "2012-04-12 19:14:28", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/12/\">12 - Elit hymenaeos sed arcu.</a>.", 
+            "modified": "2012-04-12 19:14:28", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 28
+        }
+    }, 
+    {
+        "pk": 626, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 42, 
+            "created": "2012-04-12 19:14:28", 
+            "text": "Daniele Cortolezzis - Presidente Consiglio Comunale ha presentato l'atto.", 
+            "modified": "2012-04-12 19:14:28", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 12
+        }
+    }, 
+    {
+        "pk": 627, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 42, 
+            "created": "2012-04-12 19:14:28", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/12/\">12 - Elit hymenaeos sed arcu.</a>.", 
+            "modified": "2012-04-12 19:14:28", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 13
+        }
+    }, 
+    {
+        "pk": 628, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 43, 
+            "created": "2012-04-12 19:14:28", 
+            "text": "Claudio Romano - Consigliere ha presentato l'atto.", 
+            "modified": "2012-04-12 19:14:28", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 12
+        }
+    }, 
+    {
+        "pk": 629, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 43, 
+            "created": "2012-04-12 19:14:28", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/12/\">12 - Elit hymenaeos sed arcu.</a>.", 
+            "modified": "2012-04-12 19:14:28", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 47
+        }
+    }, 
+    {
+        "pk": 630, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 13, 
+            "created": "2012-04-12 19:14:28", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-12 19:14:28", 
+            "priority": 1, 
+            "generating_content_type": 23, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 13
+        }
+    }, 
+    {
+        "pk": 631, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 44, 
+            "created": "2012-04-12 19:14:28", 
+            "text": "Claudio Freschi - Consigliere ha presentato l'atto.", 
+            "modified": "2012-04-12 19:14:28", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 13
+        }
+    }, 
+    {
+        "pk": 632, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 44, 
+            "created": "2012-04-12 19:14:28", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/13/\">13 - Commodo quam a duis ...</a>.", 
+            "modified": "2012-04-12 19:14:28", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 29
+        }
+    }, 
+    {
+        "pk": 633, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 45, 
+            "created": "2012-04-12 19:14:28", 
+            "text": "Carmelo Spiga - Consigliere ha presentato l'atto.", 
+            "modified": "2012-04-12 19:14:28", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 13
+        }
+    }, 
+    {
+        "pk": 634, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 45, 
+            "created": "2012-04-12 19:14:28", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/13/\">13 - Commodo quam a duis ...</a>.", 
+            "modified": "2012-04-12 19:14:28", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 49
+        }
+    }, 
+    {
+        "pk": 635, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 46, 
+            "created": "2012-04-12 19:14:28", 
+            "text": "Furio Honsell - Sindaco Consiglio Comunale ha presentato l'atto.", 
+            "modified": "2012-04-12 19:14:28", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 13
+        }
+    }, 
+    {
+        "pk": 636, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 46, 
+            "created": "2012-04-12 19:14:28", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/13/\">13 - Commodo quam a duis ...</a>.", 
+            "modified": "2012-04-12 19:14:28", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 32
+        }
+    }, 
+    {
+        "pk": 637, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 47, 
+            "created": "2012-04-12 19:14:28", 
+            "text": "Carlo Giacomello - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:14:28", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 13
+        }
+    }, 
+    {
+        "pk": 638, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 47, 
+            "created": "2012-04-12 19:14:28", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/13/\">13 - Commodo quam a duis ...</a>.", 
+            "modified": "2012-04-12 19:14:28", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 31
+        }
+    }, 
+    {
+        "pk": 639, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 14, 
+            "created": "2012-04-12 19:14:28", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-12 19:14:28", 
+            "priority": 1, 
+            "generating_content_type": 23, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 14
+        }
+    }, 
+    {
+        "pk": 640, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 48, 
+            "created": "2012-04-12 19:14:28", 
+            "text": "Claudio Galluzzo - Consigliere ha presentato l'atto.", 
+            "modified": "2012-04-12 19:14:28", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 14
+        }
+    }, 
+    {
+        "pk": 641, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 48, 
+            "created": "2012-04-12 19:14:28", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/14/\">14 - Bibendum.</a>.", 
+            "modified": "2012-04-12 19:14:28", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 30
+        }
+    }, 
+    {
+        "pk": 642, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 49, 
+            "created": "2012-04-12 19:14:28", 
+            "text": "Cinzia Del Torre - Consigliere ha presentato l'atto.", 
+            "modified": "2012-04-12 19:14:28", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 14
+        }
+    }, 
+    {
+        "pk": 643, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 49, 
+            "created": "2012-04-12 19:14:28", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/14/\">14 - Bibendum.</a>.", 
+            "modified": "2012-04-12 19:14:28", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 25
+        }
+    }, 
+    {
+        "pk": 644, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 15, 
+            "created": "2012-04-12 19:14:29", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-12 19:14:29", 
+            "priority": 1, 
+            "generating_content_type": 23, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 15
+        }
+    }, 
+    {
+        "pk": 645, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 50, 
+            "created": "2012-04-12 19:14:29", 
+            "text": "Luciana Perissinotto - Consigliere ha presentato l'atto.", 
+            "modified": "2012-04-12 19:14:29", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 15
+        }
+    }, 
+    {
+        "pk": 646, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 50, 
+            "created": "2012-04-12 19:14:29", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/15/\">15 - Mollis inceptos magnis dapibus.</a>.", 
+            "modified": "2012-04-12 19:14:29", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 40
+        }
+    }, 
+    {
+        "pk": 647, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 51, 
+            "created": "2012-04-12 19:14:29", 
+            "text": "Furio Honsell - Sindaco Consiglio Comunale ha presentato l'atto.", 
+            "modified": "2012-04-12 19:14:29", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 15
+        }
+    }, 
+    {
+        "pk": 648, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 51, 
+            "created": "2012-04-12 19:14:29", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/15/\">15 - Mollis inceptos magnis dapibus.</a>.", 
+            "modified": "2012-04-12 19:14:29", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 32
+        }
+    }, 
+    {
+        "pk": 649, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 52, 
+            "created": "2012-04-12 19:14:29", 
+            "text": "Mario Canciano Canciani - Consigliere ha presentato l'atto.", 
+            "modified": "2012-04-12 19:14:29", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 15
+        }
+    }, 
+    {
+        "pk": 650, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 52, 
+            "created": "2012-04-12 19:14:29", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/15/\">15 - Mollis inceptos magnis dapibus.</a>.", 
+            "modified": "2012-04-12 19:14:29", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 23
+        }
+    }, 
+    {
+        "pk": 651, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 53, 
+            "created": "2012-04-12 19:14:29", 
+            "text": "Pierenrico Scalettaris - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:14:29", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 15
+        }
+    }, 
+    {
+        "pk": 652, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 53, 
+            "created": "2012-04-12 19:14:29", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/15/\">15 - Mollis inceptos magnis dapibus.</a>.", 
+            "modified": "2012-04-12 19:14:29", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 48
+        }
+    }, 
+    {
+        "pk": 653, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 16, 
+            "created": "2012-04-12 19:14:29", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-12 19:14:29", 
+            "priority": 1, 
+            "generating_content_type": 23, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 16
+        }
+    }, 
+    {
+        "pk": 654, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 54, 
+            "created": "2012-04-12 19:14:29", 
+            "text": "Matteo Mansi - Consigliere ha presentato l'atto.", 
+            "modified": "2012-04-12 19:14:29", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 16
+        }
+    }, 
+    {
+        "pk": 655, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 54, 
+            "created": "2012-04-12 19:14:29", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/16/\">16 - Nisi mollis nec.</a>.", 
+            "modified": "2012-04-12 19:14:29", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 34
+        }
+    }, 
+    {
+        "pk": 656, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 55, 
+            "created": "2012-04-12 19:14:29", 
+            "text": "Maria Marion - Consigliere ha presentato l'atto.", 
+            "modified": "2012-04-12 19:14:29", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 16
+        }
+    }, 
+    {
+        "pk": 657, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 55, 
+            "created": "2012-04-12 19:14:29", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/16/\">16 - Nisi mollis nec.</a>.", 
+            "modified": "2012-04-12 19:14:29", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 36
+        }
+    }, 
+    {
+        "pk": 658, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 56, 
+            "created": "2012-04-12 19:14:29", 
+            "text": "Franco Della Rossa - Consigliere ha presentato l'atto.", 
+            "modified": "2012-04-12 19:14:29", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 16
+        }
+    }, 
+    {
+        "pk": 659, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 56, 
+            "created": "2012-04-12 19:14:29", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/16/\">16 - Nisi mollis nec.</a>.", 
+            "modified": "2012-04-12 19:14:29", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 26
+        }
+    }, 
+    {
+        "pk": 660, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 57, 
+            "created": "2012-04-12 19:14:29", 
+            "text": "Mario Canciano Canciani - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:14:29", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 16
+        }
+    }, 
+    {
+        "pk": 661, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 57, 
+            "created": "2012-04-12 19:14:29", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/16/\">16 - Nisi mollis nec.</a>.", 
+            "modified": "2012-04-12 19:14:29", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 23
+        }
+    }, 
+    {
+        "pk": 662, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 58, 
+            "created": "2012-04-12 19:14:29", 
+            "text": "Pierenrico Scalettaris - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:14:29", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 16
+        }
+    }, 
+    {
+        "pk": 663, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 58, 
+            "created": "2012-04-12 19:14:29", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/16/\">16 - Nisi mollis nec.</a>.", 
+            "modified": "2012-04-12 19:14:29", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 48
+        }
+    }, 
+    {
+        "pk": 664, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 59, 
+            "created": "2012-04-12 19:14:29", 
+            "text": "Luciana Perissinotto - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:14:29", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 16
+        }
+    }, 
+    {
+        "pk": 665, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 59, 
+            "created": "2012-04-12 19:14:30", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/16/\">16 - Nisi mollis nec.</a>.", 
+            "modified": "2012-04-12 19:14:30", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 40
+        }
+    }, 
+    {
+        "pk": 666, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 60, 
+            "created": "2012-04-12 19:14:30", 
+            "text": "Claudio Galluzzo - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:14:30", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 16
+        }
+    }, 
+    {
+        "pk": 667, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 60, 
+            "created": "2012-04-12 19:14:30", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/16/\">16 - Nisi mollis nec.</a>.", 
+            "modified": "2012-04-12 19:14:30", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 30
+        }
+    }, 
+    {
+        "pk": 668, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 17, 
+            "created": "2012-04-12 19:14:30", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-12 19:14:30", 
+            "priority": 1, 
+            "generating_content_type": 23, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 17
+        }
+    }, 
+    {
+        "pk": 669, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 61, 
+            "created": "2012-04-12 19:14:30", 
+            "text": "Mario Canciano Canciani - Consigliere ha presentato l'atto.", 
+            "modified": "2012-04-12 19:14:30", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 17
+        }
+    }, 
+    {
+        "pk": 670, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 61, 
+            "created": "2012-04-12 19:14:30", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/17/\">17 - Amet class erat auctor ...</a>.", 
+            "modified": "2012-04-12 19:14:30", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 23
+        }
+    }, 
+    {
+        "pk": 671, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 62, 
+            "created": "2012-04-12 19:14:30", 
+            "text": "Franco Della Rossa - Consigliere ha presentato l'atto.", 
+            "modified": "2012-04-12 19:14:30", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 17
+        }
+    }, 
+    {
+        "pk": 672, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 62, 
+            "created": "2012-04-12 19:14:30", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/17/\">17 - Amet class erat auctor ...</a>.", 
+            "modified": "2012-04-12 19:14:30", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 26
+        }
+    }, 
+    {
+        "pk": 673, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 18, 
+            "created": "2012-04-12 19:14:30", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-12 19:14:30", 
+            "priority": 1, 
+            "generating_content_type": 23, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 18
+        }
+    }, 
+    {
+        "pk": 674, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 63, 
+            "created": "2012-04-12 19:14:30", 
+            "text": "Furio Honsell - Sindaco Consiglio Comunale ha presentato l'atto.", 
+            "modified": "2012-04-12 19:14:30", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 18
+        }
+    }, 
+    {
+        "pk": 675, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 63, 
+            "created": "2012-04-12 19:14:30", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/18/\">18 - Morbi tristique dui nulla ...</a>.", 
+            "modified": "2012-04-12 19:14:30", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 32
+        }
+    }, 
+    {
+        "pk": 676, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 64, 
+            "created": "2012-04-12 19:14:30", 
+            "text": "Claudio Romano - Consigliere ha presentato l'atto.", 
+            "modified": "2012-04-12 19:14:30", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 18
+        }
+    }, 
+    {
+        "pk": 677, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 64, 
+            "created": "2012-04-12 19:14:30", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/18/\">18 - Morbi tristique dui nulla ...</a>.", 
+            "modified": "2012-04-12 19:14:30", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 47
+        }
+    }, 
+    {
+        "pk": 678, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 65, 
+            "created": "2012-04-12 19:14:30", 
+            "text": "Alessandro Venanzi - Consigliere ha presentato l'atto.", 
+            "modified": "2012-04-12 19:14:30", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 18
+        }
+    }, 
+    {
+        "pk": 679, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 65, 
+            "created": "2012-04-12 19:14:30", 
+            "text": "Ha presentato <a href=\"/acts/deliberations/18/\">18 - Morbi tristique dui nulla ...</a>.", 
+            "modified": "2012-04-12 19:14:30", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 51
+        }
+    }, 
+    {
+        "pk": 680, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 66, 
+            "created": "2012-04-12 19:14:30", 
+            "text": "Claudio Galluzzo - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:14:30", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 18
+        }
+    }, 
+    {
+        "pk": 681, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 66, 
+            "created": "2012-04-12 19:14:30", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/18/\">18 - Morbi tristique dui nulla ...</a>.", 
+            "modified": "2012-04-12 19:14:30", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 30
+        }
+    }, 
+    {
+        "pk": 682, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 67, 
+            "created": "2012-04-12 19:14:30", 
+            "text": "Carmelo Spiga - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:14:30", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 18
+        }
+    }, 
+    {
+        "pk": 683, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 67, 
+            "created": "2012-04-12 19:14:30", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/18/\">18 - Morbi tristique dui nulla ...</a>.", 
+            "modified": "2012-04-12 19:14:30", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 49
+        }
+    }, 
+    {
+        "pk": 684, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 68, 
+            "created": "2012-04-12 19:14:30", 
+            "text": "Carlo Giacomello - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:14:30", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 18
+        }
+    }, 
+    {
+        "pk": 685, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 68, 
+            "created": "2012-04-12 19:14:30", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/18/\">18 - Morbi tristique dui nulla ...</a>.", 
+            "modified": "2012-04-12 19:14:30", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 31
+        }
+    }, 
+    {
+        "pk": 686, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 69, 
+            "created": "2012-04-12 19:14:30", 
+            "text": "Luciana Perissinotto - Consigliere ha co-firmato l'atto.", 
+            "modified": "2012-04-12 19:14:30", 
+            "priority": 3, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 18
+        }
+    }, 
+    {
+        "pk": 687, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 69, 
+            "created": "2012-04-12 19:14:30", 
+            "text": "Ha co-firmato <a href=\"/acts/deliberations/18/\">18 - Morbi tristique dui nulla ...</a>.", 
+            "modified": "2012-04-12 19:14:30", 
+            "priority": 1, 
+            "generating_content_type": 20, 
+            "news_type": "INST", 
+            "related_content_type": 37, 
+            "related_object_pk": 40
+        }
+    }, 
+    {
+        "pk": 688, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 19, 
+            "created": "2012-04-12 19:14:31", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-12 19:14:31", 
+            "priority": 1, 
+            "generating_content_type": 23, 
+            "news_type": "INST", 
+            "related_content_type": 23, 
+            "related_object_pk": 19
+        }
+    }, 
+    {
+        "pk": 689, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 20, 
+            "created": "2012-04-12 19:14:31", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-12 19:14:31", 
+            "priority": 1, 
+            "generating_content_type": 24, 
+            "news_type": "INST", 
+            "related_content_type": 24, 
+            "related_object_pk": 20
+        }
+    }, 
+    {
+        "pk": 690, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 21, 
+            "created": "2012-04-12 19:14:31", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-12 19:14:31", 
+            "priority": 1, 
+            "generating_content_type": 24, 
+            "news_type": "INST", 
+            "related_content_type": 24, 
+            "related_object_pk": 21
+        }
+    }, 
+    {
+        "pk": 691, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 22, 
+            "created": "2012-04-12 19:14:31", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-12 19:14:31", 
+            "priority": 1, 
+            "generating_content_type": 24, 
+            "news_type": "INST", 
+            "related_content_type": 24, 
+            "related_object_pk": 22
+        }
+    }, 
+    {
+        "pk": 692, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 23, 
+            "created": "2012-04-12 19:14:31", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-12 19:14:31", 
+            "priority": 1, 
+            "generating_content_type": 24, 
+            "news_type": "INST", 
+            "related_content_type": 24, 
+            "related_object_pk": 23
+        }
+    }, 
+    {
+        "pk": 693, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 24, 
+            "created": "2012-04-12 19:14:31", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-12 19:14:31", 
+            "priority": 1, 
+            "generating_content_type": 24, 
+            "news_type": "INST", 
+            "related_content_type": 24, 
+            "related_object_pk": 24
+        }
+    }, 
+    {
+        "pk": 694, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 25, 
+            "created": "2012-04-12 19:14:31", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-12 19:14:31", 
+            "priority": 1, 
+            "generating_content_type": 24, 
+            "news_type": "INST", 
+            "related_content_type": 24, 
+            "related_object_pk": 25
+        }
+    }, 
+    {
+        "pk": 695, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 26, 
+            "created": "2012-04-12 19:14:31", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-12 19:14:31", 
+            "priority": 1, 
+            "generating_content_type": 24, 
+            "news_type": "INST", 
+            "related_content_type": 24, 
+            "related_object_pk": 26
+        }
+    }, 
+    {
+        "pk": 696, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 27, 
+            "created": "2012-04-12 19:14:31", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-12 19:14:31", 
+            "priority": 1, 
+            "generating_content_type": 24, 
+            "news_type": "INST", 
+            "related_content_type": 24, 
+            "related_object_pk": 27
+        }
+    }, 
+    {
+        "pk": 697, 
+        "model": "newscache.news", 
+        "fields": {
+            "generating_object_pk": 28, 
+            "created": "2012-04-12 19:14:31", 
+            "text": "L'atto \u00e8 stato presentato.", 
+            "modified": "2012-04-12 19:14:31", 
+            "priority": 1, 
+            "generating_content_type": 24, 
+            "news_type": "INST", 
+            "related_content_type": 24, 
+            "related_object_pk": 28
+        }
     }
 ]

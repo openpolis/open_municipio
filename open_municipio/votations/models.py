@@ -123,7 +123,7 @@ class Votation(models.Model):
         # compute rebel votes and presence caches
         for vc in self.charge_votes:
             charge_vote = vc.vote
-            group_vote = vc.charge.council_group.groupvote_set.get(votation=self).vote
+            group_vote = vc.charge.current_groupcharge.group.groupvote_set.get(votation=self).vote
             if charge_vote != group_vote:
                 vc.is_rebel = True
                 vc.save()

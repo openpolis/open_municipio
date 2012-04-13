@@ -3,17 +3,23 @@ from django.utils.translation import ugettext_lazy as _
 from open_municipio.people.models import *
 from open_municipio.votations.admin import VotationsInline
 
-class ResourceInline(admin.TabularInline):
-    model = Resource
+class PersonResourceInline(admin.TabularInline):
+    model = PersonResource
     extra = 0
 
 class PersonAdminWithResources(admin.ModelAdmin):
+    list_display = ('id', '__unicode__', )
+    list_display_links = ('__unicode__',)
     search_fields = ['^first_name', '^last_name']
     prepopulated_fields = {"slug": ("first_name","last_name","birth_date", "birth_location",)}
-    inlines = [ResourceInline, ]
+    inlines = [PersonResourceInline, ]
 
 class ChargeAdmin(admin.ModelAdmin):
     raw_id_fields = ('person', )
+
+class GroupResourceInline(admin.TabularInline):
+    model = GroupResource
+    extra = 0
 
 class GroupChargeInline(admin.TabularInline):
     model = GroupCharge
@@ -26,14 +32,14 @@ class GroupIsMajorityInline(admin.TabularInline):
 
 class GroupAdminWithCharges(admin.ModelAdmin):
     list_display = ('name', 'acronym', 'is_majority_now')
-    inlines = [GroupIsMajorityInline, GroupChargeInline]
+    inlines = [GroupResourceInline, GroupIsMajorityInline, GroupChargeInline]
     
 
 class ChargeInline(admin.StackedInline):
     raw_id_fields = ('person', )
     fieldsets = (
         (None, {
-            'fields': (('person', 'charge_type', 'start_date', 'end_date'), )
+            'fields': (('person', 'start_date', 'end_date'), )
         }),
         (_('Advanced options'), {
             'classes': ('collapse',),
@@ -48,12 +54,16 @@ class CompanyChargeInline(ChargeInline):
 class AdministrationChargeInline(ChargeInline):
     model = AdministrationCharge
 
+class InstitutionResourceInline(admin.TabularInline):
+    model = InstitutionResource
+    extra = 0
+
 class InstitutionChargeInline(ChargeInline):
     model = InstitutionCharge
     raw_id_fields = ('person', 'substitutes', 'substituted_by')
     fieldsets = (
         (None, {
-            'fields': (('person', 'charge_type', 'op_charge_id', 'start_date', 'end_date'), )
+            'fields': (('person', 'op_charge_id', 'start_date', 'end_date'), )
         }),
         (_('Advanced options'), {
             'classes': ('collapse',),
@@ -61,6 +71,20 @@ class InstitutionChargeInline(ChargeInline):
         })
     )
 
+
+class ResponsabilityInline(admin.TabularInline):
+    raw_id_fields = ('charge',)
+    extra = 0
+
+class InstitutionResponsabilityInline(ResponsabilityInline):
+    model = InstitutionResponsability
+    fields = ('charge', 'charge_type', 'start_date', 'end_date', 'description')
+
+class GroupResponsabilityInline(admin.TabularInline):
+    model = GroupResponsability
+    raw_id_fields = ('charge',)
+    extra = 0
+    fields = ('charge', 'charge_type', 'start_date', 'end_date', 'description')
 
 
 class ChargeAdmin(admin.ModelAdmin):
@@ -71,7 +95,7 @@ class CompanyChargeAdmin(ChargeAdmin):
     raw_id_fields = ('person', 'company')
     fieldsets = (
         (None, {
-            'fields': (('person', 'charge_type', 'company'), 
+            'fields': (('person', 'company'),
                 ('start_date', 'end_date', 'end_reason'), 
                  'description')
         }),
@@ -82,7 +106,7 @@ class AdministrationChargeAdmin(ChargeAdmin):
     raw_id_fields = ('person', 'office')
     fieldsets = (
         (None, {
-            'fields': (('person', 'charge_type', 'office'), 
+            'fields': (('person', 'office'),
                  ('start_date', 'end_date', 'end_reason'), 
                  'description')
         }),
@@ -90,15 +114,27 @@ class AdministrationChargeAdmin(ChargeAdmin):
 
 class InstitutionChargeAdmin(ChargeAdmin):
     model = InstitutionCharge
-    raw_id_fields = ('person', 'substitutes', 'substituted_by', 'institution')
+    raw_id_fields = ('person', 'substitutes', 'substituted_by', 'original_charge')
     fieldsets = (
         (None, {
-            'fields': (('person', 'charge_type', 'op_charge_id', 'institution'), 
+            'fields': (('person', 'op_charge_id', 'institution', 'original_charge'),
                  ('start_date', 'end_date', 'end_reason'), 
                  'description',
                  ('substitutes', 'substituted_by'))
         }),
     )
+    list_display = ('__unicode__', 'institution', 'start_date', 'end_date')
+    list_select_related = True
+    list_filter = ['institution__name', ]
+    inlines = [InstitutionResponsabilityInline]
+
+class GroupChargeAdmin(admin.ModelAdmin):
+    raw_id_fields = ('charge', )
+    list_display = ('__unicode__', 'start_date', 'end_date')
+    list_select_related = True
+    list_filter = ['group']
+    inlines = [GroupResponsabilityInline]
+
 
 
 class BodyAdmin(admin.ModelAdmin):
@@ -109,7 +145,7 @@ class CompanyAdmin(BodyAdmin):
 class OfficeAdmin(BodyAdmin):
     inlines = [AdministrationChargeInline]
 class InstitutionAdmin(BodyAdmin):
-    inlines = [InstitutionChargeInline]
+    inlines = [InstitutionResourceInline, InstitutionChargeInline]
 
 class SittingAdmin(admin.ModelAdmin):
     inlines = [VotationsInline]
@@ -117,6 +153,7 @@ class SittingAdmin(admin.ModelAdmin):
 admin.site.register(Sitting, SittingAdmin)
 admin.site.register(Person, PersonAdminWithResources)
 admin.site.register(Group, GroupAdminWithCharges)
+admin.site.register(GroupCharge, GroupChargeAdmin)
 admin.site.register(InstitutionCharge, InstitutionChargeAdmin)
 admin.site.register(CompanyCharge, CompanyChargeAdmin)
 admin.site.register(AdministrationCharge, AdministrationChargeAdmin)
