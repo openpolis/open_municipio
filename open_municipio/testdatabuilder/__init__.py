@@ -1,8 +1,10 @@
+# -*- coding: utf-8 -*-
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.files import File
 from django.conf import settings
 
 from open_municipio.testdatabuilder import conf
-from open_municipio.people.models import Institution, Person, GroupCharge, Sitting, InstitutionCharge
+from open_municipio.people.models import Institution, Person, GroupCharge, Sitting, InstitutionCharge, municipality
 from open_municipio.acts.models import  Act, ActSupport, Attach, Deliberation, Interrogation
 from open_municipio.taxonomy.models import Category, Tag
 from open_municipio.votations.models import Votation, ChargeVote
@@ -37,7 +39,10 @@ class RandomItemsFactory(object):
         Create a bunch of acts.
         """
         # cleanup
-        Act.objects.all().delete()
+        try:
+            Act.objects.all().delete()
+        except ObjectDoesNotExist:
+            pass
 
         election_date = '2010-06-14'
 
@@ -166,15 +171,9 @@ class RandomItemsFactory(object):
                     [2]*5,   #  5% ABSTAINED
                     [4]*5    #  5% ABSENT
                 ]))
-                for charge in council_institution.charge_set.all():
-                    if (charge.charge_type == InstitutionCharge.COUNCIL_PRES_CHARGE or
-                        charge.charge_type == InstitutionCharge.COUNCIL_VICE_CHARGE):
-                        # president and vicepresident do not vote twice
-                        continue
-                    else:
-                        # votings are drawn randomly with weighted probabilities
-                        vote = random.choice(vw)
-
+                for charge in municipality.council.members:
+                    # votings are drawn randomly with weighted probabilities
+                    vote = random.choice(vw)
                     charge_vote = ChargeVote(votation=v, charge=charge, vote=vote)
                     charge_vote.save()
                     # print "%s voted %s" % (charge, charge_vote.vote)
@@ -266,6 +265,57 @@ class RandomItemsFactory(object):
                 act.is_key = True
                 act.save()
                 print  "        act #%s is key..." % act.pk
+
+
+    def create_institutions(self):
+        print "Institutions"
+        sindaco_inst = Institution(
+            name='Sindaco', institution_type=Institution.MAYOR,
+            description="Ufficio del sindaco"
+        )
+        sindaco_inst.save()
+        print "  sindaco"
+
+        giunta_inst = Institution(
+            name='Giunta comunale', institution_type=Institution.CITY_GOVERNMENT, parent=sindaco_inst,
+            description="Descrizione dell'istituzione Giunta"
+        )
+        giunta_inst.save()
+        print "  giunta"
+
+        consiglio_inst = Institution(
+            name='Consiglio comunale', institution_type=Institution.COUNCIL, parent=sindaco_inst,
+            description="Descrizione dell'istituzione Consiglio"
+        )
+        consiglio_inst.save()
+        print "  consiglio"
+
+        # commissioni
+        comm_descrizioni = [
+            u"Bilancio e programmazione",
+            u"Urbanistica, Infrastrutture e Lavori pubblici",
+            u"Città sostenibile (Ambiente, Mobilità, Energia, Trasporto pubblico),frazioni, attività produttive, sport",
+            u"Servizi alla Persona, Pubblica Istruzione e Politiche Giovanili",
+            u"Cultura, Promozione e Turismo",
+            u"Risorse Finanziarie e Patrimonio"
+        ]
+        commissioni = []
+        print "  commissioni"
+        for c in range(0,len(comm_descrizioni)):
+            print "    %s - %s" % (c, comm_descrizioni[c])
+            comm_inst = Institution(
+                name='%d^ commissione' % (c+1), institution_type=Institution.COMMITTEE, parent=consiglio_inst,
+                description=comm_descrizioni[c]
+            )
+            comm_inst.save()
+            commissioni.append(comm_inst)
+
+
+    def generate_people_dataset(self):
+        """
+        Generate institutions and commissions
+        """
+        self.create_institutions()
 
     def generate_acts_dataset(self):
         """

@@ -15,11 +15,25 @@
     <header class="clearfix">
         <a href="{{ person.get_absolute_url }}" class="thumb"><img src="{{ STATIC_URL }}img/placehold/100.gif"></a>
         <h1>{{ person }}</h1>
-        <small><i class="icon-ok"></i> {{ person }} è iscritto a Open municipio</small>
+        {% if person.is_om_user %}
+            <small><i class="icon-ok"></i> {{ person }} è iscritto a Open municipio</small>
+        {% endif %}
         <ul class="unstyled">
-            <li><small>Sindaco</small></li>
-            <li><a href="mailto:sindaco@email.it">sindaco@email.it</a></li>
-            <li>T. 076107610761 F. 076107610761</li>
+            {% for c in current_charges %}
+                <li><small>{{ c.denomination }} dal {{ c.start_date|date:"d.m.Y" }}</small></li>
+            {% endfor %}
+
+            {% if resources.EMAIL %}
+                <li><a href="mailto:{{ resources.EMAIL.value }}">{{ resources.EMAIL.value }}</a></li>
+            {% endif %}
+            <li>
+                {% if resources.PHONE %}
+                    T.{{ resources.PHONE.value }}
+                {% endif %}
+                {% if resources.FAX %}
+                    F.{{ resources.FAX.value }}
+                {% endif %}
+            </li>
         </ul>
     </header>
 
@@ -27,18 +41,28 @@
         <div class="row-fluid">
             <div class="span6">
                 <ul class="data-list">
-                    <li>In carica dal <strong>29.04.2008</strong></li>
-                    <li>Lista di elezione <strong>Solidarietà e giustizia</strong></li>
+                    <li>Lista di elezione <strong>TODO</strong></li>
                     <li>
                         <ul>
-                            <li>Gruppo <strong>PD</strong></li>
-                            <li>(le altre appartenenze <i class="icon-chevron-down"></i>)</li>
+                            {% for c in current_charges %}
+                                {% if c.current_groupcharge %}
+                                    <li>dal {{ c.current_groupcharge.start_date|date:"d.m.Y" }}
+                                        Gruppo <strong>{{ c.current_groupcharge.group }}</strong></li>
+                                {% endif %}
+                                {% for gc in c.historical_groupcharges %}
+                                    <li>dal {{ gc.start_date|date:"d.m.Y" }}
+                                        al {{ gc.end_date|date:"d.m.Y" }}: Gruppo {{ gc.group.acronym }}</li>
+                                {% endfor %}
+                            {% endfor %}
+
                         </ul>
                     </li>
                     <li>
                         <ul>
-                            <li>Presidente <strong>Commissione permanente Edilizia e urbanistica</strong></li>
-                            <li>(le altre presenze in commissione <i class="icon-chevron-down"></i>)</li>
+                            {% for c in current_committee_charges %}
+                                <li>{{ c.denomination }} {{ c.institution }}:
+                                    <em>{{ c.institution.description }}</em></li>
+                            {% endfor %}
                         </ul>
                     </li>
                     <li>
@@ -48,8 +72,8 @@
                             <li>(altri incarichi <i class="icon-chevron-down"></i>)</li>
                         </ul>
                     </li>
-                    <li>Pensione d'invalidità</li>
-                    <li>Dichiarazione patrimoniale <i class="icon-download-alt"></i></li>
+                    <li>Pensione d'invalidità (TODO)</li>
+                    <li>Dichiarazione patrimoniale (TODO)<i class="icon-download-alt"></i></li>
                 </ul>
 
             </div>

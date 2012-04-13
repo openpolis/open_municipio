@@ -1,13 +1,10 @@
 from django import forms
-from open_municipio.acts.models import Act
-from django.forms.widgets import HiddenInput, DateTimeInput
-from taggit.forms import TagField
-from django.forms.models import ModelForm
-from open_municipio.acts.models import Transition
+
+from open_municipio.acts.models import Act, Transition
 
 
 
-class ActDescriptionForm(ModelForm):
+class ActDescriptionForm(forms.ModelForm):
     description = forms.Textarea()
     id = forms.IntegerField(widget=forms.HiddenInput)
 
@@ -15,15 +12,13 @@ class ActDescriptionForm(ModelForm):
         model = Act
         fields = ('id', 'description',)
 
-class TagAddForm(forms.Form):
-    tags = TagField()
 
-class ActTransitionForm(ModelForm):
+class ActTransitionForm(forms.ModelForm):
     """
     A form to change status of act
     """
     def save(self, commit=True):
-        instance = super(ModelForm, self).save(commit=False)
+        instance = super(forms.ModelForm, self).save(commit=False)
         instance.act = instance.act.downcast()
         if commit:
             instance.save()
@@ -33,9 +28,9 @@ class ActTransitionForm(ModelForm):
         model = Transition
         fields = ('transition_date', 'note', 'final_status', 'act')
         widgets = {
-            'act': HiddenInput(),
-            'final_status': HiddenInput(),
-            'transition_date': DateTimeInput(attrs={'class':'datepicker'})
+            'act': forms.HiddenInput(),
+            'final_status': forms.HiddenInput(),
+            'transition_date': forms.DateTimeInput(attrs={'class':'datepicker'})
         }
 
 
@@ -47,7 +42,7 @@ class ActFinalTransitionForm(ActTransitionForm):
     class Meta(ActTransitionForm.Meta):
         fields = ('transition_date', 'note', 'final_status', 'act', 'votation')
         widgets = {
-            'act': HiddenInput(),
+            'act': forms.HiddenInput(),
             'final_status': forms.Select(choices=[]),
-            'transition_date': DateTimeInput(attrs={'class':'datepicker'})
+            'transition_date': forms.DateTimeInput(attrs={'class':'datepicker'})
         }

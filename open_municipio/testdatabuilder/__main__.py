@@ -5,11 +5,13 @@ if __name__ == '__main__':
 
     parser = OptionParser()
     parser.add_option("-p", "--part", dest="part",
-                      help="part to run (acts|votations)", metavar="PART")
+                      help="part to run (people|acts|votations)", metavar="PART")
 
     (options, args) = parser.parse_args()
 
-    if options.part == 'votations':
+    if options.part == 'people':
+        RandomItemsFactory().generate_people_dataset()
+    elif options.part == 'votations':
         RandomItemsFactory().generate_votations_dataset()
     else:
         RandomItemsFactory().generate_acts_dataset()

@@ -9,20 +9,20 @@
 
                 <h3>Editor Argomenti</h3>
             </div>
-            <form action="#" method="get" class="form-horizontal">{% csrf_token %}
+            <form action="{% url om_act_topics_update pk=act.act_ptr.pk %}" method="post" class="form-horizontal">{% csrf_token %}
                 <div class="modal-body">
-                    {% for cat in act.categories %}
+                    {% for category in act.categories %}
                     <fieldset>
                         <div class="control-group">
-                            <label class="control-label" for="category_{{ cat.id }}">
-                                <a href="#"><i class="icon-remove"></i></a> <span
-                                    class="label">{{ cat.name }}</span>
+                            <label class="control-label" for="category_{{ category.id }}">
+                                <a href="#"><i class="icon-remove"></i></a> 
+                                  <span class="label">{{ category.name }}</span>
                             </label>
 
                             <div class="controls">
-                                <select name="categories[{{ cat.id }}]" id="category_{{ cat.id }}"
+                                <select name="categories[{{ category.id }}]" id="category_{{ category.id }}"
                                         multiple="multiple">
-                                    {% for tag in act_tags_editor.tags %}
+                                    {% for tag in topics.tags %}
                                         <option value="{{ tag.id }}"{% if tag in act.tags %}
                                                 selected="selected"{% endif %}>{{ tag.name }}</option>
                                     {% endfor %}
@@ -34,13 +34,13 @@
 
                     <fieldset class="hide" id="category_skeleton">
                         <div class="control-group">
-                            <label class="control-label" for="category_{{ cat.id }}">
+                            <label class="control-label" for="category_{{ category.id }}">
                                 <a href="#"><i class="icon-remove"></i></a> <span class="label"></span>
                             </label>
 
                             <div class="controls">
                                 <select multiple="multiple">
-                                    {% for tag in act_tags_editor.tags %}<option value="{{ tag.id }}">{{ tag.name }}</option>{% endfor %}
+                                    {% for tag in topics.tags %}<option value="{{ tag.id }}">{{ tag.name }}</option>{% endfor %}
                                 </select>
                             </div>
                         </div>
@@ -49,8 +49,8 @@
                     <div class="control-group">
                         <select id="category_list">
                             <option value=""></option>
-                            {% for cat in act_tags_editor.categories %}
-                                <option value="{{ cat.id }}">{{ cat.name }}</option>
+                            {% for category in topics.categories %}
+                                <option value="{{ category.id }}">{{ category.name }}</option>
                             {% endfor %}
                         </select>
                         <a href="#" class="btn btn-mini btn-success" id="category_add"><i class="icon-plus icon-white"></i> Aggiungi</a>
@@ -147,7 +147,7 @@
                     // setting select field with category id
                     $('select', fieldset).attr({
                         'id' : 'category_' + new_cat.val(),
-                        'name' : 'category['+ new_cat.val() +']'
+                        'name' : 'categories['+ new_cat.val() +']'
                     });
 
                     // activate close button

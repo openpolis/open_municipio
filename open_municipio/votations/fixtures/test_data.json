@@ -1,1 +1,6852 @@
-[{"pk": 1, "model": "people.sitting", "fields": {"date": "2012-03-26", "idnum": "C/0001", "number": 1, "institution": 3}}, {"pk": 2, "model": "people.sitting", "fields": {"date": "2012-03-27", "idnum": "C/0002", "number": 2, "institution": 3}}, {"pk": 1, "model": "votations.votation", "fields": {"is_key": false, "n_legal": 20, "sitting": 1, "n_abst": 2, "n_maj": 19, "idnum": "1", "act_descr": "", "n_yes": 27, "act": 14, "n_no": 7, "outcome": 1, "n_absents": 4, "n_rebels": 17, "n_presents": 36}}, {"pk": 2, "model": "votations.votation", "fields": {"is_key": false, "n_legal": 20, "sitting": 1, "n_abst": 0, "n_maj": 20, "idnum": "2", "act_descr": "", "n_yes": 27, "act": 1, "n_no": 11, "outcome": 1, "n_absents": 2, "n_rebels": 15, "n_presents": 38}}, {"pk": 3, "model": "votations.votation", "fields": {"is_key": false, "n_legal": 20, "sitting": 1, "n_abst": 3, "n_maj": 19, "idnum": "3", "act_descr": "", "n_yes": 23, "act": null, "n_no": 11, "outcome": 1, "n_absents": 3, "n_rebels": 13, "n_presents": 37}}, {"pk": 4, "model": "votations.votation", "fields": {"is_key": false, "n_legal": 20, "sitting": 1, "n_abst": 1, "n_maj": 19, "idnum": "4", "act_descr": "", "n_yes": 24, "act": null, "n_no": 12, "outcome": 1, "n_absents": 3, "n_rebels": 17, "n_presents": 37}}, {"pk": 5, "model": "votations.votation", "fields": {"is_key": false, "n_legal": 20, "sitting": 1, "n_abst": 1, "n_maj": 20, "idnum": "5", "act_descr": "", "n_yes": 26, "act": 10, "n_no": 12, "outcome": 1, "n_absents": 1, "n_rebels": 14, "n_presents": 39}}, {"pk": 6, "model": "votations.votation", "fields": {"is_key": false, "n_legal": 20, "sitting": 1, "n_abst": 2, "n_maj": 19, "idnum": "6", "act_descr": "", "n_yes": 17, "act": 5, "n_no": 18, "outcome": 0, "n_absents": 3, "n_rebels": 18, "n_presents": 37}}, {"pk": 7, "model": "votations.votation", "fields": {"is_key": false, "n_legal": 20, "sitting": 2, "n_abst": 0, "n_maj": 18, "idnum": "1", "act_descr": "", "n_yes": 20, "act": 11, "n_no": 15, "outcome": 1, "n_absents": 5, "n_rebels": 27, "n_presents": 35}}, {"pk": 8, "model": "votations.votation", "fields": {"is_key": false, "n_legal": 20, "sitting": 2, "n_abst": 2, "n_maj": 20, "idnum": "2", "act_descr": "", "n_yes": 21, "act": 6, "n_no": 16, "outcome": 1, "n_absents": 1, "n_rebels": 28, "n_presents": 39}}, {"pk": 9, "model": "votations.votation", "fields": {"is_key": false, "n_legal": 20, "sitting": 2, "n_abst": 2, "n_maj": 21, "idnum": "3", "act_descr": "", "n_yes": 26, "act": 2, "n_no": 12, "outcome": 1, "n_absents": 0, "n_rebels": 15, "n_presents": 40}}, {"pk": 10, "model": "votations.votation", "fields": {"is_key": false, "n_legal": 20, "sitting": 2, "n_abst": 3, "n_maj": 19, "idnum": "4", "act_descr": "", "n_yes": 21, "act": null, "n_no": 13, "outcome": 1, "n_absents": 3, "n_rebels": 22, "n_presents": 37}}, {"pk": 11, "model": "votations.votation", "fields": {"is_key": false, "n_legal": 20, "sitting": 2, "n_abst": 0, "n_maj": 20, "idnum": "5", "act_descr": "", "n_yes": 28, "act": 1, "n_no": 11, "outcome": 1, "n_absents": 1, "n_rebels": 17, "n_presents": 39}}, {"pk": 12, "model": "votations.votation", "fields": {"is_key": false, "n_legal": 20, "sitting": 2, "n_abst": 2, "n_maj": 20, "idnum": "6", "act_descr": "", "n_yes": 24, "act": 12, "n_no": 13, "outcome": 1, "n_absents": 1, "n_rebels": 18, "n_presents": 39}}]
+[
+    {
+        "pk": 1, 
+        "model": "votations.votation", 
+        "fields": {
+            "is_key": false, 
+            "n_legal": 20, 
+            "sitting": 1, 
+            "n_abst": 3, 
+            "n_maj": 20, 
+            "idnum": "1", 
+            "act_descr": "", 
+            "n_yes": 22, 
+            "act": 11, 
+            "n_no": 13, 
+            "outcome": 1, 
+            "n_absents": 1, 
+            "n_rebels": 20, 
+            "n_presents": 38
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "votations.votation", 
+        "fields": {
+            "is_key": false, 
+            "n_legal": 20, 
+            "sitting": 1, 
+            "n_abst": 1, 
+            "n_maj": 19, 
+            "idnum": "2", 
+            "act_descr": "", 
+            "n_yes": 18, 
+            "act": 2, 
+            "n_no": 18, 
+            "outcome": 0, 
+            "n_absents": 2, 
+            "n_rebels": 18, 
+            "n_presents": 37
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "votations.votation", 
+        "fields": {
+            "is_key": false, 
+            "n_legal": 20, 
+            "sitting": 1, 
+            "n_abst": 0, 
+            "n_maj": 19, 
+            "idnum": "3", 
+            "act_descr": "", 
+            "n_yes": 27, 
+            "act": 24, 
+            "n_no": 10, 
+            "outcome": 1, 
+            "n_absents": 2, 
+            "n_rebels": 11, 
+            "n_presents": 37
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "votations.votation", 
+        "fields": {
+            "is_key": false, 
+            "n_legal": 20, 
+            "sitting": 1, 
+            "n_abst": 6, 
+            "n_maj": 18, 
+            "idnum": "4", 
+            "act_descr": "", 
+            "n_yes": 20, 
+            "act": 10, 
+            "n_no": 9, 
+            "outcome": 1, 
+            "n_absents": 4, 
+            "n_rebels": 22, 
+            "n_presents": 35
+        }
+    }, 
+    {
+        "pk": 5, 
+        "model": "votations.votation", 
+        "fields": {
+            "is_key": false, 
+            "n_legal": 20, 
+            "sitting": 1, 
+            "n_abst": 1, 
+            "n_maj": 17, 
+            "idnum": "5", 
+            "act_descr": "", 
+            "n_yes": 20, 
+            "act": 4, 
+            "n_no": 12, 
+            "outcome": 1, 
+            "n_absents": 6, 
+            "n_rebels": 17, 
+            "n_presents": 33
+        }
+    }, 
+    {
+        "pk": 6, 
+        "model": "votations.votation", 
+        "fields": {
+            "is_key": false, 
+            "n_legal": 20, 
+            "sitting": 2, 
+            "n_abst": 6, 
+            "n_maj": 19, 
+            "idnum": "1", 
+            "act_descr": "", 
+            "n_yes": 19, 
+            "act": 18, 
+            "n_no": 11, 
+            "outcome": 1, 
+            "n_absents": 3, 
+            "n_rebels": 18, 
+            "n_presents": 36
+        }
+    }, 
+    {
+        "pk": 7, 
+        "model": "votations.votation", 
+        "fields": {
+            "is_key": false, 
+            "n_legal": 20, 
+            "sitting": 2, 
+            "n_abst": 2, 
+            "n_maj": 19, 
+            "idnum": "2", 
+            "act_descr": "", 
+            "n_yes": 17, 
+            "act": 24, 
+            "n_no": 17, 
+            "outcome": 0, 
+            "n_absents": 3, 
+            "n_rebels": 13, 
+            "n_presents": 36
+        }
+    }, 
+    {
+        "pk": 8, 
+        "model": "votations.votation", 
+        "fields": {
+            "is_key": false, 
+            "n_legal": 20, 
+            "sitting": 2, 
+            "n_abst": 1, 
+            "n_maj": 19, 
+            "idnum": "3", 
+            "act_descr": "", 
+            "n_yes": 26, 
+            "act": 8, 
+            "n_no": 9, 
+            "outcome": 1, 
+            "n_absents": 3, 
+            "n_rebels": 13, 
+            "n_presents": 36
+        }
+    }, 
+    {
+        "pk": 9, 
+        "model": "votations.votation", 
+        "fields": {
+            "is_key": false, 
+            "n_legal": 20, 
+            "sitting": 2, 
+            "n_abst": 2, 
+            "n_maj": 20, 
+            "idnum": "4", 
+            "act_descr": "", 
+            "n_yes": 28, 
+            "act": 10, 
+            "n_no": 9, 
+            "outcome": 1, 
+            "n_absents": 0, 
+            "n_rebels": 13, 
+            "n_presents": 39
+        }
+    }, 
+    {
+        "pk": 10, 
+        "model": "votations.votation", 
+        "fields": {
+            "is_key": false, 
+            "n_legal": 20, 
+            "sitting": 2, 
+            "n_abst": 2, 
+            "n_maj": 20, 
+            "idnum": "5", 
+            "act_descr": "", 
+            "n_yes": 29, 
+            "act": 27, 
+            "n_no": 7, 
+            "outcome": 1, 
+            "n_absents": 1, 
+            "n_rebels": 10, 
+            "n_presents": 38
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 3, 
+            "group": 1, 
+            "created": "2012-04-12 21:27:29", 
+            "modified": "2012-04-12 21:27:29", 
+            "votation": 1, 
+            "n_no": 3, 
+            "n_yes": 5, 
+            "vote": 1, 
+            "n_presents": 11
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 2, 
+            "created": "2012-04-12 21:27:29", 
+            "modified": "2012-04-12 21:27:29", 
+            "votation": 1, 
+            "n_no": 0, 
+            "n_yes": 4, 
+            "vote": 1, 
+            "n_presents": 4
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 3, 
+            "created": "2012-04-12 21:27:29", 
+            "modified": "2012-04-12 21:27:29", 
+            "votation": 1, 
+            "n_no": 0, 
+            "n_yes": 1, 
+            "vote": 3, 
+            "n_presents": 2
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 4, 
+            "created": "2012-04-12 21:27:29", 
+            "modified": "2012-04-12 21:27:29", 
+            "votation": 1, 
+            "n_no": 0, 
+            "n_yes": 1, 
+            "vote": 1, 
+            "n_presents": 1
+        }
+    }, 
+    {
+        "pk": 5, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 5, 
+            "created": "2012-04-12 21:27:29", 
+            "modified": "2012-04-12 21:27:29", 
+            "votation": 1, 
+            "n_no": 3, 
+            "n_yes": 3, 
+            "vote": 3, 
+            "n_presents": 6
+        }
+    }, 
+    {
+        "pk": 6, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 7, 
+            "created": "2012-04-12 21:27:29", 
+            "modified": "2012-04-12 21:27:29", 
+            "votation": 1, 
+            "n_no": 0, 
+            "n_yes": 1, 
+            "vote": 1, 
+            "n_presents": 1
+        }
+    }, 
+    {
+        "pk": 7, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 8, 
+            "created": "2012-04-12 21:27:29", 
+            "modified": "2012-04-12 21:27:29", 
+            "votation": 1, 
+            "n_no": 3, 
+            "n_yes": 3, 
+            "vote": 3, 
+            "n_presents": 6
+        }
+    }, 
+    {
+        "pk": 8, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 9, 
+            "created": "2012-04-12 21:27:29", 
+            "modified": "2012-04-12 21:27:29", 
+            "votation": 1, 
+            "n_no": 1, 
+            "n_yes": 0, 
+            "vote": 0, 
+            "n_presents": 1
+        }
+    }, 
+    {
+        "pk": 9, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 10, 
+            "created": "2012-04-12 21:27:29", 
+            "modified": "2012-04-12 21:27:29", 
+            "votation": 1, 
+            "n_no": 0, 
+            "n_yes": 1, 
+            "vote": 1, 
+            "n_presents": 1
+        }
+    }, 
+    {
+        "pk": 10, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 11, 
+            "created": "2012-04-12 21:27:29", 
+            "modified": "2012-04-12 21:27:29", 
+            "votation": 1, 
+            "n_no": 2, 
+            "n_yes": 0, 
+            "vote": 0, 
+            "n_presents": 2
+        }
+    }, 
+    {
+        "pk": 11, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 12, 
+            "created": "2012-04-12 21:27:29", 
+            "modified": "2012-04-12 21:27:29", 
+            "votation": 1, 
+            "n_no": 0, 
+            "n_yes": 2, 
+            "vote": 1, 
+            "n_presents": 2
+        }
+    }, 
+    {
+        "pk": 12, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 13, 
+            "created": "2012-04-12 21:27:29", 
+            "modified": "2012-04-12 21:27:29", 
+            "votation": 1, 
+            "n_no": 0, 
+            "n_yes": 1, 
+            "vote": 1, 
+            "n_presents": 1
+        }
+    }, 
+    {
+        "pk": 13, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 14, 
+            "created": "2012-04-12 21:27:29", 
+            "modified": "2012-04-12 21:27:29", 
+            "votation": 1, 
+            "n_no": 1, 
+            "n_yes": 0, 
+            "vote": 0, 
+            "n_presents": 1
+        }
+    }, 
+    {
+        "pk": 14, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 1, 
+            "created": "2012-04-12 21:27:31", 
+            "modified": "2012-04-12 21:27:31", 
+            "votation": 2, 
+            "n_no": 7, 
+            "n_yes": 4, 
+            "vote": 0, 
+            "n_presents": 11
+        }
+    }, 
+    {
+        "pk": 15, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 2, 
+            "created": "2012-04-12 21:27:31", 
+            "modified": "2012-04-12 21:27:31", 
+            "votation": 2, 
+            "n_no": 1, 
+            "n_yes": 3, 
+            "vote": 1, 
+            "n_presents": 4
+        }
+    }, 
+    {
+        "pk": 16, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 3, 
+            "created": "2012-04-12 21:27:31", 
+            "modified": "2012-04-12 21:27:31", 
+            "votation": 2, 
+            "n_no": 1, 
+            "n_yes": 1, 
+            "vote": 3, 
+            "n_presents": 2
+        }
+    }, 
+    {
+        "pk": 17, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 4, 
+            "created": "2012-04-12 21:27:31", 
+            "modified": "2012-04-12 21:27:31", 
+            "votation": 2, 
+            "n_no": 0, 
+            "n_yes": 1, 
+            "vote": 1, 
+            "n_presents": 1
+        }
+    }, 
+    {
+        "pk": 18, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 1, 
+            "group": 5, 
+            "created": "2012-04-12 21:27:31", 
+            "modified": "2012-04-12 21:27:31", 
+            "votation": 2, 
+            "n_no": 3, 
+            "n_yes": 2, 
+            "vote": 0, 
+            "n_presents": 6
+        }
+    }, 
+    {
+        "pk": 19, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 7, 
+            "created": "2012-04-12 21:27:31", 
+            "modified": "2012-04-12 21:27:31", 
+            "votation": 2, 
+            "n_no": 1, 
+            "n_yes": 0, 
+            "vote": 0, 
+            "n_presents": 1
+        }
+    }, 
+    {
+        "pk": 20, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 8, 
+            "created": "2012-04-12 21:27:31", 
+            "modified": "2012-04-12 21:27:31", 
+            "votation": 2, 
+            "n_no": 3, 
+            "n_yes": 3, 
+            "vote": 3, 
+            "n_presents": 6
+        }
+    }, 
+    {
+        "pk": 21, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 9, 
+            "created": "2012-04-12 21:27:31", 
+            "modified": "2012-04-12 21:27:31", 
+            "votation": 2, 
+            "n_no": 0, 
+            "n_yes": 1, 
+            "vote": 1, 
+            "n_presents": 1
+        }
+    }, 
+    {
+        "pk": 22, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 10, 
+            "created": "2012-04-12 21:27:31", 
+            "modified": "2012-04-12 21:27:31", 
+            "votation": 2, 
+            "n_no": 0, 
+            "n_yes": 1, 
+            "vote": 1, 
+            "n_presents": 1
+        }
+    }, 
+    {
+        "pk": 23, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 11, 
+            "created": "2012-04-12 21:27:31", 
+            "modified": "2012-04-12 21:27:31", 
+            "votation": 2, 
+            "n_no": 0, 
+            "n_yes": 0, 
+            "vote": 4, 
+            "n_presents": 2
+        }
+    }, 
+    {
+        "pk": 24, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 12, 
+            "created": "2012-04-12 21:27:31", 
+            "modified": "2012-04-12 21:27:31", 
+            "votation": 2, 
+            "n_no": 1, 
+            "n_yes": 1, 
+            "vote": 3, 
+            "n_presents": 2
+        }
+    }, 
+    {
+        "pk": 25, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 13, 
+            "created": "2012-04-12 21:27:31", 
+            "modified": "2012-04-12 21:27:31", 
+            "votation": 2, 
+            "n_no": 0, 
+            "n_yes": 1, 
+            "vote": 1, 
+            "n_presents": 1
+        }
+    }, 
+    {
+        "pk": 26, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 14, 
+            "created": "2012-04-12 21:27:31", 
+            "modified": "2012-04-12 21:27:31", 
+            "votation": 2, 
+            "n_no": 1, 
+            "n_yes": 0, 
+            "vote": 0, 
+            "n_presents": 1
+        }
+    }, 
+    {
+        "pk": 27, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 1, 
+            "created": "2012-04-12 21:27:32", 
+            "modified": "2012-04-12 21:27:32", 
+            "votation": 3, 
+            "n_no": 1, 
+            "n_yes": 9, 
+            "vote": 1, 
+            "n_presents": 11
+        }
+    }, 
+    {
+        "pk": 28, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 2, 
+            "created": "2012-04-12 21:27:32", 
+            "modified": "2012-04-12 21:27:32", 
+            "votation": 3, 
+            "n_no": 2, 
+            "n_yes": 2, 
+            "vote": 3, 
+            "n_presents": 4
+        }
+    }, 
+    {
+        "pk": 29, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 3, 
+            "created": "2012-04-12 21:27:32", 
+            "modified": "2012-04-12 21:27:32", 
+            "votation": 3, 
+            "n_no": 0, 
+            "n_yes": 2, 
+            "vote": 1, 
+            "n_presents": 2
+        }
+    }, 
+    {
+        "pk": 30, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 4, 
+            "created": "2012-04-12 21:27:32", 
+            "modified": "2012-04-12 21:27:32", 
+            "votation": 3, 
+            "n_no": 1, 
+            "n_yes": 0, 
+            "vote": 0, 
+            "n_presents": 1
+        }
+    }, 
+    {
+        "pk": 31, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 5, 
+            "created": "2012-04-12 21:27:32", 
+            "modified": "2012-04-12 21:27:32", 
+            "votation": 3, 
+            "n_no": 2, 
+            "n_yes": 4, 
+            "vote": 1, 
+            "n_presents": 6
+        }
+    }, 
+    {
+        "pk": 32, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 7, 
+            "created": "2012-04-12 21:27:32", 
+            "modified": "2012-04-12 21:27:32", 
+            "votation": 3, 
+            "n_no": 1, 
+            "n_yes": 0, 
+            "vote": 0, 
+            "n_presents": 1
+        }
+    }, 
+    {
+        "pk": 33, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 8, 
+            "created": "2012-04-12 21:27:32", 
+            "modified": "2012-04-12 21:27:32", 
+            "votation": 3, 
+            "n_no": 1, 
+            "n_yes": 5, 
+            "vote": 1, 
+            "n_presents": 6
+        }
+    }, 
+    {
+        "pk": 34, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 9, 
+            "created": "2012-04-12 21:27:32", 
+            "modified": "2012-04-12 21:27:32", 
+            "votation": 3, 
+            "n_no": 0, 
+            "n_yes": 1, 
+            "vote": 1, 
+            "n_presents": 1
+        }
+    }, 
+    {
+        "pk": 35, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 10, 
+            "created": "2012-04-12 21:27:32", 
+            "modified": "2012-04-12 21:27:32", 
+            "votation": 3, 
+            "n_no": 0, 
+            "n_yes": 1, 
+            "vote": 1, 
+            "n_presents": 1
+        }
+    }, 
+    {
+        "pk": 36, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 11, 
+            "created": "2012-04-12 21:27:32", 
+            "modified": "2012-04-12 21:27:32", 
+            "votation": 3, 
+            "n_no": 0, 
+            "n_yes": 2, 
+            "vote": 1, 
+            "n_presents": 2
+        }
+    }, 
+    {
+        "pk": 37, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 12, 
+            "created": "2012-04-12 21:27:32", 
+            "modified": "2012-04-12 21:27:32", 
+            "votation": 3, 
+            "n_no": 0, 
+            "n_yes": 1, 
+            "vote": 3, 
+            "n_presents": 2
+        }
+    }, 
+    {
+        "pk": 38, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 13, 
+            "created": "2012-04-12 21:27:32", 
+            "modified": "2012-04-12 21:27:32", 
+            "votation": 3, 
+            "n_no": 1, 
+            "n_yes": 0, 
+            "vote": 0, 
+            "n_presents": 1
+        }
+    }, 
+    {
+        "pk": 39, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 14, 
+            "created": "2012-04-12 21:27:32", 
+            "modified": "2012-04-12 21:27:32", 
+            "votation": 3, 
+            "n_no": 1, 
+            "n_yes": 0, 
+            "vote": 0, 
+            "n_presents": 1
+        }
+    }, 
+    {
+        "pk": 40, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 2, 
+            "group": 1, 
+            "created": "2012-04-12 21:27:34", 
+            "modified": "2012-04-12 21:27:34", 
+            "votation": 4, 
+            "n_no": 1, 
+            "n_yes": 6, 
+            "vote": 1, 
+            "n_presents": 11
+        }
+    }, 
+    {
+        "pk": 41, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 2, 
+            "created": "2012-04-12 21:27:34", 
+            "modified": "2012-04-12 21:27:34", 
+            "votation": 4, 
+            "n_no": 1, 
+            "n_yes": 2, 
+            "vote": 1, 
+            "n_presents": 4
+        }
+    }, 
+    {
+        "pk": 42, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 3, 
+            "created": "2012-04-12 21:27:34", 
+            "modified": "2012-04-12 21:27:34", 
+            "votation": 4, 
+            "n_no": 1, 
+            "n_yes": 1, 
+            "vote": 3, 
+            "n_presents": 2
+        }
+    }, 
+    {
+        "pk": 43, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 4, 
+            "created": "2012-04-12 21:27:34", 
+            "modified": "2012-04-12 21:27:34", 
+            "votation": 4, 
+            "n_no": 0, 
+            "n_yes": 1, 
+            "vote": 1, 
+            "n_presents": 1
+        }
+    }, 
+    {
+        "pk": 44, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 2, 
+            "group": 5, 
+            "created": "2012-04-12 21:27:34", 
+            "modified": "2012-04-12 21:27:34", 
+            "votation": 4, 
+            "n_no": 2, 
+            "n_yes": 2, 
+            "vote": 3, 
+            "n_presents": 6
+        }
+    }, 
+    {
+        "pk": 45, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 7, 
+            "created": "2012-04-12 21:27:34", 
+            "modified": "2012-04-12 21:27:34", 
+            "votation": 4, 
+            "n_no": 0, 
+            "n_yes": 1, 
+            "vote": 1, 
+            "n_presents": 1
+        }
+    }, 
+    {
+        "pk": 46, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 1, 
+            "group": 8, 
+            "created": "2012-04-12 21:27:34", 
+            "modified": "2012-04-12 21:27:34", 
+            "votation": 4, 
+            "n_no": 2, 
+            "n_yes": 3, 
+            "vote": 1, 
+            "n_presents": 6
+        }
+    }, 
+    {
+        "pk": 47, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 1, 
+            "group": 9, 
+            "created": "2012-04-12 21:27:34", 
+            "modified": "2012-04-12 21:27:34", 
+            "votation": 4, 
+            "n_no": 0, 
+            "n_yes": 0, 
+            "vote": 2, 
+            "n_presents": 1
+        }
+    }, 
+    {
+        "pk": 48, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 10, 
+            "created": "2012-04-12 21:27:34", 
+            "modified": "2012-04-12 21:27:34", 
+            "votation": 4, 
+            "n_no": 1, 
+            "n_yes": 0, 
+            "vote": 0, 
+            "n_presents": 1
+        }
+    }, 
+    {
+        "pk": 49, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 11, 
+            "created": "2012-04-12 21:27:34", 
+            "modified": "2012-04-12 21:27:34", 
+            "votation": 4, 
+            "n_no": 0, 
+            "n_yes": 1, 
+            "vote": 3, 
+            "n_presents": 2
+        }
+    }, 
+    {
+        "pk": 50, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 12, 
+            "created": "2012-04-12 21:27:34", 
+            "modified": "2012-04-12 21:27:34", 
+            "votation": 4, 
+            "n_no": 1, 
+            "n_yes": 1, 
+            "vote": 3, 
+            "n_presents": 2
+        }
+    }, 
+    {
+        "pk": 51, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 13, 
+            "created": "2012-04-12 21:27:34", 
+            "modified": "2012-04-12 21:27:34", 
+            "votation": 4, 
+            "n_no": 0, 
+            "n_yes": 1, 
+            "vote": 1, 
+            "n_presents": 1
+        }
+    }, 
+    {
+        "pk": 52, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 14, 
+            "created": "2012-04-12 21:27:34", 
+            "modified": "2012-04-12 21:27:34", 
+            "votation": 4, 
+            "n_no": 0, 
+            "n_yes": 1, 
+            "vote": 1, 
+            "n_presents": 1
+        }
+    }, 
+    {
+        "pk": 53, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 1, 
+            "created": "2012-04-12 21:27:35", 
+            "modified": "2012-04-12 21:27:35", 
+            "votation": 5, 
+            "n_no": 4, 
+            "n_yes": 5, 
+            "vote": 1, 
+            "n_presents": 11
+        }
+    }, 
+    {
+        "pk": 54, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 2, 
+            "created": "2012-04-12 21:27:35", 
+            "modified": "2012-04-12 21:27:35", 
+            "votation": 5, 
+            "n_no": 0, 
+            "n_yes": 3, 
+            "vote": 1, 
+            "n_presents": 4
+        }
+    }, 
+    {
+        "pk": 55, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 3, 
+            "created": "2012-04-12 21:27:35", 
+            "modified": "2012-04-12 21:27:35", 
+            "votation": 5, 
+            "n_no": 0, 
+            "n_yes": 1, 
+            "vote": 3, 
+            "n_presents": 2
+        }
+    }, 
+    {
+        "pk": 56, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 4, 
+            "created": "2012-04-12 21:27:35", 
+            "modified": "2012-04-12 21:27:35", 
+            "votation": 5, 
+            "n_no": 0, 
+            "n_yes": 1, 
+            "vote": 1, 
+            "n_presents": 1
+        }
+    }, 
+    {
+        "pk": 57, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 5, 
+            "created": "2012-04-12 21:27:35", 
+            "modified": "2012-04-12 21:27:35", 
+            "votation": 5, 
+            "n_no": 3, 
+            "n_yes": 2, 
+            "vote": 0, 
+            "n_presents": 6
+        }
+    }, 
+    {
+        "pk": 58, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 7, 
+            "created": "2012-04-12 21:27:35", 
+            "modified": "2012-04-12 21:27:35", 
+            "votation": 5, 
+            "n_no": 1, 
+            "n_yes": 0, 
+            "vote": 0, 
+            "n_presents": 1
+        }
+    }, 
+    {
+        "pk": 59, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 1, 
+            "group": 8, 
+            "created": "2012-04-12 21:27:35", 
+            "modified": "2012-04-12 21:27:35", 
+            "votation": 5, 
+            "n_no": 1, 
+            "n_yes": 3, 
+            "vote": 1, 
+            "n_presents": 6
+        }
+    }, 
+    {
+        "pk": 60, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 9, 
+            "created": "2012-04-12 21:27:35", 
+            "modified": "2012-04-12 21:27:35", 
+            "votation": 5, 
+            "n_no": 0, 
+            "n_yes": 1, 
+            "vote": 1, 
+            "n_presents": 1
+        }
+    }, 
+    {
+        "pk": 61, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 10, 
+            "created": "2012-04-12 21:27:35", 
+            "modified": "2012-04-12 21:27:35", 
+            "votation": 5, 
+            "n_no": 1, 
+            "n_yes": 0, 
+            "vote": 0, 
+            "n_presents": 1
+        }
+    }, 
+    {
+        "pk": 62, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 11, 
+            "created": "2012-04-12 21:27:35", 
+            "modified": "2012-04-12 21:27:35", 
+            "votation": 5, 
+            "n_no": 0, 
+            "n_yes": 2, 
+            "vote": 1, 
+            "n_presents": 2
+        }
+    }, 
+    {
+        "pk": 63, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 12, 
+            "created": "2012-04-12 21:27:36", 
+            "modified": "2012-04-12 21:27:36", 
+            "votation": 5, 
+            "n_no": 1, 
+            "n_yes": 1, 
+            "vote": 3, 
+            "n_presents": 2
+        }
+    }, 
+    {
+        "pk": 64, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 13, 
+            "created": "2012-04-12 21:27:36", 
+            "modified": "2012-04-12 21:27:36", 
+            "votation": 5, 
+            "n_no": 1, 
+            "n_yes": 0, 
+            "vote": 0, 
+            "n_presents": 1
+        }
+    }, 
+    {
+        "pk": 65, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 14, 
+            "created": "2012-04-12 21:27:36", 
+            "modified": "2012-04-12 21:27:36", 
+            "votation": 5, 
+            "n_no": 0, 
+            "n_yes": 1, 
+            "vote": 1, 
+            "n_presents": 1
+        }
+    }, 
+    {
+        "pk": 66, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 1, 
+            "group": 1, 
+            "created": "2012-04-12 21:27:37", 
+            "modified": "2012-04-12 21:27:37", 
+            "votation": 6, 
+            "n_no": 3, 
+            "n_yes": 6, 
+            "vote": 1, 
+            "n_presents": 11
+        }
+    }, 
+    {
+        "pk": 67, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 1, 
+            "group": 2, 
+            "created": "2012-04-12 21:27:37", 
+            "modified": "2012-04-12 21:27:37", 
+            "votation": 6, 
+            "n_no": 1, 
+            "n_yes": 2, 
+            "vote": 1, 
+            "n_presents": 4
+        }
+    }, 
+    {
+        "pk": 68, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 3, 
+            "created": "2012-04-12 21:27:37", 
+            "modified": "2012-04-12 21:27:37", 
+            "votation": 6, 
+            "n_no": 1, 
+            "n_yes": 1, 
+            "vote": 3, 
+            "n_presents": 2
+        }
+    }, 
+    {
+        "pk": 69, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 4, 
+            "created": "2012-04-12 21:27:37", 
+            "modified": "2012-04-12 21:27:37", 
+            "votation": 6, 
+            "n_no": 0, 
+            "n_yes": 1, 
+            "vote": 1, 
+            "n_presents": 1
+        }
+    }, 
+    {
+        "pk": 70, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 5, 
+            "created": "2012-04-12 21:27:37", 
+            "modified": "2012-04-12 21:27:37", 
+            "votation": 6, 
+            "n_no": 0, 
+            "n_yes": 4, 
+            "vote": 1, 
+            "n_presents": 6
+        }
+    }, 
+    {
+        "pk": 71, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 7, 
+            "created": "2012-04-12 21:27:37", 
+            "modified": "2012-04-12 21:27:37", 
+            "votation": 6, 
+            "n_no": 0, 
+            "n_yes": 1, 
+            "vote": 1, 
+            "n_presents": 1
+        }
+    }, 
+    {
+        "pk": 72, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 1, 
+            "group": 8, 
+            "created": "2012-04-12 21:27:37", 
+            "modified": "2012-04-12 21:27:37", 
+            "votation": 6, 
+            "n_no": 2, 
+            "n_yes": 3, 
+            "vote": 1, 
+            "n_presents": 6
+        }
+    }, 
+    {
+        "pk": 73, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 1, 
+            "group": 9, 
+            "created": "2012-04-12 21:27:37", 
+            "modified": "2012-04-12 21:27:37", 
+            "votation": 6, 
+            "n_no": 0, 
+            "n_yes": 0, 
+            "vote": 2, 
+            "n_presents": 1
+        }
+    }, 
+    {
+        "pk": 74, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 10, 
+            "created": "2012-04-12 21:27:37", 
+            "modified": "2012-04-12 21:27:37", 
+            "votation": 6, 
+            "n_no": 1, 
+            "n_yes": 0, 
+            "vote": 0, 
+            "n_presents": 1
+        }
+    }, 
+    {
+        "pk": 75, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 11, 
+            "created": "2012-04-12 21:27:37", 
+            "modified": "2012-04-12 21:27:37", 
+            "votation": 6, 
+            "n_no": 1, 
+            "n_yes": 1, 
+            "vote": 3, 
+            "n_presents": 2
+        }
+    }, 
+    {
+        "pk": 76, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 1, 
+            "group": 12, 
+            "created": "2012-04-12 21:27:37", 
+            "modified": "2012-04-12 21:27:37", 
+            "votation": 6, 
+            "n_no": 1, 
+            "n_yes": 0, 
+            "vote": 3, 
+            "n_presents": 2
+        }
+    }, 
+    {
+        "pk": 77, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 1, 
+            "group": 13, 
+            "created": "2012-04-12 21:27:37", 
+            "modified": "2012-04-12 21:27:37", 
+            "votation": 6, 
+            "n_no": 0, 
+            "n_yes": 0, 
+            "vote": 2, 
+            "n_presents": 1
+        }
+    }, 
+    {
+        "pk": 78, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 14, 
+            "created": "2012-04-12 21:27:37", 
+            "modified": "2012-04-12 21:27:37", 
+            "votation": 6, 
+            "n_no": 1, 
+            "n_yes": 0, 
+            "vote": 0, 
+            "n_presents": 1
+        }
+    }, 
+    {
+        "pk": 79, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 1, 
+            "created": "2012-04-12 21:27:39", 
+            "modified": "2012-04-12 21:27:39", 
+            "votation": 7, 
+            "n_no": 4, 
+            "n_yes": 6, 
+            "vote": 1, 
+            "n_presents": 11
+        }
+    }, 
+    {
+        "pk": 80, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 1, 
+            "group": 2, 
+            "created": "2012-04-12 21:27:39", 
+            "modified": "2012-04-12 21:27:39", 
+            "votation": 7, 
+            "n_no": 2, 
+            "n_yes": 1, 
+            "vote": 0, 
+            "n_presents": 4
+        }
+    }, 
+    {
+        "pk": 81, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 3, 
+            "created": "2012-04-12 21:27:39", 
+            "modified": "2012-04-12 21:27:39", 
+            "votation": 7, 
+            "n_no": 1, 
+            "n_yes": 1, 
+            "vote": 3, 
+            "n_presents": 2
+        }
+    }, 
+    {
+        "pk": 82, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 4, 
+            "created": "2012-04-12 21:27:39", 
+            "modified": "2012-04-12 21:27:39", 
+            "votation": 7, 
+            "n_no": 1, 
+            "n_yes": 0, 
+            "vote": 0, 
+            "n_presents": 1
+        }
+    }, 
+    {
+        "pk": 83, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 5, 
+            "created": "2012-04-12 21:27:39", 
+            "modified": "2012-04-12 21:27:39", 
+            "votation": 7, 
+            "n_no": 2, 
+            "n_yes": 4, 
+            "vote": 1, 
+            "n_presents": 6
+        }
+    }, 
+    {
+        "pk": 84, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 7, 
+            "created": "2012-04-12 21:27:39", 
+            "modified": "2012-04-12 21:27:39", 
+            "votation": 7, 
+            "n_no": 0, 
+            "n_yes": 1, 
+            "vote": 1, 
+            "n_presents": 1
+        }
+    }, 
+    {
+        "pk": 85, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 8, 
+            "created": "2012-04-12 21:27:39", 
+            "modified": "2012-04-12 21:27:39", 
+            "votation": 7, 
+            "n_no": 4, 
+            "n_yes": 1, 
+            "vote": 0, 
+            "n_presents": 6
+        }
+    }, 
+    {
+        "pk": 86, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 1, 
+            "group": 9, 
+            "created": "2012-04-12 21:27:39", 
+            "modified": "2012-04-12 21:27:39", 
+            "votation": 7, 
+            "n_no": 0, 
+            "n_yes": 0, 
+            "vote": 2, 
+            "n_presents": 1
+        }
+    }, 
+    {
+        "pk": 87, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 10, 
+            "created": "2012-04-12 21:27:39", 
+            "modified": "2012-04-12 21:27:39", 
+            "votation": 7, 
+            "n_no": 1, 
+            "n_yes": 0, 
+            "vote": 0, 
+            "n_presents": 1
+        }
+    }, 
+    {
+        "pk": 88, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 11, 
+            "created": "2012-04-12 21:27:39", 
+            "modified": "2012-04-12 21:27:39", 
+            "votation": 7, 
+            "n_no": 2, 
+            "n_yes": 0, 
+            "vote": 0, 
+            "n_presents": 2
+        }
+    }, 
+    {
+        "pk": 89, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 12, 
+            "created": "2012-04-12 21:27:39", 
+            "modified": "2012-04-12 21:27:39", 
+            "votation": 7, 
+            "n_no": 0, 
+            "n_yes": 2, 
+            "vote": 1, 
+            "n_presents": 2
+        }
+    }, 
+    {
+        "pk": 90, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 13, 
+            "created": "2012-04-12 21:27:39", 
+            "modified": "2012-04-12 21:27:39", 
+            "votation": 7, 
+            "n_no": 0, 
+            "n_yes": 0, 
+            "vote": 4, 
+            "n_presents": 1
+        }
+    }, 
+    {
+        "pk": 91, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 14, 
+            "created": "2012-04-12 21:27:39", 
+            "modified": "2012-04-12 21:27:39", 
+            "votation": 7, 
+            "n_no": 0, 
+            "n_yes": 1, 
+            "vote": 1, 
+            "n_presents": 1
+        }
+    }, 
+    {
+        "pk": 92, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 1, 
+            "created": "2012-04-12 21:27:40", 
+            "modified": "2012-04-12 21:27:40", 
+            "votation": 8, 
+            "n_no": 3, 
+            "n_yes": 6, 
+            "vote": 1, 
+            "n_presents": 11
+        }
+    }, 
+    {
+        "pk": 93, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 2, 
+            "created": "2012-04-12 21:27:40", 
+            "modified": "2012-04-12 21:27:40", 
+            "votation": 8, 
+            "n_no": 1, 
+            "n_yes": 3, 
+            "vote": 1, 
+            "n_presents": 4
+        }
+    }, 
+    {
+        "pk": 94, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 3, 
+            "created": "2012-04-12 21:27:40", 
+            "modified": "2012-04-12 21:27:40", 
+            "votation": 8, 
+            "n_no": 1, 
+            "n_yes": 1, 
+            "vote": 3, 
+            "n_presents": 2
+        }
+    }, 
+    {
+        "pk": 95, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 4, 
+            "created": "2012-04-12 21:27:40", 
+            "modified": "2012-04-12 21:27:40", 
+            "votation": 8, 
+            "n_no": 0, 
+            "n_yes": 1, 
+            "vote": 1, 
+            "n_presents": 1
+        }
+    }, 
+    {
+        "pk": 96, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 1, 
+            "group": 5, 
+            "created": "2012-04-12 21:27:40", 
+            "modified": "2012-04-12 21:27:40", 
+            "votation": 8, 
+            "n_no": 1, 
+            "n_yes": 4, 
+            "vote": 1, 
+            "n_presents": 6
+        }
+    }, 
+    {
+        "pk": 97, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 7, 
+            "created": "2012-04-12 21:27:40", 
+            "modified": "2012-04-12 21:27:40", 
+            "votation": 8, 
+            "n_no": 0, 
+            "n_yes": 1, 
+            "vote": 1, 
+            "n_presents": 1
+        }
+    }, 
+    {
+        "pk": 98, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 8, 
+            "created": "2012-04-12 21:27:40", 
+            "modified": "2012-04-12 21:27:40", 
+            "votation": 8, 
+            "n_no": 2, 
+            "n_yes": 3, 
+            "vote": 1, 
+            "n_presents": 6
+        }
+    }, 
+    {
+        "pk": 99, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 9, 
+            "created": "2012-04-12 21:27:40", 
+            "modified": "2012-04-12 21:27:40", 
+            "votation": 8, 
+            "n_no": 0, 
+            "n_yes": 1, 
+            "vote": 1, 
+            "n_presents": 1
+        }
+    }, 
+    {
+        "pk": 100, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 10, 
+            "created": "2012-04-12 21:27:40", 
+            "modified": "2012-04-12 21:27:40", 
+            "votation": 8, 
+            "n_no": 0, 
+            "n_yes": 1, 
+            "vote": 1, 
+            "n_presents": 1
+        }
+    }, 
+    {
+        "pk": 101, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 11, 
+            "created": "2012-04-12 21:27:41", 
+            "modified": "2012-04-12 21:27:41", 
+            "votation": 8, 
+            "n_no": 0, 
+            "n_yes": 2, 
+            "vote": 1, 
+            "n_presents": 2
+        }
+    }, 
+    {
+        "pk": 102, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 12, 
+            "created": "2012-04-12 21:27:41", 
+            "modified": "2012-04-12 21:27:41", 
+            "votation": 8, 
+            "n_no": 0, 
+            "n_yes": 2, 
+            "vote": 1, 
+            "n_presents": 2
+        }
+    }, 
+    {
+        "pk": 103, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 13, 
+            "created": "2012-04-12 21:27:41", 
+            "modified": "2012-04-12 21:27:41", 
+            "votation": 8, 
+            "n_no": 1, 
+            "n_yes": 0, 
+            "vote": 0, 
+            "n_presents": 1
+        }
+    }, 
+    {
+        "pk": 104, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 14, 
+            "created": "2012-04-12 21:27:41", 
+            "modified": "2012-04-12 21:27:41", 
+            "votation": 8, 
+            "n_no": 0, 
+            "n_yes": 1, 
+            "vote": 1, 
+            "n_presents": 1
+        }
+    }, 
+    {
+        "pk": 105, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 1, 
+            "created": "2012-04-12 21:27:42", 
+            "modified": "2012-04-12 21:27:42", 
+            "votation": 9, 
+            "n_no": 3, 
+            "n_yes": 8, 
+            "vote": 1, 
+            "n_presents": 11
+        }
+    }, 
+    {
+        "pk": 106, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 2, 
+            "created": "2012-04-12 21:27:42", 
+            "modified": "2012-04-12 21:27:42", 
+            "votation": 9, 
+            "n_no": 1, 
+            "n_yes": 3, 
+            "vote": 1, 
+            "n_presents": 4
+        }
+    }, 
+    {
+        "pk": 107, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 1, 
+            "group": 3, 
+            "created": "2012-04-12 21:27:42", 
+            "modified": "2012-04-12 21:27:42", 
+            "votation": 9, 
+            "n_no": 0, 
+            "n_yes": 1, 
+            "vote": 3, 
+            "n_presents": 2
+        }
+    }, 
+    {
+        "pk": 108, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 4, 
+            "created": "2012-04-12 21:27:42", 
+            "modified": "2012-04-12 21:27:42", 
+            "votation": 9, 
+            "n_no": 0, 
+            "n_yes": 1, 
+            "vote": 1, 
+            "n_presents": 1
+        }
+    }, 
+    {
+        "pk": 109, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 5, 
+            "created": "2012-04-12 21:27:42", 
+            "modified": "2012-04-12 21:27:42", 
+            "votation": 9, 
+            "n_no": 1, 
+            "n_yes": 5, 
+            "vote": 1, 
+            "n_presents": 6
+        }
+    }, 
+    {
+        "pk": 110, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 7, 
+            "created": "2012-04-12 21:27:42", 
+            "modified": "2012-04-12 21:27:42", 
+            "votation": 9, 
+            "n_no": 1, 
+            "n_yes": 0, 
+            "vote": 0, 
+            "n_presents": 1
+        }
+    }, 
+    {
+        "pk": 111, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 1, 
+            "group": 8, 
+            "created": "2012-04-12 21:27:42", 
+            "modified": "2012-04-12 21:27:42", 
+            "votation": 9, 
+            "n_no": 1, 
+            "n_yes": 4, 
+            "vote": 1, 
+            "n_presents": 6
+        }
+    }, 
+    {
+        "pk": 112, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 9, 
+            "created": "2012-04-12 21:27:42", 
+            "modified": "2012-04-12 21:27:42", 
+            "votation": 9, 
+            "n_no": 0, 
+            "n_yes": 1, 
+            "vote": 1, 
+            "n_presents": 1
+        }
+    }, 
+    {
+        "pk": 113, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 10, 
+            "created": "2012-04-12 21:27:42", 
+            "modified": "2012-04-12 21:27:42", 
+            "votation": 9, 
+            "n_no": 0, 
+            "n_yes": 1, 
+            "vote": 1, 
+            "n_presents": 1
+        }
+    }, 
+    {
+        "pk": 114, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 11, 
+            "created": "2012-04-12 21:27:42", 
+            "modified": "2012-04-12 21:27:42", 
+            "votation": 9, 
+            "n_no": 1, 
+            "n_yes": 1, 
+            "vote": 3, 
+            "n_presents": 2
+        }
+    }, 
+    {
+        "pk": 115, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 12, 
+            "created": "2012-04-12 21:27:42", 
+            "modified": "2012-04-12 21:27:42", 
+            "votation": 9, 
+            "n_no": 1, 
+            "n_yes": 1, 
+            "vote": 3, 
+            "n_presents": 2
+        }
+    }, 
+    {
+        "pk": 116, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 13, 
+            "created": "2012-04-12 21:27:42", 
+            "modified": "2012-04-12 21:27:42", 
+            "votation": 9, 
+            "n_no": 0, 
+            "n_yes": 1, 
+            "vote": 1, 
+            "n_presents": 1
+        }
+    }, 
+    {
+        "pk": 117, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 14, 
+            "created": "2012-04-12 21:27:42", 
+            "modified": "2012-04-12 21:27:42", 
+            "votation": 9, 
+            "n_no": 0, 
+            "n_yes": 1, 
+            "vote": 1, 
+            "n_presents": 1
+        }
+    }, 
+    {
+        "pk": 118, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 1, 
+            "created": "2012-04-12 21:27:44", 
+            "modified": "2012-04-12 21:27:44", 
+            "votation": 10, 
+            "n_no": 2, 
+            "n_yes": 9, 
+            "vote": 1, 
+            "n_presents": 11
+        }
+    }, 
+    {
+        "pk": 119, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 2, 
+            "created": "2012-04-12 21:27:44", 
+            "modified": "2012-04-12 21:27:44", 
+            "votation": 10, 
+            "n_no": 1, 
+            "n_yes": 2, 
+            "vote": 1, 
+            "n_presents": 4
+        }
+    }, 
+    {
+        "pk": 120, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 3, 
+            "created": "2012-04-12 21:27:44", 
+            "modified": "2012-04-12 21:27:44", 
+            "votation": 10, 
+            "n_no": 1, 
+            "n_yes": 1, 
+            "vote": 3, 
+            "n_presents": 2
+        }
+    }, 
+    {
+        "pk": 121, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 4, 
+            "created": "2012-04-12 21:27:44", 
+            "modified": "2012-04-12 21:27:44", 
+            "votation": 10, 
+            "n_no": 0, 
+            "n_yes": 1, 
+            "vote": 1, 
+            "n_presents": 1
+        }
+    }, 
+    {
+        "pk": 122, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 1, 
+            "group": 5, 
+            "created": "2012-04-12 21:27:44", 
+            "modified": "2012-04-12 21:27:44", 
+            "votation": 10, 
+            "n_no": 0, 
+            "n_yes": 5, 
+            "vote": 1, 
+            "n_presents": 6
+        }
+    }, 
+    {
+        "pk": 123, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 7, 
+            "created": "2012-04-12 21:27:44", 
+            "modified": "2012-04-12 21:27:44", 
+            "votation": 10, 
+            "n_no": 0, 
+            "n_yes": 1, 
+            "vote": 1, 
+            "n_presents": 1
+        }
+    }, 
+    {
+        "pk": 124, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 8, 
+            "created": "2012-04-12 21:27:44", 
+            "modified": "2012-04-12 21:27:44", 
+            "votation": 10, 
+            "n_no": 1, 
+            "n_yes": 5, 
+            "vote": 1, 
+            "n_presents": 6
+        }
+    }, 
+    {
+        "pk": 125, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 9, 
+            "created": "2012-04-12 21:27:44", 
+            "modified": "2012-04-12 21:27:44", 
+            "votation": 10, 
+            "n_no": 0, 
+            "n_yes": 1, 
+            "vote": 1, 
+            "n_presents": 1
+        }
+    }, 
+    {
+        "pk": 126, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 10, 
+            "created": "2012-04-12 21:27:44", 
+            "modified": "2012-04-12 21:27:44", 
+            "votation": 10, 
+            "n_no": 1, 
+            "n_yes": 0, 
+            "vote": 0, 
+            "n_presents": 1
+        }
+    }, 
+    {
+        "pk": 127, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 1, 
+            "group": 11, 
+            "created": "2012-04-12 21:27:44", 
+            "modified": "2012-04-12 21:27:44", 
+            "votation": 10, 
+            "n_no": 0, 
+            "n_yes": 1, 
+            "vote": 3, 
+            "n_presents": 2
+        }
+    }, 
+    {
+        "pk": 128, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 12, 
+            "created": "2012-04-12 21:27:44", 
+            "modified": "2012-04-12 21:27:44", 
+            "votation": 10, 
+            "n_no": 0, 
+            "n_yes": 2, 
+            "vote": 1, 
+            "n_presents": 2
+        }
+    }, 
+    {
+        "pk": 129, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 13, 
+            "created": "2012-04-12 21:27:44", 
+            "modified": "2012-04-12 21:27:44", 
+            "votation": 10, 
+            "n_no": 0, 
+            "n_yes": 1, 
+            "vote": 1, 
+            "n_presents": 1
+        }
+    }, 
+    {
+        "pk": 130, 
+        "model": "votations.groupvote", 
+        "fields": {
+            "n_abst": 0, 
+            "group": 14, 
+            "created": "2012-04-12 21:27:44", 
+            "modified": "2012-04-12 21:27:44", 
+            "votation": 10, 
+            "n_no": 1, 
+            "n_yes": 0, 
+            "vote": 0, 
+            "n_presents": 1
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:29", 
+            "modified": "2012-04-12 21:27:29", 
+            "votation": 1, 
+            "charge": 14, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:29", 
+            "modified": "2012-04-12 21:27:29", 
+            "votation": 1, 
+            "charge": 15, 
+            "vote": 4, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:29", 
+            "modified": "2012-04-12 21:27:29", 
+            "votation": 1, 
+            "charge": 16, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:29", 
+            "modified": "2012-04-12 21:27:29", 
+            "votation": 1, 
+            "charge": 17, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 5, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:29", 
+            "modified": "2012-04-12 21:27:29", 
+            "votation": 1, 
+            "charge": 18, 
+            "vote": 1, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 6, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:29", 
+            "modified": "2012-04-12 21:27:29", 
+            "votation": 1, 
+            "charge": 19, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 7, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:29", 
+            "modified": "2012-04-12 21:27:29", 
+            "votation": 1, 
+            "charge": 20, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 8, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:29", 
+            "modified": "2012-04-12 21:27:29", 
+            "votation": 1, 
+            "charge": 21, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 9, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:29", 
+            "modified": "2012-04-12 21:27:30", 
+            "votation": 1, 
+            "charge": 23, 
+            "vote": 1, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 10, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:29", 
+            "modified": "2012-04-12 21:27:30", 
+            "votation": 1, 
+            "charge": 24, 
+            "vote": 1, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 11, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:29", 
+            "modified": "2012-04-12 21:27:29", 
+            "votation": 1, 
+            "charge": 25, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 12, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:29", 
+            "modified": "2012-04-12 21:27:30", 
+            "votation": 1, 
+            "charge": 26, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 13, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:29", 
+            "modified": "2012-04-12 21:27:29", 
+            "votation": 1, 
+            "charge": 27, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 14, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:29", 
+            "modified": "2012-04-12 21:27:30", 
+            "votation": 1, 
+            "charge": 28, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 15, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:29", 
+            "modified": "2012-04-12 21:27:30", 
+            "votation": 1, 
+            "charge": 29, 
+            "vote": 2, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 16, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:29", 
+            "modified": "2012-04-12 21:27:29", 
+            "votation": 1, 
+            "charge": 30, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 17, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:29", 
+            "modified": "2012-04-12 21:27:30", 
+            "votation": 1, 
+            "charge": 31, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 18, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:29", 
+            "modified": "2012-04-12 21:27:29", 
+            "votation": 1, 
+            "charge": 33, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 19, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:29", 
+            "modified": "2012-04-12 21:27:29", 
+            "votation": 1, 
+            "charge": 34, 
+            "vote": 0, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 20, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:29", 
+            "modified": "2012-04-12 21:27:30", 
+            "votation": 1, 
+            "charge": 35, 
+            "vote": 1, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 21, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:29", 
+            "modified": "2012-04-12 21:27:30", 
+            "votation": 1, 
+            "charge": 36, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 22, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:29", 
+            "modified": "2012-04-12 21:27:30", 
+            "votation": 1, 
+            "charge": 37, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 23, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:29", 
+            "modified": "2012-04-12 21:27:30", 
+            "votation": 1, 
+            "charge": 38, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 24, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:29", 
+            "modified": "2012-04-12 21:27:29", 
+            "votation": 1, 
+            "charge": 39, 
+            "vote": 0, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 25, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:29", 
+            "modified": "2012-04-12 21:27:30", 
+            "votation": 1, 
+            "charge": 40, 
+            "vote": 2, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 26, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:29", 
+            "modified": "2012-04-12 21:27:30", 
+            "votation": 1, 
+            "charge": 41, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 27, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:29", 
+            "modified": "2012-04-12 21:27:29", 
+            "votation": 1, 
+            "charge": 42, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 28, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:29", 
+            "modified": "2012-04-12 21:27:29", 
+            "votation": 1, 
+            "charge": 43, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 29, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:29", 
+            "modified": "2012-04-12 21:27:30", 
+            "votation": 1, 
+            "charge": 44, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 30, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:29", 
+            "modified": "2012-04-12 21:27:29", 
+            "votation": 1, 
+            "charge": 45, 
+            "vote": 0, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 31, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:29", 
+            "modified": "2012-04-12 21:27:29", 
+            "votation": 1, 
+            "charge": 46, 
+            "vote": 0, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 32, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:29", 
+            "modified": "2012-04-12 21:27:30", 
+            "votation": 1, 
+            "charge": 47, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 33, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:29", 
+            "modified": "2012-04-12 21:27:29", 
+            "votation": 1, 
+            "charge": 48, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 34, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:29", 
+            "modified": "2012-04-12 21:27:30", 
+            "votation": 1, 
+            "charge": 49, 
+            "vote": 2, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 35, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:29", 
+            "modified": "2012-04-12 21:27:30", 
+            "votation": 1, 
+            "charge": 50, 
+            "vote": 1, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 36, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:29", 
+            "modified": "2012-04-12 21:27:29", 
+            "votation": 1, 
+            "charge": 51, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 37, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:29", 
+            "modified": "2012-04-12 21:27:30", 
+            "votation": 1, 
+            "charge": 52, 
+            "vote": 1, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 38, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:29", 
+            "modified": "2012-04-12 21:27:30", 
+            "votation": 1, 
+            "charge": 53, 
+            "vote": 1, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 39, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:29", 
+            "modified": "2012-04-12 21:27:29", 
+            "votation": 1, 
+            "charge": 54, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 40, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:31", 
+            "modified": "2012-04-12 21:27:31", 
+            "votation": 2, 
+            "charge": 14, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 41, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:31", 
+            "modified": "2012-04-12 21:27:31", 
+            "votation": 2, 
+            "charge": 15, 
+            "vote": 1, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 42, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:31", 
+            "modified": "2012-04-12 21:27:31", 
+            "votation": 2, 
+            "charge": 16, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 43, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:31", 
+            "modified": "2012-04-12 21:27:31", 
+            "votation": 2, 
+            "charge": 17, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 44, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:31", 
+            "modified": "2012-04-12 21:27:31", 
+            "votation": 2, 
+            "charge": 18, 
+            "vote": 1, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 45, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:31", 
+            "modified": "2012-04-12 21:27:31", 
+            "votation": 2, 
+            "charge": 19, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 46, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:31", 
+            "modified": "2012-04-12 21:27:31", 
+            "votation": 2, 
+            "charge": 20, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 47, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:31", 
+            "modified": "2012-04-12 21:27:31", 
+            "votation": 2, 
+            "charge": 21, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 48, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:31", 
+            "modified": "2012-04-12 21:27:31", 
+            "votation": 2, 
+            "charge": 23, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 49, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:31", 
+            "modified": "2012-04-12 21:27:31", 
+            "votation": 2, 
+            "charge": 24, 
+            "vote": 1, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 50, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:31", 
+            "modified": "2012-04-12 21:27:31", 
+            "votation": 2, 
+            "charge": 25, 
+            "vote": 0, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 51, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:31", 
+            "modified": "2012-04-12 21:27:31", 
+            "votation": 2, 
+            "charge": 26, 
+            "vote": 1, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 52, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:31", 
+            "modified": "2012-04-12 21:27:31", 
+            "votation": 2, 
+            "charge": 27, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 53, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:31", 
+            "modified": "2012-04-12 21:27:31", 
+            "votation": 2, 
+            "charge": 28, 
+            "vote": 1, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 54, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:31", 
+            "modified": "2012-04-12 21:27:31", 
+            "votation": 2, 
+            "charge": 29, 
+            "vote": 0, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 55, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:31", 
+            "modified": "2012-04-12 21:27:31", 
+            "votation": 2, 
+            "charge": 30, 
+            "vote": 0, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 56, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:31", 
+            "modified": "2012-04-12 21:27:31", 
+            "votation": 2, 
+            "charge": 31, 
+            "vote": 0, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 57, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:31", 
+            "modified": "2012-04-12 21:27:31", 
+            "votation": 2, 
+            "charge": 33, 
+            "vote": 1, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 58, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:31", 
+            "modified": "2012-04-12 21:27:31", 
+            "votation": 2, 
+            "charge": 34, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 59, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:31", 
+            "modified": "2012-04-12 21:27:31", 
+            "votation": 2, 
+            "charge": 35, 
+            "vote": 0, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 60, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:31", 
+            "modified": "2012-04-12 21:27:32", 
+            "votation": 2, 
+            "charge": 36, 
+            "vote": 1, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 61, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:31", 
+            "modified": "2012-04-12 21:27:31", 
+            "votation": 2, 
+            "charge": 37, 
+            "vote": 0, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 62, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:31", 
+            "modified": "2012-04-12 21:27:32", 
+            "votation": 2, 
+            "charge": 38, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 63, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:31", 
+            "modified": "2012-04-12 21:27:31", 
+            "votation": 2, 
+            "charge": 39, 
+            "vote": 4, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 64, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:31", 
+            "modified": "2012-04-12 21:27:31", 
+            "votation": 2, 
+            "charge": 40, 
+            "vote": 0, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 65, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:31", 
+            "modified": "2012-04-12 21:27:32", 
+            "votation": 2, 
+            "charge": 41, 
+            "vote": 1, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 66, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:31", 
+            "modified": "2012-04-12 21:27:31", 
+            "votation": 2, 
+            "charge": 42, 
+            "vote": 0, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 67, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:31", 
+            "modified": "2012-04-12 21:27:31", 
+            "votation": 2, 
+            "charge": 43, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 68, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:31", 
+            "modified": "2012-04-12 21:27:31", 
+            "votation": 2, 
+            "charge": 44, 
+            "vote": 0, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 69, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:31", 
+            "modified": "2012-04-12 21:27:31", 
+            "votation": 2, 
+            "charge": 45, 
+            "vote": 0, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 70, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:31", 
+            "modified": "2012-04-12 21:27:31", 
+            "votation": 2, 
+            "charge": 46, 
+            "vote": 4, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 71, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:31", 
+            "modified": "2012-04-12 21:27:31", 
+            "votation": 2, 
+            "charge": 47, 
+            "vote": 0, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 72, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:31", 
+            "modified": "2012-04-12 21:27:31", 
+            "votation": 2, 
+            "charge": 48, 
+            "vote": 0, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 73, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:31", 
+            "modified": "2012-04-12 21:27:32", 
+            "votation": 2, 
+            "charge": 49, 
+            "vote": 1, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 74, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:31", 
+            "modified": "2012-04-12 21:27:32", 
+            "votation": 2, 
+            "charge": 50, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 75, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:31", 
+            "modified": "2012-04-12 21:27:32", 
+            "votation": 2, 
+            "charge": 51, 
+            "vote": 1, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 76, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:31", 
+            "modified": "2012-04-12 21:27:32", 
+            "votation": 2, 
+            "charge": 52, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 77, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:31", 
+            "modified": "2012-04-12 21:27:32", 
+            "votation": 2, 
+            "charge": 53, 
+            "vote": 2, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 78, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:31", 
+            "modified": "2012-04-12 21:27:32", 
+            "votation": 2, 
+            "charge": 54, 
+            "vote": 1, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 79, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:32", 
+            "modified": "2012-04-12 21:27:33", 
+            "votation": 3, 
+            "charge": 14, 
+            "vote": 1, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 80, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:32", 
+            "modified": "2012-04-12 21:27:32", 
+            "votation": 3, 
+            "charge": 15, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 81, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:32", 
+            "modified": "2012-04-12 21:27:32", 
+            "votation": 3, 
+            "charge": 16, 
+            "vote": 0, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 82, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:32", 
+            "modified": "2012-04-12 21:27:33", 
+            "votation": 3, 
+            "charge": 17, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 83, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:32", 
+            "modified": "2012-04-12 21:27:32", 
+            "votation": 3, 
+            "charge": 18, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 84, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:32", 
+            "modified": "2012-04-12 21:27:33", 
+            "votation": 3, 
+            "charge": 19, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 85, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:32", 
+            "modified": "2012-04-12 21:27:32", 
+            "votation": 3, 
+            "charge": 20, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 86, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:32", 
+            "modified": "2012-04-12 21:27:33", 
+            "votation": 3, 
+            "charge": 21, 
+            "vote": 1, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 87, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:32", 
+            "modified": "2012-04-12 21:27:33", 
+            "votation": 3, 
+            "charge": 23, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 88, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:32", 
+            "modified": "2012-04-12 21:27:32", 
+            "votation": 3, 
+            "charge": 24, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 89, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:32", 
+            "modified": "2012-04-12 21:27:33", 
+            "votation": 3, 
+            "charge": 25, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 90, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:32", 
+            "modified": "2012-04-12 21:27:32", 
+            "votation": 3, 
+            "charge": 26, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 91, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:32", 
+            "modified": "2012-04-12 21:27:33", 
+            "votation": 3, 
+            "charge": 27, 
+            "vote": 4, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 92, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:32", 
+            "modified": "2012-04-12 21:27:32", 
+            "votation": 3, 
+            "charge": 28, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 93, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:32", 
+            "modified": "2012-04-12 21:27:32", 
+            "votation": 3, 
+            "charge": 29, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 94, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:32", 
+            "modified": "2012-04-12 21:27:32", 
+            "votation": 3, 
+            "charge": 30, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 95, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:32", 
+            "modified": "2012-04-12 21:27:32", 
+            "votation": 3, 
+            "charge": 31, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 96, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:32", 
+            "modified": "2012-04-12 21:27:32", 
+            "votation": 3, 
+            "charge": 33, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 97, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:32", 
+            "modified": "2012-04-12 21:27:32", 
+            "votation": 3, 
+            "charge": 34, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 98, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:32", 
+            "modified": "2012-04-12 21:27:33", 
+            "votation": 3, 
+            "charge": 35, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 99, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:32", 
+            "modified": "2012-04-12 21:27:32", 
+            "votation": 3, 
+            "charge": 36, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 100, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:32", 
+            "modified": "2012-04-12 21:27:32", 
+            "votation": 3, 
+            "charge": 37, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 101, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:32", 
+            "modified": "2012-04-12 21:27:32", 
+            "votation": 3, 
+            "charge": 38, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 102, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:32", 
+            "modified": "2012-04-12 21:27:32", 
+            "votation": 3, 
+            "charge": 39, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 103, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:32", 
+            "modified": "2012-04-12 21:27:32", 
+            "votation": 3, 
+            "charge": 40, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 104, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:32", 
+            "modified": "2012-04-12 21:27:32", 
+            "votation": 3, 
+            "charge": 41, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 105, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:32", 
+            "modified": "2012-04-12 21:27:32", 
+            "votation": 3, 
+            "charge": 42, 
+            "vote": 0, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 106, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:32", 
+            "modified": "2012-04-12 21:27:32", 
+            "votation": 3, 
+            "charge": 43, 
+            "vote": 0, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 107, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:32", 
+            "modified": "2012-04-12 21:27:32", 
+            "votation": 3, 
+            "charge": 44, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 108, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:32", 
+            "modified": "2012-04-12 21:27:32", 
+            "votation": 3, 
+            "charge": 45, 
+            "vote": 0, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 109, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:32", 
+            "modified": "2012-04-12 21:27:32", 
+            "votation": 3, 
+            "charge": 46, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 110, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:32", 
+            "modified": "2012-04-12 21:27:32", 
+            "votation": 3, 
+            "charge": 47, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 111, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:32", 
+            "modified": "2012-04-12 21:27:33", 
+            "votation": 3, 
+            "charge": 48, 
+            "vote": 4, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 112, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:32", 
+            "modified": "2012-04-12 21:27:32", 
+            "votation": 3, 
+            "charge": 49, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 113, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:32", 
+            "modified": "2012-04-12 21:27:32", 
+            "votation": 3, 
+            "charge": 50, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 114, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:32", 
+            "modified": "2012-04-12 21:27:32", 
+            "votation": 3, 
+            "charge": 51, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 115, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:32", 
+            "modified": "2012-04-12 21:27:32", 
+            "votation": 3, 
+            "charge": 52, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 116, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:32", 
+            "modified": "2012-04-12 21:27:33", 
+            "votation": 3, 
+            "charge": 53, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 117, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:32", 
+            "modified": "2012-04-12 21:27:33", 
+            "votation": 3, 
+            "charge": 54, 
+            "vote": 1, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 118, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:34", 
+            "modified": "2012-04-12 21:27:34", 
+            "votation": 4, 
+            "charge": 14, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 119, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:34", 
+            "modified": "2012-04-12 21:27:34", 
+            "votation": 4, 
+            "charge": 15, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 120, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:34", 
+            "modified": "2012-04-12 21:27:34", 
+            "votation": 4, 
+            "charge": 16, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 121, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:34", 
+            "modified": "2012-04-12 21:27:34", 
+            "votation": 4, 
+            "charge": 17, 
+            "vote": 4, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 122, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:34", 
+            "modified": "2012-04-12 21:27:34", 
+            "votation": 4, 
+            "charge": 18, 
+            "vote": 2, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 123, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:34", 
+            "modified": "2012-04-12 21:27:34", 
+            "votation": 4, 
+            "charge": 19, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 124, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:34", 
+            "modified": "2012-04-12 21:27:34", 
+            "votation": 4, 
+            "charge": 20, 
+            "vote": 0, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 125, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:34", 
+            "modified": "2012-04-12 21:27:34", 
+            "votation": 4, 
+            "charge": 21, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 126, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:34", 
+            "modified": "2012-04-12 21:27:34", 
+            "votation": 4, 
+            "charge": 23, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 127, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:34", 
+            "modified": "2012-04-12 21:27:34", 
+            "votation": 4, 
+            "charge": 24, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 128, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:34", 
+            "modified": "2012-04-12 21:27:34", 
+            "votation": 4, 
+            "charge": 25, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 129, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:34", 
+            "modified": "2012-04-12 21:27:34", 
+            "votation": 4, 
+            "charge": 26, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 130, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:34", 
+            "modified": "2012-04-12 21:27:34", 
+            "votation": 4, 
+            "charge": 27, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 131, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:34", 
+            "modified": "2012-04-12 21:27:34", 
+            "votation": 4, 
+            "charge": 28, 
+            "vote": 2, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 132, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:34", 
+            "modified": "2012-04-12 21:27:34", 
+            "votation": 4, 
+            "charge": 29, 
+            "vote": 2, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 133, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:34", 
+            "modified": "2012-04-12 21:27:34", 
+            "votation": 4, 
+            "charge": 30, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 134, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:34", 
+            "modified": "2012-04-12 21:27:34", 
+            "votation": 4, 
+            "charge": 31, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 135, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:34", 
+            "modified": "2012-04-12 21:27:35", 
+            "votation": 4, 
+            "charge": 33, 
+            "vote": 4, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 136, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:34", 
+            "modified": "2012-04-12 21:27:34", 
+            "votation": 4, 
+            "charge": 34, 
+            "vote": 2, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 137, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:34", 
+            "modified": "2012-04-12 21:27:35", 
+            "votation": 4, 
+            "charge": 35, 
+            "vote": 1, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 138, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:34", 
+            "modified": "2012-04-12 21:27:34", 
+            "votation": 4, 
+            "charge": 36, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 139, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:34", 
+            "modified": "2012-04-12 21:27:35", 
+            "votation": 4, 
+            "charge": 37, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 140, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:34", 
+            "modified": "2012-04-12 21:27:34", 
+            "votation": 4, 
+            "charge": 38, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 141, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:34", 
+            "modified": "2012-04-12 21:27:35", 
+            "votation": 4, 
+            "charge": 39, 
+            "vote": 1, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 142, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:34", 
+            "modified": "2012-04-12 21:27:35", 
+            "votation": 4, 
+            "charge": 40, 
+            "vote": 4, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 143, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:34", 
+            "modified": "2012-04-12 21:27:35", 
+            "votation": 4, 
+            "charge": 41, 
+            "vote": 2, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 144, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:34", 
+            "modified": "2012-04-12 21:27:34", 
+            "votation": 4, 
+            "charge": 42, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 145, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:34", 
+            "modified": "2012-04-12 21:27:34", 
+            "votation": 4, 
+            "charge": 43, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 146, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:34", 
+            "modified": "2012-04-12 21:27:35", 
+            "votation": 4, 
+            "charge": 44, 
+            "vote": 1, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 147, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:34", 
+            "modified": "2012-04-12 21:27:34", 
+            "votation": 4, 
+            "charge": 45, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 148, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:34", 
+            "modified": "2012-04-12 21:27:35", 
+            "votation": 4, 
+            "charge": 46, 
+            "vote": 4, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 149, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:34", 
+            "modified": "2012-04-12 21:27:34", 
+            "votation": 4, 
+            "charge": 47, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 150, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:34", 
+            "modified": "2012-04-12 21:27:35", 
+            "votation": 4, 
+            "charge": 48, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 151, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:34", 
+            "modified": "2012-04-12 21:27:35", 
+            "votation": 4, 
+            "charge": 49, 
+            "vote": 2, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 152, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:34", 
+            "modified": "2012-04-12 21:27:35", 
+            "votation": 4, 
+            "charge": 50, 
+            "vote": 1, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 153, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:34", 
+            "modified": "2012-04-12 21:27:34", 
+            "votation": 4, 
+            "charge": 51, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 154, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:34", 
+            "modified": "2012-04-12 21:27:34", 
+            "votation": 4, 
+            "charge": 52, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 155, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:34", 
+            "modified": "2012-04-12 21:27:35", 
+            "votation": 4, 
+            "charge": 53, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 156, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:34", 
+            "modified": "2012-04-12 21:27:35", 
+            "votation": 4, 
+            "charge": 54, 
+            "vote": 1, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 157, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:35", 
+            "modified": "2012-04-12 21:27:35", 
+            "votation": 5, 
+            "charge": 14, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 158, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:35", 
+            "modified": "2012-04-12 21:27:36", 
+            "votation": 5, 
+            "charge": 15, 
+            "vote": 4, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 159, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:35", 
+            "modified": "2012-04-12 21:27:35", 
+            "votation": 5, 
+            "charge": 16, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 160, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:35", 
+            "modified": "2012-04-12 21:27:35", 
+            "votation": 5, 
+            "charge": 17, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 161, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:35", 
+            "modified": "2012-04-12 21:27:36", 
+            "votation": 5, 
+            "charge": 18, 
+            "vote": 1, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 162, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:35", 
+            "modified": "2012-04-12 21:27:36", 
+            "votation": 5, 
+            "charge": 19, 
+            "vote": 4, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 163, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:35", 
+            "modified": "2012-04-12 21:27:35", 
+            "votation": 5, 
+            "charge": 20, 
+            "vote": 0, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 164, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:35", 
+            "modified": "2012-04-12 21:27:35", 
+            "votation": 5, 
+            "charge": 21, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 165, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:35", 
+            "modified": "2012-04-12 21:27:36", 
+            "votation": 5, 
+            "charge": 23, 
+            "vote": 2, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 166, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:35", 
+            "modified": "2012-04-12 21:27:35", 
+            "votation": 5, 
+            "charge": 24, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 167, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:35", 
+            "modified": "2012-04-12 21:27:36", 
+            "votation": 5, 
+            "charge": 25, 
+            "vote": 4, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 168, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:35", 
+            "modified": "2012-04-12 21:27:35", 
+            "votation": 5, 
+            "charge": 26, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 169, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:35", 
+            "modified": "2012-04-12 21:27:36", 
+            "votation": 5, 
+            "charge": 27, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 170, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:35", 
+            "modified": "2012-04-12 21:27:35", 
+            "votation": 5, 
+            "charge": 28, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 171, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:35", 
+            "modified": "2012-04-12 21:27:35", 
+            "votation": 5, 
+            "charge": 29, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 172, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:35", 
+            "modified": "2012-04-12 21:27:36", 
+            "votation": 5, 
+            "charge": 30, 
+            "vote": 4, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 173, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:35", 
+            "modified": "2012-04-12 21:27:35", 
+            "votation": 5, 
+            "charge": 31, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 174, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:35", 
+            "modified": "2012-04-12 21:27:35", 
+            "votation": 5, 
+            "charge": 33, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 175, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:35", 
+            "modified": "2012-04-12 21:27:35", 
+            "votation": 5, 
+            "charge": 34, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 176, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:35", 
+            "modified": "2012-04-12 21:27:35", 
+            "votation": 5, 
+            "charge": 35, 
+            "vote": 0, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 177, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:35", 
+            "modified": "2012-04-12 21:27:36", 
+            "votation": 5, 
+            "charge": 36, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 178, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:35", 
+            "modified": "2012-04-12 21:27:36", 
+            "votation": 5, 
+            "charge": 37, 
+            "vote": 4, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 179, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:35", 
+            "modified": "2012-04-12 21:27:36", 
+            "votation": 5, 
+            "charge": 38, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 180, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:35", 
+            "modified": "2012-04-12 21:27:35", 
+            "votation": 5, 
+            "charge": 39, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 181, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:35", 
+            "modified": "2012-04-12 21:27:36", 
+            "votation": 5, 
+            "charge": 40, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 182, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:35", 
+            "modified": "2012-04-12 21:27:35", 
+            "votation": 5, 
+            "charge": 41, 
+            "vote": 0, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 183, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:35", 
+            "modified": "2012-04-12 21:27:35", 
+            "votation": 5, 
+            "charge": 42, 
+            "vote": 0, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 184, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:35", 
+            "modified": "2012-04-12 21:27:35", 
+            "votation": 5, 
+            "charge": 43, 
+            "vote": 0, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 185, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:35", 
+            "modified": "2012-04-12 21:27:35", 
+            "votation": 5, 
+            "charge": 44, 
+            "vote": 0, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 186, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:35", 
+            "modified": "2012-04-12 21:27:35", 
+            "votation": 5, 
+            "charge": 45, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 187, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:35", 
+            "modified": "2012-04-12 21:27:35", 
+            "votation": 5, 
+            "charge": 46, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 188, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:35", 
+            "modified": "2012-04-12 21:27:35", 
+            "votation": 5, 
+            "charge": 47, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 189, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:35", 
+            "modified": "2012-04-12 21:27:37", 
+            "votation": 5, 
+            "charge": 48, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 190, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:35", 
+            "modified": "2012-04-12 21:27:37", 
+            "votation": 5, 
+            "charge": 49, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 191, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:35", 
+            "modified": "2012-04-12 21:27:37", 
+            "votation": 5, 
+            "charge": 50, 
+            "vote": 1, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 192, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:35", 
+            "modified": "2012-04-12 21:27:35", 
+            "votation": 5, 
+            "charge": 51, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 193, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:35", 
+            "modified": "2012-04-12 21:27:37", 
+            "votation": 5, 
+            "charge": 52, 
+            "vote": 4, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 194, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:35", 
+            "modified": "2012-04-12 21:27:37", 
+            "votation": 5, 
+            "charge": 53, 
+            "vote": 1, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 195, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:35", 
+            "modified": "2012-04-12 21:27:37", 
+            "votation": 5, 
+            "charge": 54, 
+            "vote": 1, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 196, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:37", 
+            "modified": "2012-04-12 21:27:37", 
+            "votation": 6, 
+            "charge": 14, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 197, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:37", 
+            "modified": "2012-04-12 21:27:37", 
+            "votation": 6, 
+            "charge": 15, 
+            "vote": 1, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 198, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:37", 
+            "modified": "2012-04-12 21:27:37", 
+            "votation": 6, 
+            "charge": 16, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 199, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:37", 
+            "modified": "2012-04-12 21:27:37", 
+            "votation": 6, 
+            "charge": 17, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 200, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:37", 
+            "modified": "2012-04-12 21:27:37", 
+            "votation": 6, 
+            "charge": 18, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 201, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:37", 
+            "modified": "2012-04-12 21:27:37", 
+            "votation": 6, 
+            "charge": 19, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 202, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:37", 
+            "modified": "2012-04-12 21:27:37", 
+            "votation": 6, 
+            "charge": 20, 
+            "vote": 0, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 203, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:37", 
+            "modified": "2012-04-12 21:27:37", 
+            "votation": 6, 
+            "charge": 21, 
+            "vote": 2, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 204, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:37", 
+            "modified": "2012-04-12 21:27:37", 
+            "votation": 6, 
+            "charge": 23, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 205, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:37", 
+            "modified": "2012-04-12 21:27:37", 
+            "votation": 6, 
+            "charge": 24, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 206, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:37", 
+            "modified": "2012-04-12 21:27:37", 
+            "votation": 6, 
+            "charge": 25, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 207, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:37", 
+            "modified": "2012-04-12 21:27:38", 
+            "votation": 6, 
+            "charge": 26, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 208, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:37", 
+            "modified": "2012-04-12 21:27:38", 
+            "votation": 6, 
+            "charge": 27, 
+            "vote": 2, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 209, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:37", 
+            "modified": "2012-04-12 21:27:38", 
+            "votation": 6, 
+            "charge": 28, 
+            "vote": 2, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 210, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:37", 
+            "modified": "2012-04-12 21:27:37", 
+            "votation": 6, 
+            "charge": 29, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 211, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:37", 
+            "modified": "2012-04-12 21:27:38", 
+            "votation": 6, 
+            "charge": 30, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 212, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:37", 
+            "modified": "2012-04-12 21:27:38", 
+            "votation": 6, 
+            "charge": 31, 
+            "vote": 2, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 213, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:37", 
+            "modified": "2012-04-12 21:27:37", 
+            "votation": 6, 
+            "charge": 33, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 214, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:37", 
+            "modified": "2012-04-12 21:27:37", 
+            "votation": 6, 
+            "charge": 34, 
+            "vote": 2, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 215, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:37", 
+            "modified": "2012-04-12 21:27:37", 
+            "votation": 6, 
+            "charge": 35, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 216, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:37", 
+            "modified": "2012-04-12 21:27:37", 
+            "votation": 6, 
+            "charge": 36, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 217, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:37", 
+            "modified": "2012-04-12 21:27:37", 
+            "votation": 6, 
+            "charge": 37, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 218, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:37", 
+            "modified": "2012-04-12 21:27:38", 
+            "votation": 6, 
+            "charge": 38, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 219, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:37", 
+            "modified": "2012-04-12 21:27:38", 
+            "votation": 6, 
+            "charge": 39, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 220, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:37", 
+            "modified": "2012-04-12 21:27:38", 
+            "votation": 6, 
+            "charge": 40, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 221, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:37", 
+            "modified": "2012-04-12 21:27:38", 
+            "votation": 6, 
+            "charge": 41, 
+            "vote": 4, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 222, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:37", 
+            "modified": "2012-04-12 21:27:37", 
+            "votation": 6, 
+            "charge": 42, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 223, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:37", 
+            "modified": "2012-04-12 21:27:37", 
+            "votation": 6, 
+            "charge": 43, 
+            "vote": 2, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 224, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:37", 
+            "modified": "2012-04-12 21:27:37", 
+            "votation": 6, 
+            "charge": 44, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 225, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:37", 
+            "modified": "2012-04-12 21:27:37", 
+            "votation": 6, 
+            "charge": 45, 
+            "vote": 0, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 226, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:37", 
+            "modified": "2012-04-12 21:27:38", 
+            "votation": 6, 
+            "charge": 46, 
+            "vote": 1, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 227, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:37", 
+            "modified": "2012-04-12 21:27:37", 
+            "votation": 6, 
+            "charge": 47, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 228, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:37", 
+            "modified": "2012-04-12 21:27:37", 
+            "votation": 6, 
+            "charge": 48, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 229, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:37", 
+            "modified": "2012-04-12 21:27:38", 
+            "votation": 6, 
+            "charge": 49, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 230, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:37", 
+            "modified": "2012-04-12 21:27:38", 
+            "votation": 6, 
+            "charge": 50, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 231, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:37", 
+            "modified": "2012-04-12 21:27:38", 
+            "votation": 6, 
+            "charge": 51, 
+            "vote": 4, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 232, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:37", 
+            "modified": "2012-04-12 21:27:37", 
+            "votation": 6, 
+            "charge": 52, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 233, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:37", 
+            "modified": "2012-04-12 21:27:38", 
+            "votation": 6, 
+            "charge": 53, 
+            "vote": 4, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 234, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:37", 
+            "modified": "2012-04-12 21:27:38", 
+            "votation": 6, 
+            "charge": 54, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 235, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:38", 
+            "modified": "2012-04-12 21:27:39", 
+            "votation": 7, 
+            "charge": 14, 
+            "vote": 1, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 236, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:38", 
+            "modified": "2012-04-12 21:27:39", 
+            "votation": 7, 
+            "charge": 15, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 237, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:38", 
+            "modified": "2012-04-12 21:27:38", 
+            "votation": 7, 
+            "charge": 16, 
+            "vote": 0, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 238, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:38", 
+            "modified": "2012-04-12 21:27:38", 
+            "votation": 7, 
+            "charge": 17, 
+            "vote": 0, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 239, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:38", 
+            "modified": "2012-04-12 21:27:39", 
+            "votation": 7, 
+            "charge": 18, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 240, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:38", 
+            "modified": "2012-04-12 21:27:38", 
+            "votation": 7, 
+            "charge": 19, 
+            "vote": 0, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 241, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:38", 
+            "modified": "2012-04-12 21:27:38", 
+            "votation": 7, 
+            "charge": 20, 
+            "vote": 0, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 242, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:38", 
+            "modified": "2012-04-12 21:27:39", 
+            "votation": 7, 
+            "charge": 21, 
+            "vote": 2, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 243, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:38", 
+            "modified": "2012-04-12 21:27:38", 
+            "votation": 7, 
+            "charge": 23, 
+            "vote": 0, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 244, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:38", 
+            "modified": "2012-04-12 21:27:39", 
+            "votation": 7, 
+            "charge": 24, 
+            "vote": 1, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 245, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:38", 
+            "modified": "2012-04-12 21:27:38", 
+            "votation": 7, 
+            "charge": 25, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 246, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:38", 
+            "modified": "2012-04-12 21:27:38", 
+            "votation": 7, 
+            "charge": 26, 
+            "vote": 0, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 247, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:38", 
+            "modified": "2012-04-12 21:27:38", 
+            "votation": 7, 
+            "charge": 27, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 248, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:38", 
+            "modified": "2012-04-12 21:27:39", 
+            "votation": 7, 
+            "charge": 28, 
+            "vote": 4, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 249, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:38", 
+            "modified": "2012-04-12 21:27:39", 
+            "votation": 7, 
+            "charge": 29, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 250, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:38", 
+            "modified": "2012-04-12 21:27:38", 
+            "votation": 7, 
+            "charge": 30, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 251, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:38", 
+            "modified": "2012-04-12 21:27:38", 
+            "votation": 7, 
+            "charge": 31, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 252, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:39", 
+            "modified": "2012-04-12 21:27:39", 
+            "votation": 7, 
+            "charge": 33, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 253, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:39", 
+            "modified": "2012-04-12 21:27:39", 
+            "votation": 7, 
+            "charge": 34, 
+            "vote": 2, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 254, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:39", 
+            "modified": "2012-04-12 21:27:39", 
+            "votation": 7, 
+            "charge": 35, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 255, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:39", 
+            "modified": "2012-04-12 21:27:39", 
+            "votation": 7, 
+            "charge": 36, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 256, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:39", 
+            "modified": "2012-04-12 21:27:39", 
+            "votation": 7, 
+            "charge": 37, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 257, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:39", 
+            "modified": "2012-04-12 21:27:39", 
+            "votation": 7, 
+            "charge": 38, 
+            "vote": 0, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 258, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:39", 
+            "modified": "2012-04-12 21:27:39", 
+            "votation": 7, 
+            "charge": 39, 
+            "vote": 0, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 259, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:39", 
+            "modified": "2012-04-12 21:27:39", 
+            "votation": 7, 
+            "charge": 40, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 260, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:39", 
+            "modified": "2012-04-12 21:27:39", 
+            "votation": 7, 
+            "charge": 41, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 261, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:39", 
+            "modified": "2012-04-12 21:27:39", 
+            "votation": 7, 
+            "charge": 42, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 262, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:39", 
+            "modified": "2012-04-12 21:27:39", 
+            "votation": 7, 
+            "charge": 43, 
+            "vote": 4, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 263, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:39", 
+            "modified": "2012-04-12 21:27:40", 
+            "votation": 7, 
+            "charge": 44, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 264, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:39", 
+            "modified": "2012-04-12 21:27:39", 
+            "votation": 7, 
+            "charge": 45, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 265, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:39", 
+            "modified": "2012-04-12 21:27:39", 
+            "votation": 7, 
+            "charge": 46, 
+            "vote": 0, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 266, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:39", 
+            "modified": "2012-04-12 21:27:40", 
+            "votation": 7, 
+            "charge": 47, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 267, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:39", 
+            "modified": "2012-04-12 21:27:40", 
+            "votation": 7, 
+            "charge": 48, 
+            "vote": 4, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 268, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:39", 
+            "modified": "2012-04-12 21:27:40", 
+            "votation": 7, 
+            "charge": 49, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 269, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:39", 
+            "modified": "2012-04-12 21:27:40", 
+            "votation": 7, 
+            "charge": 50, 
+            "vote": 1, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 270, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:39", 
+            "modified": "2012-04-12 21:27:40", 
+            "votation": 7, 
+            "charge": 51, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 271, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:39", 
+            "modified": "2012-04-12 21:27:39", 
+            "votation": 7, 
+            "charge": 52, 
+            "vote": 0, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 272, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:39", 
+            "modified": "2012-04-12 21:27:39", 
+            "votation": 7, 
+            "charge": 53, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 273, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:39", 
+            "modified": "2012-04-12 21:27:39", 
+            "votation": 7, 
+            "charge": 54, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 274, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:40", 
+            "modified": "2012-04-12 21:27:41", 
+            "votation": 8, 
+            "charge": 14, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 275, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:40", 
+            "modified": "2012-04-12 21:27:41", 
+            "votation": 8, 
+            "charge": 15, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 276, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:40", 
+            "modified": "2012-04-12 21:27:40", 
+            "votation": 8, 
+            "charge": 16, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 277, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:40", 
+            "modified": "2012-04-12 21:27:40", 
+            "votation": 8, 
+            "charge": 17, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 278, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:40", 
+            "modified": "2012-04-12 21:27:41", 
+            "votation": 8, 
+            "charge": 18, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 279, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:40", 
+            "modified": "2012-04-12 21:27:40", 
+            "votation": 8, 
+            "charge": 19, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 280, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:40", 
+            "modified": "2012-04-12 21:27:40", 
+            "votation": 8, 
+            "charge": 20, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 281, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:40", 
+            "modified": "2012-04-12 21:27:40", 
+            "votation": 8, 
+            "charge": 21, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 282, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:40", 
+            "modified": "2012-04-12 21:27:40", 
+            "votation": 8, 
+            "charge": 23, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 283, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:40", 
+            "modified": "2012-04-12 21:27:40", 
+            "votation": 8, 
+            "charge": 24, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 284, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:40", 
+            "modified": "2012-04-12 21:27:41", 
+            "votation": 8, 
+            "charge": 25, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 285, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:40", 
+            "modified": "2012-04-12 21:27:41", 
+            "votation": 8, 
+            "charge": 26, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 286, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:40", 
+            "modified": "2012-04-12 21:27:40", 
+            "votation": 8, 
+            "charge": 27, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 287, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:40", 
+            "modified": "2012-04-12 21:27:41", 
+            "votation": 8, 
+            "charge": 28, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 288, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:40", 
+            "modified": "2012-04-12 21:27:40", 
+            "votation": 8, 
+            "charge": 29, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 289, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:40", 
+            "modified": "2012-04-12 21:27:40", 
+            "votation": 8, 
+            "charge": 30, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 290, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:40", 
+            "modified": "2012-04-12 21:27:41", 
+            "votation": 8, 
+            "charge": 31, 
+            "vote": 4, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 291, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:40", 
+            "modified": "2012-04-12 21:27:40", 
+            "votation": 8, 
+            "charge": 33, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 292, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:40", 
+            "modified": "2012-04-12 21:27:40", 
+            "votation": 8, 
+            "charge": 34, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 293, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:40", 
+            "modified": "2012-04-12 21:27:40", 
+            "votation": 8, 
+            "charge": 35, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 294, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:40", 
+            "modified": "2012-04-12 21:27:41", 
+            "votation": 8, 
+            "charge": 36, 
+            "vote": 4, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 295, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:40", 
+            "modified": "2012-04-12 21:27:40", 
+            "votation": 8, 
+            "charge": 37, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 296, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:40", 
+            "modified": "2012-04-12 21:27:40", 
+            "votation": 8, 
+            "charge": 38, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 297, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:40", 
+            "modified": "2012-04-12 21:27:40", 
+            "votation": 8, 
+            "charge": 39, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 298, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:40", 
+            "modified": "2012-04-12 21:27:40", 
+            "votation": 8, 
+            "charge": 40, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 299, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:40", 
+            "modified": "2012-04-12 21:27:40", 
+            "votation": 8, 
+            "charge": 41, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 300, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:40", 
+            "modified": "2012-04-12 21:27:40", 
+            "votation": 8, 
+            "charge": 42, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 301, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:40", 
+            "modified": "2012-04-12 21:27:40", 
+            "votation": 8, 
+            "charge": 43, 
+            "vote": 0, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 302, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:40", 
+            "modified": "2012-04-12 21:27:40", 
+            "votation": 8, 
+            "charge": 44, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 303, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:40", 
+            "modified": "2012-04-12 21:27:40", 
+            "votation": 8, 
+            "charge": 45, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 304, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:40", 
+            "modified": "2012-04-12 21:27:40", 
+            "votation": 8, 
+            "charge": 46, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 305, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:40", 
+            "modified": "2012-04-12 21:27:40", 
+            "votation": 8, 
+            "charge": 47, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 306, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:40", 
+            "modified": "2012-04-12 21:27:40", 
+            "votation": 8, 
+            "charge": 48, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 307, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:40", 
+            "modified": "2012-04-12 21:27:41", 
+            "votation": 8, 
+            "charge": 49, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 308, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:40", 
+            "modified": "2012-04-12 21:27:42", 
+            "votation": 8, 
+            "charge": 50, 
+            "vote": 1, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 309, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:40", 
+            "modified": "2012-04-12 21:27:42", 
+            "votation": 8, 
+            "charge": 51, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 310, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:40", 
+            "modified": "2012-04-12 21:27:42", 
+            "votation": 8, 
+            "charge": 52, 
+            "vote": 4, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 311, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:40", 
+            "modified": "2012-04-12 21:27:42", 
+            "votation": 8, 
+            "charge": 53, 
+            "vote": 2, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 312, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:40", 
+            "modified": "2012-04-12 21:27:40", 
+            "votation": 8, 
+            "charge": 54, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 313, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:42", 
+            "modified": "2012-04-12 21:27:42", 
+            "votation": 9, 
+            "charge": 14, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 314, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:42", 
+            "modified": "2012-04-12 21:27:42", 
+            "votation": 9, 
+            "charge": 15, 
+            "vote": 1, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 315, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:42", 
+            "modified": "2012-04-12 21:27:42", 
+            "votation": 9, 
+            "charge": 16, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 316, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:42", 
+            "modified": "2012-04-12 21:27:42", 
+            "votation": 9, 
+            "charge": 17, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 317, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:42", 
+            "modified": "2012-04-12 21:27:42", 
+            "votation": 9, 
+            "charge": 18, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 318, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:42", 
+            "modified": "2012-04-12 21:27:42", 
+            "votation": 9, 
+            "charge": 19, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 319, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:42", 
+            "modified": "2012-04-12 21:27:42", 
+            "votation": 9, 
+            "charge": 20, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 320, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:42", 
+            "modified": "2012-04-12 21:27:42", 
+            "votation": 9, 
+            "charge": 21, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 321, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:42", 
+            "modified": "2012-04-12 21:27:42", 
+            "votation": 9, 
+            "charge": 23, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 322, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:42", 
+            "modified": "2012-04-12 21:27:42", 
+            "votation": 9, 
+            "charge": 24, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 323, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:42", 
+            "modified": "2012-04-12 21:27:42", 
+            "votation": 9, 
+            "charge": 25, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 324, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:42", 
+            "modified": "2012-04-12 21:27:43", 
+            "votation": 9, 
+            "charge": 26, 
+            "vote": 2, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 325, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:42", 
+            "modified": "2012-04-12 21:27:43", 
+            "votation": 9, 
+            "charge": 27, 
+            "vote": 1, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 326, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:42", 
+            "modified": "2012-04-12 21:27:42", 
+            "votation": 9, 
+            "charge": 28, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 327, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:42", 
+            "modified": "2012-04-12 21:27:43", 
+            "votation": 9, 
+            "charge": 29, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 328, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:42", 
+            "modified": "2012-04-12 21:27:43", 
+            "votation": 9, 
+            "charge": 30, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 329, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:42", 
+            "modified": "2012-04-12 21:27:42", 
+            "votation": 9, 
+            "charge": 31, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 330, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:42", 
+            "modified": "2012-04-12 21:27:42", 
+            "votation": 9, 
+            "charge": 33, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 331, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:42", 
+            "modified": "2012-04-12 21:27:42", 
+            "votation": 9, 
+            "charge": 34, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 332, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:42", 
+            "modified": "2012-04-12 21:27:42", 
+            "votation": 9, 
+            "charge": 35, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 333, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:42", 
+            "modified": "2012-04-12 21:27:42", 
+            "votation": 9, 
+            "charge": 36, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 334, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:42", 
+            "modified": "2012-04-12 21:27:43", 
+            "votation": 9, 
+            "charge": 37, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 335, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:42", 
+            "modified": "2012-04-12 21:27:42", 
+            "votation": 9, 
+            "charge": 38, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 336, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:42", 
+            "modified": "2012-04-12 21:27:43", 
+            "votation": 9, 
+            "charge": 39, 
+            "vote": 1, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 337, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:42", 
+            "modified": "2012-04-12 21:27:42", 
+            "votation": 9, 
+            "charge": 40, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 338, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:42", 
+            "modified": "2012-04-12 21:27:42", 
+            "votation": 9, 
+            "charge": 41, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 339, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:42", 
+            "modified": "2012-04-12 21:27:42", 
+            "votation": 9, 
+            "charge": 42, 
+            "vote": 0, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 340, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:42", 
+            "modified": "2012-04-12 21:27:42", 
+            "votation": 9, 
+            "charge": 43, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 341, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:42", 
+            "modified": "2012-04-12 21:27:42", 
+            "votation": 9, 
+            "charge": 44, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 342, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:42", 
+            "modified": "2012-04-12 21:27:42", 
+            "votation": 9, 
+            "charge": 45, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 343, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:42", 
+            "modified": "2012-04-12 21:27:43", 
+            "votation": 9, 
+            "charge": 46, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 344, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:42", 
+            "modified": "2012-04-12 21:27:43", 
+            "votation": 9, 
+            "charge": 47, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 345, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:42", 
+            "modified": "2012-04-12 21:27:42", 
+            "votation": 9, 
+            "charge": 48, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 346, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:42", 
+            "modified": "2012-04-12 21:27:42", 
+            "votation": 9, 
+            "charge": 49, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 347, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:42", 
+            "modified": "2012-04-12 21:27:43", 
+            "votation": 9, 
+            "charge": 50, 
+            "vote": 2, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 348, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:42", 
+            "modified": "2012-04-12 21:27:42", 
+            "votation": 9, 
+            "charge": 51, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 349, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:42", 
+            "modified": "2012-04-12 21:27:43", 
+            "votation": 9, 
+            "charge": 52, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 350, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:42", 
+            "modified": "2012-04-12 21:27:42", 
+            "votation": 9, 
+            "charge": 53, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 351, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:42", 
+            "modified": "2012-04-12 21:27:43", 
+            "votation": 9, 
+            "charge": 54, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 352, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:43", 
+            "modified": "2012-04-12 21:27:44", 
+            "votation": 10, 
+            "charge": 14, 
+            "vote": 4, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 353, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:43", 
+            "modified": "2012-04-12 21:27:44", 
+            "votation": 10, 
+            "charge": 15, 
+            "vote": 1, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 354, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:43", 
+            "modified": "2012-04-12 21:27:43", 
+            "votation": 10, 
+            "charge": 16, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 355, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:43", 
+            "modified": "2012-04-12 21:27:44", 
+            "votation": 10, 
+            "charge": 17, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 356, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:43", 
+            "modified": "2012-04-12 21:27:43", 
+            "votation": 10, 
+            "charge": 18, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 357, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:43", 
+            "modified": "2012-04-12 21:27:43", 
+            "votation": 10, 
+            "charge": 19, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 358, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:43", 
+            "modified": "2012-04-12 21:27:43", 
+            "votation": 10, 
+            "charge": 20, 
+            "vote": 0, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 359, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:43", 
+            "modified": "2012-04-12 21:27:43", 
+            "votation": 10, 
+            "charge": 21, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 360, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:43", 
+            "modified": "2012-04-12 21:27:43", 
+            "votation": 10, 
+            "charge": 23, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 361, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:43", 
+            "modified": "2012-04-12 21:27:43", 
+            "votation": 10, 
+            "charge": 24, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 362, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:44", 
+            "modified": "2012-04-12 21:27:44", 
+            "votation": 10, 
+            "charge": 25, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 363, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:44", 
+            "modified": "2012-04-12 21:27:44", 
+            "votation": 10, 
+            "charge": 26, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 364, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:44", 
+            "modified": "2012-04-12 21:27:44", 
+            "votation": 10, 
+            "charge": 27, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 365, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:44", 
+            "modified": "2012-04-12 21:27:44", 
+            "votation": 10, 
+            "charge": 28, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 366, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:44", 
+            "modified": "2012-04-12 21:27:44", 
+            "votation": 10, 
+            "charge": 29, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 367, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:44", 
+            "modified": "2012-04-12 21:27:44", 
+            "votation": 10, 
+            "charge": 30, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 368, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:44", 
+            "modified": "2012-04-12 21:27:44", 
+            "votation": 10, 
+            "charge": 31, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 369, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:44", 
+            "modified": "2012-04-12 21:27:44", 
+            "votation": 10, 
+            "charge": 33, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 370, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:44", 
+            "modified": "2012-04-12 21:27:44", 
+            "votation": 10, 
+            "charge": 34, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 371, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:44", 
+            "modified": "2012-04-12 21:27:44", 
+            "votation": 10, 
+            "charge": 35, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 372, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:44", 
+            "modified": "2012-04-12 21:27:44", 
+            "votation": 10, 
+            "charge": 36, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 373, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:44", 
+            "modified": "2012-04-12 21:27:44", 
+            "votation": 10, 
+            "charge": 37, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 374, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:44", 
+            "modified": "2012-04-12 21:27:44", 
+            "votation": 10, 
+            "charge": 38, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 375, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:44", 
+            "modified": "2012-04-12 21:27:45", 
+            "votation": 10, 
+            "charge": 39, 
+            "vote": 1, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 376, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:44", 
+            "modified": "2012-04-12 21:27:44", 
+            "votation": 10, 
+            "charge": 40, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 377, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:44", 
+            "modified": "2012-04-12 21:27:45", 
+            "votation": 10, 
+            "charge": 41, 
+            "vote": 2, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 378, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:44", 
+            "modified": "2012-04-12 21:27:44", 
+            "votation": 10, 
+            "charge": 42, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 379, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:44", 
+            "modified": "2012-04-12 21:27:44", 
+            "votation": 10, 
+            "charge": 43, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 380, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:44", 
+            "modified": "2012-04-12 21:27:44", 
+            "votation": 10, 
+            "charge": 44, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 381, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:44", 
+            "modified": "2012-04-12 21:27:44", 
+            "votation": 10, 
+            "charge": 45, 
+            "vote": 0, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 382, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:44", 
+            "modified": "2012-04-12 21:27:45", 
+            "votation": 10, 
+            "charge": 46, 
+            "vote": 2, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 383, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:44", 
+            "modified": "2012-04-12 21:27:45", 
+            "votation": 10, 
+            "charge": 47, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 384, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:44", 
+            "modified": "2012-04-12 21:27:44", 
+            "votation": 10, 
+            "charge": 48, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 385, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:44", 
+            "modified": "2012-04-12 21:27:44", 
+            "votation": 10, 
+            "charge": 49, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 386, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:44", 
+            "modified": "2012-04-12 21:27:45", 
+            "votation": 10, 
+            "charge": 50, 
+            "vote": 0, 
+            "is_rebel": true
+        }
+    }, 
+    {
+        "pk": 387, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:44", 
+            "modified": "2012-04-12 21:27:44", 
+            "votation": 10, 
+            "charge": 51, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 388, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:44", 
+            "modified": "2012-04-12 21:27:44", 
+            "votation": 10, 
+            "charge": 52, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 389, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:44", 
+            "modified": "2012-04-12 21:27:44", 
+            "votation": 10, 
+            "charge": 53, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 390, 
+        "model": "votations.chargevote", 
+        "fields": {
+            "created": "2012-04-12 21:27:44", 
+            "modified": "2012-04-12 21:27:44", 
+            "votation": 10, 
+            "charge": 54, 
+            "vote": 1, 
+            "is_rebel": false
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "people.sitting", 
+        "fields": {
+            "date": "2012-04-03", 
+            "idnum": "C/0001", 
+            "number": 1, 
+            "institution": 3
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "people.sitting", 
+        "fields": {
+            "date": "2012-04-04", 
+            "idnum": "C/0002", 
+            "number": 2, 
+            "institution": 3
+        }
+    }
+]

@@ -7,24 +7,79 @@
     <section class="clearfix border-bottom">
         <h1>Consiglio</h1>
         <ul class="people-list list-floated">
-            <li><a href="{{ president.get_absolute_url }}"><strong>{{ president.person.first_name }} {{ president.person.last_name }}</strong> (P)</a><br>Presidente</li>
-            <li><a href="{{ mayor.get_absolute_url }}"><strong>{{ mayor.person.first_name }} {{ mayor.person.last_name }}</strong> (P)</a><br>Sindaco</li>
-            <li><a href="{{ vice_president.get_absolute_url }}"><strong>{{ vice_president.person.first_name }} {{ vice_president.person.last_name }}</strong> (P)</a><br>Vice presidente</li>
+            <!-- president -->
+            <li>
+                <a href="{{ president.charge.get_absolute_url }}">
+                    <strong>{{ president.charge.person.first_name }} {{ president.charge.person.last_name }}</strong>
+                    ({{ president.charge.council_group.acronym }})
+                </a><br/>
+                {{ president.get_charge_type_display }}
+            </li>
+
+            <!-- mayor -->
+            <li>
+                <a href="{{ mayor.get_absolute_url }}">
+                    <strong>{{ mayor.person.first_name }} {{ mayor.person.last_name }}</strong>
+                </a><br/>Sindaco
+            </li>
+
+            <!-- vice presidents -->
+            {% for vice_president in vicepresidents %}
+                <li>
+                    <a href="{{ vice_president.charge.get_absolute_url }}">
+                        <strong>{{ vice_president.charge.person.first_name }} {{ vice_president.charge.person.last_name }}</strong>
+                        ({{ vice_president.charge.council_group.acronym }})
+                    </a><br/>
+                    {{ vice_president.get_charge_type_display }}
+                </li>
+            {% endfor %}
+
         </ul>
     </section>
 
     <section>
         {% for group in groups %}
         <div class="party-people">
-            <h2><img src="{{ STATIC_URL }}img/placehold/50.gif">{{ group.name }}</h2>
+            <h2><img src="{{ STATIC_URL }}img/placehold/50.gif">{{ group.name }} ({{ group.acronym }})</h2>
+            <address>
+                {% for r in group.resources %}
+                    {% if r.resource_type == 'URL' %}
+                        {% if 'http://' not in r.value %}
+                            {{ r.description }}: <a href="http://{{ r.value }}">{{ r.value }}</a><br/>
+                        {%  else %}
+                            {{ r.description }}: <a href="{{ r.value }}">{{ r.value }}</a><br/>
+                        {% endif %}
+                    {% else %}
+                        {% if r.resource_type == 'EMAIL' %}
+                            <a href="mailto:{{ r.value }}">{{ r.value }}</a><br/>
+                        {%  else %}
+                            {{ r.value }}<br/>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            </address>
+
             <p>
-                {# FIXME #}<a href="CORRECT-URL-HERE"><strong>Correct Politician Here</strong> (CPH)</a><br />{# endFIXME #}
-                Capogruppo
+                <a href="{{ group.leader.charge.charge.get_absolute_url }}">
+                    <strong>{{ group.leader.charge.charge.person }}</strong>
+                </a><br />
+                {{ group.leader.get_charge_type_display }}
             </p>
-            
+
+            <p>
+                <a href="{{ group.deputy.charge.charge.get_absolute_url }}">
+                    <strong>{{ group.deputy.charge.charge.person }}</strong>
+                </a><br />
+                {{ group.deputy.get_charge_type_display }}
+            </p>
             <ul class="list-floated">
-                {% for counselor in group.counselors %}
-                <li><a href="{{ counselor.get_absolute_url }}"><strong>{{ counselor.person.first_name }} {{ counselor.person.last_name }}</strong> ({{ counselor.council_group.acronym }})</a></li>
+                {% for counselor in group.alpha_members %}
+
+                <li>
+                    <a href="{{ counselor.get_absolute_url }}">
+                        <strong>{{ counselor.person }}</strong>
+                    </a>
+                </li>
                 {% endfor %}
             </ul>
         </div>

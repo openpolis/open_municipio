@@ -18,6 +18,7 @@
     {{ block.super }}
     <script src="{{ STATIC_URL }}js/ajax_csrf.js" type="text/javascript" charset="utf-8"></script>
     <script src="{{ STATIC_URL }}js/voting.js" type="text/javascript"></script>
+    <script src="https://raw.github.com/tuupola/jquery_jeditable/master/jquery.jeditable.js" stype="text/javascript"></script>
 {% endblock head_js_includes %}
 
 {% block footer_js_includes %}
@@ -25,6 +26,21 @@
     <script type="text/javascript">
 
         {% if request.user.is_authenticated %}
+
+         $(document).ready(function(){
+             $('#act_title strong').editable('CAMBIAMI', {
+                 name : 'act_title',
+                 submitdata : function(value, settings) {
+                     return { 'act_id': {{ act.pk }} };
+                 },
+                 'class'   : 'form-inline',
+                 submit    : 'Salva',
+                 indicator : '<img src="{{ STATIC_URL }}img/spinner.gif">',
+                 tooltip   : 'Clicca per modificare...',
+                 style     : 'display: inline',
+                 onblur     : 'ignore'
+             });
+         });
 
         {% comment %}Build Comment form{% endcomment %}
         var selectRadio = function() {
@@ -86,7 +102,7 @@
         </h2>
 {% load om_utils %}
 {% load bookmarking_tags %}
- <h1><i id="{{ act|as_token }}" class="bookmarkable {% is_key_class act %}"></i><strong>{{ act.title }}</strong> ({{ act.idnum }})</h1>
+ <h1 id="act_title"><i id="{{ act|as_token }}" class="bookmarkable {% is_key_class act %}"></i><strong>{{ act.title }}</strong> ({{ act.idnum }})</h1>
     </hgroup>
 
         {% if description_form %}

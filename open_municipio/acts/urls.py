@@ -9,8 +9,7 @@ from open_municipio.acts.models import Act
 from open_municipio.acts.views import (ActSearchView, AgendaDetailView,
                                        DeliberationDetailView, InterpellationDetailView,
                                        InterrogationDetailView, MotionDetailView, ActDescriptionView,
-                                       ActTransitionAddView, ActTransitionRemoveView,
-                                       ActAddTagsView, ActRemoveTagView)
+                                       ActTransitionAddView, ActTransitionRemoveView, ActTagEditorView)
 
 from open_municipio.locations.views import ActTagByLocationView
 
@@ -59,9 +58,7 @@ urlpatterns = patterns('',
 
 ## Tag management
 urlpatterns += patterns('',
-    url(r'^(?P<pk>\d+)/tags/add/$', ActAddTagsView.as_view(),  name='om_act_tags_add'),
-    url(r'^(?P<act_pk>\d+)/tags/remove/(?P<tag_slug>[-\w]+)/$', ActRemoveTagView.as_view(),  name='om_act_tags_remove'),
-    url(r'^(?P<object_id>\d+)/(?P<direction>up|down|clear)vote/?$', vote_on_object, act_dict),
+    url(r'^(?P<pk>\d+)/topics/update/$', ActTagEditorView.as_view(),  name='om_act_topics_update'),
 )
 
 ## Location management
@@ -79,3 +76,8 @@ urlpatterns += patterns('',
     url(r'(?P<pk>\d+)/transition/add/', ActTransitionAddView.as_view(), name='om_act_transition_add'),
     url(r'(?P<pk>\d+)/transition/remove/', ActTransitionRemoveView.as_view(), name='om_act_transition_remove'),
 )
+
+## Votes casted by users
+urlpatterns += patterns('',
+    url(r'^(?P<object_id>\d+)/(?P<direction>up|down|clear)vote/?$', vote_on_object, act_dict),
+)                        
