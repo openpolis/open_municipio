@@ -50,7 +50,9 @@
                         <select id="category_list">
                             <option value=""></option>
                             {% for category in topics.categories %}
-                                <option value="{{ category.id }}">{{ category.name }}</option>
+                                {% if category not in act.categories %}                         
+                                     <option value="{{ category.id }}">{{ category.name }}</option>
+                                {% endif %}
                             {% endfor %}
                         </select>
                         <a href="#" class="btn btn-mini btn-success" id="category_add"><i class="icon-plus icon-white"></i> Aggiungi</a>
