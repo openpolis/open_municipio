@@ -62,6 +62,10 @@ class ActSearchView(ExtendedFacetedSearchView):
         return extra
 
 
+from django.views.generic import View
+
+from django.http import HttpResponse
+
 class ActListView(ListView):
     template_name = 'acts/act_list.html'
     queryset = Act.objects.select_subclasses().order_by('-presentation_date')
