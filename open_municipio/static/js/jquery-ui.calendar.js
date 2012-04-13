@@ -126,10 +126,6 @@ jQuery(document).ready(function($) {
                 }
                 if (event) {
                     scrollTo(event_container,'#'+event.Id);
-
-                    /*$('#'+event.Id).ScrollTo({
-                        offset: 50
-                    });*/
                 }
             },
             onSelect: function(dateText) {
@@ -149,15 +145,8 @@ jQuery(document).ready(function($) {
 
                 if (event) {
                     scrollTo(event_container,'#'+event.Id);
-                    /*
-                    $('#'+event.Id).ScrollTo({
-                        offset: 50
-                    });*/
                 }
             }
         });
     });
-
-
-
 });

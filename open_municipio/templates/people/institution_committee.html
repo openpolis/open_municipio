@@ -88,10 +88,10 @@
                 </div>
             </div>
             <div class="span8">
-                <ul class="list-floated unstyled">
+                <ul class="list-floated unstyled calendar_events">
                     {% for event in events %}
                         {% if not event.is_past_due %}
-                            <li><strong>{{ event.date|date:"d.m.Y" }}</strong> <a href="{{ event.act.downcast.get_absolute_url }}">{{ event.act.title }}</a></li>
+                            <li data-day="{{ event.date|date:"d/m/Y" }}"><strong>{{ event.date|date:"d.m.Y" }}</strong> <a href="{{ event.act.downcast.get_absolute_url }}">{{ event.act.title }}</a></li>
                         {% endif %}
                     {% endfor %}
                 </ul>
@@ -105,7 +105,7 @@
     <h2>Commissioni</h2>
     <ul class="unstyled">
         {% for committee_iter in committee_list %}
-            {% if committee_iter = committee %}
+            {% if committee_iter == committee %}
                 <li><strong>{{ committee_iter.name }}</strong>: {{ committee_iter.description|truncatewords:3 }}</li>
             {% else %}
                 <li><a href="{{ committee_iter.get_absolute_url }}"><strong>{{ committee_iter.name }}</strong>: {{ committee_iter.description|truncatewords:3 }}</a></li>

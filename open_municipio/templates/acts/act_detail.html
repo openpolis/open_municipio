@@ -25,28 +25,6 @@
     <script type="text/javascript">
 
         {% if request.user.is_authenticated %}
-        {% comment %}Send Monitoring form with anchor link{% endcomment %}
-        $(document).ready(function () {
-            $('#monitoring_table form').each(function(){
-                // hide forms
-                $(this).hide();
-                // search button to emulate
-                var button = $('button', this).first();
-                // create ajax sender link
-                var link = $('<a />').prop({
-                    'href' : '#'
-                }).on('click', function() {
-                    $(this).next('form').submit();
-                    return false;
-                });
-                button.contents().each(function(){
-                    link.append(this);
-                });
-                // inject content and insert before the form
-                $(this).before( link );
-            });
-
-        });
 
         {% comment %}Build Comment form{% endcomment %}
         var selectRadio = function() {
@@ -68,13 +46,12 @@
                 {
                     $('#comment_form_submit').append($('<i class="socialicon-'+el.data('icon')+' socialicon-active"></i>'))
                 }
-                el.css({
+                el.prop('title',el.text().trim()).css({
                     'text-indent': '-99999px',
                     'overflow': 'hidden',
                     'cursor': 'pointer'
                 }).addClass('socialicon-'+el.data('icon')).on('click', selectRadio);
             });
-            $('#id_comment').autogrow();
             // prevent empty submit
             $('#comment_form').submit(function(){
                 var field = $(this).find('textarea');
@@ -83,6 +60,9 @@
                     return false;
                 }
             });
+
+            // textarea form
+            $('#id_comment').autogrow();
 
             // politician form grow
             $('#description_form textarea').autogrow();
@@ -141,93 +121,34 @@
 {% block sidebar %}
 
 <section>
+    {% if perms.taxonomy.change_taggedact %}
     {% include 'acts/act_tags_editor.html' %}
+    {% endif %}
     <h3>Argomenti dell'atto</h3>
     
     <dl class="tags-cloud">
         {% for category in act.categories %}
-        <dt><a href="{{ category.get_absolute_url }}">{{ category.name }}</a></dt>
-        {% for tag in category.tags %}
-            {% if tag in act.tags %}
-            <dd><a href="{{ tag.get_absolute_url }}">{{ tag }}</a></dd>
-            {% endif %}
-        {% endfor %}
+            <dt><a href="{{ category.get_absolute_url }}">{{ category.name }}</a></dt>
+            {% for tag in category.tags %}
+                {% if tag in act.tags %}
+                    <dd><a href="{{ tag.get_absolute_url }}">{{ tag }}</a></dd>
+                {% endif %}
+            {% endfor %}
         {% endfor %}
     </dl>
-    
+ 
+    {% if location_form %}
+    	<form id="location-form" class="form-inline" action="{% url om_act_locations_add pk=act.act_ptr.pk %}" method="post">
+    		{% csrf_token %}
+	        {{ location_form.as_p }}
+            <button type="submit" class="btn btn-info btn-small">Applica</button>
+		</form>
+	{% endif %}
+ 
 </section>
 
 <section><h3>Monitora</h3>
-    <table id="monitoring_table">
-        <tr>
-            <td><span class="bluebox">{{ act.monitoring_users_count}}</span></td>
-            <th class="bg-dark span12">
-                utenti che monitorano l'atto
-                <ul class="unstyled list-inline">
-                    {% for user in act.monitoring_users %}
-                    <li>
-                        <a href="{% url users_user_detail user.username %}">{{ user.get_profile.public_name }}</a>
-                        {% if not forloop.last %},{% endif %}
-                    </li>
-                    {% endfor %}
-                </ul>
-
-                <small>
-                {% if user.is_authenticated and not user.get_profile.person %}
-                    {% if is_user_monitoring %}
-                        <i class="icon-eye-close"></i>
-                        <form action="{% url om_monitoring_stop %}" method="post">
-                            {% csrf_token %}
-                            {{ monitoring_form }}
-                            <button type="submit" class="btn btn-info btn-mini">Interrompi il monitoraggio</button>
-                        </form>
-                    {% else %}
-                        <i class="icon-eye-open"></i>
-                        <form action="{% url om_monitoring_start %}" method="post">
-                            {% csrf_token %}
-                            {{ monitoring_form }}
-                            <button type="submit" class="btn btn-info btn-mini">Avvia il monitoraggio</button>
-                        </form>
-                    {% endif %}
-                {% endif %}
-                </small>
-            </th>
-        </tr>
-        <tr>
-            <td><span class="greenbox">{{ act.monitoring_politicians_count}}</span></td>
-            <th class="bg-dark span12">
-                politici che monitorano l'atto
-                <ul class="unstyled list-inline">
-                    {% for user in act.monitoring_politicians %}
-                    <li>
-                        <a href="{{ user.get_profile.person.get_absolute_url }}">{{ user.get_profile.public_name }}</a>
-                        {% if not forloop.last %},{% endif %}
-                    </li>
-                    {% endfor %}
-                </ul>
-
-                <small>
-                {% if user.is_authenticated and user.get_profile.person %}
-                    {% if is_user_monitoring %}
-                        <i class="icon-eye-close"></i>
-                        <form action="{% url om_monitoring_stop %}" method="post">
-                            {% csrf_token %}
-                            {{ monitoring_form }}
-                            <button type="submit" class="btn btn-info btn-mini">Interrompi il monitoraggio</button>
-                        </form>
-                    {% else %}
-                        <i class="icon-eye-open"></i>
-                        <form action="{% url om_monitoring_start %}" method="post">
-                            {% csrf_token %}
-                            {{ monitoring_form }}
-                            <button type="submit" class="btn btn-info btn-mini">Avvia il monitoraggio</button>
-                        </form>
-                    {% endif %}
-                {% endif %}
-                </small>
-            </th>
-        </tr>
-    </table>
+    {% include 'monitoring/summary.html' with object=act show_politicians=1 %}
 </section>
 
 
@@ -245,7 +166,7 @@
         {% for comment in comment_list %}
         <li class="bg-light"> <!-- make control for different comment opinion, like positive comment use .bg-lightgreen -->
             <a href="{% url users_user_detail comment.user.username %}">
-                <img src="http://placehold.it/50x50" />
+                <img src="{{ STATIC_URL }}img/placehold/50.gif" />
                 {{ comment.user.username|capfirst }}
             </a>
             {{ comment.comment }}

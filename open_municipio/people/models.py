@@ -11,17 +11,18 @@ from django.contrib.contenttypes.models import ContentType
 from model_utils import Choices
 from model_utils.managers import PassThroughManager
 
-from open_municipio.monitoring.models import Monitoring
+from open_municipio.monitoring.models import Monitoring, MonitorizedItem
 from open_municipio.newscache.models import News
 from open_municipio.people.managers import TimeFramedQuerySet
-import open_municipio
+from open_municipio.om_utils.models import SlugModel
+
 
 
 #
 # Persons, charges and groups
 #
 
-class Person(models.Model):
+class Person(models.Model, MonitorizedItem):
     FEMALE_SEX = 0
     MALE_SEX = 1
     SEX = Choices(
@@ -374,7 +375,9 @@ class InstitutionCharge(Charge):
         Re-compute the number of votations where the charge was present/absent
         and update the respective counters
         """
-        absent = open_municipio.votations.models.ChargeVote.ABSENT
+        from open_municipio.votations.models import ChargeVote
+         
+        absent = ChargeVote.ABSENT
         self.n_present_votations = self.chargevote_set.exclude(vote=absent).count()
         self.n_absent_votations = self.chargevote_set.filter(vote=absent).count()
         self.save()
@@ -595,7 +598,7 @@ class GroupIsMajority(models.Model):
 #
 # Bodies
 #
-class Body(models.Model):
+class Body(SlugModel):
     """
     The base model for bodies. 
     
