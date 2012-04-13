@@ -10,7 +10,7 @@ import dateutil.parser
 #from time import strptime
 #import datetime
 import sys, traceback
-from open_municipio.settings_import import XML_TO_OM_INST, IMPORT_NS
+from open_municipio.settings_import import XML_TO_OM_INST, XML_TO_OM_VOTE, IMPORT_NS
 
 class Command(BaseCommand):
     args = "<filename filename ...>"
@@ -18,9 +18,10 @@ class Command(BaseCommand):
 
     def lookupCharge(self, xml_chargevote):
         try:
-            inst_pk = xml_chargevote.get("componentId")
-            om_charge = InstitutionCharge.get(inst_pk)
+            inst_pk = int(xml_chargevote.get("componentId"))
+            om_charge = InstitutionCharge.objects.all().get(pk=inst_pk)
         except Exception,e:
+            print("Exception lookingup charge: %s" % e)
             om_charge = None
 
         return om_charge
@@ -49,7 +50,7 @@ class Command(BaseCommand):
     def lookupOrAddSitting(self, xml_sitting):
         sitt_num = xml_sitting.get("num")
         str_date = xml_sitting.get("date")
-        sitt_date = dateutil.parser.parse(xml_sitting.get("date")))
+        sitt_date = dateutil.parser.parse(xml_sitting.get("date"))
         sitt_type = xml_sitting.get("type")
 
         if sitt_type == None or sitt_date == None or sitt_num == None:
@@ -101,7 +102,13 @@ class Command(BaseCommand):
         print("Inside buildChargeVote")
         om_cv = ChargeVote()
         om_cv.votation = om_votation
-        om_cv.vote = xml_cv.get("vote") # decode
+
+        xml_vote = xml_cv.get("vote")
+        if not (xml_vote in XML_TO_OM_VOTE):
+            print("Cannot store ChargeVote. XML vote code '%d' not recognized" %
+                xml_vote)
+            return None
+        om_cv.vote = XML_TO_OM_VOTE[xml_vote]
 
         om_cv.charge = om_charge
         return om_cv
@@ -151,6 +158,10 @@ class Command(BaseCommand):
                         continue;
 
                     om_cv = self.buildChargeVote(xml_cv, om_charge, om_votation)
+
+                    if om_cv == None:
+                        print("ChargeVote importation interrupted")
+                        return
                     om_cv.save()
                     print("Saved ChargeVote", om_cv)
                 

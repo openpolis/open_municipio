@@ -83,9 +83,9 @@ class Command(BaseCommand):
                     (om_person.first_name, om_person.last_name, om_institution.name))
                 continue
 
-            charge_pk = xml_charge.get("componentId")
+            charge_pk = xml_charge.get("id")
             om_charge = InstitutionCharge()
-            om_charge.pk = charge_pk
+            om_charge.pk = int(charge_pk)
             om_charge.person = om_person
             om_charge.institution = om_institution
             om_charge.start_date = START_DATE_DEF
@@ -93,7 +93,7 @@ class Command(BaseCommand):
             om_charge.save()
             print("Imported Charge (%s %s at %s) successfully (pk=%d)" % 
                     (om_person.first_name, om_person.last_name, om_institution.name,
-                    om_charge.pk))
+                    om_charge.pk, charge_pk))
 
 
     def handleCouncil(self, xml_council):
