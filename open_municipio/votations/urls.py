@@ -19,8 +19,3 @@ urlpatterns = patterns('',
     # votation detail
     url(r'^(?P<pk>\d+)/$', VotationDetailView.as_view(), name='om_votation_detail'),
 )
-
-## Bookmark management
-urlpatterns += patterns('',
-    url(r'(?P<pk>\d+)/togglebookmark/?$',VotationToggleBookmark.as_view(),name='om_votation_bookmark_set'),
-)
