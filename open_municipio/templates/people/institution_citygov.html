@@ -9,7 +9,7 @@
         <ul class="people-list list-floated">
             {% for member in citygov.members %}
             <li>
-                <a href="{{ member.get_absolute_url }}"><img src="http://placehold.it/50" /></a>
+                <a href="{{ member.get_absolute_url }}"><img src="{{ STATIC_URL }}img/placehold/50.gif" /></a>
                 <strong><a href="{{ member.get_absolute_url }}"><i class="icon-ok"></i> {{ member.person.first_name|lower|capfirst }} {{ member.person.last_name|lower|capfirst }}</a></strong> <br />
                 <span class="monitoring">
                     {% if not member.person.monitoring_users %}Non monitorato{% else %}Monitorato da {{ member.person.monitoring_users|length }} cittadin{{ member.person.monitoring_users_count|pluralize:"o,i" }}{% endif %} - <a href="#"><i class="socialicon-add"></i> Monitora</a>
@@ -25,19 +25,14 @@
             <div class="span4">
                 <div class="calendar_container">
                     <h3>Agenda della commissione</h3>
-                    <div class="calendar" data-calendar=".calendar_events"></div>
-                    <ul class="calendar_events">
-                        {% for event in events %}
-                        <li data-day="{{ event.date|date:"d/m/Y" }}"><a href="{{ event.act.downcast.get_absolute_url }}">{{ event.act.title }}</a></li>
-                        {% endfor %}
-                    </ul>
+                    <div class="calendar" data-events=".calendar_events"></div>
                 </div>
             </div>
             <div class="span8">
-                <ul class="list-floated unstyled">
+                <ul class="list-floated unstyled calendar_events">
                     {% for event in events %}
                     {% if not event.is_past_due %}
-                    <li><strong>{{ event.date|date:"d.m.Y" }}</strong> <a href="{{ event.act.downcast.get_absolute_url }}">{{ event.act.title }}</a></li>
+                    <li data-day="{{ event.date|date:"d/m/Y" }}"><strong>{{ event.date|date:"d.m.Y" }}</strong> <a href="{{ event.act.downcast.get_absolute_url }}">{{ event.act.title }}</a></li>
                     {% endif %}
                     {% endfor %}
                 </ul>
@@ -105,5 +100,5 @@
 {% block footer_js_includes %}
     {{ block.super }}
     <script src="{{ STATIC_URL }}js/jquery-ui-1.8.18.custom.min.js"></script>
-    <script src="{{ STATIC_URL }}js/jquery.ui.calendar.js"></script>
+    <script src="{{ STATIC_URL }}js/jquery-ui.calendar.js"></script>
 {% endblock %}

@@ -13,7 +13,7 @@
 
 {% block content %}
     <header class="clearfix">
-        <a href="{{ person.get_absolute_url }}" class="thumb"><img src="http://placehold.it/100"></a>
+        <a href="{{ person.get_absolute_url }}" class="thumb"><img src="{{ STATIC_URL }}img/placehold/100.gif"></a>
         <h1>{{ person }}</h1>
         <small><i class="icon-ok"></i> {{ person }} è iscritto a Open municipio</small>
         <ul class="unstyled">
