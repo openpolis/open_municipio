@@ -578,6 +578,29 @@
 	<xs:element name="Content" type="contentType"/>
 	<xs:element name="Section" type="contentType"/>
 
+	<xs:element name="CouncilDeliberationTransition">
+		<xs:complexType>
+			<xs:attribute name="name">
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<!-- generic -->
+						<xs:enumeration value="Presented"/>
+						<xs:enumeration value="Accepted"/>
+						<xs:enumeration value="Rejected"/>
+						<xs:enumeration value="Retired"/>
+						<xs:enumeration value="Postponed"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="date" type="dateType"/>
+			<!-- a concise description of the reason that lead the transition to this step -->
+			<xs:attribute name="reason" type="xs:string"/>
+			<!-- in the note field it is possible to store unstructure information attached to the transition -->
+			<xs:attribute name="note" type="xs:string"/>
+		</xs:complexType>
+	</xs:element>
+
+
 	<xs:element name="CouncilDeliberation">
 		<xs:complexType>
 			<xs:complexContent>
@@ -586,6 +609,8 @@
 						<xs:element ref="OfficeOpinion" minOccurs="0" maxOccurs="1"/>
 						<xs:element minOccurs="0" name="CouncilBallot" type="actBallot"/>
 						<xs:element ref="Attachment" minOccurs="0" maxOccurs="unbounded"/>
+						<xs:element ref="CouncilDeliberationTransition" minOccurs="0"
+							maxOccurs="unbounded"/>
 					</xs:sequence>
 					<xs:attribute name="final_id" type="xs:string"/>
 					<xs:attribute name="approval_date" type="xs:date" use="optional"/>
@@ -705,6 +730,7 @@
 						<xs:enumeration value="Accepted"/>
 						<xs:enumeration value="Rejected"/>
 						<xs:enumeration value="Retired"/>
+                        <xs:enumeration value="Postponed" />
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:attribute>
@@ -902,6 +928,19 @@
 					<xs:restriction base="xs:token">
 						<xs:enumeration value="yes"/>
 						<xs:enumeration value="no"/>
+                        <xs:enumeration value="abstained" />
+                        <xs:enumeration value="mission" />
+                        <xs:enumeration value="absent" />
+                        <!-- partecipates to an invalid votation -->
+                        <xs:enumeration value="invalid" />
+                        <!-- it is president during votation, and thus it does not vote -->
+                        <xs:enumeration value="president" />
+                        <!-- the charge requires the votation but does not vote -->
+                        <xs:enumeration value="requires" />
+                        <!-- the votation has been canceled -->
+                        <xs:enumeration value="canceled" />
+                        <!-- the votation is secret -->
+                        <xs:enumeration value="secret" />
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:attribute>
