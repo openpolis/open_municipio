@@ -74,14 +74,17 @@ class InstitutionChargeInline(ChargeInline):
 
 class ResponsabilityInline(admin.TabularInline):
     raw_id_fields = ('charge',)
-    fields = ('charge', 'charge_type', 'start_date', 'end_date', 'description')
     extra = 0
 
 class InstitutionResponsabilityInline(ResponsabilityInline):
     model = InstitutionResponsability
+    fields = ('charge', 'charge_type', 'start_date', 'end_date', 'description')
 
-class GroupResponsabilityInline(ResponsabilityInline):
+class GroupResponsabilityInline(admin.TabularInline):
     model = GroupResponsability
+    raw_id_fields = ('charge',)
+    extra = 0
+    fields = ('charge', 'charge_type', 'start_date', 'end_date', 'description')
 
 
 class ChargeAdmin(admin.ModelAdmin):

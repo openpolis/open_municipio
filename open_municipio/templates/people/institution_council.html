@@ -61,17 +61,23 @@
 
             <p>
                 <a href="{{ group.leader.charge.charge.get_absolute_url }}">
-                    <strong>{{ group.leader.charge.charge.person.first_name }} {{ group.leader.charge.charge.person.last_name }}</strong>
+                    <strong>{{ group.leader.charge.charge.person }}</strong>
                 </a><br />
                 {{ group.leader.get_charge_type_display }}
             </p>
-            
+
+            <p>
+                <a href="{{ group.deputy.charge.charge.get_absolute_url }}">
+                    <strong>{{ group.deputy.charge.charge.person }}</strong>
+                </a><br />
+                {{ group.deputy.get_charge_type_display }}
+            </p>
             <ul class="list-floated">
                 {% for counselor in group.alpha_members %}
 
                 <li>
                     <a href="{{ counselor.get_absolute_url }}">
-                        <strong>{{ counselor.person.first_name }} {{ counselor.person.last_name }}</strong>
+                        <strong>{{ counselor.person }}</strong>
                     </a>
                 </li>
                 {% endfor %}

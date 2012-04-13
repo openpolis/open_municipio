@@ -205,15 +205,6 @@ class ChargeResponsability(models.Model):
     This is an abstract class, that must be subclassed, in order to specify
     the context (institution charge or group charge)
     """
-    CHARGE_TYPES = Choices(
-        ('MAYOR', 'mayor', _('Mayor')),
-        ('FIRSTDEPUTYMAYOR', 'firstdeputymayor', _('First deputy mayor')),
-        ('PRESIDENT', 'president', _('President')),
-        ('VICE', 'vice', _('Vice president')),
-        ('VICEVICE', 'vicevice', _('Vice vice precident')),
-    )
-
-    charge_type = models.CharField(_('charge type'), max_length=16, choices=CHARGE_TYPES)
     start_date = models.DateField(_('start date'))
     end_date = models.DateField(_('end date'), blank=True, null=True)
     description = models.CharField(_('description'), blank=True, max_length=255,
@@ -388,7 +379,16 @@ class InstitutionResponsability(ChargeResponsability):
     """
     Responsability for institutional charges.
     """
+    CHARGE_TYPES = Choices(
+        ('MAYOR', 'mayor', _('Mayor')),
+        ('FIRSTDEPUTYMAYOR', 'firstdeputymayor', _('First deputy mayor')),
+        ('PRESIDENT', 'president', _('President')),
+        ('VICE', 'vice', _('Vice president')),
+        ('VICEVICE', 'vicevice', _('Vice vice precident')),
+                                      )
+
     charge = models.ForeignKey(InstitutionCharge, verbose_name=_('charge'))
+    charge_type = models.CharField(_('charge type'), max_length=16, choices=CHARGE_TYPES)
     class Meta:
         verbose_name = _('institutional responsability')
         verbose_name_plural = _('institutional responsabilities')
@@ -479,6 +479,23 @@ class Group(models.Model):
             return None
 
     @property
+    def deputy(self):
+        """
+        The current deputy leader of the Group as GroupResponsability.
+        None if not found.
+
+        To fetch the InstitutionCharge, .groupcharge.charge.
+        """
+        try:
+            deputy = GroupResponsability.objects.select_related().get(
+                charge__group=self,
+                charge_type=GroupResponsability.CHARGE_TYPES.deputy
+            )
+            return deputy
+        except ObjectDoesNotExist:
+            return None
+
+    @property
     def members(self):
         """
         Current members of the group, as institution charges, leader and
@@ -487,6 +504,7 @@ class Group(models.Model):
         return self.charges.select_related().exclude(
             groupcharge__groupresponsability__charge_type__in=(
                 GroupResponsability.CHARGE_TYPES.leader,
+                GroupResponsability.CHARGE_TYPES.deputy
                 ),
             groupcharge__groupresponsability__end_date__isnull=True
         ).exclude(
@@ -566,6 +584,12 @@ class GroupResponsability(ChargeResponsability):
     """
     Responsability for group charges.
     """
+    CHARGE_TYPES = Choices(
+        ('MAYOR', 'mayor', _('Mayor')),
+        ('LEADER', 'leader', _('Group leader')),
+        ('DEPUTY', 'deputy', _('Group deputy leader')),
+    )
+    charge_type = models.CharField(_('charge type'), max_length=16, choices=CHARGE_TYPES)
     charge = models.ForeignKey(GroupCharge, verbose_name=_('charge'))
 
 
