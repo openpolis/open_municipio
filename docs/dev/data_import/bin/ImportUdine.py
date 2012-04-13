@@ -188,9 +188,10 @@ try:
     for row in rset:
         charge = etree.SubElement(council, OM + "Charge")
         charge.set("id", unicode(row["IdConsigliere"]))
-        charge.set("description", "Consigliere")
+        # NB the description must be one of InstitutionCharge.CHARGE_TYPES values
+        charge.set("description", "Counselor")
 
-        person = etree.SubElement(charge, "Person")
+        person = etree.SubElement(charge, OM + "Person")
         person.set("first_name", unicode(capwords(row["Nome"])))
         person.set("last_name",unicode(capwords(row["Cognome"])))
 
