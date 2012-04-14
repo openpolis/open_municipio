@@ -187,8 +187,8 @@
         <ul class="nav nav-tabs">
             <li class="active"><a href="#chart-tab-yes" data-toggle="tab">Favorevoli</a></li>
             <li><a href="#chart-tab-no" data-toggle="tab">Contrari</a></li>
-            <li><a href="#chart-tab-abstained" data-toggle="tab">Astenuti</a></li>
-            <li><a href="#chart-tab-rebel" data-toggle="tab">Ribelli</a></li>
+            <li><a href="#chart-tab-abst" data-toggle="tab">Astenuti</a></li>
+            <li><a href="#chart-tab-rebels" data-toggle="tab">Ribelli</a></li>
         </ul>
         <div class="tab-content">
             <div class="tab-pane active" id="chart-tab-yes">
@@ -197,10 +197,10 @@
             <div class="tab-pane" id="chart-tab-no">
                 <p><img src="https://chart.googleapis.com/chart?cht=p&chs=485x154&chl={% for group_vote in votation.group_votes %}{{ group_vote.group.acronym }} {{ group_vote.n_no }}{% if not forloop.last %}|{% endif %}{% endfor %}&chd=t:{% for group_vote in votation.group_votes %}{{ group_vote.n_no }}{% if not forloop.last %},{% endif %}{% endfor %}&chco=CC0000,FFFF33"></p>
             </div>
-            <div class="tab-pane" id="chart-tab-abstained">
+            <div class="tab-pane" id="chart-tab-abst">
                 <p><img src="https://chart.googleapis.com/chart?cht=p&chs=485x154&chl={% for group_vote in votation.group_votes %}{{ group_vote.group.acronym }} {{ group_vote.n_abst }}{% if not forloop.last %}|{% endif %}{% endfor %}&chd=t:{% for group_vote in votation.group_votes %}{{ group_vote.n_abst }}{% if not forloop.last %},{% endif %}{% endfor %}&chco=CC0000,FFFF33"></p>
             </div>
-            <div class="tab-pane" id="chart-tab-rebel"><!-- fix me, I need real rebels'data -->
+            <div class="tab-pane" id="chart-tab-rebels"><!-- fix me, I need real rebels'data -->
                 <p><img src="https://chart.googleapis.com/chart?cht=p&chs=485x154&chl={% for group_vote in votation.group_votes %}{{ group_vote.group.acronym }} {{ group_vote.n_rebel }}{% if not forloop.last %}|{% endif %}{% endfor %}&chd=t:{% for group_vote in votation.group_votes %}{{ group_vote.n_rebel }}{% if not forloop.last %},{% endif %}{% endfor %}&chco=CC0000,FFFF33"></p>
             </div>
         </div>
