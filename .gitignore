@@ -1,0 +1,11 @@
+.idea
+apache
+docs
+fabfile
+fabfile.sample
+open_municipio
+sitestatic
+solr
+uploads
+smtp_sink_server.py
+
