@@ -1,4 +1,6 @@
 .idea
+_site
+_files
 apache
 docs
 fabfile
@@ -8,4 +10,3 @@ sitestatic
 solr
 uploads
 smtp_sink_server.py
-

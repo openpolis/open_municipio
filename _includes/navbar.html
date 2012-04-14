@@ -1,0 +1,97 @@
+<div class="navbar navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container-fluid">
+      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </a>
+      <a class="brand" href="index.html">Open municipio</a>
+      <div class="nav-collapse">
+        <ul class="nav">
+          <li {% if page.url == '/about.html'%}class="active"{% endif%}><a href="about.html">About</a></li>
+          <li {% if page.url == '/team.html'%}class="active"{% endif%}><a href="team.html">Team</a></li>
+          <li {% if page.url contains '/documents_'%}class="active dropdown"{%else%}class="dropdown"{% endif%}>
+            <a href="#"
+                  class="dropdown-toggle"
+                  data-toggle="dropdown">
+                  Documents
+                  <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+              <li {% if page.url == '/documents_gantt.html'%}class="active"{% endif%}>
+                <a href="documents_gantt.html">Gantt</a>
+              </li>
+              <li {% if page.url == '/documents_usecases.html'%}class="active"{% endif%}>
+                <a href="documents_usecases.html">Use cases</a>
+              </li>
+              <li {% if page.url == '/documents_ermodel.html'%}class="active"{% endif%}>
+                <a href="documents_ermodel.html">ER Model</a>
+              </li>
+              <li {% if page.url == '/documents_navigation_tree.html'%}class="active"{% endif%}>
+                <a href="documents_navigation_tree.html">Navigation tree</a>
+              </li>
+              <li {% if page.url == '/documents_requirements.html'%}class="active"{% endif%}>
+                <a href="documents_requirements.html">Requirements</a>
+              </li>
+            </ul>
+          </li>
+
+          <li {% if page.url contains '/wireframes_'%}class="active dropdown"{%else%}class="dropdown"{% endif%}>
+            <a href="#"
+                  class="dropdown-toggle"
+                  data-toggle="dropdown">
+                  Wireframes
+                  <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+              <li {% if page.url == '/wireframes_council.html'%}class="active"{% endif%}>
+                <a href="wireframes_council.html">Council</a>
+              </li>
+              <li {% if page.url == '/wireframes_citygov.html'%}class="active"{% endif%}>
+                <a href="wireframes_citygov.html">CityGovernment</a>
+              </li>
+              <li {% if page.url == '/wireframes_commission.html'%}class="active"{% endif%}>
+                <a href="wireframes_commission.html">Commission</a>
+              </li>
+              <li {% if page.url == '/wireframes_groups.html'%}class="active"{% endif%}>
+                <a href="wireframes_groups.html">Groups</a>
+              </li>
+              <li {% if page.url == '/wireframes_acts.html'%}class="active"{% endif%}>
+                <a href="wireframes_acts.html">Acts list</a>
+              </li>
+              <li {% if page.url == '/wireframes_act.html'%}class="active"{% endif%}>
+                <a href="wireframes_act.html">Act</a>
+              </li>
+              <li {% if page.url == '/wireframes_votes.html'%}class="active"{% endif%}>
+                <a href="wireframes_votes.html">Votes list</a>
+              </li>
+              <li {% if page.url == '/wireframes_vote.html'%}class="active"{% endif%}>
+                <a href="wireframes_vote.html">Vote</a>
+              </li>
+              <li {% if page.url == '/wireframes_tags.html'%}class="active"{% endif%}>
+                <a href="wireframes_tags.html">Tags list</a>
+              </li>
+              <li {% if page.url == '/wireframes_tag.html'%}class="active"{% endif%}>
+                <a href="wireframes_tag.html">Tag</a>
+              </li>
+              <li {% if page.url == '/wireframes_politicians.html'%}class="active"{% endif%}>
+                <a href="wireframes_politicians.html">Politicians list</a>
+              </li>
+              <li {% if page.url == '/wireframes_politician.html'%}class="active"{% endif%}>
+                <a href="wireframes_politician.html">Politician</a>
+              </li>
+              <li {% if page.url == '/wireframes_citizens.html'%}class="active"{% endif%}>
+                <a href="wireframes_citizens.html">Citizens list</a>
+              </li>
+              <li {% if page.url == '/wireframes_citizen.html'%}class="active"{% endif%}>
+                <a href="wireframes_citizen.html">Citizen</a>
+              </li>
+
+            </ul>
+          </li>
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </div>
+</div>
