@@ -200,8 +200,8 @@
             <div class="tab-pane" id="chart-tab-abst">
                 <p><img src="https://chart.googleapis.com/chart?cht=p&chs=485x154&chl={% for group_vote in votation.group_votes %}{{ group_vote.group.acronym }} {{ group_vote.n_abst }}{% if not forloop.last %}|{% endif %}{% endfor %}&chd=t:{% for group_vote in votation.group_votes %}{{ group_vote.n_abst }}{% if not forloop.last %},{% endif %}{% endfor %}&chco=CC0000,FFFF33"></p>
             </div>
-            <div class="tab-pane" id="chart-tab-rebels"><!-- fix me, I need real rebels'data -->
-                <p><img src="https://chart.googleapis.com/chart?cht=p&chs=485x154&chl={% for group_vote in votation.group_votes %}{{ group_vote.group.acronym }} {{ group_vote.n_rebel }}{% if not forloop.last %}|{% endif %}{% endfor %}&chd=t:{% for group_vote in votation.group_votes %}{{ group_vote.n_rebel }}{% if not forloop.last %},{% endif %}{% endfor %}&chco=CC0000,FFFF33"></p>
+            <div class="tab-pane" id="chart-tab-rebels">
+                <p><img src="https://chart.googleapis.com/chart?cht=p&chs=485x154&chl={% for group_vote in votation.group_votes %}{{ group_vote.group.acronym }} {{ group_vote.n_rebels }}{% if not forloop.last %}|{% endif %}{% endfor %}&chd=t:{% for group_vote in votation.group_votes %}{{ group_vote.n_rebels }}{% if not forloop.last %},{% endif %}{% endfor %}&chco=CC0000,FFFF33"></p>
             </div>
         </div>
     </div>
