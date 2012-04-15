@@ -1,4 +1,5 @@
-## Django global settings for the "OpenMunicipio" web application.
+# -*- coding: utf-8 -*-
+# ## Django global settings for the "OpenMunicipio" web application.
 ##
 ## Note that machine-specific settings (such as DB connection parameters,
 ## absolute filesystem paths, passwords, etc.) should be placed within 
@@ -159,6 +160,6 @@ OM_BOOKMARKING_EMPTY_STAR_CLASS = 'icon-star-empty'
 
 # Site templates globals variables
 SITE_INFO = {
-    'main_city': 'Roma'
+    'main_city': u'City'
 }
 

@@ -21,3 +21,4 @@ Technologies
 Open municipio is a **django** project, developed on github, by a small team of experts and developers. 
 The project has been subdivided into many **independent applications**, 
 in order to keep thing simpler and to possibly re-use applications in other contexts.
+

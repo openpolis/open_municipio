@@ -39,6 +39,7 @@ class Votation(models.Model):
     n_no = models.IntegerField(default=0)
     n_abst = models.IntegerField(default=0)
     n_maj = models.IntegerField(blank=True, null=True)
+    is_key = models.BooleanField(default=False, help_text=_("Specify whether the present Votation should be a featured one or not"))
     outcome = models.IntegerField(choices=OUTCOMES, blank=True, null=True)
     is_key = models.BooleanField(default=False, help_text=_("Specify whether this is a key votation"))
     n_rebels = models.IntegerField(default= 0)
@@ -88,6 +89,7 @@ class Votation(models.Model):
         else:
             return True
 
+
     def update_caches(self):
         """
         Computes and update caches for this votation.
@@ -135,12 +137,14 @@ class Votation(models.Model):
         self.n_rebels = self.chargevote_set.filter(is_rebel=True).count()
         self.save()
 
+        # computes and caches group rebels
+        self.compute_group_rebels()
 
 
     def compute_group_votes(self):
         """
-        once all charges' votes have been stored, the aggregated votations
-        of the groups are stored in GroupVote.vote
+        Once all charges' votes have been stored, the aggregated
+        votations of the groups are stored in GroupVote.vote.
 
         A GroupVote is the same as the majority of the group.
         Whenever there is no clear majority (50%/50%), then a
@@ -152,10 +156,9 @@ class Votation(models.Model):
         * n_no
         * n_abst
 
-        the number of total group members is len(g.councelors())
+        The number of total group members is len(g.councelors())
         and it should be cached somewhere,
         then n_absents = n_group_members - n_presents
-
         """
 
         # the computation is done only if ChargeVote is populated,
@@ -203,6 +206,33 @@ class Votation(models.Model):
                 gv.save()
 
 
+    def compute_group_rebels(self):
+        """
+        Once rebel votes have been stored for votations, rebel votes
+        are then calculated on a group basis.
+
+        Cached value:
+        * n_rebels
+        """
+
+        # the computation is done only if ChargeVote is populated,
+        # for this votation
+        if ChargeVote.objects.filter(votation__id=self.id).count() > 0:
+
+            for g in Group.objects.all():
+                # rebels
+                rebel_votes = ChargeVote.objects.filter(votation__id=self.id,
+                                                        charge__groupcharge__group=g,
+                                                        charge__groupcharge__end_date__isnull=True,
+                                                        is_rebel=True).count()
+                gv = GroupVote.objects.get(votation__id=self.id, group=g)
+                gv.n_rebels = rebel_votes
+                print rebel_votes
+
+                # save updates
+                gv.save()
+
+
 class GroupVote(TimeStampedModel):
     """
     WRITEME
@@ -227,6 +257,7 @@ class GroupVote(TimeStampedModel):
     n_yes = models.IntegerField(default=0)
     n_no = models.IntegerField(default=0)
     n_abst = models.IntegerField(default=0)
+    n_rebels = models.IntegerField(default=0)
 
     class Meta:
         db_table = u'votations_group_vote'    
