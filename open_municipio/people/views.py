@@ -174,7 +174,7 @@ class PoliticianDetailView(DetailView):
         context['institution_list'] = Institution.objects.all()
 
         context['resources'] = dict(
-            (r['resource_type'], {'value': r['value'], 'descritpion': r['description']})
+            (r['resource_type'], {'value': r['value'], 'description': r['description']})
             for r in self.object.resource_set.all().values('resource_type', 'value', 'description')
         )
         context['current_charges'] = self.object.current_institution_charges.exclude(
