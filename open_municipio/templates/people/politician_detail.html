@@ -1,5 +1,7 @@
 {% extends "base_two_columns.html" %}
 {% load i18n %}
+{% load comments %}
+{% load om_voting_tags %}
 
 {% block title %}| Dettaglio {{ person }}{% endblock %}
 {% block content_header %}{% trans 'politicians' %}{% endblock %}
@@ -199,24 +201,37 @@
             </tr>
             </tfoot>
             <tbody>
+            {% for c in current_charges %}
+                {% for act in c.presented_acts %}
             <tr>
-                <td><a href="#"><strong>Titolo di una votazione effettuata</strong> (94756)</a></td>
-                <td class="text-center"><span class="label label-success">Approvato</span></td>
-                <td class="text-center"><span class="okbox">10</span> <span class="kobox">25</span></td>
-                <td class="text-center"><a href="#"><strong>25</strong></a></td>
+                <td><a href="{{ act.downcast.get_absolute_url }}"><strong>{{ act.title }}</strong> ({{ act.idnum }})</a></td>
+                <td class="text-center">
+
+<!-- FIX ME !!! list all act's subclasses' status or use some better method ? -->
+
+                {% if act.status == "APPROVED" %}
+                    <span class="label label-success">Approvato</span>
+                {% else %}{% if act.status == "REJECTED" %}
+                    <span class="label label-important">Respinto</span>                    
+                {% else %}{% if act.status == "PRESENTED" %}
+                    <span class="label">Presentato</span>
+                {% else %}{% if act.status == "COUNCIL" %}
+                    <span class="label">Consiglio</span> 
+                {% else %}{% if act.status == "COMMITTEE" %}
+                    <span class="label">Commissione</span>
+                {% else %}{% if act.status == "ANSWERED" %}
+                    <span class="label">Risposto</span> 
+                {% else %}{% if act.status == "NOTANSWERED" %}
+                    <span class="label">Non risposto</span> 
+                {% endif %}{% endif %}{% endif %}{% endif %}{% endif %}{% endif %}{% endif %}  
+                </td>
+{% votes_for_object act as act_num_votes %}
+                <td class="text-center"><span class="okbox">{{ act_num_votes.upvotes }}</span> <span class="kobox">{{ act_num_votes.downvotes }}</span></td>
+{% get_comment_count for act as comment_count %}
+                <td class="text-center"><a href="#"><strong>{{ comment_count }}</strong></a></td>
             </tr>
-            <tr>
-                <td><a href="#"><strong>Titolo di una votazione effettuata</strong> (94756)</a></td>
-                <td class="text-center"><span class="label label-important">Respinta</span></td>
-                <td class="text-center"><span class="okbox">10</span> <span class="kobox">25</span></td>
-                <td class="text-center"><a href="#"><strong>25</strong></a></td>
-            </tr>
-            <tr>
-                <td><a href="#"><strong>Titolo di una votazione effettuata</strong> (94756)</a></td>
-                <td class="text-center"><span class="label">In esame</span></td>
-                <td class="text-center"><span class="okbox">10</span> <span class="kobox">25</span></td>
-                <td class="text-center"><a href="#"><strong>25</strong></a></td>
-            </tr>
+                {% endfor %}
+            {% endfor %}
             </tbody>
 
 
