@@ -185,6 +185,41 @@ class PoliticianDetailView(DetailView):
         )
         context['current_committee_charges'] = self.object.current_committee_charges
 
+        # Is politician a counselor? If so, we show present/absent
+        # graph
+        for charge in context['current_charges']:
+            if charge.institution.institution_type == Institution.COUNCIL:
+                # Calculate average present/absent for counselors
+                percentage_present = 0
+                percentage_absent = 0
+                n_counselors = len(municipality.council.charges)
+                for counselor in municipality.council.charges:
+                    n_votations = counselor.n_present_votations \
+                        + counselor.n_absent_votations
+                    if n_votations > 0:
+                        percentage_present += \
+                            float(counselor.n_present_votations) / n_votations
+                        percentage_absent += \
+                            float(counselor.n_absent_votations) / n_votations
+                # Empty city council? That can't be the case!
+                # n_counselors is supposed to be > 0
+                context['percentage_present_votations_average'] = \
+                    "%.1f" % (float(percentage_present) / n_counselors * 100)
+                context['percentage_absent_votations_average'] = \
+                    "%.1f" % (float(percentage_absent) / n_counselors * 100)
+
+                # Calculate present/absent for current counselor
+                charge.n_total_votations = \
+                    charge.n_present_votations + charge.n_absent_votations
+                charge.percentage_present_votations = \
+                    "%.1f" % (float(charge.n_present_votations) / \
+                                  charge.n_total_votations * 100.00)
+                charge.percentage_absent_votations = \
+                    "%.1f" % (float(charge.n_absent_votations) / \
+                                  charge.n_total_votations * 100.00)
+                self.object.counselor_charge = charge
+                break
+
         # is the user monitoring the act?
         context['is_user_monitoring'] = False
         try:

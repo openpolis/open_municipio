@@ -105,37 +105,30 @@
 
     <hr>
 
+    {% if person.counselor_charge %}
     <section>
-        <h2>Presenze (400 votazioni)</h2>
+        <h2>Presenze ({{ person.counselor_charge.n_total_votations }} votazion{{ person.counselor_charge.n_total_votations|pluralize:"e,i" }})</h2>
 
         <div class="meter-bar float-container">
             <div class="meter-bar-container">
-                <div class="meter-label"><strong class="green">89.60%</strong>&nbsp;(4,953)</div>
                 <label>Presenze:</label>
+                <div class="meter-label"><strong class="green">{{ person.counselor_charge.percentage_present_votations }}%</strong>&nbsp;({{ person.counselor_charge.n_present_votations }})</div>
                 <div class="green-meter-bar">
-                    <div style="left: 79.89%;" class="meter-average"><label>valore medio: 79.89%</label>&nbsp;</div>
-                    <div style="width: 89.60%;" class="meter-value">&nbsp;</div>
+                    <div style="left: {{ percentage_present_votations_average }}%;" class="meter-average"><label>valore medio: {{ percentage_present_votations_average }}%</label>&nbsp;</div>
+                    <div style="width: {{ person.counselor_charge.percentage_present_votations }}%;" class="meter-value">&nbsp;</div>
                 </div>
             </div>
             <div class="meter-bar-container">
                 <label>Assenze:</label>
-                <div class="meter-label"><strong class="red">10.13%</strong>&nbsp;(560)</div>
+                <div class="meter-label"><strong class="red">{{ person.counselor_charge.percentage_absent_votations }}%</strong>&nbsp;({{ person.counselor_charge.n_absent_votations }})</div>
                 <div class="red-meter-bar">
-                    <div style="left: 12.59%;" class="meter-average"><label>valore medio: 12.59%</label>&nbsp;</div>
-                    <div style="width: 10.13%;" class="meter-value">&nbsp;</div>
-                </div>
-            </div>
-            <div class="meter-bar-container">
-                <label>Missioni:</label>
-                <div class="meter-label"><strong class="blue">0.27%</strong>&nbsp;(15)</div>
-                <div class="blue-meter-bar">
-                    <div style="left: 7.53%;" class="meter-average"><label>valore medio: 7.53%</label>&nbsp;</div>
-                    <div style="width: 0.271345875543%;" class="meter-value">&nbsp;</div>
+                    <div style="left: {{ percentage_absent_votations_average }}%;" class="meter-average"><label>valore medio: {{ percentage_absent_votations_average }}%</label>&nbsp;</div>
+                    <div style="width: {{ person.counselor_charge.percentage_absent_votations }}%;" class="meter-value">&nbsp;</div>
                 </div>
             </div>
         </div>
-
     </section>
+    {% endif %}
 
     <section>
         <h2>Voti nelle votazioni chiave</h2>
