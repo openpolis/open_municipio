@@ -62,6 +62,10 @@ class ActSearchView(ExtendedFacetedSearchView):
         return extra
 
 
+from django.views.generic import View
+
+from django.http import HttpResponse
+
 class ActListView(ListView):
     template_name = 'acts/act_list.html'
     queryset = Act.objects.select_subclasses().order_by('-presentation_date')
@@ -255,13 +259,13 @@ class ActTagEditorView(View):
         new_topics = {} # new set of topics (categories + tags) for the act
         r = re.compile(r'^categories\[(\d+)\]$')
         new_tags_ids = set()
-        for param in self.request.POST.keys():
+        for param in self.request.POST:
             if r.match(param):
                 m = r.match(param)
                 category = get_object_or_404(Category, pk=int(m.group(1)))
                 new_topics[category] = []
                 tag_ids = self.request.POST[param].split(',')
-                if len(tag_ids) > 0: # if this category has been associated to at least one tag
+                if tag_ids != [u'']: # if this category has been associated to at least one tag
                     new_tags_ids |= set(tag_ids) 
                     for tag_id in tag_ids:
                         tag = get_object_or_404(Tag, id=int(tag_id))
@@ -270,7 +274,7 @@ class ActTagEditorView(View):
         new_categories = new_topics.keys()
         tagged_act.category_set = new_categories
         # assign new tags to the act
-        new_tags = list(Tag.objects.filter(id__in=new_tags_ids)) 
+        new_tags = list(Tag.objects.filter(id__in=new_tags_ids))
         tagged_act.tag_set.add(*new_tags, tagger=self.request.user)
         # bind tags to categories
         for category in  new_categories:
