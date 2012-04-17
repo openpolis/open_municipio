@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<om:Sitting xmlns:om="http://www.openmunicipio.it" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink" xsi:schemaLocation="http://www.openmunicipio.it DataImport.xsd" num="29" date="2010-05-27 00:00:00" call="1" site="C03">
+  <om:Votation seq_n="1" votation_type="Palese Nominale" presents="33" partecipants="23" outcome="Approvato" legal_number="21" date_time="2010-05-27T00:00:00" counter_yes="23" counter_no="0" counter_abs="10">
+    <om:Subject sintetic="ogg 4"><![CDATA[Lavori di realizzazione di una nuova autorimessa interrata in piazza 1° Maggio. Approvazione del progetto prelimianre e della variante urbanistica.]]></om:Subject>
+    <om:Votes>
+      <om:ChargeVote cardID="5" componentId="5" vote="EAB">
+        <om:ChargeXRef xlink:href="./people.xml#5" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="6" componentId="6" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#6" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="7" componentId="7" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#7" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="9" componentId="9" vote="EAB">
+        <om:ChargeXRef xlink:href="./people.xml#9" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="13" componentId="13" vote="EAB">
+        <om:ChargeXRef xlink:href="./people.xml#13" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="15" componentId="15" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#15" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="16" componentId="16" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#16" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="19" componentId="19" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#19" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="20" componentId="20" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#20" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="24" componentId="24" vote="EAB">
+        <om:ChargeXRef xlink:href="./people.xml#24" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="26" componentId="26" vote="AST">
+        <om:ChargeXRef xlink:href="./people.xml#26" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="29" componentId="29" vote="EAB">
+        <om:ChargeXRef xlink:href="./people.xml#29" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="34" componentId="34" vote="AST">
+        <om:ChargeXRef xlink:href="./people.xml#34" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="36" componentId="36" vote="AST">
+        <om:ChargeXRef xlink:href="./people.xml#36" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="46" componentId="46" vote="EAB">
+        <om:ChargeXRef xlink:href="./people.xml#46" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="60" componentId="60" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#60" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="64" componentId="64" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#64" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="68" componentId="68" vote="EAB">
+        <om:ChargeXRef xlink:href="./people.xml#68" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="69" componentId="69" vote="AST">
+        <om:ChargeXRef xlink:href="./people.xml#69" xlink:type="simple"/>
+      </om:ChargeVote>
+    </om:Votes>
+  </om:Votation>
+</om:Sitting>

@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<om:Sitting xmlns:om="http://www.openmunicipio.it" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink" xsi:schemaLocation="http://www.openmunicipio.it DataImport.xsd" num="11" date="2010-01-12 00:00:00" call="1" site="C06">
+  <om:Votation seq_n="1" votation_type="Palese Semplice" presents="60" partecipants="46" outcome="Approvato" legal_number="21" date_time="2009-12-10T00:00:00" counter_yes="46" counter_no="0" counter_abs="14">
+    <om:Subject sintetic="art. 47"><![CDATA[Art. 47 Statuto comunale]]></om:Subject>
+    <om:Votes>
+      <om:ChargeVote cardID="5" componentId="5" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#5" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="20" componentId="20" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#20" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="21" componentId="21" vote="EAB">
+        <om:ChargeXRef xlink:href="./people.xml#21" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="24" componentId="24" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#24" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="26" componentId="26" vote="AST">
+        <om:ChargeXRef xlink:href="./people.xml#26" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="32" componentId="32" vote="AST">
+        <om:ChargeXRef xlink:href="./people.xml#32" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="36" componentId="36" vote="AST">
+        <om:ChargeXRef xlink:href="./people.xml#36" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="51" componentId="51" vote="EAB">
+        <om:ChargeXRef xlink:href="./people.xml#51" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="60" componentId="60" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#60" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="64" componentId="64" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#64" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="69" componentId="69" vote="AST">
+        <om:ChargeXRef xlink:href="./people.xml#69" xlink:type="simple"/>
+      </om:ChargeVote>
+    </om:Votes>
+  </om:Votation>
+</om:Sitting>

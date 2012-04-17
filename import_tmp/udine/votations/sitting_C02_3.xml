@@ -1,0 +1,424 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<om:Sitting xmlns:om="http://www.openmunicipio.it" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink" xsi:schemaLocation="http://www.openmunicipio.it DataImport.xsd" num="3" date="2008-09-24 00:00:00" call="1" site="C02">
+  <om:Votation seq_n="1" votation_type="Palese Nominale" presents="34" partecipants="24" outcome="Approvato" legal_number="21" date_time="2008-09-24T00:00:00" counter_yes="24" counter_no="0" counter_abs="10">
+    <om:Subject sintetic="ogg 5"/>
+    <om:Votes>
+      <om:ChargeVote cardID="2" componentId="2" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#2" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="5" componentId="5" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#5" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="8" componentId="8" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#8" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="10" componentId="10" vote="EAB">
+        <om:ChargeXRef xlink:href="./people.xml#10" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="13" componentId="13" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#13" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="19" componentId="19" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#19" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="20" componentId="20" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#20" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="23" componentId="23" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#23" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="29" componentId="29" vote="AST">
+        <om:ChargeXRef xlink:href="./people.xml#29" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="35" componentId="35" vote="AST">
+        <om:ChargeXRef xlink:href="./people.xml#35" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="38" componentId="38" vote="AST">
+        <om:ChargeXRef xlink:href="./people.xml#38" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="40" componentId="40" vote="AST">
+        <om:ChargeXRef xlink:href="./people.xml#40" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="48" componentId="48" vote="EAB">
+        <om:ChargeXRef xlink:href="./people.xml#48" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="49" componentId="49" vote="EAB">
+        <om:ChargeXRef xlink:href="./people.xml#49" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="55" componentId="55" vote="EAB">
+        <om:ChargeXRef xlink:href="./people.xml#55" xlink:type="simple"/>
+      </om:ChargeVote>
+    </om:Votes>
+  </om:Votation>
+  <om:Votation seq_n="2" votation_type="Palese Nominale" presents="31" partecipants="31" outcome="Approvato" legal_number="21" date_time="2008-09-24T00:00:00" counter_yes="21" counter_no="10" counter_abs="0">
+    <om:Subject sintetic="ogg 7"/>
+    <om:Votes>
+      <om:ChargeVote cardID="2" componentId="2" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#2" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="3" componentId="3" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#3" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="5" componentId="5" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#5" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="8" componentId="8" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#8" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="10" componentId="10" vote="EAB">
+        <om:ChargeXRef xlink:href="./people.xml#10" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="13" componentId="13" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#13" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="19" componentId="19" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#19" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="23" componentId="23" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#23" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="29" componentId="29" vote="CON">
+        <om:ChargeXRef xlink:href="./people.xml#29" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="35" componentId="35" vote="CON">
+        <om:ChargeXRef xlink:href="./people.xml#35" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="38" componentId="38" vote="CON">
+        <om:ChargeXRef xlink:href="./people.xml#38" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="40" componentId="40" vote="CON">
+        <om:ChargeXRef xlink:href="./people.xml#40" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="49" componentId="49" vote="EAB">
+        <om:ChargeXRef xlink:href="./people.xml#49" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="55" componentId="55" vote="EAB">
+        <om:ChargeXRef xlink:href="./people.xml#55" xlink:type="simple"/>
+      </om:ChargeVote>
+    </om:Votes>
+  </om:Votation>
+  <om:Votation seq_n="3" votation_type="Palese Nominale" presents="40" partecipants="36" outcome="Approvato" legal_number="21" date_time="2008-09-24T00:00:00" counter_yes="28" counter_no="8" counter_abs="4">
+    <om:Subject sintetic="ogg 1"/>
+    <om:Votes>
+      <om:ChargeVote cardID="2" componentId="2" vote="CON">
+        <om:ChargeXRef xlink:href="./people.xml#2" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="3" componentId="3" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#3" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="5" componentId="5" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#5" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="8" componentId="8" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#8" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="9" componentId="9" vote="EAB">
+        <om:ChargeXRef xlink:href="./people.xml#9" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="10" componentId="10" vote="EAB">
+        <om:ChargeXRef xlink:href="./people.xml#10" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="13" componentId="13" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#13" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="18" componentId="18" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#18" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="19" componentId="19" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#19" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="23" componentId="23" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#23" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="26" componentId="26" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#26" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="29" componentId="29" vote="CON">
+        <om:ChargeXRef xlink:href="./people.xml#29" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="35" componentId="35" vote="AST">
+        <om:ChargeXRef xlink:href="./people.xml#35" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="36" componentId="36" vote="CON">
+        <om:ChargeXRef xlink:href="./people.xml#36" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="38" componentId="38" vote="CON">
+        <om:ChargeXRef xlink:href="./people.xml#38" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="49" componentId="49" vote="EAB">
+        <om:ChargeXRef xlink:href="./people.xml#49" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="55" componentId="55" vote="EAB">
+        <om:ChargeXRef xlink:href="./people.xml#55" xlink:type="simple"/>
+      </om:ChargeVote>
+    </om:Votes>
+  </om:Votation>
+  <om:Votation seq_n="4" votation_type="Palese Nominale" presents="40" partecipants="30" outcome="Approvato" legal_number="21" date_time="2008-09-24T00:00:00" counter_yes="30" counter_no="0" counter_abs="10">
+    <om:Subject sintetic="ogg 6"/>
+    <om:Votes>
+      <om:ChargeVote cardID="2" componentId="2" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#2" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="3" componentId="3" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#3" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="5" componentId="5" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#5" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="8" componentId="8" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#8" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="9" componentId="9" vote="EAB">
+        <om:ChargeXRef xlink:href="./people.xml#9" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="10" componentId="10" vote="EAB">
+        <om:ChargeXRef xlink:href="./people.xml#10" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="13" componentId="13" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#13" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="18" componentId="18" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#18" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="19" componentId="19" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#19" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="23" componentId="23" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#23" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="26" componentId="26" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#26" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="29" componentId="29" vote="AST">
+        <om:ChargeXRef xlink:href="./people.xml#29" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="35" componentId="35" vote="AST">
+        <om:ChargeXRef xlink:href="./people.xml#35" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="36" componentId="36" vote="AST">
+        <om:ChargeXRef xlink:href="./people.xml#36" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="38" componentId="38" vote="AST">
+        <om:ChargeXRef xlink:href="./people.xml#38" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="49" componentId="49" vote="EAB">
+        <om:ChargeXRef xlink:href="./people.xml#49" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="55" componentId="55" vote="EAB">
+        <om:ChargeXRef xlink:href="./people.xml#55" xlink:type="simple"/>
+      </om:ChargeVote>
+    </om:Votes>
+  </om:Votation>
+  <om:Votation seq_n="5" votation_type="Palese Nominale" presents="40" partecipants="40" outcome="Approvato" legal_number="21" date_time="2008-09-24T00:00:00" counter_yes="28" counter_no="12" counter_abs="0">
+    <om:Subject sintetic="ogg 2"/>
+    <om:Votes>
+      <om:ChargeVote cardID="2" componentId="2" vote="CON">
+        <om:ChargeXRef xlink:href="./people.xml#2" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="3" componentId="3" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#3" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="5" componentId="5" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#5" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="8" componentId="8" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#8" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="9" componentId="9" vote="EAB">
+        <om:ChargeXRef xlink:href="./people.xml#9" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="10" componentId="10" vote="EAB">
+        <om:ChargeXRef xlink:href="./people.xml#10" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="13" componentId="13" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#13" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="18" componentId="18" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#18" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="19" componentId="19" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#19" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="23" componentId="23" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#23" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="26" componentId="26" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#26" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="29" componentId="29" vote="CON">
+        <om:ChargeXRef xlink:href="./people.xml#29" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="35" componentId="35" vote="CON">
+        <om:ChargeXRef xlink:href="./people.xml#35" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="36" componentId="36" vote="CON">
+        <om:ChargeXRef xlink:href="./people.xml#36" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="38" componentId="38" vote="CON">
+        <om:ChargeXRef xlink:href="./people.xml#38" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="49" componentId="49" vote="EAB">
+        <om:ChargeXRef xlink:href="./people.xml#49" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="55" componentId="55" vote="EAB">
+        <om:ChargeXRef xlink:href="./people.xml#55" xlink:type="simple"/>
+      </om:ChargeVote>
+    </om:Votes>
+  </om:Votation>
+  <om:Votation seq_n="6" votation_type="Palese Nominale" presents="36" partecipants="30" outcome="Approvato" legal_number="21" date_time="2008-09-24T00:00:00" counter_yes="30" counter_no="0" counter_abs="6">
+    <om:Subject sintetic="ogg 3"/>
+    <om:Votes>
+      <om:ChargeVote cardID="2" componentId="2" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#2" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="3" componentId="3" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#3" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="5" componentId="5" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#5" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="8" componentId="8" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#8" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="9" componentId="9" vote="EAB">
+        <om:ChargeXRef xlink:href="./people.xml#9" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="10" componentId="10" vote="EAB">
+        <om:ChargeXRef xlink:href="./people.xml#10" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="13" componentId="13" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#13" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="18" componentId="18" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#18" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="19" componentId="19" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#19" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="23" componentId="23" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#23" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="26" componentId="26" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#26" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="29" componentId="29" vote="AST">
+        <om:ChargeXRef xlink:href="./people.xml#29" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="36" componentId="36" vote="AST">
+        <om:ChargeXRef xlink:href="./people.xml#36" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="38" componentId="38" vote="AST">
+        <om:ChargeXRef xlink:href="./people.xml#38" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="49" componentId="49" vote="EAB">
+        <om:ChargeXRef xlink:href="./people.xml#49" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="55" componentId="55" vote="EAB">
+        <om:ChargeXRef xlink:href="./people.xml#55" xlink:type="simple"/>
+      </om:ChargeVote>
+    </om:Votes>
+  </om:Votation>
+  <om:Votation seq_n="7" votation_type="Palese Nominale" presents="36" partecipants="35" outcome="Approvato" legal_number="21" date_time="2008-09-24T00:00:00" counter_yes="30" counter_no="5" counter_abs="1">
+    <om:Subject sintetic="ogg 8"/>
+    <om:Votes>
+      <om:ChargeVote cardID="2" componentId="2" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#2" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="3" componentId="3" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#3" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="5" componentId="5" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#5" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="8" componentId="8" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#8" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="9" componentId="9" vote="EAB">
+        <om:ChargeXRef xlink:href="./people.xml#9" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="10" componentId="10" vote="EAB">
+        <om:ChargeXRef xlink:href="./people.xml#10" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="13" componentId="13" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#13" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="18" componentId="18" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#18" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="19" componentId="19" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#19" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="23" componentId="23" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#23" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="26" componentId="26" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#26" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="29" componentId="29" vote="CON">
+        <om:ChargeXRef xlink:href="./people.xml#29" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="36" componentId="36" vote="CON">
+        <om:ChargeXRef xlink:href="./people.xml#36" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="38" componentId="38" vote="AST">
+        <om:ChargeXRef xlink:href="./people.xml#38" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="49" componentId="49" vote="EAB">
+        <om:ChargeXRef xlink:href="./people.xml#49" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="55" componentId="55" vote="EAB">
+        <om:ChargeXRef xlink:href="./people.xml#55" xlink:type="simple"/>
+      </om:ChargeVote>
+    </om:Votes>
+  </om:Votation>
+  <om:Votation seq_n="8" votation_type="Palese Nominale" presents="34" partecipants="32" outcome="Respinto" legal_number="21" date_time="2008-09-24T00:00:00" counter_yes="9" counter_no="23" counter_abs="2">
+    <om:Subject sintetic="ogg 9"/>
+    <om:Votes>
+      <om:ChargeVote cardID="2" componentId="2" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#2" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="3" componentId="3" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#3" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="5" componentId="5" vote="CON">
+        <om:ChargeXRef xlink:href="./people.xml#5" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="8" componentId="8" vote="CON">
+        <om:ChargeXRef xlink:href="./people.xml#8" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="9" componentId="9" vote="EAB">
+        <om:ChargeXRef xlink:href="./people.xml#9" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="10" componentId="10" vote="EAB">
+        <om:ChargeXRef xlink:href="./people.xml#10" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="13" componentId="13" vote="CON">
+        <om:ChargeXRef xlink:href="./people.xml#13" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="18" componentId="18" vote="CON">
+        <om:ChargeXRef xlink:href="./people.xml#18" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="19" componentId="19" vote="CON">
+        <om:ChargeXRef xlink:href="./people.xml#19" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="26" componentId="26" vote="AST">
+        <om:ChargeXRef xlink:href="./people.xml#26" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="29" componentId="29" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#29" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="36" componentId="36" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#36" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="38" componentId="38" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#38" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="49" componentId="49" vote="EAB">
+        <om:ChargeXRef xlink:href="./people.xml#49" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="55" componentId="55" vote="EAB">
+        <om:ChargeXRef xlink:href="./people.xml#55" xlink:type="simple"/>
+      </om:ChargeVote>
+    </om:Votes>
+  </om:Votation>
+</om:Sitting>

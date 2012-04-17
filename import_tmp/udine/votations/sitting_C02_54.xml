@@ -1,0 +1,141 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<om:Sitting xmlns:om="http://www.openmunicipio.it" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink" xsi:schemaLocation="http://www.openmunicipio.it DataImport.xsd" num="54" date="2011-10-27 00:00:00" call="1" site="C02">
+  <om:Votation seq_n="1" votation_type="Palese Nominale" presents="31" partecipants="25" outcome="Approvato" legal_number="21" date_time="2011-10-27T00:00:00" counter_yes="25" counter_no="0" counter_abs="6">
+    <om:Subject sintetic="OGG 1"><![CDATA[Proposta di trasferimento nella proprietà dell'unità immobiliare di proprietà del Comune di Udine censita al F 24 map 156 sub 18, a favore del titolare della farmacia Aurora.]]></om:Subject>
+    <om:Votes>
+      <om:ChargeVote cardID="2" componentId="2" vote="AST">
+        <om:ChargeXRef xlink:href="./people.xml#2" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="5" componentId="5" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#5" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="13" componentId="13" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#13" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="16" componentId="16" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#16" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="19" componentId="19" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#19" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="20" componentId="20" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#20" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="29" componentId="29" vote="AST">
+        <om:ChargeXRef xlink:href="./people.xml#29" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="32" componentId="32" vote="EAB">
+        <om:ChargeXRef xlink:href="./people.xml#32" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="35" componentId="35" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#35" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="36" componentId="36" vote="AST">
+        <om:ChargeXRef xlink:href="./people.xml#36" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="43" componentId="43" vote="EAB">
+        <om:ChargeXRef xlink:href="./people.xml#43" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="63" componentId="63" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#63" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="66" componentId="66" vote="EAB">
+        <om:ChargeXRef xlink:href="./people.xml#66" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="72" componentId="72" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#72" xlink:type="simple"/>
+      </om:ChargeVote>
+    </om:Votes>
+  </om:Votation>
+  <om:Votation seq_n="2" votation_type="Palese Nominale" presents="24" partecipants="22" outcome="Approvato" legal_number="21" date_time="2011-10-27T00:00:00" counter_yes="22" counter_no="0" counter_abs="2">
+    <om:Subject sintetic="OGG 2"><![CDATA[Acquisizione, ai sensi dell'art 31 c 21 L 448/98 della strada denominata via L. Sbaiz (intero sedime).]]></om:Subject>
+    <om:Votes>
+      <om:ChargeVote cardID="2" componentId="2" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#2" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="5" componentId="5" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#5" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="13" componentId="13" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#13" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="16" componentId="16" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#16" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="19" componentId="19" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#19" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="29" componentId="29" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#29" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="32" componentId="32" vote="EAB">
+        <om:ChargeXRef xlink:href="./people.xml#32" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="35" componentId="35" vote="...">
+        <om:ChargeXRef xlink:href="./people.xml#35" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="36" componentId="36" vote="AST">
+        <om:ChargeXRef xlink:href="./people.xml#36" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="43" componentId="43" vote="EAB">
+        <om:ChargeXRef xlink:href="./people.xml#43" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="63" componentId="63" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#63" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="66" componentId="66" vote="EAB">
+        <om:ChargeXRef xlink:href="./people.xml#66" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="72" componentId="72" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#72" xlink:type="simple"/>
+      </om:ChargeVote>
+    </om:Votes>
+  </om:Votation>
+  <om:Votation seq_n="3" votation_type="Palese Nominale" presents="27" partecipants="25" outcome="Approvato" legal_number="21" date_time="2011-10-27T00:00:00" counter_yes="25" counter_no="0" counter_abs="2">
+    <om:Subject sintetic="OGG 2"><![CDATA[Acquisizione, ai sensi dell'art 31 c 21 L 448/98 della strada denominata via L. Sbaiz (intero sedime).]]></om:Subject>
+    <om:Votes>
+      <om:ChargeVote cardID="2" componentId="2" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#2" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="5" componentId="5" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#5" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="13" componentId="13" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#13" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="15" componentId="15" vote="EAB">
+        <om:ChargeXRef xlink:href="./people.xml#15" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="16" componentId="16" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#16" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="19" componentId="19" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#19" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="29" componentId="29" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#29" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="32" componentId="32" vote="EAB">
+        <om:ChargeXRef xlink:href="./people.xml#32" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="35" componentId="35" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#35" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="36" componentId="36" vote="AST">
+        <om:ChargeXRef xlink:href="./people.xml#36" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="43" componentId="43" vote="EAB">
+        <om:ChargeXRef xlink:href="./people.xml#43" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="63" componentId="63" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#63" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="66" componentId="66" vote="EAB">
+        <om:ChargeXRef xlink:href="./people.xml#66" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="72" componentId="72" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#72" xlink:type="simple"/>
+      </om:ChargeVote>
+    </om:Votes>
+  </om:Votation>
+</om:Sitting>

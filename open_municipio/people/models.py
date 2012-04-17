@@ -87,11 +87,17 @@ class Person(models.Model, MonitorizedItem):
             institution__institution_type__in=(Institution.COMMITTEE, Institution.JOINT_COMMITTEE)
         )
 
+    @property
     def current_committee_charges(self):
         return self.institutioncharge_set.select_related().current().filter(
             institution__institution_type__in=(Institution.COMMITTEE, Institution.JOINT_COMMITTEE)
         ).order_by('-institutionresponsability__charge_type')
-    
+
+    def current_institution_charge(self, institution):
+        return self.institutioncharge_set.select_related().current().get(
+            institution=institution
+        )
+
     @property
     def monitorings(self):
         """

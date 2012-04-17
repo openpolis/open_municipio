@@ -39,7 +39,6 @@ class Votation(models.Model):
     n_no = models.IntegerField(default=0)
     n_abst = models.IntegerField(default=0)
     n_maj = models.IntegerField(blank=True, null=True)
-    is_key = models.BooleanField(default=False, help_text=_("Specify whether the present Votation should be a featured one or not"))
     outcome = models.IntegerField(choices=OUTCOMES, blank=True, null=True)
     is_key = models.BooleanField(default=False, help_text=_("Specify whether this is a key votation"))
     n_rebels = models.IntegerField(default= 0)
@@ -239,31 +238,19 @@ class ChargeVote(TimeStampedModel):
     """
     WRITEME
     """  
-    NO = 0
-    YES = 1
-    ABSTAINED = 2
-    MISSION = 3
-    ABSENT = 4
-    INVALID = 5
-    PRES = 6
-    REQUIRES = 7
-    CANCELED = 8
-    SECRET = 9
     VOTES = Choices(
-    (YES, _('Yes')),    
-    (NO, _('No')),
-    (ABSTAINED, _('Abstained')),
-    (MISSION, _('Is on mission')),
-    (ABSENT, _('Is absent')),
-    (INVALID, _('Participates to an invalid votation')),
-    (PRES, _('President during votation')),
-    (REQUIRES, _('Requires votation, but does not vote')),
-    (CANCELED, _('Canceled votation')),
-    (SECRET, _('Secret votation')),
+        ('YES', 'yes', _('Yes')),
+        ('NO', 'no', _('No')),
+        ('ABSTAINED', 'abstained', _('Abstained')),
+        ('CANCELED', 'canceled', _('Vote was canceled')),
+        ('PRES', 'pres', _('Present but not voting')),
+        ('SECRET', 'secret', _('Secret votation')),
+        ('ABSENT', 'absent', _('Is absent')),
+        ('UNTRACKED', 'untracked', _('Vote was not tracked')),  # nothing can be said about presence
     )
     
     votation = models.ForeignKey(Votation)
-    vote = models.IntegerField(choices=VOTES)
+    vote = models.CharField(choices=VOTES, max_length=12)
     charge = models.ForeignKey(InstitutionCharge)
     is_rebel = models.BooleanField(default=False)
     
