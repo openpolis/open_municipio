@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<om:Sitting xmlns:om="http://www.openmunicipio.it" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink" xsi:schemaLocation="http://www.openmunicipio.it DataImport.xsd" num="10" date="2009-10-12 00:00:00" call="1" site="C06">
+  <om:Votation seq_n="1" votation_type="Palese Semplice" presents="21" partecipants="18" outcome="Approvato" legal_number="21" date_time="2009-10-12T00:00:00" counter_yes="11" counter_no="7" counter_abs="3">
+    <om:Subject sintetic="Mozione Arpino"><![CDATA[Mozione del Consigliere Arpino sul fenomeno della prostituzione]]></om:Subject>
+    <om:Votes>
+      <om:ChargeVote cardID="20" componentId="20" vote="CON">
+        <om:ChargeXRef xlink:href="./people.xml#20" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="26" componentId="26" vote="AST">
+        <om:ChargeXRef xlink:href="./people.xml#26" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="29" componentId="29" vote="EAB">
+        <om:ChargeXRef xlink:href="./people.xml#29" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="32" componentId="32" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#32" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="36" componentId="36" vote="AST">
+        <om:ChargeXRef xlink:href="./people.xml#36" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="38" componentId="38" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#38" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="60" componentId="60" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#60" xlink:type="simple"/>
+      </om:ChargeVote>
+    </om:Votes>
+  </om:Votation>
+</om:Sitting>

@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<om:Sitting xmlns:om="http://www.openmunicipio.it" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink" xsi:schemaLocation="http://www.openmunicipio.it DataImport.xsd" num="12" date="2011-12-20 00:00:00" call="1" site="C04">
+  <om:Votation seq_n="1" votation_type="Palese Nominale" presents="35" partecipants="16" outcome="Approvato" legal_number="21" date_time="2011-12-20T00:00:00" counter_yes="16" counter_no="0" counter_abs="19">
+    <om:Subject sintetic="OGG 1"><![CDATA[Modifica ed integrazione linee guida per la disciplina del rapporto tra il Comune e l'ASU , conseguente alla concessione d'uso e gestione dell'impianto sportivo di via Lodi.]]></om:Subject>
+    <om:Votes>
+      <om:ChargeVote cardID="13" componentId="13" vote="EAB">
+        <om:ChargeXRef xlink:href="./people.xml#13" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="17" componentId="17" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#17" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="19" componentId="19" vote="EAB">
+        <om:ChargeXRef xlink:href="./people.xml#19" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="22" componentId="22" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#22" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="28" componentId="28" vote="AST">
+        <om:ChargeXRef xlink:href="./people.xml#28" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="34" componentId="34" vote="AST">
+        <om:ChargeXRef xlink:href="./people.xml#34" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="37" componentId="37" vote="AST">
+        <om:ChargeXRef xlink:href="./people.xml#37" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="44" componentId="44" vote="EAB">
+        <om:ChargeXRef xlink:href="./people.xml#44" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="49" componentId="49" vote="EAB">
+        <om:ChargeXRef xlink:href="./people.xml#49" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="58" componentId="58" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#58" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="59" componentId="59" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#59" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="60" componentId="60" vote="AST">
+        <om:ChargeXRef xlink:href="./people.xml#60" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="64" componentId="64" vote="FAV">
+        <om:ChargeXRef xlink:href="./people.xml#64" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="69" componentId="69" vote="AST">
+        <om:ChargeXRef xlink:href="./people.xml#69" xlink:type="simple"/>
+      </om:ChargeVote>
+      <om:ChargeVote cardID="71" componentId="71" vote="AST">
+        <om:ChargeXRef xlink:href="./people.xml#71" xlink:type="simple"/>
+      </om:ChargeVote>
+    </om:Votes>
+  </om:Votation>
+</om:Sitting>

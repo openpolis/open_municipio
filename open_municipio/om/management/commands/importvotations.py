@@ -1,185 +1,203 @@
-from django.core.management.base import BaseCommand, CommandError
+# -*- coding: utf-8 -*-
+from optparse import make_option
+from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
+from django.core.management.base import LabelCommand, CommandError, BaseCommand
 
 from lxml import etree
 from os import path
 
-from open_municipio.people.models import Sitting
+from open_municipio.people.models import Sitting, Institution, Person
 from open_municipio.votations.models import Votation, ChargeVote, InstitutionCharge
 
 import dateutil.parser
 #from time import strptime
 #import datetime
-import sys, traceback
-from open_municipio.settings_import import XML_TO_OM_INST, XML_TO_OM_VOTE, IMPORT_NS
+import traceback
+from open_municipio import settings_import as settings
 
-class Command(BaseCommand):
+
+# configure xml namespaces
+NS = {
+    'xsi': 'http://www.w3.org/2001/XMLSchema-instance',
+    'om': 'http://www.openmunicipio.it',
+    'xlink': 'http://www.w3.org/1999/xlink'
+}
+
+class Command(LabelCommand):
+    option_list = BaseCommand.option_list + (
+        make_option('--overwrite',
+                    action='store_true',
+                    dest='overwrite',
+                    default=False,
+                    help='Re-write charge from scratch'
+        ),
+        make_option('--people_file',
+                    dest='people_file',
+                    default='import_tmp/udine/votations/people.xml',
+                    help='The xml file containing the persons'
+        ),
+    )
+
     args = "<filename filename ...>"
     help = "Import the voting information contained in the specified XML documents"
+    label = 'filename'
 
-    def lookupCharge(self, xml_chargevote):
+    people_tree = None
+
+    def lookupCharge(self, xml_chargevote, institution):
+        """
+        look for the correct open municipio charge, or return None
+        """
         try:
-            inst_pk = int(xml_chargevote.get("componentId"))
-            om_charge = InstitutionCharge.objects.all().get(pk=inst_pk)
-        except Exception,e:
-            print("Exception lookingup charge: %s" % e)
-            om_charge = None
-
-        return om_charge
-
-    def lookupChargeVote(self, om_charge, om_votation):
-        om_chargevotes = ChargeVote.objects.filter(charge=om_charge,votation=om_votation)
-        if len(om_chargevotes) == 0:
+            # this is done through component_id,
+            # making the whole ChargeXRef stuff unused
+            # TODO: see if there's a more flexible way to do it, using ChargeXRef
+            component_id = xml_chargevote.get("componentId")
+            people_charges = self.people_tree.xpath(
+                '//om:Charge[@id=%s]' % component_id,
+                namespaces={'om': "http://www.openmunicipio.it"}
+            )
+            if len(people_charges):
+                om_id = people_charges[0].get('om_id')
+                if om_id is None:
+                    self.stderr.write("Warning: charge with id %s has no om_id (past charge?). Skipping.\n" % component_id)
+                    return None
+                try:
+                    person = Person.objects.get(pk=int(om_id))
+                    charge =  person.current_institution_charge(institution)
+                    return charge
+                except ObjectDoesNotExist:
+                    self.stderr.write("Warning: could not find person or charge for id = %s in open municipio DB. Skipping.\n" % component_id)
+                    return None
+                except MultipleObjectsReturned:
+                    self.stderr.write("Error: found more than one person or charge for id %s in open municipio db. Skipping.\n" % component_id)
+                    return None
+            else:
+                self.stderr.write("Warning: could not find person for id %s in peopkle XML file. Skipping.\n" % component_id)
+                return None
+        except ObjectDoesNotExist:
+            self.stderr.write("Warning: could not find charge with id %s in Open Municipio DB. Skipping.\n" % component_id)
             return None
-        if len(om_chargevotes) > 1:
-            print("More than one ChargeVote for votation %d" % om_votation.pk)
 
-        return om_chargevotes[0]
 
-    def lookupVotation(self, xml_votation, om_sitting):
-        vot_num = xml_votation.get("seq_n")
-        if vot_num == None:
-            raise Exception("Votation without 'seq_n' attribute not allowed")
-
-        try:
-            om_votation = Votation.objects.get(idnum=vot_num,
-                sitting=om_sitting)
-            return om_votation
-        except Exception: # limit to DoesNotExist
-            return None
-
-    def lookupOrAddSitting(self, xml_sitting):
-        sitt_num = xml_sitting.get("num")
-        str_date = xml_sitting.get("date")
-        sitt_date = dateutil.parser.parse(xml_sitting.get("date"))
-        sitt_type = xml_sitting.get("type")
-
-        if sitt_type == None or sitt_date == None or sitt_num == None:
-            raise Exception("Sitting date,num and type must be provided. Passed, respectively: %s,%s,%s" % (sitt_num,sitt_date,sitt_type))
-
-        print("Lookup sitting num %s, date %s, type %s" % (sitt_num,sitt_date,sitt_type))
-
-# TODO unable to find institution
-        curr_inst = XML_TO_OM_INST[sitt_type]
-
-        sitting_QS = Sitting.objects.filter(number=sitt_num,date=sitt_date,institution=curr_inst)[:1]
-    
-#        if om_sitting == None:
-        if sitting_QS:
-            om_sitting = sitting_QS[0]
-            print("Found sitting", om_sitting)
-        else:
-# add the sitting because not present
-            om_sitting = Sitting()            
-            om_sitting.number = sitt_num
-            om_sitting.date = sitt_date
-            om_sitting.institution = curr_inst
-            om_sitting.save()
-            print("Created sitting", om_sitting)
-
-    def buildVotation(self, xml_votation, om_sitting):
-        vot_num = xml_votation.get("seq_n")
-
-        if vot_num == None:
-            raise Exception("Votation without 'seq_n' attribute not allowed")
-
-        print("Build OM Votation num %s" % vot_num)
-
-        om_votation = Votation()
-        om_votation.sitting = om_sitting
-        om_votation.idnum = vot_num
-        om_votation.act_descr = "" # TODO get it from the votation
-#        om_votation.charge_set = None # TODO get it from the votation
-        om_votation.n_legal = xml_votation.get("legal_number")
-        om_votation.n_presents = xml_votation.get("presents")
-        om_votation.n_yes = xml_votation.get("counter_yes")
-        om_votation.n_no = xml_votation.get("counter_no")
-        om_votation.n_abst = xml_votation.get("counter_abs")
-# TODO majority not present in XML?
-        om_votation.outcome = xml_votation.get("outcome") # decode
-        return om_votation
-
-    def buildChargeVote(self, xml_cv, om_charge, om_votation):
-        print("Inside buildChargeVote")
-        om_cv = ChargeVote()
-        om_cv.votation = om_votation
-
-        xml_vote = xml_cv.get("vote")
-        if not (xml_vote in XML_TO_OM_VOTE):
-            print("Cannot store ChargeVote. XML vote code '%d' not recognized" %
-                xml_vote)
-            return None
-        om_cv.vote = XML_TO_OM_VOTE[xml_vote]
-
-        om_cv.charge = om_charge
-        return om_cv
-       
-
-    def handleFile(self, filename):
+    def handle_label(self, filename, **options):
         if not path.isfile(filename):
             raise IOError("File %s does not exist" % filename)
 
         tree = etree.parse(filename)
 
-        sittings = tree.xpath("/om:Sitting",namespaces=IMPORT_NS)
-        print("%d Sittings to import" % len(sittings))
+        sittings = tree.xpath("/om:Sitting",namespaces=NS)
+        self.stdout.write("%d Sittings to import\n" % len(sittings))
         for xml_sitting in sittings:
-            om_sitting = self.lookupOrAddSitting(xml_sitting)
 
-            votations = xml_sitting.xpath("./om:Votation", namespaces=IMPORT_NS)
-            print("%d Votations to import" % len(votations))
+            # map the sitting site code into an Institution
+            site = xml_sitting.get("site")
+            if site is None:
+                self.stderr.write(
+                    "Error: Sitting %s has no site attribute! Skipping this sitting." %
+                    xml_sitting.get('num')
+                )
+                continue
+
+
+            # get or create the sitting object
+            curr_inst = Institution.objects.get(name=settings.XML_TO_OM_INST[site])
+            om_sitting, created = Sitting.objects.get_or_create(
+                number=xml_sitting.get("num"),
+                date=xml_sitting.get("date")[0:10],
+                institution=curr_inst
+            )
+
+            if not created:
+                self.stdout.write("Found sitting %s\n" % om_sitting.number)
+            else:
+                self.stdout.write("Created sitting %s\n" % om_sitting.number)
+
+            # fetch all votations for the sitting in the XML
+            votations = xml_sitting.xpath("./om:Votation", namespaces=NS)
+            self.stdout.write("%d Votations to import\n" % len(votations))
             for xml_votation in votations:
-                om_votation = self.lookupVotation(xml_votation, om_sitting)
 
-                # if the Votation has already been imported, ignore it
                 vot_num = xml_votation.get("seq_n")
-                if om_votation != None:
-                    print("Votation num %s already present" % vot_num)
+                if vot_num is None:
+                    self.stderr.write(
+                        "Votation has no seq_n attribute! Skipping it."
+                    )
                     continue
-                
-                # build one Votation for the entire votation
-                om_votation = self.buildVotation(xml_votation, om_sitting)
+
+                # get or create the sitting in the DB
+                om_votation, created = Votation.objects.get_or_create(
+                    idnum=vot_num,
+                    sitting=om_sitting
+                )
+                if not created:
+                    self.stdout.write("Found votation %s\n" % om_votation.idnum)
+                else:
+                    self.stdout.write("Created votation %s\n" % om_votation.idnum)
+
+                # new votations get statistics (or overwrite)
+                if created or options['overwrite']:
+                    subjects = xml_votation.xpath("./om:Subject", namespaces=NS)
+                    if len(subjects):
+                        om_votation.act_descr = subjects[0].text or subjects[0].get('sintetic') or ""
+
+                    # these data MUST be cross-verified with detailed data
+                    # om_votation.n_presents = xml_votation.get("presents")
+                    # om_votation.n_legal = xml_votation.get("legal_number")
+                    # om_votation.n_yes = xml_votation.get("counter_yes")
+                    # om_votation.n_no = xml_votation.get("counter_no")
+                    # om_votation.n_abst = xml_votation.get("counter_abs")
+                    # om_votation.outcome = xml_votation.get("outcome") # decode
+                    om_votation.save()
 
                 # build a ChargeVote for every single vote
-                chargevotes = xml_votation.xpath("./om:Votes/om:ChargeVote",
-                    namespaces=IMPORT_NS)
-                print("Votation contains %d ChargeVotes" % len(chargevotes))
+                chargevotes = xml_votation.xpath("./om:Votes/om:ChargeVote", namespaces=NS)
+                self.stdout.write("Votation contains %d ChargeVotes\n" % len(chargevotes))
+
+                # remove all votes in this votation if overwriting
+                if options['overwrite']:
+                    ChargeVote.objects.filter(votation=om_votation).delete()
+
                 for xml_cv in chargevotes:
-                    om_charge = self.lookupCharge(xml_cv)
-
-                    if om_charge == None:       
-                        charge_pk = xml_cv.get("componentId")
-                        print("InstitutionCharge (componentId=%s) not found, unable to import ChargeVote" % charge_pk)
+                    om_charge = self.lookupCharge(xml_cv, curr_inst)
+                    if om_charge is None:
                         continue
-    
-                    om_cv = self.lookupChargeVote(om_charge, om_votation)
 
-                    if om_cv != None:
-                        print("ChargeVote (charge pk=%s) already found for Votation (pk=%d)" % (om_cv.charge.pk, om_votation.pk))
-                        continue;
+                    # get or create ChargeVote
+                    om_cv, created = ChargeVote.objects.get_or_create(
+                        charge=om_charge,
+                        votation=om_votation
+                    )
 
-                    om_cv = self.buildChargeVote(xml_cv, om_charge, om_votation)
+                    if created or options['overwrite']:
+                        xml_vote = xml_cv.get("vote")
+                        if not (xml_vote in settings.XML_TO_OM_VOTE):
+                            self.stderr.write(
+                                "Cannot store ChargeVote. XML vote code '%d' not recognized. Skipping." %
+                                xml_vote
+                            )
+                            continue
+                        if settings.XML_TO_OM_VOTE[xml_vote] is None:
+                            self.stderr.write(
+                                "Skipping non installed terminals, as not interesting. "
+                            )
+                            continue
 
-                    if om_cv == None:
-                        print("ChargeVote importation interrupted")
-                        return
-                    om_cv.save()
-                    print("Saved ChargeVote", om_cv)
-                
+                        om_cv.vote = settings.XML_TO_OM_VOTE[xml_vote]
+                        om_cv.save()
 
-    def print_help(self):
-        self.stdout.write("Command syntax:\n")
-        self.stdout.write("importvotation %s\n" % self.args)
-        self.stdout.write("%s\n" % self.help)
+    def handle(self, *labels, **options):
+        if not labels:
+            raise CommandError('Enter at least one %s.' % self.label)
 
-    def handle(self, *args, **options):
-        try:
-            if len(args) == 0:
-                self.print_help()
-                return
+        # parse people xml file into an lxml.etree
+        people_file = options['people_file']
+        if not path.isfile(people_file):
+            raise IOError("File %s does not exist" % people_file)
 
-            for filename in args:
-                self.handleFile(filename)
-        except Exception as e:
-            traceback.print_exc()
-            raise CommandError("Error executing command: %s" % e)
+        self.people_tree = etree.parse(people_file)
 
+        # parse passed sittings
+        for label in labels:
+            self.handle_label(label, **options)
+        return 'done\n'

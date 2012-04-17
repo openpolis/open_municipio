@@ -193,8 +193,10 @@ class Act(TimeStampedModel, MonitorizedItem):
                 groups.get(transition.final_status).append(transition)
         return groups
 
-    def is_final_status(self, status):
+    def is_final_status(self, status=None):
         this = self.downcast()
+        if status in None:
+            status = this.status
 
         if not hasattr(this, 'FINAL_STATUSES'):
             return False
