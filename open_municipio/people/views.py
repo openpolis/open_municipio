@@ -6,7 +6,9 @@ from open_municipio.people.models import Institution, InstitutionCharge, Person,
 from open_municipio.monitoring.forms import MonitoringForm
 from open_municipio.acts.models import Act, Deliberation, Interrogation, Interpellation, Motion, Agenda
 from open_municipio.events.models import Event
+from open_municipio.votations.models import ChargeVote
 
+from operator import attrgetter
 from os import sys
 
 
@@ -219,6 +221,21 @@ class PoliticianDetailView(DetailView):
                                   charge.n_total_votations * 100.00)
                 self.object.counselor_charge = charge
                 break
+
+        # Current politician's charge votes for key votations
+        unsorted_current_charge_votes = []
+        for charge in context['current_charges']:
+            charge_votes = ChargeVote.objects\
+                .filter(charge=charge).filter(votation__is_key=True)
+            unsorted_current_charge_votes += charge_votes
+        # Sort by date 
+        current_charge_votes = sorted(
+            unsorted_current_charge_votes,
+            key=attrgetter('votation.sitting.date'),
+            reverse=True
+            )
+        # Pass data to template
+        context['current_charge_votes'] = current_charge_votes
 
         # is the user monitoring the act?
         context['is_user_monitoring'] = False
