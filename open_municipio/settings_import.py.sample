@@ -1,6 +1,34 @@
 ## -*- mode: python -*-
 ## Django settings specific for the data import features
+from open_municipio.votations.models import ChargeVote
 
-MAP_XML_TO_OM_INST = {
-    'SCN' : None,   # City Council 
+XML_TO_OM_INST = {
+    'SCN' : 'Consiglio comunale',
+    'C02' : '1^ commissione',
+    'C03' : '2^ commissione',
+    'C04' : '3^ commissione',
+    'C05' : '4^ commissione',
+    'C06' : '5^ commissione',
+    'C07' : '6^ commissione',
+}
+
+# mappings of the possible vote types
+XML_TO_OM_VOTE = {
+    'FAV' : ChargeVote.VOTES.yes,
+    'CON' : ChargeVote.VOTES.no,
+    'AST' : ChargeVote.VOTES.abstained,
+    'VOT' : ChargeVote.VOTES.secret,
+    'NVT' : ChargeVote.VOTES.canceled,
+    'PRE' : ChargeVote.VOTES.pres,
+    '...' : ChargeVote.VOTES.absent,
+    '___' : None,
+    'ECP' : ChargeVote.VOTES.untracked,
+    'ETP' : ChargeVote.VOTES.untracked,
+    'ELE' : ChargeVote.VOTES.untracked,
+    'ELG' : ChargeVote.VOTES.untracked,
+    'EFW' : ChargeVote.VOTES.untracked,
+    'ENR' : ChargeVote.VOTES.untracked,
+    'BDO' : ChargeVote.VOTES.untracked,
+    'EAB' : ChargeVote.VOTES.untracked,
+    'EPO' : ChargeVote.VOTES.untracked
 }

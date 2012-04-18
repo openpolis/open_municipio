@@ -14,7 +14,6 @@ class ActIndex(SearchIndex):
     organ = FacetCharField(model_attr='emitting_institution__name')
     pub_date = FacetDateField(model_attr='presentation_date')
     categories = MultiValueField(indexed=True, stored=True, faceted=True)
-    tags = MultiValueField(indexed=True, stored=True, faceted=True)
 
 
     # stored fields, used not to touch DB
@@ -23,10 +22,8 @@ class ActIndex(SearchIndex):
     title = CharField(indexed=False, stored=True, model_attr='title')
 
     def prepare_categories(self, obj):
-        return [c.name for c in obj.categories]
-
-    def prepare_tags(self, obj):
-        return [tag.name for tag in obj.tags]
+        d_obj = obj.downcast()
+        return [c.name for c in list(d_obj.categories) + list(d_obj.tags) + list(d_obj.locations)]
 
     def prepare_act_type(self, obj):
         return obj.downcast().__class__.__name__
