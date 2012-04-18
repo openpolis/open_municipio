@@ -199,29 +199,24 @@
             <tr>
                 <td><a href="{{ act.downcast.get_absolute_url }}"><strong>{{ act.title }}</strong> ({{ act.idnum }})</a></td>
                 <td class="text-center">
-
-<!-- FIX ME !!! list all act's subclasses' status or use some better method ? -->
-
-                {% if act.status == "APPROVED" %}
-                    <span class="label label-success">Approvato</span>
-                {% else %}{% if act.status == "REJECTED" %}
-                    <span class="label label-important">Respinto</span>                    
-                {% else %}{% if act.status == "PRESENTED" %}
-                    <span class="label">Presentato</span>
-                {% else %}{% if act.status == "COUNCIL" %}
-                    <span class="label">Consiglio</span> 
-                {% else %}{% if act.status == "COMMITTEE" %}
-                    <span class="label">Commissione</span>
-                {% else %}{% if act.status == "ANSWERED" %}
-                    <span class="label">Risposto</span> 
-                {% else %}{% if act.status == "NOTANSWERED" %}
-                    <span class="label">Non risposto</span> 
-                {% endif %}{% endif %}{% endif %}{% endif %}{% endif %}{% endif %}{% endif %}  
+                {% if not act.is_final_status %}
+                    <span class="label">In esame</span>
+                {% else %}
+                    {% if act.status == "APPROVED" or act.status == "ANSWERED" %}
+                        <span class="label label-success">
+                    {% else %}
+                        {% if act.status == "REJECTED" or act.status == "NOTANSWERED" %}
+                            <span class="label label-important">
+                        {% else %}
+                            <span class="label">
+                        {% endif %}
+                    {% endif %}{{ act.get_status_display }}</span> <!-- FIX ME: this template variable still doesn't work -->                  
+                {% endif %} 
                 </td>
 {% votes_for_object act as act_num_votes %}
                 <td class="text-center"><span class="okbox">{{ act_num_votes.upvotes }}</span> <span class="kobox">{{ act_num_votes.downvotes }}</span></td>
 {% get_comment_count for act as comment_count %}
-                <td class="text-center"><a href="#"><strong>{{ comment_count }}</strong></a></td>
+                <td class="text-center"><a href="{{ act.downcast.get_absolute_url }}"><strong>{{ comment_count }}</strong></a></td>
             </tr>
                 {% endfor %}
             {% endfor %}
