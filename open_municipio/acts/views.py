@@ -22,6 +22,8 @@ from open_municipio.locations.forms import ActLocationsAddForm
 
 import re
 
+from django.utils import simplejson as json
+
 
 class ActSearchView(ExtendedFacetedSearchView):
     """
@@ -77,6 +79,23 @@ class ActListView(ListView):
         context['key_acts'] = Act.featured.all()
         
         return context
+
+
+class ActLiveEditView(FormView):
+    @method_decorator(user_passes_test(lambda u: u.is_staff))
+    def dispatch(self, *args, **kwargs):
+        return super(ActLiveEditView, self).dispatch(*args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        act = get_object_or_404(Act, pk=self.kwargs.get('pk'))
+
+        act.title = request.POST.get('act_title','')
+        act.save()
+
+        response_data = {}
+        response_data['text'] = act.title
+
+        return HttpResponse(json.dumps(response_data), mimetype="application/json")
 
 
 class ActDescriptionView(FormView):

@@ -15,12 +15,15 @@
 @grayDark:              #333;
 @gray:                  #555;
 @grayLight:             #999;
+@grayPreLighter:        #e2e2e2;
 @grayLighter:           #ebe8e0;
+@semiWhite:             #f9f9f9;
 @white:                 #fff;
 
 
 // Accent colors
 // -------------------------
+@blueLighter:           #dae7f3;
 @blueLight:             #a6cce9;
 @blue:                  #049cdb;
 @blueDark:              #4788c2;
@@ -39,8 +42,8 @@
 // Scaffolding
 // -------------------------
 @bodyBackground:        @white;
-@textColor:             @grayDark;
-
+@textColor:             @black;
+@backgroundHighlightColor:  @blueLighter;
 
 // Links
 // -------------------------
@@ -144,16 +147,16 @@
 
 // Navbar
 // -------------------------
-@navbarHeight:                    40px;
-@navbarBackground:                @grayDarker;
-@navbarBackgroundHighlight:       @grayDark;
+@navbarHeight:                    35px;
+@navbarBackground:                @black;
+@navbarBackgroundHighlight:       @grayDarker;
 
-@navbarText:                      @grayLight;
-@navbarLinkColor:                 @grayLight;
+@navbarText:                      @white;
+@navbarLinkColor:                 @white;
 @navbarLinkColorHover:            @white;
-@navbarLinkColorActive:           @navbarLinkColorHover;
+@navbarLinkColorActive:           @black;
 @navbarLinkBackgroundHover:       transparent;
-@navbarLinkBackgroundActive:      @navbarBackground;
+@navbarLinkBackgroundActive:      @white;
 
 @navbarSearchBackground:          lighten(@navbarBackground, 25%);
 @navbarSearchBackgroundFocus:     @white;

@@ -35,6 +35,10 @@ class Location(SlugModel):
         Returns the ``QuerySet`` of all acts tagged with this location.  
         """
         return self.tagged_act_set.all()
+
+    @models.permalink
+    def get_absolute_url(self):
+        return 'om_location_detail', (), { 'slug': self.slug }
     
     
 class TaggedActByLocation(models.Model):

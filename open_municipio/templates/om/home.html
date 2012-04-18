@@ -1,9 +1,67 @@
 {% extends "base_one_column.html" %}
 
-{% block title %}| Home page {% endblock %}
+{% block title %}Home page{% endblock %}
+{% block body_class %}homepage{% endblock %}
 
-{% block content %}
-  <section><!-- #content -->
-    Questa &egrave; l'Home page del progetto. Il template da modificare è <strong>om/home.html</strong>.
-  </section><!-- end of #content -->  
+{% block sub_nav %}
+  <section id="payoff" class="container-fluid">
+    <div class="row-fluid">
+      <div class="span4">
+        <h2>Informati</h2>
+        <img src="{{ STATIC_URL }}img/homepage/informati.png" alt="">
+        <p>Tutta l'attività politico amministrativa aggiornata in tempo reale e sempre disponibile, con dati</p>
+      </div>
+      <div class="span4">
+        <h2>Monitora</h2>
+        <img src="{{ STATIC_URL }}img/homepage/monitora.png" alt="">
+        <p>Puoi monitorare l'andamento di un atto, le attività dei politici o un argomento di particolare interesse</p>
+      </div>
+      <div class="span4">
+        <h2>Partecipa</h2>
+        <img src="{{ STATIC_URL }}img/homepage/partecipa.png" alt="">
+        <p>Intervieni nella vita politica della tua città: commenta e vota l'attività amministrativa nella community di OpenMunicipio</p>
+      </div>
+    </div>
+  </section>
 {% endblock %}
+
+{% block container %}
+  <article>
+
+    <h1>In agenda</h1>
+
+    <div class="row-fluid">
+      <div class="span4">
+        <div class="circle-date pull-left">
+          <span class="day">10</span>
+          <span class="month">mar</span>
+        </div>
+        <ul class="">
+          <li><a href="#">Convocazione della II commissione consiliare "Territorio e ambiente"</a></li>
+          <li><a href="#">Convocazione della V commissione "Statuto"</a></li>
+          <li><a href="#">Consiglio comunale</a></li>
+        </ul>
+      </div>
+      <div class="span4">
+        <div class="circle-date pull-left">
+          <span class="day">10</span>
+          <span class="month">mar</span>
+        </div>
+        <ul class="">
+          <li><a href="#">Convocazione della V commissione "Statuto"</a></li>
+          <li><a href="#">Giunta</a></li>
+        </ul>
+      </div>
+      <div class="span4">
+        <div class="circle-date pull-left">
+          <span class="day">10</span>
+          <span class="month">mar</span>
+        </div>
+        <ul class="">
+          <li><a href="#">Consiglio comunale</a></li>
+          <li><a href="#">Convocazione della III commissione "Pari opportunità"</a></li>
+        </ul>
+      </div>
+    </div>
+  </article>
+{% endblock container %}

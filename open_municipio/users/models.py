@@ -1,4 +1,5 @@
 from django.contrib.contenttypes import generic
+from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch.dispatcher import receiver
@@ -101,6 +102,15 @@ class UserProfile(models.Model):
         Returns objects monitored by this user (as a list).
         """
         return [o.content_object for o in self.user.monitoring_set.all()]
+
+    def is_editor(self):
+        try:
+            self.user.groups.get(name='editors')
+            return True
+        except ObjectDoesNotExist:
+            return False
+
+
 
 
 @receiver(post_save, sender=UserProfile)
