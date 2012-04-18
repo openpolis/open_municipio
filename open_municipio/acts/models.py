@@ -259,31 +259,8 @@ class ActDescriptor(TimeStampedModel):
     class Meta:
         db_table = u'acts_act_descriptor'
 
-class Agenda(Act):
-    """
-    Maps the *Ordine del Giorno* act type.
-    It is a political act, used to publicly influence the following discussions on Deliberations.
-    It is specifically used with respect to issues specific to the deliberation process.
-    It is submitted to the Council approval and Emendations to it can be presented before the votation.
-    """
-    STATUS = Choices(
-        ('PRESENTED', 'presented', _('presented')),
-        ('COUNCIL', 'council', _('council')),
-        ('APPROVED', 'approved', _('approved')),
-        ('REJECTED', 'rejected', _('rejected'))
-    )
 
-    status = StatusField()
-    
-    class Meta:
-        verbose_name = _('agenda')
-        verbose_name_plural = _('agenda')
 
-    @models.permalink
-    def get_absolute_url(self):
-        return ('om_agenda_detail', (), {'pk': str(self.pk)})
-    
-    
 class Deliberation(Act):
     """
     WRITEME
@@ -410,7 +387,31 @@ class Motion(Act):
     @models.permalink
     def get_absolute_url(self):
         return ('om_motion_detail', (), {'pk': str(self.pk)})
-    
+
+
+class Agenda(Act):
+    """
+    Maps the *Ordine del Giorno* act type.
+    It is a political act, used to publicly influence the following discussions on Deliberations.
+    It is specifically used with respect to issues specific to the deliberation process.
+    It is submitted to the Council approval and Emendations to it can be presented before the votation.
+    """
+    STATUS = Choices(
+        ('PRESENTED', 'presented', _('presented')),
+        ('COUNCIL', 'council', _('council')),
+        ('APPROVED', 'approved', _('approved')),
+        ('REJECTED', 'rejected', _('rejected'))
+    )
+
+    status = StatusField()
+
+    class Meta:
+        verbose_name = _('agenda')
+        verbose_name_plural = _('agenda')
+
+    @models.permalink
+    def get_absolute_url(self):
+        return ('om_agenda_detail', (), {'pk': str(self.pk)})
 
 
 class Emendation(Act):
