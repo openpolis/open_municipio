@@ -8,6 +8,7 @@ open_municipio/urls_*.py
 apache
 fabfile/
 sitestatic
+import_tmp/udine/votations/sitting_*
 open_municipio/media
 open_municipio/*/migrations
 solr
