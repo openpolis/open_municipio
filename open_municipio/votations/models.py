@@ -40,7 +40,6 @@ class Votation(models.Model):
     n_abst = models.IntegerField(default=0)
     n_maj = models.IntegerField(blank=True, null=True)
     outcome = models.IntegerField(choices=OUTCOMES, blank=True, null=True)
-    is_key = models.BooleanField(default=False, help_text=_("Specify whether this is a key votation"))
     n_rebels = models.IntegerField(default= 0)
 
     # default manager must be explicitly defined, when
