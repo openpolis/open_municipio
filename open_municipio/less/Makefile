@@ -1,17 +1,14 @@
-BOOTSTRAP = ../static/css/bootstrap.css
-BOOTSTRAP_LESS = ./bootstrap.less
-BOOTSTRAP_RESPONSIVE = ../static/css/bootstrap-responsive.css
-BOOTSTRAP_RESPONSIVE_LESS = ./responsive.less
-LESS_COMPRESSOR ?= `which lessc`
-WATCHR ?= `which watchr`
+BOOTSTRAP = ../static/css/styles.css
+BOOTSTRAP_LESS = ./styles.less
+BOOTSTRAP_RESPONSIVE = ../static/css/styles-responsive.css
+BOOTSTRAP_RESPONSIVE_LESS = ./styles-responsive.less
 
 
 #
 # BUILD SIMPLE BOOTSTRAP DIRECTORY
-# lessc & uglifyjs are required
 #
 
-bootstrap:
+styles: bootstrap/*.less
 	lessc ${BOOTSTRAP_LESS} > ${BOOTSTRAP}
 #	${LESSCPATH}lessc --compress ${BOOTSTRAP_LESS} > bootstrap/css/bootstrap.min.css
 	lessc ${BOOTSTRAP_RESPONSIVE_LESS} > ${BOOTSTRAP_RESPONSIVE}
@@ -22,10 +19,6 @@ bootstrap:
 #
 # WATCH LESS FILES
 #
-
 watch:
 	echo "Watching less files..."; \
-    watchr -e "watch('less/.*\.less') { system 'make' }"
-
-
-.PHONY: dist docs watch gh-pages
+	watchr -e "watch('less/.*\.less') { system 'make' }"

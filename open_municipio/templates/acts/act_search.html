@@ -1,9 +1,10 @@
 {% extends 'base_two_columns.html' %}
 {% load highlight %}
+{% load om_utils %}
 
 {% block title %}| Elenco atti {% endblock title %}
 {% block content_header %}Elenco atti{% endblock %}
-{% block acts_class %}class="active"{% endblock %}
+{% block acts_class %}active{% endblock %}
 
 {% block extra_style %}
 em {
@@ -68,7 +69,7 @@ em {
                 <tbody>
                 {% for result in page.object_list %}
                     <tr>
-                        <td>{{ result.pub_date}}</td>
+                        <td>{{ result.pub_date|circled:"full" }}</td>
                         <td>
                             <span class="label">{{ result.act_type }}</span>
                             <a href="{{ result.url }}">{{ result.title }}</a><br/>

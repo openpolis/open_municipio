@@ -51,6 +51,7 @@
                             {% endwith %}
                         </div>
                         <div class="modal-footer">
+                            <input type="hidden" name="prefix" value="committee">
                             <input type="button" value="Chiudi" data-dismiss="modal" class="btn">
                             <input type="submit" value="Salva" class="btn btn-primary">
                         </div>
@@ -84,6 +85,7 @@
                             {% endwith %}
                         </div>
                         <div class="modal-footer">
+                            <input type="hidden" name="prefix" value="council">
                             <input type="button" value="Chiudi" data-dismiss="modal" class="btn">
                             <input type="submit" value="Salva" class="btn btn-primary">
                         </div>
@@ -118,6 +120,7 @@
                             {% endwith %}
                         </div>
                         <div class="modal-footer">
+                            <input type="hidden" name="prefix" value="final">
                             <input type="button" value="Chiudi" data-dismiss="modal" class="btn">
                             <input type="submit" value="Salva" class="btn btn-primary">
                         </div>
@@ -200,7 +203,9 @@
         include(["js/jquery-ui.calendar.js"], function() {
             // on scripts loaded...
             $('.datepicker').each(function(){
-                $('#'+$(this).prop('id')).datepicker();
+                $('#'+$(this).prop('id')).datepicker({
+                    dateFormat: 'dd/mm/yy'
+                });
             });
         });
     });

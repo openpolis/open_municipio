@@ -36,3 +36,40 @@ def as_token(value, arg='-'):
         return mark_safe(token)
     except:
         return ''
+
+
+
+@register.filter
+def circled(value, args=''):
+    """
+    Surround value with a circle,
+    if value is a Date type, has specific styles
+    {{ act.presentation_date|circled }}
+    {{ act.presentation_date|circled:"full" }}
+    {{ act.presentation_date|circled:"colored" }}
+    {{ act.presentation_date|circled:"full,colored" }}
+    NOTE: Works with .circle styles
+
+    """
+    colored = 'colored' in args
+    full = 'full' in args
+    dark = 'dark' in args
+
+    classes = []
+    if type(value).__name__=='date':
+        if full:
+            classes.append('circle-fulldate')
+            value = value.strftime('<span class="day">%d</span> <span class="month">%b</span> <span class="year">%Y</span>')
+        else:
+            classes.append('circle-date')
+            value = value.strftime('<span class="day">%d</span> <span class="month">%b</span>')
+    else:
+        classes.append('circle')
+
+    if colored:
+        classes.append('circle-colored')
+
+    if dark:
+        classes.append('circle-dark')
+
+    return mark_safe('<div class="%s">%s</div>' %  (' '.join(classes), value))

@@ -212,6 +212,8 @@ class Act(TimeStampedModel, MonitorizedItem):
             return list(self.transitions)[-1]
         return False
 
+    def get_absolute_url(self):
+        return self.downcast().get_absolute_url()
 
       
 class ActSection(models.Model):

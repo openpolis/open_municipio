@@ -9,7 +9,7 @@ from open_municipio.acts.models import Act
 from open_municipio.acts.views import (ActSearchView, AgendaDetailView,
                                        DeliberationDetailView, InterpellationDetailView,
                                        InterrogationDetailView, MotionDetailView, ActDescriptionView,
-                                       ActTransitionAddView, ActTransitionRemoveView, ActTagEditorView)
+                                       ActTransitionAddView, ActTransitionRemoveView, ActTagEditorView, ActLiveEditView)
 
 from open_municipio.locations.views import ActTagByLocationView
 
@@ -66,9 +66,10 @@ urlpatterns += patterns('',
     url(r'^(?P<pk>\d+)/locations/add/$', ActTagByLocationView.as_view(),  name='om_act_locations_add'),
 )
 
-## Act's description update
+## Act's fields update
 urlpatterns += patterns('',
     url(r'^(?P<pk>\d+)/description/update/$', ActDescriptionView.as_view(), name='om_act_description_update'),
+    url(r'^(?P<pk>\d+)/title/update/$', ActLiveEditView.as_view(), name='om_act_title_update'),
 )
 
 ## Transition management
@@ -79,5 +80,6 @@ urlpatterns += patterns('',
 
 ## Votes casted by users
 urlpatterns += patterns('',
-    url(r'^(?P<object_id>\d+)/(?P<direction>up|down|clear)vote/?$', vote_on_object, act_dict),
+    url(r'^(?P<object_id>\d+)/(?P<direction>up|down|clear)vote/?$', vote_on_object, act_dict, name='om_act_user_voting'),
+
 )                        

@@ -1,0 +1,507 @@
+/* Import bootstrap styles */
+@import "bootstrap/bootstrap.less";
+
+// Globals
+
+body {
+  // footer bar
+  padding-bottom: @navbarHeight;
+  h1 { font-size: 20px; line-height: 24px; margin-bottom: 10px; }
+  h2 { font-size: 16px; line-height: 18px; margin-bottom: 20px; font-weight: normal; }
+  #content, #sidebar {
+    padding-top: 35px;
+    position: relative;
+  }
+  #sidebar {
+    // default style for circle
+    .circle {
+      background-color: @grayLighter; color: @textColor;
+    }
+    // default for lists
+    ul.list-simple {
+      list-style: none;
+      margin:0;
+      li {
+        padding: 10px 5px 10px 10px;
+      }
+    }
+
+    // default gray boxes
+    .box {
+      .bg-light;
+      margin:1px 0 0 0;
+      padding: 3px 10px;
+      a { font-weight: bold; }
+      p { margin: 9px 0; }
+    }
+  }
+  #main.two_columns {
+    .two_columns_background(66%, transparent, @semiWhite );
+  }
+}
+
+// Top bar for Navigation
+#navbar-top {
+  height: 55px;
+
+  .navbar-inner {
+    background-color: @white;
+    color: @black;
+
+    .nav {
+      padding: 8px;
+      a {
+        color: @black;
+        padding: 0;
+        text-transform: uppercase;
+        font-weight: bold;
+        &:hover { color: @black; background-color: transparent; }
+      }
+      .active > a {
+        color: @black;
+        &:hover { color: @grayDark; }
+      }
+      .divider-vertical {
+        background-color: @black;
+        border-right: 0;
+        height: @navbarHeight + 8;
+        margin: 0 15px;
+      }
+    }
+  }
+  .brand {
+    color: @black;
+    small {
+      display:block;
+      font-size: 11px;
+      margin: 3px 0;
+    }
+  }
+}
+
+
+// Main Header
+#wrapper > header
+{
+  background: @blueDark;
+
+  #area-title {
+    color: @white;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    font-size: 40px;
+    background: transparent url('../img/logo-city.png') no-repeat right center;
+  }
+
+  #sub-nav {
+    .navbar-inner {
+      background-color: transparent; background-image: none;
+      a {
+        color: @black;
+        &:hover { background-color: transparent; text-decoration: underline; }
+        &.active { background-color: @white; font-weight: bolder; }
+      }
+    }
+    .pipe-separators;
+  }
+}
+
+
+
+// Homepage styles
+body.homepage {
+  #payoff {
+    color : @white;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    h2 { font-weight: normal; font-size: 30px; padding-bottom: 5px; }
+    img { float:left; padding-right: 10px; }
+    p { padding-top: 10px; }
+
+  }
+
+  article {
+    h1 {
+      font-weight: normal;
+      font-size: 30px;
+      margin: 25px 0;
+    }
+    ul {
+      font-weight: bold;
+      list-style: none;
+      margin: 0;
+      padding-left: 70px;
+      li {
+        border-top: 1px solid @hrBorder;
+        padding: 10px 0;
+      }
+      li:first-child {
+        border-top: 0;
+        padding-top: 0;
+      }
+    }
+  }
+
+}
+
+
+// Show a label list with optional span with counters
+.taxonomy-cloud {
+  dd, dt, li {
+    .label;
+    .border-radius(10px);
+    .bg-light;
+    white-space: nowrap;
+    display: inline;
+    font-size: 12px;
+    margin: 0;
+    padding: 4px 8px;
+    text-shadow: 0 0 0 transparent;
+    a, a:hover { color: @textColor;  }
+  }
+  dd, li { font-weight: normal; text-transform: lowercase; }
+  dt { font-size: 14px; text-transform: capitalize; font-weight: bold; }
+  // counters
+  li span {
+    .border-radius(5px);
+    .bg-lighter;
+    font-size: 12px;
+    padding:1px 3px;
+  }
+  line-height: 34px;
+}
+
+// Styles sidebar comments list
+ul.comments-list {
+  margin: 10px 0;
+  list-style: none;
+  li {
+    padding: 10px 5px 10px 10px;
+    // image
+    > a {
+      float: left;
+      clear: left;
+      width: 50px;
+      text-align: center;
+    }
+    // comment info
+    > div {
+      margin-left: 60px;
+    }
+  }
+}
+
+/********************************/
+/*          Act page            */
+/********************************/
+
+
+table#acttable {
+  .table;
+  .table-bordered;
+  tbody {
+    font-size: 12px;
+    form { display: inline; float: right; }
+    ul {
+      margin-left: 0;
+      list-style: none;
+      li { padding: 10px 0; }
+      li:first-child { border-top: 0; }
+    }
+  }
+  tfoot {}
+  thead {
+    th {
+      padding: 0;
+      background-color: @gray;
+      vertical-align: top;
+      text-align: center;
+      border-right: 1px solid @white;
+      .arrow {
+        position: absolute;
+        top:0; right:-18px;
+        width: 18px;
+        height: 50px;
+        z-index: 999;
+        background-image: url(../img/act-arrow.png);
+      }
+
+      &:first-child > div {
+        padding-left: 8px;
+      }
+
+      &.current {
+        background-color: @greenLight;
+
+        .arrow { background-image: url(../img/act-arrow-approved.png); }
+      }
+
+      &.past {
+        background-color: @greenLighter;
+        .arrow { background-image: url(../img/act-arrow-current.png); }
+      }
+
+      > div { position: relative; padding: 8px 8px 8px 22px; min-height: 50px; }
+    }
+
+  }
+}
+
+// container for peoples with image left-floated
+.party-people {
+  .clearfix;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+
+  h2 {
+    color: @grayLight;
+    font-size: 2em;
+    img { vertical-align: middle; margin-right: 10px; }
+  }
+  p { margin: 10px 0; }
+  ul.list-floated li { margin-bottom: 0; }
+
+}
+
+
+
+/* Calendars */
+.calendar_container {
+  border: 1px solid @grayLight;
+  min-width: 200px;
+  .border-radius;
+  h3 { margin: 5px 0; font-size: 15px; text-align:center; border-bottom: 1px solid @grayLight; }
+  .calendar { padding: 5px; }
+  .ui-datepicker { width: auto; }
+  .ui-datepicker-calendar tbody td.highlight > a { font-weight: bold; color: @linkColor; }
+}
+.calendar_events {
+  height: 230px;
+  overflow: scroll;
+}
+
+//---------------------------------------------------------
+//---------------------- COMMONS --------------------------
+//---------------------------------------------------------
+
+//-------------- Backgrounds --------------
+.bg-lighter { background-color: @semiWhite; color: @textColor; }
+.bg-light { background-color: @grayLighter; color: @textColor; }
+.bg-gray { background-color: @grayLight; color: @textColor; }
+.bg-dark { background-color: @grayDarker; color: @semiWhite; }
+.bg-highlight { background-color: @backgroundHighlightColor; color:@textColor; }
+
+.two_columns_background(@percent:67%, @leftcolor:transparent, @rightcolor:#f6f4f2)
+{
+  background-image: -webkit-gradient(linear,left top,right top,color-stop(0, @leftcolor),color-stop(@percent, @leftcolor),color-stop(@percent, @rightcolor),color-stop(100%, @rightcolor));
+  background-image: -webkit-linear-gradient(left,@leftcolor,@leftcolor @percent,@rightcolor @percent,@rightcolor 100%);
+  background-image: -moz-linear-gradient(left, @leftcolor, @leftcolor @percent, @rightcolor @percent, @rightcolor 100% );
+  background-image: -ms-linear-gradient(left,@leftcolor, @leftcolor @percent, @rightcolor @percent, @rightcolor 100%);
+  background-image: -o-linear-gradient( left, @leftcolor, @leftcolor @percent, @rightcolor @percent, @rightcolor 100% );
+}
+
+//-------------- Alignments ---------------
+.text-left { text-align: left; }
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+
+//-------------- Absolute Positions
+.attach-top-right { position: absolute; right: 0; top: 0; }
+.attach-top-left { position: absolute; left: 0; top: 0; }
+.attach-bottom-right { position: absolute; right: 0; bottom: 0; }
+.attach-bottom-left { position: absolute; left: 0; bottom: 0; }
+
+//-------------- Horizontal piped List --------------
+.pipe-separators {
+  ul.nav > li + li:before {
+    font-size: 11px;
+    font-weight: bold;
+    float: left;
+    content: ' | ';
+    line-height: 30px;
+    color: @grayDark;
+  }
+  ul.nav > li.unpipe + li:before { content: ''; }
+  ul.nav > li + li.unpipe:before { content: ''; }
+}
+
+//-------------- Boxing --------------
+.box(@bgcolor, @fontcolor: @white, @size: 22px, @fontsize: 20px) {
+  font-size: @fontsize;
+  padding: 8px;
+  margin: 8px;
+  font-weight: bold;
+  text-align: center;
+  display: inline-block;
+  background-color: @bgcolor;
+  color: @fontcolor;
+  height: @size;
+  width: @size;
+  line-height: @size;
+}
+.circle {
+  .box( @semiWhite, @black, 36px, 18px );
+  .border-radius(36px);
+  line-height: 36px;
+  &.circle-colored { background-color: @blueDark; color: @semiWhite; }
+  &.circle-dark { background-color: @grayLighter; color: @textColor; }
+}
+.circle-date {
+  .circle;
+  line-height: 18px;
+  span {
+    font-size: 18px;
+    display: block;
+    &.month { font-size: 10px; font-weight: bold; text-transform: uppercase; }
+    &.year { font-size: 10px; font-weight: bold; }
+  }
+}
+.circle-fulldate {
+  .circle-date;
+  line-height: 12px;
+}
+
+//-------------- Hand Icons --------------
+[class^="hand-"] {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  vertical-align: text-top;
+  background-image: url(../img/social-icons.png);
+  background-position: 14px 14px;
+  background-repeat: no-repeat;
+
+  .ie7-restore-right-whitespace();
+}
+
+.hand-five              { background-position: 0      0; }
+.hand-ok                { background-position: -20px  0; }
+.hand-ko                { background-position: -40px  0; }
+.hand-add               { background-position: -60px  0; }
+.hand-like              { background-position: -80px  0; }
+
+.hand-five:hover, .hand-five.hand-active    { background-position: 0      -20px; }
+.hand-ok:hover, .hand-ok.hand-active        { background-position: -20px  -20px; }
+.hand-ko:hover, .hand-ko.hand-active        { background-position: -40px  -20px; }
+.hand-add:hover, .hand-add.hand-active      { background-position: -60px  -20px; }
+
+.hand-five.hand-used             { background-position: 0      -40px; }
+.hand-ok.hand-used                { background-position: -20px  -40px; }
+.hand-ko.hand-used               { background-position: -40px  -40px; }
+.hand-add.hand-used               { background-position: -60px  -40px; }
+
+
+// Fix for textarea width
+.boxsizingBorder {
+  box-sizing: border-box;
+  -webkit-box-sizing:border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+}
+.input-expanded {
+  .boxsizingBorder;
+  width: 100%;
+}
+
+/* Dotted Bordering */
+.border-right { border-right: 1px dashed @grayLight; }
+.border-left { border-left: 1px dashed @grayLight; }
+.border-top { border-top: 1px dashed @grayLight; }
+.border-bottom { border-bottom: 1px dashed @grayLight; }
+
+
+/* Generic list of person, with pic, name and short description */
+ul.people-list {
+  margin-left: 5px; margin-right: 5px;
+  list-style: none;
+  li {
+    margin-top: 5px;
+    .clearfix;
+    padding-top: 3px; padding-bottom: 3px;
+    line-height: 16px;
+    img { .pull-left; margin-right:5px; margin-left: 5px; border:0; }
+    .monitoring { display:block; padding: 0 10px; }
+    form { margin: 0; }
+  }
+}
+
+ul.feed-list {
+  margin: 0;
+  list-style: none;
+  background-color: @white;
+  li {
+    //background-color: @lightBackground;
+    .bg-light;
+    margin-bottom: 3px;
+    padding: 10px;
+  }
+  .rank-value { color: @grayLight; font-size: 2.5em; font-weight: bold; }
+}
+
+/* Data lists */
+ul.list-inline {
+  margin: 8px 0;
+  li { display: inline; }
+}
+ul.list-floated {
+  li { width: 48%; float:left; margin-bottom: 10px; padding-right: 1%; }
+}
+
+ul.data-list {
+  margin-left: 0;
+  list-style: none;
+  margin-bottom: 12px;
+> li {
+    margin-bottom: 12px;
+  }
+ul {
+  margin-left: 0;
+  list-style: none;
+}
+  }
+
+dl.data-list {
+  dt {
+    float:left;
+    margin-top: 12px;
+    &:first-child { margin-top: 0; }
+    i { text-indent: -9999px; overflow: hidden; }
+  }
+  dd {
+    margin-left: 25px;
+  }
+  dt + dd { margin-top: 12px;  }
+}
+
+table.data {
+  .table;
+  .table-striped;
+  td { vertical-align: middle; }
+}
+
+
+/* Category with a list of its tags, 3 columns */
+#topic_summary a { text-decoration: underline; }
+#topic_summary > dl { float:left; width: 33%; font-size: 12px; }
+#topic_summary > dl dt { padding: 0 10px; }
+#topic_summary > dl dd { padding: 0 10px; margin: 0; }
+#topic_summary dd {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space:nowrap;
+}
+
+/* Tag cloud */
+#cloud { padding: 2px; line-height: 3em; text-align: center; }
+#cloud li { display: inline; }
+#cloud a { padding: 0px; }
+#cloud a.tag1 { font-size: 0.7em; font-weight: 100; }
+#cloud a.tag2 { font-size: 0.8em; font-weight: 200; }
+#cloud a.tag3 { font-size: 0.9em; font-weight: 300; }
+#cloud a.tag4 { font-size: 1.0em; font-weight: 400; }
+#cloud a.tag5 { font-size: 1.2em; font-weight: 500; }
+#cloud a.tag6 { font-size: 1.4em; font-weight: 600; }
+#cloud a.tag7 { font-size: 1.6em; font-weight: 700; }
+#cloud a.tag8 { font-size: 1.8em; font-weight: 800; }
+#cloud a.tag9 { font-size: 2.2em; font-weight: 900; }
+#cloud a.tag10 { font-size: 2.5em; font-weight: 900; }

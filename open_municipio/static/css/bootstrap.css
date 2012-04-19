@@ -1,3 +1,4 @@
+@import url('http://fonts.googleapis.com/css?family=Open+Sans:400,300,400italic,600,700.css');
 /*!
  * Bootstrap v2.0.1
  *
@@ -3740,6 +3741,9 @@ a.thumbnail:hover {
 }
 .invisible {
   visibility: hidden;
+}
+body {
+  font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 address {
   font-size: 12px;

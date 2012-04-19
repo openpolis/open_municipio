@@ -1,92 +1,64 @@
-<table id="monitoring_table">
+{% load om_utils %}
+<table id="monitoring-table">
+  <tr>
+    <td>
+      {{ object.monitoring_users_count|circled:"dark" }}
+    </td>
+    <td>
+      {% if user.is_authenticated and not user.get_profile.person %}
+        {% if is_user_monitoring %}
+          <h4>Cittadini che monitorano l'atto, incluso te</h4>
+          <form action="{% url om_monitoring_stop %}" method="post">{% csrf_token %}
+            {{ monitoring_form }}
+            <button type="submit" class="btn btn-info btn-mini">Non monitorare più</button>
+          </form>
+        {% else %}
+          <h4>Cittadini che monitorano l'atto</h4>
+          <i class="icon-plus-sign"></i>
+          <form action="{% url om_monitoring_start %}" method="post">{% csrf_token %}
+            {{ monitoring_form }}
+            <button type="submit" class="btn btn-info btn-mini">Monitora</button>
+          </form>
+        {% endif %}
+      {% else %}
+        <h4>Cittadini che monitorano l'atto</h4>
+      {% endif %}
+    </td>
+  </tr>
+  {% if show_politicians %}
     <tr>
-        <td><span class="bluebox">{{ object.monitoring_users_count }}</span></td>
-        <th class="bg-dark span12">utenti che monitorano l'atto
-            <ul class="unstyled list-inline">
-                {% for user in object.monitoring_users %}
-                    <li><a href="{% url users_user_detail user.username %}">{{ user.get_profile.public_name }}</a>{% if not forloop.last %},{% endif %}</li>
-                {% endfor %}
-            </ul>
-
-            <small>
-                {% if user.is_authenticated and not user.get_profile.person %}
-                    {% if is_user_monitoring %}
-                        <i class="icon-eye-close"></i>
-                        <form action="{% url om_monitoring_stop %}" method="post">
-                            {% csrf_token %}
-                            {{ monitoring_form }}
-                            <button type="submit" class="btn btn-info btn-mini">Interrompi il monitoraggio</button>
-                        </form>
-                    {% else %}
-                        <i class="icon-eye-open"></i>
-                        <form action="{% url om_monitoring_start %}" method="post">
-                            {% csrf_token %}
-                            {{ monitoring_form }}
-                            <button type="submit" class="btn btn-info btn-mini">Avvia il monitoraggio</button>
-                        </form>
-                    {% endif %}
-                {% endif %}
-            </small>
-        </th>
+      <td>
+        {{ object.monitoring_politicians|length|circled:"dark" }}
+      </td>
+      <td>
+        {% if user.is_authenticated and user.get_profile.person %}
+          {% if is_user_monitoring %}
+            <h4>Politici monitorano l'atto, incluso te</h4>
+            <form action="{% url om_monitoring_stop %}" method="post">{% csrf_token %}
+              {{ monitoring_form }}
+              <button type="submit" class="btn btn-info btn-mini">Non monitorare più</button>
+            </form>
+          {% else %}
+            <h4>Politici monitorano l'atto</h4>
+            <i class="icon-plus-sign"></i>
+            <form action="{% url om_monitoring_start %}" method="post">{% csrf_token %}
+              {{ monitoring_form }}
+              <button type="submit" class="btn btn-info btn-mini">Monitora</button>
+            </form>
+          {% endif %}
+        {% else %}
+          <h4>Politici monitorano l'atto</h4>
+        {% endif %}
+      </td>
     </tr>
-{% if show_politicians %}
-    <tr>
-        <td><span class="greenbox">{{ object.monitoring_politicians|length }}</span></td>
-        <th class="bg-dark span12">
-            politici che monitorano l'atto
-            <ul class="unstyled list-inline">
-                {% for user in object.monitoring_politicians %}
-                <li><a href="{{ user.get_profile.person.get_absolute_url }}">{{ user.get_profile.public_name }}</a>{% if not forloop.last %},{% endif %}</li>
-                {% endfor %}
-            </ul>
-
-            <small>
-                {% if user.is_authenticated and user.get_profile.person %}
-                    {% if is_user_monitoring %}
-                        <i class="icon-eye-close"></i>
-                        <form action="{% url om_monitoring_stop %}" method="post">
-                            {% csrf_token %}
-                            {{ monitoring_form }}
-                            <button type="submit" class="btn btn-info btn-mini">Interrompi il monitoraggio</button>
-                        </form>
-                    {% else %}
-                        <i class="icon-eye-open"></i>
-                        <form action="{% url om_monitoring_start %}" method="post">
-                            {% csrf_token %}
-                            {{ monitoring_form }}
-                            <button type="submit" class="btn btn-info btn-mini">Avvia il monitoraggio</button>
-                        </form>
-                    {% endif %}
-                {% endif %}
-            </small>
-        </th>
-    </tr>
-{% endif %}
+  {% endif %}
 </table>
 
+{% if request.user.is_authenticated %}
+{% comment %}Send Monitoring form with anchor link{% endcomment %}
 <script type="text/javascript">
-    {% if request.user.is_authenticated %}
-    {% comment %}Send Monitoring form with anchor link{% endcomment %}
     $(document).ready(function () {
-        $('#monitoring_table form').each(function(){
-            // hide forms
-            $(this).hide();
-            // search button to emulate
-            var button = $('button', this).first();
-            // create ajax sender link
-            var link = $('<a />').prop({
-                'href' : '#'
-            }).on('click', function() {
-                        $(this).next('form').submit();
-                        return false;
-                    });
-            button.contents().each(function(){
-                link.append(this);
-            });
-            // inject content and insert before the form
-            $(this).before( link );
-        });
-
+      $('#monitoring-table form').submitLink();
     });
-    {% endif %}
 </script>
+{% endif %}

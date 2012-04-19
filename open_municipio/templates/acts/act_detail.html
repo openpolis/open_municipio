@@ -5,9 +5,17 @@
 {% load voting_tags %}
 {% load newscache_tags %}
 
-{% block title %}| Dettaglio {{ act }}{% endblock title %}
+{% comment %}Bookmarking tags{% endcomment %}
+{% load om_utils %}
+{% load bookmarking_tags %}
+
+{% comment %}WebServices tags: share{% endcomment %}
+{% load web_services_tags %}
+
+{% block title %}Dettaglio {{ act }}{% endblock title %}
 {% block content_header %}Dettaglio atto{% endblock %}
-{% block acts_class %}class="active"{% endblock %}
+{% block body_class %}act{% endblock %}
+{% block acts_class %}active{% endblock %}
 
 {% block head_css_includes %}
     {{ block.super }}
@@ -15,247 +23,337 @@
 {% endblock head_css_includes %}
 
 {% block head_js_includes %}
-    {{ block.super }}
-    <script src="{{ STATIC_URL }}js/ajax_csrf.js" type="text/javascript" charset="utf-8"></script>
-    <script src="{{ STATIC_URL }}js/voting.js" type="text/javascript"></script>
+  {{ block.super }}
+  <script src="{{ STATIC_URL }}js/ajax_csrf.js" type="text/javascript" charset="utf-8"></script>
+  <script src="{{ STATIC_URL }}js/jquery.jeditable.js" stype="text/javascript"></script>
+  <script src="{{ STATIC_URL }}js/jquery.submitlink.js" stype="text/javascript"></script>
 {% endblock head_js_includes %}
 
-{% block footer_js_includes %}
-    {{ block.super }}
-    <script type="text/javascript">
-
-        {% if request.user.is_authenticated %}
-
-        {% comment %}Build Comment form{% endcomment %}
-        var selectRadio = function() {
-            el = $(this);
-            // de-activate icon
-            el.parent().find('.socialicon-active').removeClass('socialicon-active');
-            // clean send button
-            $('#comment_form_submit i').remove();
-            // inject new hand
-            $('#comment_form_submit').append($('<i class="socialicon-'+el.data('icon')+' socialicon-active"></i>'));
-            // set radiobox as checked
-            el.addClass('socialicon-active').find('input').prop('checked', true);
-        };
-        include('js/jquery.autogrow.js', function() {
-            $('#comment_form .radio-group label').each(function(id,el){
-                el = $(el);
-                el.data('icon', el.prop('for') == 'id_mood_0' ? 'ok' : ( el.prop('for') == 'id_mood_1' ? 'ko' : 'five' ));
-                if ( $('input', el).prop('checked') )
-                {
-                    $('#comment_form_submit').append($('<i class="socialicon-'+el.data('icon')+' socialicon-active"></i>'))
-                }
-                el.prop('title',el.text().trim()).css({
-                    'text-indent': '-99999px',
-                    'overflow': 'hidden',
-                    'cursor': 'pointer'
-                }).addClass('socialicon-'+el.data('icon')).on('click', selectRadio);
-            });
-            // prevent empty submit
-            $('#comment_form').submit(function(){
-                var field = $(this).find('textarea');
-                if (field.length && (field.val().length == 0) ) {
-                    alert('Attenzione, il commento è vuoto.');
-                    return false;
-                }
-            });
-
-            // textarea form
-            $('#id_comment').autogrow();
-
-            // politician form grow
-            $('#description_form textarea').autogrow();
-        });
-        {% endif %}
-
-    </script>
-{% endblock %}
 
 {% block content %}
-    <hgroup>
-        <table class="pull-right">
-            <tr>
-                <th><span class="lightgraybox smallbox">Prossima discussione</span></th>
-                <td><span class="graybox smallbox">3.3.2012</span></td>
-            </tr>
-        </table>
-        <h2>
-            <strong>{% block act_type %}TIPO ATTO{% endblock %}</strong>
-            del Consiglio comunale N° {{ act.idnum }} del <span class="date">{{ act.presentation_date }}</span></small>
-        </h2>
-{% load om_utils %}
-{% load bookmarking_tags %}
- <h1><i id="{{ act|as_token }}" class="bookmarkable {% is_key_class act %}"></i><strong>{{ act.title }}</strong> ({{ act.idnum }})</h1>
-    </hgroup>
+  <table class="pull-right bg-lighter">
+    <tr>
+      <td>
+        {{ act.presentation_date|circled:"full,colored" }}
+      </td>
+      <td><p>Prossima <br>discussione</p></td>
+    </tr>
+  </table>
 
-        {% if description_form %}
-            <form id="description_form" class="well form-horizontal" action="{% url om_act_description_update pk=act.pk %}" method="post">
-                {% csrf_token %}
-                <textarea name="{{ description_form.description.html_name }}" id="{{ description_form.description.html_name }}_id" cols="30"
-                          rows="3">{{ description_form.description.value }}</textarea>
-                {% for hidden in description_form.hidden_fields %}
-                    {{ hidden }}
-                {% endfor %}
-                <button type="submit" class="btn btn-info btn-small">Invia</button>
-            </form>
-        {%  else %}
-            <p class="well">{{ act.description|safe }}</p>
-        {% endif %}
+  <hgroup>
+    <h1 id="act_title">
+      <i id="{{ act|as_token }}" class="bookmarkable {% is_key_class act %}"></i>
+      <strong class="input-append">{{ act.title }}</strong>
+      <small>(N. {{ act.idnum }})</small></h1>
+    <h2>
+      {% block act_type %}TIPO ATTO{% endblock %}
+      del Consiglio comunale N° <strong>{{ act.idnum }}</strong> del <strong><span class="date">{{ act.presentation_date }}</span></strong>
+    </h2>
+  </hgroup>
 
+  {% if description_form %}
+    <form id="description_form" class="well form-horizontal" action="{% url om_act_description_update pk=act.pk %}" method="post">
+      {% csrf_token %}
+      <textarea name="{{ description_form.description.html_name }}" id="{{ description_form.description.html_name }}_id" cols="30"
+                rows="3">{{ description_form.description.value }}</textarea>
+      {% for hidden in description_form.hidden_fields %}
+          {{ hidden }}
+      {% endfor %}
+      <button type="submit" class="btn btn-info btn-small">Invia</button>
+    </form>
+  {%  else %}
+    <p>{{ act.description|safe }}</p>
+  {% endif %}
+
+  <div class="nav-tabs-container">
     <ul class="nav nav-tabs">
       <li {% block act_tab_status_class %}class="active"{% endblock %}> <a href="{{ act.get_absolute_url }}">Stato</a></li>
       <li {% block act_tab_documents_class %}{% endblock %}><a href="{{ act.get_absolute_url }}documents">Documenti</a></li>
       <li><a href="{{ act.get_absolute_url }}votes"><strong>Voti</strong></a></li>
     </ul>
+  </div>
 
-    {% block act_tab_body %}
-        {% include 'acts/act_table_transitions.html' %}
-    {% endblock act_tab_body %}
+  {% block act_tab_body %}
+    {% include 'acts/act_table_transitions.html' %}
+  {% endblock act_tab_body %}
 
-    {% load web_services_tags %}
-    {% share act %}
+  {% share act %}
 {% endblock content %}
 
 
 {% block sidebar %}
 
-<section>
+  <section>
     {% if perms.taxonomy.change_taggedact %}
     {% include 'acts/act_tags_editor.html' %}
     {% endif %}
+
     <h3>Argomenti dell'atto</h3>
-    
-    <dl class="tags-cloud">
-        {% for category in act.categories %}
-            <dt><a href="{{ category.get_absolute_url }}">{{ category.name }}</a></dt>
-            {% for tag in category.tags %}
-                {% if tag in act.tags %}
-                    <dd><a href="{{ tag.get_absolute_url }}">{{ tag }}</a></dd>
-                {% endif %}
-            {% endfor %}
+
+    <dl class="taxonomy-cloud">
+      {% for category in act.categories %}
+        <dt><a href="{{ category.get_absolute_url }}">{{ category.name }}</a></dt>
+        {% for tag in category.tags %}
+          {% if tag in act.tags %}
+          <dd><a href="{{ tag.get_absolute_url }}">{{ tag }}</a></dd>
+          {% endif %}
         {% endfor %}
+      {% endfor %}
+
+      {% for location in act.locations %}
+        {% if forloop.first %}
+        <dt>Territorio</dt>
+        {% endif %}
+        <dd><a href="{{ location.get_absolute_url }}">{{ location }}</a></dd>
+      {% endfor %}
     </dl>
- 
+
     {% if location_form %}
-    	<form id="location-form" class="form-inline" action="{% url om_act_locations_add pk=act.act_ptr.pk %}" method="post">
-    		{% csrf_token %}
-	        {{ location_form.as_p }}
-            <button type="submit" class="btn btn-info btn-small">Applica</button>
-		</form>
-	{% endif %}
- 
-</section>
+    <a href="#" class="btn btn-mini"><i class="icon-edit"></i> Modifica Territori</a>
+    <form id="location-form" class="form-inline" action="{% url om_act_locations_add pk=act.act_ptr.pk %}" method="post">
+      {% csrf_token %}{% for hidden in location_form.hidden_fields %}{{ hidden }}{% endfor %}
+      {{ location_form.locations }}
+      <div class="form-actions text-center">
+        <button type="submit" class="btn btn-info btn-mini">Applica</button>
+      </div>
+    </form>
+    <script type="text/javascript">
+      $(document).ready(function(){
+        var form = $('#location-form').hide();
+        form.prev('a').click(function(){
+          $('#location-form').slideToggle();
+          return false;
+        });
+      });
+    </script>
+    {% endif %}
 
-<section><h3>Monitora</h3>
+  </section>
+
+  <hr>
+
+  <section>
+    <h3>Monitora</h3>
     {% include 'monitoring/summary.html' with object=act show_politicians=1 %}
-</section>
+  </section>
 
+  <hr>
 
+  <section>
+    <h3>Vota</h3>
+    {% include "acts/act_vote_block.html" %}
+  </section>
 
-
-<section><h3>Vota</h3>
-  {% include "acts/act_vote_block.html" %}
-</section>
+  <hr>
 
 {% get_comment_count for act as comment_count %}
 {% get_comment_list for act as comment_list %}
 {% get_comment_form for act as form %}
-<section><h3>Commenti ({{ comment_count }})</h3>
-    <ul class="people-list">
-        {% for comment in comment_list %}
-        <li class="bg-light"> <!-- make control for different comment opinion, like positive comment use .bg-lightgreen -->
-            <a href="{% url users_user_detail comment.user.username %}">
-                <img src="{{ STATIC_URL }}img/placehold/50.gif" />
-                {{ comment.user.username|capfirst }}
-            </a>
+  <section>
+    <h3>Commenti ({{ comment_count }})</h3>
+
+    <ul class="comments-list">
+      {% for comment in comment_list %}
+      <li{% if user.is_authenticated and user.get_profile.person %} class="bg-highlight"{% endif %}>
+        <a href="{% url users_user_detail comment.user.username %}">
+          <img src="{{ STATIC_URL }}img/placehold/50.gif" />
+        </a>
+
+        <div>
+          {% if comment.user == request.user and comment|comment_TTL > 0 %}
+            <a href="#" class="pull-right bg-light" title="{% blocktrans with seconds=comment|comment_TTL %}You still have {{ seconds }} seconds to delete this comment{% endblocktrans %}"><i class="icon-remove"></i></a>
+            <form action="{% url comments-delete-own-comment comment.id %}" class="comment-form-delete" method="post">{% csrf_token %}
+              <button type="submit" class="btn btn-danger btn-mini">{% trans 'Delete' %}</button>
+            </form>
+          {% endif %}
+
+          <p>
+            <a href="{% url users_user_detail comment.user.username %}">{{ comment.user.username|capfirst }}</a>
             {{ comment.comment }}
+          </p>
 
-            <div class="clearfix"></div>
-
-            <span id="comments-votebox-{{ comment.id }}" class="monitoring">
-
-                {% if comment.user == request.user and comment|comment_TTL > 0 %}
-                    <div class="pull-right" title="{% blocktrans with seconds=comment|comment_TTL %}You still have {{ seconds }} seconds to delete this comment{% endblocktrans %}">
-                        <form action="{% url comments-delete-own-comment comment.id %}" method="post">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-danger btn-mini">{% trans 'Delete' %}
-                                <small>(-{{ comment|comment_TTL }}s)</small></button>
-                        </form>
-                        {% comment %}
-                    <!-- A simple anchor tag instead of the form can work
-                         too, but the form ``csrf_token`` provide some
-                         additional security!  Yep, bit of a paranoyd
-                         thing indeed! ;-) -->
-                    <a href="{% url comments-delete-own-comment comment.id %}">Remove comment</a>
-                    {% endcomment %}
-                    </div>
-                {% endif %}
-
-
-                {% if comment.mood == "+" %}<i class="socialicon-ok socialicon-active"></i>{% else %}
-                {% if comment.mood == "-" %}<i class="socialicon-ko socialicon-active"></i>{% else %}
-                {% if comment.mood == "0" %}<i class="socialicon-five socialicon-active"></i>{% endif %}{% endif %}{% endif %}
-                 &middot; {{ comment.submit_date|date:"d M Y" }}  &middot;
-                {% score_for_object comment as comment_score %}
-                {% if request.user.is_authenticated %}
-                {% vote_by_user request.user on comment as vote %}
-                <a href="#" id="comments-vote-{{ comment.id }}-up" class='vote{% if vote.vote and vote.vote > 0 %} up-voted{% endif %}'><span class='notlike'>Non mi piace pi&ugrave</span><span class='like'>Mi piace</span></a>  &middot; 
-                {% else %}
-                <a href="#" class="vote"><span class='like'>Mi piace</span></a>  &middot;                 
-                {% endif %}
-                <i class="socialicon-like"></i> <span class="okscore">{{ comment_score.score }}</span>
-            </span>
-        </li>
-        {% endfor %}
-    </ul>
-    {% if request.user.is_authenticated %}
-    <form id="comment_form" action="{% comment_form_target %}" method="post" class="form-inline bg-dark">
-        <input type="hidden" name="next" value="{{ act.get_absolute_url }}" />
-        {% csrf_token %}
-
-        {% for hidden in form.hidden_fields %}
-            {{ hidden }}
-        {% endfor %}
-
-        <div class="row-fluid">
-            <div class="span8">
-                <textarea name="{{ form.comment.html_name }}" placeholder="Inserisci un commento" id="id_comment" cols="30" rows="3"></textarea>
-            </div>
-            <div class="span4 text-center">
-                <button type="submit" class="btn btn-mini" id="comment_form_submit">{% trans 'Post' %} </button>
-                <div class="radio-group">
-                    {{ form.mood }}
-                </div>
-            </div>
+          {% if comment.mood == "+" %}<i class="hand-ok hand-active"></i>{% else %}
+          {% if comment.mood == "-" %}<i class="hand-ko hand-active"></i>{% else %}
+          {% if comment.mood == "0" %}<i class="hand-five hand-active"></i>{% endif %}{% endif %}{% endif %}
+          &middot; {{ comment.submit_date|date:"d M Y" }}  &middot;
+          {% score_for_object comment as comment_score %}
+          {% if request.user.is_authenticated %}
+            {% vote_by_user request.user on comment as vote %}
+            <a href="#" id="comments-vote-{{ comment.id }}-up" class='vote{% if vote.vote and vote.vote > 0 %} up-voted{% endif %}'><span class='notlike'>Non mi piace pi&ugrave</span><span class='like'>Mi piace</span></a>  &middot;
+          {% else %}
+            <a href="#" class="vote"><span class='like'>Mi piace</span></a>  &middot;
+          {% endif %}
+          <i class="hand-like"></i> <span class="okscore">{{ comment_score.score }}</span>
         </div>
+      </li>
+      {% endfor %}
+    </ul>
+
+    {% if request.user.is_authenticated %}
+    <form id="comment-form" action="{% comment_form_target %}" method="post" class="form-inline box">
+      <input type="hidden" name="next" value="{{ act.get_absolute_url }}" />
+      {% csrf_token %}
+      {% for hidden in form.hidden_fields %}
+        {{ hidden }}
+      {% endfor %}
+
+      <p>
+        <textarea name="{{ form.comment.html_name }}" class="input-expanded" placeholder="Inserisci un commento" id="comment-form-text" rows="1"></textarea>
+      </p>
+
+      <button type="submit" class="btn btn-mini pull-right" id="comment-form-submit">{% trans 'Post' %} </button>
+
+      <p>
+        <label for="{{ form.mood.html_name }}">Scegli la posizione</label> {{ form.mood }}
+      </p>
+
     </form>
     {% endif %}
-    <p>Leggi tutti (Cronologia) <i class="icon-chevron-down"></i></p>
-</section>
 
-<section>
+    <p class="box">
+      <a href="#">Leggi tutti</a> <i class="icon-play-down"></i>
+    </p>
+  </section>
+
+  <hr>
+
+  <section>
     <h3>Ultime sugli Atti <img src="{{ STATIC_URL }}img/feed-icon-14x14.png" alt="" /></h3>
 
-    <ul class="feed-list">
-        {% institutional_news_for_object act as i_news %}
-        {% for n in i_news %}
-            <li>{{ n.created|date:"d-m-Y" }} - {{ n.text|safe }}</li>
-        {% endfor %}
+    <ul class="list-simple">
+      {% institutional_news_for_object act as i_news %}
+      {% for n in i_news %}
+      <li>{{ n.created|date:"d-m-Y" }} - {{ n.text|safe }}</li>
+      {% endfor %}
     </ul>
-    <p class="bg-dark">Leggi tutti (Cronologia) <i class="icon-chevron-down"></i></p>
-</section>
 
-<section>
-    <h3>Ultime dalla community <img src="{{ STATIC_URL }}img/feed-icon-14x14.png" alt="" /></h3>
+    <p class="box">
+      <a href="#">Leggi tutti</a> <i class="icon-play-down"></i>
+    </p>
+  </section>
 
-    <ul class="feed-list">
-        {% community_news_for_object act as c_news %}
-        {% for n in c_news %}
-            <li>{{ n.created|date:"d-m-Y" }} - {{ n.text|safe }}</li>
-        {% endfor %}
-    </ul>
-    <p class="bg-dark">Leggi tutte (Cronologia) <i class="icon-chevron-down"></i></p>
-</section>
+{% endblock %}
+
+
+{% block footer_js_includes %}
+  {{ block.super }}
+  <script type="text/javascript">
+
+    {% if request.user.is_authenticated %}
+
+      $(document).ready(function(){
+
+        {% if request.user.get_profile.is_editor %}
+        // Edit Act Title in-place
+        $('#act_title strong').editable('{% url om_act_title_update pk=act.id %}', {
+          name : 'act_title',
+          submitdata : function(value, settings) {
+            return { 'act_id': {{ act.pk }} };
+          },
+          cssclass  : 'form-inline',
+          submit    : '<button type="submit" class="btn">Salva</button>',
+          indicator : '<img src="{{ STATIC_URL }}img/spinner.gif">',
+          tooltip   : 'Clicca per modificare...',
+          style     : 'display: inline',
+          //onblur     : 'ignore',
+          inputclass : 'input-xlarge',
+          callback : function(value){
+            value = JSON.parse(value)
+            // TODO check if there's some errors
+            $(this).text(value.text)
+          }
+
+        });
+        {% endif %}
+
+        // ----------------------------
+
+        // Replace form to remove own comments with link
+        $('.comments-list').find('form.comment-form-delete').each(function(){
+          $(this).submitLink({ link: $(this).prev('a') })
+        });
+
+        // ----------------------------
+
+        // Commenting Form
+        var $comment_form = $('#comment-form')
+        var $comment_form_submit = $('#comment-form-submit')
+
+        // prevent empty submit
+        $comment_form.submit(function(){
+          var field = $(this).find('textarea');
+          if (field.length && (field.val().length == 0) ) {
+            alert('Attenzione, il commento è vuoto.');
+            return false;
+          }
+        });
+
+        var selectHand = function() {
+          el = $(this);
+          // de-activate icon
+          el.parent().find('.hand-active').removeClass('hand-active');
+          // clean send button
+          $('i', $comment_form_submit).remove();
+          // inject new hand
+          $comment_form_submit.prepend($('<i />').addClass( el.data('icon') ).addClass('hand-active'));
+          // set radiobox as checked
+          el.addClass('hand-active').find('input').prop('checked', true);
+        };
+
+        $comment_form.find('label').each(function(){
+          var icon,
+              $label = $(this),
+              $input = $label.find('input:radio')
+
+          if ( $input.length == 0 ) return
+
+          // store icon
+          switch ($input.prop('value'))
+          {
+            case '+':
+              $label.data('icon','hand-ok')
+              break;
+            case '0':
+              $label.data('icon','hand-five')
+              break;
+            case '-':
+              $label.data('icon','hand-ko')
+              break;
+          }
+
+          // default radio
+          if ($input.prop('checked'))
+          {
+            $comment_form_submit.prepend(
+                $('<i />').addClass( $label.data('icon')).addClass('hand-active')
+            )
+            $label.addClass('hand-active')
+          }
+
+          $label
+              .prop('title', $label.text().trim() )
+              .css({
+                'text-indent': '-99999px',
+                'overflow': 'hidden',
+                'cursor': 'pointer'
+              })
+              .addClass( $label.data('icon') )
+              .click( selectHand )
+        })
+
+      });
+
+
+      include('js/jquery.autogrow.js', function() {
+
+        // textarea form
+        $('#comment-form-text').autogrow();
+
+        // politician form grow
+        $('#description_form textarea').autogrow();
+      });
+    {% endif %}
+
+  </script>
 {% endblock %}
 

@@ -38,8 +38,7 @@ class ActTagByLocationView(FormView):
         return HttpResponseRedirect(self.get_success_url())
        
     def form_invalid(self, form=None):
-        msg = "It appears that the monitoring form has been tampered with !"
-        return HttpResponseBadRequest(msg)
+        return HttpResponseBadRequest("%s" % form)
     
     def get_success_url(self):
         return self.act.downcast().get_absolute_url()
