@@ -215,6 +215,9 @@ class Act(TimeStampedModel, MonitorizedItem):
     def get_absolute_url(self):
         return self.downcast().get_absolute_url()
 
+    def get_status_display(self):
+        return self.downcast().get_status_display()
+
       
 class ActSection(models.Model):
     """

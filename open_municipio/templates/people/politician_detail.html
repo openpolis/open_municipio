@@ -2,6 +2,7 @@
 {% load i18n %}
 {% load comments %}
 {% load om_voting_tags %}
+{% load om_utils %}
 
 {% block title %}| Dettaglio {{ person }}{% endblock %}
 {% block content_header %}{% trans 'politicians' %}{% endblock %}
@@ -187,7 +188,7 @@
             {% for c in current_charges %}
                 {% for act in c.presented_acts %}
             <tr>
-                <td><a href="{{ act.downcast.get_absolute_url }}"><strong>{{ act.title }}</strong> ({{ act.idnum }})</a></td>
+                <td><a href="{{ act.get_absolute_url }}"><strong>{{ act.title }}</strong> ({{ act.idnum }})</a></td>
                 <td class="text-center">
                 {% if not act.is_final_status %}
                     <span class="label">In esame</span>
@@ -200,13 +201,13 @@
                         {% else %}
                             <span class="label">
                         {% endif %}
-                    {% endif %}{{ act.get_status_display }}</span> <!-- FIX ME: this template variable still doesn't work -->                  
+                    {% endif %}{{ act.get_status_display }}</span>                 
                 {% endif %} 
                 </td>
 {% votes_for_object act as act_num_votes %}
-                <td class="text-center"><span class="okbox">{{ act_num_votes.upvotes }}</span> <span class="kobox">{{ act_num_votes.downvotes }}</span></td>
+                <td class="text-center">{{ act_num_votes.upvotes|circled }}{{ act_num_votes.downvotes|circled }}</td>
 {% get_comment_count for act as comment_count %}
-                <td class="text-center"><a href="{{ act.downcast.get_absolute_url }}"><strong>{{ comment_count }}</strong></a></td>
+                <td class="text-center"><a href="{{ act.get_absolute_url }}"><strong>{{ comment_count }}</strong></a></td>
             </tr>
                 {% endfor %}
             {% endfor %}
