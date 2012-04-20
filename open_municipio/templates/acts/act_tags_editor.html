@@ -128,7 +128,25 @@
 
                 // build initial textlistboxes
                 $('#category_skeleton').prevAll('fieldset').each(function() {
-                    buildTextList( $('select',this) );
+                    var fieldset = $(this),
+                        select = $('select',fieldset),
+                        option = $('<option />')
+                            .val( select.prop('id').replace('category_','') )
+                            .text( $('label.control-label', fieldset).text() )
+
+                    // build input select option
+
+                    fieldset.data('option', option )
+
+                    buildTextList( select );
+
+                    // activate close button
+                    $('.control-label a', fieldset).click(function(e) {
+                      e.preventDefault();
+                      // add category to re-add
+                      $('#category_list').append( fieldset.data('option') );
+                      fieldset.remove();
+                    });
                 });
 
                 $('#category_add').click(function(e){

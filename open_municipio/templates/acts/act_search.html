@@ -1,9 +1,10 @@
 {% extends 'base_two_columns.html' %}
 {% load highlight %}
+{% load om_utils %}
 
 {% block title %}| Elenco atti {% endblock title %}
 {% block content_header %}Elenco atti{% endblock %}
-{% block acts_class %}class="active"{% endblock %}
+{% block acts_class %}active{% endblock %}
 
 {% block extra_style %}
 em {
@@ -68,7 +69,7 @@ em {
                 <tbody>
                 {% for result in page.object_list %}
                     <tr>
-                        <td>{{ result.pub_date}}</td>
+                        <td>{{ result.pub_date|circled:"full" }}</td>
                         <td>
                             <span class="label">{{ result.act_type }}</span>
                             <a href="{{ result.url }}">{{ result.title }}</a><br/>
@@ -189,23 +190,10 @@ em {
                 {% if facets.fields.categories %}
                     <dt>Categorie</dt>
                     {# Provide only the top 5 categories #}
-                    {% for cat in facets.fields.categories.counts|slice:":5" %}
+                    {% for cat in facets.fields.categories.counts|slice:":10" %}
                         <dd>
                             {% if not cat.2 %}
-                                <a href="{{ base_url }}&selected_facets=categories:{{ cat.0|urlencode }}">{{ cat.0 }}</a> ({{ cat.1 }})
-                            {% endif %}
-                        </dd>
-                    {% endfor %}
-                {% endif %}
-            </dl>
-            <dl>
-                {% if facets.fields.tags %}
-                    <dt>Tag</dt>
-                    {# Provide only the top 5 tags #}
-                    {% for tag in facets.fields.tags.counts|slice:":5" %}
-                        <dd>
-                            {% if not tag.2 %}
-                                <a href="{{ base_url }}&selected_facets=tags:{{ tag.0|urlencode }}">{{ tag.0 }}</a> ({{ tag.1 }})
+                                <a href="{{ base_url }}&selected_facets=categories_exact:{{ cat.0|urlencode }}">{{ cat.0 }}</a> ({{ cat.1 }})
                             {% endif %}
                         </dd>
                     {% endfor %}

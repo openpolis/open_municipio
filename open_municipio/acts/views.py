@@ -22,6 +22,8 @@ from open_municipio.locations.forms import ActLocationsAddForm
 
 import re
 
+from django.utils import simplejson as json
+
 
 class ActSearchView(ExtendedFacetedSearchView):
     """
@@ -79,6 +81,23 @@ class ActListView(ListView):
         return context
 
 
+class ActLiveEditView(FormView):
+    @method_decorator(user_passes_test(lambda u: u.is_staff))
+    def dispatch(self, *args, **kwargs):
+        return super(ActLiveEditView, self).dispatch(*args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        act = get_object_or_404(Act, pk=self.kwargs.get('pk'))
+
+        act.title = request.POST.get('act_title','')
+        act.save()
+
+        response_data = {}
+        response_data['text'] = act.title
+
+        return HttpResponse(json.dumps(response_data), mimetype="application/json")
+
+
 class ActDescriptionView(FormView):
     form_class = ActDescriptionForm
 
@@ -88,6 +107,7 @@ class ActDescriptionView(FormView):
 
     def form_valid(self, form):
         """
+        TODO: check if user can edit this Act Description
         instead of saving the form, just extract the act from the ID
         and change its description
         """
@@ -182,7 +202,7 @@ class ActDetailView(DetailView):
         if self.request.user.has_perm('acts.change_transition') : #and context['status_list']
             if len(context['transition_groups']) == 5:
                 context['transition_to_council_form'] = ActTransitionForm(initial={'act': act, 'final_status': 'COUNCIL' },prefix="council")
-                context['transition_to_committee_form'] = ActTransitionForm(initial={'act': act, 'final_status': 'COMMITTEE' },prefix="commitee")
+                context['transition_to_committee_form'] = ActTransitionForm(initial={'act': act, 'final_status': 'COMMITTEE' },prefix="committee")
             context['transition_to_final_form'] = ActFinalTransitionForm(initial={'act': act },prefix="final")
             context['transition_to_final_form'].fields['final_status'].widget.choices = act.FINAL_STATUSES
 
@@ -302,12 +322,13 @@ class ActTransitionToggleBaseView(FormView):
 class ActTransitionAddView(ActTransitionToggleBaseView):
     def post(self, request, *args, **kwargs):
         self.act = get_object_or_404(Act, pk=kwargs['pk'])
+        nameprefix = request.POST.get('prefix', '')
 
-        if 'votation' in request.POST:
-            form = ActFinalTransitionForm(data=request.POST)
+        if 'final' == nameprefix:
+            form = ActFinalTransitionForm(request.POST,prefix=nameprefix)
             form.fields['final_status'].widget.choices = self.act.downcast().FINAL_STATUSES
         else:
-            form = ActTransitionForm(data=request.POST)
+            form = ActTransitionForm(request.POST,prefix=nameprefix)
 
         if not form.is_valid():
             return self.form_invalid(form)

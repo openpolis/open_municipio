@@ -31,7 +31,7 @@ def is_key_class(context, obj):
         elif user.is_staff:
             return mark_safe(settings.OM_BOOKMARKING_EMPTY_STAR_CLASS)
         else:
-            return '' 
+            return ''
     except:
         return ''
     
