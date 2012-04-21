@@ -195,7 +195,7 @@ class Act(TimeStampedModel, MonitorizedItem):
 
     def is_final_status(self, status=None):
         this = self.downcast()
-        if status in None:
+        if status is None:
             status = this.status
 
         if not hasattr(this, 'FINAL_STATUSES'):
