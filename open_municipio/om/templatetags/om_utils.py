@@ -54,6 +54,9 @@ def circled(value, args=''):
     colored = 'colored' in args
     full = 'full' in args
     dark = 'dark' in args
+    voteok = 'voteok' in args
+    voteko = 'voteko' in args
+
 
     classes = []
     if type(value).__name__=='date':
@@ -68,8 +71,11 @@ def circled(value, args=''):
 
     if colored:
         classes.append('circle-colored')
-
-    if dark:
+    elif dark:
         classes.append('circle-dark')
+    elif voteok:
+        classes.append('circle-green')
+    elif voteko:
+        classes.append('circle-red')
 
     return mark_safe('<div class="%s">%s</div>' %  (' '.join(classes), value))

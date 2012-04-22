@@ -2,18 +2,21 @@
 
     <section class="span6">
         <h1>{{ supporter_title|default:"Firmatari" }}</h1>
-        <ul class="people-list border-right">
-            {% for supporter in act_supporters %}
-                <li>
-                    <a href="#"><img src="{{ STATIC_URL }}img/placehold/50.gif" /></a>
-                    <strong><a href="{{ supporter.get_absolute_url }}"><i class="icon-ok"></i> {{ supporter.person.full_name }}</a></strong> <br />
-                    {{ supporter.council_group }}
-                    <span class="monitoring">
-                        Monitorato da {{ supporter.monitoring_users|length }} cittadini -
-                        <a href="#"><i class="socialicon-add"></i> Monitora</a>
-                    </span>
-                </li>
-            {% endfor %}
+        <ul class="people-list">
+          {% for supporter in act_supporters %}
+          <li>
+            <a href="{{ supporter.get_absolute_url }}"><img src="{{ STATIC_URL }}img/placehold/50.gif" /></a>
+
+            <div>
+              <strong><a href="{{ supporter.get_absolute_url }}">{{ supporter.person.full_name }}</a></strong>
+              <br>
+              {{ supporter.council_group }}
+              <br>
+              <span class="monitoring">Monitorato da {{ supporter.monitoring_users|length }} cittadini -</span>
+              <i class="icon-plus-sign"></i> <a href="#">Monitora</a>
+            </div>
+          </li>
+          {% endfor %}
         </ul>
 
     </section>
@@ -22,17 +25,20 @@
         {% if act_cosupporters %}
         <h1>{{ cosupporter_title|default:"Co-firmatari" }}</h1>
         <ul class="people-list">
-            {% for supporter in act_cosupporters %}
-                <li>
-                    <a href="#"><img src="{{ STATIC_URL }}img/placehold/50.gif" /></a>
-                    <strong><a href="{{ supporter.get_absolute_url }}"><i class="icon-ok"></i> {{ supporter.person.full_name }}</a></strong> <br />
-                    {{ supporter.council_group }}
-                    <span class="monitoring">
-                        Monitorato da {{ supporter.monitoring_users|length }} cittadini -
-                        <a href="#"><i class="socialicon-add"></i> Monitora</a>
-                    </span>
-                </li>
-            {% endfor %}
+          {% for supporter in act_supporters %}
+            <li>
+              <a href="{{ supporter.get_absolute_url }}"><img src="{{ STATIC_URL }}img/placehold/50.gif" /></a>
+
+              <div>
+                <strong><a href="{{ supporter.get_absolute_url }}">{{ supporter.person.full_name }}</a></strong>
+                <br>
+                {{ supporter.council_group }}
+                <br>
+                <span class="monitoring">Monitorato da {{ supporter.monitoring_users|length }} cittadini -</span>
+                <i class="icon-plus-sign"></i> <a href="#">Monitora</a>
+              </div>
+            </li>
+          {% endfor %}
         </ul>
         {% endif %}
 

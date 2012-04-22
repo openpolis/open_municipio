@@ -1,5 +1,6 @@
 {% extends "base_two_columns.html" %}
 {% load i18n %}
+{% load om_utils %}
 
 {% block title %}| Dettaglio {{ votation }}{% endblock %}
 
@@ -20,6 +21,24 @@
 {% endblock footer_js_includes %}
 
 {% block content %}
+  {% if votation.outcome = votation.PASSED %}
+    <h2 class="text-green"><i class="socialicon-ok socialicon-active"></i> Approvato</h2>
+  {% else %}
+    <h2 class="text-red"><i class="socialicon-ko socialicon-active"></i> Respinto</h2>
+  {% endif %}
+  <table class="pull-right bg-lighter">
+    <tr>
+      {% if votation.outcome = votation.PASSED %}
+      <td>{{ '<i class="icon-thumbs-up"></i>'|safe|circled:"voteok" }}</td>
+      <td><p>Approvato</p></td>
+      {% else %}
+      <td>{{ '<i class="icon-thumbs-down"></i>'|safe|circled:"voteko" }}</td>
+      <td><p>Respinto</p></td>
+      {% endif %}
+
+    </tr>
+  </table>
+
     <hgroup>
         <h2>
             {% if votation.act %}
@@ -91,24 +110,38 @@
                 <tbody>
                     {% for charge_vote in votation.charge_votes %}
                     {% with charge_vote.charge.person as politician %}
-                    <tr>
+                      <tr>
                         <td>
-                            <a href="{{ politician.get_absolute_url }}">
-                                <strong>{{ politician.full_name }}</strong> ({{ charge_vote.charge.council_group.acronym }})
-                            </a>
+                          <a href="{{ politician.get_absolute_url }}">
+                            <strong>{{ politician.full_name }}</strong> ({{ charge_vote.charge.council_group.acronym }})
+                          </a>
                         </td>
-                        {% if charge_vote.vote = charge_vote.YES %}
-                        <td><span class="label label-success">Favorevole</span></td><td></td><td></td><td></td><td></td>
-                        {% else %}{% if charge_vote.vote = charge_vote.NO %}
-                        <td></td><td><span class="label label-important">Contrario</span></td><td></td><td></td><td></td>
-                        {% else %}{% if charge_vote.vote = charge_vote.ABSTAINED %}
-                        <td></td><td></td><td><span class="label">Astenuto</span></td><td></td><td></td>
-                        {% else %}{% if charge_vote.vote = charge_vote.MISSION %}
-                        <td></td><td></td><td></td><td></td><td><span class="label label-info">In Missione</span></td>
-                        {% else %}{% if charge_vote.vote = charge_vote.ABSENT %}
-                        <td></td><td></td><td></td><td><span class="label label-white">Assente</span></td><td></td>
-                        {% endif %}{% endif %}{% endif %}{% endif %}{% endif %}
-                    </tr>
+                        <td>
+                          {% if charge_vote.vote = charge_vote.YES %}
+                            <span class="label label-success">Favorevole</span>
+                          {% endif %}
+                        </td>
+                        <td>
+                          {% if charge_vote.vote = charge_vote.NO %}
+                            <span class="label label-warning">Contrario</span>
+                          {% endif %}
+                        </td>
+                        <td>
+                          {% if charge_vote.vote = charge_vote.ABSTAINED %}
+                            <span class="label label-success">Astenuto</span>
+                          {% endif %}
+                        </td>
+                        <td>
+                          {% if charge_vote.vote = charge_vote.MISSION %}
+                            <span class="label label-info">Missione</span>
+                          {% endif %}
+                        </td>
+                        <td>
+                          {% if charge_vote.vote = charge_vote.ABSENT %}
+                            <span class="label label-white">Assente</span>
+                          {% endif %}
+                        </td>
+                      </tr>
                     {% endwith %}
                     {% endfor %}
                 </tbody>
@@ -131,22 +164,36 @@
                     {% with charge_vote.charge.person as politician %}
                     {% if charge_vote.rebel %}
                     <tr>
-                        <td>
-                            <a href="{{ politician.get_absolute_url }}">
-                                <strong>{{ politician.full_name }}</strong> ({{ charge_vote.charge.council_group.acronym }})
-                            </a>
-                        </td>
+                      <td>
+                        <a href="{{ politician.get_absolute_url }}">
+                          <strong>{{ politician.full_name }}</strong> ({{ charge_vote.charge.council_group.acronym }})
+                        </a>
+                      </td>
+                      <td>
                         {% if charge_vote.vote = charge_vote.YES %}
-                        <td><span class="label label-success">Favorevole</span></td><td></td><td></td><td></td><td></td>
-                        {% else %}{% if charge_vote.vote = charge_vote.NO %}
-                        <td></td><td><span class="label label-important">Contrario</span></td><td></td><td></td><td></td>
-                        {% else %}{% if charge_vote.vote = charge_vote.ABSTAINED %}
-                        <td></td><td></td><td><span class="label">Astenuto</span></td><td></td><td></td>
-                        {% else %}{% if charge_vote.vote = charge_vote.MISSION %}
-                        <td></td><td></td><td></td><td></td><td><span class="label label-info">In Missione</span></td>
-                        {% else %}{% if charge_vote.vote = charge_vote.ABSENT %}
-                        <td></td><td></td><td></td><td><span class="label label-white">Assente</span></td><td></td>
-                        {% endif %}{% endif %}{% endif %}{% endif %}{% endif %}
+                        <span class="label label-success">Favorevole</span>
+                        {% endif %}
+                       </td>
+                      <td>
+                        {% if charge_vote.vote = charge_vote.NO %}
+                          <span class="label label-warning">Contrario</span>
+                        {% endif %}
+                      </td>
+                      <td>
+                        {% if charge_vote.vote = charge_vote.ABSTAINED %}
+                          <span class="label label-success">Astenuto</span>
+                        {% endif %}
+                      </td>
+                      <td>
+                        {% if charge_vote.vote = charge_vote.MISSION %}
+                          <span class="label label-info">Missione</span>
+                        {% endif %}
+                      </td>
+                      <td>
+                        {% if charge_vote.vote = charge_vote.ABSENT %}
+                          <span class="label label-white">Assente</span>
+                        {% endif %}
+                      </td>
                     </tr>
                     {% endif %}
                     {% endwith %}
@@ -158,29 +205,25 @@
 {% endblock content %}
 
 {% block sidebar %}
-    {% if votation.outcome = votation.PASSED %}
-    <h2 class="text-green"><i class="socialicon-ok socialicon-active"></i> Approvato</h2>
-    {% else %}
-    <h2 class="text-red"><i class="socialicon-ko socialicon-active"></i> Respinto</h2>
-    {% endif %}
-    <table class="stats">
-        <tr>
-            <td><span class="okbox">{{ votation.n_yes }}</span></td>
-            <th class="bg-dark span6">Favorevoli</th>
-            <td><span class="graybox">{{ votation.n_abst }}</span></td>
-            <th class="bg-dark span6">Astenuti</th>
-            <td><span class="kobox">{{ votation.n_no }}</span></td>
-            <th class="bg-dark span6">Contrari</th>
-        </tr>
-    </table>
-    <table class="stats">
-        <tr>
-            <td><span class="lightgraybox">150</span></td>
-            <th class="bg-dark span6">Voti di scarto</th>
-            <td><span class="lightgraybox">{{ votation.n_rebels }}</span></td>
-            <th class="bg-dark span6">Politici ribelli</th>
-        </tr>
-    </table>
+
+  <table class="stats">
+    <tr>
+      <td>{{ votation.n_yes|circled:"voteok" }}</td>
+      <th class="span6">Favorevoli</th>
+      <td>{{ votation.n_no|circled:"voteko" }}</td>
+      <th class="span6">Contrari</th>
+    </tr>
+    <tr>
+      <td>{{ votation.n_abst|circled }}</td>
+      <th class="span6">Astenuti</th>
+      <td>{{ '-'|circled }}</td>
+      <th class="span6">Voti di scarto</th>
+    </tr>
+    <tr>
+      <td>{{ votation.n_rebels|circled }}</td>
+      <th colspan="3">Politici ribelli</th>
+    </tr>
+  </table>
 
 
     <div class="tabbable">
@@ -206,47 +249,73 @@
         </div>
     </div>
 
+  <hr>
 
-    <section><h3>Commenti (20)</h3>
-        <ul class="people-list">
-            <li class="bg-light">
-                <a href="#"><img src="{{ STATIC_URL }}img/placehold/50.gif" alt="" /></a>
-                <a href="#">JohnDoe</a> Lorem ipsum dolor sit amet,consectetuer adipiscing elit. Suspendisse ut purus.
-            <span class="monitoring">
-                <i class="socialicon-ko"></i> · 14.06.2011 · <a href="#">Condividi</a> · <a href="#">Mi piace</a> · <i class="socialicon-add"></i> 4
-            </span>
-            </li>
-            <li class="bg-lightgreen">
-                <a href="#"><img src="{{ STATIC_URL }}img/placehold/50.gif" alt="" /></a>
-                <a href="#">JohnDoe</a> Lorem ipsum dolor sit amet,consectetuer adipiscing elit. Suspendisse ut purus.
-            <span class="monitoring">
-                <i class="socialicon-ko"></i> · 14.06.2011 · <a href="#">Condividi</a> · <a href="#">Mi piace</a> · <i class="socialicon-add"></i> 4
-            </span>
-            </li>
-            <li class="bg-light">
-                <a href="#"><img src="{{ STATIC_URL }}img/placehold/50.gif" alt="" /></a>
-                <a href="#">JohnDoe</a> Lorem ipsum dolor sit amet,consectetuer adipiscing elit. Suspendisse ut purus.
-            <span class="monitoring">
-                <i class="socialicon-ko"></i> · 14.06.2011 · <a href="#">Condividi</a> · <a href="#">Mi piace</a> · <i class="socialicon-add"></i> 4
-            </span>
-            </li>
-            <li class="bg-light">
-                <form action="#" class="form-inline">
-                    <i class="socialicon-ok"></i><i class="socialicon-ko"></i><i class="socialicon-five"></i>
-                    <input type="text" placeholder="Scrivi un commento..." />
-                </form>
-            </li>
-        </ul>
-        <p class="bg-dark">Leggi tutti (Cronologia) <i class="icon-chevron-down"></i></p>
-
-    </section>
-
-
-    <h2>Ultime sul Voto <img src="{{ STATIC_URL }}img/feed-icon-14x14.png" alt="" /></h2> 
-    <ul class="feed-list">
-        <li><a href="#">Mario Rossi ha commentato il voto</a></li>
-        <li><a href="#">Il voto è inserito nell'ordine del giorno N° 13516</a></li>
-        <li><a href="#">Barcaiuolo, Pellacani, Bellei, Morandi, Santoro (PdL) hanno presentato la mozione...</a></li>
+  <section>
+    <h3>Commenti (20)</h3>
+    <ul class="comments-list">
+      <li>
+        <a href="#"><img src="{{ STATIC_URL }}img/placehold/50.gif" /></a>
+        <div>
+          <p>
+            <a href="#">User</a>
+            Lorem ipsum dolor sit amet,consectetuer adipiscing elit. Suspendisse ut purus.
+          </p>
+          <i class="hand-ok hand-active"></i> &middot; 05 Feb 2012  &middot; <a href="#">Mi piace</a> <i class="hand-like"></i> 10
+        </div>
+      </li>
+      <li class="bg-highlight">
+        <a href="#"><img src="{{ STATIC_URL }}img/placehold/50.gif" /></a>
+        <div>
+          <p>
+            <a href="#">User</a>
+            Lorem ipsum dolor sit amet,consectetuer adipiscing elit. Suspendisse ut purus.
+          </p>
+          <i class="hand-ok hand-active"></i> &middot; 06 Feb 2012  &middot; <a href="#">Mi piace</a> <i class="hand-like"></i> 10
+        </div>
+      </li>
+      <li>
+        <a href="#"><img src="{{ STATIC_URL }}img/placehold/50.gif" /></a>
+        <div>
+          <p>
+            <a href="#">User</a>
+            Lorem ipsum dolor sit amet,consectetuer adipiscing elit. Suspendisse ut purus.
+          </p>
+          <i class="hand-ok hand-active"></i> &middot; 07 Feb 2012  &middot; <a href="#">Non mi piace più</a> <i class="hand-like"></i> 10
+        </div>
+      </li>
     </ul>
-    <p class="bg-dark"><a href="#">Leggi tutte <i class="icon-chevron-down"></i></a></p>
+
+    {% if request.user.is_authenticated %}
+      <form id="comment-form" action="#" method="post" class="form-inline box">
+        <p>
+          <textarea name="" class="input-expanded" data-plugin="autogrow" placeholder="Inserisci un commento" id="comment-form-text" rows="1"></textarea>
+        </p>
+        <button type="submit" class="btn btn-mini pull-right" id="comment-form-submit">{% trans 'Post' %} </button>
+        <p>
+          <label>Scegli la posizione</label>
+        </p>
+      </form>
+    {% endif %}
+
+    <p class="box">
+      <a href="#">Leggi tutti</a> <i class="icon-play-down"></i>
+    </p>
+  </section>
+
+  <hr>
+
+  <section>
+    <h3>Ultime sul Voto <img src="{{ STATIC_URL }}img/feed-icon-14x14.png" alt="" /></h3>
+
+    <ul class="list-simple">
+      <li>01.01.2012 - Mario Rossi ha commentato il voto</li>
+      <li>01.01.2012 - Mario Rossi ha commentato il voto</li>
+      <li>01.01.2012 - Mario Rossi ha commentato il voto</li>
+    </ul>
+
+    <p class="box">
+      <a href="#">Leggi tutti</a> <i class="icon-play-down"></i>
+    </p>
+  </section>
 {% endblock sidebar %}

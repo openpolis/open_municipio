@@ -32,10 +32,6 @@ em {
 
 
 
-    <form method="get" action="{% url om_act_search %}" class="well form-search">
-        <input type="text" class="input-medium search-query" name="{{ form.q.html_name }}" value="{% if form.q.value %}{{ form.q.value }}{% endif %}" placeholder="Testo della ricerca" />
-        <button type="submit" class="btn">Cerca</button>
-    </form>
     {% if n_results %}
 
         {% if page.has_previous or page.has_next %}
@@ -63,31 +59,31 @@ em {
         {% endif %}
 
         <section>
-            <h3>{% if not query %}Tutti i {% endif %} {{ n_results }} documenti</h3>
+          <h3>{% if not query %}Tutti i {% endif %} {{ n_results }} documenti</h3>
 
-            <table class="data">
-                <tbody>
-                {% for result in page.object_list %}
-                    <tr>
-                        <td>{{ result.pub_date|circled:"full" }}</td>
-                        <td>
-                            <span class="label">{{ result.act_type }}</span>
-                            <a href="{{ result.url }}">{{ result.title }}</a><br/>
-                            {{ result.highlighted.text.0|safe }}<br/>
-                            {% if result.categories %}
-                                <strong>Categorie</strong>: {{ result.categories|join:", " }}<br/>
-                            {% endif %}
-                            {% if result.tags %}
-                                <strong>Tag</strong>: {{ result.tags|join:", " }}<br/>
-                            {% endif %}
-                            <strong>Score:</strong> {{ result.score }}
-                        </td>
-                    </tr>
-                {% empty %}
-                    <p>Nessun risultato trovato.</p>
-                {% endfor %}
-                </tbody>
-            </table>
+          <table class="search-results">
+            <tbody>
+            {% for result in page.object_list %}
+            <tr>
+              <td>{{ result.pub_date|circled:"full,dark" }}</td>
+              <td>
+                <a href="{{ result.url }}">{{ result.title }}</a>
+                <br/><strong>{{ result.act_type }}</strong>
+                {% comment %}{{ result.highlighted.text.0|safe }}<br/>{% endcomment %}
+                {% if result.categories %}
+                  <br/>Categorie: {% for cat in result.categories %}<a href="{{ cat.get_absolute_url }}">{{ cat }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}
+                {% endif %}
+                {% if result.tags %}
+                  <br/>Tag: {% for tag in result.tags %}<a href="{{ tag.get_absolute_url }}">{{ tag }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}
+                {% endif %}
+                <!-- <strong>Score:</strong> {{ result.score }} -->
+              </td>
+            </tr>
+            {% empty %}
+                <p>Nessun risultato trovato.</p>
+            {% endfor %}
+            </tbody>
+          </table>
         </section>
 
         {% if page.has_previous or page.has_next %}
@@ -121,6 +117,12 @@ em {
 {% endblock %}
 
 {% block sidebar %}
+
+  <h4>Cerca negli atti</h4>
+  <form method="get" action="{% url om_act_search %}" class="form-search">
+    <input type="text" class="input-medium search-query" name="{{ form.q.html_name }}" value="{% if form.q.value %}{{ form.q.value }}{% endif %}" placeholder="Testo della ricerca" />
+    <button type="submit" class="btn">Cerca</button>
+  </form>
 
     {% if n_results %}
         <!-- Begin faceting. -->

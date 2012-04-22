@@ -12,7 +12,6 @@
 {% endblock %}
 
 {% block content %}
-    <h1>Cerca la votazione</h1>
 
     {% if selected_facets %}
         <ul class="breadcrumb">
@@ -30,11 +29,6 @@
     {% endif %}
 
 
-
-    <form method="get" action="{% url om_votation_search %}" class="well form-search">
-        <input type="text" class="input-medium search-query" name="{{ form.q.html_name }}" value="{% if form.q.value %}{{ form.q.value }}{% endif %}" placeholder="Testo della ricerca" />
-        <button type="submit" class="btn">Cerca</button>
-    </form>
     {% if n_results %}
 
         {% if page.has_previous or page.has_next %}
@@ -58,8 +52,13 @@
         {% endif %}
 
         <section>
+          <p>Puoi trovare la votazione che ti interessa scorrendo la lista delle ultime pubblicate, qui sotto.
+            Puoi perfezionare la ricerca usando i filtri nella colonna qui a destra. Oppure puoi usare il form di
+            ricerca con una parola che pensi sia contenuta nella votazione o nell'atto che la riguarda,
+            in cima alla colonna qui a destra</p>
+
             <h3>{% if not query %}Tutte le {% endif %} {{ n_results }} votazioni</h3>
-            <table class="data">
+            <table class="search-results">
                 <tbody>
                 {% for result in page.object_list %}
                     <tr>
@@ -117,6 +116,12 @@
 {% endblock %}
 
 {% block sidebar %}
+
+  <h4>Cerca nelle votazioni</h4>
+  <form method="get" action="{% url om_votation_search %}" class="form-search">
+    <input type="text" class="input-medium search-query" name="{{ form.q.html_name }}" value="{% if form.q.value %}{{ form.q.value }}{% endif %}" placeholder="Testo della ricerca" />
+    <button type="submit" class="btn">Cerca</button>
+  </form>
 
     {% if n_results %}
         <!-- Begin faceting. -->
