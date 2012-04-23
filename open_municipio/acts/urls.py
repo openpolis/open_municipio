@@ -8,7 +8,7 @@ from open_municipio.acts.models import Act
 
 from open_municipio.acts.views import (ActSearchView, AgendaDetailView,
                                        DeliberationDetailView, InterpellationDetailView,
-                                       InterrogationDetailView, MotionDetailView, ActDescriptionView,
+                                       InterrogationDetailView, MotionDetailView,
                                        ActTransitionAddView, ActTransitionRemoveView, ActTagEditorView, ActLiveEditView)
 
 from open_municipio.locations.views import ActTagByLocationView
@@ -25,7 +25,7 @@ act_dict = {
 sqs = SearchQuerySet().filter(django_ct='acts.act').\
     facet('act_type').facet('is_key').facet('initiative').\
     facet('organ').\
-    facet('categories').facet('tags').\
+    facet('categories').\
     query_facet('pub_date', ActSearchView.THREEDAYS).\
     query_facet('pub_date', ActSearchView.ONEMONTH).\
     query_facet('pub_date', ActSearchView.ONEYEAR).\
@@ -68,7 +68,7 @@ urlpatterns += patterns('',
 
 ## Act's fields update
 urlpatterns += patterns('',
-    url(r'^(?P<pk>\d+)/description/update/$', ActDescriptionView.as_view(), name='om_act_description_update'),
+    url(r'^(?P<pk>\d+)/description/update/$', ActLiveEditView.as_view(), name='om_act_description_update'),
     url(r'^(?P<pk>\d+)/title/update/$', ActLiveEditView.as_view(), name='om_act_title_update'),
 )
 

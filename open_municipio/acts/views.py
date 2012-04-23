@@ -6,10 +6,10 @@ from django.views.generic.edit import FormView
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
 
-from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.decorators import user_passes_test, login_required
 
 from open_municipio.acts.models import Act, Agenda, Deliberation, Interpellation, Interrogation, Motion, Transition
-from open_municipio.acts.forms import ActDescriptionForm, ActTransitionForm, ActFinalTransitionForm
+from open_municipio.acts.forms import ActDescriptionForm, ActTransitionForm, ActFinalTransitionForm, ActTitleForm
 
 from open_municipio.monitoring.forms import MonitoringForm
 
@@ -64,7 +64,6 @@ class ActSearchView(ExtendedFacetedSearchView):
         return extra
 
 
-from django.views.generic import View
 
 from django.http import HttpResponse
 
@@ -82,54 +81,44 @@ class ActListView(ListView):
 
 
 class ActLiveEditView(FormView):
-    @method_decorator(user_passes_test(lambda u: u.is_staff))
     def dispatch(self, *args, **kwargs):
         return super(ActLiveEditView, self).dispatch(*args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        act = get_object_or_404(Act, pk=self.kwargs.get('pk'))
-
-        act.title = request.POST.get('act_title','')
-        act.save()
-
         response_data = {}
-        response_data['text'] = act.title
+        try:
+            if not self.request.user.is_authenticated() or not self.kwargs.get('pk') == request.POST.get('id'):
+                raise Exception('NOT_ALLOWED1')
+
+            target_act = Act.objects.get(pk=self.kwargs.get('pk'))
+            target_act_field = self.request.POST.get('act_field')
+
+            if target_act_field == 'title':
+                if not request.user.has_perm('acts.change_act'):
+                    raise Exception('NOT_ALLOWED2')
+                form = ActTitleForm(self.request.POST, instance=target_act)
+
+            elif target_act_field == 'description':
+                if not (self.request.user.get_profile().person and\
+                   self.request.user.get_profile().person in [p.person for p in target_act.presenters]):
+                    raise Exception('NOT_ALLOWED3')
+                form = ActDescriptionForm(self.request.POST, instance=target_act)
+
+            else:
+                raise Exception('INVALID_FIELD')
+
+            if not form.is_valid():
+                raise Exception( form.errors )
+
+            form.save()
+            response_data['text'] = form.cleaned_data[ target_act_field ]
+
+        except Act.DoesNotExist:
+            response_data['error'] = 'ACT_NOT_FOUND'
+        except Exception as e:
+            response_data['error'] = e.args[0]
 
         return HttpResponse(json.dumps(response_data), mimetype="application/json")
-
-
-class ActDescriptionView(FormView):
-    form_class = ActDescriptionForm
-
-    @method_decorator(user_passes_test(lambda u: u.is_staff))
-    def dispatch(self, *args, **kwargs):
-        return super(ActDescriptionView, self).dispatch(*args, **kwargs)
-
-    def form_valid(self, form):
-        """
-        TODO: check if user can edit this Act Description
-        instead of saving the form, just extract the act from the ID
-        and change its description
-        """
-        act = Act.objects.select_subclasses().get(pk=form.cleaned_data['id'])
-        description = form.cleaned_data['description']
-        act.description = description
-        act.save()
-        return HttpResponseRedirect(self.get_success_url())
-
-    def form_invalid(self, form=None):
-        msg = "It appears that the act's description form has been tampered with !"
-        return HttpResponseBadRequest(msg)
-
-    def get_success_url(self):
-        # FIXME: redirects shouldn't rely on the ``Referer`` header,
-        # since it might be missing from the HTTP request,
-        # depending on client's configuration.
-        return self.request.META['HTTP_REFERER']
-
-    def get(self, *args, **kwargs):
-        msg = "This view can be accessed only via POST"
-        return HttpResponseNotAllowed(msg)
 
 
 class ActDetailView(DetailView):
@@ -148,8 +137,15 @@ class ActDetailView(DetailView):
         extra_context = getattr(self, 'get_related_%(tab)s' % {'tab': self.tab})()
         if extra_context:
             context.update(extra_context)
+
+        if self.request.user.has_perm('acts.change_act'):
+            # add a form for editing title of act
+            context['title_form'] = ActTitleForm(initial = {
+                'id': act.pk,
+                'title': act.title,
+                })
  
-        if self.request.user.is_staff:
+        if self.request.user.has_perm('locations.change_taggedactbylocation'):
             # add a form for classifying an act using locations
             context['location_form'] = ActLocationsAddForm(initial = {
                 'act': act,
@@ -162,7 +158,7 @@ class ActDetailView(DetailView):
             if self.request.user.is_authenticated() and\
                self.request.user.get_profile().person and \
                self.request.user.get_profile().person in signers:
-                context['description_form'] = ActDescriptionForm(data = {
+                context['description_form'] = ActDescriptionForm(initial = {
                     'id': act.pk,
                     'description': act.description,
                 })
@@ -197,14 +193,14 @@ class ActDetailView(DetailView):
         # retrieve a dictionary with status and its transitions
         context['transition_groups'] = act.get_transitions_groups()
 
-        context['transition_forms'] = {}
         # some user can set transitions
         if self.request.user.has_perm('acts.change_transition') : #and context['status_list']
+            context['transition_forms'] = {}
             if len(context['transition_groups']) == 5:
-                context['transition_to_council_form'] = ActTransitionForm(initial={'act': act, 'final_status': 'COUNCIL' },prefix="council")
-                context['transition_to_committee_form'] = ActTransitionForm(initial={'act': act, 'final_status': 'COMMITTEE' },prefix="committee")
-            context['transition_to_final_form'] = ActFinalTransitionForm(initial={'act': act },prefix="final")
-            context['transition_to_final_form'].fields['final_status'].widget.choices = act.FINAL_STATUSES
+                context['transition_forms']['transition_to_council_form'] = ActTransitionForm(initial={'act': act, 'final_status': 'COUNCIL' },prefix="council")
+                context['transition_forms']['transition_to_committee_form'] = ActTransitionForm(initial={'act': act, 'final_status': 'COMMITTEE' },prefix="committee")
+            context['transition_forms']['transition_to_final_form'] = ActFinalTransitionForm(initial={'act': act },prefix="final")
+            context['transition_forms']['transition_to_final_form'].fields['final_status'].widget.choices = act.FINAL_STATUSES
 
         return context
     

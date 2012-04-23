@@ -13,10 +13,6 @@ body {
     position: relative;
   }
   #sidebar {
-    // default style for circle
-    .circle {
-      background-color: @grayLighter; color: @textColor;
-    }
     // default for lists
     ul.list-simple {
       list-style: none;
@@ -37,6 +33,20 @@ body {
   }
   #main.two_columns {
     .two_columns_background(66%, transparent, @semiWhite );
+  }
+  .navbar.navbar-fixed-bottom form.navbar-search {
+    input { height: 13px; }
+  }
+
+  // Header colouring
+  &.politician #wrapper > header {
+    background-color: #72c056;
+  }
+  &.tags #wrapper > header {
+    background-color: #f4c242;
+  }
+  &.citizen #wrapper > header {
+    background-color: #dc4630;
   }
 }
 
@@ -171,8 +181,8 @@ body.homepage {
   line-height: 34px;
 }
 
-// Styles sidebar comments list
-ul.comments-list {
+/* Generic list of person, with pic, name and short description */
+ul.comments-list, ul.people-list {
   margin: 10px 0;
   list-style: none;
   li {
@@ -187,6 +197,7 @@ ul.comments-list {
     // comment info
     > div {
       margin-left: 60px;
+      .monitoring { color: @grayLight; }
     }
   }
 }
@@ -195,13 +206,54 @@ ul.comments-list {
 /*          Act page            */
 /********************************/
 
+table#status-table {
 
-table#acttable {
   .table;
   .table-bordered;
+
+  // override default hover highlight effect
+  tbody tr:hover td,
+  tbody tr:hover th {
+    background-color: transparent;
+  }
+
+  // columns background
+  col {
+    #gradient > .vertical( @grayLighter, @white );
+    &.current { #gradient > .vertical( #4788c2, @white ) }
+    &.past { #gradient > .vertical( #a3c4e1, @white ) }
+  }
+
+  thead th {
+    text-align: center;
+    vertical-align: middle;
+    padding:5px 0 0 0;
+
+    > div {
+      position:relative;
+      min-height: 40px;
+      padding: 0 15px;
+      .arrow {
+        position: absolute;
+        top:10px; right:-10px;
+        width: 10px;
+        height: 18px;
+        z-index: 999;
+        background-image: url(../img/act-arrow.png);
+      }
+    }
+
+    &.current .arrow { background-image: url(../img/act-arrow-approved.png); }
+    &.past .arrow { background-image: url(../img/act-arrow-current.png); }
+
+  }
+
   tbody {
+
     font-size: 12px;
+
     form { display: inline; float: right; }
+
     ul {
       margin-left: 0;
       list-style: none;
@@ -209,42 +261,23 @@ table#acttable {
       li:first-child { border-top: 0; }
     }
   }
-  tfoot {}
-  thead {
-    th {
-      padding: 0;
-      background-color: @gray;
-      vertical-align: top;
-      text-align: center;
-      border-right: 1px solid @white;
-      .arrow {
-        position: absolute;
-        top:0; right:-18px;
-        width: 18px;
-        height: 50px;
-        z-index: 999;
-        background-image: url(../img/act-arrow.png);
-      }
 
-      &:first-child > div {
-        padding-left: 8px;
-      }
+}
 
-      &.current {
-        background-color: @greenLight;
+table.search-results {
+  .table;
 
-        .arrow { background-image: url(../img/act-arrow-approved.png); }
-      }
+  td { vertical-align: middle; }
 
-      &.past {
-        background-color: @greenLighter;
-        .arrow { background-image: url(../img/act-arrow-current.png); }
-      }
-
-      > div { position: relative; padding: 8px 8px 8px 22px; min-height: 50px; }
-    }
-
+  // override default hover highlight effect
+  tbody tr:hover td,
+  tbody tr:hover th {
+    background-color: transparent;
   }
+}
+
+table.stats {
+  th { text-align: left; }
 }
 
 // container for peoples with image left-floated
@@ -300,6 +333,17 @@ table#acttable {
   background-image: -o-linear-gradient( left, @leftcolor, @leftcolor @percent, @rightcolor @percent, @rightcolor 100% );
 }
 
+//-------------- Quoted     ---------------
+.quoted {
+  &:before {
+    content: '\201C';
+  }
+
+  &:after {
+    content: '\201D';
+  }
+}
+
 //-------------- Alignments ---------------
 .text-left { text-align: left; }
 .text-center { text-align: center; }
@@ -340,11 +384,13 @@ table#acttable {
   line-height: @size;
 }
 .circle {
-  .box( @semiWhite, @black, 36px, 18px );
+  .box( @grayLighter, @black, 36px, 18px );
   .border-radius(36px);
   line-height: 36px;
   &.circle-colored { background-color: @blueDark; color: @semiWhite; }
-  &.circle-dark { background-color: @grayLighter; color: @textColor; }
+  &.circle-dark { background-color: @grayLight; color: @textColor; }
+  &.circle-green { background-color: @greenDark; color: @semiWhite; }
+  &.circle-red { background-color: @red; color: @semiWhite; }
 }
 .circle-date {
   .circle;
@@ -409,21 +455,6 @@ table#acttable {
 .border-top { border-top: 1px dashed @grayLight; }
 .border-bottom { border-bottom: 1px dashed @grayLight; }
 
-
-/* Generic list of person, with pic, name and short description */
-ul.people-list {
-  margin-left: 5px; margin-right: 5px;
-  list-style: none;
-  li {
-    margin-top: 5px;
-    .clearfix;
-    padding-top: 3px; padding-bottom: 3px;
-    line-height: 16px;
-    img { .pull-left; margin-right:5px; margin-left: 5px; border:0; }
-    .monitoring { display:block; padding: 0 10px; }
-    form { margin: 0; }
-  }
-}
 
 ul.feed-list {
   margin: 0;

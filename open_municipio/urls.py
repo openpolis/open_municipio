@@ -45,6 +45,7 @@ urlpatterns = patterns('',
     (r'^categories/', include('open_municipio.taxonomy.urls.categories')),
     (r'^tags/', include('open_municipio.taxonomy.urls.tags')),
     (r'^webservices/', include('open_municipio.web_services.urls')),
+    (r'^locations/', include('open_municipio.locations.urls')),
 )
 
 # inline editing

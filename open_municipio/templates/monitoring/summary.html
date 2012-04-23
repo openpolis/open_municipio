@@ -2,7 +2,7 @@
 <table id="monitoring-table">
   <tr>
     <td>
-      {{ object.monitoring_users_count|circled:"dark" }}
+      {{ object.monitoring_users_count|circled }}
     </td>
     <td>
       {% if user.is_authenticated and not user.get_profile.person %}
@@ -28,7 +28,7 @@
   {% if show_politicians %}
     <tr>
       <td>
-        {{ object.monitoring_politicians|length|circled:"dark" }}
+        {{ object.monitoring_politicians|length|circled }}
       </td>
       <td>
         {% if user.is_authenticated and user.get_profile.person %}
