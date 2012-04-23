@@ -205,7 +205,7 @@
                 {% endif %} 
                 </td>
 {% votes_for_object act as act_num_votes %}
-                <td class="text-center">{{ act_num_votes.upvotes|circled }}{{ act_num_votes.downvotes|circled }}</td>
+                <td class="text-center">{{ act_num_votes.upvotes|circled:"voteok" }}{{ act_num_votes.downvotes|circled:"voteko" }}</td>
 {% get_comment_count for act as comment_count %}
                 <td class="text-center"><a href="{{ act.get_absolute_url }}"><strong>{{ comment_count }}</strong></a></td>
             </tr>
