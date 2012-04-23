@@ -57,4 +57,14 @@
 
     }
 
+    /* AUTOGROW DATA-API
+     * =============== */
+
+    $(function () {
+        $('form').one('focus.autogrow.data-api', '[data-plugin^=autogrow]', function ( e ) {
+            var $el = $(e.target)
+            $el.autogrow()
+        })
+    })
+
 })(jQuery);

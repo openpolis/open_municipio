@@ -73,11 +73,25 @@
     <div class="navbar">
       <div class="navbar-inner">
         <nav class="container-fluid">
-            <ul class="nav">
-                <li {% block people_class %}{% endblock %}><a href="{% url om_politician_list %}">Politici</a></li>
-                <li {% block tags_class %}{% endblock %}><a href="{% url om_topic_list %}">Argomenti</a></li>
-                <li {% block users_class %}{% endblock %}><a href="/users/">Cittadini</a></li>
-            </ul>
+          <ul class="nav">
+            <li {% block people_class %}{% endblock %}><a href="{% url om_politician_list %}">Politici</a></li>
+            <li {% block tags_class %}{% endblock %}><a href="{% url om_topic_list %}">Argomenti</a></li>
+            <li {% block users_class %}{% endblock %}><a href="/users/">Cittadini</a></li>
+          </ul>
+          <ul class="nav pull-right">
+            <li class="dropdown">
+              <a href="#"
+                 class="dropdown-toggle"
+                 data-toggle="dropdown">
+                Uso del sito
+                <b class="caret"></b>
+              </a>
+              <ul class="dropdown-menu">
+                <li><a href="#">FAQ</a></li>
+                <li><a href="#">Help</a></li>
+              </ul>
+            </li>
+          </ul>
         </nav>
       </div>
     </div>
@@ -112,6 +126,9 @@
           </li>
           <!-- TODO <li><a href="#">Società partecipate</a></li> -->
         </ul>
+        <form class="navbar-search pull-right" action="{{ haystack_search }}">
+          <input type="text" class="search-query" placeholder="Cerca nel sito">
+        </form>
       </nav>
     </div>
   </footer>

@@ -2,12 +2,13 @@ from django import forms
 
 from open_municipio.acts.models import Act, Transition
 
+class ActTitleForm(forms.ModelForm):
+    class Meta:
+        model = Act
+        fields = ('id', 'title',)
 
 
 class ActDescriptionForm(forms.ModelForm):
-    description = forms.Textarea()
-    id = forms.IntegerField(widget=forms.HiddenInput)
-
     class Meta:
         model = Act
         fields = ('id', 'description',)
