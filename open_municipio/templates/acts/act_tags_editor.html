@@ -1,6 +1,3 @@
-    <a href="#" id="cteditor-launcher" class="hide pull-right label label-info">
-        <i class="icon-edit icon-white"></i> Edit
-    </a>
     <div id="cteditor" class="hide">
 
         <div class="modal" id="modal-container">
@@ -11,20 +8,21 @@
             </div>
             <form action="{% url om_act_topics_update pk=act.act_ptr.pk %}" method="post" class="form-horizontal">{% csrf_token %}
                 <div class="modal-body">
-                    {% for category in act.categories %}
+                  {% regroup act.topics by category as categorized_topics %}
+                  {% for grouped_tags in categorized_topics %}
                     <fieldset>
                         <div class="control-group">
-                            <label class="control-label" for="category_{{ category.id }}">
+                            <label class="control-label" for="category_{{ grouped_tags.grouper.id }}">
                                 <a href="#"><i class="icon-remove"></i></a> 
-                                  <span class="label">{{ category.name }}</span>
+                                  <span class="label">{{ grouped_tags.grouper.name }}</span>
                             </label>
 
                             <div class="controls">
-                                <select name="categories[{{ category.id }}]" id="category_{{ category.id }}"
+                                <select name="categories[{{ grouped_tags.grouper.id }}]" id="category_{{ grouped_tags.grouper.id }}"
                                         multiple="multiple">
                                     {% for tag in topics.tags %}
-                                        <option value="{{ tag.id }}"{% if tag in act.tags %}
-                                                selected="selected"{% endif %}>{{ tag.name }}</option>
+                                        <option value="{{ tag.id }}"{% for topic in grouped_tags.list %}{% if tag == topic.tag %}
+                                                selected="selected"{% endif %}{% endfor %}>{{ tag.name }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -112,7 +110,9 @@
             'css/textboxlist.css',
             'css/ui-custom-theme/jquery-ui-1.8.16.custom.css'], function() {
 
-            $('#cteditor-launcher').click(function(event){
+            var cteditor_launcher = $('{{ launcher_id|default:"#cteditor_launcher" }}')
+
+            $(cteditor_launcher).click(function(event){
                 event.preventDefault();
 
                 // express a single node as a jQuery object
@@ -187,9 +187,9 @@
                     // remove from selectable
                     fieldset.data('option', new_cat.remove());
                 });
-            }).parent().hover(
+            })/*.parent().hover(
                 function() { $('#cteditor-launcher', this).fadeIn(); },     // in
                 function() { $('#cteditor-launcher', this).fadeOut(); }     // out
-            );
+            );*/
         });
     </script>

@@ -27,6 +27,7 @@
   <script src="{{ STATIC_URL }}js/ajax_csrf.js" type="text/javascript" charset="utf-8"></script>
   <script src="{{ STATIC_URL }}js/jquery.jeditable.js" stype="text/javascript"></script>
   <script src="{{ STATIC_URL }}js/jquery.submitlink.js" stype="text/javascript"></script>
+  <script src="{{ STATIC_URL }}js/jquery.autogrow.js" stype="text/javascript"></script>
 {% endblock head_js_includes %}
 
 
@@ -51,19 +52,12 @@
     </h2>
   </hgroup>
 
-  {% if description_form %}
-    <form id="description_form" class="well form-horizontal" action="{% url om_act_description_update pk=act.pk %}" method="post">
-      {% csrf_token %}
-      <textarea name="{{ description_form.description.html_name }}" id="{{ description_form.description.html_name }}_id" cols="30"
-                rows="3">{{ description_form.description.value }}</textarea>
-      {% for hidden in description_form.hidden_fields %}
-          {{ hidden }}
-      {% endfor %}
-      <button type="submit" class="btn btn-info btn-small">Invia</button>
-    </form>
-  {%  else %}
-    <p>{{ act.description|safe }}</p>
-  {% endif %}
+  <div>
+    <p{% if act.description|length > 0 %} class="quoted"{% endif %} id="act_description">{{ act.description|safe }}</p>
+    {% for descriptor in act.descriptors %}
+      <i class="icon-ok"></i> <a href="{{ descriptor.get_absolute_url }}">{{ descriptor }}</a>
+    {% endfor %}
+  </div>
 
   <div class="nav-tabs-container">
     <ul class="nav nav-tabs">
@@ -83,34 +77,51 @@
 
 {% block sidebar %}
 
-  <section>
-    {% if perms.taxonomy.change_taggedact %}
-    {% include 'acts/act_tags_editor.html' %}
-    {% endif %}
+  {% if topics %}
+  {% include 'acts/act_tags_editor.html' with launcher_id="#cteditor-launcher" %}
+  {% endif %}
 
-    <h3>Argomenti dell'atto</h3>
+  <section>
+    <h3>Argomenti dell'atto
+    {% if topics %}
+      <a href="#" id="cteditor-launcher" class="label label-info">
+        <i class="icon-edit icon-white"></i> Edit
+      </a>
+    {% endif %}
+    </h3>
 
     <dl class="taxonomy-cloud">
-      {% for category in act.categories %}
-        <dt><a href="{{ category.get_absolute_url }}">{{ category.name }}</a></dt>
-        {% for tag in category.tags %}
-          {% if tag in act.tags %}
-          <dd><a href="{{ tag.get_absolute_url }}">{{ tag }}</a></dd>
-          {% endif %}
+      {% regroup act.topics by category as categorized_topics %}
+      {% for grouped_tags in categorized_topics %}
+        <dt>
+          <a href="{{ grouped_tags.grouper.get_absolute_url }}">{{ grouped_tags.grouper.name }}</a>
+          <span>{{ grouped_tags.grouper.count }}</span>
+        </dt>
+        {% for topic in grouped_tags.list %}
+        {% if topic.tag %}
+        <dd><a href="{{ topic.tag.get_absolute_url }}">{{ topic.tag }}</a> <span>{{ topic.tag.count }}</span></dd>
+        {% endif %}
         {% endfor %}
       {% endfor %}
 
       {% for location in act.locations %}
         {% if forloop.first %}
-        <dt>Territorio</dt>
+          {% if location_form %}
+          <dt><i class="icon-edit"></i> <a href="#" id="location_form_link">Territorio</a></dt>
+          {% else %}
+          <dt>Territorio</dt>
+          {% endif %}
         {% endif %}
         <dd><a href="{{ location.get_absolute_url }}">{{ location }}</a></dd>
+      {% empty %}
+        {% if location_form %}
+          <dt><i class="icon-edit"></i> <a href="#" id="location_form_link">Territorio</a></dt>
+        {% endif %}
       {% endfor %}
     </dl>
 
     {% if location_form %}
-    <a href="#" class="btn btn-mini"><i class="icon-edit"></i> Modifica Territori</a>
-    <form id="location-form" class="form-inline" action="{% url om_act_locations_add pk=act.act_ptr.pk %}" method="post">
+    <form id="location-form" data-toggle="#location_form_link" class="form-inline" action="{% url om_act_locations_add pk=act.act_ptr.pk %}" method="post">
       {% csrf_token %}{% for hidden in location_form.hidden_fields %}{{ hidden }}{% endfor %}
       {{ location_form.locations }}
       <div class="form-actions text-center">
@@ -120,7 +131,7 @@
     <script type="text/javascript">
       $(document).ready(function(){
         var form = $('#location-form').hide();
-        form.prev('a').click(function(){
+        $( form.data('toggle') ).click(function(){
           $('#location-form').slideToggle();
           return false;
         });
@@ -198,7 +209,7 @@
       {% endfor %}
 
       <p>
-        <textarea name="{{ form.comment.html_name }}" class="input-expanded" placeholder="Inserisci un commento" id="comment-form-text" rows="1"></textarea>
+        <textarea name="{{ form.comment.html_name }}" class="input-expanded" data-plugin="autogrow" placeholder="Inserisci un commento" id="comment-form-text" rows="1"></textarea>
       </p>
 
       <button type="submit" class="btn btn-mini pull-right" id="comment-form-submit">{% trans 'Post' %} </button>
@@ -243,12 +254,12 @@
 
       $(document).ready(function(){
 
-        {% if request.user.get_profile.is_editor %}
+        {% if title_form %}
         // Edit Act Title in-place
         $('#act_title strong').editable('{% url om_act_title_update pk=act.id %}', {
-          name : 'act_title',
+          name : '{{ title_form.title.html_name }}',
           submitdata : function(value, settings) {
-            return { 'act_id': {{ act.pk }} };
+            return { 'id': {{ act.id }}, 'act_field': 'title' };
           },
           cssclass  : 'form-inline',
           submit    : '<button type="submit" class="btn">Salva</button>',
@@ -256,13 +267,37 @@
           tooltip   : 'Clicca per modificare...',
           style     : 'display: inline',
           //onblur     : 'ignore',
-          inputclass : 'input-xlarge',
+          inputclass : 'input-xxlarge',
           callback : function(value){
             value = JSON.parse(value)
             // TODO check if there's some errors
             $(this).text(value.text)
           }
+        });
+        {% endif %}
 
+        // ----------------------------
+
+        {% if description_form %}
+          // Edit Act Description in-place
+        $('#act_description').editable('{% url om_act_description_update pk=act.id %}', {
+          type: 'autogrow',
+          name : '{{ description_form.description.html_name }}',
+          submitdata : function(value, settings) {
+            return { 'id': {{ act.id }}, 'act_field': 'description' };
+          },
+          cssclass  : 'form-inline',
+          submit    : '<button type="submit" class="btn">Salva</button>',
+          indicator : '<img src="{{ STATIC_URL }}img/spinner.gif">',
+          tooltip   : 'Clicca per modificare...',
+          style     : 'display: inline',
+          //onblur     : 'ignore',
+          inputclass : 'input-xxlarge',
+          callback : function(value){
+            value = JSON.parse(value)
+            // TODO check if there's some errors
+            $(this).text(value.text)
+          }
         });
         {% endif %}
 
@@ -343,15 +378,6 @@
 
       });
 
-
-      include('js/jquery.autogrow.js', function() {
-
-        // textarea form
-        $('#comment-form-text').autogrow();
-
-        // politician form grow
-        $('#description_form textarea').autogrow();
-      });
     {% endif %}
 
   </script>

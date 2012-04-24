@@ -15,10 +15,10 @@ from model_utils.managers import InheritanceManager, QueryManager
 from model_utils.models import TimeStampedModel
 from model_utils.fields import StatusField
 
-from taggit.managers import TaggableManager
 from open_municipio.newscache.models import News
 
 from open_municipio.people.models import Institution, InstitutionCharge, Sitting, Person
+from open_municipio.taxonomy.managers import TopicableManager
 from open_municipio.taxonomy.models import Category, TaggedAct
 from open_municipio.locations.models import Location, TaggedActByLocation
 from open_municipio.monitoring.models import Monitoring, MonitorizedItem
@@ -65,7 +65,7 @@ class Act(TimeStampedModel, MonitorizedItem):
     # use this manager to retrieve only key acts
     featured = QueryManager(is_key=True).order_by('-presentation_date') 
     
-    tag_set = TaggableManager(through=TaggedAct, blank=True)
+    tag_set = TopicableManager(through=TaggedAct, blank=True)
 
 
     # manager to handle the list of news that have the act as related object
@@ -136,11 +136,17 @@ class Act(TimeStampedModel, MonitorizedItem):
         
     @property
     def tags(self):
+        #return set([ topic.tag for topic in self.topics ])
         return self.tag_set.all()
     
     @property
     def categories(self):
-        return self.category_set.all()
+        return list( set([ topic.category for topic in self.topics]) )
+        #return self.category_set.all()
+
+    @property
+    def topics(self):
+        return self.tag_set.topics()
     
     @property
     def locations(self):
@@ -195,7 +201,7 @@ class Act(TimeStampedModel, MonitorizedItem):
 
     def is_final_status(self, status=None):
         this = self.downcast()
-        if status in None:
+        if status is None:
             status = this.status
 
         if not hasattr(this, 'FINAL_STATUSES'):

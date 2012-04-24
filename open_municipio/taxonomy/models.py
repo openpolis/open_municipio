@@ -1,6 +1,8 @@
 from django.db import models
 from django.db.models import permalink
-from django.utils.translation import ugettext_lazy as _
+from django.db.models.signals import post_save, post_delete
+from django.dispatch.dispatcher import receiver
+from django.utils.translation import ugettext_lazy as _, ugettext
 
 from django.contrib.auth.models import User
 from django.contrib.contenttypes import generic
@@ -12,6 +14,10 @@ from open_municipio.om_utils.models import SlugModel
 
 
 class Tag(TagBase):
+
+    # cached value of how many act uses it
+    count = models.IntegerField(default=0)
+
     class Meta:
         verbose_name = _("Tag")
         verbose_name_plural = _("Tags")
@@ -39,9 +45,10 @@ class TaggedAct(ItemBase):
     .. _`custom version`: http://readthedocs.org/docs/django-taggit/en/latest/custom_tagging.html
     """
     content_object = models.ForeignKey('acts.Act')
-    tag = models.ForeignKey(Tag, related_name='tagged_acts')
+    tag = models.ForeignKey(Tag, related_name='tagged_acts', blank=True, null=True)
     tagger = models.ForeignKey(User, null=True, blank=True, editable=False)
-    tagging_time = models.DateTimeField(null=True, auto_now_add=True, editable=False)    
+    tagging_time = models.DateTimeField(null=True, auto_now_add=True, editable=False)
+    category = models.ForeignKey('Category')
                                        
     class Meta:
         verbose_name = _("tagged act")
@@ -57,6 +64,17 @@ class TaggedAct(ItemBase):
             '%s__content_object__isnull' % cls.tag_relname(): False
         }).distinct()
 
+    def __unicode__(self):
+        template = u"%(object)s tagged in %(category)s"
+        if self.tag is not None:
+            template += u" with %(tag)s"
+
+        return ugettext(template) % {
+            "object": self.content_object,
+            "tag": self.tag,
+            "category": self.category
+        }
+
 
 class Category(SlugModel):
     """
@@ -68,6 +86,8 @@ class Category(SlugModel):
     name = models.CharField(verbose_name=_('Name'), max_length=100)
     slug = models.SlugField(verbose_name=_('Slug'), blank=True, unique=True, max_length=100)
     tag_set = models.ManyToManyField(Tag, related_name='category_set', null=True, blank=True)
+    # cached value of how many act uses it
+    count = models.IntegerField(default=0)
   
     # manager to handle the list of monitoring having as content_object this instance
     monitoring_set = generic.GenericRelation(Monitoring, object_id_field='object_pk')
@@ -82,7 +102,7 @@ class Category(SlugModel):
     @permalink
     def get_absolute_url(self):
         return 'om_category_detail', (), { 'slug': self.slug }
-           
+
     @property
     def tags(self):
         return self.tag_set.all()
