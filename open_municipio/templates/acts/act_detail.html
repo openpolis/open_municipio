@@ -91,19 +91,23 @@
     </h3>
 
     <dl class="taxonomy-cloud">
-      {% for category in act.categories %}
-        <dt><a href="{{ category.get_absolute_url }}">{{ category.name }}</a></dt>
-        {% for tag in category.tags %}
-          {% if tag in act.tags %}
-          <dd><a href="{{ tag.get_absolute_url }}">{{ tag }}</a></dd>
-          {% endif %}
+      {% regroup act.topics by category as categorized_topics %}
+      {% for grouped_tags in categorized_topics %}
+        <dt>
+          <a href="{{ grouped_tags.grouper.get_absolute_url }}">{{ grouped_tags.grouper.name }}</a>
+          <span>{{ grouped_tags.grouper.count }}</span>
+        </dt>
+        {% for topic in grouped_tags.list %}
+        {% if topic.tag %}
+        <dd><a href="{{ topic.tag.get_absolute_url }}">{{ topic.tag }}</a> <span>{{ topic.tag.count }}</span></dd>
+        {% endif %}
         {% endfor %}
       {% endfor %}
 
       {% for location in act.locations %}
         {% if forloop.first %}
           {% if location_form %}
-          <dt><a href="#" id="location_form_link"><i class="icon-edit"></i> Territorio</a></dt>
+          <dt><i class="icon-edit"></i> <a href="#" id="location_form_link">Territorio</a></dt>
           {% else %}
           <dt>Territorio</dt>
           {% endif %}
@@ -111,7 +115,7 @@
         <dd><a href="{{ location.get_absolute_url }}">{{ location }}</a></dd>
       {% empty %}
         {% if location_form %}
-          <dt><a href="#" id="location_form_link"><i class="icon-edit"></i> Territorio</a></dt>
+          <dt><i class="icon-edit"></i> <a href="#" id="location_form_link">Territorio</a></dt>
         {% endif %}
       {% endfor %}
     </dl>
