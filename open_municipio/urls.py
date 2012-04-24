@@ -44,6 +44,7 @@ urlpatterns = patterns('',
     (r'^topics/', include('open_municipio.taxonomy.urls.topics')),
     (r'^categories/', include('open_municipio.taxonomy.urls.categories')),
     (r'^tags/', include('open_municipio.taxonomy.urls.tags')),
+    (r'^locations/', include('open_municipio.locations.urls')),
     (r'^webservices/', include('open_municipio.web_services.urls')),
 )
 
