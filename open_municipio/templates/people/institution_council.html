@@ -39,50 +39,51 @@
 
     <section>
         {% for group in groups %}
-        <div class="party-people">
-            <h2><img src="{{ STATIC_URL }}img/placehold/50.gif">{{ group.name }} ({{ group.acronym }})</h2>
-            <address>
-                {% for r in group.resources %}
-                    {% if r.resource_type == 'URL' %}
-                        {% if 'http://' not in r.value %}
-                            {{ r.description }}: <a href="http://{{ r.value }}">{{ r.value }}</a><br/>
-                        {%  else %}
-                            {{ r.description }}: <a href="{{ r.value }}">{{ r.value }}</a><br/>
-                        {% endif %}
-                    {% else %}
-                        {% if r.resource_type == 'EMAIL' %}
-                            <a href="mailto:{{ r.value }}">{{ r.value }}</a><br/>
-                        {%  else %}
-                            {{ r.value }}<br/>
-                        {% endif %}
-                    {% endif %}
-                {% endfor %}
-            </address>
+            {% if group.is_current %}
+                <div class="party-people">
+                    <h2><img src="{{ STATIC_URL }}img/placehold/50.gif">{{ group.name }} ({{ group.acronym }})</h2>
+                    <address>
+                        {% for r in group.resources %}
+                            {% if r.resource_type == 'URL' %}
+                                {% if 'http://' not in r.value %}
+                                    {{ r.description }}: <a href="http://{{ r.value }}">{{ r.value }}</a><br/>
+                                {%  else %}
+                                    {{ r.description }}: <a href="{{ r.value }}">{{ r.value }}</a><br/>
+                                {% endif %}
+                            {% else %}
+                                {% if r.resource_type == 'EMAIL' %}
+                                    <a href="mailto:{{ r.value }}">{{ r.value }}</a><br/>
+                                {%  else %}
+                                    {{ r.value }}<br/>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    </address>
 
-            <p>
-                <a href="{{ group.leader.charge.charge.get_absolute_url }}">
-                    <strong>{{ group.leader.charge.charge.person }}</strong>
-                </a><br />
-                {{ group.leader.get_charge_type_display }}
-            </p>
+                    <p>
+                        <a href="{{ group.leader.charge.charge.get_absolute_url }}">
+                            <strong>{{ group.leader.charge.charge.person }}</strong>
+                        </a><br />
+                        {{ group.leader.get_charge_type_display }}
+                    </p>
 
-            <p>
-                <a href="{{ group.deputy.charge.charge.get_absolute_url }}">
-                    <strong>{{ group.deputy.charge.charge.person }}</strong>
-                </a><br />
-                {{ group.deputy.get_charge_type_display }}
-            </p>
-            <ul class="list-floated">
-                {% for counselor in group.alpha_members %}
-
-                <li>
-                    <a href="{{ counselor.get_absolute_url }}">
-                        <strong>{{ counselor.person }}</strong>
-                    </a>
-                </li>
-                {% endfor %}
-            </ul>
-        </div>
+                    <p>
+                        <a href="{{ group.deputy.charge.charge.get_absolute_url }}">
+                            <strong>{{ group.deputy.charge.charge.person }}</strong>
+                        </a><br />
+                        {{ group.deputy.get_charge_type_display }}
+                    </p>
+                    <ul class="list-floated">
+                        {% for counselor in group.alpha_members %}
+                            <li>
+                                <a href="{{ counselor.get_absolute_url }}">
+                                    <strong>{{ counselor.person }}</strong>
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
         {% endfor %}
     </section>
     

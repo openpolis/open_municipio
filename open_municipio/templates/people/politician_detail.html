@@ -47,11 +47,11 @@
                             {% for c in current_charges %}
                                 {% if c.current_groupcharge %}
                                     <li>dal {{ c.current_groupcharge.start_date|date:"d.m.Y" }}
-                                        Gruppo <strong>{{ c.current_groupcharge.group }}</strong></li>
+                                        <strong>{{ c.current_groupcharge }}</strong></li>
                                 {% endif %}
                                 {% for gc in c.historical_groupcharges %}
                                     <li>dal {{ gc.start_date|date:"d.m.Y" }}
-                                        al {{ gc.end_date|date:"d.m.Y" }}: Gruppo {{ gc.group.acronym }}</li>
+                                        al {{ gc.end_date|date:"d.m.Y" }}: {{ gc }}</li>
                                 {% endfor %}
                             {% endfor %}
 
@@ -65,15 +65,6 @@
                             {% endfor %}
                         </ul>
                     </li>
-                    <li>
-                        <ul>
-                            <li>Vicepresidente Conorobus SpA</li>
-                            <li>Presidente Mario Rossi SpA</li>
-                            <li>(altri incarichi <i class="icon-chevron-down"></i>)</li>
-                        </ul>
-                    </li>
-                    <li>Pensione d'invalidità (TODO)</li>
-                    <li>Dichiarazione patrimoniale (TODO)<i class="icon-download-alt"></i></li>
                 </ul>
 
             </div>
