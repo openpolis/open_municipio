@@ -3,7 +3,7 @@
 
 {% block title %}| Dettaglio {{ votation }}{% endblock %}
 
-{% block content_header %}Votazion{% endblock %}
+{% block content_header %}Votazione{% endblock %}
 
 {% block head_css_includes %}
     {{ block.super }}
@@ -97,15 +97,15 @@
                                 <strong>{{ politician.full_name }}</strong> ({{ charge_vote.charge.council_group.acronym }})
                             </a>
                         </td>
-                        {% if charge_vote.vote = charge_vote.YES %}
+                        {% if charge_vote.vote = charge_vote.VOTES.yes %}
                         <td><span class="label label-success">Favorevole</span></td><td></td><td></td><td></td><td></td>
-                        {% else %}{% if charge_vote.vote = charge_vote.NO %}
+                        {% else %}{% if charge_vote.vote = charge_vote.VOTES.no %}
                         <td></td><td><span class="label label-important">Contrario</span></td><td></td><td></td><td></td>
-                        {% else %}{% if charge_vote.vote = charge_vote.ABSTAINED %}
+                        {% else %}{% if charge_vote.vote = charge_vote.VOTES.abstained %}
                         <td></td><td></td><td><span class="label">Astenuto</span></td><td></td><td></td>
-                        {% else %}{% if charge_vote.vote = charge_vote.MISSION %}
+                        {% else %}{% if charge_vote.vote = charge_vote.VOTES.mission %}
                         <td></td><td></td><td></td><td></td><td><span class="label label-info">In Missione</span></td>
-                        {% else %}{% if charge_vote.vote = charge_vote.ABSENT %}
+                        {% else %}{% if charge_vote.vote = charge_vote.VOTES.absent %}
                         <td></td><td></td><td></td><td><span class="label label-white">Assente</span></td><td></td>
                         {% endif %}{% endif %}{% endif %}{% endif %}{% endif %}
                     </tr>

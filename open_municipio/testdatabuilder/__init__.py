@@ -166,10 +166,10 @@ class RandomItemsFactory(object):
                 # choosing randomly from the flattened lists is almost equivalent
                 # to choosing with weighted probabilities
                 vw = list(itertools.chain.from_iterable([
-                    [0]*30,  # 30% NO
-                    [1]*60,  # 60% YES
-                    [2]*5,   #  5% ABSTAINED
-                    [4]*5    #  5% ABSENT
+                    [ChargeVote.VOTES.no]*30,  # 30% NO
+                    [ChargeVote.VOTES.yes]*60,  # 60% YES
+                    [ChargeVote.VOTES.abstained]*5,   #  5% ABSTAINED
+                    [ChargeVote.VOTES.canceled]*5    #  5% ABSENT
                 ]))
                 for charge in municipality.council.members:
                     # votings are drawn randomly with weighted probabilities
@@ -181,11 +181,11 @@ class RandomItemsFactory(object):
 
 
                 # compute voting totals
-                v.n_yes = ChargeVote.objects.filter(votation=v, vote=ChargeVote.YES).count()
-                v.n_no = ChargeVote.objects.filter(votation=v, vote=ChargeVote.NO).count()
-                v.n_abst = ChargeVote.objects.filter(votation=v, vote=ChargeVote.ABSTAINED).count()
-                v.n_absents = ChargeVote.objects.filter(votation=v, vote=ChargeVote.ABSENT).count()
-                n_president = ChargeVote.objects.filter(votation=v, vote=ChargeVote.PRES).count()
+                v.n_yes = ChargeVote.objects.filter(votation=v, vote=ChargeVote.VOTES.yes).count()
+                v.n_no = ChargeVote.objects.filter(votation=v, vote=ChargeVote.VOTES.no).count()
+                v.n_abst = ChargeVote.objects.filter(votation=v, vote=ChargeVote.VOTES.abstained).count()
+                v.n_absents = ChargeVote.objects.filter(votation=v, vote=ChargeVote.VOTES.absent).count()
+                n_president = ChargeVote.objects.filter(votation=v, vote=ChargeVote.VOTES.pres).count()
                 v.n_presents = v.n_yes + v.n_no + v.n_abst + n_president
                 v.n_maj = int(v.n_presents / 2) + 1
                 if v.n_yes >= v.n_maj:

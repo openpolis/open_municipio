@@ -17,7 +17,7 @@
         "model": "people.person", 
         "fields": {
             "first_name": "Vincenzo", 
-            "last_name": "Matines", 
+            "last_name": "Martines", 
             "birth_location": "Trieste (TS)", 
             "op_politician_id": null, 
             "sex": 1, 
@@ -95,7 +95,7 @@
         "model": "people.person", 
         "fields": {
             "first_name": "Gianna", 
-            "last_name": "Malisani", 
+            "last_name": "Malisana", 
             "birth_location": "Udine (UD)", 
             "op_politician_id": null, 
             "sex": 0, 
@@ -618,7 +618,7 @@
             "last_name": "Vicario", 
             "birth_location": "Udine(UD)", 
             "op_politician_id": null, 
-            "sex": 0, 
+            "sex": 1, 
             "birth_date": "1953-11-20", 
             "slug": "michele-vicario-1953-11-20"
         }
@@ -647,6 +647,188 @@
             "sex": 0, 
             "birth_date": "1978-10-02", 
             "slug": "barbara-zele-1978-10-02"
+        }
+    }, 
+    {
+        "pk": 52, 
+        "model": "people.person", 
+        "fields": {
+            "first_name": "Roberto", 
+            "last_name": "Bardini", 
+            "birth_location": "LIBIA", 
+            "op_politician_id": null, 
+            "sex": 1, 
+            "birth_date": "1934-04-29", 
+            "slug": "roberto-bardini-1934-04-29"
+        }
+    }, 
+    {
+        "pk": 53, 
+        "model": "people.person", 
+        "fields": {
+            "first_name": "Enzo", 
+            "last_name": "Cainero", 
+            "birth_location": "Tavagnacco (UD)", 
+            "op_politician_id": null, 
+            "sex": 1, 
+            "birth_date": "1944-08-23", 
+            "slug": "enzo-cainero-1944-08-23"
+        }
+    }, 
+    {
+        "pk": 54, 
+        "model": "people.person", 
+        "fields": {
+            "first_name": "Luciano", 
+            "last_name": "Gallerini", 
+            "birth_location": "Udine (UD)", 
+            "op_politician_id": null, 
+            "sex": 1, 
+            "birth_date": "1962-11-11", 
+            "slug": "luciano-gallerini-1962-11-11"
+        }
+    }, 
+    {
+        "pk": 55, 
+        "model": "people.person", 
+        "fields": {
+            "first_name": "Agostino", 
+            "last_name": "Maio", 
+            "birth_location": "Udine (UD)", 
+            "op_politician_id": null, 
+            "sex": 1, 
+            "birth_date": "1954-06-09", 
+            "slug": "agostino-maio-1954-06-09"
+        }
+    }, 
+    {
+        "pk": 57, 
+        "model": "people.person", 
+        "fields": {
+            "first_name": "Maria Alessandro", 
+            "last_name": "Oria", 
+            "birth_location": "Udine (UD)", 
+            "op_politician_id": null, 
+            "sex": 1, 
+            "birth_date": "1976-03-14", 
+            "slug": "maria-alessandro-oria-1976-03-14"
+        }
+    }, 
+    {
+        "pk": 58, 
+        "model": "people.person", 
+        "fields": {
+            "first_name": "Anna Paola", 
+            "last_name": "Peratoner", 
+            "birth_location": "Udine (UD)", 
+            "op_politician_id": null, 
+            "sex": 0, 
+            "birth_date": "1973-03-27", 
+            "slug": "anna-paola-peratoner-1973-03-27"
+        }
+    }, 
+    {
+        "pk": 59, 
+        "model": "people.person", 
+        "fields": {
+            "first_name": "Marco", 
+            "last_name": "Piva", 
+            "birth_location": "Udine (UD)", 
+            "op_politician_id": null, 
+            "sex": 1, 
+            "birth_date": "1965-08-13", 
+            "slug": "marco-piva-1965-08-13"
+        }
+    }, 
+    {
+        "pk": 60, 
+        "model": "people.person", 
+        "fields": {
+            "first_name": "Freschi Claudio", 
+            "last_name": "Freschi", 
+            "birth_location": "Udine (UD)", 
+            "op_politician_id": null, 
+            "sex": 1, 
+            "birth_date": "1956-02-17", 
+            "slug": "freschi-claudio-freschi-1956-02-17"
+        }
+    }, 
+    {
+        "pk": 61, 
+        "model": "people.person", 
+        "fields": {
+            "first_name": "Pravisano Renzo", 
+            "last_name": "Pravisano", 
+            "birth_location": "Tricesimo (UD)", 
+            "op_politician_id": null, 
+            "sex": 1, 
+            "birth_date": "1943-01-20", 
+            "slug": "pravisano-renzo-pravisano-1943-01-20"
+        }
+    }, 
+    {
+        "pk": 62, 
+        "model": "people.person", 
+        "fields": {
+            "first_name": "Rinaldi Aldo", 
+            "last_name": "Rinaldi", 
+            "birth_location": "CROAZIA", 
+            "op_politician_id": null, 
+            "sex": 1, 
+            "birth_date": "1927-07-25", 
+            "slug": "rinaldi-aldo-rinaldi-1927-07-25"
+        }
+    }, 
+    {
+        "pk": 63, 
+        "model": "people.person", 
+        "fields": {
+            "first_name": "Romano Claudio", 
+            "last_name": "Romano", 
+            "birth_location": "Villa Santina (UD)", 
+            "op_politician_id": null, 
+            "sex": 1, 
+            "birth_date": "1942-05-19", 
+            "slug": "romano-claudio-romano-1942-05-19"
+        }
+    }, 
+    {
+        "pk": 64, 
+        "model": "people.person", 
+        "fields": {
+            "first_name": "Spiga Carmelo", 
+            "last_name": "Spiga", 
+            "birth_location": "Nuramis (CA)", 
+            "op_politician_id": null, 
+            "sex": 1, 
+            "birth_date": "1946-07-29", 
+            "slug": "spiga-carmelo-spiga-1946-07-29"
+        }
+    }, 
+    {
+        "pk": 65, 
+        "model": "people.person", 
+        "fields": {
+            "first_name": "Torretta Gregorio", 
+            "last_name": "Torretta", 
+            "birth_location": "Palermo (PA)", 
+            "op_politician_id": null, 
+            "sex": 1, 
+            "birth_date": "1952-04-23", 
+            "slug": "torretta-gregorio-torretta-1952-04-23"
+        }
+    }, 
+    {
+        "pk": 66, 
+        "model": "people.person", 
+        "fields": {
+            "first_name": "Diego", 
+            "last_name": "Volpe Pasini", 
+            "birth_location": "Roma (RM)", 
+            "op_politician_id": null, 
+            "sex": 1, 
+            "birth_date": "1961-03-15", 
+            "slug": "diego-volpe-pasini-1961-03-15"
         }
     }, 
     {
@@ -928,785 +1110,6 @@
         }
     }, 
     {
-        "pk": 13, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "op_charge_id": null, 
-            "n_present_votations": 1, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "", 
-            "end_date": null, 
-            "n_absent_votations": 0, 
-            "n_rebel_votations": 0, 
-            "institution": 3, 
-            "person": 12, 
-            "end_reason": "", 
-            "original_charge": null, 
-            "start_date": "2008-04-29"
-        }
-    }, 
-    {
-        "pk": 14, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "op_charge_id": null, 
-            "n_present_votations": 9, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "", 
-            "end_date": null, 
-            "n_absent_votations": 1, 
-            "n_rebel_votations": 4, 
-            "institution": 3, 
-            "person": 13, 
-            "end_reason": "", 
-            "original_charge": null, 
-            "start_date": "2008-04-29"
-        }
-    }, 
-    {
-        "pk": 15, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "op_charge_id": null, 
-            "n_present_votations": 8, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "", 
-            "end_date": null, 
-            "n_absent_votations": 2, 
-            "n_rebel_votations": 9, 
-            "institution": 3, 
-            "person": 14, 
-            "end_reason": "", 
-            "original_charge": null, 
-            "start_date": "2008-04-29"
-        }
-    }, 
-    {
-        "pk": 16, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "op_charge_id": null, 
-            "n_present_votations": 10, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "", 
-            "end_date": null, 
-            "n_absent_votations": 0, 
-            "n_rebel_votations": 0, 
-            "institution": 3, 
-            "person": 15, 
-            "end_reason": "", 
-            "original_charge": null, 
-            "start_date": "2009-09-28"
-        }
-    }, 
-    {
-        "pk": 17, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "op_charge_id": null, 
-            "n_present_votations": 9, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "", 
-            "end_date": null, 
-            "n_absent_votations": 1, 
-            "n_rebel_votations": 4, 
-            "institution": 3, 
-            "person": 16, 
-            "end_reason": "", 
-            "original_charge": null, 
-            "start_date": "2008-04-29"
-        }
-    }, 
-    {
-        "pk": 18, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "op_charge_id": null, 
-            "n_present_votations": 10, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "", 
-            "end_date": null, 
-            "n_absent_votations": 0, 
-            "n_rebel_votations": 6, 
-            "institution": 3, 
-            "person": 17, 
-            "end_reason": "", 
-            "original_charge": null, 
-            "start_date": "2008-04-29"
-        }
-    }, 
-    {
-        "pk": 19, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "op_charge_id": null, 
-            "n_present_votations": 9, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "", 
-            "end_date": null, 
-            "n_absent_votations": 1, 
-            "n_rebel_votations": 3, 
-            "institution": 3, 
-            "person": 18, 
-            "end_reason": "", 
-            "original_charge": null, 
-            "start_date": "2008-04-29"
-        }
-    }, 
-    {
-        "pk": 20, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "op_charge_id": null, 
-            "n_present_votations": 10, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "", 
-            "end_date": null, 
-            "n_absent_votations": 0, 
-            "n_rebel_votations": 0, 
-            "institution": 3, 
-            "person": 19, 
-            "end_reason": "", 
-            "original_charge": null, 
-            "start_date": "2008-04-29"
-        }
-    }, 
-    {
-        "pk": 21, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "op_charge_id": null, 
-            "n_present_votations": 10, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "", 
-            "end_date": null, 
-            "n_absent_votations": 0, 
-            "n_rebel_votations": 5, 
-            "institution": 3, 
-            "person": 20, 
-            "end_reason": "", 
-            "original_charge": null, 
-            "start_date": "2009-11-30"
-        }
-    }, 
-    {
-        "pk": 23, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "op_charge_id": null, 
-            "n_present_votations": 10, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "", 
-            "end_date": null, 
-            "n_absent_votations": 0, 
-            "n_rebel_votations": 5, 
-            "institution": 3, 
-            "person": 22, 
-            "end_reason": "", 
-            "original_charge": null, 
-            "start_date": "2008-04-29"
-        }
-    }, 
-    {
-        "pk": 24, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "op_charge_id": null, 
-            "n_present_votations": 10, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "", 
-            "end_date": null, 
-            "n_absent_votations": 0, 
-            "n_rebel_votations": 4, 
-            "institution": 3, 
-            "person": 5, 
-            "end_reason": "", 
-            "original_charge": null, 
-            "start_date": "2008-04-29"
-        }
-    }, 
-    {
-        "pk": 25, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "op_charge_id": null, 
-            "n_present_votations": 9, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "", 
-            "end_date": null, 
-            "n_absent_votations": 1, 
-            "n_rebel_votations": 3, 
-            "institution": 3, 
-            "person": 23, 
-            "end_reason": "", 
-            "original_charge": null, 
-            "start_date": "2008-04-29"
-        }
-    }, 
-    {
-        "pk": 26, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "op_charge_id": null, 
-            "n_present_votations": 10, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "", 
-            "end_date": null, 
-            "n_absent_votations": 0, 
-            "n_rebel_votations": 6, 
-            "institution": 3, 
-            "person": 24, 
-            "end_reason": "", 
-            "original_charge": null, 
-            "start_date": "2008-04-29"
-        }
-    }, 
-    {
-        "pk": 27, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "op_charge_id": null, 
-            "n_present_votations": 9, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "", 
-            "end_date": null, 
-            "n_absent_votations": 1, 
-            "n_rebel_votations": 6, 
-            "institution": 3, 
-            "person": 25, 
-            "end_reason": "", 
-            "original_charge": null, 
-            "start_date": "2008-04-29"
-        }
-    }, 
-    {
-        "pk": 28, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "op_charge_id": null, 
-            "n_present_votations": 9, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "", 
-            "end_date": null, 
-            "n_absent_votations": 1, 
-            "n_rebel_votations": 6, 
-            "institution": 3, 
-            "person": 26, 
-            "end_reason": "", 
-            "original_charge": null, 
-            "start_date": "2008-04-29"
-        }
-    }, 
-    {
-        "pk": 29, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "op_charge_id": null, 
-            "n_present_votations": 10, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "", 
-            "end_date": null, 
-            "n_absent_votations": 0, 
-            "n_rebel_votations": 5, 
-            "institution": 3, 
-            "person": 27, 
-            "end_reason": "", 
-            "original_charge": null, 
-            "start_date": "2009-01-07"
-        }
-    }, 
-    {
-        "pk": 30, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "op_charge_id": null, 
-            "n_present_votations": 9, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "", 
-            "end_date": null, 
-            "n_absent_votations": 1, 
-            "n_rebel_votations": 3, 
-            "institution": 3, 
-            "person": 28, 
-            "end_reason": "", 
-            "original_charge": null, 
-            "start_date": "2008-04-29"
-        }
-    }, 
-    {
-        "pk": 31, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "op_charge_id": null, 
-            "n_present_votations": 9, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "", 
-            "end_date": null, 
-            "n_absent_votations": 1, 
-            "n_rebel_votations": 3, 
-            "institution": 3, 
-            "person": 29, 
-            "end_reason": "", 
-            "original_charge": null, 
-            "start_date": "2008-04-29"
-        }
-    }, 
-    {
-        "pk": 32, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "op_charge_id": null, 
-            "n_present_votations": 0, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "", 
-            "end_date": null, 
-            "n_absent_votations": 0, 
-            "n_rebel_votations": 0, 
-            "institution": 3, 
-            "person": 1, 
-            "end_reason": "", 
-            "original_charge": null, 
-            "start_date": "2008-04-29"
-        }
-    }, 
-    {
-        "pk": 33, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "op_charge_id": null, 
-            "n_present_votations": 9, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "", 
-            "end_date": null, 
-            "n_absent_votations": 1, 
-            "n_rebel_votations": 2, 
-            "institution": 3, 
-            "person": 30, 
-            "end_reason": "", 
-            "original_charge": null, 
-            "start_date": "2008-04-29"
-        }
-    }, 
-    {
-        "pk": 34, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "op_charge_id": null, 
-            "n_present_votations": 10, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "", 
-            "end_date": null, 
-            "n_absent_votations": 0, 
-            "n_rebel_votations": 0, 
-            "institution": 3, 
-            "person": 31, 
-            "end_reason": "", 
-            "original_charge": null, 
-            "start_date": "2009-07-27"
-        }
-    }, 
-    {
-        "pk": 35, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "op_charge_id": null, 
-            "n_present_votations": 10, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "", 
-            "end_date": null, 
-            "n_absent_votations": 0, 
-            "n_rebel_votations": 3, 
-            "institution": 3, 
-            "person": 32, 
-            "end_reason": "", 
-            "original_charge": null, 
-            "start_date": "2009-12-21"
-        }
-    }, 
-    {
-        "pk": 36, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "op_charge_id": null, 
-            "n_present_votations": 9, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "", 
-            "end_date": null, 
-            "n_absent_votations": 1, 
-            "n_rebel_votations": 4, 
-            "institution": 3, 
-            "person": 33, 
-            "end_reason": "", 
-            "original_charge": null, 
-            "start_date": "2008-11-03"
-        }
-    }, 
-    {
-        "pk": 37, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "op_charge_id": null, 
-            "n_present_votations": 9, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "", 
-            "end_date": null, 
-            "n_absent_votations": 1, 
-            "n_rebel_votations": 4, 
-            "institution": 3, 
-            "person": 34, 
-            "end_reason": "", 
-            "original_charge": null, 
-            "start_date": "2008-04-29"
-        }
-    }, 
-    {
-        "pk": 38, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "op_charge_id": null, 
-            "n_present_votations": 10, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "", 
-            "end_date": null, 
-            "n_absent_votations": 0, 
-            "n_rebel_votations": 4, 
-            "institution": 3, 
-            "person": 35, 
-            "end_reason": "", 
-            "original_charge": null, 
-            "start_date": "2008-04-29"
-        }
-    }, 
-    {
-        "pk": 39, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "op_charge_id": null, 
-            "n_present_votations": 9, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "", 
-            "end_date": null, 
-            "n_absent_votations": 1, 
-            "n_rebel_votations": 4, 
-            "institution": 3, 
-            "person": 36, 
-            "end_reason": "", 
-            "original_charge": null, 
-            "start_date": "2008-04-29"
-        }
-    }, 
-    {
-        "pk": 40, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "op_charge_id": null, 
-            "n_present_votations": 9, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "", 
-            "end_date": null, 
-            "n_absent_votations": 1, 
-            "n_rebel_votations": 4, 
-            "institution": 3, 
-            "person": 37, 
-            "end_reason": "", 
-            "original_charge": null, 
-            "start_date": "2011-02-18"
-        }
-    }, 
-    {
-        "pk": 41, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "op_charge_id": null, 
-            "n_present_votations": 9, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "", 
-            "end_date": null, 
-            "n_absent_votations": 1, 
-            "n_rebel_votations": 5, 
-            "institution": 3, 
-            "person": 38, 
-            "end_reason": "", 
-            "original_charge": null, 
-            "start_date": "2009-11-30"
-        }
-    }, 
-    {
-        "pk": 42, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "op_charge_id": null, 
-            "n_present_votations": 10, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "", 
-            "end_date": null, 
-            "n_absent_votations": 0, 
-            "n_rebel_votations": 0, 
-            "institution": 3, 
-            "person": 39, 
-            "end_reason": "", 
-            "original_charge": null, 
-            "start_date": "2008-04-29"
-        }
-    }, 
-    {
-        "pk": 43, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "op_charge_id": null, 
-            "n_present_votations": 9, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "", 
-            "end_date": null, 
-            "n_absent_votations": 1, 
-            "n_rebel_votations": 0, 
-            "institution": 3, 
-            "person": 40, 
-            "end_reason": "", 
-            "original_charge": null, 
-            "start_date": "2011-03-28"
-        }
-    }, 
-    {
-        "pk": 44, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "op_charge_id": null, 
-            "n_present_votations": 10, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "", 
-            "end_date": null, 
-            "n_absent_votations": 0, 
-            "n_rebel_votations": 3, 
-            "institution": 3, 
-            "person": 41, 
-            "end_reason": "", 
-            "original_charge": null, 
-            "start_date": "2008-04-29"
-        }
-    }, 
-    {
-        "pk": 45, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "op_charge_id": null, 
-            "n_present_votations": 10, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "", 
-            "end_date": null, 
-            "n_absent_votations": 0, 
-            "n_rebel_votations": 0, 
-            "institution": 3, 
-            "person": 42, 
-            "end_reason": "", 
-            "original_charge": null, 
-            "start_date": "2008-11-28"
-        }
-    }, 
-    {
-        "pk": 46, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "op_charge_id": null, 
-            "n_present_votations": 8, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "", 
-            "end_date": null, 
-            "n_absent_votations": 2, 
-            "n_rebel_votations": 4, 
-            "institution": 3, 
-            "person": 43, 
-            "end_reason": "", 
-            "original_charge": null, 
-            "start_date": "2008-04-29"
-        }
-    }, 
-    {
-        "pk": 47, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "op_charge_id": null, 
-            "n_present_votations": 10, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "", 
-            "end_date": null, 
-            "n_absent_votations": 0, 
-            "n_rebel_votations": 4, 
-            "institution": 3, 
-            "person": 44, 
-            "end_reason": "", 
-            "original_charge": null, 
-            "start_date": "2008-04-29"
-        }
-    }, 
-    {
-        "pk": 48, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "op_charge_id": null, 
-            "n_present_votations": 8, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "", 
-            "end_date": null, 
-            "n_absent_votations": 2, 
-            "n_rebel_votations": 4, 
-            "institution": 3, 
-            "person": 45, 
-            "end_reason": "", 
-            "original_charge": null, 
-            "start_date": "2008-08-05"
-        }
-    }, 
-    {
-        "pk": 49, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "op_charge_id": null, 
-            "n_present_votations": 10, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "", 
-            "end_date": null, 
-            "n_absent_votations": 0, 
-            "n_rebel_votations": 7, 
-            "institution": 3, 
-            "person": 46, 
-            "end_reason": "", 
-            "original_charge": null, 
-            "start_date": "2008-04-29"
-        }
-    }, 
-    {
-        "pk": 50, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "op_charge_id": null, 
-            "n_present_votations": 10, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "", 
-            "end_date": null, 
-            "n_absent_votations": 0, 
-            "n_rebel_votations": 9, 
-            "institution": 3, 
-            "person": 47, 
-            "end_reason": "", 
-            "original_charge": null, 
-            "start_date": "2008-04-29"
-        }
-    }, 
-    {
-        "pk": 51, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "op_charge_id": null, 
-            "n_present_votations": 9, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "", 
-            "end_date": null, 
-            "n_absent_votations": 1, 
-            "n_rebel_votations": 4, 
-            "institution": 3, 
-            "person": 48, 
-            "end_reason": "", 
-            "original_charge": null, 
-            "start_date": "2008-04-29"
-        }
-    }, 
-    {
-        "pk": 52, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "op_charge_id": null, 
-            "n_present_votations": 8, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "", 
-            "end_date": null, 
-            "n_absent_votations": 2, 
-            "n_rebel_votations": 5, 
-            "institution": 3, 
-            "person": 49, 
-            "end_reason": "", 
-            "original_charge": null, 
-            "start_date": "2012-02-07"
-        }
-    }, 
-    {
-        "pk": 53, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "op_charge_id": null, 
-            "n_present_votations": 9, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "", 
-            "end_date": null, 
-            "n_absent_votations": 1, 
-            "n_rebel_votations": 7, 
-            "institution": 3, 
-            "person": 50, 
-            "end_reason": "", 
-            "original_charge": null, 
-            "start_date": "2008-04-29"
-        }
-    }, 
-    {
-        "pk": 54, 
-        "model": "people.institutioncharge", 
-        "fields": {
-            "op_charge_id": null, 
-            "n_present_votations": 10, 
-            "substituted_by": null, 
-            "substitutes": null, 
-            "description": "", 
-            "end_date": null, 
-            "n_absent_votations": 0, 
-            "n_rebel_votations": 6, 
-            "institution": 3, 
-            "person": 51, 
-            "end_reason": "", 
-            "original_charge": null, 
-            "start_date": "2008-04-29"
-        }
-    }, 
-    {
         "pk": 55, 
         "model": "people.institutioncharge", 
         "fields": {
@@ -1721,7 +1124,7 @@
             "institution": 4, 
             "person": 19, 
             "end_reason": "", 
-            "original_charge": 20, 
+            "original_charge": 157, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -1740,7 +1143,7 @@
             "institution": 4, 
             "person": 24, 
             "end_reason": "", 
-            "original_charge": 26, 
+            "original_charge": 165, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -1759,7 +1162,7 @@
             "institution": 4, 
             "person": 26, 
             "end_reason": "", 
-            "original_charge": 28, 
+            "original_charge": 170, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -1778,7 +1181,7 @@
             "institution": 4, 
             "person": 15, 
             "end_reason": "", 
-            "original_charge": 16, 
+            "original_charge": 162, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -1797,7 +1200,7 @@
             "institution": 4, 
             "person": 31, 
             "end_reason": "", 
-            "original_charge": 34, 
+            "original_charge": 186, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -1816,7 +1219,7 @@
             "institution": 4, 
             "person": 23, 
             "end_reason": "", 
-            "original_charge": 25, 
+            "original_charge": 166, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -1835,7 +1238,7 @@
             "institution": 4, 
             "person": 44, 
             "end_reason": "", 
-            "original_charge": 47, 
+            "original_charge": 194, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -1854,7 +1257,7 @@
             "institution": 4, 
             "person": 48, 
             "end_reason": "", 
-            "original_charge": 51, 
+            "original_charge": 197, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -1873,7 +1276,7 @@
             "institution": 4, 
             "person": 36, 
             "end_reason": "", 
-            "original_charge": 39, 
+            "original_charge": 184, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -1892,7 +1295,7 @@
             "institution": 4, 
             "person": 50, 
             "end_reason": "", 
-            "original_charge": 53, 
+            "original_charge": 200, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -1911,7 +1314,7 @@
             "institution": 4, 
             "person": 38, 
             "end_reason": "", 
-            "original_charge": 41, 
+            "original_charge": 159, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -1930,7 +1333,7 @@
             "institution": 4, 
             "person": 25, 
             "end_reason": "", 
-            "original_charge": 27, 
+            "original_charge": 169, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -1949,7 +1352,7 @@
             "institution": 4, 
             "person": 40, 
             "end_reason": "", 
-            "original_charge": 43, 
+            "original_charge": 172, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -1968,7 +1371,7 @@
             "institution": 4, 
             "person": 42, 
             "end_reason": "", 
-            "original_charge": 45, 
+            "original_charge": 199, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -1987,7 +1390,7 @@
             "institution": 4, 
             "person": 13, 
             "end_reason": "", 
-            "original_charge": 14, 
+            "original_charge": 150, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -2006,7 +1409,7 @@
             "institution": 4, 
             "person": 14, 
             "end_reason": "", 
-            "original_charge": 15, 
+            "original_charge": 151, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -2025,7 +1428,7 @@
             "institution": 5, 
             "person": 19, 
             "end_reason": "", 
-            "original_charge": 20, 
+            "original_charge": null, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -2044,7 +1447,7 @@
             "institution": 5, 
             "person": 24, 
             "end_reason": "", 
-            "original_charge": 26, 
+            "original_charge": null, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -2063,7 +1466,7 @@
             "institution": 5, 
             "person": 49, 
             "end_reason": "", 
-            "original_charge": 52, 
+            "original_charge": null, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -2082,7 +1485,7 @@
             "institution": 5, 
             "person": 15, 
             "end_reason": "", 
-            "original_charge": 16, 
+            "original_charge": null, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -2101,7 +1504,7 @@
             "institution": 5, 
             "person": 39, 
             "end_reason": "", 
-            "original_charge": 42, 
+            "original_charge": null, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -2120,7 +1523,7 @@
             "institution": 5, 
             "person": 28, 
             "end_reason": "", 
-            "original_charge": 30, 
+            "original_charge": null, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -2139,7 +1542,7 @@
             "institution": 5, 
             "person": 29, 
             "end_reason": "", 
-            "original_charge": 31, 
+            "original_charge": null, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -2158,7 +1561,7 @@
             "institution": 5, 
             "person": 30, 
             "end_reason": "", 
-            "original_charge": 33, 
+            "original_charge": null, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -2177,7 +1580,7 @@
             "institution": 5, 
             "person": 36, 
             "end_reason": "", 
-            "original_charge": 39, 
+            "original_charge": null, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -2196,7 +1599,7 @@
             "institution": 5, 
             "person": 41, 
             "end_reason": "", 
-            "original_charge": 44, 
+            "original_charge": null, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -2215,7 +1618,7 @@
             "institution": 5, 
             "person": 34, 
             "end_reason": "", 
-            "original_charge": 37, 
+            "original_charge": null, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -2234,7 +1637,7 @@
             "institution": 5, 
             "person": 25, 
             "end_reason": "", 
-            "original_charge": 27, 
+            "original_charge": null, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -2253,7 +1656,7 @@
             "institution": 5, 
             "person": 40, 
             "end_reason": "", 
-            "original_charge": 43, 
+            "original_charge": null, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -2272,7 +1675,7 @@
             "institution": 5, 
             "person": 42, 
             "end_reason": "", 
-            "original_charge": 45, 
+            "original_charge": null, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -2291,7 +1694,7 @@
             "institution": 5, 
             "person": 20, 
             "end_reason": "", 
-            "original_charge": 21, 
+            "original_charge": null, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -2310,7 +1713,7 @@
             "institution": 5, 
             "person": 47, 
             "end_reason": "", 
-            "original_charge": 50, 
+            "original_charge": null, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -2329,7 +1732,7 @@
             "institution": 6, 
             "person": 19, 
             "end_reason": "", 
-            "original_charge": 20, 
+            "original_charge": null, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -2348,7 +1751,7 @@
             "institution": 6, 
             "person": 22, 
             "end_reason": "", 
-            "original_charge": 23, 
+            "original_charge": null, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -2367,7 +1770,7 @@
             "institution": 6, 
             "person": 35, 
             "end_reason": "", 
-            "original_charge": 38, 
+            "original_charge": null, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -2386,7 +1789,7 @@
             "institution": 6, 
             "person": 15, 
             "end_reason": "", 
-            "original_charge": 16, 
+            "original_charge": null, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -2405,7 +1808,7 @@
             "institution": 6, 
             "person": 31, 
             "end_reason": "", 
-            "original_charge": 34, 
+            "original_charge": null, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -2424,7 +1827,7 @@
             "institution": 6, 
             "person": 33, 
             "end_reason": "", 
-            "original_charge": 36, 
+            "original_charge": null, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -2443,7 +1846,7 @@
             "institution": 6, 
             "person": 37, 
             "end_reason": "", 
-            "original_charge": 40, 
+            "original_charge": null, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -2462,7 +1865,7 @@
             "institution": 6, 
             "person": 45, 
             "end_reason": "", 
-            "original_charge": 48, 
+            "original_charge": null, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -2481,7 +1884,7 @@
             "institution": 6, 
             "person": 43, 
             "end_reason": "", 
-            "original_charge": 46, 
+            "original_charge": null, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -2500,7 +1903,7 @@
             "institution": 6, 
             "person": 32, 
             "end_reason": "", 
-            "original_charge": 35, 
+            "original_charge": null, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -2519,7 +1922,7 @@
             "institution": 6, 
             "person": 51, 
             "end_reason": "", 
-            "original_charge": 54, 
+            "original_charge": null, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -2538,7 +1941,7 @@
             "institution": 6, 
             "person": 40, 
             "end_reason": "", 
-            "original_charge": 43, 
+            "original_charge": null, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -2557,7 +1960,7 @@
             "institution": 6, 
             "person": 42, 
             "end_reason": "", 
-            "original_charge": 45, 
+            "original_charge": null, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -2576,7 +1979,7 @@
             "institution": 6, 
             "person": 16, 
             "end_reason": "", 
-            "original_charge": 17, 
+            "original_charge": null, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -2595,7 +1998,7 @@
             "institution": 6, 
             "person": 14, 
             "end_reason": "", 
-            "original_charge": 15, 
+            "original_charge": null, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -2614,7 +2017,7 @@
             "institution": 7, 
             "person": 19, 
             "end_reason": "", 
-            "original_charge": 20, 
+            "original_charge": null, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -2633,7 +2036,7 @@
             "institution": 7, 
             "person": 35, 
             "end_reason": "", 
-            "original_charge": 38, 
+            "original_charge": null, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -2652,7 +2055,7 @@
             "institution": 7, 
             "person": 15, 
             "end_reason": "", 
-            "original_charge": 16, 
+            "original_charge": null, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -2671,7 +2074,7 @@
             "institution": 7, 
             "person": 39, 
             "end_reason": "", 
-            "original_charge": 42, 
+            "original_charge": null, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -2690,7 +2093,7 @@
             "institution": 7, 
             "person": 27, 
             "end_reason": "", 
-            "original_charge": 29, 
+            "original_charge": null, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -2709,7 +2112,7 @@
             "institution": 7, 
             "person": 45, 
             "end_reason": "", 
-            "original_charge": 48, 
+            "original_charge": null, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -2728,7 +2131,7 @@
             "institution": 7, 
             "person": 46, 
             "end_reason": "", 
-            "original_charge": 49, 
+            "original_charge": null, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -2747,7 +2150,7 @@
             "institution": 7, 
             "person": 43, 
             "end_reason": "", 
-            "original_charge": 46, 
+            "original_charge": null, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -2766,7 +2169,7 @@
             "institution": 7, 
             "person": 50, 
             "end_reason": "", 
-            "original_charge": 53, 
+            "original_charge": null, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -2785,7 +2188,7 @@
             "institution": 7, 
             "person": 51, 
             "end_reason": "", 
-            "original_charge": 54, 
+            "original_charge": null, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -2804,7 +2207,7 @@
             "institution": 7, 
             "person": 40, 
             "end_reason": "", 
-            "original_charge": 43, 
+            "original_charge": null, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -2823,7 +2226,7 @@
             "institution": 7, 
             "person": 42, 
             "end_reason": "", 
-            "original_charge": 45, 
+            "original_charge": null, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -2842,7 +2245,7 @@
             "institution": 7, 
             "person": 18, 
             "end_reason": "", 
-            "original_charge": 19, 
+            "original_charge": null, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -2861,7 +2264,7 @@
             "institution": 7, 
             "person": 47, 
             "end_reason": "", 
-            "original_charge": 50, 
+            "original_charge": null, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -2880,7 +2283,7 @@
             "institution": 8, 
             "person": 19, 
             "end_reason": "", 
-            "original_charge": 20, 
+            "original_charge": null, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -2899,7 +2302,7 @@
             "institution": 8, 
             "person": 24, 
             "end_reason": "", 
-            "original_charge": 26, 
+            "original_charge": null, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -2918,7 +2321,7 @@
             "institution": 8, 
             "person": 15, 
             "end_reason": "", 
-            "original_charge": 16, 
+            "original_charge": null, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -2937,7 +2340,7 @@
             "institution": 8, 
             "person": 39, 
             "end_reason": "", 
-            "original_charge": 42, 
+            "original_charge": null, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -2956,7 +2359,7 @@
             "institution": 8, 
             "person": 23, 
             "end_reason": "", 
-            "original_charge": 25, 
+            "original_charge": null, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -2975,7 +2378,7 @@
             "institution": 8, 
             "person": 36, 
             "end_reason": "", 
-            "original_charge": 39, 
+            "original_charge": null, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -2994,7 +2397,7 @@
             "institution": 8, 
             "person": 50, 
             "end_reason": "", 
-            "original_charge": 53, 
+            "original_charge": null, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -3013,7 +2416,7 @@
             "institution": 8, 
             "person": 25, 
             "end_reason": "", 
-            "original_charge": 27, 
+            "original_charge": null, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -3032,7 +2435,7 @@
             "institution": 8, 
             "person": 40, 
             "end_reason": "", 
-            "original_charge": 43, 
+            "original_charge": null, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -3051,7 +2454,7 @@
             "institution": 8, 
             "person": 42, 
             "end_reason": "", 
-            "original_charge": 45, 
+            "original_charge": null, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -3070,7 +2473,7 @@
             "institution": 8, 
             "person": 13, 
             "end_reason": "", 
-            "original_charge": 14, 
+            "original_charge": null, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -3089,7 +2492,7 @@
             "institution": 8, 
             "person": 47, 
             "end_reason": "", 
-            "original_charge": 50, 
+            "original_charge": null, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -3108,7 +2511,7 @@
             "institution": 9, 
             "person": 19, 
             "end_reason": "", 
-            "original_charge": 20, 
+            "original_charge": null, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -3127,7 +2530,7 @@
             "institution": 9, 
             "person": 22, 
             "end_reason": "", 
-            "original_charge": 23, 
+            "original_charge": null, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -3146,7 +2549,7 @@
             "institution": 9, 
             "person": 15, 
             "end_reason": "", 
-            "original_charge": 16, 
+            "original_charge": null, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -3165,7 +2568,7 @@
             "institution": 9, 
             "person": 31, 
             "end_reason": "", 
-            "original_charge": 34, 
+            "original_charge": null, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -3184,7 +2587,7 @@
             "institution": 9, 
             "person": 44, 
             "end_reason": "", 
-            "original_charge": 47, 
+            "original_charge": null, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -3203,7 +2606,7 @@
             "institution": 9, 
             "person": 36, 
             "end_reason": "", 
-            "original_charge": 39, 
+            "original_charge": null, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -3222,7 +2625,7 @@
             "institution": 9, 
             "person": 17, 
             "end_reason": "", 
-            "original_charge": 18, 
+            "original_charge": null, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -3241,7 +2644,7 @@
             "institution": 9, 
             "person": 51, 
             "end_reason": "", 
-            "original_charge": 54, 
+            "original_charge": null, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -3260,7 +2663,7 @@
             "institution": 9, 
             "person": 40, 
             "end_reason": "", 
-            "original_charge": 43, 
+            "original_charge": null, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -3279,7 +2682,7 @@
             "institution": 9, 
             "person": 42, 
             "end_reason": "", 
-            "original_charge": 45, 
+            "original_charge": null, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -3298,7 +2701,7 @@
             "institution": 9, 
             "person": 13, 
             "end_reason": "", 
-            "original_charge": 14, 
+            "original_charge": null, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -3317,7 +2720,1033 @@
             "institution": 9, 
             "person": 14, 
             "end_reason": "", 
-            "original_charge": 15, 
+            "original_charge": null, 
+            "start_date": "2008-04-29"
+        }
+    }, 
+    {
+        "pk": 141, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "Assessore", 
+            "end_date": "2009-02-10", 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 2, 
+            "person": 16, 
+            "end_reason": "", 
+            "original_charge": null, 
+            "start_date": "2008-05-08"
+        }
+    }, 
+    {
+        "pk": 149, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "Assessore", 
+            "end_date": "2012-01-23", 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 2, 
+            "person": 26, 
+            "end_reason": "", 
+            "original_charge": null, 
+            "start_date": "2008-05-08"
+        }
+    }, 
+    {
+        "pk": 150, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "", 
+            "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 3, 
+            "person": 13, 
+            "end_reason": "", 
+            "original_charge": null, 
+            "start_date": "2008-04-29"
+        }
+    }, 
+    {
+        "pk": 151, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "", 
+            "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 3, 
+            "person": 14, 
+            "end_reason": "", 
+            "original_charge": null, 
+            "start_date": "2008-04-29"
+        }
+    }, 
+    {
+        "pk": 152, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "", 
+            "end_date": "2009-12-15", 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 3, 
+            "person": 52, 
+            "end_reason": "", 
+            "original_charge": null, 
+            "start_date": "2008-04-29"
+        }
+    }, 
+    {
+        "pk": 153, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "", 
+            "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 3, 
+            "person": 32, 
+            "end_reason": "", 
+            "original_charge": null, 
+            "start_date": "2009-12-21"
+        }
+    }, 
+    {
+        "pk": 154, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "", 
+            "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 3, 
+            "person": 16, 
+            "end_reason": "", 
+            "original_charge": null, 
+            "start_date": "2008-04-29"
+        }
+    }, 
+    {
+        "pk": 155, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "", 
+            "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 3, 
+            "person": 17, 
+            "end_reason": "", 
+            "original_charge": null, 
+            "start_date": "2008-04-29"
+        }
+    }, 
+    {
+        "pk": 156, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "", 
+            "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 3, 
+            "person": 18, 
+            "end_reason": "", 
+            "original_charge": null, 
+            "start_date": "2008-04-29"
+        }
+    }, 
+    {
+        "pk": 157, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "", 
+            "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 3, 
+            "person": 19, 
+            "end_reason": "", 
+            "original_charge": null, 
+            "start_date": "2008-04-29"
+        }
+    }, 
+    {
+        "pk": 158, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "", 
+            "end_date": "2009-11-06", 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 3, 
+            "person": 53, 
+            "end_reason": "", 
+            "original_charge": null, 
+            "start_date": "2008-04-29"
+        }
+    }, 
+    {
+        "pk": 159, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "", 
+            "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 3, 
+            "person": 38, 
+            "end_reason": "", 
+            "original_charge": null, 
+            "start_date": "2009-11-30"
+        }
+    }, 
+    {
+        "pk": 160, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "", 
+            "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 3, 
+            "person": 22, 
+            "end_reason": "", 
+            "original_charge": null, 
+            "start_date": "2008-04-29"
+        }
+    }, 
+    {
+        "pk": 161, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "", 
+            "end_date": "2009-09-08", 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 3, 
+            "person": 4, 
+            "end_reason": "", 
+            "original_charge": null, 
+            "start_date": "2008-04-29"
+        }
+    }, 
+    {
+        "pk": 162, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "", 
+            "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 3, 
+            "person": 15, 
+            "end_reason": "", 
+            "original_charge": null, 
+            "start_date": "2009-09-08"
+        }
+    }, 
+    {
+        "pk": 163, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "", 
+            "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 3, 
+            "person": 12, 
+            "end_reason": "", 
+            "original_charge": null, 
+            "start_date": "2008-04-29"
+        }
+    }, 
+    {
+        "pk": 164, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "", 
+            "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 3, 
+            "person": 5, 
+            "end_reason": "", 
+            "original_charge": null, 
+            "start_date": "2008-04-29"
+        }
+    }, 
+    {
+        "pk": 165, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "", 
+            "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 3, 
+            "person": 24, 
+            "end_reason": "", 
+            "original_charge": null, 
+            "start_date": "2008-04-29"
+        }
+    }, 
+    {
+        "pk": 166, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "", 
+            "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 3, 
+            "person": 23, 
+            "end_reason": "", 
+            "original_charge": null, 
+            "start_date": "2008-04-29"
+        }
+    }, 
+    {
+        "pk": 167, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "", 
+            "end_date": "2012-02-07", 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 3, 
+            "person": 6, 
+            "end_reason": "", 
+            "original_charge": null, 
+            "start_date": "2008-04-29"
+        }
+    }, 
+    {
+        "pk": 168, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "", 
+            "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 3, 
+            "person": 49, 
+            "end_reason": "", 
+            "original_charge": null, 
+            "start_date": "2012-02-27"
+        }
+    }, 
+    {
+        "pk": 169, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "", 
+            "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 3, 
+            "person": 25, 
+            "end_reason": "", 
+            "original_charge": null, 
+            "start_date": "2008-04-29"
+        }
+    }, 
+    {
+        "pk": 170, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "", 
+            "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 3, 
+            "person": 26, 
+            "end_reason": "", 
+            "original_charge": null, 
+            "start_date": "2008-04-29"
+        }
+    }, 
+    {
+        "pk": 171, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "", 
+            "end_date": "2011-03-11", 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 3, 
+            "person": 54, 
+            "end_reason": "", 
+            "original_charge": null, 
+            "start_date": "2008-04-29"
+        }
+    }, 
+    {
+        "pk": 172, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "", 
+            "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 3, 
+            "person": 40, 
+            "end_reason": "", 
+            "original_charge": null, 
+            "start_date": "2011-03-28"
+        }
+    }, 
+    {
+        "pk": 173, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "", 
+            "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 3, 
+            "person": 28, 
+            "end_reason": "", 
+            "original_charge": null, 
+            "start_date": "2008-04-29"
+        }
+    }, 
+    {
+        "pk": 174, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "", 
+            "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 3, 
+            "person": 29, 
+            "end_reason": "", 
+            "original_charge": null, 
+            "start_date": "2008-04-29"
+        }
+    }, 
+    {
+        "pk": 175, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "", 
+            "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 3, 
+            "person": 55, 
+            "end_reason": "", 
+            "original_charge": null, 
+            "start_date": "2008-04-29"
+        }
+    }, 
+    {
+        "pk": 176, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "", 
+            "end_date": "2008-10-16", 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 3, 
+            "person": 8, 
+            "end_reason": "", 
+            "original_charge": null, 
+            "start_date": "2008-04-29"
+        }
+    }, 
+    {
+        "pk": 177, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "", 
+            "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 3, 
+            "person": 33, 
+            "end_reason": "", 
+            "original_charge": null, 
+            "start_date": "2008-11-03"
+        }
+    }, 
+    {
+        "pk": 178, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "", 
+            "end_date": "2008-07-18", 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 3, 
+            "person": 2, 
+            "end_reason": "", 
+            "original_charge": null, 
+            "start_date": "2008-04-29"
+        }
+    }, 
+    {
+        "pk": 179, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "", 
+            "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 3, 
+            "person": 45, 
+            "end_reason": "", 
+            "original_charge": null, 
+            "start_date": "2008-07-28"
+        }
+    }, 
+    {
+        "pk": 180, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "", 
+            "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 3, 
+            "person": 34, 
+            "end_reason": "", 
+            "original_charge": null, 
+            "start_date": "2008-04-29"
+        }
+    }, 
+    {
+        "pk": 181, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "", 
+            "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 3, 
+            "person": 35, 
+            "end_reason": "", 
+            "original_charge": null, 
+            "start_date": "2008-04-29"
+        }
+    }, 
+    {
+        "pk": 182, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "", 
+            "end_date": "2011-02-16", 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 3, 
+            "person": 57, 
+            "end_reason": "", 
+            "original_charge": null, 
+            "start_date": "2008-04-29"
+        }
+    }, 
+    {
+        "pk": 183, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "", 
+            "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 3, 
+            "person": 37, 
+            "end_reason": "", 
+            "original_charge": null, 
+            "start_date": "2011-02-18"
+        }
+    }, 
+    {
+        "pk": 184, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "", 
+            "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 3, 
+            "person": 36, 
+            "end_reason": "", 
+            "original_charge": null, 
+            "start_date": "2008-04-29"
+        }
+    }, 
+    {
+        "pk": 185, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "", 
+            "end_date": "2009-07-09", 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 3, 
+            "person": 58, 
+            "end_reason": "", 
+            "original_charge": null, 
+            "start_date": "2008-04-29"
+        }
+    }, 
+    {
+        "pk": 186, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "", 
+            "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 3, 
+            "person": 31, 
+            "end_reason": "", 
+            "original_charge": null, 
+            "start_date": "2009-07-27"
+        }
+    }, 
+    {
+        "pk": 187, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "", 
+            "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 3, 
+            "person": 39, 
+            "end_reason": "", 
+            "original_charge": null, 
+            "start_date": "2008-04-29"
+        }
+    }, 
+    {
+        "pk": 188, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "", 
+            "end_date": "2009-11-10", 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 3, 
+            "person": 59, 
+            "end_reason": "", 
+            "original_charge": null, 
+            "start_date": "2008-04-29"
+        }
+    }, 
+    {
+        "pk": 189, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "", 
+            "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 3, 
+            "person": 20, 
+            "end_reason": "", 
+            "original_charge": null, 
+            "start_date": "2009-11-30"
+        }
+    }, 
+    {
+        "pk": 190, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "", 
+            "end_date": "2008-12-16", 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 3, 
+            "person": 9, 
+            "end_reason": "", 
+            "original_charge": null, 
+            "start_date": "2008-04-29"
+        }
+    }, 
+    {
+        "pk": 191, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "", 
+            "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 3, 
+            "person": 60, 
+            "end_reason": "", 
+            "original_charge": null, 
+            "start_date": "2008-12-22"
+        }
+    }, 
+    {
+        "pk": 192, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "", 
+            "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 3, 
+            "person": 61, 
+            "end_reason": "", 
+            "original_charge": null, 
+            "start_date": "2008-04-29"
+        }
+    }, 
+    {
+        "pk": 193, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "", 
+            "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 3, 
+            "person": 62, 
+            "end_reason": "", 
+            "original_charge": null, 
+            "start_date": "2008-04-29"
+        }
+    }, 
+    {
+        "pk": 194, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "", 
+            "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 3, 
+            "person": 63, 
+            "end_reason": "", 
+            "original_charge": null, 
+            "start_date": "2008-04-29"
+        }
+    }, 
+    {
+        "pk": 195, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "", 
+            "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 3, 
+            "person": 64, 
+            "end_reason": "", 
+            "original_charge": null, 
+            "start_date": "2008-04-29"
+        }
+    }, 
+    {
+        "pk": 196, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "", 
+            "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 3, 
+            "person": 65, 
+            "end_reason": "", 
+            "original_charge": null, 
+            "start_date": "2008-04-29"
+        }
+    }, 
+    {
+        "pk": 197, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "", 
+            "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 3, 
+            "person": 48, 
+            "end_reason": "", 
+            "original_charge": null, 
+            "start_date": "2008-04-29"
+        }
+    }, 
+    {
+        "pk": 198, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "", 
+            "end_date": "2008-11-28", 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 3, 
+            "person": 66, 
+            "end_reason": "", 
+            "original_charge": null, 
+            "start_date": "2008-04-29"
+        }
+    }, 
+    {
+        "pk": 199, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "", 
+            "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 3, 
+            "person": 42, 
+            "end_reason": "", 
+            "original_charge": null, 
+            "start_date": "2008-11-28"
+        }
+    }, 
+    {
+        "pk": 200, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "", 
+            "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 3, 
+            "person": 50, 
+            "end_reason": "", 
+            "original_charge": null, 
+            "start_date": "2008-04-29"
+        }
+    }, 
+    {
+        "pk": 201, 
+        "model": "people.institutioncharge", 
+        "fields": {
+            "op_charge_id": null, 
+            "n_present_votations": 0, 
+            "substituted_by": null, 
+            "substitutes": null, 
+            "description": "", 
+            "end_date": null, 
+            "n_absent_votations": 0, 
+            "n_rebel_votations": 0, 
+            "institution": 3, 
+            "person": 51, 
+            "end_reason": "", 
+            "original_charge": null, 
             "start_date": "2008-04-29"
         }
     }, 
@@ -3348,129 +3777,19 @@
         "model": "people.institutionresponsability", 
         "fields": {
             "charge_type": "PRESIDENT", 
-            "charge": 13, 
-            "start_date": "2008-04-29", 
+            "charge": 163, 
+            "start_date": "2008-05-19", 
             "end_date": null, 
-            "description": "Presidente del Consiglio Comunale"
+            "description": ""
         }
     }, 
     {
         "pk": 4, 
         "model": "people.institutionresponsability", 
         "fields": {
-            "charge_type": "MAYOR", 
-            "charge": 32, 
-            "start_date": "2008-04-29", 
-            "end_date": null, 
-            "description": "Sindaco"
-        }
-    }, 
-    {
-        "pk": 5, 
-        "model": "people.institutionresponsability", 
-        "fields": {
-            "charge_type": "PRESIDENT", 
-            "charge": 57, 
-            "start_date": "2008-04-29", 
-            "end_date": null, 
-            "description": ""
-        }
-    }, 
-    {
-        "pk": 6, 
-        "model": "people.institutionresponsability", 
-        "fields": {
             "charge_type": "VICE", 
-            "charge": 64, 
-            "start_date": "2008-04-29", 
-            "end_date": null, 
-            "description": ""
-        }
-    }, 
-    {
-        "pk": 7, 
-        "model": "people.institutionresponsability", 
-        "fields": {
-            "charge_type": "VICE", 
-            "charge": 74, 
-            "start_date": "2008-04-29", 
-            "end_date": null, 
-            "description": ""
-        }
-    }, 
-    {
-        "pk": 8, 
-        "model": "people.institutionresponsability", 
-        "fields": {
-            "charge_type": "PRESIDENT", 
-            "charge": 77, 
-            "start_date": "2008-04-29", 
-            "end_date": null, 
-            "description": ""
-        }
-    }, 
-    {
-        "pk": 9, 
-        "model": "people.institutionresponsability", 
-        "fields": {
-            "charge_type": "PRESIDENT", 
-            "charge": 88, 
-            "start_date": "2008-04-29", 
-            "end_date": null, 
-            "description": ""
-        }
-    }, 
-    {
-        "pk": 10, 
-        "model": "people.institutionresponsability", 
-        "fields": {
-            "charge_type": "PRESIDENT", 
-            "charge": 105, 
-            "start_date": "2008-04-29", 
-            "end_date": null, 
-            "description": ""
-        }
-    }, 
-    {
-        "pk": 11, 
-        "model": "people.institutionresponsability", 
-        "fields": {
-            "charge_type": "PRESIDENT", 
-            "charge": 126, 
-            "start_date": "2008-04-29", 
-            "end_date": null, 
-            "description": ""
-        }
-    }, 
-    {
-        "pk": 12, 
-        "model": "people.institutionresponsability", 
-        "fields": {
-            "charge_type": "VICE", 
-            "charge": 120, 
-            "start_date": "2008-04-29", 
-            "end_date": null, 
-            "description": ""
-        }
-    }, 
-    {
-        "pk": 13, 
-        "model": "people.institutionresponsability", 
-        "fields": {
-            "charge_type": "PRESIDENT", 
-            "charge": 134, 
-            "start_date": "2008-04-29", 
-            "end_date": null, 
-            "description": ""
-        }
-    }, 
-    {
-        "pk": 14, 
-        "model": "people.institutionresponsability", 
-        "fields": {
-            "charge_type": "VICE", 
-            "charge": 132, 
-            "start_date": "2008-04-29", 
+            "charge": 165, 
+            "start_date": "2008-05-19", 
             "end_date": null, 
             "description": ""
         }
@@ -3488,7 +3807,7 @@
         "model": "people.group", 
         "fields": {
             "acronym": "UDC", 
-            "name": "UDC per la costituente"
+            "name": "UDC per la costituente di centro"
         }
     }, 
     {
@@ -3552,7 +3871,7 @@
         "model": "people.group", 
         "fields": {
             "acronym": "DO", 
-            "name": "Domani \u00e8 con Ortis"
+            "name": "Domani \u00e8 Udine con Ortis"
         }
     }, 
     {
@@ -3560,7 +3879,7 @@
         "model": "people.group", 
         "fields": {
             "acronym": "Lega", 
-            "name": "Lega Nord"
+            "name": "Lega Nord per l'indipendenza della Padania"
         }
     }, 
     {
@@ -3576,17 +3895,57 @@
         "model": "people.group", 
         "fields": {
             "acronym": "SOS", 
-            "name": "SOS Italia - Popolo della libert\u00e0"
+            "name": "S.O.S. Italia - Popolo della libert\u00e0"
+        }
+    }, 
+    {
+        "pk": 15, 
+        "model": "people.group", 
+        "fields": {
+            "acronym": "Cainero", 
+            "name": "Lista Cainero per una grande Udine"
+        }
+    }, 
+    {
+        "pk": 16, 
+        "model": "people.group", 
+        "fields": {
+            "acronym": "Cittadini", 
+            "name": "Cittadini"
+        }
+    }, 
+    {
+        "pk": 17, 
+        "model": "people.group", 
+        "fields": {
+            "acronym": "FF", 
+            "name": "Friuli Futuro"
+        }
+    }, 
+    {
+        "pk": 18, 
+        "model": "people.group", 
+        "fields": {
+            "acronym": "PLS", 
+            "name": "Per la sinistra"
+        }
+    }, 
+    {
+        "pk": 19, 
+        "model": "people.group", 
+        "fields": {
+            "acronym": "UDC-DC", 
+            "name": "Unione dei democratici cristiani e dei democratici di centro"
         }
     }, 
     {
         "pk": 1, 
         "model": "people.groupcharge", 
         "fields": {
-            "group": 1, 
-            "end_date": null, 
+            "group": 15, 
+            "end_date": "2009-05-08", 
             "start_date": "2008-04-29", 
-            "charge": 13, 
+            "charge": 150, 
             "end_reason": "", 
             "charge_description": ""
         }
@@ -3597,8 +3956,8 @@
         "fields": {
             "group": 2, 
             "end_date": null, 
-            "start_date": "2008-04-29", 
-            "charge": 14, 
+            "start_date": "2009-05-08", 
+            "charge": 150, 
             "end_reason": "", 
             "charge_description": ""
         }
@@ -3607,10 +3966,10 @@
         "pk": 3, 
         "model": "people.groupcharge", 
         "fields": {
-            "group": 3, 
-            "end_date": null, 
+            "group": 5, 
+            "end_date": "2010-02-06", 
             "start_date": "2008-04-29", 
-            "charge": 15, 
+            "charge": 151, 
             "end_reason": "", 
             "charge_description": ""
         }
@@ -3619,10 +3978,10 @@
         "pk": 4, 
         "model": "people.groupcharge", 
         "fields": {
-            "group": 4, 
+            "group": 3, 
             "end_date": null, 
-            "start_date": "2009-09-28", 
-            "charge": 16, 
+            "start_date": "2010-02-06", 
+            "charge": 151, 
             "end_reason": "", 
             "charge_description": ""
         }
@@ -3631,10 +3990,10 @@
         "pk": 5, 
         "model": "people.groupcharge", 
         "fields": {
-            "group": 2, 
-            "end_date": null, 
+            "group": 5, 
+            "end_date": "2009-12-15", 
             "start_date": "2008-04-29", 
-            "charge": 17, 
+            "charge": 152, 
             "end_reason": "", 
             "charge_description": ""
         }
@@ -3645,8 +4004,8 @@
         "fields": {
             "group": 5, 
             "end_date": null, 
-            "start_date": "2008-04-29", 
-            "charge": 18, 
+            "start_date": "2009-12-21", 
+            "charge": 153, 
             "end_reason": "", 
             "charge_description": ""
         }
@@ -3655,10 +4014,22 @@
         "pk": 7, 
         "model": "people.groupcharge", 
         "fields": {
-            "group": 2, 
-            "end_date": null, 
+            "group": 16, 
+            "end_date": "2009-02-20", 
             "start_date": "2008-04-29", 
-            "charge": 19, 
+            "charge": 154, 
+            "end_reason": "", 
+            "charge_description": ""
+        }
+    }, 
+    {
+        "pk": 8, 
+        "model": "people.groupcharge", 
+        "fields": {
+            "group": 3, 
+            "end_date": "2009-05-08", 
+            "start_date": "2009-02-20", 
+            "charge": 154, 
             "end_reason": "", 
             "charge_description": ""
         }
@@ -3669,8 +4040,44 @@
         "fields": {
             "group": 2, 
             "end_date": null, 
-            "start_date": "2009-11-30", 
-            "charge": 21, 
+            "start_date": "2009-05-08", 
+            "charge": 154, 
+            "end_reason": "", 
+            "charge_description": ""
+        }
+    }, 
+    {
+        "pk": 10, 
+        "model": "people.groupcharge", 
+        "fields": {
+            "group": 5, 
+            "end_date": null, 
+            "start_date": "2008-04-29", 
+            "charge": 155, 
+            "end_reason": "", 
+            "charge_description": ""
+        }
+    }, 
+    {
+        "pk": 11, 
+        "model": "people.groupcharge", 
+        "fields": {
+            "group": 5, 
+            "end_date": "2010-03-24", 
+            "start_date": "2008-04-29", 
+            "charge": 156, 
+            "end_reason": "", 
+            "charge_description": ""
+        }
+    }, 
+    {
+        "pk": 12, 
+        "model": "people.groupcharge", 
+        "fields": {
+            "group": 2, 
+            "end_date": null, 
+            "start_date": "2010-03-24", 
+            "charge": 156, 
             "end_reason": "", 
             "charge_description": ""
         }
@@ -3679,10 +4086,46 @@
         "pk": 13, 
         "model": "people.groupcharge", 
         "fields": {
-            "group": 1, 
-            "end_date": null, 
+            "group": 16, 
+            "end_date": "2009-04-28", 
             "start_date": "2008-04-29", 
-            "charge": 25, 
+            "charge": 157, 
+            "end_reason": "", 
+            "charge_description": ""
+        }
+    }, 
+    {
+        "pk": 14, 
+        "model": "people.groupcharge", 
+        "fields": {
+            "group": 17, 
+            "end_date": "2010-11-30", 
+            "start_date": "2009-04-28", 
+            "charge": 157, 
+            "end_reason": "", 
+            "charge_description": ""
+        }
+    }, 
+    {
+        "pk": 15, 
+        "model": "people.groupcharge", 
+        "fields": {
+            "group": 10, 
+            "end_date": null, 
+            "start_date": "2010-11-30", 
+            "charge": 157, 
+            "end_reason": "", 
+            "charge_description": ""
+        }
+    }, 
+    {
+        "pk": 16, 
+        "model": "people.groupcharge", 
+        "fields": {
+            "group": 15, 
+            "end_date": "2009-11-06", 
+            "start_date": "2008-04-29", 
+            "charge": 158, 
             "end_reason": "", 
             "charge_description": ""
         }
@@ -3691,10 +4134,10 @@
         "pk": 17, 
         "model": "people.groupcharge", 
         "fields": {
-            "group": 1, 
+            "group": 5, 
             "end_date": null, 
-            "start_date": "2009-01-07", 
-            "charge": 29, 
+            "start_date": "2009-11-30", 
+            "charge": 159, 
             "end_reason": "", 
             "charge_description": ""
         }
@@ -3703,10 +4146,10 @@
         "pk": 18, 
         "model": "people.groupcharge", 
         "fields": {
-            "group": 1, 
+            "group": 8, 
             "end_date": null, 
             "start_date": "2008-04-29", 
-            "charge": 30, 
+            "charge": 160, 
             "end_reason": "", 
             "charge_description": ""
         }
@@ -3715,10 +4158,22 @@
         "pk": 19, 
         "model": "people.groupcharge", 
         "fields": {
-            "group": 1, 
+            "group": 4, 
+            "end_date": "2009-09-08", 
+            "start_date": "2009-04-29", 
+            "charge": 161, 
+            "end_reason": "", 
+            "charge_description": ""
+        }
+    }, 
+    {
+        "pk": 20, 
+        "model": "people.groupcharge", 
+        "fields": {
+            "group": 4, 
             "end_date": null, 
-            "start_date": "2008-04-29", 
-            "charge": 31, 
+            "start_date": "2009-09-08", 
+            "charge": 162, 
             "end_reason": "", 
             "charge_description": ""
         }
@@ -3730,7 +4185,19 @@
             "group": 1, 
             "end_date": null, 
             "start_date": "2008-04-29", 
-            "charge": 33, 
+            "charge": 163, 
+            "end_reason": "", 
+            "charge_description": ""
+        }
+    }, 
+    {
+        "pk": 22, 
+        "model": "people.groupcharge", 
+        "fields": {
+            "group": 8, 
+            "end_date": null, 
+            "start_date": "2008-04-29", 
+            "charge": 164, 
             "end_reason": "", 
             "charge_description": ""
         }
@@ -3739,10 +4206,10 @@
         "pk": 23, 
         "model": "people.groupcharge", 
         "fields": {
-            "group": 5, 
+            "group": 8, 
             "end_date": null, 
-            "start_date": "2009-12-21", 
-            "charge": 35, 
+            "start_date": "2008-04-29", 
+            "charge": 165, 
             "end_reason": "", 
             "charge_description": ""
         }
@@ -3753,8 +4220,8 @@
         "fields": {
             "group": 1, 
             "end_date": null, 
-            "start_date": "2008-11-03", 
-            "charge": 36, 
+            "start_date": "2008-04-29", 
+            "charge": 166, 
             "end_reason": "", 
             "charge_description": ""
         }
@@ -3763,10 +4230,34 @@
         "pk": 25, 
         "model": "people.groupcharge", 
         "fields": {
-            "group": 5, 
+            "group": 8, 
+            "end_date": "2012-02-07", 
+            "start_date": "2008-04-29", 
+            "charge": 167, 
+            "end_reason": "", 
+            "charge_description": ""
+        }
+    }, 
+    {
+        "pk": 26, 
+        "model": "people.groupcharge", 
+        "fields": {
+            "group": 8, 
+            "end_date": null, 
+            "start_date": "2012-02-27", 
+            "charge": 168, 
+            "end_reason": "", 
+            "charge_description": ""
+        }
+    }, 
+    {
+        "pk": 27, 
+        "model": "people.groupcharge", 
+        "fields": {
+            "group": 12, 
             "end_date": null, 
             "start_date": "2008-04-29", 
-            "charge": 37, 
+            "charge": 169, 
             "end_reason": "", 
             "charge_description": ""
         }
@@ -3775,10 +4266,10 @@
         "pk": 28, 
         "model": "people.groupcharge", 
         "fields": {
-            "group": 1, 
+            "group": 8, 
             "end_date": null, 
-            "start_date": "2011-02-18", 
-            "charge": 40, 
+            "start_date": "2008-04-29", 
+            "charge": 170, 
             "end_reason": "", 
             "charge_description": ""
         }
@@ -3787,10 +4278,10 @@
         "pk": 29, 
         "model": "people.groupcharge", 
         "fields": {
-            "group": 5, 
-            "end_date": null, 
-            "start_date": "2009-11-30", 
-            "charge": 41, 
+            "group": 13, 
+            "end_date": "2011-03-11", 
+            "start_date": "2008-04-29", 
+            "charge": 171, 
             "end_reason": "", 
             "charge_description": ""
         }
@@ -3799,10 +4290,22 @@
         "pk": 30, 
         "model": "people.groupcharge", 
         "fields": {
-            "group": 7, 
+            "group": 13, 
+            "end_date": null, 
+            "start_date": "2011-03-28", 
+            "charge": 172, 
+            "end_reason": "", 
+            "charge_description": ""
+        }
+    }, 
+    {
+        "pk": 31, 
+        "model": "people.groupcharge", 
+        "fields": {
+            "group": 1, 
             "end_date": null, 
             "start_date": "2008-04-29", 
-            "charge": 42, 
+            "charge": 173, 
             "end_reason": "", 
             "charge_description": ""
         }
@@ -3811,10 +4314,34 @@
         "pk": 32, 
         "model": "people.groupcharge", 
         "fields": {
-            "group": 5, 
+            "group": 1, 
             "end_date": null, 
             "start_date": "2008-04-29", 
-            "charge": 44, 
+            "charge": 174, 
+            "end_reason": "", 
+            "charge_description": ""
+        }
+    }, 
+    {
+        "pk": 33, 
+        "model": "people.groupcharge", 
+        "fields": {
+            "group": 1, 
+            "end_date": null, 
+            "start_date": "2008-04-29", 
+            "charge": 175, 
+            "end_reason": "", 
+            "charge_description": ""
+        }
+    }, 
+    {
+        "pk": 34, 
+        "model": "people.groupcharge", 
+        "fields": {
+            "group": 1, 
+            "end_date": "2008-10-16", 
+            "start_date": "2008-04-29", 
+            "charge": 176, 
             "end_reason": "", 
             "charge_description": ""
         }
@@ -3825,8 +4352,8 @@
         "fields": {
             "group": 1, 
             "end_date": null, 
-            "start_date": "2008-04-29", 
-            "charge": 47, 
+            "start_date": "2008-11-03", 
+            "charge": 177, 
             "end_reason": "", 
             "charge_description": ""
         }
@@ -3836,9 +4363,9 @@
         "model": "people.groupcharge", 
         "fields": {
             "group": 1, 
-            "end_date": null, 
-            "start_date": "2008-08-05", 
-            "charge": 48, 
+            "end_date": "2008-07-18", 
+            "start_date": "2008-04-29", 
+            "charge": 178, 
             "end_reason": "", 
             "charge_description": ""
         }
@@ -3849,8 +4376,8 @@
         "fields": {
             "group": 1, 
             "end_date": null, 
-            "start_date": "2008-04-29", 
-            "charge": 49, 
+            "start_date": "2008-07-28", 
+            "charge": 179, 
             "end_reason": "", 
             "charge_description": ""
         }
@@ -3859,10 +4386,10 @@
         "pk": 38, 
         "model": "people.groupcharge", 
         "fields": {
-            "group": 3, 
+            "group": 5, 
             "end_date": null, 
             "start_date": "2008-04-29", 
-            "charge": 50, 
+            "charge": 180, 
             "end_reason": "", 
             "charge_description": ""
         }
@@ -3871,10 +4398,22 @@
         "pk": 39, 
         "model": "people.groupcharge", 
         "fields": {
-            "group": 1, 
+            "group": 8, 
             "end_date": null, 
             "start_date": "2008-04-29", 
-            "charge": 51, 
+            "charge": 181, 
+            "end_reason": "", 
+            "charge_description": ""
+        }
+    }, 
+    {
+        "pk": 40, 
+        "model": "people.groupcharge", 
+        "fields": {
+            "group": 1, 
+            "end_date": "2011-02-16", 
+            "start_date": "2008-04-29", 
+            "charge": 182, 
             "end_reason": "", 
             "charge_description": ""
         }
@@ -3883,10 +4422,22 @@
         "pk": 41, 
         "model": "people.groupcharge", 
         "fields": {
-            "group": 5, 
+            "group": 1, 
+            "end_date": null, 
+            "start_date": "2011-02-18", 
+            "charge": 183, 
+            "end_reason": "", 
+            "charge_description": ""
+        }
+    }, 
+    {
+        "pk": 42, 
+        "model": "people.groupcharge", 
+        "fields": {
+            "group": 11, 
             "end_date": null, 
             "start_date": "2008-04-29", 
-            "charge": 53, 
+            "charge": 184, 
             "end_reason": "", 
             "charge_description": ""
         }
@@ -3895,10 +4446,10 @@
         "pk": 43, 
         "model": "people.groupcharge", 
         "fields": {
-            "group": 8, 
-            "end_date": null, 
+            "group": 9, 
+            "end_date": "2009-03-01", 
             "start_date": "2008-04-29", 
-            "charge": 23, 
+            "charge": 185, 
             "end_reason": "", 
             "charge_description": ""
         }
@@ -3907,10 +4458,10 @@
         "pk": 44, 
         "model": "people.groupcharge", 
         "fields": {
-            "group": 8, 
-            "end_date": null, 
-            "start_date": "2012-02-07", 
-            "charge": 52, 
+            "group": 18, 
+            "end_date": "2009-07-09", 
+            "start_date": "2009-03-01", 
+            "charge": 185, 
             "end_reason": "", 
             "charge_description": ""
         }
@@ -3919,10 +4470,10 @@
         "pk": 45, 
         "model": "people.groupcharge", 
         "fields": {
-            "group": 8, 
+            "group": 7, 
             "end_date": null, 
-            "start_date": "2008-04-29", 
-            "charge": 26, 
+            "start_date": "2009-07-27", 
+            "charge": 186, 
             "end_reason": "", 
             "charge_description": ""
         }
@@ -3931,10 +4482,10 @@
         "pk": 46, 
         "model": "people.groupcharge", 
         "fields": {
-            "group": 8, 
-            "end_date": null, 
+            "group": 9, 
+            "end_date": "2009-03-01", 
             "start_date": "2008-04-29", 
-            "charge": 28, 
+            "charge": 187, 
             "end_reason": "", 
             "charge_description": ""
         }
@@ -3943,10 +4494,10 @@
         "pk": 47, 
         "model": "people.groupcharge", 
         "fields": {
-            "group": 8, 
-            "end_date": null, 
-            "start_date": "2008-04-29", 
-            "charge": 38, 
+            "group": 18, 
+            "end_date": "2009-07-27", 
+            "start_date": "2009-03-01", 
+            "charge": 187, 
             "end_reason": "", 
             "charge_description": ""
         }
@@ -3955,10 +4506,10 @@
         "pk": 48, 
         "model": "people.groupcharge", 
         "fields": {
-            "group": 14, 
+            "group": 7, 
             "end_date": null, 
-            "start_date": "2008-11-28", 
-            "charge": 45, 
+            "start_date": "2009-07-27", 
+            "charge": 187, 
             "end_reason": "", 
             "charge_description": ""
         }
@@ -3967,10 +4518,10 @@
         "pk": 49, 
         "model": "people.groupcharge", 
         "fields": {
-            "group": 10, 
-            "end_date": null, 
+            "group": 19, 
+            "end_date": "2009-05-07", 
             "start_date": "2008-04-29", 
-            "charge": 20, 
+            "charge": 188, 
             "end_reason": "", 
             "charge_description": ""
         }
@@ -3979,10 +4530,10 @@
         "pk": 50, 
         "model": "people.groupcharge", 
         "fields": {
-            "group": 11, 
-            "end_date": null, 
-            "start_date": "2008-04-29", 
-            "charge": 39, 
+            "group": 2, 
+            "end_date": "2009-11-10", 
+            "start_date": "2009-05-07", 
+            "charge": 188, 
             "end_reason": "", 
             "charge_description": ""
         }
@@ -3991,10 +4542,10 @@
         "pk": 51, 
         "model": "people.groupcharge", 
         "fields": {
-            "group": 11, 
+            "group": 2, 
             "end_date": null, 
-            "start_date": "2008-04-29", 
-            "charge": 46, 
+            "start_date": "2009-11-30", 
+            "charge": 189, 
             "end_reason": "", 
             "charge_description": ""
         }
@@ -4003,10 +4554,10 @@
         "pk": 52, 
         "model": "people.groupcharge", 
         "fields": {
-            "group": 12, 
-            "end_date": null, 
+            "group": 1, 
+            "end_date": "2008-12-16", 
             "start_date": "2008-04-29", 
-            "charge": 27, 
+            "charge": 190, 
             "end_reason": "", 
             "charge_description": ""
         }
@@ -4015,10 +4566,10 @@
         "pk": 53, 
         "model": "people.groupcharge", 
         "fields": {
-            "group": 12, 
+            "group": 1, 
             "end_date": null, 
-            "start_date": "2008-04-29", 
-            "charge": 54, 
+            "start_date": "2008-12-22", 
+            "charge": 191, 
             "end_reason": "", 
             "charge_description": ""
         }
@@ -4027,10 +4578,10 @@
         "pk": 54, 
         "model": "people.groupcharge", 
         "fields": {
-            "group": 13, 
+            "group": 5, 
             "end_date": null, 
-            "start_date": "2011-03-28", 
-            "charge": 43, 
+            "start_date": "2008-04-29", 
+            "charge": 192, 
             "end_reason": "", 
             "charge_description": ""
         }
@@ -4039,10 +4590,10 @@
         "pk": 55, 
         "model": "people.groupcharge", 
         "fields": {
-            "group": 9, 
+            "group": 11, 
             "end_date": null, 
-            "start_date": "2009-07-27", 
-            "charge": 34, 
+            "start_date": "2008-04-29", 
+            "charge": 193, 
             "end_reason": "", 
             "charge_description": ""
         }
@@ -4051,10 +4602,10 @@
         "pk": 56, 
         "model": "people.groupcharge", 
         "fields": {
-            "group": 8, 
+            "group": 1, 
             "end_date": null, 
             "start_date": "2008-04-29", 
-            "charge": 32, 
+            "charge": 194, 
             "end_reason": "", 
             "charge_description": ""
         }
@@ -4063,10 +4614,106 @@
         "pk": 57, 
         "model": "people.groupcharge", 
         "fields": {
-            "group": 8, 
+            "group": 1, 
             "end_date": null, 
-            "start_date": "2008-11-03", 
-            "charge": 24, 
+            "start_date": "2008-04-29", 
+            "charge": 195, 
+            "end_reason": "", 
+            "charge_description": ""
+        }
+    }, 
+    {
+        "pk": 58, 
+        "model": "people.groupcharge", 
+        "fields": {
+            "group": 1, 
+            "end_date": "2009-03-01", 
+            "start_date": "2008-04-29", 
+            "charge": 196, 
+            "end_reason": "", 
+            "charge_description": ""
+        }
+    }, 
+    {
+        "pk": 59, 
+        "model": "people.groupcharge", 
+        "fields": {
+            "group": 18, 
+            "end_date": "2009-07-27", 
+            "start_date": "2009-03-01", 
+            "charge": 196, 
+            "end_reason": "", 
+            "charge_description": ""
+        }
+    }, 
+    {
+        "pk": 60, 
+        "model": "people.groupcharge", 
+        "fields": {
+            "group": 3, 
+            "end_date": null, 
+            "start_date": "2009-07-27", 
+            "charge": 196, 
+            "end_reason": "", 
+            "charge_description": ""
+        }
+    }, 
+    {
+        "pk": 61, 
+        "model": "people.groupcharge", 
+        "fields": {
+            "group": 1, 
+            "end_date": null, 
+            "start_date": "2008-04-29", 
+            "charge": 197, 
+            "end_reason": "", 
+            "charge_description": ""
+        }
+    }, 
+    {
+        "pk": 62, 
+        "model": "people.groupcharge", 
+        "fields": {
+            "group": 14, 
+            "end_date": "2008-11-28", 
+            "start_date": "2008-04-29", 
+            "charge": 198, 
+            "end_reason": "", 
+            "charge_description": ""
+        }
+    }, 
+    {
+        "pk": 63, 
+        "model": "people.groupcharge", 
+        "fields": {
+            "group": 14, 
+            "end_date": null, 
+            "start_date": "2008-11-28", 
+            "charge": 199, 
+            "end_reason": "", 
+            "charge_description": ""
+        }
+    }, 
+    {
+        "pk": 64, 
+        "model": "people.groupcharge", 
+        "fields": {
+            "group": 5, 
+            "end_date": null, 
+            "start_date": "2008-04-29", 
+            "charge": 200, 
+            "end_reason": "", 
+            "charge_description": ""
+        }
+    }, 
+    {
+        "pk": 65, 
+        "model": "people.groupcharge", 
+        "fields": {
+            "group": 12, 
+            "end_date": null, 
+            "start_date": "2008-04-29", 
+            "charge": 201, 
             "end_reason": "", 
             "charge_description": ""
         }
@@ -4075,10 +4722,10 @@
         "pk": 1, 
         "model": "people.groupresponsability", 
         "fields": {
-            "charge_type": "LEADER", 
-            "charge": 21, 
+            "charge_type": "DEPUTY", 
+            "charge": 1, 
             "start_date": "2008-04-29", 
-            "end_date": null, 
+            "end_date": "2009-05-08", 
             "description": ""
         }
     }, 
@@ -4087,9 +4734,9 @@
         "model": "people.groupresponsability", 
         "fields": {
             "charge_type": "DEPUTY", 
-            "charge": 37, 
-            "start_date": "2008-04-29", 
-            "end_date": null, 
+            "charge": 2, 
+            "start_date": "2009-05-08", 
+            "end_date": "2010-02-04", 
             "description": ""
         }
     }, 
@@ -4097,10 +4744,10 @@
         "pk": 3, 
         "model": "people.groupresponsability", 
         "fields": {
-            "charge_type": "MAYOR", 
-            "charge": 56, 
+            "charge_type": "DEPUTY", 
+            "charge": 3, 
             "start_date": "2008-04-29", 
-            "end_date": null, 
+            "end_date": "2010-02-06", 
             "description": ""
         }
     }, 
@@ -4108,9 +4755,9 @@
         "pk": 4, 
         "model": "people.groupresponsability", 
         "fields": {
-            "charge_type": "LEADER", 
-            "charge": 47, 
-            "start_date": "2008-04-29", 
+            "charge_type": "DEPUTY", 
+            "charge": 9, 
+            "start_date": "2010-02-15", 
             "end_date": null, 
             "description": ""
         }
@@ -4120,8 +4767,8 @@
         "model": "people.groupresponsability", 
         "fields": {
             "charge_type": "DEPUTY", 
-            "charge": 45, 
-            "start_date": "2008-04-29", 
+            "charge": 10, 
+            "start_date": "2010-03-15", 
             "end_date": null, 
             "description": ""
         }
@@ -4131,8 +4778,8 @@
         "model": "people.groupresponsability", 
         "fields": {
             "charge_type": "LEADER", 
-            "charge": 30, 
-            "start_date": "2008-04-29", 
+            "charge": 12, 
+            "start_date": "2011-03-16", 
             "end_date": null, 
             "description": ""
         }
@@ -4142,9 +4789,9 @@
         "model": "people.groupresponsability", 
         "fields": {
             "charge_type": "LEADER", 
-            "charge": 38, 
+            "charge": 13, 
             "start_date": "2008-04-29", 
-            "end_date": null, 
+            "end_date": "2009-04-28", 
             "description": ""
         }
     }, 
@@ -4153,9 +4800,9 @@
         "model": "people.groupresponsability", 
         "fields": {
             "charge_type": "LEADER", 
-            "charge": 49, 
-            "start_date": "2008-04-29", 
-            "end_date": null, 
+            "charge": 14, 
+            "start_date": "2009-04-28", 
+            "end_date": "2010-11-30", 
             "description": ""
         }
     }, 
@@ -4164,8 +4811,8 @@
         "model": "people.groupresponsability", 
         "fields": {
             "charge_type": "LEADER", 
-            "charge": 4, 
-            "start_date": "2008-04-29", 
+            "charge": 15, 
+            "start_date": "2010-11-30", 
             "end_date": null, 
             "description": ""
         }
@@ -4175,9 +4822,9 @@
         "model": "people.groupresponsability", 
         "fields": {
             "charge_type": "LEADER", 
-            "charge": 50, 
+            "charge": 16, 
             "start_date": "2008-04-29", 
-            "end_date": null, 
+            "end_date": "2009-11-06", 
             "description": ""
         }
     }, 
@@ -4185,10 +4832,10 @@
         "pk": 11, 
         "model": "people.groupresponsability", 
         "fields": {
-            "charge_type": "DEPUTY", 
-            "charge": 51, 
-            "start_date": "2008-04-29", 
-            "end_date": null, 
+            "charge_type": "LEADER", 
+            "charge": 19, 
+            "start_date": "2009-04-29", 
+            "end_date": "2009-09-08", 
             "description": ""
         }
     }, 
@@ -4197,8 +4844,8 @@
         "model": "people.groupresponsability", 
         "fields": {
             "charge_type": "LEADER", 
-            "charge": 6, 
-            "start_date": "2008-04-29", 
+            "charge": 20, 
+            "start_date": "2009-09-08", 
             "end_date": null, 
             "description": ""
         }
@@ -4207,10 +4854,10 @@
         "pk": 13, 
         "model": "people.groupresponsability", 
         "fields": {
-            "charge_type": "DEPUTY", 
-            "charge": 41, 
+            "charge_type": "LEADER", 
+            "charge": 25, 
             "start_date": "2008-04-29", 
-            "end_date": null, 
+            "end_date": "2012-02-07", 
             "description": ""
         }
     }, 
@@ -4219,7 +4866,7 @@
         "model": "people.groupresponsability", 
         "fields": {
             "charge_type": "LEADER", 
-            "charge": 52, 
+            "charge": 27, 
             "start_date": "2008-04-29", 
             "end_date": null, 
             "description": ""
@@ -4230,9 +4877,9 @@
         "model": "people.groupresponsability", 
         "fields": {
             "charge_type": "LEADER", 
-            "charge": 7, 
+            "charge": 29, 
             "start_date": "2008-04-29", 
-            "end_date": null, 
+            "end_date": "2011-03-11", 
             "description": ""
         }
     }, 
@@ -4240,9 +4887,9 @@
         "pk": 16, 
         "model": "people.groupresponsability", 
         "fields": {
-            "charge_type": "DEPUTY", 
-            "charge": 5, 
-            "start_date": "2008-04-29", 
+            "charge_type": "LEADER", 
+            "charge": 30, 
+            "start_date": "2011-03-28", 
             "end_date": null, 
             "description": ""
         }
@@ -4252,7 +4899,7 @@
         "model": "people.groupresponsability", 
         "fields": {
             "charge_type": "LEADER", 
-            "charge": 54, 
+            "charge": 33, 
             "start_date": "2008-04-29", 
             "end_date": null, 
             "description": ""
@@ -4263,7 +4910,172 @@
         "model": "people.groupresponsability", 
         "fields": {
             "charge_type": "LEADER", 
+            "charge": 38, 
+            "start_date": "2008-04-29", 
+            "end_date": null, 
+            "description": ""
+        }
+    }, 
+    {
+        "pk": 19, 
+        "model": "people.groupresponsability", 
+        "fields": {
+            "charge_type": "LEADER", 
+            "charge": 39, 
+            "start_date": "2012-03-01", 
+            "end_date": null, 
+            "description": ""
+        }
+    }, 
+    {
+        "pk": 20, 
+        "model": "people.groupresponsability", 
+        "fields": {
+            "charge_type": "LEADER", 
+            "charge": 42, 
+            "start_date": "2008-04-29", 
+            "end_date": null, 
+            "description": ""
+        }
+    }, 
+    {
+        "pk": 21, 
+        "model": "people.groupresponsability", 
+        "fields": {
+            "charge_type": "LEADER", 
+            "charge": 43, 
+            "start_date": "2008-04-29", 
+            "end_date": "2009-03-01", 
+            "description": ""
+        }
+    }, 
+    {
+        "pk": 22, 
+        "model": "people.groupresponsability", 
+        "fields": {
+            "charge_type": "LEADER", 
+            "charge": 44, 
+            "start_date": "2009-03-01", 
+            "end_date": "2009-07-09", 
+            "description": ""
+        }
+    }, 
+    {
+        "pk": 23, 
+        "model": "people.groupresponsability", 
+        "fields": {
+            "charge_type": "DEPUTY", 
+            "charge": 46, 
+            "start_date": "2008-04-29", 
+            "end_date": "2009-03-01", 
+            "description": ""
+        }
+    }, 
+    {
+        "pk": 24, 
+        "model": "people.groupresponsability", 
+        "fields": {
+            "charge_type": "DEPUTY", 
+            "charge": 47, 
+            "start_date": "2009-03-01", 
+            "end_date": "2009-07-27", 
+            "description": ""
+        }
+    }, 
+    {
+        "pk": 25, 
+        "model": "people.groupresponsability", 
+        "fields": {
+            "charge_type": "LEADER", 
             "charge": 48, 
+            "start_date": "2009-07-27", 
+            "end_date": null, 
+            "description": ""
+        }
+    }, 
+    {
+        "pk": 26, 
+        "model": "people.groupresponsability", 
+        "fields": {
+            "charge_type": "LEADER", 
+            "charge": 49, 
+            "start_date": "2008-04-29", 
+            "end_date": "2009-05-07", 
+            "description": ""
+        }
+    }, 
+    {
+        "pk": 27, 
+        "model": "people.groupresponsability", 
+        "fields": {
+            "charge_type": "LEADER", 
+            "charge": 50, 
+            "start_date": "2009-05-07", 
+            "end_date": "2009-11-10", 
+            "description": ""
+        }
+    }, 
+    {
+        "pk": 28, 
+        "model": "people.groupresponsability", 
+        "fields": {
+            "charge_type": "LEADER", 
+            "charge": 51, 
+            "start_date": "2009-11-30", 
+            "end_date": "2011-03-16", 
+            "description": ""
+        }
+    }, 
+    {
+        "pk": 29, 
+        "model": "people.groupresponsability", 
+        "fields": {
+            "charge_type": "DEPUTY", 
+            "charge": 55, 
+            "start_date": "2008-04-29", 
+            "end_date": null, 
+            "description": ""
+        }
+    }, 
+    {
+        "pk": 30, 
+        "model": "people.groupresponsability", 
+        "fields": {
+            "charge_type": "LEADER", 
+            "charge": 60, 
+            "start_date": "2009-07-27", 
+            "end_date": null, 
+            "description": ""
+        }
+    }, 
+    {
+        "pk": 31, 
+        "model": "people.groupresponsability", 
+        "fields": {
+            "charge_type": "LEADER", 
+            "charge": 62, 
+            "start_date": "2008-04-29", 
+            "end_date": "2008-11-28", 
+            "description": ""
+        }
+    }, 
+    {
+        "pk": 32, 
+        "model": "people.groupresponsability", 
+        "fields": {
+            "charge_type": "LEADER", 
+            "charge": 63, 
+            "start_date": "2008-11-28", 
+            "end_date": null, 
+            "description": ""
+        }
+    }, 
+    {
+        "pk": 33, 
+        "model": "people.groupresponsability", 
+        "fields": {
+            "charge_type": "DEPUTY", 
+            "charge": 65, 
             "start_date": "2008-04-29", 
             "end_date": null, 
             "description": ""

@@ -379,7 +379,7 @@ class InstitutionCharge(Charge):
         """
         from open_municipio.votations.models import ChargeVote
          
-        absent = ChargeVote.ABSENT
+        absent = ChargeVote.VOTES.absent
         self.n_present_votations = self.chargevote_set.exclude(vote=absent).count()
         self.n_absent_votations = self.chargevote_set.filter(vote=absent).count()
         self.save()
