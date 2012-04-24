@@ -25,7 +25,7 @@ act_dict = {
 sqs = SearchQuerySet().filter(django_ct='acts.act').\
     facet('act_type').facet('is_key').facet('initiative').\
     facet('organ').\
-    facet('categories').facet('tags').\
+    facet('categories').\
     query_facet('pub_date', ActSearchView.THREEDAYS).\
     query_facet('pub_date', ActSearchView.ONEMONTH).\
     query_facet('pub_date', ActSearchView.ONEYEAR).\

@@ -77,9 +77,6 @@ em {
                             {% if result.categories %}
                                 <strong>Categorie</strong>: {{ result.categories|join:", " }}<br/>
                             {% endif %}
-                            {% if result.tags %}
-                                <strong>Tag</strong>: {{ result.tags|join:", " }}<br/>
-                            {% endif %}
                             <strong>Score:</strong> {{ result.score }}
                         </td>
                     </tr>
