@@ -65,7 +65,7 @@
     </h4>
   </hgroup>
 
-  <table class="data text-right tablesorter" id="votation_results">
+  <table class="data text-right table-condensed tablesorter" id="votation_results">
     <thead>
       <tr>
         <th class="sorter-left text-left">Gruppi</th>
@@ -100,16 +100,15 @@
     </tfoot>
   </table>
 
-  <hr>
 
   <ul class="nav nav-tabs">
       <li class="active">
-          <a href="#all_tab" data-toggle="tab">Tutti</a>
+          <a href="#all_votes_tab" data-toggle="tab">Tutti</a>
       </li>
-      <li><a href="#rebels_tab" data-toggle="tab">Ribelli</a></li>
+      <li><a href="#rebels_votes_tab" data-toggle="tab">Ribelli</a></li>
   </ul>
   <div class="tab-content">
-    <div class="tab-pane active" id="all_tab">
+    <div class="tab-pane active" id="all_votes_tab">
       <table class="data text-right tablesorter">
         <thead>
         <tr>
@@ -131,28 +130,28 @@
                 </a>
               </td>
               <td>
-                {% if charge_vote.vote == charge_vote.YES %}
+                {% if charge_vote.vote == charge_vote.VOTES.yes %}
                   <span class="label label-success">Favorevole</span>
                 {% endif %}
               </td>
               <td>
-                {% if charge_vote.vote == charge_vote.NO %}
-                  <span class="label label-warning">Contrario</span>
+                {% if charge_vote.vote == charge_vote.VOTES.no %}
+                  <span class="label label-important">Contrario</span>
                 {% endif %}
               </td>
               <td>
-                {% if charge_vote.vote == charge_vote.ABSTAINED %}
-                  <span class="label label-success">Astenuto</span>
+                {% if charge_vote.vote == charge_vote.VOTES.abstained %}
+                  <span class="label">Astenuto</span>
                 {% endif %}
               </td>
               <td>
-                {% if charge_vote.vote == charge_vote.MISSION %}
+                {% if charge_vote.vote == charge_vote.VOTES.absent %}
+                  <span class="label label-text">Assente</span>
+                {% endif %}
+              </td>
+              <td>
+                {% if charge_vote.vote == charge_vote.VOTES.mission %}
                   <span class="label label-info">Missione</span>
-                {% endif %}
-              </td>
-              <td>
-                {% if charge_vote.vote == charge_vote.ABSENT %}
-                  <span class="label label-white">Assente</span>
                 {% endif %}
               </td>
             </tr>
@@ -161,7 +160,7 @@
         </tbody>
       </table>
     </div>
-    <div class="tab-pane" id="rebels_tab">
+    <div class="tab-pane" id="rebels_votes_tab">
       <table class="data">
         <thead>
         <tr>
@@ -184,28 +183,28 @@
                   </a>
                 </td>
                 <td>
-                  {% if charge_vote.vote = charge_vote.YES %}
+                  {% if charge_vote.vote == charge_vote.VOTES.yes %}
                     <span class="label label-success">Favorevole</span>
                   {% endif %}
                 </td>
                 <td>
-                  {% if charge_vote.vote = charge_vote.NO %}
+                  {% if charge_vote.vote == charge_vote.VOTES.no %}
                     <span class="label label-warning">Contrario</span>
                   {% endif %}
                 </td>
                 <td>
-                  {% if charge_vote.vote = charge_vote.ABSTAINED %}
-                    <span class="label label-success">Astenuto</span>
+                  {% if charge_vote.vote == charge_vote.VOTES.abstained %}
+                    <span class="label">Astenuto</span>
                   {% endif %}
                 </td>
                 <td>
-                  {% if charge_vote.vote = charge_vote.MISSION %}
+                  {% if charge_vote.vote == charge_vote.VOTES.absent %}
+                    <span class="label label-text">Assente</span>
+                  {% endif %}
+                </td>
+                <td>
+                  {% if charge_vote.vote == charge_vote.VOTES.mission %}
                     <span class="label label-info">Missione</span>
-                  {% endif %}
-                </td>
-                <td>
-                  {% if charge_vote.vote = charge_vote.ABSENT %}
-                    <span class="label label-white">Assente</span>
                   {% endif %}
                 </td>
               </tr>
