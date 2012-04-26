@@ -274,6 +274,7 @@ class ActTagEditorView(View):
         new_topics = {} # new set of topics (categories + tags) for the act
         r = re.compile(r'^categories\[(\d+)\]$')
         new_tags_ids = set()
+        new_tags = set()
         for param in self.request.POST:
             if r.match(param):
                 m = r.match(param)
@@ -285,15 +286,40 @@ class ActTagEditorView(View):
                     for tag_id in tag_ids:
                         tag = get_object_or_404(Tag, id=int(tag_id))
                         new_topics[category].append(tag)
-        # assign new categories to the act
-        new_categories = new_topics.keys()
-        tagged_act.category_set = new_categories
-        # assign new tags to the act
-        new_tags = list(Tag.objects.filter(id__in=new_tags_ids))
-        tagged_act.tag_set.add(*new_tags, tagger=self.request.user)
-        # bind tags to categories
-        for category in  new_categories:
-            category.tag_set = new_topics[category]
+                        new_tags.add(tag)
+
+        old_tags = set(tagged_act.tags)
+        old_categories = set(tagged_act.categories)
+
+        # decrement count of removed tags
+        for tag in old_tags - new_tags:
+            tag.count -= 1
+            if tag.count < 0:
+                tag.count = 0
+            tag.save()
+
+        # decrement count of removed categories
+        for cat in old_categories - set(new_topics.keys()):
+            cat.count -= 1
+            if cat.count < 0:
+                cat.count = 0
+            cat.save()
+
+        # remove old topics
+        tagged_act.tag_set.clear()
+
+        # adding new topics
+        for cat in new_topics.keys():
+            tagged_act.tag_set.add(*new_topics.get(cat), tagger=self.request.user, category=cat)
+            # increment added categories
+            if cat not in old_categories:
+                cat.count += 1
+                cat.save()
+
+        # increment added tags
+        for tag in new_tags - old_tags:
+            tag.count += 1
+            tag.save()
         
         return HttpResponseRedirect(self.get_success_url())   
  

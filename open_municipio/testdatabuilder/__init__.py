@@ -251,9 +251,10 @@ class RandomItemsFactory(object):
                 sample_size = random.randint(conf.MIN_TAGS_PER_CATEGORY, conf.MAX_TAGS_PER_CATEGORY)
                 tags = random.sample(population, sample_size)
                 # add tags to the act
-                act.tag_set.add(*tags)
+                act.tag_set.add(*tags, category=category)
                 # associate tags with the category
                 category.tag_set.add(*tags)
+
 
     def bookmark_acts(self):
         """
