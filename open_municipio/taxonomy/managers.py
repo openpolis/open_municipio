@@ -1,6 +1,5 @@
 from taggit.managers import TaggableManager, _TaggableManager
 from taggit.utils import require_instance_manager
-from open_municipio.taxonomy.models import TaggedAct
 
 class TopicableManager(TaggableManager):
 
