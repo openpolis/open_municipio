@@ -167,9 +167,10 @@ class RandomItemsFactory(object):
                 # to choosing with weighted probabilities
                 vw = list(itertools.chain.from_iterable([
                     [ChargeVote.VOTES.no]*30,  # 30% NO
-                    [ChargeVote.VOTES.yes]*60,  # 60% YES
-                    [ChargeVote.VOTES.abstained]*5,   #  5% ABSTAINED
+                    [ChargeVote.VOTES.yes]*50,  # 50% YES
+                    [ChargeVote.VOTES.abstained]*10,   #  5% ABSTAINED
                     [ChargeVote.VOTES.canceled]*5    #  5% ABSENT
+                    [ChargeVote.VOTES.absent]*5    #  5% ABSENT
                 ]))
                 for charge in municipality.council.members:
                     # votings are drawn randomly with weighted probabilities

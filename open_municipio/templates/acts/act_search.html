@@ -34,81 +34,37 @@ em {
 
     {% if n_results %}
 
-        {% if page.has_previous or page.has_next %}
-            <div class="pagination pagination-right">
-                <ul>
-                    {% if page.has_previous %}
-                        <li><a href="{{ base_url }}&page={{ page.previous_page_number }}">&larr;</a></li>
-                    {% else %}
-                        <li class="disabled"><span>&larr;</span></li>
-                    {% endif %}
+      {% include "commons/pagination.html" with base_url=base_url %}
 
-                    {% for p in paginator.page_range %}
-                        <li{% if p == page.number %} class="active"{% endif %}>
-                            <a href="{{ base_url }}&page={{ p }}">{{ p }}</a>
-                        </li>
-                    {% endfor %}
+      <section>
+        <h3>{% if not query %}Tutti i {% endif %} {{ n_results }} documenti</h3>
 
-                    {% if page.has_next %}
-                        <li><a href="{{ base_url }}&page={{ page.next_page_number }}">&rarr;</a></li>
-                    {% else %}
-                        <li class="disabled"><span>&rarr;</span></li>
-                    {% endif %}
-                </ul>
-            </div>
-        {% endif %}
+        <table class="search-results">
+          <tbody>
+          {% for result in page.object_list %}
+          <tr>
+            <td>{{ result.pub_date|circled:"full" }}</td>
+            <td>
+              <a href="{{ result.url }}">{{ result.title }}</a>
+              <br/><strong>{{ result.act_type }}</strong>
+              {% comment %}{{ result.highlighted.text.0|safe }}<br/>{% endcomment %}
+              {% if result.categories %}
+                <br/>Categorie: {% for cat in result.categories %}<a href="{{ cat.get_absolute_url }}">{{ cat }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}
+              {% endif %}
+              {% if result.tags %}
+                <br/>Tag: {% for tag in result.tags %}<a href="{{ tag.get_absolute_url }}">{{ tag }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}
+              {% endif %}
+              <!-- <strong>Score:</strong> {{ result.score }} -->
+            </td>
+          </tr>
+          {% empty %}
+              <p>Nessun risultato trovato.</p>
+          {% endfor %}
+          </tbody>
+        </table>
+      </section>
 
-        <section>
-          <h3>{% if not query %}Tutti i {% endif %} {{ n_results }} documenti</h3>
-
-          <table class="search-results">
-            <tbody>
-            {% for result in page.object_list %}
-            <tr>
-              <td>{{ result.pub_date|circled:"full,dark" }}</td>
-              <td>
-                <a href="{{ result.url }}">{{ result.title }}</a>
-                <br/><strong>{{ result.act_type }}</strong>
-                {% comment %}{{ result.highlighted.text.0|safe }}<br/>{% endcomment %}
-                {% if result.categories %}
-                  <br/>Categorie: {% for cat in result.categories %}<a href="{{ cat.get_absolute_url }}">{{ cat }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}
-                {% endif %}
-                {% if result.tags %}
-                  <br/>Tag: {% for tag in result.tags %}<a href="{{ tag.get_absolute_url }}">{{ tag }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}
-                {% endif %}
-                <!-- <strong>Score:</strong> {{ result.score }} -->
-              </td>
-            </tr>
-            {% empty %}
-                <p>Nessun risultato trovato.</p>
-            {% endfor %}
-            </tbody>
-          </table>
-        </section>
-
-        {% if page.has_previous or page.has_next %}
-            <div class="pagination pagination-right">
-                <ul>
-                    {% if page.has_previous %}
-                        <li><a href="{{ base_url }}&page={{ page.previous_page_number }}">&larr;</a></li>
-                    {% else %}
-                        <li class="disabled"><span>&larr;</span></li>
-                    {% endif %}
-
-                    {% for p in paginator.page_range %}
-                        <li{% if p == page.number %} class="active"{% endif %}>
-                            <a href="{{ base_url }}&page={{ p }}">{{ p }}</a>
-                        </li>
-                    {% endfor %}
-
-                    {% if page.has_next %}
-                        <li><a href="{{ base_url }}&page={{ page.next_page_number }}">&rarr;</a></li>
-                    {% else %}
-                        <li class="disabled"><span>&rarr;</span></li>
-                    {% endif %}
-                </ul>
-            </div>
-        {% endif %}
+      {% include "commons/pagination.html" with base_url=base_url %}
 
     {% else %}
         {# Show some example queries to run, maybe query syntax, something else? #}

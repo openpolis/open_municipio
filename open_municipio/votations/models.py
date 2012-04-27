@@ -186,7 +186,6 @@ class Votation(models.Model):
                 else:
                     vote = GroupVote.VOTES.noncomputable
 
-
                 # get or create group votation
                 gv, created = GroupVote.objects.get_or_create(votation=self, group=g, defaults={'vote':vote})
 
