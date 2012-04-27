@@ -9,7 +9,9 @@
          nel caso di delibere è l'id della proposta
     
     final_id - identifica l'atto quando è diventato delibera
+    title - è il titolo con cui la delibera è identificata
     initiative - è il tipo di iniziativa se di consiglio, di giunta o popolare
+    presentation_date - è la data della seduta in cui la delibera è presentata
     approval_date - data di approvazione (se approvata)
     execution_date - data in cui la delibera diventa esecutiva
 -->
@@ -20,10 +22,8 @@
     xsi:schemaLocation="DataImport.xsd"
     presentation_date="20110904T1325Z+1"
     initiative="council_member" id="2012/D/001" final_id="001"
+    title="Lorem ipsum dolor sit amet"
     approval_date="01-03-2012" execution_date="04-05-2012">
-    
-    <!-- Titolo dell'atto -->
-    <om:Content title="Lorem ipsum dolor sit amet"/>
 
     <!-- 
     Esistono due tipologie di firmatari: 

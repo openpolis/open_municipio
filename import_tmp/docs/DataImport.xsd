@@ -69,12 +69,13 @@
 
 	<xs:complexType name="actType">
 		<xs:sequence>
-			<xs:element ref="Content" minOccurs="1" maxOccurs="1"/>
+			<xs:element ref="Content" minOccurs="0" maxOccurs="1"/>
 		</xs:sequence>
 		<xs:attribute name="id" use="required" type="xs:string"/>
 		<xs:attribute name="title" use="required" type="xs:string"/>
 		<!-- presentation date is not present because every it is derived from the first TransitionStep -->
 		<!-- the text of the act must be wrapped in a Section -->
+		<xs:attribute name="presentation_date" type="xs:date"/>
 	</xs:complexType>
 
 	<xs:complexType name="councilActType">
@@ -119,7 +120,7 @@
 	<xs:element name="ActSubscribers">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element maxOccurs="unbounded" ref="ChargeXRef" />
+				<xs:element maxOccurs="unbounded" ref="ChargeXRef"/>
 			</xs:sequence>
 			<xs:attribute name="type">
 				<xs:simpleType>
@@ -191,7 +192,7 @@
 	<xs:element name="OpenMunicipio">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element ref="Scheduling"/>
+				<xs:element ref="Scheduling" minOccurs="0"/>
 				<xs:element minOccurs="0" maxOccurs="1" ref="People"/>
 				<xs:element ref="Acts" minOccurs="0" maxOccurs="1"/>
 				<xs:element maxOccurs="1" minOccurs="0" ref="Sittings"/>
@@ -359,17 +360,12 @@
 						<xs:element ref="ActTargets" minOccurs="1" maxOccurs="1"/>
 						<!-- 						<xs:element ref="QuestionText" minOccurs="1" maxOccurs="1" /> -->
 						<!-- the Answer is optional because the act may have not received it, yet -->
+						<xs:element minOccurs="0" ref="QuestionMotivationText"/>
 						<xs:element ref="Answer" minOccurs="0" maxOccurs="1"/>
-						<xs:element ref="InterrogationTransition" minOccurs="1"
+						<xs:element ref="InterrogationTransition" minOccurs="0"
 							maxOccurs="unbounded"/>
 					</xs:sequence>
-					<xs:attribute name="answer_type" use="required">
-						<xs:simpleType>
-							<xs:restriction base="xs:token">
-								<xs:enumeration value="written"/>
-								<xs:enumeration value="oral"/>
-							</xs:restriction>
-						</xs:simpleType>
+					<xs:attribute name="answer_type" use="required" type="answerType">
 					</xs:attribute>
 				</xs:extension>
 			</xs:complexContent>
@@ -381,24 +377,22 @@
 	</xs:element>
 
 	<xs:element name="Answer">
-		<xs:complexType>
+		<xs:complexType mixed="false">
 			<xs:sequence>
-				<xs:element ref="ReplyInstitution" minOccurs="0" maxOccurs="1"/>
-				<xs:element ref="ReplyText" minOccurs="1"/>
+				<xs:element name="AnswerText">
+					<xs:complexType mixed="true"/>
+				</xs:element>
+				<xs:element minOccurs="0" name="ReplyText">
+					<xs:complexType mixed="true"/>
+				</xs:element>
 			</xs:sequence>
-			<xs:attribute name="answerType" use="required">
-				<xs:simpleType>
-					<xs:restriction base="xs:token">
-						<xs:enumeration value="written"/>
-						<xs:enumeration value="oral"/>
-					</xs:restriction>
-				</xs:simpleType>
-			</xs:attribute>
-			<xs:attribute name="site" use="required" type="siteType"/>
+			<xs:attribute name="answer_date" type="xs:date"/>
 		</xs:complexType>
 	</xs:element>
 
-	<xs:element name="ReplyText"/>
+	<xs:element name="ReplyText">
+		<xs:complexType mixed="true"/>
+	</xs:element>
 	<xs:element name="ReplyInstitution" type="bodyType"> </xs:element>
 
 	<xs:element name="Interpellation">
@@ -408,10 +402,12 @@
 					<xs:sequence>
 						<xs:element ref="ActTargets" minOccurs="1" maxOccurs="1"/>
 						<!-- the Answer is optional because the act may have not received it, yet -->
+						<xs:element minOccurs="0" ref="QuestionMotivationText"/>
 						<xs:element ref="Answer" minOccurs="0" maxOccurs="1"/>
-						<xs:element ref="InterpellationTransition" minOccurs="1"
+						<xs:element ref="InterpellationTransition" minOccurs="0"
 							maxOccurs="unbounded"/>
 					</xs:sequence>
+					<xs:attribute name="answer_type" type="answerType"/>
 				</xs:extension>
 			</xs:complexContent>
 		</xs:complexType>
@@ -439,8 +435,8 @@
 				<xs:extension base="councilActType">
 					<xs:sequence>
 						<xs:element ref="Emendation" minOccurs="0" maxOccurs="unbounded"/>
-						<xs:element ref="MotionBallot" minOccurs="0" maxOccurs="1"/>
-						<xs:element ref="MotionTransition" minOccurs="1" maxOccurs="unbounded"/>
+						<xs:element maxOccurs="unbounded" minOccurs="0" ref="Attachment"/>
+						<xs:element ref="MotionTransition" minOccurs="0" maxOccurs="unbounded"/>
 					</xs:sequence>
 				</xs:extension>
 			</xs:complexContent>
@@ -730,7 +726,7 @@
 						<xs:enumeration value="Accepted"/>
 						<xs:enumeration value="Rejected"/>
 						<xs:enumeration value="Retired"/>
-                        <xs:enumeration value="Postponed" />
+						<xs:enumeration value="Postponed"/>
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:attribute>
@@ -928,19 +924,19 @@
 					<xs:restriction base="xs:token">
 						<xs:enumeration value="yes"/>
 						<xs:enumeration value="no"/>
-                        <xs:enumeration value="abstained" />
-                        <xs:enumeration value="mission" />
-                        <xs:enumeration value="absent" />
-                        <!-- partecipates to an invalid votation -->
-                        <xs:enumeration value="invalid" />
-                        <!-- it is president during votation, and thus it does not vote -->
-                        <xs:enumeration value="president" />
-                        <!-- the charge requires the votation but does not vote -->
-                        <xs:enumeration value="requires" />
-                        <!-- the votation has been canceled -->
-                        <xs:enumeration value="canceled" />
-                        <!-- the votation is secret -->
-                        <xs:enumeration value="secret" />
+						<xs:enumeration value="abstained"/>
+						<xs:enumeration value="mission"/>
+						<xs:enumeration value="absent"/>
+						<!-- partecipates to an invalid votation -->
+						<xs:enumeration value="invalid"/>
+						<!-- it is president during votation, and thus it does not vote -->
+						<xs:enumeration value="president"/>
+						<!-- the charge requires the votation but does not vote -->
+						<xs:enumeration value="requires"/>
+						<!-- the votation has been canceled -->
+						<xs:enumeration value="canceled"/>
+						<!-- the votation is secret -->
+						<xs:enumeration value="secret"/>
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:attribute>
@@ -1043,4 +1039,13 @@
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="Description" type="contentType"/>
+	<xs:simpleType name="answerType">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="written"/>
+			<xs:enumeration value="oral"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="QuestionMotivationText">
+		<xs:complexType mixed="true"/>
+	</xs:element>
 </xs:schema>
