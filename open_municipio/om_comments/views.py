@@ -1,12 +1,16 @@
-from django import template
 from django.conf import settings
-from django.contrib import comments
-from django.contrib.auth.decorators import login_required
-from django.contrib.comments.models import Comment
-from django.http import HttpResponse, HttpResponseRedirect
+
 from django.shortcuts import get_object_or_404, redirect
 
+from django.contrib import comments
+from django.contrib.auth.decorators import login_required
+
+from voting.views import RecordVoteOnItemView
+
+from open_municipio.om_comments.models import CommentWithMood
+
 import datetime
+
 
 
 # Number of minutes within users can delete their own comments
@@ -35,3 +39,7 @@ def delete_own_comment(request, message_id):
 
     # Whatever happened, just get back to the act page
     return redirect(comment.content_object.get_absolute_url() )
+
+
+class RecordVoteOnCommentView(RecordVoteOnItemView):
+    model = CommentWithMood  

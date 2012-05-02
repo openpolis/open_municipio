@@ -1,24 +1,14 @@
 from django.conf.urls.defaults import *
 
-from voting.views import vote_on_object
-
 from haystack.query import SearchQuerySet
-
-from open_municipio.acts.models import Act
 
 from open_municipio.acts.views import (ActSearchView, AgendaDetailView,
                                        DeliberationDetailView, InterpellationDetailView,
                                        InterrogationDetailView, MotionDetailView,
-                                       ActTransitionAddView, ActTransitionRemoveView, ActTagEditorView, ActLiveEditView)
+                                       ActTransitionAddView, ActTransitionRemoveView, ActTagEditorView, 
+                                       ActLiveEditView, RecordVoteOnActView)
 
 from open_municipio.locations.views import ActTagByLocationView
-
-
-act_dict = {
-    'model': Act,
-    'template_object_name': 'act',
-    'allow_xmlhttprequest': 'true',
-}
 
 
 ## SearchQuerySet with multiple facets and highlight
@@ -80,6 +70,5 @@ urlpatterns += patterns('',
 
 ## Votes casted by users
 urlpatterns += patterns('',
-    url(r'^(?P<object_id>\d+)/(?P<direction>up|down|clear)vote/?$', vote_on_object, act_dict, name='om_act_user_voting'),
-
+    url(r'^(?P<pk>\d+)/vote/(?P<direction>up|down|clear)/$', RecordVoteOnActView.as_view(), name='om_act_record_user_vote'),
 )                        
