@@ -1,7 +1,7 @@
 {% load om_utils %}
 {% load voting_tags %}
-{% load om_voting_tags %}
-{% votes_for_object act.act_ptr as num_votes %}
+
+{% votes_for_object act.act_ptr as act_votes %}
 
 
 {% vote_by_user request.user on act.act_ptr as vote %}
@@ -9,7 +9,7 @@
   <table id="act-voting-table">
 
     <tr>
-      <td>{{ num_votes.upvotes|circled }}</td>
+      <td>{{ act_votes.upvotes|circled }}</td>
       <td>
         <h4>Cittadini favorevoli all'atto{% if vote.vote and vote.vote > 0 %}, incluso te{% endif %}</h4>
         {% if vote %}
@@ -28,7 +28,7 @@
     </tr>
 
     <tr>
-      <td>{{ num_votes.downvotes|circled }}</td>
+      <td>{{ act_votes.downvotes|circled }}</td>
       <td>
         <h4>Cittadini contrari all'atto{% if vote.vote and vote.vote < 0 %}, incluso te{% endif %}</h4>
         {% if vote %}
