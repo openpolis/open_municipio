@@ -271,6 +271,10 @@ class ActTagEditorView(View):
     
     def post(self, request, *args, **kwargs):
         tagged_act = self.tagged_act = self.get_object()
+
+        # remove old topics
+        tagged_act.tag_set.clear()
+
         new_topics = {} # new set of topics (categories + tags) for the act
         r = re.compile(r'^categories\[(\d+)\]$')
         new_tags_ids = set()
@@ -288,38 +292,10 @@ class ActTagEditorView(View):
                         new_topics[category].append(tag)
                         new_tags.add(tag)
 
-        old_tags = set(tagged_act.tags)
-        old_categories = set(tagged_act.categories)
-
-        # decrement count of removed tags
-        for tag in old_tags - new_tags:
-            tag.count -= 1
-            if tag.count < 0:
-                tag.count = 0
-            tag.save()
-
-        # decrement count of removed categories
-        for cat in old_categories - set(new_topics.keys()):
-            cat.count -= 1
-            if cat.count < 0:
-                cat.count = 0
-            cat.save()
-
-        # remove old topics
-        tagged_act.tag_set.clear()
-
         # adding new topics
         for cat in new_topics.keys():
             tagged_act.tag_set.add(*new_topics.get(cat), tagger=self.request.user, category=cat)
-            # increment added categories
-            if cat not in old_categories:
-                cat.count += 1
-                cat.save()
 
-        # increment added tags
-        for tag in new_tags - old_tags:
-            tag.count += 1
-            tag.save()
         
         return HttpResponseRedirect(self.get_success_url())   
  

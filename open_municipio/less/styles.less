@@ -16,12 +16,13 @@ body {
     font-size: 16px;
     font-weight: normal;
   }
-  hgroup { margin-bottom: 20px; }
+  hgroup { margin-bottom: 0px; }
   #content, #sidebar {
     padding-top: 35px;
     position: relative;
   }
   #sidebar {
+    h3 { font-size: 20px; }
     // default for lists
     ul.list-simple {
       list-style: none;
@@ -39,12 +40,35 @@ body {
       a { font-weight: bold; }
       p { margin: 9px 0; }
     }
+
+    .nav-tabs {
+      margin-bottom: 0;
+    }
+    .tab-content {
+      border: 1px solid #DDD;
+      border-top: 0;
+    }
   }
   #main.two_columns {
     .two_columns_background(66%, transparent, @semiWhite );
   }
   .navbar.navbar-fixed-bottom form.navbar-search {
     input { height: 13px; }
+  }
+
+  #content {
+    hgroup {
+      margin-bottom: 20px;
+      h2 {
+        line-height: 20px;
+        margin-bottom: 5px;
+      }
+      h4 { font-weight: normal; }
+    }
+    > section {
+      margin: 40px 0;
+
+    }
   }
 
   // Header colouring
@@ -294,6 +318,7 @@ table.stats {
   .clearfix;
   margin-bottom: 20px;
   padding-bottom: 10px;
+  border-bottom: 5px solid @grayLighter;
 
   h2 {
     color: @grayLight;
@@ -301,7 +326,7 @@ table.stats {
     img { vertical-align: middle; margin-right: 10px; }
   }
   p { margin: 10px 0; }
-  ul.list-floated li { margin-bottom: 0; }
+  ul li { padding: 5px 0; border-bottom: 1px solid @grayLighter; }
 
 }
 
@@ -468,11 +493,10 @@ table.stats {
 ul.feed-list {
   margin: 0;
   list-style: none;
-  background-color: @white;
   li {
     //background-color: @lightBackground;
-    .bg-light;
-    margin-bottom: 3px;
+
+    border-bottom: 3px solid @semiWhite;
     padding: 10px;
   }
   .rank-value { color: @grayLight; font-size: 2.5em; font-weight: bold; }
@@ -484,7 +508,7 @@ ul.list-inline {
   li { display: inline; }
 }
 ul.list-floated {
-  li { width: 48%; float:left; margin-bottom: 10px; padding-right: 1%; }
+  li { width: 48%; float:left; margin-bottom: 10px; padding-right: 1%; list-style: none; }
 }
 
 ul.data-list {
@@ -540,19 +564,10 @@ dl.data-list {
 }
 
 /* Tag cloud */
-#cloud { padding: 2px; line-height: 3em; text-align: center; }
-#cloud li { display: inline; }
-#cloud a { padding: 0px; }
-#cloud a.tag1 { font-size: 0.7em; font-weight: 100; }
-#cloud a.tag2 { font-size: 0.8em; font-weight: 200; }
-#cloud a.tag3 { font-size: 0.9em; font-weight: 300; }
-#cloud a.tag4 { font-size: 1.0em; font-weight: 400; }
-#cloud a.tag5 { font-size: 1.2em; font-weight: 500; }
-#cloud a.tag6 { font-size: 1.4em; font-weight: 600; }
-#cloud a.tag7 { font-size: 1.6em; font-weight: 700; }
-#cloud a.tag8 { font-size: 1.8em; font-weight: 800; }
-#cloud a.tag9 { font-size: 2.2em; font-weight: 900; }
-#cloud a.tag10 { font-size: 2.5em; font-weight: 900; }
+.tags-cloud { padding: 2px; line-height: 3em; text-align: center; }
+.tags-cloud li { display: inline; }
+.tags-cloud a { padding: 0 5px 0 0; }
+
 
 
 table.tablesorter {
@@ -563,6 +578,7 @@ table.tablesorter {
     background-position: center right;
     padding: 4px 20px 4px 4px;
     cursor: pointer;
+    white-space: nowrap;
   }
 
   tbody td {
@@ -572,6 +588,7 @@ table.tablesorter {
   }
 
   th.sorter-left {
+    background-repeat: no-repeat;
     background-image: url(data:image/gif;base64,R0lGODlhFQAJAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAkAAAIXjI+AywnaYnhUMoqt3gZXPmVg94yJVQAAOw==);
     background-position: center left;
     padding: 4px 4px 4px 20px;
@@ -596,4 +613,53 @@ table.tablesorter {
   /* black desc arrow */
     background-image: url(data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjI8Bya2wnINUMopZAQA7);
   }
+}
+
+.page-tabs {
+
+  background-color: #4788C2;
+  padding: 0 15px;
+  li {
+    position:relative;
+    border: 0;
+    border-left: 1px solid white;
+
+    &.active {
+      border: 0;
+      a {
+        margin-top: -8px;
+        padding: 8px 30px;
+        border-color: #4788C2;
+        border-bottom: 1px solid white;
+        border-radius: 4px 4px 0 0;
+        font-weight: normal;
+      }
+    }
+    > a {
+      color: white;
+      padding: 4px 30px 4px 30px;
+      border-radius: 0;
+      font-weight: bold;
+      border: 0;
+      &:hover { background: transparent; }
+    }
+  }
+
+   li.active + li { border-left: 0; border-right: 1px solid white; }
+}
+
+
+.list-plain {
+  margin:0;
+  padding:0;
+  list-style: none;
+  li {
+    padding: 5px 0;
+    .monitoring {
+      color: @grayLight;
+      display: block;
+      i { color: @textColor; }
+    }
+  }
+
 }
