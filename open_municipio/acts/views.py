@@ -337,8 +337,7 @@ class ActTransitionToggleBaseView(FormView):
         return self.act.downcast().get_absolute_url()
 
     def get(self, *args, **kwargs):
-        msg = "This view can be accessed only via POST"
-        return HttpResponseNotAllowed(msg)
+        return HttpResponseNotAllowed(['POST'])
 
 
 class ActTransitionAddView(ActTransitionToggleBaseView):
