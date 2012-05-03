@@ -1,8 +1,7 @@
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, HttpResponseBadRequest, HttpResponseNotAllowed
 from django.utils.decorators import method_decorator
-from django.views.generic import View, DetailView, ListView
-from django.views.generic.edit import FormView
+from django.views.generic import View, DetailView, ListView, FormView
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils import simplejson as json

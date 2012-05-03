@@ -163,3 +163,6 @@ SITE_INFO = {
     'main_city': u'City'
 }
 
+## settings for the ``open_municipio.om_comments`` app
+# Number of second within which users can delete their own comments
+OM_COMMENTS_REMOVAL_MAX_TIME = 600
