@@ -1,4 +1,6 @@
 from django.db import models
+from django.db.models.signals import post_save, pre_delete
+from django.dispatch.dispatcher import receiver
 from django.utils.translation import ugettext_lazy as _
 
 from django.contrib.auth.models import User
@@ -21,6 +23,9 @@ class Location(SlugModel):
     latitude = models.FloatField(verbose_name=_('Latitude'), blank=True, null=True)
     # FIXME: choose the right number of significant digits
     longitude = models.FloatField(verbose_name=_('Longitude'), blank=True, null=True)
+
+    # cached value of how many act uses it
+    count = models.IntegerField(default=0)
     
     class Meta:
         verbose_name = _('location')
@@ -55,7 +60,7 @@ class TaggedActByLocation(models.Model):
     act = models.ForeignKey('acts.Act')
     location = models.ForeignKey(Location, related_name='tagged_act_set')
     tagger = models.ForeignKey(User, null=True, blank=True, editable=False)
-    tagging_time = models.DateTimeField(null=True, auto_now_add=True, editable=False)    
+    tagging_time = models.DateTimeField(null=True, auto_now_add=True, editable=False)
                                        
     class Meta:
         verbose_name = _("tagged act by location")
@@ -68,4 +73,35 @@ class TaggedActByLocation(models.Model):
                   'act_id': self.act.pk,
                   'time': self.tagging_time,
                   }
-        return u"User '%(tagger)s' added location '%(location)s' to act #%(act_id)s at %(time)s" % params 
+        return u"User '%(tagger)s' added location '%(location)s' to act #%(act_id)s at %(time)s" % params
+
+def reset_location_counters():
+    for item in Location.objects.all():
+        item.count = TaggedActByLocation.objects.filter(location=item).count()
+        item.save()
+
+def locations_tagging_stats():
+    print "------\nTAGGING STATS:\n"
+    print "Locations: \n"
+    print [("%s[%s]" % (x, x.count)) for x in Location.objects.all()]
+    print "\n-----"
+
+
+@receiver(post_save, sender=TaggedActByLocation)
+def new_tagging_by_location(**kwargs):
+    """
+    Increment counter of related location
+    """
+    if not kwargs.get('raw', False) and kwargs.get('created', False):
+        tagging = kwargs.get('instance')
+        tagging.location.count += 1
+        tagging.location.save()
+
+@receiver(pre_delete, sender=TaggedActByLocation)
+def remove_tagging_by_location(**kwargs):
+    """
+    Decrement counter of related location
+    """
+    tagging = kwargs.get('instance')
+    tagging.location.count = max(0, tagging.location.count - 1)
+    tagging.location.save()
