@@ -4,8 +4,8 @@ from django import template
 import datetime
 
 
-
 register = template.Library()
+
 @register.filter(name='comment_TTL')
 def comment_TTL(comment):
     """

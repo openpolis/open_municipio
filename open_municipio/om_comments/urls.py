@@ -1,4 +1,4 @@
-from django.conf.urls.defaults import include, patterns, url
+from django.conf.urls.defaults import patterns, url
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.comments.views.comments import comment_done, post_comment
