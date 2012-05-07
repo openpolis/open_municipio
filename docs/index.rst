@@ -16,6 +16,7 @@ Contents:
    dev/GUIDELINES
    dev/code/queries
    dev/code/apps/testdatabuilder
+   dev/code/apps/newscache
 
 Indices and tables
 ==================
