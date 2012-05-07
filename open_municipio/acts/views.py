@@ -1,12 +1,14 @@
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, HttpResponseBadRequest, HttpResponseNotAllowed
 from django.utils.decorators import method_decorator
-from django.views.generic import View, DetailView, ListView
-from django.views.generic.edit import FormView
+from django.views.generic import View, DetailView, ListView, FormView
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
+from django.utils import simplejson as json
 
-from django.contrib.auth.decorators import user_passes_test, login_required
+from django.contrib.auth.decorators import user_passes_test
+
+from voting.views import RecordVoteOnItemView
 
 from open_municipio.acts.models import Act, Agenda, Deliberation, Interpellation, Interrogation, Motion, Transition
 from open_municipio.acts.forms import ActDescriptionForm, ActTransitionForm, ActFinalTransitionForm, ActTitleForm
@@ -22,7 +24,6 @@ from open_municipio.locations.forms import ActLocationsAddForm
 
 import re
 
-from django.utils import simplejson as json
 
 
 class ActSearchView(ExtendedFacetedSearchView):
@@ -345,4 +346,8 @@ class ActTransitionRemoveView(ActTransitionToggleBaseView):
         transition = get_object_or_404(Transition, pk=request.POST['transition_id'])
         transition.delete()
 
-        return HttpResponseRedirect( self.get_success_url() )
+        return HttpResponseRedirect(self.get_success_url())
+    
+    
+class RecordVoteOnActView(RecordVoteOnItemView):
+    model = Act   
