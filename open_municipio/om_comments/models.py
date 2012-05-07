@@ -3,7 +3,6 @@ from django.db.models.signals import post_save, pre_delete
 from django.dispatch.dispatcher import receiver
 from django.template.context import Context
 from django.utils.translation import ugettext_lazy as _
-from django.core.exceptions import ObjectDoesNotExist
 
 from django.contrib.comments.models import Comment
 from django.contrib.contenttypes.models import ContentType
@@ -104,7 +103,7 @@ def new_user_activity(sender, **kwargs):
 @receiver(pre_delete, sender=Vote)
 def removed_comment_or_vote(sender, **kwargs):
     """
-    When a user revokes either a vote or a comment on a given object, 
+    When a user revokes either a vote or a comment on a given content object, 
     delete the corresponding record(s) from the newscache.
     """
     generating_object = kwargs['instance']

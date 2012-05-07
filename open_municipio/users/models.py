@@ -1,17 +1,18 @@
-from django.contrib.contenttypes import generic
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch.dispatcher import receiver
 from django.utils.translation import ugettext_lazy as _
+
 from django.contrib.auth.models import User, Group
+
 from model_utils import Choices
-import sys
-from open_municipio.newscache.models import News
+
+from open_municipio.newscache.models import NewsTargetMixin
 from open_municipio.people.models import Person
 
 
-class UserProfile(models.Model):
+class UserProfile(models.Model, NewsTargetMixin):
     """
     This model describes a user's profile.
     
@@ -34,7 +35,8 @@ class UserProfile(models.Model):
     
     * From user to profile: ``user.get_profile()``
     * From profile to user: ``profile.user``
-
+    
+    The ``related_news`` attribute can be used to fetch news items related to a given user.
     """
     PRIVACY_LEVELS = Choices(
         (1, 'all', _('all')),
@@ -64,11 +66,6 @@ class UserProfile(models.Model):
     # TODO: ``city`` must be a foreign key to a proper, dedicated table of locations
     city = models.CharField(_(u'location'), max_length=128)
 
-    # manager to handle the list of news that have the act as related object
-    related_news_set = generic.GenericRelation(News,
-                                           content_type_field='related_content_type',
-                                           object_id_field='related_object_pk')
-
     class Meta:
         db_table = u'users_user_profile'
 
@@ -78,13 +75,6 @@ class UserProfile(models.Model):
     @models.permalink
     def get_absolute_url(self):
         return 'profiles_profile_detail', (), { 'username': self.user.username }
-
-    @property
-    def related_news(self):
-        """
-        Returns the related_news_set as a list of objects
-        """
-        return self.related_news_set.all()
 
     @property
     def public_name(self):
