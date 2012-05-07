@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    Una Interrogation è una interrogazione,
+    che può ricevere una risposta o no.
+    
+    Attributi:
+    id - identifica l'atto internamente, 
+         secondo le specifiche del sistema informativo che lo genera
+    presentation_date - è la data della seduta in cui l'interrogazione è posta
+    title - è il titolo con cui l'iunterrogazione è identificata
+-->
+<om:Interrogation xmlns:xlink="http://www.w3.org/1999/xlink"
+ xmlns:om="http://www.openmunicipio.it"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://www.openmunicipio.it file:/Users/guglielmo/Workspace/open_municipio/import_tmp/docs/DataImport.xsd" answer_type="written" id="2009/I/23" title="Interrogazione numero 23" presentation_date="2009-09-25">
+    <om:ActSubscribers>
+        <om:ChargeXRef xlink:href="people.xml#MICA" xlink:type="simple"/>
+        <om:ChargeXRef xlink:href="people.xml#CINI" xlink:type="simple"/>
+    </om:ActSubscribers>
+    
+    <om:ActTargets>
+        <om:ChargeXRef xlink:href="people.xml#ANRE" xlink:type="simple"/>
+    </om:ActTargets>
+
+    <!-- 
+        Testo della motivazione per la domanda.
+        Non è sempre presente, ma se c'è va qui.
+    -->
+    <om:QuestionMotivationText>
+        <![CDATA[
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit, 
+        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+        ]]>
+    </om:QuestionMotivationText>
+    
+    <!-- 
+        Answer contiene i dettagli della risposta.
+        Il tag è presente solo se è stata data una risposta.
+        In quel caso il tag AnswerText deve essere presente.
+        La data della risposta è specificata nell'attributo answer_date di Answer.
+        ReplyText può contenere il testo del reply alla risposta.
+    -->
+    <om:Answer answer_date="2010-08-04">
+        <om:AnswerText>
+            <![CDATA[
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit, 
+            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+            ]]>
+        </om:AnswerText>
+        <om:ReplyText>
+            <![CDATA[
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit, 
+            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+            ]]>            
+        </om:ReplyText>
+    </om:Answer>
+</om:Interrogation>

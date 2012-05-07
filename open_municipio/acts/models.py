@@ -345,7 +345,7 @@ class Interrogation(Act):
     
     @models.permalink
     def get_absolute_url(self):
-        return ('om_interrogation_detail', (), {'pk': str(self.pk)})
+        return 'om_interrogation_detail', (), {'pk': str(self.pk)}
     
 
 class Interpellation(Act):
@@ -356,12 +356,17 @@ class Interpellation(Act):
         ('WRITTEN', 'written', _('Written')),
         ('VERBAL', 'verbal', _('Verbal')),
     )
+    FINAL_STATUSES = [
+        ('ANSWERED', _('answered')),
+        ('NOTANSWERED', _('not answered')),
+    ]
+
     STATUS = Choices(
         ('PRESENTED', 'presented', _('presented')),
-        ('ANSWERED', 'answered', _('answered')),
-        ('NOTANSWERED', 'notanswered', _('not answered'))
+        (FINAL_STATUSES[0][0], 'answered', FINAL_STATUSES[0][1]),
+        (FINAL_STATUSES[1][0], 'notanswered', FINAL_STATUSES[1][1]),
     )
-    
+
     status = StatusField()
     answer_type = models.CharField(_('answer type'), max_length=8, choices=ANSWER_TYPES)
     question_motivation = models.TextField(blank=True)
@@ -373,7 +378,7 @@ class Interpellation(Act):
     
     @models.permalink
     def get_absolute_url(self):
-        return ('om_interpellation_detail', (), {'pk': str(self.pk)})
+        return 'om_interpellation_detail', (), {'pk': str(self.pk)}
     
 
 class Motion(Act):

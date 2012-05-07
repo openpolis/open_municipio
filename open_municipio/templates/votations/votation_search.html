@@ -1,5 +1,6 @@
 {% extends 'base_two_columns.html' %}
 {% load highlight %}
+{% load om_utils %}
 
 {% block title %}| Elenco votazioni {% endblock title %}
 {% block content_header %}Elenco votazioni{% endblock %}
@@ -30,84 +31,51 @@
 
 
     {% if n_results %}
+    <p>Puoi trovare la votazione che ti interessa scorrendo la lista delle ultime pubblicate, qui sotto.
+      Puoi perfezionare la ricerca usando i filtri nella colonna qui a destra. Oppure puoi usare il form di
+      ricerca con una parola che pensi sia contenuta nella votazione o nell'atto che la riguarda,
+      in cima alla colonna qui a destra</p>
 
-        {% if page.has_previous or page.has_next %}
-            <div class="pagination pagination-right">
-                <ul>
-                    <li{% if not page.has_previous %} class="active"{% endif %}>
-                        <a href="{{ base_url }}&page={{ page.previous_page_number }}">&larr;</a>
-                    </li>
+    {% include "commons/pagination.html" with base_url=base_url %}
 
-                    {% for p in paginator.page_range %}
-                        <li{% if p == page.number %} class="active"{% endif %}>
-                            <a href="{{ base_url }}&page={{ p }}">{{ p }}</a>
-                        </li>
-                    {% endfor %}
+    <section>
 
-                    <li{% if not page.has_next %} class="active"{% endif %}>
-                        <a href="{{ base_url }}&page={{ page.next_page_number }}">&rarr;</a>
-                    </li>
-                </ul>
-            </div>
-        {% endif %}
 
-        <section>
-          <p>Puoi trovare la votazione che ti interessa scorrendo la lista delle ultime pubblicate, qui sotto.
-            Puoi perfezionare la ricerca usando i filtri nella colonna qui a destra. Oppure puoi usare il form di
-            ricerca con una parola che pensi sia contenuta nella votazione o nell'atto che la riguarda,
-            in cima alla colonna qui a destra</p>
+      <h3>{% if not query %}Tutte le {% endif %} {{ n_results }} votazioni</h3>
+      <table class="search-results">
+        <tbody>
+        {% for result in page.object_list %}
+        <tr>
+          <td>{{ result.votation_date|circled:"full" }}</td>
+          <td>
+            <a href="{{ result.url }}">Votazione n.{{ result.votation_num }}</a>
+            della seduta n.{{ result.votation_sitting_num }}
+            del {{ result.votation_date}}<br/>
+            <a href="{{ result.act_url }}">{{ result.title }}</a><br/>
+            {% if result.highlighted.text %}
+              {{ result.highlighted.text.0|safe }}<br/>
+            {% endif %}
+            <strong>{{ result.act_type }}</strong><br/>
+            Presenti: {{ result.votation_n_presents }},
+            Maggioranza: {{ result.votation_n_maj }},
+            Favorevoli: {{ result.votation_n_yes }},
+            Contrari: {{ result.votation_n_no }},
+            Astenuti: {{ result.votation_n_abst }},
+            Esito: {{ result.votation_outcome }},
+            Ribelli: {{ result.votation_n_rebels }}
+            <!-- <strong>Score:</strong> {{ result.score }} -->
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td><p>Nessun risultato trovato.</p></td>
+        </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </section>
 
-            <h3>{% if not query %}Tutte le {% endif %} {{ n_results }} votazioni</h3>
-            <table class="search-results">
-                <tbody>
-                {% for result in page.object_list %}
-                    <tr>
-                        <td>
-                            <a href="{{ result.url }}">Votazione n.{{ result.votation_num }}</a>
-                            della seduta n.{{ result.votation_sitting_num }}
-                            del {{ result.votation_date}}<br/>
-                            relativa a: <span class="label">{{ result.act_type }}</span>
-                            <a href="{{ result.act_url }}">{{ result.title }}</a><br/>
-                            {% if result.highlighted.text %}
-                                {{ result.highlighted.text.0|safe }}<br/>
-                            {% endif %}
-                            Presenti: {{ result.votation_n_presents }},
-                            Maggioranza: {{ result.votation_n_maj }},
-                            Favorevoli: {{ result.votation_n_yes }},
-                            Contrari: {{ result.votation_n_no }},
-                            Astenuti: {{ result.votation_n_abst }},
-                            Esito: {{ result.votation_outcome }},
-                            Ribelli: {{ result.votation_n_rebels }}
-                            <br/>
-                            [<strong>Score:</strong> {{ result.score }}]
-                        </td>
-                    </tr>
-                {% empty %}
-                    <p>Nessun risultato trovato.</p>
-                {% endfor %}
-                </tbody>
-            </table>
-        </section>
-
-        {% if page.has_previous or page.has_next %}
-            <div class="pagination pagination-right">
-                <ul>
-                    <li{% if not page.has_previous %} class="active"{% endif %}>
-                        <a href="{{ base_url }}&page={{ page.previous_page_number }}">&larr;</a>
-                    </li>
-
-                    {% for p in paginator.page_range %}
-                        <li{% if p == page.number %} class="active"{% endif %}>
-                            <a href="{{ base_url }}&page={{ p }}">{{ p }}</a>
-                        </li>
-                    {% endfor %}
-
-                    <li{% if not page.has_next %} class="active"{% endif %}>
-                        <a href="{{ base_url }}&page={{ page.next_page_number }}">&rarr;</a>
-                    </li>
-                </ul>
-            </div>
-        {% endif %}
+    {% include "commons/pagination.html" with base_url=base_url %}
 
     {% else %}
         {# Show some example queries to run, maybe query syntax, something else? #}

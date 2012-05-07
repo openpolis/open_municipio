@@ -54,7 +54,7 @@ class Command(LabelCommand):
             # TODO: see if there's a more flexible way to do it, using ChargeXRef
             component_id = xml_chargevote.get("componentId")
             people_charges = self.people_tree.xpath(
-                '//om:Charge[@id=%s]' % component_id,
+                '//om:Person[@id=%s]' % component_id,
                 namespaces={'om': "http://www.openmunicipio.it"}
             )
             if len(people_charges):

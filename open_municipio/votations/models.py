@@ -169,16 +169,22 @@ class Votation(models.Model):
                                                             charge__groupcharge__end_date__isnull=True).\
                                                      values('vote').\
                                                      annotate(Count('vote'))
+                if not len(annotated_votes):
+                    continue
+
                 # extract the 2 most voted votes for this group,
                 # in this votation
                 most_voted = annotated_votes.order_by('-vote__count')[0:2]
+
+
+                print "group: %s" % (g.acronym,)
 
                 # if equal, then set to not available
                 if (len(most_voted) == 1 or
                     most_voted[0]['vote__count'] > most_voted[1]['vote__count']):
                     vote = most_voted[0]['vote']
                 else:
-                    vote = GroupVote.NON_COMPUTABLE
+                    vote = GroupVote.VOTES.noncomputable
 
                 # get or create group votation
                 gv, created = GroupVote.objects.get_or_create(votation=self, group=g, defaults={'vote':vote})
@@ -186,11 +192,11 @@ class Votation(models.Model):
                 # update other cached values
                 votes_cnt = 0
                 for v in annotated_votes:
-                    if v['vote'] == ChargeVote.NO:
+                    if v['vote'] == ChargeVote.VOTES.no:
                         gv.n_no = v['vote__count']
-                    elif v['vote'] == ChargeVote.YES:
+                    elif v['vote'] == ChargeVote.VOTES.yes:
                         gv.n_yes = v['vote__count']
-                    elif v['vote'] == ChargeVote.ABSTAINED:
+                    elif v['vote'] == ChargeVote.VOTES.abstained:
                         gv.n_abst = v['vote__count']
                     else:
                         pass
@@ -207,19 +213,15 @@ class GroupVote(TimeStampedModel):
     """
     WRITEME
     """
-    NO = 0
-    YES = 1
-    ABSTAINED = 2
-    NON_COMPUTABLE = 3
     VOTES = Choices(
-      (YES, _('Yes')),    
-      (NO, _('No')),
-      (ABSTAINED, _('Abstained')),
-      (NON_COMPUTABLE, _('Non computable')),
+      ('YES', 'yes', _('Yes')),
+      ('NO', 'no', _('No')),
+      ('ABSTAINED', 'abstained', _('Abstained')),
+      ('NON_COMPUTABLE', 'noncomputable', _('Non computable')),
     )
     
     votation = models.ForeignKey(Votation)
-    vote = models.IntegerField(choices=VOTES)
+    vote = models.CharField(choices=VOTES, max_length=16)
     group = models.ForeignKey(Group)
 
     # cache fields

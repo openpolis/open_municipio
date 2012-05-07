@@ -1,6 +1,10 @@
 from taggit.managers import TaggableManager, _TaggableManager
 from taggit.utils import require_instance_manager
-from open_municipio.taxonomy.models import TaggedAct
+
+import django.dispatch
+
+post_tagging = django.dispatch.Signal(providing_args=["category", "tags"])
+post_untagging = django.dispatch.Signal(providing_args=["category", "tags"])
 
 class TopicableManager(TaggableManager):
 
@@ -29,4 +33,37 @@ class _TopicableManager(_TaggableManager):
             self.through.objects.get_or_create(**kwargs)
         else:
             super(_TopicableManager, self).add(*tags, **extra_kwargs)
+
+        # call custom Signal
+        post_tagging.send(sender=self.through, category=extra_kwargs.get('category'), tags=tags)
+
+    @require_instance_manager
+    def remove(self, *tags, **extra_kwargs):
+        if not tags:
+            kwargs = self._lookup_kwargs()
+            kwargs.update(extra_kwargs)
+            self.through.objects.filter(**kwargs).delete()
+        else:
+            super(_TopicableManager, self).remove(*tags, **extra_kwargs)
+
+        # call custom Signal
+        post_untagging.send(sender=self.through, category=kwargs.get('category'), tags=tags)
+
+
+    @require_instance_manager
+    def clear(self):
+        taggings = self.through.objects.filter(**self._lookup_kwargs())
+        # collect all tags in categories
+        categorized_tags = {}
+        for tagging in taggings:
+            if not categorized_tags.has_key(tagging.category):
+                categorized_tags[tagging.category] = []
+            if tagging.tag:
+                categorized_tags[tagging.category].append(tagging.tag)
+        # delete all taggings
+        taggings.delete()
+        # call custom Signal foreach category
+        for cat in categorized_tags.keys():
+            post_untagging.send(sender=self.through, category=cat, tags=categorized_tags.get(cat))
+
 

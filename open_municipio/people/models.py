@@ -251,9 +251,9 @@ class InstitutionCharge(Charge):
 
     def __unicode__(self):
         if self.denomination:
-            return "%s - %s" % (self.person, self.denomination.encode('utf-8'))
+            return "%s %s - %s" % (self.person.first_name, self.person.last_name, self.denomination)
         else:
-            return "%s" % self.person
+            return "%s %s" % (self.person.first_name, self.person.last_name)
 
 
     # TODO: model validation: check that ``substitutes`` and ``substituted_by`` fields
@@ -268,17 +268,22 @@ class InstitutionCharge(Charge):
                 s = self.responsabilities[0].get_charge_type_display()
                 if self.responsabilities[0].charge_type == InstitutionResponsability.CHARGE_TYPES.firstdeputymayor:
                     s += ", %s" % self.description
-                return s
+                return "%s: %s - %s" % (s, self.responsabilities[0].start_date, self.responsabilities[0].end_date)
             else:
                 return " %s" % self.description
         elif self.institution.institution_type == Institution.COUNCIL:
             if self.responsabilities.count():
+                return "%s Consiglio Comunale: %s - %s" % \
+                       (self.responsabilities[0].get_charge_type_display(),
+                        self.responsabilities[0].start_date, self.responsabilities[0].end_date)
                 return "%s Consiglio Comunale" % self.responsabilities[0].get_charge_type_display()
             else:
                 return _('Counselor').translate(settings.LANGUAGE_CODE)
         elif self.institution.institution_type == Institution.COMMITTEE:
             if self.responsabilities.count():
-                return "%s" % (self.responsabilities[0].get_charge_type_display(),)
+                return "%s: %s - %s" % (self.responsabilities[0].get_charge_type_display(),
+                                        self.responsabilities[0].start_date,
+                                        self.responsabilities[0].end_date)
             else:
                 return _('Member').translate(settings.LANGUAGE_CODE)
         else:
@@ -374,7 +379,7 @@ class InstitutionCharge(Charge):
         """
         from open_municipio.votations.models import ChargeVote
          
-        absent = ChargeVote.ABSENT
+        absent = ChargeVote.VOTES.absent
         self.n_present_votations = self.chargevote_set.exclude(vote=absent).count()
         self.n_absent_votations = self.chargevote_set.filter(vote=absent).count()
         self.save()
@@ -478,7 +483,8 @@ class Group(models.Model):
         try:
             leader = GroupResponsability.objects.select_related().get(
                 charge__group=self,
-                charge_type=GroupResponsability.CHARGE_TYPES.leader
+                charge_type=GroupResponsability.CHARGE_TYPES.leader,
+                end_date__isnull=True
             )
             return leader
         except ObjectDoesNotExist:
@@ -495,7 +501,8 @@ class Group(models.Model):
         try:
             deputy = GroupResponsability.objects.select_related().get(
                 charge__group=self,
-                charge_type=GroupResponsability.CHARGE_TYPES.deputy
+                charge_type=GroupResponsability.CHARGE_TYPES.deputy,
+                end_date__isnull=True
             )
             return deputy
         except ObjectDoesNotExist:
@@ -507,7 +514,7 @@ class Group(models.Model):
         Current members of the group, as institution charges, leader and
         council president and vice presidents **excluded**.
         """
-        return self.charges.select_related().exclude(
+        return self.institution_charges.select_related().exclude(
             groupcharge__groupresponsability__charge_type__in=(
                 GroupResponsability.CHARGE_TYPES.leader,
                 GroupResponsability.CHARGE_TYPES.deputy
@@ -528,11 +535,18 @@ class Group(models.Model):
         return self.members.order_by('person__last_name')
 
     @property
-    def charges(self):
+    def institution_charges(self):
         """
         All current institution charges in the group, leader **included**
         """
-        return self.charge_set.current()
+        return self.charge_set.filter(groupcharge__end_date__isnull=True)
+
+    @property
+    def is_current(self):
+        """
+        returns True if the group has at least one current charge
+        """
+        return self.groupcharge_set.current().count() > 0
 
     @property
     def majority_records(self):
@@ -568,9 +582,10 @@ class GroupCharge(models.Model):
         return self.groupresponsability_set.all()
 
     @property
-    def denomination(self):
-        if self.responsabilities.count():
-            s = "%s" % self.responsabilities[0].get_charge_type_display()
+    def responsability(self):
+        if self.responsabilities.count() == 1:
+            r = self.responsabilities[0]
+            s = "%s: %s - %s" % (r.get_charge_type_display(), r.start_date, r.end_date)
             return s
         else:
             return ""
@@ -581,17 +596,16 @@ class GroupCharge(models.Model):
         verbose_name_plural = _('group charges')
 
     def __unicode__(self):
-        if self.denomination:
-            return "%s - %s - %s" % (self.group.acronym, self.charge.person, self.denomination)
+        if self.responsability:
+            return "%s - %s - %s" % (self.group.acronym, self.charge.person.last_name, self.responsability)
         else:
-            return "%s - %s" % (self.group.acronym, self.charge.person)
+            return "%s - %s" % (self.group.acronym, self.charge.person.last_name)
 
 class GroupResponsability(ChargeResponsability):
     """
     Responsability for group charges.
     """
     CHARGE_TYPES = Choices(
-        ('MAYOR', 'mayor', _('Mayor')),
         ('LEADER', 'leader', _('Group leader')),
         ('DEPUTY', 'deputy', _('Group deputy leader')),
     )

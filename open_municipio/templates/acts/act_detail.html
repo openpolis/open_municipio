@@ -32,7 +32,7 @@
 
 
 {% block content %}
-  <table class="pull-right bg-lighter">
+  <table class="" style="position: absolute; top:0; right: 0;">
     <tr>
       <td>
         {{ act.presentation_date|circled:"full,colored" }}
@@ -42,14 +42,14 @@
   </table>
 
   <hgroup>
-    <h1 id="act_title">
+    <h2 id="act_title">
       <i id="{{ act|as_token }}" class="bookmarkable {% is_key_class act %}"></i>
       <strong class="input-append">{{ act.title }}</strong>
-      <small>(N. {{ act.idnum }})</small></h1>
-    <h2>
+      <small>(N. {{ act.idnum }})</small></h2>
+    <h4>
       {% block act_type %}TIPO ATTO{% endblock %}
       del Consiglio comunale N° <strong>{{ act.idnum }}</strong> del <strong><span class="date">{{ act.presentation_date }}</span></strong>
-    </h2>
+    </h4>
   </hgroup>
 
   <div>
@@ -60,7 +60,7 @@
   </div>
 
   <div class="nav-tabs-container">
-    <ul class="nav nav-tabs">
+    <ul class="nav nav-tabs page-tabs">
       <li {% block act_tab_status_class %}class="active"{% endblock %}> <a href="{{ act.get_absolute_url }}">Stato</a></li>
       <li {% block act_tab_documents_class %}{% endblock %}><a href="{{ act.get_absolute_url }}documents">Documenti</a></li>
       <li><a href="{{ act.get_absolute_url }}votes"><strong>Voti</strong></a></li>
@@ -93,13 +93,10 @@
     <dl class="taxonomy-cloud">
       {% regroup act.topics by category as categorized_topics %}
       {% for grouped_tags in categorized_topics %}
-        <dt>
-          <a href="{{ grouped_tags.grouper.get_absolute_url }}">{{ grouped_tags.grouper.name }}</a>
-          <span>{{ grouped_tags.grouper.count }}</span>
-        </dt>
+        <dt><a href="{{ grouped_tags.grouper.get_absolute_url }}">{{ grouped_tags.grouper.name }}</a></dt>
         {% for topic in grouped_tags.list %}
         {% if topic.tag %}
-        <dd><a href="{{ topic.tag.get_absolute_url }}">{{ topic.tag }}</a> <span>{{ topic.tag.count }}</span></dd>
+        <dd><a href="{{ topic.tag.get_absolute_url }}">{{ topic.tag }}</a></dd>
         {% endif %}
         {% endfor %}
       {% endfor %}
@@ -107,7 +104,7 @@
       {% for location in act.locations %}
         {% if forloop.first %}
           {% if location_form %}
-          <dt><i class="icon-edit"></i> <a href="#" id="location_form_link">Territorio</a></dt>
+          <dt><a href="#" id="location_form_link"><i class="icon-edit"></i></a> Territorio</dt>
           {% else %}
           <dt>Territorio</dt>
           {% endif %}
@@ -115,7 +112,7 @@
         <dd><a href="{{ location.get_absolute_url }}">{{ location }}</a></dd>
       {% empty %}
         {% if location_form %}
-          <dt><i class="icon-edit"></i> <a href="#" id="location_form_link">Territorio</a></dt>
+          <dt><a href="#" id="location_form_link"><i class="icon-edit"></i></a> Territorio</dt>
         {% endif %}
       {% endfor %}
     </dl>

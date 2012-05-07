@@ -1,155 +1,186 @@
 {% extends "base_two_columns.html" %}
 {% load i18n %}
 {% load om_utils %}
+{% load bookmarking_tags %}
 
 {% block title %}| Dettaglio {{ votation }}{% endblock %}
 
 {% block content_header %}Votazione{% endblock %}
 
+{% block votations_class %}active{% endblock %}
+
+
 {% block head_css_includes %}
     {{ block.super }}
     <link rel="stylesheet" href="{{ STATIC_URL }}css/bookmarking.css" />
+    <style type="text/css">
+      #content table#votation_outcome i {
+        font-size: 30px; line-height: 30px;
+      }
+    </style>
 {% endblock head_css_includes %}
 
 {% block footer_js_includes %}
     {{ block.super }}
-    <script src="{{ STATIC_URL }}js/ajax_csrf.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/ajax_csrf.js" charset="utf-8"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap-tab.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.tablesorter.min.js"></script>
     {% if user.is_staff %}
         <script src="{{ STATIC_URL }}js/bookmarking.js" type="text/javascript" charset="utf-8"></script>
     {% endif %}
+  <script type="text/javascript">
+    $(function(){
+      $(".tablesorter").tablesorter({
+
+        });
+    });
+  </script>
 {% endblock footer_js_includes %}
 
 {% block content %}
-  {% if votation.outcome = votation.PASSED %}
-    <h2 class="text-green"><i class="socialicon-ok socialicon-active"></i> Approvato</h2>
-  {% else %}
-    <h2 class="text-red"><i class="socialicon-ko socialicon-active"></i> Respinto</h2>
-  {% endif %}
-  <table class="pull-right bg-lighter">
+
+  <table class="pull-right bg-lighter" id="votation_outcome">
     <tr>
-      {% if votation.outcome = votation.PASSED %}
+      {% if votation.outcome == votation.PASSED %}
       <td>{{ '<i class="icon-thumbs-up"></i>'|safe|circled:"voteok" }}</td>
       <td><p>Approvato</p></td>
       {% else %}
       <td>{{ '<i class="icon-thumbs-down"></i>'|safe|circled:"voteko" }}</td>
       <td><p>Respinto</p></td>
       {% endif %}
-
     </tr>
   </table>
 
-    <hgroup>
-        <h2>
-            {% if votation.act %}
-            <strong>{{ votation.act_type }}</strong>
-            del {{ votation.act.emitting_institution }} N° {{ votation.act.idnum }} del <span class="date">{{ votation.act.presentation_date|date:"d.m.Y" }}</span></small>
-            {% else %}
-            {{ votation.act_descr }}
-            {% endif %}
-        </h2>
-{% load om_utils %}
-{% load bookmarking_tags %}
-        <h1><i id="{{ votation|as_token }}" class="bookmarkable {% is_key_class votation %}"></i>{{ votation.act.title }}</h1>
-    </hgroup>
+  <hgroup>
+    <h1 class="highlight">Votazione <strong>N.{{ votation.idnum }}</strong></h1>
+    <h2>
+      <i id="{{ votation|as_token }}" class="bookmarkable {% is_key_class votation %}"></i>{{ votation.act.title }}
+    </h2>
+    <h4>
+      {% if votation.act %}
+        Proposta di <strong>{{ votation.act_type }}</strong>
+        del {{ votation.act.emitting_institution }} N° <strong>{{ votation.act.idnum }}</strong>
+        del <strong>{{ votation.act.presentation_date|date:"d F Y" }}</strong>
+      {% else %}
+        {{ votation.act_descr }}
+      {% endif %}
+    </h4>
+  </hgroup>
 
-    <table class="table table-striped table-bordered table-condensed">
-        <thead>
-        <tr>
-            <th class="text-center">Gruppi</th>
-            <th>Favorevoli</th>
-            <th>Contrari</th>
-            <th>Astenuti</th>
-            <th>Assenti</th>
-            <th>In missione</th>
-        </tr>
-        </thead>
-        <tbody>
-            {% for group_vote in votation.group_votes %}
-            <tr>
-                <td><strong>{{ group_vote.group.name }}</strong> ({{ group_vote.group.acronym }})</td>
-                <td>{{ group_vote.n_yes }}</td>
-                <td>{{ group_vote.n_no }}</td>
-                <td>{{ group_vote.n_abst }}</td>
-                <td>{{ group_vote.n_absent }}</td>
-                <td>{{ group_vote.n_mission }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-        <tfoot>
-        <tr>
-            <th class="text-center">Totale</th>
-            <th>{{ votation.n_yes }}</th>
-            <th>{{ votation.n_no }}</th>
-            <th>{{ votation.n_abst }}</th>
-            <th>{{ votation.n_absent }}</th>
-            <th>{{ votation.n_mission }}</th>
-        </tr>
-        </tfoot>
-    </table>
+  <table class="data text-right table-condensed tablesorter" id="votation_results">
+    <thead>
+      <tr>
+        <th class="sorter-left text-left">Gruppi</th>
+        <th>Favorevoli</th>
+        <th>Contrari</th>
+        <th>Astenuti</th>
+        <th>Assenti</th>
+        <th>In missione</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for group_vote in votation.group_votes %}
+      <tr>
+        <td class="text-left"><strong>{{ group_vote.group.name }}</strong> ({{ group_vote.group.acronym }})</td>
+        <td>{{ group_vote.n_yes }}</td>
+        <td>{{ group_vote.n_no }}</td>
+        <td>{{ group_vote.n_abst }}</td>
+        <td>{{ group_vote.n_absent }}</td>
+        <td>{{ group_vote.n_mission }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+    <tfoot>
+      <tr>
+        <td class="text-left">Totale</td>
+        <td>{{ votation.n_yes }}</td>
+        <td>{{ votation.n_no }}</td>
+        <td>{{ votation.n_abst }}</td>
+        <td>{{ votation.n_absent }}</td>
+        <td>{{ votation.n_mission }}</td>
+      </tr>
+    </tfoot>
+  </table>
 
-    <ul class="nav nav-tabs">
-        <li class="active">
-            <a href="#all_tab" data-toggle="tab">Tutti</a>
-        </li>
-        <li><a href="#rebels_tab" data-toggle="tab">Ribelli</a></li>
+
+  <section>
+    <ul class="nav nav-tabs page-tabs">
+      <li class="active">
+        <a href="#all_votes_tab" data-toggle="tab">Tutti</a>
+      </li>
+      <li><a href="#rebels_votes_tab" data-toggle="tab">Ribelli</a></li>
     </ul>
     <div class="tab-content">
-        <div class="tab-pane active" id="all_tab">
-            <table class="data">
-                <thead>
-                <tr>
-                    <th>Politico</th>
-                    <th>Favorevole</th>
-                    <th>Contrario</th>
-                    <th>Astenuto</th>
-                    <th>Assente</th>
-                    <th>In missione</th>
-                </tr>
-                </thead>
-                <tbody>
-                    {% for charge_vote in votation.charge_votes %}
-                    {% with charge_vote.charge.person as politician %}
-                      <tr>
-                        <td>
-                          <a href="{{ politician.get_absolute_url }}">
-                            <strong>{{ politician.full_name }}</strong> ({{ charge_vote.charge.council_group.acronym }})
-                          </a>
-                        </td>
-                        <td>
-                          {% if charge_vote.vote = charge_vote.YES %}
-                            <span class="label label-success">Favorevole</span>
-                          {% endif %}
-                        </td>
-                        <td>
-                          {% if charge_vote.vote = charge_vote.NO %}
-                            <span class="label label-warning">Contrario</span>
-                          {% endif %}
-                        </td>
-                        <td>
-                          {% if charge_vote.vote = charge_vote.ABSTAINED %}
-                            <span class="label label-success">Astenuto</span>
-                          {% endif %}
-                        </td>
-                        <td>
-                          {% if charge_vote.vote = charge_vote.MISSION %}
-                            <span class="label label-info">Missione</span>
-                          {% endif %}
-                        </td>
-                        <td>
-                          {% if charge_vote.vote = charge_vote.ABSENT %}
-                            <span class="label label-white">Assente</span>
-                          {% endif %}
-                        </td>
-                      </tr>
-                    {% endwith %}
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-        <div class="tab-pane" id="rebels_tab">
-            <table class="data">
-                <thead>
+      <div class="tab-pane active" id="all_votes_tab">
+        <table class="data text-right tablesorter">
+          <thead>
+          <tr>
+            <th class="sorter-left text-left">Politico</th>
+            <th>Favorevole</th>
+            <th>Contrario</th>
+            <th>Astenuto</th>
+            <th>Assente</th>
+            <th>In missione</th>
+          </tr>
+          </thead>
+          <tbody>
+          {% for charge_vote in votation.charge_votes %}
+            {% with charge_vote.charge.person as politician %}
+              <tr>
+                <td class="text-left">
+                  <a href="{{ politician.get_absolute_url }}">
+                    <strong>{{ politician.full_name }}</strong> ({{ charge_vote.charge.council_group.acronym }})
+                  </a>
+                </td>
+                <td>
+                  {% if charge_vote.vote == charge_vote.VOTES.yes %}
+                    <span class="label label-success">Favorevole</span>
+                  {% endif %}
+                </td>
+                <td>
+                  {% if charge_vote.vote == charge_vote.VOTES.no %}
+                    <span class="label label-important">Contrario</span>
+                  {% endif %}
+                </td>
+                <td>
+                  {% if charge_vote.vote == charge_vote.VOTES.abstained %}
+                    <span class="label">Astenuto</span>
+                  {% endif %}
+                </td>
+                <td>
+                  {% if charge_vote.vote == charge_vote.VOTES.absent %}
+                    <span class="label label-text">Assente</span>
+                  {% endif %}
+                </td>
+                <td>
+                  {% if charge_vote.vote == charge_vote.VOTES.mission %}
+                    <span class="label label-info">Missione</span>
+                  {% endif %}
+                </td>
+              </tr>
+            {% endwith %}
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="tab-pane" id="rebels_votes_tab">
+
+        <table class="data text-right tablesorter">
+          <thead>
+          <tr>
+            <th class="sorter-left text-left">Politico</th>
+            <th>Favorevole</th>
+            <th>Contrario</th>
+            <th>Astenuto</th>
+            <th>Assente</th>
+            <th>In missione</th>
+          </tr>
+          </thead>
+          <tbody>
+          {% for charge_vote in votation.charge_votes %}
+            {% with charge_vote.charge.person as politician %}
+              {% if charge_vote.rebel %}
                 <tr>
                     <th>Politico</th>
                     <th>Favorevole</th>
@@ -196,12 +227,32 @@
                       </td>
                     </tr>
                     {% endif %}
-                    {% endwith %}
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
+                  </td>
+                  <td>
+                    {% if charge_vote.vote == charge_vote.VOTES.no %}
+                      <span class="label label-warning">Contrario</span>
+                    {% endif %}
+                  </td>
+                  <td>
+                    {% if charge_vote.vote == charge_vote.VOTES.abstained %}
+                      <span class="label">Astenuto</span>
+                    {% endif %}
+                  </td>
+                  <td>
+                    {% if charge_vote.vote == charge_vote.VOTES.absent %}
+                      <span class="label label-text">Assente</span>
+                    {% endif %}
+                  </td>
+                </tr>
+              {% endif %}
+            {% endwith %}
+          {% endfor %}
+          </tbody>
+        </table>
+
+      </div>
     </div>
+  </section>
 {% endblock content %}
 
 {% block sidebar %}
@@ -225,7 +276,7 @@
     </tr>
   </table>
 
-
+  <hr>
     <div class="tabbable">
         <ul class="nav nav-tabs">
             <li class="active"><a href="#chart-tab-yes" data-toggle="tab">Favorevoli</a></li>
@@ -248,6 +299,7 @@
             </div>
         </div>
     </div>
+  </div>
 
   <hr>
 

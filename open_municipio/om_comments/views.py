@@ -1,37 +1,45 @@
-from django import template
 from django.conf import settings
+from django.utils.decorators import method_decorator
+from django.views.generic import View
+from django.http import HttpResponseRedirect 
+from django.shortcuts import get_object_or_404
+
 from django.contrib import comments
 from django.contrib.auth.decorators import login_required
-from django.contrib.comments.models import Comment
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import get_object_or_404, redirect
+
+from voting.views import RecordVoteOnItemView
+
+from open_municipio.om_comments.models import CommentWithMood
 
 import datetime
 
 
-# Number of minutes within users can delete their own comments
-MAX_TIME_FOR_COMMENT_REMOVAL = 10
 
-@login_required
-def delete_own_comment(request, message_id):
+class DeleteOwnCommentView(View):
     """
     Users can delete their own comments within a certain time lapse.
     """
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(DeleteOwnCommentView, self).dispatch(*args, **kwargs)
+    
+    def post(self, request, *args, **kwargs):    
+        now = datetime.datetime.now()
+        control_date = now - datetime.timedelta(seconds=settings.OM_COMMENTS_REMOVAL_MAX_TIME)
+        # retrieve the comment that has been asked for removal
+        comment = get_object_or_404(comments.get_model(), pk=self.kwargs.get('pk', None))
+        # check if the comment may be removed, i.e if all the following conditions hold true:
+        # * it was posted by the same user who made the removal request
+        # * it belongs to the current site
+        # * the time thresold for removal has not expired, yet 
+        if (comment.user == request.user) and (comment.site.pk == settings.SITE_ID) and (comment.submit_date >= control_date):    
+            # flag the comment as removed!
+            comment.is_removed = True
+            comment.save()
+  
+        # Whatever happened, just get back to the detail page of the content object the comment is attached to
+        return HttpResponseRedirect(comment.content_object.get_absolute_url())
+    
 
-    now = datetime.datetime.now()
-    control_date = now - datetime.timedelta(minutes=MAX_TIME_FOR_COMMENT_REMOVAL)
-
-    # I retrieve the comment if it's been written in the past few
-    # minutes: ``submit_date__gte=control_date``
-    comment = get_object_or_404(comments.get_model(), pk=message_id,
-                                site__pk=settings.SITE_ID,
-                                submit_date__gte=control_date)
-
-    # Does current user really own it?
-    if (comment.user == request.user):
-        # Then flag it as removed!
-        comment.is_removed = True
-        comment.save()
-
-    # Whatever happened, just get back to the act page
-    return redirect(comment.content_object.get_absolute_url() )
+class RecordVoteOnCommentView(RecordVoteOnItemView):
+    model = CommentWithMood  

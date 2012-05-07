@@ -1,12 +1,14 @@
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, HttpResponseBadRequest, HttpResponseNotAllowed
 from django.utils.decorators import method_decorator
-from django.views.generic import View, DetailView, ListView
-from django.views.generic.edit import FormView
+from django.views.generic import View, DetailView, ListView, FormView
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
+from django.utils import simplejson as json
 
-from django.contrib.auth.decorators import user_passes_test, login_required
+from django.contrib.auth.decorators import user_passes_test
+
+from voting.views import RecordVoteOnItemView
 
 from open_municipio.acts.models import Act, Agenda, Deliberation, Interpellation, Interrogation, Motion, Transition
 from open_municipio.acts.forms import ActDescriptionForm, ActTransitionForm, ActFinalTransitionForm, ActTitleForm
@@ -22,7 +24,6 @@ from open_municipio.locations.forms import ActLocationsAddForm
 
 import re
 
-from django.utils import simplejson as json
 
 
 class ActSearchView(ExtendedFacetedSearchView):
@@ -271,6 +272,10 @@ class ActTagEditorView(View):
     
     def post(self, request, *args, **kwargs):
         tagged_act = self.tagged_act = self.get_object()
+
+        # remove old topics
+        tagged_act.tag_set.clear()
+
         new_topics = {} # new set of topics (categories + tags) for the act
         r = re.compile(r'^categories\[(\d+)\]$')
         new_tags_ids = set()
@@ -288,38 +293,10 @@ class ActTagEditorView(View):
                         new_topics[category].append(tag)
                         new_tags.add(tag)
 
-        old_tags = set(tagged_act.tags)
-        old_categories = set(tagged_act.categories)
-
-        # decrement count of removed tags
-        for tag in old_tags - new_tags:
-            tag.count -= 1
-            if tag.count < 0:
-                tag.count = 0
-            tag.save()
-
-        # decrement count of removed categories
-        for cat in old_categories - set(new_topics.keys()):
-            cat.count -= 1
-            if cat.count < 0:
-                cat.count = 0
-            cat.save()
-
-        # remove old topics
-        tagged_act.tag_set.clear()
-
         # adding new topics
         for cat in new_topics.keys():
             tagged_act.tag_set.add(*new_topics.get(cat), tagger=self.request.user, category=cat)
-            # increment added categories
-            if cat not in old_categories:
-                cat.count += 1
-                cat.save()
 
-        # increment added tags
-        for tag in new_tags - old_tags:
-            tag.count += 1
-            tag.save()
         
         return HttpResponseRedirect(self.get_success_url())   
  
@@ -337,8 +314,7 @@ class ActTransitionToggleBaseView(FormView):
         return self.act.downcast().get_absolute_url()
 
     def get(self, *args, **kwargs):
-        msg = "This view can be accessed only via POST"
-        return HttpResponseNotAllowed(msg)
+        return HttpResponseNotAllowed(['POST'])
 
 
 class ActTransitionAddView(ActTransitionToggleBaseView):
@@ -370,4 +346,8 @@ class ActTransitionRemoveView(ActTransitionToggleBaseView):
         transition = get_object_or_404(Transition, pk=request.POST['transition_id'])
         transition.delete()
 
-        return HttpResponseRedirect( self.get_success_url() )
+        return HttpResponseRedirect(self.get_success_url())
+    
+    
+class RecordVoteOnActView(RecordVoteOnItemView):
+    model = Act   

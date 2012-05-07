@@ -1,15 +1,19 @@
-from django.contrib.comments.models import Comment
-from django.contrib.contenttypes.models import ContentType
-from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.db.models.signals import post_save, pre_delete
 from django.dispatch.dispatcher import receiver
 from django.template.context import Context
 from django.utils.translation import ugettext_lazy as _
+from django.core.exceptions import ObjectDoesNotExist
+
+from django.contrib.comments.models import Comment
+from django.contrib.contenttypes.models import ContentType
+
 from voting.models import Vote
+
 from open_municipio.newscache.models import News
+
 import datetime
-import sys
+
 
 
 class CommentWithMood(Comment):
@@ -32,12 +36,8 @@ class CommentWithMood(Comment):
 # Signals handlers
 #
 
-#
-# Signals handlers
-#
-
 @receiver(post_save, sender=CommentWithMood)
-@receiver(post_save, sender=Vote)
+#@receiver(post_save, sender=Vote)
 def new_comment(**kwargs):
     """
     generates a record in newscache, when someone votes on something
@@ -93,7 +93,7 @@ def new_comment(**kwargs):
         )
 
 
-@receiver(pre_delete, sender=Vote)
+#@receiver(pre_delete, sender=Vote)
 def removed_comment(**kwargs):
     """
     removes records in newscache, when someone stops monitoring something

@@ -279,7 +279,7 @@ class PoliticianListView(TemplateView):
             institutionresponsability__end_date__isnull=True
         ).select_related().order_by('person__last_name')
         # exclude mayor from council members
-        counselors = context['counselors'] = municipality.council.members.exclude(
+        counselors = context['counselors'] = municipality.council.charges.exclude(
             institutionresponsability__charge_type__in=(
                 InstitutionResponsability.CHARGE_TYPES.mayor,
             ),
