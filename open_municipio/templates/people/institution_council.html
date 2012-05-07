@@ -93,7 +93,33 @@
                     </a>
                   </li>
                 {% endfor %}
-              </ul>
+            </ul>
+        </div>
+    </section>
+    
+    <section>
+        <h2>Prossimi appuntamenti</h2>
+        <div class="row-fluid">
+            <div class="span4">
+                <div class="calendar_container">
+                    <h3>Agenda del consiglio</h3>
+                    <div class="calendar" data-calendar=".calendar_events">
+                        <ul class="calendar_events">
+                            {% for event in events %}
+                            <li data-day="{{ event.date|date:"d/m/Y" }}"><a href="{{ event.act.downcast.get_absolute_url }}">{{ event.act.title }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="span8">
+                <ul class="list-floated unstyled calendar_events">
+                    {% for event in events %}
+                    {% if not event.is_past_due %}
+                    <li data-day="{{ event.date|date:"d/m/Y" }}"><strong>{{ event.date|date:"d.m.Y" }}</strong> <a href="{{ event.act.downcast.get_absolute_url }}">{{ event.act.title }}</a></li>
+                    {% endif %}
+                    {% endfor %}
+                </ul>
             </div>
           </div>
         </div>
@@ -200,3 +226,4 @@
     <script src="{{ STATIC_URL }}js/jquery-ui-1.8.18.custom.min.js"></script>
     <script src="{{ STATIC_URL }}js/jquery-ui.calendar.js"></script>
 {% endblock %}
+

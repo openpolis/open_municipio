@@ -6,7 +6,9 @@ from open_municipio.people.models import Institution, InstitutionCharge, Person,
 from open_municipio.monitoring.forms import MonitoringForm
 from open_municipio.acts.models import Act, Deliberation, Interrogation, Interpellation, Motion, Agenda
 from open_municipio.events.models import Event
+from open_municipio.votations.models import ChargeVote
 
+from operator import attrgetter
 from os import sys
 
 
@@ -174,7 +176,7 @@ class PoliticianDetailView(DetailView):
         context['institution_list'] = Institution.objects.all()
 
         context['resources'] = dict(
-            (r['resource_type'], {'value': r['value'], 'descritpion': r['description']})
+            (r['resource_type'], {'value': r['value'], 'description': r['description']})
             for r in self.object.resource_set.all().values('resource_type', 'value', 'description')
         )
         context['current_charges'] = self.object.current_institution_charges.exclude(
@@ -184,6 +186,56 @@ class PoliticianDetailView(DetailView):
             institutionresponsability__end_date__isnull=True
         )
         context['current_committee_charges'] = self.object.current_committee_charges
+
+        # Is politician a counselor? If so, we show present/absent
+        # graph
+        for charge in context['current_charges']:
+            if charge.institution.institution_type == Institution.COUNCIL:
+                # Calculate average present/absent for counselors
+                percentage_present = 0
+                percentage_absent = 0
+                n_counselors = len(municipality.council.charges)
+                for counselor in municipality.council.charges:
+                    n_votations = counselor.n_present_votations \
+                        + counselor.n_absent_votations
+                    if n_votations > 0:
+                        percentage_present += \
+                            float(counselor.n_present_votations) / n_votations
+                        percentage_absent += \
+                            float(counselor.n_absent_votations) / n_votations
+                # Empty city council? That can't be the case!
+                # n_counselors is supposed to be > 0
+                context['percentage_present_votations_average'] = \
+                    "%.1f" % (float(percentage_present) / n_counselors * 100)
+                context['percentage_absent_votations_average'] = \
+                    "%.1f" % (float(percentage_absent) / n_counselors * 100)
+
+                # Calculate present/absent for current counselor
+                charge.n_total_votations = \
+                    charge.n_present_votations + charge.n_absent_votations
+                charge.percentage_present_votations = \
+                    "%.1f" % (float(charge.n_present_votations) / \
+                                  charge.n_total_votations * 100.00)
+                charge.percentage_absent_votations = \
+                    "%.1f" % (float(charge.n_absent_votations) / \
+                                  charge.n_total_votations * 100.00)
+                self.object.counselor_charge = charge
+                break
+
+        # Current politician's charge votes for key votations
+        unsorted_current_charge_votes = []
+        for charge in context['current_charges']:
+            charge_votes = ChargeVote.objects\
+                .filter(charge=charge).filter(votation__is_key=True)
+            unsorted_current_charge_votes += charge_votes
+        # Sort by date 
+        current_charge_votes = sorted(
+            unsorted_current_charge_votes,
+            key=attrgetter('votation.sitting.date'),
+            reverse=True
+            )
+        # Pass data to template
+        context['current_charge_votes'] = current_charge_votes
 
         # is the user monitoring the act?
         context['is_user_monitoring'] = False

@@ -9,6 +9,7 @@
 
 {% block votations_class %}active{% endblock %}
 
+
 {% block head_css_includes %}
     {{ block.super }}
     <link rel="stylesheet" href="{{ STATIC_URL }}css/bookmarking.css" />
@@ -181,14 +182,50 @@
             {% with charge_vote.charge.person as politician %}
               {% if charge_vote.rebel %}
                 <tr>
-                  <td>
-                    <a href="{{ politician.get_absolute_url }}">
-                      <strong>{{ politician.full_name }}</strong> ({{ charge_vote.charge.council_group.acronym }})
-                    </a>
-                  </td>
-                  <td>
-                    {% if charge_vote.vote == charge_vote.VOTES.yes %}
-                      <span class="label label-success">Favorevole</span>
+                    <th>Politico</th>
+                    <th>Favorevole</th>
+                    <th>Contrario</th>
+                    <th>Astenuto</th>
+                    <th>Assente</th>
+                    <th>In missione</th>
+                </tr>
+                </thead>
+                <tbody>
+                    {% for charge_vote in votation.charge_votes %}
+                    {% with charge_vote.charge.person as politician %}
+                    {% if charge_vote.is_rebel %}
+                    <tr>
+                      <td>
+                        <a href="{{ politician.get_absolute_url }}">
+                          <strong>{{ politician.full_name }}</strong> ({{ charge_vote.charge.council_group.acronym }})
+                        </a>
+                      </td>
+                      <td>
+                        {% if charge_vote.vote = charge_vote.YES %}
+                        <span class="label label-success">Favorevole</span>
+                        {% endif %}
+                       </td>
+                      <td>
+                        {% if charge_vote.vote = charge_vote.NO %}
+                          <span class="label label-warning">Contrario</span>
+                        {% endif %}
+                      </td>
+                      <td>
+                        {% if charge_vote.vote = charge_vote.ABSTAINED %}
+                          <span class="label label-success">Astenuto</span>
+                        {% endif %}
+                      </td>
+                      <td>
+                        {% if charge_vote.vote = charge_vote.MISSION %}
+                          <span class="label label-info">Missione</span>
+                        {% endif %}
+                      </td>
+                      <td>
+                        {% if charge_vote.vote = charge_vote.ABSENT %}
+                          <span class="label label-white">Assente</span>
+                        {% endif %}
+                      </td>
+                    </tr>
                     {% endif %}
                   </td>
                   <td>
@@ -240,31 +277,27 @@
   </table>
 
   <hr>
-
-  <div class="tabbable">
-    <ul class="nav nav-tabs">
-      <li class="active"><a href="#favorables_tab" data-toggle="tab">Favorevoli</a></li>
-      <li><a href="#against_tab" data-toggle="tab">Contrari</a></li>
-      <li><a href="#abstained_tab" data-toggle="tab">Astenuti</a></li>
-      <li><a href="#rebels_tab" data-toggle="tab">Ribelli</a></li>
-    </ul>
-    <div class="tab-content">
-      <div class="tab-pane active" id="favorables_tab">
-        <p><img src="https://chart.googleapis.com/chart?cht=p&chs=368x154&chl={% for group_vote in votation.group_votes %}{{ group_vote.group.acronym }} {{ group_vote.n_yes }}{% if not forloop.last %}|{% endif %}{% endfor %}&chd=t:{% for group_vote in votation.group_votes %}{{ group_vote.n_yes }}{% if not forloop.last %},{% endif %}{% endfor %}&chco=CC0000,FFFF33">
-        </p>
-      </div>
-      <div class="tab-pane" id="against_tab">
-        <p><img src="https://chart.googleapis.com/chart?cht=p&chs=368x154&chl={% for group_vote in votation.group_votes %}{{ group_vote.group.acronym }} {{ group_vote.n_no }}{% if not forloop.last %}|{% endif %}{% endfor %}&chd=t:{% for group_vote in votation.group_votes %}{{ group_vote.n_no }}{% if not forloop.last %},{% endif %}{% endfor %}&chco=CC0000,FFFF33">
-        </p>
-      </div>
-      <div class="tab-pane" id="abstained_tab">
-        <p><img src="https://chart.googleapis.com/chart?cht=p&chs=368x154&chl={% for group_vote in votation.group_votes %}{{ group_vote.group.acronym }} {{ group_vote.n_abst }}{% if not forloop.last %}|{% endif %}{% endfor %}&chd=t:{% for group_vote in votation.group_votes %}{{ group_vote.n_abst }}{% if not forloop.last %},{% endif %}{% endfor %}&chco=CC0000,FFFF33">
-        </p>
-      </div>
-      <div class="tab-pane" id="rebels_tab"><!-- fix me, I need real rebels'data -->
-        <p><img src="https://chart.googleapis.com/chart?cht=p&chs=368x154&chl={% for group_vote in votation.group_votes %}{{ group_vote.group.acronym }} {{ group_vote.n_rebel }}{% if not forloop.last %}|{% endif %}{% endfor %}&chd=t:{% for group_vote in votation.group_votes %}{{ group_vote.n_rebel }}{% if not forloop.last %},{% endif %}{% endfor %}&chco=CC0000,FFFF33">
-        </p>
-      </div>
+    <div class="tabbable">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#chart-tab-yes" data-toggle="tab">Favorevoli</a></li>
+            <li><a href="#chart-tab-no" data-toggle="tab">Contrari</a></li>
+            <li><a href="#chart-tab-abst" data-toggle="tab">Astenuti</a></li>
+            <li><a href="#chart-tab-rebels" data-toggle="tab">Ribelli</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" id="chart-tab-yes">
+                <p><img src="https://chart.googleapis.com/chart?cht=p&chs=485x154&chl={% for group_vote in votation.group_votes %}{{ group_vote.group.acronym }} {{ group_vote.n_yes }}{% if not forloop.last %}|{% endif %}{% endfor %}&chd=t:{% for group_vote in votation.group_votes %}{{ group_vote.n_yes }}{% if not forloop.last %},{% endif %}{% endfor %}&chco=CC0000,FFFF33"></p>
+            </div>
+            <div class="tab-pane" id="chart-tab-no">
+                <p><img src="https://chart.googleapis.com/chart?cht=p&chs=485x154&chl={% for group_vote in votation.group_votes %}{{ group_vote.group.acronym }} {{ group_vote.n_no }}{% if not forloop.last %}|{% endif %}{% endfor %}&chd=t:{% for group_vote in votation.group_votes %}{{ group_vote.n_no }}{% if not forloop.last %},{% endif %}{% endfor %}&chco=CC0000,FFFF33"></p>
+            </div>
+            <div class="tab-pane" id="chart-tab-abst">
+                <p><img src="https://chart.googleapis.com/chart?cht=p&chs=485x154&chl={% for group_vote in votation.group_votes %}{{ group_vote.group.acronym }} {{ group_vote.n_abst }}{% if not forloop.last %}|{% endif %}{% endfor %}&chd=t:{% for group_vote in votation.group_votes %}{{ group_vote.n_abst }}{% if not forloop.last %},{% endif %}{% endfor %}&chco=CC0000,FFFF33"></p>
+            </div>
+            <div class="tab-pane" id="chart-tab-rebels">
+                <p><img src="https://chart.googleapis.com/chart?cht=p&chs=485x154&chl={% for group_vote in votation.group_votes %}{{ group_vote.group.acronym }} {{ group_vote.n_rebels }}{% if not forloop.last %}|{% endif %}{% endfor %}&chd=t:{% for group_vote in votation.group_votes %}{{ group_vote.n_rebels }}{% if not forloop.last %},{% endif %}{% endfor %}&chco=CC0000,FFFF33"></p>
+            </div>
+        </div>
     </div>
   </div>
 
