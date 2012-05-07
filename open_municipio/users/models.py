@@ -12,7 +12,7 @@ from open_municipio.newscache.models import NewsTargetMixin
 from open_municipio.people.models import Person
 
 
-class UserProfile(models.Model, NewsTargetMixin):
+class UserProfile(NewsTargetMixin, models.Model):
     """
     This model describes a user's profile.
     

@@ -169,7 +169,7 @@ class GroupResource(Resource):
     group = models.ForeignKey('Group', verbose_name=_('group'), related_name='resource_set')
 
 
-class Charge(models.Model, NewsTargetMixin):
+class Charge(NewsTargetMixin, models.Model):
     """
     This is the base class for the different macro-types of charges (institution, organization, administration).
 

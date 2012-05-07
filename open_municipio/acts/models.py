@@ -28,7 +28,7 @@ from open_municipio.monitoring.models import Monitoring, MonitorizedItem
 # Acts
 #
 
-class Act(TimeStampedModel, MonitorizedItem, NewsTargetMixin):
+class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
     """
     This is the base class for all the different act types: it contains the common fields for
     deliberations, interrogations, interpellations, motions, agendas and emendations.

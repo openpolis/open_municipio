@@ -74,12 +74,12 @@ class News(TimeStampedModel):
         return re.sub("\s+", " ", template.render(context).strip())
 
     
-class NewsTargetMixin(object):
+class NewsTargetMixin(models.Model):
     """
     A mix-in class for models which are valid targets for news generation. 
     """
     # A manager that can be used to retrieve the QuerySet of news items targeting this content object
-    related_news = generic.GenericRelation(News,
+    related_news_set = generic.GenericRelation(News,
                                            content_type_field='related_content_type',
                                            object_id_field='related_object_pk')
     @property
@@ -88,3 +88,6 @@ class NewsTargetMixin(object):
         Retunrn the QuerySet of news items targeting this content object.
         """
         return self.related_news_set.all()
+    
+    class Meta:
+        abstract = True
