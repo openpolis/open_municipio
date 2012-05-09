@@ -67,8 +67,9 @@ body {
     }
     > section {
       margin: 40px 0;
-
+      &.party-people { margin: 0; }
     }
+
   }
 
   // Header colouring
@@ -134,6 +135,15 @@ body {
     padding-bottom: 30px;
     font-size: 40px;
     background: transparent url('../img/logo-city.png') no-repeat right center;
+    small {
+      color: @white;
+      font-size: 40px;
+      line-height: 50px;
+      margin-left: 5px;
+      padding-left: 5px;
+      border-left: 1px solid @white;
+      font-weight: lighter;
+    }
   }
 
   #sub-nav {
@@ -321,8 +331,8 @@ table.stats {
   border-bottom: 5px solid @grayLighter;
 
   h2 {
-    color: @grayLight;
-    font-size: 2em;
+    /*color: @grayLight;
+    font-size: 2em;*/
     img { vertical-align: middle; margin-right: 10px; }
   }
   p { margin: 10px 0; }
@@ -499,7 +509,7 @@ ul.feed-list {
     border-bottom: 3px solid @semiWhite;
     padding: 10px;
   }
-  .rank-value { color: @grayLight; font-size: 2.5em; font-weight: bold; }
+
 }
 
 /* Data lists */
@@ -508,7 +518,8 @@ ul.list-inline {
   li { display: inline; }
 }
 ul.list-floated {
-  li { width: 48%; float:left; margin-bottom: 10px; padding-right: 1%; list-style: none; }
+  margin-left:0;
+  li { width: 46%; float:left; margin-bottom: 10px; margin-right: 2%; list-style: none; }
 }
 
 ul.data-list {
@@ -663,3 +674,7 @@ table.tablesorter {
   }
 
 }
+
+.monitoring i { color: @textColor; }
+.monitoring a:hover i { color: @grayLight; text-decoration: none; }
+.rank-value { color: @grayLight; font-size: 2.5em; font-weight: bold; }

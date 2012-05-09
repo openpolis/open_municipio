@@ -4210,6 +4210,9 @@ body #content hgroup h4 {
 body #content > section {
   margin: 40px 0;
 }
+body #content > section.party-people {
+  margin: 0;
+}
 body.politician #wrapper > header {
   background-color: #72c056;
 }
@@ -4268,6 +4271,15 @@ body.citizen #wrapper > header {
   padding-bottom: 30px;
   font-size: 40px;
   background: transparent url('../img/logo-city.png') no-repeat right center;
+}
+#wrapper > header #area-title small {
+  color: #ffffff;
+  font-size: 40px;
+  line-height: 50px;
+  margin-left: 5px;
+  padding-left: 5px;
+  border-left: 1px solid #ffffff;
+  font-weight: lighter;
 }
 #wrapper > header #sub-nav .navbar-inner {
   background-color: transparent;
@@ -4623,8 +4635,9 @@ table.stats th {
   clear: both;
 }
 .party-people h2 {
-  color: #999999;
-  font-size: 2em;
+  /*color: @grayLight;
+    font-size: 2em;*/
+
 }
 .party-people h2 img {
   vertical-align: middle;
@@ -4952,11 +4965,6 @@ ul.feed-list li {
   border-bottom: 3px solid #f9f9f9;
   padding: 10px;
 }
-ul.feed-list .rank-value {
-  color: #999999;
-  font-size: 2.5em;
-  font-weight: bold;
-}
 /* Data lists */
 ul.list-inline {
   margin: 8px 0;
@@ -4964,11 +4972,14 @@ ul.list-inline {
 ul.list-inline li {
   display: inline;
 }
+ul.list-floated {
+  margin-left: 0;
+}
 ul.list-floated li {
-  width: 48%;
+  width: 46%;
   float: left;
   margin-bottom: 10px;
-  padding-right: 1%;
+  margin-right: 2%;
   list-style: none;
 }
 ul.data-list {
@@ -5171,4 +5182,16 @@ table.tablesorter th.tablesorter-headerSortDown {
 }
 .list-plain li .monitoring i {
   color: #000000;
+}
+.monitoring i {
+  color: #000000;
+}
+.monitoring a:hover i {
+  color: #999999;
+  text-decoration: none;
+}
+.rank-value {
+  color: #999999;
+  font-size: 2.5em;
+  font-weight: bold;
 }

@@ -180,7 +180,7 @@
           <tbody>
           {% for charge_vote in votation.charge_votes %}
             {% with charge_vote.charge.person as politician %}
-              {% if charge_vote.rebel %}
+              {% if charge_vote.is_rebel %}
               <tr>
                 <td>
                   <a href="{{ politician.get_absolute_url }}">

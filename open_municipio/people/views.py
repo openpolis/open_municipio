@@ -1,8 +1,8 @@
-from django.http import Http404
+from django.http import Http404, HttpResponseRedirect
 from django.views.generic import TemplateView, DetailView, ListView, RedirectView
 from django.core.exceptions import ObjectDoesNotExist
 
-from open_municipio.people.models import Institution, InstitutionCharge, Person, municipality, InstitutionResponsability, Resource
+from open_municipio.people.models import Institution, InstitutionCharge, Person, municipality, InstitutionResponsability, Resource, GroupCharge
 from open_municipio.monitoring.forms import MonitoringForm
 from open_municipio.acts.models import Act, Deliberation, Interrogation, Interpellation, Motion, Agenda
 from open_municipio.events.models import Event
@@ -290,6 +290,15 @@ class PoliticianListView(TemplateView):
         context['most_rebellious'] = counselors.order_by('-n_rebel_votations')[0:3]
         context['least_absent'] = counselors.order_by('n_absent_votations')[0:3]
         context['most_absent'] = counselors.order_by('-n_absent_votations')[0:3]
+
+        # take latest group charge changes
+        context['last_group_changes'] = [gc.charge for gc in GroupCharge.objects.filter(
+            charge__in= [gc.charge.id for gc in GroupCharge.objects.filter(end_date__isnull=True)]
+        ).filter(end_date__isnull=False).order_by('-end_date')[0:3]]
+
+        # TODO: sostituite with real data
+        context['most_monitorized'] = []
+
         return context
 
 
