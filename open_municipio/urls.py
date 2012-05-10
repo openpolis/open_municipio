@@ -18,35 +18,36 @@
 ## * ``urls_production.py`` -- for production servers
 
 
-from django.conf.urls.defaults import *
+from django.conf.urls.defaults import patterns, url, include
+from django.views.generic import TemplateView
+
 from django.contrib import admin
+
 from open_municipio.inline_edit.views import InlineEditView
+
+
 admin.autodiscover()
 
 
 urlpatterns = patterns('',
-    (r'^admin/doc/', include('django.contrib.admindocs.urls')),
-    (r'^admin/', include(admin.site.urls)),
-    
+    url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
+    url(r'^admin/', include(admin.site.urls)),   
     # home page
-    (r'^$', 'django.views.generic.simple.direct_to_template', {'template': 'om/home.html'}),
-
+    url(r'^$', TemplateView.as_view(template_name='om/home.html')),
     # info page
-    (r'^info/$', 'django.views.generic.simple.direct_to_template', {'template': 'om/info.html'}),
-
-    (r'^comments/', include('open_municipio.om_comments.urls')),
-    (r'^people/', include('open_municipio.people.urls.people')),
-    (r'^institutions/', include('open_municipio.people.urls.institutions')),
-    (r'^offices/', include('open_municipio.people.urls.offices')),
-    (r'^companies/', include('open_municipio.people.urls.companies')), 
-    (r'^acts/', include('open_municipio.acts.urls')),
-    (r'^votations/', include('open_municipio.votations.urls')),
-    (r'^topics/', include('open_municipio.taxonomy.urls.topics')),
-    (r'^categories/', include('open_municipio.taxonomy.urls.categories')),
-    (r'^tags/', include('open_municipio.taxonomy.urls.tags')),
-    (r'^locations/', include('open_municipio.locations.urls')),
-    (r'^webservices/', include('open_municipio.web_services.urls')),
-    (r'^locations/', include('open_municipio.locations.urls')),
+    url(r'^info/$', TemplateView.as_view(template_name='om/info.html')),
+    url(r'^comments/', include('open_municipio.om_comments.urls')),
+    url(r'^people/', include('open_municipio.people.urls.people')),
+    url(r'^institutions/', include('open_municipio.people.urls.institutions')),
+    url(r'^offices/', include('open_municipio.people.urls.offices')),
+    url(r'^companies/', include('open_municipio.people.urls.companies')), 
+    url(r'^acts/', include('open_municipio.acts.urls')),
+    url(r'^votations/', include('open_municipio.votations.urls')),
+    url(r'^topics/', include('open_municipio.taxonomy.urls.topics')),
+    url(r'^categories/', include('open_municipio.taxonomy.urls.categories')),
+    url(r'^tags/', include('open_municipio.taxonomy.urls.tags')),
+    url(r'^locations/', include('open_municipio.locations.urls')),
+    url(r'^webservices/', include('open_municipio.web_services.urls')),
 )
 
 # inline editing

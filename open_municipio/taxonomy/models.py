@@ -1,6 +1,6 @@
 from django.db import models
 from django.db.models import permalink
-from django.db.models.signals import post_save, post_delete
+from django.db.models.signals import post_save, post_delete, pre_delete
 from django.dispatch.dispatcher import receiver
 from django.utils.translation import ugettext_lazy as _, ugettext
 
@@ -11,6 +11,7 @@ from taggit.models import TagBase, ItemBase
 
 from open_municipio.monitoring.models import Monitoring
 from open_municipio.om_utils.models import SlugModel
+from open_municipio.taxonomy.managers import post_tagging, post_untagging
 
 
 class Tag(TagBase):
@@ -124,3 +125,68 @@ class Category(SlugModel):
         # moreover, often we are only interested in the total number of 
         # monitoring users, so building a list in memory may result in a waste of resources). 
         return [m.user for m in self.monitorings]
+
+@receiver(post_tagging, sender=TaggedAct)
+def new_tagging(**kwargs):
+    """
+    Increment counter of related location
+    """
+    tags = kwargs.get('tags', [])
+    for tag in tags:
+        tag.count += 1
+        tag.save()
+
+    category = kwargs.get('category')
+    category.count += 1
+    category.save()
+
+    # link category and tags
+    category.tag_set.add( *tags )
+
+#    print "New tagging: %s[%s] ->\n" % (category,category.count)
+#    for tag in tags:
+#        print "\t%s[%s]\n" % (tag, tag.count)
+
+@receiver(post_untagging, sender=TaggedAct)
+def remove_tagging(**kwargs):
+    """
+    Decrement counter of related location
+    """
+    tags = kwargs.get('tags', [])
+    for tag in tags:
+        tag.count = max(0, tag.count - 1)
+        tag.save()
+
+    category = kwargs.get('category')
+    category.count = max(0, category.count - 1)
+    category.save()
+
+#    print "Removed tagging: %s[%s] ->\n" % (category,category.count)
+#    for tag in tags:
+#        print "\t%s[%s]\n" % (tag, tag.count)
+
+
+def reset_counters():
+    for model in [Category, Tag]:
+        model.objects.update(count=0)
+
+    act_cat_cache = {}
+    for ta in TaggedAct.objects.all():
+        if ta.tag:
+            ta.tag.count += 1
+            ta.tag.save()
+        if not act_cat_cache.has_key(ta.content_object):
+            act_cat_cache[ta.content_object] = []
+        if ta.category in act_cat_cache.get(ta.content_object):
+            continue
+        ta.category.count += 1
+        ta.category.save()
+        act_cat_cache.get(ta.content_object).append(ta.category)
+
+def tagging_stats():
+    print "------\nTAGGING STATS:\n"
+    print "Categories: \n"
+    print [("%s[%s]" % (x, x.count)) for x in Category.objects.all()]
+    print "\nTags: \n"
+    print [("%s[%s]" % (x, x.count)) for x in Tag.objects.all()]
+    print "\n-----"

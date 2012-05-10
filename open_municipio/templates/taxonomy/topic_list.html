@@ -25,11 +25,9 @@
     <hr>
 
     <h3>Peso degli argomenti negli atti</h3>
-    <ul id="cloud">
-        {% for tag in tags %}
-        <li><a href="{{ tag.get_absolute_url }}" class="tag{{ tag.id }}">{{ tag }}</a></li>
-        {% endfor %}
-    </ul>
+
+    {% load tags_cloud %}
+    {% tags_cloud tags_to_cloud %}
 
 {% endblock %}
 

@@ -307,25 +307,27 @@
   }
 }
 // Dropdown toggle caret
-.navbar .nav .dropdown-toggle .caret,
-.navbar .nav .open.dropdown .caret {
+.navbar .nav .dropdown-toggle .caret {
   border-top-color: @white;
   border-bottom-color: @white;
 }
-.navbar .nav .active .caret {
+.navbar .nav .active .caret,
+.navbar .nav .open.dropdown .caret{
   .opacity(100);
+  border-top-color: @black;
+  border-bottom-color: @black;
 }
 
 // Remove background color from open dropdown
 .navbar .nav .open > .dropdown-toggle,
 .navbar .nav .active > .dropdown-toggle,
 .navbar .nav .open.active > .dropdown-toggle {
-  background-color: transparent;
+  //background-color: transparent;
 }
 
 // Dropdown link on hover
 .navbar .nav .active > .dropdown-toggle:hover {
-  color: @white;
+  //color: @white;
 }
 
 // Right aligned menus need alt position
