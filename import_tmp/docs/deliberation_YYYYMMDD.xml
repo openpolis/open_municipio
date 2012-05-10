@@ -19,12 +19,28 @@
     xmlns:xlink="http://www.w3.org/1999/xlink"
     xmlns:om="http://www.openmunicipio.it"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="DataImport.xsd"
-    presentation_date="20110904T1325Z+1"
+    xsi:schemaLocation="http://www.openmunicipio.it file:/Users/guglielmo/Workspace/open_municipio/import_tmp/docs/DataImport.xsd" 
+    presentation_date="2011-09-23"
     initiative="council_member" id="2012/D/001" final_id="001"
-    title="Lorem ipsum dolor sit amet"
-    approval_date="01-03-2012" execution_date="04-05-2012">
+    approval_date="2012-03-01" execution_date="2012-03-04">
 
+    <!--
+        Il titolo della proposta, se possibile,
+        se non è possibile, il tag deve essere presente lo stesso, vuoto.
+    -->
+    <om:Title>
+        <![CDATA[
+        Lorem ipsum dolor sit amet
+        ]]>
+    </om:Title>
+
+    <!--
+        Il testo della proposta, se possibile estrarlo.
+        Se non è possibile, il tag deve essere presente lo stesso, vuoto.
+        Se presente, il testo deve essere compreso in CDATA
+       
+    -->
+    <om:Content></om:Content>
     <!-- 
     Esistono due tipologie di firmatari: 
      - i primi firmatari (presentano la proposta) 
@@ -32,11 +48,17 @@
     E' possibile che l'elenco di firmatari vari nel tempo.
     -->
     <om:ActSubscribers type="first_subscriber">
-        <om:ChargeXRef xlink:href="people.xml#MICA" xlink:type="simple"/>
-        <om:ChargeXRef xlink:href="people.xml#CINI" xlink:type="simple"/>
+        <om:ActSupport date="2012-03-05">
+            <om:ChargeXRef xlink:href="people.xml#MICA" xlink:type="simple"/>
+        </om:ActSupport>
+        <om:ActSupport date="2012-03-07">
+            <om:ChargeXRef xlink:href="people.xml#CINI" xlink:type="simple"/>
+        </om:ActSupport>
     </om:ActSubscribers>
     <om:ActSubscribers type="co_signer">
-        <om:ChargeXRef xlink:href="people.xml#ANRE" xlink:type="simple"/>
+        <om:ActSupport>
+            <om:ChargeXRef xlink:href="people.xml#ANRE" xlink:type="simple"/>
+        </om:ActSupport>
     </om:ActSubscribers> 
     
     <!-- 
@@ -50,16 +72,20 @@
     I tag om:AttachmentDescription e om:AttachmentContent sono 
     la rappresentazione testuale dell'allegato, se disponibile.
     
-    om:AttachmenteDescription è una versione breve (riassunto o abstract)
-    omAttachmentContent è la versione completa.
+    om:AttachmenteDescription è una versione breve 
+    (riassunto, abstract o descrizione di cosa contiene il documento)
+    omAttachmentContent è la versione completa (opzionale)
+    Entrambi i tag contengono testo in CDATA, per eventuali problemi di encoding.
     
     Rappresentaizone testuale e risorsa esterna, se presenti entrambe, 
     devono contenere lo stesso testo.    
     -->
-    <om:Attachment title="Lorem Ipsum allegato A" 
-                   xlink:href="./allegati/atto_15434_a.pdf" xlink:type="simple"
-                   type="pdf">       
-        <om:AttachmentDescription>Abstract breve dell'allegato</om:AttachmentDescription>
-        <om:AttachmentContent>Rappresentaizone testuale completa dell'allegato A</om:AttachmentContent>
+    <om:Attachment xlink:href="./allegati/atto_15434_a.pdf" xlink:type="simple"
+                   type="doc">       
+        <om:AttachmentDescription>
+            <![CDATA[
+            Il testo della proposta
+            ]]>
+        </om:AttachmentDescription>
     </om:Attachment>
 </om:CouncilDeliberation>
