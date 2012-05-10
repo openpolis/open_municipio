@@ -21,6 +21,19 @@
         </dd>
       </dl>
     {% endfor %}
+    <dl>
+      <dt>
+      <h3><a href="#">Territorio</a></h3>
+      </dt>
+      <dd>
+        {% for location in locations %}
+          <a href="{{ location.get_absolute_url }}">{{ location|title }}</a>
+          {% if not forloop.last %}, {% endif %}
+        {% empty %}
+          &hellip;
+        {% endfor %}
+      </dd>
+    </dl>
   </dl>
 
   <hr>

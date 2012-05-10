@@ -146,7 +146,10 @@ class CommitteeDetailView(DetailView):
                 get(pk=m.original_charge_id).council_group
 
 
-        resources = self.object.resource_set.all()
+        resources = dict(
+            (r['resource_type'], {'value': r['value'], 'description': r['description']})
+                for r in self.object.resources.values('resource_type', 'value', 'description')
+        )
 
         events = Event.future.filter(institution=self.object)
 
@@ -177,7 +180,7 @@ class PoliticianDetailView(DetailView):
 
         context['resources'] = dict(
             (r['resource_type'], {'value': r['value'], 'description': r['description']})
-            for r in self.object.resource_set.all().values('resource_type', 'value', 'description')
+            for r in self.object.resources.values('resource_type', 'value', 'description')
         )
         context['current_charges'] = self.object.current_institution_charges.exclude(
             institutionresponsability__charge_type__in=(
@@ -211,14 +214,19 @@ class PoliticianDetailView(DetailView):
                     "%.1f" % (float(percentage_absent) / n_counselors * 100)
 
                 # Calculate present/absent for current counselor
-                charge.n_total_votations = \
-                    charge.n_present_votations + charge.n_absent_votations
-                charge.percentage_present_votations = \
-                    "%.1f" % (float(charge.n_present_votations) / \
-                                  charge.n_total_votations * 100.00)
-                charge.percentage_absent_votations = \
-                    "%.1f" % (float(charge.n_absent_votations) / \
-                                  charge.n_total_votations * 100.00)
+                charge.n_total_votations = 0
+                charge.percentage_present_votations = charge.percentage_absent_votations = 0.0
+
+                if charge.n_total_votations > 0:
+                    charge.n_total_votations = \
+                        charge.n_present_votations + charge.n_absent_votations
+                    charge.percentage_present_votations = \
+                        "%.1f" % (float(charge.n_present_votations) / \
+                                      charge.n_total_votations * 100.00)
+                    charge.percentage_absent_votations = \
+                        "%.1f" % (float(charge.n_absent_votations) / \
+                                      charge.n_total_votations * 100.00)
+
                 self.object.counselor_charge = charge
                 break
 
@@ -253,6 +261,12 @@ class PoliticianDetailView(DetailView):
                     context['is_user_monitoring'] = True
         except ObjectDoesNotExist:
             context['is_user_monitoring'] = False
+
+        context['person_topics'] = []
+        for topics in [y.topics for x in self.object.current_institution_charges for y in x.presented_act_set.all() ]:
+            for topic in topics:
+                context['person_topics'].append(topic)
+
         return context
 
 
@@ -297,7 +311,23 @@ class PoliticianListView(TemplateView):
         ).filter(end_date__isnull=False).order_by('-end_date')[0:3]]
 
         # TODO: sostituite with real data
-        context['most_monitorized'] = []
+        context['most_monitorized'] = context['last_group_changes']
+
+        context['gender_stats'] = {'Uomini': 0, 'Donne': 0}
+        context['age_stats'] = context['degree_stats'] = {}
+        for charge in municipality.council.members:
+            if charge.person.sex == Person.MALE_SEX:
+                context['gender_stats']['Uomini'] += 1
+            elif charge.person.sex == Person.FEMALE_SEX:
+                context['gender_stats']['Donne'] += 1
+
+            if not charge.person.age in context['age_stats']:
+                context['age_stats'][charge.person.age] = 0
+            context['age_stats'][charge.person.age] += 1
+
+        context['gender_stats'] = context['gender_stats'].items()
+        context['age_stats'] = context['age_stats'].items()
+        context['degree_stats'] = [('phd',1), ('none',2)]
 
         return context
 

@@ -4538,6 +4538,18 @@ table#status-table col.past {
   background-repeat: repeat-x;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#a3c4e1', endColorstr='#ffffff', GradientType=0);
 }
+table#status-table thead th,
+table#status-table tfoot td {
+  background-color: #ebe8e0;
+}
+table#status-table thead th.current,
+table#status-table tfoot td.current {
+  background-color: #4788c2;
+}
+table#status-table thead th.past,
+table#status-table tfoot td.past {
+  background-color: #a3c4e1;
+}
 table#status-table thead th {
   text-align: center;
   vertical-align: middle;
@@ -5194,4 +5206,13 @@ table.tablesorter th.tablesorter-headerSortDown {
   color: #999999;
   font-size: 2.5em;
   font-weight: bold;
+}
+/* Generic thumbnail */
+.thumb-left {
+  float: left;
+  margin: 5px 15px 15px 5px;
+}
+hr.big {
+  border-top: 1px solid #ebe8e0;
+  border-bottom: 5px solid #EBE8E0;
 }

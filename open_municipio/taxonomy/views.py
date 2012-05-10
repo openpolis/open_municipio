@@ -1,7 +1,7 @@
 from django.views.generic import DetailView, ListView
 from open_municipio.locations.models import Location
 
-from open_municipio.taxonomy.models import Tag, Category
+from open_municipio.taxonomy.models import Tag, Category, TaggedAct
 
 
 class TopicListView(ListView):
@@ -34,13 +34,22 @@ class TopicDetailView(DetailView):
         context = super(TopicDetailView, self).get_context_data(**kwargs)
 
         context['topics'] = Category.objects.all()
+        context['subtopics'] = self.take_subtopics()
                 
         return context
-    
+
+    def take_subtopics(self):
+        return []
     
 class TagDetailView(TopicDetailView):
     model = Tag
+
+    def take_subtopics(self):
+        return [x.category for x in TaggedAct.objects.filter( tag=self.object )]
   
     
 class CategoryDetailView(TopicDetailView):
     model = Category
+
+    def take_subtopics(self):
+        return [x.tag for x in TaggedAct.objects.filter( category=self.object ) if x.tag]

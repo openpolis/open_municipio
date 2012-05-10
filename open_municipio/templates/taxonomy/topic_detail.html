@@ -66,7 +66,7 @@
         </div>
     </section>
 
-    <hr>
+    <hr class="big">
 
     <section>
         <h3>Atti che trattano di {{ topic }}</h3>
@@ -74,45 +74,45 @@
         <table class="data">
             <thead>
             <tr>
-                <td>Atti</td>
-                <td>Giunta</td>
-                <td>Consiglio</td>
-                <td>Commissioni</td>
+                <th class="text-left">Atti</th>
+                <th>Giunta</th>
+                <th>Consiglio</th>
+                <th>Commissioni</th>
             </tr>
             </thead>
-            <tbody>
+            <tbody class="text-center">
             <tr>
-                <td>Proposta di delibera</td>
+                <td class="text-left">Proposta di delibera</td>
                 <td>23</td>
                 <td>34</td>
                 <td></td>
             </tr>
             <tr>
-                <td>Delibera</td>
+                <td class="text-left">Delibera</td>
                 <td>10</td>
                 <td>10</td>
                 <td>10</td>
             </tr>
             <tr>
-                <td>Mozioni</td>
+                <td class="text-left">Mozioni</td>
                 <td>5</td>
                 <td>5</td>
                 <td>5</td>
             </tr>
             <tr>
-                <td>Ordini del giorno</td>
+                <td class="text-left">Ordini del giorno</td>
                 <td>12</td>
                 <td>12</td>
                 <td>12</td>
             </tr>
             <tr>
-                <td>Interrogazione</td>
+                <td class="text-left">Interrogazione</td>
                 <td>23</td>
                 <td>34</td>
                 <td>12</td>
             </tr>
             <tr>
-                <td>Interpellanza</td>
+                <td class="text-left">Interpellanza</td>
                 <td>3</td>
                 <td>3</td>
                 <td>3</td>
@@ -121,8 +121,8 @@
         </table>
     </section>
 
-    <hr>
 
+{% comment %}NOT ANY MORE...
     <section>
         <h3>Politici che si occupano dell'argomento</h3>
 
@@ -148,7 +148,8 @@
                 {% endfor %}
             {% empty %}
 
-            {% endfor %}{% endcomment %}
+            {% endfor %}
+
             <div class="span6">
                 <ul class="people-list border-right">
                     <li>
@@ -173,10 +174,11 @@
                     </li>
                 </ul>
             </div>
+
         </div>
 
     </section>
-
+{% endcomment %}
     {% load web_services_tags %}
     {% share topic %}
 
@@ -184,23 +186,25 @@
 
 {% block sidebar %}
 
-    {% if topic.tags %}
-    <section>
-        <h3>Altri argomenti in {{ topic|title }}</h3>
+  <section><h3>Monitora</h3>
+    {% include 'monitoring/summary.html' with object=topic show_politicians=0 %}
+  </section>
 
-        <ul class="tags-cloud">
-            {% for tag in topic.tags %}
-                <li><a href="{{ tag.get_absolute_url }}">{{ tag }}</a> <span>1</span></li>
-            {% endfor %}
-        </ul>
-        <small>Il numero accanto al tag corrispondente alla quantità di atti taggati con questo argomento</small>
-    </section>
-    {% endif %}
+  <hr>
 
-    <section>
-        <h3>Monitora</h3>
+  {% if subtopics %}
+  <section>
+      <h3>Altri argomenti in {{ topic|title }}</h3>
 
-    </section>
+      <dl class="taxonomy-cloud">
+          {% for tag in subtopics %}
+              <dd><a href="{{ tag.get_absolute_url }}">{{ tag }}</a></dd>
+          {% endfor %}
+      </dl>
+  </section>
+  {% endif %}
+
+
 
 {% endblock %}
 
@@ -215,5 +219,9 @@
     {{ block.super }}
     <script src="{{ STATIC_URL }}js/jquery-ui-1.8.18.custom.min.js"></script>
     <script src="{{ STATIC_URL }}js/jquery-ui.calendar.js"></script>
+
+    <script src="{{ STATIC_URL }}js/ajax_csrf.js" type="text/javascript" charset="utf-8"></script>
+    <script src="{{ STATIC_URL }}js/jquery.submitlink.js" stype="text/javascript"></script>
+
 {% endblock %}
 

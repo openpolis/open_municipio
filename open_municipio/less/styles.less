@@ -267,6 +267,12 @@ table#status-table {
     &.past { #gradient > .vertical( #a3c4e1, @white ) }
   }
 
+  thead th, tfoot td {
+    background-color: @grayLighter;
+    &.current { background-color: #4788c2; }
+    &.past { background-color: #a3c4e1; }
+  }
+
   thead th {
     text-align: center;
     vertical-align: middle;
@@ -678,3 +684,14 @@ table.tablesorter {
 .monitoring i { color: @textColor; }
 .monitoring a:hover i { color: @grayLight; text-decoration: none; }
 .rank-value { color: @grayLight; font-size: 2.5em; font-weight: bold; }
+/* Generic thumbnail */
+.thumb-left {
+  .pull-left;
+  margin: 5px 15px 15px 5px;
+}
+
+hr.big {
+  border-top: 1px solid @hrBorder;
+  border-bottom: 5px solid #EBE8E0;
+
+}
