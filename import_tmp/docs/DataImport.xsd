@@ -18,12 +18,10 @@
 	<xs:element name="Attachment">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element ref="AttachmentDescription" minOccurs="0" maxOccurs="1"/>
+				<xs:element ref="AttachmentDescription" minOccurs="1" maxOccurs="1"/>
 				<xs:element ref="AttachmentContent" minOccurs="0" maxOccurs="1"/>
 			</xs:sequence>
-
-			<xs:attribute name="title" type="xs:string" use="required"/>
-			<xs:attribute name="type" type="xs:string" use="optional"/>
+			<xs:attribute name="type" type="xs:string" use="required"/>
 			<xs:attribute ref="xlink:href"/>
 			<xs:attribute fixed="simple" ref="xlink:type"/>
 		</xs:complexType>
@@ -69,10 +67,10 @@
 
 	<xs:complexType name="actType">
 		<xs:sequence>
-			<xs:element ref="Content" minOccurs="0" maxOccurs="1"/>
+			<xs:element ref="Title"/>
+			<xs:element ref="Content" minOccurs="1" maxOccurs="1"/>
 		</xs:sequence>
 		<xs:attribute name="id" use="required" type="xs:string"/>
-		<xs:attribute name="title" use="required" type="xs:string"/>
 		<!-- presentation date is not present because every it is derived from the first TransitionStep -->
 		<!-- the text of the act must be wrapped in a Section -->
 		<xs:attribute name="presentation_date" type="xs:date"/>
@@ -120,7 +118,14 @@
 	<xs:element name="ActSubscribers">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element maxOccurs="unbounded" ref="ChargeXRef"/>
+				<xs:element maxOccurs="unbounded" name="ActSupport">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="ChargeXRef"/>
+						</xs:sequence>
+						<xs:attribute name="date" type="xs:date"/>
+					</xs:complexType>
+				</xs:element>
 			</xs:sequence>
 			<xs:attribute name="type">
 				<xs:simpleType>
@@ -362,6 +367,7 @@
 						<!-- the Answer is optional because the act may have not received it, yet -->
 						<xs:element minOccurs="0" ref="QuestionMotivationText"/>
 						<xs:element ref="Answer" minOccurs="0" maxOccurs="1"/>
+						<xs:element maxOccurs="unbounded" minOccurs="0" ref="Attachment"/>
 						<xs:element ref="InterrogationTransition" minOccurs="0"
 							maxOccurs="unbounded"/>
 					</xs:sequence>
@@ -404,6 +410,7 @@
 						<!-- the Answer is optional because the act may have not received it, yet -->
 						<xs:element minOccurs="0" ref="QuestionMotivationText"/>
 						<xs:element ref="Answer" minOccurs="0" maxOccurs="1"/>
+						<xs:element maxOccurs="unbounded" minOccurs="0" ref="Attachment"/>
 						<xs:element ref="InterpellationTransition" minOccurs="0"
 							maxOccurs="unbounded"/>
 					</xs:sequence>
@@ -419,9 +426,10 @@
 				<xs:extension base="councilActType">
 					<xs:sequence>
 						<xs:element ref="Emendation" minOccurs="0" maxOccurs="unbounded"/>
-						<xs:element ref="AgendaBallot" minOccurs="0" maxOccurs="1"/>
-						<xs:element ref="AgendaTransition"/>
+						<xs:element maxOccurs="unbounded" minOccurs="0" ref="Attachment"/>
+						<xs:element ref="AgendaTransition" maxOccurs="unbounded" minOccurs="0"/>
 					</xs:sequence>
+					<xs:attribute name="site" type="siteType"/>
 				</xs:extension>
 			</xs:complexContent>
 		</xs:complexType>
@@ -438,6 +446,7 @@
 						<xs:element maxOccurs="unbounded" minOccurs="0" ref="Attachment"/>
 						<xs:element ref="MotionTransition" minOccurs="0" maxOccurs="unbounded"/>
 					</xs:sequence>
+					<xs:attribute name="site" type="siteType"/>
 				</xs:extension>
 			</xs:complexContent>
 		</xs:complexType>
@@ -607,6 +616,7 @@
 						<xs:element ref="Attachment" minOccurs="0" maxOccurs="unbounded"/>
 						<xs:element ref="CouncilDeliberationTransition" minOccurs="0"
 							maxOccurs="unbounded"/>
+						<xs:element maxOccurs="unbounded" minOccurs="0" ref="Emendation"/>
 					</xs:sequence>
 					<xs:attribute name="final_id" type="xs:string"/>
 					<xs:attribute name="approval_date" type="xs:date" use="optional"/>
@@ -1048,4 +1058,5 @@
 	<xs:element name="QuestionMotivationText">
 		<xs:complexType mixed="true"/>
 	</xs:element>
+	<xs:element name="Title" type="contentType"/>
 </xs:schema>

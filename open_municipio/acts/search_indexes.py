@@ -4,7 +4,7 @@ from haystack import site
 from open_municipio.acts.models import Act
 
 
-class ActIndex(SearchIndex):
+class ActIndex(RealTimeSearchIndex):
     text = CharField(document=True, use_template=True)
 
     # faceting fields
