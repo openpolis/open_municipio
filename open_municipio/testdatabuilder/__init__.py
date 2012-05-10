@@ -60,7 +60,7 @@ class RandomItemsFactory(object):
                 text=g.generate_paragraph(),
                 presentation_date=datetime.date.today() - datetime.timedelta(days=random.randint(1, 10)),
                 emitting_institution=institution,
-                initiative=Deliberation.INIZIATIVE_CHOICES.counselor,
+                initiative=Deliberation.INITIATIVE_CHOICES.counselor,
                 )
             d.save()
             print "Delibera %s - %s creata" % (d.idnum, d.title)

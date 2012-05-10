@@ -273,7 +273,7 @@ class Deliberation(Act):
     """
     WRITEME
     """
-    INIZIATIVE_CHOICES = Choices(
+    INITIATIVE_CHOICES = Choices(
         ('COUNSELOR', 'counselor', _('Counselor')),
         ('PRESIDENT', 'president', _('President')),
         ('ASSESSOR', 'assessor', _('City Government Member')),
@@ -298,7 +298,7 @@ class Deliberation(Act):
     approval_date = models.DateField(_('approval date'), null=True, blank=True)
     publication_date = models.DateField(_('publication date'), null=True, blank=True)
     execution_date = models.DateField(_('execution date'), null=True, blank=True)
-    initiative = models.CharField(_('initiative'), max_length=12, choices=INIZIATIVE_CHOICES)
+    initiative = models.CharField(_('initiative'), max_length=12, choices=INITIATIVE_CHOICES)
     approved_text = models.TextField(blank=True)
     
     class Meta:
@@ -478,8 +478,8 @@ class Document(TimeStampedModel):
     
     * a text string
     * an URL to its textual representation
-    * an URL to an external PDF file
-    * an uploaded internal PDF file
+    * an URL to an external file
+    * an uploaded internal file
     
     It is possible for a single document to have more than one type of content:
     for example, a textual and a PDF local versions, or remote links...
@@ -487,8 +487,8 @@ class Document(TimeStampedModel):
     document_date = models.DateField(null=True, blank=True)
     text = models.TextField(blank=True)
     text_url = models.URLField(blank=True)
-    pdf_url = models.URLField(blank=True)
-    pdf_file = models.FileField(upload_to="attached_documents/%Y%d%m", blank=True)
+    file_url = models.URLField(blank=True)
+    file = models.FileField(upload_to="attached_documents/%Y%d%m", blank=True)
     
     class Meta:
         abstract = True
@@ -628,7 +628,7 @@ def new_signature(**kwargs):
     # and for objects creation
     if not kwargs.get('raw', False) and kwargs.get('created', False):
         generating_item = kwargs['instance']
-        act = generating_item.act
+        act = generating_item.act.downcast()
         signer = generating_item.charge
         # define context for textual representation of the news
         ctx = Context({ 'current_site': Site.objects.get(id=settings.SITE_ID),
@@ -671,8 +671,9 @@ def delete_transition(**kwargs):
         deleting_item = kwargs['instance']
         act = deleting_item.act.downcast()
 
-        act.status = act.get_last_transition().final_status
-        if act.is_final_status(deleting_item.final_status):
-            act.status_is_final = False
+        if act.get_last_transition():
+            act.status = act.get_last_transition().final_status
+            if act.is_final_status(deleting_item.final_status):
+                act.status_is_final = False
 
         act.save()
