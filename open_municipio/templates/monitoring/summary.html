@@ -2,7 +2,7 @@
 <table id="monitoring-table">
   <tr>
     <td>
-      {{ object.monitoring_users_count|circled }}
+      {{ object.monitoring_users_count|default:'0'|circled }}
     </td>
     <td>
       {% if user.is_authenticated and not user.get_profile.person %}
