@@ -350,6 +350,9 @@ class InstitutionCharge(Charge):
         """
         if self.institution.institution_type == Institution.COUNCIL:
             return GroupCharge.objects.select_related().get(charge__id=self.id, end_date__isnull=True)
+        elif self.institution.institution_type == Institution.COMMITTEE or \
+             self.institution.institution_type == Institution.JOINT_COMMITTEE:
+            return GroupCharge.objects.select_related().get(charge__id=self.original_charge_id, end_date__isnull=True)
         else:
             return None
 
@@ -857,7 +860,7 @@ class Sitting(models.Model):
         verbose_name_plural = _('sittings')
     
     def __unicode__(self):
-        return u'seduta num. %s del %s' % (self.number, self.date.strftime('%d/%m/%Y'))
+        return u'seduta num. %s del %s (%s)' % (self.number, self.date.strftime('%d/%m/%Y'), self.institution.name)
      
 
 ## Private DB access API

@@ -115,7 +115,7 @@ class Command(LabelCommand):
                 )
                 continue
 
-            initiative = xml_act.get("initiative")
+            initiative = settings.XML_TO_OM_INITIATIVE[xml_act.get("initiative")]
             if initiative is None:
                 self.stderr.write(
                     "Error: Act %s has no initiative attribute! Skipping this sitting." % id

@@ -7,7 +7,7 @@ from model_utils.models import TimeStampedModel
 from model_utils.managers import QueryManager
 import sys
 
-from open_municipio.people.models import Group, InstitutionCharge, Sitting
+from open_municipio.people.models import Group, InstitutionCharge, Sitting, Institution
 from open_municipio.acts.models import Act
 
 
@@ -151,8 +151,10 @@ class Votation(models.Model):
         * n_yes
         * n_no
         * n_abst
+        * n_rebels
+        * n_absents
 
-        the number of total group members is len(g.councelors())
+        the number of total group members is len(g.counselors())
         and it should be cached somewhere,
         then n_absents = n_group_members - n_presents
 
@@ -164,11 +166,12 @@ class Votation(models.Model):
 
             for g in Group.objects.all():
                 # compute votation details for the group
+                # differentiate between council and committee queries
                 annotated_votes = ChargeVote.objects.filter(votation__id=self.id,
                                                             charge__groupcharge__group=g,
                                                             charge__groupcharge__end_date__isnull=True).\
-                                                     values('vote').\
-                                                     annotate(Count('vote'))
+                values('vote').\
+                annotate(Count('vote'))
                 if not len(annotated_votes):
                     continue
 
@@ -176,8 +179,6 @@ class Votation(models.Model):
                 # in this votation
                 most_voted = annotated_votes.order_by('-vote__count')[0:2]
 
-
-                print "group: %s" % (g.acronym,)
 
                 # if equal, then set to not available
                 if (len(most_voted) == 1 or
@@ -191,6 +192,7 @@ class Votation(models.Model):
 
                 # update other cached values
                 votes_cnt = 0
+                n_rebels = 0
                 for v in annotated_votes:
                     if v['vote'] == ChargeVote.VOTES.no:
                         gv.n_no = v['vote__count']
@@ -201,9 +203,24 @@ class Votation(models.Model):
                     else:
                         pass
                     votes_cnt += v['vote__count']
+
+                    # compute n_rebels
+                    if v['vote'] == ChargeVote.VOTES.yes or\
+                       v['vote'] == ChargeVote.VOTES.no or\
+                       v['vote'] == ChargeVote.VOTES.abstained:
+                        if vote != GroupVote.VOTES.noncomputable and \
+                           v['vote'] > 0 and v['vote'] != vote:
+                            n_rebels += v['vote__count']
+
                 # presences = n. of total votes
                 # presidents, mission, and ther are counted
                 gv.n_presents = votes_cnt
+
+                # count absences
+                gv.n_absents = len(g.institution_charges) - gv.n_presents
+
+                # n_rebels in group
+                gv.n_rebels = n_rebels
 
                 # save updates
                 gv.save()
@@ -229,6 +246,8 @@ class GroupVote(TimeStampedModel):
     n_yes = models.IntegerField(default=0)
     n_no = models.IntegerField(default=0)
     n_abst = models.IntegerField(default=0)
+    n_rebels = models.IntegerField(default=0)
+    n_absents = models.IntegerField(default=0)
 
     class Meta:
         db_table = u'votations_group_vote'    

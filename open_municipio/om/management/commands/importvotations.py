@@ -44,7 +44,7 @@ class Command(LabelCommand):
 
     people_tree = None
 
-    def lookupCharge(self, xml_chargevote, institution):
+    def lookupCharge(self, xml_chargevote, institution, **options):
         """
         look for the correct open municipio charge, or return None
         """
@@ -60,23 +60,27 @@ class Command(LabelCommand):
             if len(people_charges):
                 om_id = people_charges[0].get('om_id')
                 if om_id is None:
-                    self.stderr.write("Warning: charge with id %s has no om_id (past charge?). Skipping.\n" % component_id)
+                    if int(options['verbosity']) > 0:
+                        self.stderr.write("Warning: charge with id %s has no om_id (past charge?). Skipping.\n" % component_id)
                     return None
                 try:
                     person = Person.objects.get(pk=int(om_id))
                     charge =  person.current_institution_charge(institution)
                     return charge
                 except ObjectDoesNotExist:
-                    self.stderr.write("Warning: could not find person or charge for id = %s in open municipio DB. Skipping.\n" % component_id)
+                    if int(options['verbosity']) > 1:
+                        self.stderr.write("Warning: could not find person or charge for id = %s in open municipio DB. Skipping.\n" % component_id)
                     return None
                 except MultipleObjectsReturned:
                     self.stderr.write("Error: found more than one person or charge for id %s in open municipio db. Skipping.\n" % component_id)
                     return None
             else:
-                self.stderr.write("Warning: could not find person for id %s in peopkle XML file. Skipping.\n" % component_id)
+                if int(options['verbosity']) > 0:
+                    self.stderr.write("Warning: could not find person for id %s in peopkle XML file. Skipping.\n" % component_id)
                 return None
         except ObjectDoesNotExist:
-            self.stderr.write("Warning: could not find charge with id %s in Open Municipio DB. Skipping.\n" % component_id)
+            if int(options['verbosity']) > 0:
+                self.stderr.write("Warning: could not find charge with id %s in Open Municipio DB. Skipping.\n" % component_id)
             return None
 
 
@@ -102,16 +106,19 @@ class Command(LabelCommand):
 
             # get or create the sitting object
             curr_inst = Institution.objects.get(name=settings.XML_TO_OM_INST[site])
+            council_inst = Institution.objects.get(name=settings.XML_TO_OM_INST['SCN'])
+
+            sitting_date = xml_sitting.get("date")[0:10]
             om_sitting, created = Sitting.objects.get_or_create(
                 number=xml_sitting.get("num"),
-                date=xml_sitting.get("date")[0:10],
+                date=sitting_date,
                 institution=curr_inst
             )
 
             if not created:
-                self.stdout.write("Found sitting %s\n" % om_sitting.number)
+                self.stdout.write("\n\nFound sitting %s - %s\n" % (om_sitting.number, sitting_date))
             else:
-                self.stdout.write("Created sitting %s\n" % om_sitting.number)
+                self.stdout.write("\n\nCreated sitting %s - %s\n" % (om_sitting.number, sitting_date))
 
             # fetch all votations for the sitting in the XML
             votations = xml_sitting.xpath("./om:Votation", namespaces=NS)
@@ -150,6 +157,8 @@ class Command(LabelCommand):
                     # om_votation.outcome = xml_votation.get("outcome") # decode
                     om_votation.save()
 
+                self.stdout.write("title: %s\n" % om_votation.act_descr.encode('utf-8'))
+
                 # build a ChargeVote for every single vote
                 chargevotes = xml_votation.xpath("./om:Votes/om:ChargeVote", namespaces=NS)
                 self.stdout.write("Votation contains %d ChargeVotes\n" % len(chargevotes))
@@ -159,7 +168,8 @@ class Command(LabelCommand):
                     ChargeVote.objects.filter(votation=om_votation).delete()
 
                 for xml_cv in chargevotes:
-                    om_charge = self.lookupCharge(xml_cv, curr_inst)
+                    # lookup council charges to match with ChargeVote
+                    om_charge = self.lookupCharge(xml_cv, council_inst, **options)
                     if om_charge is None:
                         continue
 
@@ -186,7 +196,15 @@ class Command(LabelCommand):
                         om_cv.vote = settings.XML_TO_OM_VOTE[xml_vote]
                         om_cv.save()
 
+                        self.stdout.write("Person: %s - %s\n" % (om_charge.person.last_name.encode('utf8'), om_cv.vote))
+
+
+                # update votation caches
+                om_votation.update_caches()
+                self.stdout.write("caches for this votation updated.\n")
+
     def handle(self, *labels, **options):
+
         if not labels:
             raise CommandError('Enter at least one %s.' % self.label)
 

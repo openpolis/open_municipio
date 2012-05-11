@@ -3,7 +3,7 @@
         "pk":1,
         "model":"sites.site",
         "fields":{
-            "domain":"openmunicipio.staging.openpolis.it",
+            "domain":"udine.openmunicipio.it",
             "name":"openmunicipio.it"
         }
     }
