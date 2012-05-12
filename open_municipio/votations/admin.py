@@ -17,9 +17,9 @@ class ChargeVoteInline(admin.TabularInline):
 
 class VotationAdmin(admin.ModelAdmin):
     list_display = ('idnum', 'act_descr', 'sitting', 'is_linked', 'outcome')
-    list_filter = ('act', 'sitting',)
+    list_filter = ('sitting',)
     raw_id_fields = ['act']
-    readonly_fields = ('act_descr', )
+    readonly_fields = ('act_descr', 'sitting', 'idnum' )
     ordering = ['-sitting__date']
 
 
@@ -31,6 +31,7 @@ class VotationAdmin(admin.ModelAdmin):
             self.inlines = [GroupVoteInline, ChargeVoteInline]
         else:
             self.inlines = []
+            self.fields = ('idnum', 'sitting', 'act', 'act_descr')
 
         self.inline_instances = []
         for inline_class in self.inlines:

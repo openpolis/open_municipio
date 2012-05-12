@@ -1,0 +1,17 @@
+<a href="{{ politician.person.get_absolute_url }}"><img src="{{ STATIC_URL }}img/placehold/50.gif" /></a>
+<div>
+
+  <a href="{{ politician.person.get_absolute_url }}"><strong>{{ politician.person|title }}</strong></a>
+
+  {% if what %}({{ value }} {{ what }}){% else %}{{ value }}{% endif %}
+
+  <br>
+
+  {{ politician.council_group }}
+
+  <br>
+
+  <span class="monitoring">
+    Monitorato da # cittadini - <a href="#"><i class="icon-plus-sign"></i>Monitora</a>
+  </span>
+</div>

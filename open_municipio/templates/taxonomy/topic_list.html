@@ -6,45 +6,59 @@
 
 {% block content %}
 
-    <dl id="topic_summary">
+  <dl id="topic_summary" class="clearfix">
     {% for category in categories %}
-        <dl>
-            <dt><h3><a href="{{ category.get_absolute_url }}">{{ category|title }}</a></h3></dt>
-            <dd>
-                {% for tag in category.tags %}
-                <a href="{{ tag.get_absolute_url }}">{{ tag|title }}</a>
-                    {% if not forloop.last %}, {% endif %}
-                {% empty %}
-                &hellip;
-                {% endfor %}
-            </dd>
-        </dl>
+      <dl>
+        <dt>
+        <h3><a href="{{ category.get_absolute_url }}">{{ category|title }}</a></h3></dt>
+        <dd>
+          {% for tag in category.tags %}
+            <a href="{{ tag.get_absolute_url }}">{{ tag|title }}</a>
+            {% if not forloop.last %}, {% endif %}
+          {% empty %}
+            &hellip;
+          {% endfor %}
+        </dd>
+      </dl>
     {% endfor %}
+    <dl>
+      <dt>
+      <h3><a href="#">Territorio</a></h3>
+      </dt>
+      <dd>
+        {% for location in locations %}
+          <a href="{{ location.get_absolute_url }}">{{ location|title }}</a>
+          {% if not forloop.last %}, {% endif %}
+        {% empty %}
+          &hellip;
+        {% endfor %}
+      </dd>
     </dl>
+  </dl>
 
-    <hr>
+  <hr>
 
-    <h3>Peso degli argomenti negli atti</h3>
+  <h3>Peso degli argomenti negli atti</h3>
 
-    {% load tags_cloud %}
-    {% tags_cloud tags_to_cloud %}
+  {% load tags_cloud %}
+  {% tags_cloud tags_to_cloud %}
 
 {% endblock %}
 
 {% block sidebar %}
 
-    <h2>Argomenti più monitorati</h2>
+  <h2>Argomenti più monitorati</h2>
 
-    <ul class="feed-list">
-        {% for tag in top_monitorized_tags %}
-            <li>
-                <span class="rank-value pull-right">{{ forloop.counter }}</span>
-                <strong><a href="{{ tag.get_absolute_url }}">{{ tag }}</a></strong>
+  <ul class="feed-list">
+    {% for tag in top_monitorized_tags %}
+      <li>
+        <span class="rank-value pull-right">{{ forloop.counter }}</span>
+        <strong><a href="{{ tag.get_absolute_url }}">{{ tag }}</a></strong>
                 <span class="monitoring">
                     Monitorato da 5 cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a>
                 </span>
-            </li>
-        {% endfor %}
-    </ul>
+      </li>
+    {% endfor %}
+  </ul>
 
 {% endblock %}

@@ -9,6 +9,8 @@ apache
 fabfile/
 sitestatic
 import_tmp/udine/votations/sitting_*
+import_tmp/udine/acts/*
+import_tmp/udine/acts_new
 open_municipio/media
 open_municipio/*/migrations
 solr

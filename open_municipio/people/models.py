@@ -2,6 +2,7 @@ from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.db.models import permalink
+from django.utils.datetime_safe import date
 from django.utils.translation import ugettext_lazy as _
 from django.template.defaultfilters import slugify
 from django.core.urlresolvers import reverse
@@ -131,6 +132,14 @@ class Person(models.Model, MonitorizedItem):
         Return id of the content type associated with this instance.
         """
         return ContentType.objects.get_for_model(self).id
+
+    @property
+    def age(self, in_date=None):
+        """
+        Returns an integer of year between birth_date and now
+        """
+        end_date = in_date if in_date else date.today()
+        return (end_date - self.birth_date).days / 365
 
 class Resource(models.Model):
     """
@@ -350,6 +359,9 @@ class InstitutionCharge(Charge):
         """
         if self.institution.institution_type == Institution.COUNCIL:
             return GroupCharge.objects.select_related().get(charge__id=self.id, end_date__isnull=True)
+        elif self.institution.institution_type == Institution.COMMITTEE or \
+             self.institution.institution_type == Institution.JOINT_COMMITTEE:
+            return GroupCharge.objects.select_related().get(charge__id=self.original_charge_id, end_date__isnull=True)
         else:
             return None
 
@@ -857,7 +869,7 @@ class Sitting(models.Model):
         verbose_name_plural = _('sittings')
     
     def __unicode__(self):
-        return u'seduta num. %s del %s' % (self.number, self.date.strftime('%d/%m/%Y'))
+        return u'seduta num. %s del %s (%s)' % (self.number, self.date.strftime('%d/%m/%Y'), self.institution.name)
      
 
 ## Private DB access API

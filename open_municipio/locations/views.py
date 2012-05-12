@@ -9,11 +9,12 @@ from open_municipio.acts.models import Act
 
 from open_municipio.locations.models import Location, TaggedActByLocation
 from open_municipio.locations.forms import ActLocationsAddForm
+from open_municipio.taxonomy.views import TopicDetailView
 
 
-class LocationDetailView(DetailView):
+class LocationDetailView(TopicDetailView):
     context_object_name = 'location'
-    template_name = 'taxonomy/location_detail.html'
+    #template_name = 'taxonomy/location_detail.html'
     model = Location
 
 
