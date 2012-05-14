@@ -86,6 +86,29 @@ class ActAdminWithAttaches(admin.ModelAdmin):
 class ActAdminWithEmendations(admin.ModelAdmin):
     inlines = [EmendationInline]
 
+class MotionAdmin(ActAdmin):
+    fieldsets = (
+        (None, {
+            'fields': ('idnum', 'title', 'adj_title', 'status')
+        }),
+        ('Presentazione', {
+            'classes': ('collapse',),
+            'fields': ('presentation_date', 'text', 'emitting_institution'),
+            }),
+        )
+
+
+class InterrogationAdmin(ActAdmin):
+    fieldsets = (
+        (None, {
+            'fields': ('idnum', 'title', 'adj_title', 'status')
+        }),
+        ('Presentazione', {
+            'classes': ('collapse',),
+            'fields': ('presentation_date', 'text', 'emitting_institution', 'answer_type'),
+            }),
+        )
+
 class DeliberationAdmin(ActAdmin):
     fieldsets = (
         (None, {
@@ -111,9 +134,9 @@ admin.site.register(Act, ActAdmin)
 # end of our homemade fix!
 
 admin.site.register(Deliberation, DeliberationAdmin)
-admin.site.register(Interrogation)
+admin.site.register(Interrogation, InterrogationAdmin)
 admin.site.register(Interpellation)
-admin.site.register(Motion, ActAdminWithEmendations)
+admin.site.register(Motion, MotionAdmin)
 admin.site.register(Calendar)
 admin.site.register(Emendation, ActAdminWithAttaches)
 admin.site.register(Attach)

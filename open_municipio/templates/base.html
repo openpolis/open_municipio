@@ -39,21 +39,25 @@
   <div class="navbar" id="navbar-top">
     <nav class="navbar-inner">
       <a href="/" class="brand">
-        open<strong>municipio</strong>
+        open<strong>municipio</strong>{% if site_version %}<span class="version">{{ site_version }}</span>{% endif %}
         <small>Informati, monitora e partecipa ai lavori del tuo municipio</small>
       </a>
 
+      {% if user.is_authenticated %}
+        <p class="text-right pull-right">
+          Ciao, <strong>{{ user.username }}</strong>
+          <br>
+          <a href="/accounts/logout/?next={% if "/accounts" in request.path %}/{% else %}{{ request.path }}{% endif %}">Esci</a>
+          &middot;
+          <a href="/users/profile/edit/">Impostazioni</a>
+        </p>
+      {% else %}
       <ul class="nav pull-right">
-        {% if user.is_authenticated %}
-          <li><a href="/users/profile/edit/">Logged in as {{ user.username }}</a></li>
-          <li class="divider-vertical"></li>
-          <li><a href="/accounts/logout/?next={% if "/accounts" in request.path %}/{% else %}{{ request.path }}{% endif %}">Esci</a></li>
-        {% else %}
           <li>Vuoi partecipare? <a href="/accounts/register/">Registrati</a></li>
           <li class="divider-vertical"></li>
           <li>Sei già registrato? <a href="/accounts/login/?next={% if "/accounts" in request.path %}/{% else %}{{ request.path }}{% endif %}">Entra</a></li>
-        {% endif %}
       </ul>
+      {% endif %}
     </nav>
   </div>
   <!-- /TOPBAR -->

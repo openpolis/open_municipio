@@ -60,21 +60,22 @@ class VotationDetailView(DetailView):
 
         votation = self.object
 
-        # So we have an act. What kind of act, specifically? (FIXME: I
-        # don't like the way act types are hardcoded here with their
-        # Italian names.)
-        if votation.act.downcast().__class__() == Agenda().__class__():
-            act_type = "Ordine del Giorno"
-        elif votation.act.downcast().__class__() == Deliberation().__class__():
-            act_type = "Delibera"
-        elif votation.act.downcast().__class__() == Interpellation().__class__():
-            act_type = "Interpellanza"
-        elif votation.act.downcast().__class__() == Interrogation().__class__():
-            act_type = "Interrogazione"
-        elif votation.act.downcast().__class__() == Motion().__class__():
-            act_type = "Mozione"
+        if votation.act:
+            # So we have an act. What kind of act, specifically? (FIXME: I
+            # don't like the way act types are hardcoded here with their
+            # Italian names.)
+            if votation.act.downcast().__class__() == Agenda().__class__():
+                act_type = "Ordine del Giorno"
+            elif votation.act.downcast().__class__() == Deliberation().__class__():
+                act_type = "Delibera"
+            elif votation.act.downcast().__class__() == Interpellation().__class__():
+                act_type = "Interpellanza"
+            elif votation.act.downcast().__class__() == Interrogation().__class__():
+                act_type = "Interrogazione"
+            elif votation.act.downcast().__class__() == Motion().__class__():
+                act_type = "Mozione"
 
-        votation.act_type = act_type
+            votation.act_type = act_type
 
         extra_context = {
             'votation': votation,

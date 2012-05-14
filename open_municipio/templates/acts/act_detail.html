@@ -19,15 +19,15 @@
 
 {% block head_css_includes %}
     {{ block.super }}
-    <link href="{{ STATIC_URL }}css/voting.css" rel="stylesheet">    
+    <link href="{{ STATIC_URL }}css/voting.css" rel="stylesheet">
 {% endblock head_css_includes %}
 
 {% block head_js_includes %}
   {{ block.super }}
   <script src="{{ STATIC_URL }}js/ajax_csrf.js" type="text/javascript" charset="utf-8"></script>
-  <script src="{{ STATIC_URL }}js/jquery.jeditable.js" stype="text/javascript"></script>
-  <script src="{{ STATIC_URL }}js/jquery.submitlink.js" stype="text/javascript"></script>
-  <script src="{{ STATIC_URL }}js/jquery.autogrow.js" stype="text/javascript"></script>
+  <script src="{{ STATIC_URL }}js/jquery.jeditable.js" type="text/javascript"></script>
+  <script src="{{ STATIC_URL }}js/jquery.submitlink.js" type="text/javascript"></script>
+  <script src="{{ STATIC_URL }}js/jquery.autogrow.js" type="text/javascript"></script>
 {% endblock head_js_includes %}
 
 
@@ -43,7 +43,7 @@
 
   <hgroup>
     <h2 id="act_title">
-      <i id="{{ act|as_token }}" class="bookmarkable {% is_key_class act %}"></i>
+      <a href="#" id="{{ act|as_token }}" class="bookmarkable"><i class="{% is_key_class act %}"></i></a>
       <strong class="input-append">{{ act.title }}</strong>
       <small>(N. {{ act.idnum }})</small></h2>
     <h4>
@@ -59,7 +59,13 @@
     {% endfor %}
   </div>
 
-  <div class="nav-tabs-container">
+  <div>
+      {% if act.text|length > 0 %}
+        <pre style="margin-bottom: 1em; overflow-y: scroll; height: 150px" id="act_text">{{ act.text }}</pre>
+      {%  endif %}
+  </div>
+
+    <div class="nav-tabs-container">
     <ul class="nav nav-tabs page-tabs">
       <li {% block act_tab_status_class %}class="active"{% endblock %}> <a href="{{ act.get_absolute_url }}">Stato</a></li>
       <li {% block act_tab_documents_class %}{% endblock %}><a href="{{ act.get_absolute_url }}documents">Documenti</a></li>

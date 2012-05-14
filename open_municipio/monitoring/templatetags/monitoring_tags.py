@@ -1,13 +1,8 @@
+from django import template
 from django.core.exceptions import ObjectDoesNotExist
 from open_municipio.monitoring.forms import MonitoringForm
 
-__author__ = 'joke2k'
-
-from django import template
-
 register = template.Library()
-
-
 
 @register.inclusion_tag('monitoring/summary.html', takes_context=True)
 def object_monitoring(context, object, show_politicians=False):
@@ -60,4 +55,3 @@ def object_inline_monitoring(context, object):
         args['is_user_monitoring'] = False
 
     return args
-

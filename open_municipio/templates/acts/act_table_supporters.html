@@ -3,7 +3,7 @@
 <div class="row-fluid">
 
     <section class="span6">
-        <h1>{{ supporter_title|default:"Firmatari" }}</h1>
+        {% if supporter_title %}<h1>{{ supporter_title }}</h1>{% endif %}
         <ul class="people-list">
           {% for supporter in act_supporters %}
           <li>
@@ -12,7 +12,7 @@
             <div>
               <strong><a href="{{ supporter.get_absolute_url }}">{{ supporter.person.full_name }}</a></strong>
               <br>
-              {{ supporter.council_group }}
+              {{ supporter.denomination }}
               <br>
 
               {% object_inline_monitoring supporter.person %}
@@ -25,16 +25,16 @@
 
     <section class="span6">
         {% if act_cosupporters %}
-        <h1>{{ cosupporter_title|default:"Co-firmatari" }}</h1>
+        {% if cosupporter_title %}<h1>{{ cosupporter_title }}</h1>{% endif %}
         <ul class="people-list">
-          {% for supporter in act_supporters %}
+          {% for supporter in act_cosupporters %}
             <li>
               <a href="{{ supporter.get_absolute_url }}"><img src="{{ STATIC_URL }}img/placehold/50.gif" /></a>
 
               <div>
                 <strong><a href="{{ supporter.get_absolute_url }}">{{ supporter.person.full_name }}</a></strong>
                 <br>
-                {{ supporter.council_group }}
+                {{ supporter.denomination }}
                 <br>
 
                 {% object_inline_monitoring supporter.person %}

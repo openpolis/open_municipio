@@ -98,26 +98,27 @@
             </div>
           </div>
         </div>
+        <hr class="big">
       {% endif %}
     {% endfor %}
   </section>
 
   <section>
-    <h2>Agenda del consiglio</h2>
-
-    <div class="row-fluid">
-      <div class="span4">
-        <div class="calendar" data-events=".calendar_events"></div>
-      </div>
-      <div class="span8">
-        <ul class="list-floated unstyled calendar_events">
-          {% for event in events %}
-            {% if not event.is_past_due %}
-              <li data-day="{{ event.date|date:"d/m/Y" }}"><strong>{{ event.date|date:"d.m.Y" }}</strong> <a
-                  href="{{ event.act.downcast.get_absolute_url }}">{{ event.act.title }}</a></li>
-            {% endif %}
-          {% endfor %}
-        </ul>
+    <h3>Agenda del Consiglio</h3>
+    <div class="calendar_container">
+      <div class="row-fluid">
+        <div class="span4">
+          <div class="calendar" data-events=".calendar_events"></div>
+        </div>
+        <div class="span8">
+          <ul class="data-list calendar_events">
+            {% for event in events %}
+              {% if not event.is_past_due %}
+                <li data-day="{{ event.date|date:"m/d/Y" }}"><strong>{{ event.date|date:"d.m.Y" }}</strong> <a href="{{ event.act.downcast.get_absolute_url }}">{{ event.act.title }}</a></li>
+              {% endif %}
+            {% endfor %}
+          </ul>
+        </div>
       </div>
     </div>
   </section>
@@ -125,7 +126,6 @@
 {% endblock %}
 
 {% block sidebar %}
-
   <h2>Commissioni</h2>
   <ul class="list-plain">
       {% for committee in committees %}
