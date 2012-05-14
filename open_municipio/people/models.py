@@ -39,7 +39,7 @@ class Person(models.Model, MonitorizedItem):
     op_politician_id = models.IntegerField(_('openpolis politician ID'), blank=True, null=True)
 
     # manager to handle the list of monitoring having as content_object this instance
-    monitoring_set = generic.GenericRelation(Monitoring, object_id_field='object_pk')
+    #monitoring_set = generic.GenericRelation(Monitoring, object_id_field='object_pk')
     
     class Meta:
         verbose_name = _('person')
@@ -100,26 +100,6 @@ class Person(models.Model, MonitorizedItem):
         )
 
     @property
-    def monitorings(self):
-        """
-        Returns the monitorings associated with this person (as a QuerySet).
-        """
-        return self.monitoring_set.all()
-    
-    @property
-    def monitoring_users(self):
-        """
-        Returns the list of users monitoring this person.
-        """
-        # FIXME: This method should return a QuerySet for efficiency reasons
-        # (a politician could be monitored by a large number of people;
-        # moreover, often we are only interested in the total number of 
-        # monitoring users, so building a list in memory may result in a waste of resources).
-        # You can use monitoring_set.count() for counting,
-        # this is just a handle to build quickly a users list.
-        return [m.user for m in self.monitorings]
-
-    @property
     def resources(self):
         """
         Returns the list of resources associated with this person
@@ -134,12 +114,12 @@ class Person(models.Model, MonitorizedItem):
         return ContentType.objects.get_for_model(self).id
 
     @property
-    def age(self, in_date=None):
+    def age(self):
         """
         Returns an integer of year between birth_date and now
         """
-        end_date = in_date if in_date else date.today()
-        return (end_date - self.birth_date).days / 365
+        #end_date = in_date if in_date else date.today()
+        return (date.today() - self.birth_date).days / 365
 
 class Resource(models.Model):
     """

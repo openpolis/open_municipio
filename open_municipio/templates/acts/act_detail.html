@@ -32,7 +32,7 @@
 
 
 {% block content %}
-  <table class="" style="position: absolute; top:0; right: 0;">
+  <table class="pull-right">
     <tr>
       <td>
         {{ act.presentation_date|circled:"full,colored" }}
@@ -142,7 +142,8 @@
 
   <section>
     <h3>Monitora</h3>
-    {% include 'monitoring/summary.html' with object=act show_politicians=True %}
+    {% load monitoring_tags %}
+    {% object_monitoring act 1 %}
   </section>
 
   <hr>

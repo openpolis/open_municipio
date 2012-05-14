@@ -15,26 +15,27 @@
 {% block content %}
 
     {% if selected_facets %}
-        <ul class="breadcrumb">
-            {% for facet in selected_facets  %}
-                <li>
-                    <a href="{{ facet.url }}"><i class="icon-remove"></i></a>
-                    <span style="color:gray;">{{ facet.field }}</span>:
-                    {{ facet.label }}
-                </li>
-                {% if not forloop.last %}
-                    <span class="divider">/</span>
-                {% endif %}
-            {% endfor %}
-        </ul>
+      <ul class="breadcrumb">
+        {% for facet in selected_facets  %}
+          <li>
+            <a href="{{ facet.url }}"><i class="icon-remove"></i></a>
+            <span style="color:gray;">{{ facet.field }}</span>:
+            {{ facet.label }}
+          </li>
+          {% if not forloop.last %}
+            <span class="divider">/</span>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>Puoi trovare la votazione che ti interessa scorrendo la lista delle ultime pubblicate, qui sotto.
+        Puoi perfezionare la ricerca usando i filtri nella colonna qui a destra. Oppure puoi usare il form di
+        ricerca con una parola che pensi sia contenuta nella votazione o nell'atto che la riguarda,
+        in cima alla colonna qui a destra</p>
     {% endif %}
 
 
     {% if n_results %}
-    <p>Puoi trovare la votazione che ti interessa scorrendo la lista delle ultime pubblicate, qui sotto.
-      Puoi perfezionare la ricerca usando i filtri nella colonna qui a destra. Oppure puoi usare il form di
-      ricerca con una parola che pensi sia contenuta nella votazione o nell'atto che la riguarda,
-      in cima alla colonna qui a destra</p>
 
     {% include "commons/pagination.html" with base_url=base_url %}
 

@@ -13,9 +13,12 @@ from open_municipio.taxonomy.views import TopicDetailView
 
 
 class LocationDetailView(TopicDetailView):
-    context_object_name = 'location'
+    #context_object_name = 'location'
     #template_name = 'taxonomy/location_detail.html'
     model = Location
+
+    def take_subtopics(self):
+        return Location.objects.exclude(pk=self.object.pk)
 
 
 class ActTagByLocationView(FormView):

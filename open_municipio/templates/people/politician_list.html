@@ -1,5 +1,6 @@
 {% extends "base_two_columns.html" %}
 {% load i18n %}
+{% load monitoring_tags %}
 
 {% block title %} Politici {% endblock %}
 {% block content_header %}Politici{% endblock %}
@@ -9,6 +10,7 @@
 {% block footer_js_includes %}
     {{ block.super }}
     <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap-tab.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.submitlink.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -49,6 +51,7 @@
           {% for politician in last_group_changes %}
           <li>
             {% include 'people/politician_list_section.html' with value=politician.start_date %}
+            {% object_inline_monitoring politician.person %}
           </li>
           {% endfor %}
         </ul>
@@ -60,6 +63,7 @@
           {% for politician in most_rebellious %}
           <li>
             {% include 'people/politician_list_section.html' with value=politician.n_rebel_votations what='ribellioni' %}
+            {% object_inline_monitoring politician.person %}
           </li>
           {% endfor %}
         </ul>
@@ -77,6 +81,7 @@
           {% for politician in least_absent %}
           <li>
             {% include 'people/politician_list_section.html' with value=politician.n_absent_votations what='assenze' %}
+            {% object_inline_monitoring politician.person %}
           </li>
           {% endfor %}
         </ul>
@@ -88,6 +93,7 @@
           {% for politician in most_absent %}
           <li>
             {% include 'people/politician_list_section.html' with value=politician.n_absent_votations what='assenze' %}
+            {% object_inline_monitoring politician.person %}
           </li>
           {% endfor %}
         </ul>
@@ -105,6 +111,7 @@
       {% for politician in most_monitorized %}
         <li><span class="rank-value pull-right">{{ forloop.counter }}</span>
           {% include 'people/politician_list_section.html' %}
+          {% object_inline_monitoring politician.person %}
         </li>
       {% endfor %}
     </ul>
