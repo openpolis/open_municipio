@@ -2,7 +2,7 @@
 <OpenMunicipio
 	xmlns="http://www.openmunicipio.it"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.openmunicipio.it OpenMunicipioDataImport.xsd">
+	xsi:schemaLocation="http://www.openmunicipio.it OM-XML.xsd">
 	<People>
 		<Institutions>
 			<Mayor name="sior Sindaco">

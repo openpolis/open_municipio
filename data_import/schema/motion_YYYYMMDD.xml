@@ -2,7 +2,7 @@
 <om:Motion xmlns:xlink="http://www.w3.org/1999/xlink"
  xmlns:om="http://www.openmunicipio.it"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- xsi:schemaLocation="http://www.openmunicipio.it file:/Users/guglielmo/Workspace/open_municipio/import_tmp/docs/DataImport.xsd" 
+ xsi:schemaLocation="http://www.openmunicipio.it OM-XML.xsd" 
  id="2010/M/2" presentation_date="2010-03-12">
     <!--
         Il titolo della proposta, se possibile,

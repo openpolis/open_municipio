@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<om:People xmlns:om="http://www.openmunicipio.it" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openmunicipio.it DataImport.xsd">
+<om:People xmlns:om="http://www.openmunicipio.it" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openmunicipio.it OM-XML.xsd">
   <om:Person id="1">
     <om:Person first_name="Enzo" last_name="CAINERO"/>
   </om:Person>

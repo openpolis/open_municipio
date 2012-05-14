@@ -70,7 +70,7 @@ class XMLGenerator(object):
         people = etree.Element(OM + "People",
                                nsmap={"om":OM_NS,"xsi":XSI_NS})
         people.set(XSI + "schemaLocation",
-                   "http://www.openmunicipio.it DataImport.xsd")
+                   "http://www.openmunicipio.it OM-XML.xsd")
 
         institutions = etree.SubElement(people, OM + "Institutions")
         council = etree.SubElement(institutions, OM + "Council")
@@ -144,7 +144,7 @@ class XMLGenerator(object):
                 sitting = etree.Element(OM + "Sitting",
                                         nsmap={"om":OM_NS,"xsi":XSI_NS, "xlink":XLINK_NS})
                 sitting.set(XSI + "schemaLocation",
-                            "http://www.openmunicipio.it DataImport.xsd")
+                            "http://www.openmunicipio.it OM-XML.xsd")
                 sitting.set("num",unicode(sitting_n))
                 sitting.set("date",unicode(sitting_row['DataSeduta']))
                 sitting.set("call",unicode(sitting_row['Convocazione']))

@@ -19,7 +19,7 @@
     xmlns:xlink="http://www.w3.org/1999/xlink"
     xmlns:om="http://www.openmunicipio.it"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.openmunicipio.it file:/Users/guglielmo/Workspace/open_municipio/import_tmp/docs/DataImport.xsd" 
+    xsi:schemaLocation="http://www.openmunicipio.it OM-XML.xsd" 
     presentation_date="2011-09-23"
     initiative="council_member" id="2012/D/001" final_id="001"
     approval_date="2012-03-01" execution_date="2012-03-04">

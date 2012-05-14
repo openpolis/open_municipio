@@ -24,10 +24,10 @@ Schema e istanze
 Per lo scambio dati si è definito uno schema XML, in formato XSD, definito secondo le `raccomandazioni del W3C`_, che descrive la tipologia dei flussi XML da scambiare.
 Assieme allo schema, sono fornite istanze di esempio, in formato XML, che implementano lo schema.
 
-**DataImport.xsd**
+**OM-XML.xsd**
   è lo schema XML (`visualizza`__)
 
-.. __: ./DataImport.xsd
+.. __: ../../../../data_import/schema/OM-XML.xsd
 
 **institutions_sample.xml**
   esempio di flusso che definisce la composizione degli organi istituzionale di un Comune (`visualizza`__)

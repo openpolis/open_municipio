@@ -13,7 +13,7 @@ I valori possibili:
 <om:People xmlns:xlink="http://www.w3.org/1999/xlink"
  xmlns:om="http://www.openmunicipio.it"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- xsi:schemaLocation="http://www.openmunicipio.it OpenMunicipioDataImport.xsd">
+ xsi:schemaLocation="http://www.openmunicipio.it OM-XML.xsd">
 
     <om:Person id="IVLE" first_name="Ivo" last_name="Lenardon" sex="m" charge="mayor"/>
     <om:Person id="SACO" first_name="Salvatore" last_name="Cortis" charge="firstdeputy"/>

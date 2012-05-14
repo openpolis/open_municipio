@@ -33,7 +33,7 @@ class Command(LabelCommand):
         ),
         make_option('--people_file',
                     dest='people_file',
-                    default='import_tmp/udine/votations/people.xml',
+                    default='data_import/udine/votations/people.xml',
                     help='The xml file containing the persons'
         ),
     )

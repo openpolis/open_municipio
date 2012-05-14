@@ -2,7 +2,7 @@
 <om:Sittings xmlns:xlink="http://www.w3.org/1999/xlink"
  xmlns:om="http://www.openmunicipio.it"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- xsi:schemaLocation="http://www.openmunicipio.it OpenMunicipioDataImport.xsd">
+ xsi:schemaLocation="http://www.openmunicipio.it OM-XML.xsd">
     <om:Sitting call="1" date="2011-11-23" num="12">
         <om:Votation seq_n="1" votation_type="Palese" presents="39" partecipants="39" outcome="approved" legal_number="20" date_time="2010-02-15T21:00:00" counter_yes="23" counter_no="16" counter_abs="0">
             <om:Subject sintetic="OGG 1">Titolo che descrive l'atto per esteso</om:Subject>

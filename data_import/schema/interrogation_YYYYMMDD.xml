@@ -12,7 +12,7 @@
 <om:Interrogation xmlns:xlink="http://www.w3.org/1999/xlink"
  xmlns:om="http://www.openmunicipio.it"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- xsi:schemaLocation="http://www.openmunicipio.it file:/Users/guglielmo/Workspace/open_municipio/import_tmp/docs/DataImport.xsd" answer_type="written" 
+ xsi:schemaLocation="http://www.openmunicipio.it OM-XML.xsd" answer_type="written" 
  id="2009/I/23" presentation_date="2009-09-25">
     <!--
         Il titolo della proposta, se possibile,

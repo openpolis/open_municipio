@@ -2,7 +2,7 @@
 <om:Scheduling xmlns:xlink="http://www.w3.org/1999/xlink"
  xmlns:om="http://www.openmunicipio.it"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- xsi:schemaLocation="http://www.openmunicipio.it file:/Users/guglielmo/Workspace/open_municipio/docs/dev/data_import/DataImport.xsd">
+ xsi:schemaLocation="http://www.openmunicipio.it OM-XML.xsd">
     <om:Event>
         <om:ActXRef xlink:href="deliberation_001.xml#2012/D/001" xlink:type="simple"/>
         <om:Description>
