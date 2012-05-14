@@ -9,12 +9,12 @@ from django.contrib.contenttypes import generic
 
 from taggit.models import TagBase, ItemBase
 
-from open_municipio.monitoring.models import Monitoring
+from open_municipio.monitoring.models import Monitoring, MonitorizedItem
 from open_municipio.om_utils.models import SlugModel
 from open_municipio.taxonomy.managers import post_tagging, post_untagging
 
 
-class Tag(TagBase):
+class Tag(TagBase, MonitorizedItem):
 
     # cached value of how many act uses it
     count = models.IntegerField(default=0)
@@ -77,7 +77,7 @@ class TaggedAct(ItemBase):
         }
 
 
-class Category(SlugModel):
+class Category(SlugModel, MonitorizedItem):
     """
     A label that can be used to categorize content objects.
     
@@ -91,7 +91,7 @@ class Category(SlugModel):
     count = models.IntegerField(default=0)
   
     # manager to handle the list of monitoring having as content_object this instance
-    monitoring_set = generic.GenericRelation(Monitoring, object_id_field='object_pk')
+#    monitoring_set = generic.GenericRelation(Monitoring, object_id_field='object_pk')
   
     class Meta:
         verbose_name = _('category')
@@ -107,24 +107,7 @@ class Category(SlugModel):
     @property
     def tags(self):
         return self.tag_set.all()
-    
-    @property
-    def monitorings(self):
-        """
-        Returns the monitorings associated with this category (as a QuerySet).
-        """
-        return self.monitoring_set.all()
-    
-    @property
-    def monitoring_users(self):
-        """
-        Returns the list of users monitoring this argument (category).
-        """
-        # FIXME: This method should return a QuerySet for efficiency reasons
-        # (an argument could be monitored by a large number of people;
-        # moreover, often we are only interested in the total number of 
-        # monitoring users, so building a list in memory may result in a waste of resources). 
-        return [m.user for m in self.monitorings]
+
 
 @receiver(post_tagging, sender=TaggedAct)
 def new_tagging(**kwargs):

@@ -21,7 +21,7 @@ from open_municipio.people.models import Institution, InstitutionCharge, Sitting
 from open_municipio.taxonomy.managers import TopicableManager
 from open_municipio.taxonomy.models import Category, TaggedAct
 from open_municipio.locations.models import Location, TaggedActByLocation
-from open_municipio.monitoring.models import Monitoring, MonitorizedItem
+from open_municipio.monitoring.models import MonitorizedItem
 
 
 #
@@ -73,8 +73,6 @@ class Act(TimeStampedModel, MonitorizedItem):
                                                content_type_field='related_content_type',
                                                object_id_field='related_object_pk')
 
-    # manager to handle the list of monitoring having as content_object this instance
-    monitoring_set = generic.GenericRelation(Monitoring, object_id_field='object_pk')
 
     def __unicode__(self):
         uc = u'%s' % (self.title, )
@@ -158,13 +156,6 @@ class Act(TimeStampedModel, MonitorizedItem):
         Returns the queryset of all those that modified the description
         """
         return self.actdescriptor_set.all()
-
-    @property
-    def content_type_id(self):
-        """
-        Returns id of the content type associated with this instance.
-        """
-        return ContentType.objects.get_for_model(self).id
 
     def status(self):
         """

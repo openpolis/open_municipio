@@ -1,5 +1,8 @@
 {% extends 'base_two_columns.html' %}
 
+{% load newscache_tags %}
+{% load monitoring_tags %}
+
 {% block title %}Argomento {{ topic }}{% endblock title %}
 {% block content_header %}Argomenti{% endblock %}
 {% block body_class %}tags{% endblock %}
@@ -25,45 +28,44 @@
 
 {% block content %}
 
-    <h1>{{ topic|title }}</h1>
+    <h1><span class="colored">{{ topic|title }}</span></h1>
 
     <section>
+      <h3>Quando se ne discute e dove se ne discute</h3>
+
+      <div class="calendar_container">
         <div class="row-fluid">
-            <div class="span4">
-                <div class="calendar_container">
-                    <h3>Argomento sull'agenda politica</h3>
-                    <div class="calendar" data-events=".calendar_events"></div>
-                </div>
-            </div>
-            <div class="span8">
-                <h4>Se ne discute</h4>
+          <div class="span4">
+            <div class="calendar" data-events=".calendar_events"></div>
+          </div>
+          <div class="span8">
+            <ul class="data-list calendar_events">
+              <li data-month="03/2012"><h3>Marzo 2012</h3></li>
+              <li data-day="03/01/2012">01.03.2012 in <a href="#">Consiglio comunale</a></li>
+              <li data-day="03/02/2012">02.03.2012 in <a href="#">Consiglio comunale</a></li>
+              <li data-day="03/04/2012">04.03.2012 in <a href="#">Consiglio comunale</a></li>
+              <li data-day="03/06/2012">06.03.2012 in <a href="#">Consiglio comunale</a></li>
+              <li data-day="03/08/2012">08.03.2012 in <a href="#">Consiglio comunale</a></li>
+              <li data-day="03/10/2012">10.03.2012 in <a href="#">Consiglio comunale</a></li>
 
-                <ul class="data-list calendar_events">
-                    <li data-month="03/2012"><h3>Marzo 2012</h3></li>
-                    <li data-day="03/01/2012">01.03.2012 in <a href="#">Consiglio comunale</a></li>
-                    <li data-day="03/02/2012">02.03.2012 in <a href="#">Consiglio comunale</a></li>
-                    <li data-day="03/04/2012">04.03.2012 in <a href="#">Consiglio comunale</a></li>
-                    <li data-day="03/06/2012">06.03.2012 in <a href="#">Consiglio comunale</a></li>
-                    <li data-day="03/08/2012">08.03.2012 in <a href="#">Consiglio comunale</a></li>
-                    <li data-day="03/10/2012">10.03.2012 in <a href="#">Consiglio comunale</a></li>
+              <li data-month="04/2012"><h3>Aprile 2012</h3></li>
+              <li data-day="04/01/2012">01.04.2012 in <a href="#">Consiglio comunale</a></li>
+              <li data-day="04/12/2012">12.04.2012 in <a href="#">Consiglio comunale</a></li>
+              <li data-day="04/20/2012">20.04.2012 in <a href="#">Consiglio comunale</a></li>
 
-                    <li data-month="04/2012"><h3>Aprile 2012</h3></li>
-                    <li data-day="04/01/2012">01.04.2012 in <a href="#">Consiglio comunale</a></li>
-                    <li data-day="04/12/2012">12.04.2012 in <a href="#">Consiglio comunale</a></li>
-                    <li data-day="04/20/2012">20.04.2012 in <a href="#">Consiglio comunale</a></li>
+              <li data-month="05/2012"><h3>Maggio 2012</h3></li>
+              <li data-day="05/01/2012">01.05.2012 in <a href="#">Consiglio comunale</a></li>
+              <li data-day="05/12/2012">12.05.2012 in <a href="#">Consiglio comunale</a></li>
+              <li data-day="05/20/2012">20.05.2012 in <a href="#">Consiglio comunale</a></li>
 
-                    <li data-month="05/2012"><h3>Maggio 2012</h3></li>
-                    <li data-day="05/01/2012">01.05.2012 in <a href="#">Consiglio comunale</a></li>
-                    <li data-day="05/12/2012">12.05.2012 in <a href="#">Consiglio comunale</a></li>
-                    <li data-day="05/20/2012">20.05.2012 in <a href="#">Consiglio comunale</a></li>
-
-                    <li data-month="06/2012"><h3>Giugno 2012</h3></li>
-                    <li data-day="06/01/2012">01.06.2012 in <a href="#">Consiglio comunale</a></li>
-                    <li data-day="06/12/2012">12.06.2012 in <a href="#">Consiglio comunale</a></li>
-                    <li data-day="06/20/2012">20.06.2012 in <a href="#">Consiglio comunale</a></li>
-                </ul>
-            </div>
+              <li data-month="06/2012"><h3>Giugno 2012</h3></li>
+              <li data-day="06/01/2012">01.06.2012 in <a href="#">Consiglio comunale</a></li>
+              <li data-day="06/12/2012">12.06.2012 in <a href="#">Consiglio comunale</a></li>
+              <li data-day="06/20/2012">20.06.2012 in <a href="#">Consiglio comunale</a></li>
+            </ul>
+          </div>
         </div>
+      </div>
     </section>
 
     <hr class="big">
@@ -187,7 +189,8 @@
 {% block sidebar %}
 
   <section><h3>Monitora</h3>
-    {% include 'monitoring/summary.html' with object=topic show_politicians=0 %}
+    {% object_monitoring topic %}
+    {% comment %}{% include 'monitoring/summary.html' with object=topic show_politicians=0 %}{% endcomment %}
   </section>
 
   <hr>
@@ -203,6 +206,26 @@
       </dl>
   </section>
   {% endif %}
+
+  <hr>
+
+  <section>
+    <h3>Ultime sull'Argomento <img src="{{ STATIC_URL }}img/feed-icon-14x14.png" alt="Feed RSS"></h3>
+    <ul class="list-simple">
+      {% comment %}
+      TODO resolve "Caught AttributeError while rendering: 'Category' object has no attribute 'related_news_set'"
+      for Tag, Category and Location
+      {% news_for_object topic as topic_news %}
+      {% endcomment %}
+      {% for n in topic_news %}
+        <li>{{ n.created|date:"d-m-Y" }} - {{ n.text|safe }}</li>
+      {% endfor %}
+    </ul>
+
+    <p class="box">
+      <a href="#">Leggi tutte</a> <i class="icon-play-down"></i>
+    </p>
+  </section>
 
 
 

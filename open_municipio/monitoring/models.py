@@ -57,6 +57,8 @@ class Monitoring(models.Model):
 
 class MonitorizedItem():
 
+
+
     def monitorings(self, user_type=None):
         """
         Returns the list of monitorings for this act.
@@ -64,12 +66,16 @@ class MonitorizedItem():
         user_type can take None, "simple", "politician" and indicates whether to apply a filter
 
         """
+        type = ContentType.objects.get_for_model(self)
         if user_type == "simple":
-            return self.monitoring_set.filter(user__userprofile__person__isnull=True)
+            return Monitoring.objects.filter(content_type__pk=type.id, object_pk=self.pk, user__userprofile__person__isnull=True)
+            #return self.monitoring_set.filter(user__userprofile__person__isnull=True)
         elif user_type == "politician":
-            return self.monitoring_set.filter(user__userprofile__person__isnull=False)
+            return Monitoring.objects.filter(content_type__pk=type.id, object_pk=self.pk, user__userprofile__person__isnull=False)
+            #return self.monitoring_set.filter(user__userprofile__person__isnull=False)
         else:
-            return self.monitoring_set.all()
+            return Monitoring.objects.filter(content_type__pk=type.id, object_pk=self.pk,)
+            #return self.monitoring_set.all()
 
     @property
     def all_monitoring_users(self):
@@ -85,6 +91,9 @@ class MonitorizedItem():
 
     @property
     def monitoring_users(self):
+        """
+        Returns the list of users monitoring this argument (category).
+        """
         # FIXME: This method should return a QuerySet for efficiency reasons
         # (an act could be monitored by a large number of people;
         # moreover, often we are only interested in the total number of
@@ -106,6 +115,13 @@ class MonitorizedItem():
     @property
     def monitoring_politicians_count(self):
         return self.monitorings(user_type='politician').count()
+
+    @property
+    def content_type_id(self):
+        """
+        Returns id of the content type associated with this instance.
+        """
+        return ContentType.objects.get_for_model(self).id
 
 #
 # Signals handlers

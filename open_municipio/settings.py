@@ -160,7 +160,8 @@ OM_BOOKMARKING_EMPTY_STAR_CLASS = 'icon-star-empty'
 
 # Site templates globals variables
 SITE_INFO = {
-    'main_city': u'City'
+    'main_city': u'City',
+    'site_version': u'Beta',
 }
 
 ## settings for the ``open_municipio.om_comments`` app

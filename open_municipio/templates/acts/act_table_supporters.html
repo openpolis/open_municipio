@@ -1,3 +1,5 @@
+{% load monitoring_tags %}
+
 <div class="row-fluid">
 
     <section class="span6">
@@ -12,8 +14,8 @@
               <br>
               {{ supporter.council_group }}
               <br>
-              <span class="monitoring">Monitorato da {{ supporter.monitoring_users|length }} cittadini -</span>
-              <i class="icon-plus-sign"></i> <a href="#">Monitora</a>
+
+              {% object_inline_monitoring supporter.person %}
             </div>
           </li>
           {% endfor %}
@@ -34,8 +36,9 @@
                 <br>
                 {{ supporter.council_group }}
                 <br>
-                <span class="monitoring">Monitorato da {{ supporter.monitoring_users|length }} cittadini -</span>
-                <i class="icon-plus-sign"></i> <a href="#">Monitora</a>
+
+                {% object_inline_monitoring supporter.person %}
+
               </div>
             </li>
           {% endfor %}

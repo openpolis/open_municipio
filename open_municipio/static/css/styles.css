@@ -4155,11 +4155,12 @@ body hgroup {
 }
 body #content,
 body #sidebar {
-  padding-top: 35px;
+  padding-top: 20px;
   position: relative;
 }
 body #sidebar h3 {
   font-size: 20px;
+  margin-bottom: 10px;
 }
 body #sidebar ul.list-simple {
   list-style: none;
@@ -4208,7 +4209,7 @@ body #content hgroup h4 {
   font-weight: normal;
 }
 body #content > section {
-  margin: 40px 0;
+  margin: 20px 0;
 }
 body #content > section.party-people {
   margin: 0;
@@ -4216,11 +4217,24 @@ body #content > section.party-people {
 body.politician #wrapper > header {
   background-color: #72c056;
 }
+body.politician #wrapper .colored {
+  background-color: #72c056;
+}
 body.tags #wrapper > header {
-  background-color: #f4c242;
+  background-color: #ffbf43;
+}
+body.tags #wrapper .colored {
+  background-color: #ffbf43;
 }
 body.citizen #wrapper > header {
   background-color: #dc4630;
+}
+body.citizen #wrapper .colored {
+  background-color: #dc4630;
+}
+body h1 span.colored {
+  padding-left: 5px;
+  padding-right: 5px;
 }
 #navbar-top {
   height: 55px;
@@ -4262,6 +4276,13 @@ body.citizen #wrapper > header {
   font-size: 11px;
   margin: 3px 0;
 }
+#navbar-top .brand .version {
+  font-size: 13px;
+  vertical-align: super;
+  margin-left: 5px;
+  font-family: Verdana;
+  color: #999999;
+}
 #wrapper > header {
   background: #4788c2;
 }
@@ -4279,7 +4300,7 @@ body.citizen #wrapper > header {
   margin-left: 5px;
   padding-left: 5px;
   border-left: 1px solid #ffffff;
-  font-weight: lighter;
+  font-weight: 200;
 }
 #wrapper > header #sub-nav .navbar-inner {
   background-color: transparent;
@@ -4441,6 +4462,7 @@ table#status-table {
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   border-radius: 4px;
+  margin-top: 30px;
 }
 table#status-table th,
 table#status-table td {
@@ -4664,17 +4686,13 @@ table.stats th {
 }
 /* Calendars */
 .calendar_container {
-  border: 1px solid #999999;
+  /*border: 1px solid @grayLight;
   min-width: 200px;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  border-radius: 5px;
-}
-.calendar_container h3 {
-  margin: 5px 0;
-  font-size: 15px;
-  text-align: center;
-  border-bottom: 1px solid #999999;
+  .border-radius;
+  h3 { margin: 5px 0; font-size: 15px; text-align:center; border-bottom: 1px solid @grayLight; }*/
+
+  padding: 10px;
+  background-color: #ebe8e0;
 }
 .calendar_container .calendar {
   padding: 5px;
@@ -4688,7 +4706,7 @@ table.stats th {
 }
 .calendar_events {
   height: 230px;
-  overflow: scroll;
+  overflow-y: scroll;
 }
 .bg-lighter {
   background-color: #f9f9f9;
@@ -5190,7 +5208,8 @@ table.tablesorter th.tablesorter-headerSortDown {
 }
 .list-plain li .monitoring {
   color: #999999;
-  display: block;
+  /*display: block;*/
+
 }
 .list-plain li .monitoring i {
   color: #000000;
@@ -5215,4 +5234,5 @@ table.tablesorter th.tablesorter-headerSortDown {
 hr.big {
   border-top: 1px solid #ebe8e0;
   border-bottom: 5px solid #EBE8E0;
+  margin: 25px 0;
 }
