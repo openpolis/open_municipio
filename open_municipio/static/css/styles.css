@@ -4276,6 +4276,13 @@ body h1 span.colored {
   font-size: 11px;
   margin: 3px 0;
 }
+#navbar-top .brand .version {
+  font-size: 13px;
+  vertical-align: super;
+  margin-left: 5px;
+  font-family: Verdana;
+  color: #999999;
+}
 #wrapper > header {
   background: #4788c2;
 }
