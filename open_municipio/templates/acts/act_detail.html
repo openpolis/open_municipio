@@ -19,7 +19,7 @@
 
 {% block head_css_includes %}
     {{ block.super }}
-    <link href="{{ STATIC_URL }}css/voting.css" rel="stylesheet">    
+    <link href="{{ STATIC_URL }}css/voting.css" rel="stylesheet">
 {% endblock head_css_includes %}
 
 {% block head_js_includes %}
@@ -28,7 +28,6 @@
   <script src="{{ STATIC_URL }}js/jquery.jeditable.js" type="text/javascript"></script>
   <script src="{{ STATIC_URL }}js/jquery.submitlink.js" type="text/javascript"></script>
   <script src="{{ STATIC_URL }}js/jquery.autogrow.js" type="text/javascript"></script>
-  <script src="{{ STATIC_URL }}js/bookmarking.js" type="text/javascript"></script>
 {% endblock head_js_includes %}
 
 
@@ -44,7 +43,7 @@
 
   <hgroup>
     <h2 id="act_title">
-      <i id="{{ act|as_token }}" class="bookmarkable {% is_key_class act %}"></i>
+      <a href="#" id="{{ act|as_token }}" class="bookmarkable"><i class="{% is_key_class act %}"></i></a>
       <strong class="input-append">{{ act.title }}</strong>
       <small>(N. {{ act.idnum }})</small></h2>
     <h4>

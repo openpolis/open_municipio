@@ -32,6 +32,6 @@ class ToggleBookmarkView(View):
         object.is_key = not object.is_key 
         object.save()
         # TODO: handle error conditions
-        data = {'success': True}
+        data = {'success': True, 'message': ('Impostato come Atto Chiave' if object.is_key else 'Rimosso dagli Atti Chiave')}
         return HttpResponse(json.dumps(data), content_type='application/json')
 
