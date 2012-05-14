@@ -1,6 +1,8 @@
 {% extends 'base_two_columns.html' %}
 
+{% block title %}Organi politici | {{ committee.name }}{% endblock title %}
 {% block content_header %}Organi politici{% endblock %}
+{% block institutions_class %}active{% endblock %}
 
 {% block content %}
 
@@ -71,55 +73,52 @@
         </div>
     </section>
 
-    <hr>
+  <hr class="big">
 
-    <section>
-        <h2>Prossimi appuntamenti</h2>
-        <div class="row-fluid">
-            <div class="span4">
-                <div class="calendar_container">
-                    <h3>Agenda della commissione</h3>
-                    <div class="calendar" data-calendar=".calendar_events"></div>
-                    <ul class="calendar_events">
-                        {% for event in events %}
-                            <li data-day="{{ event.date|date:"d/m/Y" }}"><a href="{{ event.act.downcast.get_absolute_url }}">{{ event.act.title }}</a></li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
-            <div class="span8">
-                <ul class="list-floated unstyled calendar_events">
-                    {% for event in events %}
-                        {% if not event.is_past_due %}
-                            <li data-day="{{ event.date|date:"d/m/Y" }}"><strong>{{ event.date|date:"d.m.Y" }}</strong> <a href="{{ event.act.downcast.get_absolute_url }}">{{ event.act.title }}</a></li>
-                        {% endif %}
-                    {% endfor %}
-                </ul>
-            </div>
+  <section>
+    <h3>Prossimi appuntamenti</h3>
+    <div class="calendar_container">
+      <div class="row-fluid">
+        <div class="span4">
+          <div class="calendar" data-events=".calendar_events"></div>
         </div>
-    </section>
+        <div class="span8">
+          <ul class="data-list calendar_events">
+            {% for event in events %}
+              {% if not event.is_past_due %}
+                <li data-day="{{ event.date|date:"m/d/Y" }}"><strong>{{ event.date|date:"d.m.Y" }}</strong> <a href="{{ event.act.downcast.get_absolute_url }}">{{ event.act.title }}</a></li>
+              {% endif %}
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
 
 {% endblock %}
 
 {% block sidebar %}
-    <h2>Commissioni</h2>
-    <ul class="unstyled">
-        {% for committee_iter in committee_list %}
-            {% if committee_iter == committee %}
-                <li><strong>{{ committee_iter.name }}</strong>: {{ committee_iter.description|truncatewords:3 }}</li>
-            {% else %}
-                <li><a href="{{ committee_iter.get_absolute_url }}"><strong>{{ committee_iter.name }}</strong>: {{ committee_iter.description|truncatewords:3 }}</a></li>
-            {% endif %}
-        {% endfor %}
-    </ul>
+  <h2>Commissioni</h2>
+  <ul class="unstyled">
+    {% for committee_iter in committee_list %}
+      {% if committee_iter == committee %}
+        <li><strong>{{ committee_iter.name }}</strong>: {{ committee_iter.description|truncatewords:3 }}</li>
+      {% else %}
+        <li><a href="{{ committee_iter.get_absolute_url }}"><strong>{{ committee_iter.name }}</strong>: {{ committee_iter.description|truncatewords:3 }}</a></li>
+      {% endif %}
+    {% endfor %}
+  </ul>
 
-    <h2>Ultime sulla commissione</h2>
-    <ul class="feed-list">
-        <li><a href="#">Mario Rossi ha commentato il voto</a></li>
-        <li><a href="#">Il voto è inserito nell'ordine del giorno N° 13516</a></li>
-        <li><a href="#">Barcaiuolo, Pellacani, Bellei, Morandi, Santoro (PdL) hanno presentato la mozione...</a></li>
-    </ul>
-    <p class="bg-dark"><a href="#">Leggi tutte <i class="icon-chevron-down"></i></a></p>
+  <h2>Ultime sulla commissione</h2>
+  <ul class="list-simple">
+    <li><a href="#">Mario Rossi ha commentato il voto</a></li>
+    <li><a href="#">Il voto è inserito nell'ordine del giorno N° 13516</a></li>
+    <li><a href="#">Barcaiuolo, Pellacani, Bellei, Morandi, Santoro (PdL) hanno presentato la mozione...</a></li>
+  </ul>
+
+  <p class="box">
+    <a href="#">Leggi tutti</a> <i class="icon-play-down"></i>
+  </p>
 {% endblock %}
 
 

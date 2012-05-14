@@ -4,8 +4,8 @@
 {% load voting_tags %}
 {% load om_utils %}
 
-{% block title %}| Dettaglio {{ person }}{% endblock %}
-{% block content_header %}{% trans 'politicians' %}{% endblock %}
+{% block title %}Dettaglio {{ person }}{% endblock %}
+{% block content_header %}Politici{% endblock %}
 {% block body_class %}politician{% endblock %}
 {% block people_class %}class="active"{% endblock %}
 
@@ -107,35 +107,31 @@
 
   <hr class="big">
 
-  <section>
-    {% if person.counselor_charge %}
-      <section>
-        <h2>Presenze ({{ person.counselor_charge.n_total_votations }} votazion{{ person.counselor_charge.n_total_votations|pluralize:"e,i" }})</h2>
+  {% if person.counselor_charge %}
+    <section>
+      <h2>Presenze ({{ person.counselor_charge.n_total_votations }} votazion{{ person.counselor_charge.n_total_votations|pluralize:"e,i" }})</h2>
 
-        <div class="meter-bar float-container">
-          <div class="meter-bar-container">
-            <label>Presenze:</label>
-            <div class="meter-label"><strong class="green">{{ person.counselor_charge.percentage_present_votations }}%</strong>&nbsp;({{ person.counselor_charge.n_present_votations }})</div>
-            <div class="green-meter-bar">
-              <div style="left: {{ percentage_present_votations_average }}%;" class="meter-average"><label>valore medio: {{ percentage_present_votations_average }}%</label>&nbsp;</div>
-              <div style="width: {{ person.counselor_charge.percentage_present_votations }}%;" class="meter-value">&nbsp;</div>
-            </div>
-          </div>
-          <div class="meter-bar-container">
-            <label>Assenze:</label>
-            <div class="meter-label"><strong class="red">{{ person.counselor_charge.percentage_absent_votations }}%</strong>&nbsp;({{ person.counselor_charge.n_absent_votations }})</div>
-            <div class="red-meter-bar">
-              <div style="left: {{ percentage_absent_votations_average }}%;" class="meter-average"><label>valore medio: {{ percentage_absent_votations_average }}%</label>&nbsp;</div>
-              <div style="width: {{ person.counselor_charge.percentage_absent_votations }}%;" class="meter-value">&nbsp;</div>
-            </div>
+      <div class="meter-bar float-container">
+        <div class="meter-bar-container">
+          <label>Presenze:</label>
+          <div class="meter-label"><strong class="green">{{ person.counselor_charge.percentage_present_votations }}%</strong>&nbsp;({{ person.counselor_charge.n_present_votations }})</div>
+          <div class="green-meter-bar">
+            <div style="left: {{ percentage_present_votations_average }}%;" class="meter-average"><label>valore medio: {{ percentage_present_votations_average }}%</label>&nbsp;</div>
+            <div style="width: {{ person.counselor_charge.percentage_present_votations }}%;" class="meter-value">&nbsp;</div>
           </div>
         </div>
-      </section>
-    {% endif %}
-
-  </section>
-
-  <hr class="big">
+        <div class="meter-bar-container">
+          <label>Assenze:</label>
+          <div class="meter-label"><strong class="red">{{ person.counselor_charge.percentage_absent_votations }}%</strong>&nbsp;({{ person.counselor_charge.n_absent_votations }})</div>
+          <div class="red-meter-bar">
+            <div style="left: {{ percentage_absent_votations_average }}%;" class="meter-average"><label>valore medio: {{ percentage_absent_votations_average }}%</label>&nbsp;</div>
+            <div style="width: {{ person.counselor_charge.percentage_absent_votations }}%;" class="meter-value">&nbsp;</div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <hr class="big">
+  {% endif %}
 
   <section>
     <h2>Voti nelle votazioni chiave</h2>
