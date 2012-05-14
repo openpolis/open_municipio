@@ -16,7 +16,8 @@ import dateutil.parser
 #from time import strptime
 #import datetime
 import traceback
-from open_municipio import settings_import as settings
+from django.conf import settings
+from open_municipio import settings_import
 
 
 # configure xml namespaces
@@ -190,18 +191,20 @@ class Command(LabelCommand):
             om_att.document_type = os.path.splitext(attach_filename)[1][1:]
             om_att.document_size = File(f).size
             self.stdout.write(" will attach %s - %s (%s)\n" % (attach_file, attach_title, attach_dir + "_" + attach_filename))
-
-            # text extraction (using tika as a server on port 21000)
-            # TODO: put netcat's connection parameters in settings
-            f = open(attach_file, 'r')
-            document_content = f.read()
-            document_text = netcat('localhost', 21000, document_content)
-            om_att.text = document_text
-
             om_att.save()
 
-            # testo proposta text content go into act.content field
+             # text extraction (using tika as a server on port 21000)
+            # for proposal and discussion texts
             # TODO: this is just for Udine, it must be optional and configurable
+            if 'testoproposta' in attach_filename.lower() or \
+               'testodiscussione' in attach_filename.lower():
+                f = open(attach_file, 'r')
+                document_content = f.read()
+                document_text = netcat('localhost', settings.TIKA_PORT, document_content)
+                om_att.text = document_text
+                om_att.save()
+
+            # proposal text content go into act.content field
             if 'testoproposta' in attach_filename.lower():
                 om_act.text = document_text
                 om_act.save()
@@ -224,7 +227,7 @@ class Command(LabelCommand):
 
             final_id = xml_act.get('final_id')
 
-            initiative = settings.XML_TO_OM_INITIATIVE[xml_act.get("initiative")]
+            initiative = settings_import.XML_TO_OM_INITIATIVE[xml_act.get("initiative")]
             if initiative is None:
                 self.stderr.write(
                     "Error: Act %s has no initiative attribute! Skipping this sitting." % id
