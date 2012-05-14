@@ -44,8 +44,6 @@ class TagsCloudNode(template.Node):
                 } for tag in tag_list]
             }
 
-            print context
-
             context['min_count'] = min(context['tags'], key=lambda x: x['count'])['count']
             context['max_count'] = max(context['tags'], key=lambda x: x['count'])['count']
 
