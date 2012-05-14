@@ -4,12 +4,13 @@ from django.dispatch.dispatcher import receiver
 from django.utils.translation import ugettext_lazy as _
 
 from django.contrib.auth.models import User
+from open_municipio.monitoring.models import MonitorizedItem
 
 from open_municipio.om_utils.models import SlugModel
 
 
 
-class Location(SlugModel):
+class Location(SlugModel, MonitorizedItem):
     """
     A concise description of a town's location.
     

@@ -69,5 +69,12 @@
         onSubmit: function() { }
     };
 
+    /* SUBMIT-LINK DATA-API
+     * =============== */
+
+    $(function () {
+        $('form[data-submit^=link]').submitLink()
+    })
+
 })( jQuery, window, document );
 

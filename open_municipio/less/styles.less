@@ -2,6 +2,10 @@
 @import "bootstrap/bootstrap.less";
 
 // Globals
+//@cityColor: #008AC2;
+@politicianColor: #72c056;
+@topicColor: #FFBF43;
+@citizenColor: #dc4630;
 
 body {
   // footer bar
@@ -18,11 +22,11 @@ body {
   }
   hgroup { margin-bottom: 0px; }
   #content, #sidebar {
-    padding-top: 35px;
+    padding-top: 20px;
     position: relative;
   }
   #sidebar {
-    h3 { font-size: 20px; }
+    h3 { font-size: 20px; margin-bottom: 10px; }
     // default for lists
     ul.list-simple {
       list-style: none;
@@ -66,22 +70,33 @@ body {
       h4 { font-weight: normal; }
     }
     > section {
-      margin: 40px 0;
+      margin: 20px 0;
       &.party-people { margin: 0; }
     }
 
   }
 
   // Header colouring
-  &.politician #wrapper > header {
-    background-color: #72c056;
+
+  &.politician #wrapper {
+    > header {
+      background-color: @politicianColor;
+    }
+    .colored { background-color: @politicianColor;}
   }
-  &.tags #wrapper > header {
-    background-color: #f4c242;
+  &.tags #wrapper {
+    > header {
+      background-color: @topicColor;
+    }
+    .colored { background-color: @topicColor}
   }
-  &.citizen #wrapper > header {
-    background-color: #dc4630;
+  &.citizen #wrapper {
+    > header {
+      background-color: @citizenColor;
+    }
+    .colored { background-color: @citizenColor}
   }
+  h1 span.colored { padding-left: 5px; padding-right: 5px;}
 }
 
 // Top bar for Navigation
@@ -120,6 +135,13 @@ body {
       font-size: 11px;
       margin: 3px 0;
     }
+    .version {
+      font-size: 13px;
+      vertical-align: super;
+      margin-left: 5px;
+      font-family: Verdana;
+      color: @grayLight;
+    }
   }
 }
 
@@ -142,7 +164,7 @@ body {
       margin-left: 5px;
       padding-left: 5px;
       border-left: 1px solid @white;
-      font-weight: lighter;
+      font-weight: 200;
     }
   }
 
@@ -254,6 +276,8 @@ table#status-table {
   .table;
   .table-bordered;
 
+  margin-top: 30px;
+
   // override default hover highlight effect
   tbody tr:hover td,
   tbody tr:hover th {
@@ -350,17 +374,18 @@ table.stats {
 
 /* Calendars */
 .calendar_container {
-  border: 1px solid @grayLight;
+  /*border: 1px solid @grayLight;
   min-width: 200px;
   .border-radius;
-  h3 { margin: 5px 0; font-size: 15px; text-align:center; border-bottom: 1px solid @grayLight; }
+  h3 { margin: 5px 0; font-size: 15px; text-align:center; border-bottom: 1px solid @grayLight; }*/
+  padding:10px; background-color: @grayLighter;
   .calendar { padding: 5px; }
   .ui-datepicker { width: auto; }
   .ui-datepicker-calendar tbody td.highlight > a { font-weight: bold; color: @linkColor; }
 }
 .calendar_events {
   height: 230px;
-  overflow: scroll;
+  overflow-y: scroll;
 }
 
 //---------------------------------------------------------
@@ -674,7 +699,7 @@ table.tablesorter {
     padding: 5px 0;
     .monitoring {
       color: @grayLight;
-      display: block;
+      /*display: block;*/
       i { color: @textColor; }
     }
   }
@@ -693,5 +718,5 @@ table.tablesorter {
 hr.big {
   border-top: 1px solid @hrBorder;
   border-bottom: 5px solid #EBE8E0;
-
+  margin: 25px 0;
 }

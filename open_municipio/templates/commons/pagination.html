@@ -1,5 +1,5 @@
 {% if page.has_previous or page.has_next %}
-  <div class="pagination pagination-right">
+  <div class="pagination pagination-right pull-right" style="margin:0 5px 10px 0;">
     <ul>
       {% if page.has_previous %}
         <li><a href="{{ base_url }}&page={{ page.previous_page_number }}">&larr;</a></li>

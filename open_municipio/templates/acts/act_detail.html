@@ -25,14 +25,15 @@
 {% block head_js_includes %}
   {{ block.super }}
   <script src="{{ STATIC_URL }}js/ajax_csrf.js" type="text/javascript" charset="utf-8"></script>
-  <script src="{{ STATIC_URL }}js/jquery.jeditable.js" stype="text/javascript"></script>
-  <script src="{{ STATIC_URL }}js/jquery.submitlink.js" stype="text/javascript"></script>
-  <script src="{{ STATIC_URL }}js/jquery.autogrow.js" stype="text/javascript"></script>
+  <script src="{{ STATIC_URL }}js/jquery.jeditable.js" type="text/javascript"></script>
+  <script src="{{ STATIC_URL }}js/jquery.submitlink.js" type="text/javascript"></script>
+  <script src="{{ STATIC_URL }}js/jquery.autogrow.js" type="text/javascript"></script>
+  <script src="{{ STATIC_URL }}js/bookmarking.js" type="text/javascript"></script>
 {% endblock head_js_includes %}
 
 
 {% block content %}
-  <table class="" style="position: absolute; top:0; right: 0;">
+  <table class="pull-right">
     <tr>
       <td>
         {{ act.presentation_date|circled:"full,colored" }}
@@ -148,7 +149,8 @@
 
   <section>
     <h3>Monitora</h3>
-    {% include 'monitoring/summary.html' with object=act show_politicians=True %}
+    {% load monitoring_tags %}
+    {% object_monitoring act 1 %}
   </section>
 
   <hr>
