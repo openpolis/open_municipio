@@ -7,6 +7,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User, Group
 from model_utils import Choices
 import sys
+from open_municipio.monitoring.models import Monitoring
 from open_municipio.newscache.models import News
 from open_municipio.people.models import Person
 
@@ -101,7 +102,7 @@ class UserProfile(models.Model):
         """
         Returns objects monitored by this user (as a list).
         """
-        return [o.content_object for o in self.user.monitoring_set.all()]
+        return [o.content_object for o in Monitoring.objects.filter(user=self.user)]
 
     def is_editor(self):
         try:

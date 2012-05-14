@@ -28,6 +28,11 @@ em {
                 {% endif %}
             {% endfor %}
         </ul>
+    {% else %}
+      <p>Puoi trovare l'atto che ti interessa scorrendo la lista degli ultimi pubblicati, qui sotto.
+        Puoi perfezionare la ricerca usando i filtri nella colonna qui a destra. Oppure puoi usare il form di
+        ricerca con una parola che pensi sia contenuta nell'atto ,
+        in cima alla colonna qui a destra</p>
     {% endif %}
 
 
@@ -45,8 +50,8 @@ em {
           <tr>
             <td>{{ result.pub_date|circled:"full" }}</td>
             <td>
-              <a href="{{ result.url }}">{{ result.title }}</a>
-              <br/><strong>{{ result.act_type }}</strong>
+              <h4><a href="{{ result.url }}">{{ result.title }}</a></h4>
+              <strong>{{ result.act_type }}</strong>
               {% comment %}{{ result.highlighted.text.0|safe }}<br/>{% endcomment %}
               {% if result.categories %}
                 <br/>Categorie: {% for cat in result.categories %}<a href="{{ cat.get_absolute_url }}">{{ cat }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}
