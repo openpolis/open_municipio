@@ -485,7 +485,7 @@ class RandomItemsFactory(object):
             # file is saved as attribute of the attach object and moved in the right path
             # see https://docs.djangoproject.com/en/dev/ref/models/fields/#django.db.models.FieldFile.save
             f = open(tmp_file, 'r')
-            attach.pdf_file.save(file_name, File(f))
+            attach.file.save(file_name, File(f))
             attach.save()
             os.remove(tmp_file)
 

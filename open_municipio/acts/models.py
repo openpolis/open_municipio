@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from south.modelsinspector import add_ignored_fields
 from django.conf import settings
 from django.contrib.sites.models import Site
 from django.db import models
@@ -46,6 +47,8 @@ class Act(TimeStampedModel, MonitorizedItem):
     .. _django-model-utils: https://bitbucket.org/carljm/django-model-utils/src
 
     """
+    # added to avoid problem with south migrations
+    add_ignored_fields(["^open_municipio\.taxonomy\.managers"])
 
     idnum = models.CharField(max_length=64, blank=True, help_text=_("A string representing the identification number or sequence, used internally by the administration."))
     title = models.CharField(_('title'), max_length=255, blank=True)
@@ -378,13 +381,18 @@ class Motion(Act):
     on a broad type of issues (specific to the Comune proceedings, or of a more general category)
     It is submitted to the Council approval and Emendations to it can be presented before the votation.
     """
+    FINAL_STATUSES = [
+        ('APPROVED', _('approved')),
+        ('REJECTED', _('rejected')),
+    ]
+
     STATUS = Choices(
         ('PRESENTED', 'presented', _('presented')),
         ('COUNCIL', 'council', _('council')),
-        ('APPROVED', 'approved', _('approved')),
-        ('REJECTED', 'rejected', _('rejected'))
-    )
-    
+        (FINAL_STATUSES[0][0], 'approved', FINAL_STATUSES[0][1]),
+        (FINAL_STATUSES[1][0], 'rejected', FINAL_STATUSES[1][1]),
+                                                  )
+
     status = StatusField()
     
     class Meta:
@@ -403,12 +411,17 @@ class Agenda(Act):
     It is specifically used with respect to issues specific to the deliberation process.
     It is submitted to the Council approval and Emendations to it can be presented before the votation.
     """
+    FINAL_STATUSES = [
+        ('APPROVED', _('approved')),
+        ('REJECTED', _('rejected')),
+    ]
+
     STATUS = Choices(
         ('PRESENTED', 'presented', _('presented')),
         ('COUNCIL', 'council', _('council')),
-        ('APPROVED', 'approved', _('approved')),
-        ('REJECTED', 'rejected', _('rejected'))
-    )
+        (FINAL_STATUSES[0][0], 'approved', FINAL_STATUSES[0][1]),
+        (FINAL_STATUSES[1][0], 'rejected', FINAL_STATUSES[1][1]),
+                                                  )
 
     status = StatusField()
 
@@ -479,6 +492,8 @@ class Document(TimeStampedModel):
     for example, a textual and a PDF local versions, or remote links...
     """
     document_date = models.DateField(null=True, blank=True)
+    document_type = models.CharField(max_length=5, null=True, blank=True)
+    document_size = models.IntegerField(blank=True)
     text = models.TextField(blank=True)
     text_url = models.URLField(blank=True)
     file_url = models.URLField(blank=True)

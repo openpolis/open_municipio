@@ -15,8 +15,9 @@
     <ul class="unstyled">
         {% for attach in act.attachments %}
         <li>
-            <img src="{{ STATIC_URL }}img/pdf-icon-16x16.png" alt="PDF">
-            <a href="{{ attach.pdf_file.url }}">{{ attach.title }}</a>
+            <img src="{{ STATIC_URL }}img/{{ attach.document_type }}-icon-16x16.png" alt="{{ attach.document_type|upper }}">
+            <a href="{{ MEDIA_URL }}{{ attach.file }}">{{ attach.title }}</a>
+            ({{ attach.document_size|filesizeformat }})
         </li>
         {% endfor %}
     </ul>

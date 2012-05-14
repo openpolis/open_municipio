@@ -59,7 +59,13 @@
     {% endfor %}
   </div>
 
-  <div class="nav-tabs-container">
+  <div>
+      {% if act.text|length > 0 %}
+        <pre style="margin-bottom: 1em; overflow-y: scroll; height: 150px" id="act_text">{{ act.text }}</pre>
+      {%  endif %}
+  </div>
+
+    <div class="nav-tabs-container">
     <ul class="nav nav-tabs page-tabs">
       <li {% block act_tab_status_class %}class="active"{% endblock %}> <a href="{{ act.get_absolute_url }}">Stato</a></li>
       <li {% block act_tab_documents_class %}{% endblock %}><a href="{{ act.get_absolute_url }}documents">Documenti</a></li>
