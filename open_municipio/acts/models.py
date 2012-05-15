@@ -493,7 +493,7 @@ class Document(TimeStampedModel):
     """
     document_date = models.DateField(null=True, blank=True)
     document_type = models.CharField(max_length=5, null=True, blank=True)
-    document_size = models.IntegerField(blank=True)
+    document_size = models.IntegerField(blank=True, null=True)
     text = models.TextField(blank=True)
     text_url = models.URLField(blank=True)
     file_url = models.URLField(blank=True)
