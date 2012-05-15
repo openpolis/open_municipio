@@ -60,6 +60,12 @@ class BaseReader(object):
     def __init__(self, data_source=None):
         self.data_source = data_source
     
+    def setup(self):
+        """
+        Reader's initialization code goes here.
+        """
+        pass
+    
     def get_data_source(self):
         """
         Return an object representing the data source to read from. 
@@ -71,7 +77,7 @@ class BaseReader(object):
             return self.data_source
         else:
             raise ImproperlyConfigured("You must provide a data source")  
-        
+     
     def read(self):
         raise NotImplementedError
 
@@ -85,6 +91,9 @@ class BaseVotationReader(BaseReader):
     concrete scenarios. 
     """
     def read(self):
+        # initialize the reader
+        self.setup()
+        
         for sitting in self.get_sittings():
             sitting.ballots = self.get_ballots(sitting)
             for ballot in sitting.ballots:
