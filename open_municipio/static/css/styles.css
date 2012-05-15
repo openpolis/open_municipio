@@ -4243,6 +4243,12 @@ body h1 span.colored {
   background-color: #ffffff;
   color: #000000;
 }
+#navbar-top .navbar-inner > p {
+  margin-right: 20px;
+  /*strong { margin-right: 15px; }
+      a { margin: 5px 15px; }*/
+
+}
 #navbar-top .navbar-inner .nav {
   padding: 8px;
 }
@@ -4658,7 +4664,8 @@ table.stats th {
   *zoom: 1;
   margin-bottom: 20px;
   padding-bottom: 10px;
-  border-bottom: 5px solid #ebe8e0;
+  /*border-bottom: 5px solid @grayLighter;*/
+
 }
 .party-people:before,
 .party-people:after {
@@ -5044,6 +5051,10 @@ dl.data-list dt + dd {
 .data {
   width: 100%;
   margin-bottom: 17px;
+  /*tbody tr:first-child td {
+    border-top: 1px solid @blueDark;
+  }*/
+
   border-bottom: 2px solid #999999;
 }
 .data th,
@@ -5083,8 +5094,8 @@ dl.data-list dt + dd {
   text-transform: uppercase;
   color: #4788c2;
 }
-.data tbody tr:first-child td {
-  border-top: 1px solid #4788c2;
+.data thead th {
+  border-bottom: 1px solid #4788c2;
 }
 /* Category with a list of its tags, 3 columns */
 #topic_summary a {
@@ -5235,4 +5246,10 @@ hr.big {
   border-top: 1px solid #ebe8e0;
   border-bottom: 5px solid #EBE8E0;
   margin: 25px 0;
+}
+.bookmarkable {
+  color: inherit;
+}
+.bookmarkable:hover {
+  text-decoration: none;
 }

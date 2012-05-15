@@ -39,7 +39,7 @@
 
 {% block content %}
 
-  <table class="pull-right bg-lighter" id="votation_outcome">
+  <table class="pull-right" id="votation_outcome">
     <tr>
       {% if votation.outcome == votation.PASSED %}
       <td>{{ '<i class="icon-thumbs-up"></i>'|safe|circled:"voteok" }}</td>
@@ -54,7 +54,8 @@
   <hgroup>
     <h1 class="highlight">Votazione <strong>N.{{ votation.idnum }}</strong></h1>
     <h2>
-      <i id="{{ votation|as_token }}" class="bookmarkable {% is_key_class votation %}"></i>{{ votation.act.title }}
+      <a href="#" id="{{ votation|as_token }}" class="bookmarkable"><i class="{% is_key_class votation %}"></i></a>
+      {{ votation.act.title }}
     </h2>
     <h4>
       {% if votation.act %}

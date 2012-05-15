@@ -106,7 +106,11 @@ body {
   .navbar-inner {
     background-color: @white;
     color: @black;
-
+    > p {
+      margin-right: 20px;
+      /*strong { margin-right: 15px; }
+      a { margin: 5px 15px; }*/
+    }
     .nav {
       padding: 8px;
       a {
@@ -358,7 +362,7 @@ table.stats {
   .clearfix;
   margin-bottom: 20px;
   padding-bottom: 10px;
-  border-bottom: 5px solid @grayLighter;
+  /*border-bottom: 5px solid @grayLighter;*/
 
   h2 {
     /*color: @grayLight;
@@ -587,9 +591,12 @@ dl.data-list {
     text-transform: uppercase;
     color: @blueDark;
   }
-  tbody tr:first-child td {
-    border-top: 1px solid @blueDark;
+  thead th {
+    border-bottom: 1px solid @blueDark;
   }
+  /*tbody tr:first-child td {
+    border-top: 1px solid @blueDark;
+  }*/
   border-bottom: 2px solid @grayLight;
 }
 
@@ -719,4 +726,9 @@ hr.big {
   border-top: 1px solid @hrBorder;
   border-bottom: 5px solid #EBE8E0;
   margin: 25px 0;
+}
+
+.bookmarkable {
+  color: inherit;
+  &:hover { text-decoration: none; }
 }
