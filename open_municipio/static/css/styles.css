@@ -4150,6 +4150,9 @@ body h1.highlight {
   font-size: 16px;
   font-weight: normal;
 }
+body h2 small {
+  white-space: pre;
+}
 body hgroup {
   margin-bottom: 0px;
 }
@@ -4229,17 +4232,26 @@ body.politician #wrapper > header {
 body.politician #wrapper .colored {
   background-color: #72c056;
 }
+body.politician #wrapper #area-title {
+  background-image: url('../img/city-logo/city-logo-politician.png');
+}
 body.tags #wrapper > header {
   background-color: #ffbf43;
 }
 body.tags #wrapper .colored {
   background-color: #ffbf43;
 }
+body.tags #wrapper #area-title {
+  background-image: url('../img/city-logo/city-logo-tags.png');
+}
 body.citizen #wrapper > header {
   background-color: #dc4630;
 }
 body.citizen #wrapper .colored {
   background-color: #dc4630;
+}
+body.citizen #wrapper #area-title {
+  background-image: url('../img/city-logo/city-logo-citizen.png');
 }
 body h1 span.colored {
   padding-left: 5px;
@@ -4306,7 +4318,7 @@ body h1 span.colored {
   padding-top: 30px;
   padding-bottom: 30px;
   font-size: 40px;
-  background: transparent url('../img/logo-city.png') no-repeat right center;
+  background: transparent url('../img/city-logo/city-logo.png') no-repeat right center;
 }
 #wrapper > header #area-title small {
   color: #ffffff;
@@ -5029,8 +5041,11 @@ ul.feed-list {
   list-style: none;
 }
 ul.feed-list li {
-  border-bottom: 3px solid #f7f6f1;
+  border-bottom: 3px solid #ffffff;
   padding: 10px;
+}
+#sidebar ul.feed-list h3 {
+  margin-bottom: 0;
 }
 /* Data lists */
 ul.list-inline {

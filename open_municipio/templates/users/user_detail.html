@@ -153,16 +153,7 @@
         </table>
     </section>
 
-    <section>
-        <h3>Ultime su {{ registered_user }} <img src="{{ STATIC_URL }}img/feed-icon-14x14.png" alt="" /></h3>
-
-        <ul class="feed-list">
-            {% news_for_object registered_user.get_profile as i_news %}
-            {% for n in i_news %}
-                <li>{{ n.created|date:"d-m-Y" }} - {{ n.text|safe }}</li>
-            {% endfor %}
-        </ul>
-        <p class="bg-dark">Leggi tutte <i class="icon-chevron-down"></i></p>
-    </section>
+  {% news_for_object registered_user.get_profile as i_news %}
+  {% include 'commons/news_list.html' with news_list=i_news news_title='Ultime su '|add:registered_user.get_profile.public_name %}
 
 {% endblock %}

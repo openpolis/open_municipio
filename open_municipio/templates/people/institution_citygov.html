@@ -74,17 +74,8 @@
 
   <hr>
 
+  {% include 'commons/news_list.html' with news_list=FILLME news_title='Ultime dalla Giunta' %}
 
-  <h2>Ultime sulla Giunta <img src="{{ STATIC_URL }}img/feed-icon-14x14.png" alt="" /></h2>
-  <ul class="list-simple">
-    <li><a href="#">Mario Rossi ha commentato il voto</a></li>
-    <li><a href="#">Il voto è inserito nell'ordine del giorno N° 13516</a></li>
-    <li><a href="#">Barcaiuolo, Pellacani, Bellei, Morandi, Santoro (PdL) hanno presentato la mozione...</a></li>
-  </ul>
-
-  <p class="box">
-    <a href="#">Leggi tutti</a> <i class="icon-play-down"></i>
-  </p>
 {% endblock %}
 
 

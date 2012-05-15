@@ -1,77 +1,82 @@
 {% extends 'base_two_columns.html' %}
 
 {% block title %}Organi politici | {{ committee.name }}{% endblock title %}
-{% block content_header %}Commissione{% endblock %}
+{% block content_header %}Organi politici{% endblock %}
 {% block institutions_class %}active{% endblock %}
 
 {% block content %}
 
 
-    <h1>{{ committee.name }}</h1>
-    <p>{{ committee.description }}</p>
+  <h1>{{ committee.name }}</h1>
+  <p>{{ committee.description }}</p>
 
-    <hr>
+  <hr>
 
-    <section class="row-fluid">
-        <div class="span6">
-            <p>
-                {% if president %}
-                    <a href="{{ president.charge.person.get_absolute_url }}">
-                        <strong>{{ president.charge.person.full_name }}</strong>
-                        {% if president.group %}
-                            ({{ president.group.acronym }})
-                        {% endif %}
-                    </a><br/>
-                    {{ president.get_charge_type_display }}
-                {% else %}
-                    Presidente non definito
-                {% endif %}
-            </p>
+  <div class="party-people">
+    <div class="row-fluid">
+      {% comment %}Commitee leaders{% endcomment %}
+      <div class="span6">
 
-            {% for vp in vice_presidents %}
-                <p>
-                    <a href="{{ vp.charge.person.get_absolute_url }}">
-                        <strong>{{ vp.charge.person.full_name }}</strong>
-                        {% if vp.group %}
-                            ({{ vp.group.acronym }})
-                        {% endif %}
-                    </a><br/>
-                    {{ vp.get_charge_type_display }}
+        <p>
+          {% if president %}
+            <a href="{{ president.charge.person.get_absolute_url }}">
+              <strong>{{ president.charge.person.full_name }}</strong>
+              {% if president.group %}
+                ({{ president.group.acronym }})
+              {% endif %}
+            </a><br/>
+            {{ president.get_charge_type_display }}
+          {% else %}
+            Presidente non definito
+          {% endif %}
+        </p>
 
-                </p>
-            {% endfor %}
+        {% for vp in vice_presidents %}
+          <p>
+            <a href="{{ vp.charge.person.get_absolute_url }}">
+              <strong>{{ vp.charge.person.full_name }}</strong>
+              {% if vp.group %}
+                ({{ vp.group.acronym }})
+              {% endif %}
+            </a><br/>
+            {{ vp.get_charge_type_display }}
 
-            <address>
-                {% for r in resources %}
-                    {% if r.resource_type == 'URL' %}
-                        {% if 'http://' not in r.value %}
-                            {{ r.description }}: <a href="http://{{ r.value }}">{{ r.value }}</a><br/>
-                        {%  else %}
-                            {{ r.description }}: <a href="{{ r.value }}">{{ r.value }}</a><br/>
-                        {% endif %}
-                    {% else %}
-                        {% if r.resource_type == 'EMAIL' %}
-                            <a href="mailto:{{ r.value }}">{{ r.value }}</a><br/>
-                        {%  else %}
-                            {{ r.value }}<br/>
-                        {% endif %}
-                    {% endif %}
-                {% endfor %}
-            </address>
+          </p>
+        {% endfor %}
+
+        <address>
+          {% for r in resources %}
+            {% if r.resource_type == 'URL' %}
+              {% if 'http://' not in r.value %}
+                {{ r.description }}: <a href="http://{{ r.value }}">{{ r.value }}</a><br/>
+              {%  else %}
+                {{ r.description }}: <a href="{{ r.value }}">{{ r.value }}</a><br/>
+              {% endif %}
+            {% else %}
+              {% if r.resource_type == 'EMAIL' %}
+                <a href="mailto:{{ r.value }}">{{ r.value }}</a><br/>
+              {%  else %}
+                {{ r.value }}<br/>
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+        </address>
 
 
-        </div>
-        <div class="span6">
-            <ul>
-                {% for member in members %}
-                    <li><a href="{{ member.person.get_absolute_url }}"><strong>{{ member.person.full_name }}</strong>
-                        {% if member.group %}
-                            ({{ member.group.acronym }})
-                        {% endif %}</a></li>
-                {% endfor %}
-            </ul>
-        </div>
-    </section>
+      </div>
+      {% comment %}Committee peoples{% endcomment %}
+      <div class="span6">
+        <ul class="unstyled">
+          {% for member in members %}
+            <li><a href="{{ member.person.get_absolute_url }}"><strong>{{ member.person.full_name }}</strong>
+              {% if member.group %}
+                ({{ member.group.acronym }})
+              {% endif %}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
 
   <hr class="big">
 
@@ -105,16 +110,7 @@
     {% endfor %}
   </ul>
 
-  <h2>Ultime sulla commissione</h2>
-  <ul class="list-simple">
-    <li><a href="#">Mario Rossi ha commentato il voto</a></li>
-    <li><a href="#">Il voto è inserito nell'ordine del giorno N° 13516</a></li>
-    <li><a href="#">Barcaiuolo, Pellacani, Bellei, Morandi, Santoro (PdL) hanno presentato la mozione...</a></li>
-  </ul>
-
-  <p class="box">
-    <a href="#">Leggi tutti</a> <i class="icon-play-down"></i>
-  </p>
+  {% include 'commons/news_list.html' with news_list=i_news news_title='Ultime sulla Commissione' %}
 {% endblock %}
 
 

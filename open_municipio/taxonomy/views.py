@@ -1,5 +1,7 @@
+from django.db.models import Count
 from django.views.generic import DetailView, ListView
 from open_municipio.locations.models import Location
+from open_municipio.monitoring.models import Monitoring
 
 from open_municipio.taxonomy.models import Tag, Category, TaggedAct
 
@@ -19,6 +21,25 @@ class TopicListView(ListView):
 
         import random
         random.shuffle(context['tags_to_cloud'], lambda : 0.5)
+
+        # collect content type ids
+        type_id_list = []
+        if context['categories']:
+            type_id_list.append(context['categories'][0].content_type_id)
+        if context['tags']:
+            type_id_list.append(context['tags'][0].content_type_id)
+        if context['locations']:
+            type_id_list.append(context['locations'][0].content_type_id)
+
+        if type_id_list:
+            # create rank of monitorized items
+            context['top_monitorized_tags'] = [
+                m.content_object
+                for m in Monitoring.objects.filter(
+                    content_type__in=type_id_list
+                    ).annotate(n_monitoring=Count('object_pk'))
+                    .order_by('-n_monitoring')[:10]
+            ]
         return context
     
     

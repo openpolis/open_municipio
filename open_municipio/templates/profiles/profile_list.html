@@ -115,21 +115,7 @@
         </li>
     </ul>
 
-    <h3>Ultime sui cittadini <img src="{{ STATIC_URL }}img/feed-icon-14x14.png" alt="" /></h3>
-    <ul class="feed-list">
-        <li>
-            <a href="#">Variante al PRG per le rifunzionalizzazione del comparto</a>
-        </li>
-        <li>
-            <a href="#">Variante al PRG per le rifunzionalizzazione del comparto</a>
-        </li>
-        <li>
-            <a href="#">Variante al PRG per le rifunzionalizzazione del comparto</a>
-        </li>
-
-    </ul>
-
-    <p class="bg-dark"><a href="#">Leggi tutte <i class="icon-chevron-down"></i></a></p>
+  {% include 'commons/news_list.html' with news_list=FILLME news_title='Ultime sui cittadini' %}
 
 {% endblock %}
 
