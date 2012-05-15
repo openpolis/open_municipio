@@ -2,13 +2,13 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-15 18:38+0200\n"
+"POT-Creation-Date: 2012-05-15 23:37+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,7 +22,7 @@ msgstr ""
 msgid ""
 "A string representing the identification number or sequence, used internally "
 "by the administration."
-msgstr ""
+msgstr "L'identificatore univoco usato internamente dall'amministrazione"
 
 #: acts/models.py:54
 msgid "title"
@@ -252,9 +252,17 @@ msgstr "risultato"
 msgid "outcomes"
 msgstr "risultati"
 
-#: acts/models.py:570 acts/models.py:571
+#: acts/models.py:571 acts/models.py:572
 msgid "calendar"
 msgstr "calendario"
+
+#: acts/search_indexes.py:55
+msgid "yes"
+msgstr "sì"
+
+#: acts/search_indexes.py:57
+msgid "no"
+msgstr "no"
 
 #: events/models.py:32
 msgid "Event date"
@@ -426,7 +434,6 @@ msgid "Resource"
 msgstr "Risorsa"
 
 #: people/models.py:159 people/models.py:230 people/models.py:684
-#: templates/people/person_detail.html:210
 msgid "institution"
 msgstr "istituzione"
 
@@ -705,17 +712,17 @@ msgstr "categoria"
 msgid "OpenMunicipio"
 msgstr "Amministrazione sito Open municipio"
 
-#: templates/acts/act_detail.html:188
+#: templates/acts/act_detail.html:187
 #, python-format
 msgid "You still have %(seconds)s seconds to delete this comment"
 msgstr "Hai ancora %(seconds)s secondi per cancellare questo commento"
 
-#: templates/acts/act_detail.html:190
+#: templates/acts/act_detail.html:189
 msgid "Delete"
 msgstr "Cancella"
 
-#: templates/acts/act_detail.html:228
-#: templates/votations/votation_detail.html:315
+#: templates/acts/act_detail.html:227
+#: templates/votations/votation_detail.html:305
 msgid "Post"
 msgstr ""
 
@@ -750,23 +757,16 @@ msgstr[0] "Per favore, correggi l'errore qui sotto"
 msgstr[1] "Per favore, correggi gli errori qui sotto"
 
 #: templates/people/institution_detail.html:21
-#: templates/people/person_detail.html:211
 msgid "charge_type"
 msgstr "incarico"
 
 #: templates/people/institution_detail.html:22
-#: templates/people/person_detail.html:212
 msgid "from"
 msgstr "dal"
 
 #: templates/people/institution_detail.html:23
-#: templates/people/person_detail.html:213
 msgid "to"
 msgstr "al"
-
-#: templates/people/person_detail.html:5
-msgid "politicians"
-msgstr "Politici"
 
 #: users/models.py:41
 msgid "all"
@@ -798,7 +798,7 @@ msgstr "desidera newsletter"
 
 #: votations/filters.py:32
 msgid "Any"
-msgstr ""
+msgstr "Qualsiasi"
 
 #: votations/filters.py:36 votations/models.py:234 votations/models.py:263
 msgid "Yes"
@@ -872,9 +872,11 @@ msgstr "voto incarico"
 msgid "charge votes"
 msgstr "voti incarico"
 
-msgid "Motion"
-msgstr "Mozione"
+#~ msgid "politicians"
+#~ msgstr "Politici"
 
+#~ msgid "Motion"
+#~ msgstr "Mozione"
 
 #~ msgid "language"
 #~ msgstr "lingua"
