@@ -36,6 +36,8 @@ class VotationSearchView(ExtendedFacetedSearchView):
         # facet expressions:
         form_kwargs['selected_facets'] = self.request.GET.getlist("selected_facets")
 
+        form_kwargs['act_url'] = self.request.GET.get("act_url")
+
         return super(VotationSearchView, self).build_form(form_kwargs)
 
     def extra_context(self):

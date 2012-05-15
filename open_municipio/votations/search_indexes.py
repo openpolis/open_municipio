@@ -15,7 +15,7 @@ class VotationIndex(SearchIndex):
     # stored fields, used not to touch DB
     # while showing results
     url = CharField(indexed=False, stored=True)
-    act_url = CharField(indexed=False, stored=True)
+    act_url = CharField(indexed=True, stored=True)
     title = CharField(indexed=False, stored=True, model_attr='act__title')
     votation_num = CharField(indexed=False, stored=True, model_attr='idnum')
     votation_sitting_num = IntegerField(indexed=False, stored=True, model_attr='sitting__number')

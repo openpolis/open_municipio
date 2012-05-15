@@ -65,7 +65,7 @@
     <ul class="nav nav-tabs page-tabs">
       <li {% block act_tab_status_class %}class="active"{% endblock %}> <a href="{{ act.get_absolute_url }}">Stato</a></li>
       <li {% block act_tab_documents_class %}{% endblock %}><a href="{{ act.get_absolute_url }}documents">Documenti</a></li>
-      <li><a href="{{ act.get_absolute_url }}votes"><strong>Voti</strong></a></li>
+      <li><a href="/votations/?act_url={{ act.get_absolute_url }}"><strong>Voti</strong></a></li>
     </ul>
   </div>
 
