@@ -5,8 +5,6 @@ import os
 import sys
 import settings
 
-__author__ = 'guglielmo'
-
 
 # configure xml namespaces and urls
 XSI_NS="http://www.w3.org/2001/XMLSchema-instance"

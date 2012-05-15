@@ -1,5 +1,6 @@
-from optparse import OptionParser
 from data_import.udine import XMLGenerator
+
+from optparse import OptionParser
 
 if __name__ == '__main__':
 
