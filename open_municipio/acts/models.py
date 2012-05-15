@@ -218,6 +218,9 @@ class Act(TimeStampedModel, MonitorizedItem):
     def get_status_display(self):
         return self.downcast().get_status_display()
 
+    def get_type_name(self):
+        return self.downcast()._meta.verbose_name
+
       
 class ActSection(models.Model):
     """
