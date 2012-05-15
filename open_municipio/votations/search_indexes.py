@@ -25,7 +25,7 @@ class VotationIndex(SearchIndex):
     votation_n_abst = IntegerField(indexed=False, stored=True, model_attr='n_abst')
     votation_n_maj = IntegerField(indexed=False, stored=True, model_attr='n_maj')
     votation_n_rebels = IntegerField(indexed=False, stored=True, model_attr='n_rebels')
-    votation_outcome = CharField(indexed=False, stored=True, model_attr='outcome')
+    votation_outcome = CharField(indexed=False, stored=True, model_attr='outcome', default='')
 
     def prepare_url(self, obj):
         return obj.get_absolute_url()
