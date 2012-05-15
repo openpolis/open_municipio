@@ -57,9 +57,10 @@
     </h2>
     <h4>
       {% if votation.act %}
-        Proposta di <strong>{{ votation.act_type }}</strong>
+        <strong>{{ votation.act.get_type_name|capfirst }}</strong>
         del {{ votation.act.emitting_institution }} N° <strong>{{ votation.act.idnum }}</strong>
         del <strong>{{ votation.act.presentation_date|date:"d F Y" }}</strong>
+         (<a href="{{ votation.act.get_absolute_url }}">vai all'atto</a>)
       {% else %}
         {{ votation.act_descr }}
       {% endif %}

@@ -48,7 +48,7 @@
       <strong class="input-append">{{ act.title }}</strong>
       <small>(N. {{ act.idnum }})</small></h2>
     <h4>
-      {% block act_type %}TIPO ATTO{% endblock %}
+      <strong>{{ act.get_type_name|capfirst }}</strong>
       del Consiglio comunale N° <strong>{{ act.idnum }}</strong> del <strong><span class="date">{{ act.presentation_date }}</span></strong>
     </h4>
   </hgroup>
@@ -64,7 +64,7 @@
     <ul class="nav nav-tabs page-tabs">
       <li {% block act_tab_status_class %}class="active"{% endblock %}> <a href="{{ act.get_absolute_url }}">Stato</a></li>
       <li {% block act_tab_documents_class %}{% endblock %}><a href="{{ act.get_absolute_url }}documents">Documenti</a></li>
-      <li><a href="{{ act.get_absolute_url }}votes"><strong>Voti</strong></a></li>
+      <li><a href="/votations/?act_url={{ act.get_absolute_url }}"><strong>Voti</strong></a></li>
     </ul>
   </div>
 
