@@ -9,9 +9,6 @@ from os import path
 from open_municipio.people.models import Sitting, Institution, Person
 from open_municipio.votations.models import Votation, ChargeVote, InstitutionCharge
 
-import dateutil.parser
-#from time import strptime
-#import datetime
 import traceback
 from open_municipio import settings_import as settings
 

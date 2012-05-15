@@ -12,9 +12,6 @@ from open_municipio.om.management.commands.utils import netcat
 from open_municipio.people.models import Person, municipality
 from open_municipio.acts.models import *
 
-import dateutil.parser
-#from time import strptime
-#import datetime
 import traceback
 from django.conf import settings
 from open_municipio import settings_import
@@ -38,7 +35,7 @@ class Command(LabelCommand):
                     default=False,
                     help='Re-write charge from scratch'
         ),
-        make_option('--people_file',
+        make_option('--people-file',
                     dest='people_file',
                     default='import_tmp/udine/acts/people.xml',
                     help='The xml file containing the persons'
