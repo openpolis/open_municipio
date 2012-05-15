@@ -6,12 +6,12 @@
 
 
 {% block title %}Organi politici | Consiglio{% endblock title %}
-{% block content_header %}Organi politici{% endblock %}
+{% block content_header %}Consiglio{% endblock %}
 {% block institutions_class %}active{% endblock %}
 
 {% block content %}
 
-  <h1>Consiglio</h1>
+  <h2>Consiglio</h2>
   <ul class="list-floated clearfix unstyled party-people">
     <!-- president -->
     <li>
@@ -42,6 +42,8 @@
 
   </ul>
 
+  <hr class="big">
+
   <section>
     {% for group in groups %}
       {% if group.is_current %}
@@ -49,8 +51,8 @@
           <h2>
               {% thumbnail group.img "50x50" crop="center" as im %}
                   <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
-                  {{ group.name }} ({{ group.acronym }})
               {% endthumbnail %}
+            {{ group.name }} ({{ group.acronym }})
           </h2>
           {% if group.resources|length > 0 %}
           <address>

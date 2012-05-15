@@ -1,7 +1,7 @@
 {% extends 'base_two_columns.html' %}
 
 {% block title %}Organi politici | {{ committee.name }}{% endblock title %}
-{% block content_header %}Organi politici{% endblock %}
+{% block content_header %}Commissione{% endblock %}
 {% block institutions_class %}active{% endblock %}
 
 {% block content %}
@@ -99,13 +99,9 @@
 
 {% block sidebar %}
   <h2>Commissioni</h2>
-  <ul class="unstyled">
-    {% for committee_iter in committee_list %}
-      {% if committee_iter == committee %}
-        <li><strong>{{ committee_iter.name }}</strong>: {{ committee_iter.description|truncatewords:3 }}</li>
-      {% else %}
-        <li><a href="{{ committee_iter.get_absolute_url }}"><strong>{{ committee_iter.name }}</strong>: {{ committee_iter.description|truncatewords:3 }}</a></li>
-      {% endif %}
+  <ul class="list-plain">
+    {% for committee in committees %}
+      <li><a href="{{ committee.get_absolute_url }}"><strong>{{ committee.name }}</strong>: {{ committee.description|truncatewords:3 }}</a></li>
     {% endfor %}
   </ul>
 

@@ -13,7 +13,7 @@
 {% load web_services_tags %}
 
 {% block title %}Dettaglio {{ act }}{% endblock title %}
-{% block content_header %}Dettaglio atto{% endblock %}
+{% block content_header %}Atto{% endblock %}
 {% block body_class %}act{% endblock %}
 {% block acts_class %}active{% endblock %}
 
@@ -28,7 +28,6 @@
   <script src="{{ STATIC_URL }}js/jquery.jeditable.js" type="text/javascript"></script>
   <script src="{{ STATIC_URL }}js/jquery.submitlink.js" type="text/javascript"></script>
   <script src="{{ STATIC_URL }}js/jquery.autogrow.js" type="text/javascript"></script>
-  <script src="{{ STATIC_URL }}js/bookmarking.js" type="text/javascript"></script>
   <script src="{{ STATIC_URL }}js/bootstrap-modal.js" type="text/javascript" charset="utf-8"></script>
 {% endblock head_js_includes %}
 
@@ -247,6 +246,8 @@
       {% for n in i_news %}
       <li>{{ n.created|date:"d-m-Y" }} - {{ n.text|safe }}</li>
       {% endfor %}
+      <li>News 1</li><li>News 1</li><li>News 1</li><li>News 1</li>
+
     </ul>
 
     <p class="box">

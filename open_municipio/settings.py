@@ -163,6 +163,7 @@ OM_BOOKMARKING_EMPTY_STAR_CLASS = 'icon-star-empty'
 SITE_INFO = {
     'main_city': u'City',
     'site_version': u'Beta',
+    'main_city_logo': 'img/city-logo/city-logo.png'
 }
 
 ## settings for the ``open_municipio.om_comments`` app

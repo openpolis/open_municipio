@@ -26,7 +26,7 @@ body {
     position: relative;
   }
   #sidebar {
-    h3 { font-size: 20px; margin-bottom: 10px; }
+    h3 { font-size: 19px; margin-bottom: 10px; }
     // default for lists
     ul.list-simple {
       list-style: none;
@@ -38,11 +38,12 @@ body {
 
     // default gray boxes
     .box {
-      .bg-light;
+      background-color: #f1efe8;
       margin:1px 0 0 0;
       padding: 3px 10px;
       a { font-weight: bold; }
       p { margin: 9px 0; }
+      i { font-size: 10px; }
     }
 
     .nav-tabs {
@@ -62,13 +63,16 @@ body {
 
   #content {
     hgroup {
-      margin-bottom: 20px;
+      margin-top: 20px;
+      margin-bottom: 30px;
       h2 {
         line-height: 20px;
         margin-bottom: 5px;
       }
       h4 { font-weight: normal; }
     }
+    h2 { font-size: 19px; }
+    h4 { font-size: 13px; }
     > section {
       margin: 20px 0;
       &.party-people { margin: 0; }
@@ -166,19 +170,20 @@ body {
       font-size: 40px;
       line-height: 50px;
       margin-left: 5px;
-      padding-left: 5px;
+      padding-left: 10px;
       border-left: 1px solid @white;
       font-weight: 200;
     }
   }
 
   #sub-nav {
+    background-color: @white;
     .navbar-inner {
       background-color: transparent; background-image: none;
       a {
         color: @black;
         &:hover { background-color: transparent; text-decoration: underline; }
-        &.active { background-color: @white; font-weight: bolder; }
+        &.active { background-color: @white; font-weight: normal; }
       }
     }
     .pipe-separators;
@@ -193,17 +198,20 @@ body.homepage {
     color : @white;
     padding-top: 20px;
     padding-bottom: 20px;
-    h2 { font-weight: normal; font-size: 30px; padding-bottom: 5px; }
+    h2 { font-weight: normal; font-size: 40px; padding-bottom: 5px; font-weight: 200; }
     img { float:left; padding-right: 10px; }
     p { padding-top: 10px; }
 
   }
 
+  #main { background-color:#F5F4EE }
+
   article {
     h1 {
       font-weight: normal;
-      font-size: 30px;
+      font-size: 40px;
       margin: 25px 0;
+      font-weight: 200;
     }
     ul {
       font-weight: bold;
@@ -218,6 +226,7 @@ body.homepage {
         border-top: 0;
         padding-top: 0;
       }
+      &.unstyled {padding-left: 0; }
     }
   }
 
@@ -266,6 +275,7 @@ ul.comments-list, ul.people-list {
     // comment info
     > div {
       margin-left: 60px;
+      strong > a { font-size: 16px; }
       .monitoring { color: @grayLight; }
     }
   }
@@ -344,6 +354,8 @@ table#status-table {
 table.search-results {
   .table;
 
+  h4 {font-size: 16px;}
+
   td { vertical-align: middle; }
 
   // override default hover highlight effect
@@ -371,6 +383,7 @@ table.stats {
   }
   p { margin: 10px 0; }
   ul li { padding: 5px 0; border-bottom: 1px solid @grayLighter; }
+  a { font-size: 16px; }
 
 }
 
@@ -382,7 +395,7 @@ table.stats {
   min-width: 200px;
   .border-radius;
   h3 { margin: 5px 0; font-size: 15px; text-align:center; border-bottom: 1px solid @grayLight; }*/
-  padding:10px; background-color: @grayLighter;
+  padding:10px; background-color: @semiWhite;
   .calendar { padding: 5px; }
   .ui-datepicker { width: auto; }
   .ui-datepicker-calendar tbody td.highlight > a { font-weight: bold; color: @linkColor; }
@@ -589,7 +602,7 @@ dl.data-list {
   td { vertical-align: middle; }
   thead th {
     text-transform: uppercase;
-    color: @blueDark;
+    color: @black;
   }
   thead th {
     border-bottom: 1px solid @blueDark;
@@ -731,4 +744,10 @@ hr.big {
 .bookmarkable {
   color: inherit;
   &:hover { text-decoration: none; }
+}
+
+ul.person-resources {
+  margin:0;
+  list-style: none;
+
 }

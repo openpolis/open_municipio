@@ -9,17 +9,20 @@
       <div class="span4">
         <h2>Informati</h2>
         <img src="{{ STATIC_URL }}img/homepage/informati.png" alt="">
-        <p>Tutta l'attività politico amministrativa aggiornata in tempo reale e sempre disponibile, con dati</p>
+        <p>Tutta l'attività politico amministrativa aggiornata in tempo reale e
+          sempre disponibile, con dati ufficiali del comune.</p>
       </div>
       <div class="span4">
         <h2>Monitora</h2>
         <img src="{{ STATIC_URL }}img/homepage/monitora.png" alt="">
-        <p>Puoi monitorare l'andamento di un atto, le attività dei politici o un argomento di particolare interesse</p>
+        <p>Puoi monitorare l'andamento di un atto, le attività dei politici
+          o un argomento di particolare interesse.</p>
       </div>
       <div class="span4">
         <h2>Partecipa</h2>
         <img src="{{ STATIC_URL }}img/homepage/partecipa.png" alt="">
-        <p>Intervieni nella vita politica della tua città: commenta e vota l'attività amministrativa nella community di OpenMunicipio</p>
+        <p>Intervieni nella vita politica della tua città: commenta e vota
+          l'attività amministrativa nella community di Open municipio</p>
       </div>
     </div>
   </section>
@@ -28,40 +31,46 @@
 {% block container %}
   <article>
 
-    <h1>In agenda</h1>
+
 
     <div class="row-fluid">
-      <div class="span4">
-        <div class="circle-date pull-left">
-          <span class="day">10</span>
-          <span class="month">mar</span>
+      <div class="span8">
+        <h1>In agenda</h1>
+
+        <div class="row-fluid">
+          <div class="span6">
+            <div class="circle-date pull-left">
+              <span class="day">19</span>
+              <span class="month">mag</span>
+            </div>
+            <ul class="">
+              <li><a href="#">Convocazione della II commissione consiliare "Territorio e ambiente"</a></li>
+              <li><a href="#">Convocazione della V commissione "Statuto"</a></li>
+              <li><a href="#">Consiglio comunale</a></li>
+            </ul>
+          </div>
+
+          <div class="span6">
+            <div class="circle-date pull-left">
+              <span class="day">22</span>
+              <span class="month">mag</span>
+            </div>
+            <ul class="">
+              <li><a href="#">Convocazione della V commissione "Statuto"</a></li>
+              <li><a href="#">Giunta</a></li>
+            </ul>
+          </div>
         </div>
-        <ul class="">
-          <li><a href="#">Convocazione della II commissione consiliare "Territorio e ambiente"</a></li>
-          <li><a href="#">Convocazione della V commissione "Statuto"</a></li>
-          <li><a href="#">Consiglio comunale</a></li>
-        </ul>
       </div>
       <div class="span4">
-        <div class="circle-date pull-left">
-          <span class="day">10</span>
-          <span class="month">mar</span>
-        </div>
-        <ul class="">
-          <li><a href="#">Convocazione della V commissione "Statuto"</a></li>
-          <li><a href="#">Giunta</a></li>
-        </ul>
-      </div>
-      <div class="span4">
-        <div class="circle-date pull-left">
-          <span class="day">10</span>
-          <span class="month">mar</span>
-        </div>
-        <ul class="">
+        <h1>Ultimi 3 atti chiave</h1>
+
+        <ul class="unstyled">
           <li><a href="#">Consiglio comunale</a></li>
           <li><a href="#">Convocazione della III commissione "Pari opportunità"</a></li>
         </ul>
       </div>
     </div>
+
   </article>
 {% endblock container %}

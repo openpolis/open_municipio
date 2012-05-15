@@ -39,8 +39,9 @@
   <div class="navbar" id="navbar-top">
     <nav class="navbar-inner">
       <a href="/" class="brand">
-        open<strong>municipio</strong>{% if site_version %}<span class="version">{{ site_version }}</span>{% endif %}
-        <small>Informati, monitora e partecipa ai lavori del tuo municipio</small>
+        <img src="{{ STATIC_URL }}img/logo-openmunicipio.png" alt="Openmunicipio - Informati, monitora e partecipa ai lavori del tuo municipio">
+        <!--open<strong>municipio</strong>{% if site_version %}<span class="version">{{ site_version }}</span>{% endif %}
+        <small></small>-->
       </a>
 
       {% if user.is_authenticated %}
@@ -67,16 +68,19 @@
 
     <!-- AREA-TITLE -->
     <hgroup class="container-fluid">
-        <div class="row-fluid">
-            <h1 class="span11" id="area-title">{{ main_city }} <small>{% block content_header %}{% endblock %}</small></h1>
-        </div>
+      <div class="row-fluid">
+        <h1 class="span11" id="area-title" style="background-image:url({{ STATIC_URL }}{{ main_city_logo }})">
+
+          {{ main_city }} <small>{% block content_header %}{% endblock %}</small>
+        </h1>
+      </div>
     </hgroup>
     <!-- /AREA-TITLE -->
 
     <!-- MAIN-NAVBAR -->
     <div class="navbar">
       <div class="navbar-inner">
-        <nav class="container-fluid">
+        <nav class="container-fluid" style="padding:0;">
           <ul class="nav">
             <li {% block people_class %}{% endblock %}><a href="{% url om_politician_list %}">Politici</a></li>
             <li {% block tags_class %}{% endblock %}><a href="{% url om_topic_list %}">Argomenti</a></li>
@@ -91,8 +95,9 @@
                 <b class="caret"></b>
               </a>
               <ul class="dropdown-menu">
-                <li><a href="#">FAQ</a></li>
-                <li><a href="#">Help</a></li>
+                <li><a href="{% url om_rules %}">Regolamento</a></li>
+                <li><a href="{% url om_terms %}">Condizioni d'uso</a></li>
+                <li><a href="{% url om_privacy %}">Privacy</a></li>
               </ul>
             </li>
           </ul>
@@ -114,7 +119,7 @@
   <!-- FOOTER-NAV -->
   <footer class="navbar navbar-fixed-bottom">
     <div class="navbar-inner">
-      <nav class="container-fluid">
+      <nav class="container-fluid" style="padding:0;">
         <ul class="nav">
           <li class="{% block acts_class %}{% endblock %}"><a href="{% url om_act_search %}">Atti</a></li>
           <li class="{% block votations_class %}{% endblock %}"><a href="{% url om_votation_search %}">Votazioni</a></li>
@@ -131,7 +136,7 @@
           <!-- TODO <li><a href="#">Società partecipate</a></li> -->
         </ul>
         <form class="navbar-search pull-right" action="{{ haystack_search }}">
-          <input type="text" class="search-query" placeholder="Cerca nel sito">
+          <input type="text" class="search-query" name="q" placeholder="Cerca nel sito">
         </form>
       </nav>
     </div>

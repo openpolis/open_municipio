@@ -4,25 +4,25 @@
 {% load monitoring_tags %}
 
 {% block title %}Argomento {{ topic }}{% endblock title %}
-{% block content_header %}Argomenti{% endblock %}
+{% block content_header %}Argomento{% endblock %}
 {% block body_class %}tags{% endblock %}
 {% block tags_class %}class="active"{% endblock %}
 
 {% block sub_nav %}
 
-    <nav class="navbar pipe-separators" id="sub-nav">
-        <div class="navbar-inner">
-            <div class="container-fluid">
-                <ul class="nav">
-                    {% for t in topics %}
-                    <li{% if t == topic %} class="unpipe"{% endif %}>
-                        <a href="{{ t.get_absolute_url }}"{% if t == topic %} class="active"{% endif %}>{{ t }}</a>
-                    </li>
-                    {% endfor %}
-                </ul>
-            </div>
-        </div>
-    </nav>
+  <nav class="navbar" id="sub-nav">
+    <div class="navbar-inner">
+      <div class="container-fluid">
+        <ul class="nav">
+          {% for t in topics %}
+            <li>{% comment %}{% if t == topic %} class="unpipe"{% endif %}{% endcomment %}
+              <a href="{{ t.get_absolute_url }}"{% if t == topic %} class="active"{% endif %}>{{ t }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </nav>
 
 {% endblock %}
 
@@ -71,7 +71,7 @@
     <hr class="big">
 
     <section>
-        <h3>Atti che trattano di {{ topic }}</h3>
+        <h2>Atti che trattano di {{ topic }}</h2>
 
         <table class="data">
             <thead>

@@ -2,8 +2,8 @@
 {% load highlight %}
 {% load om_utils %}
 
-{% block title %}| Elenco atti {% endblock title %}
-{% block content_header %}Elenco atti{% endblock %}
+{% block title %}Elenco atti {% endblock title %}
+{% block content_header %}Atti{% endblock %}
 {% block acts_class %}active{% endblock %}
 
 {% block extra_style %}
@@ -13,8 +13,6 @@ em {
 {% endblock %}
 
 {% block content %}
-    <h1>Cerca l'atto</h1>
-
     {% if selected_facets %}
         <ul class="breadcrumb">
             {% for facet in selected_facets  %}
@@ -30,7 +28,7 @@ em {
         </ul>
     {% else %}
       <p>Puoi trovare l'atto che ti interessa scorrendo la lista degli ultimi pubblicati, qui sotto.
-        Puoi perfezionare la ricerca usando i filtri nella colonna qui a destra. Oppure puoi usare il form di
+        Puoi perfezionare la ricerca usando i filtri nella colonna qui a destra, oppure puoi usare il form di
         ricerca con una parola che pensi sia contenuta nell'atto ,
         in cima alla colonna qui a destra</p>
     {% endif %}

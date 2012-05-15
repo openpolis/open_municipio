@@ -3,7 +3,7 @@
 <div class="row-fluid">
 
     <section class="span6">
-        {% if supporter_title %}<h1>{{ supporter_title }}</h1>{% endif %}
+        {% if supporter_title %}<h2>{{ supporter_title }}</h2>{% endif %}
         <ul class="people-list">
           {% for supporter in act_supporters %}
           <li>
@@ -25,7 +25,7 @@
 
     <section class="span6">
         {% if act_cosupporters %}
-        {% if cosupporter_title %}<h1>{{ cosupporter_title }}</h1>{% endif %}
+        {% if cosupporter_title %}<h2>{{ cosupporter_title }}</h2>{% endif %}
         <ul class="people-list">
           {% for supporter in act_cosupporters %}
             <li>
