@@ -564,6 +564,7 @@ class Calendar(models.Model):
     WRITEME
     """
     act_set = models.ManyToManyField(Act)
+    site = models.ForeignKey(Institution)
     date = models.DateField()
 
     class Meta:
