@@ -27,7 +27,7 @@ class ExtendedFacetedSearchView(SearchView):
 
         # This way the form can always receive a list containing zero or more
         # facet expressions:
-        form_kwargs['selected_facets'] = self._get_extended_selected_facets()
+        form_kwargs['selected_facets'] = self.request.GET.getlist('selected_facets')
 
         return super(ExtendedFacetedSearchView, self).build_form(form_kwargs)
 
