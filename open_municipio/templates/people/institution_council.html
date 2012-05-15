@@ -2,6 +2,8 @@
 
 {% load om_utils %}
 {% load monitoring_tags %}
+{% load thumbnail %}
+
 
 {% block title %}Organi politici | Consiglio{% endblock title %}
 {% block content_header %}Organi politici{% endblock %}
@@ -44,7 +46,12 @@
     {% for group in groups %}
       {% if group.is_current %}
         <div class="party-people">
-          <h2><img src="{{ STATIC_URL }}img/placehold/50.gif">{{ group.name }} ({{ group.acronym }})</h2>
+          <h2>
+              {% thumbnail group.img "50x50" crop="center" as im %}
+                  <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+                  {{ group.name }} ({{ group.acronym }})
+              {% endthumbnail %}
+          </h2>
           {% if group.resources|length > 0 %}
           <address>
             {% for r in group.resources %}

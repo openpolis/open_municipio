@@ -133,6 +133,7 @@ INSTALLED_APPS = (
     'open_municipio.web_services',
     'open_municipio.newscache',
     'haystack',
+    'sorl.thumbnail',
 )
 
 COMMENTS_APP = 'open_municipio.om_comments'

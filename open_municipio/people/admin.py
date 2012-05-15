@@ -2,12 +2,14 @@ from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 from open_municipio.people.models import *
 from open_municipio.votations.admin import VotationsInline
+from sorl.thumbnail.admin import AdminImageMixin
+
 
 class PersonResourceInline(admin.TabularInline):
     model = PersonResource
     extra = 0
 
-class PersonAdminWithResources(admin.ModelAdmin):
+class PersonAdminWithResources(AdminImageMixin, admin.ModelAdmin):
     list_display = ('id', '__unicode__', 'birth_date', 'birth_location' )
     list_display_links = ('__unicode__',)
     search_fields = ['^first_name', '^last_name']
@@ -30,7 +32,7 @@ class GroupIsMajorityInline(admin.TabularInline):
     model = GroupIsMajority
     extra = 1
 
-class GroupAdminWithCharges(admin.ModelAdmin):
+class GroupAdminWithCharges(AdminImageMixin, admin.ModelAdmin):
     list_display = ('name', 'acronym', 'is_majority_now')
     inlines = [GroupResourceInline, GroupIsMajorityInline, GroupChargeInline]
     

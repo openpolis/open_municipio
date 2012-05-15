@@ -12,6 +12,8 @@ from django.contrib.contenttypes.models import ContentType
 from model_utils import Choices
 from model_utils.managers import PassThroughManager
 
+from sorl.thumbnail import ImageField
+
 from open_municipio.monitoring.models import Monitoring, MonitorizedItem
 from open_municipio.newscache.models import News
 from open_municipio.people.managers import TimeFramedQuerySet
@@ -38,7 +40,9 @@ class Person(models.Model, MonitorizedItem):
     sex = models.IntegerField(_('sex'), choices=SEX)
     op_politician_id = models.IntegerField(_('openpolis politician ID'), blank=True, null=True)
 
-    # manager to handle the list of monitoring having as content_object this instance
+    img = ImageField(upload_to="person_images", blank=True, null=True)
+
+# manager to handle the list of monitoring having as content_object this instance
     #monitoring_set = generic.GenericRelation(Monitoring, object_id_field='object_pk')
     
     class Meta:
@@ -456,6 +460,8 @@ class Group(models.Model):
     name = models.CharField(max_length=100)
     acronym = models.CharField(blank=True, max_length=16)
     charge_set = models.ManyToManyField('InstitutionCharge', through='GroupCharge')
+
+    img = ImageField(upload_to="group_images", blank=True, null=True)
 
     class Meta:
         verbose_name = _('group')

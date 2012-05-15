@@ -3,6 +3,7 @@
 {% load comments %}
 {% load voting_tags %}
 {% load om_utils %}
+{% load thumbnail %}
 
 {% block title %}| Dettaglio {{ person }}{% endblock %}
 {% block content_header %}{% trans 'politicians' %}{% endblock %}
@@ -26,7 +27,9 @@
     <div class="span6">
 
       <header class="clearfix">
-        <img src="{{ STATIC_URL }}img/placehold/100.gif" class="thumb-left">
+          {% thumbnail person.img "100x100" crop="center" as im %}
+              <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+          {% endthumbnail %}
         <h1>
           {% if person.is_om_user %}
             <i class="icon-ok" title="{{ person }} è iscritto a Open municipio"></i>
