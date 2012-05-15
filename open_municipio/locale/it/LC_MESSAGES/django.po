@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-16 00:16+0200\n"
+"POT-Creation-Date: 2012-05-16 00:55+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -78,11 +78,11 @@ msgstr "località"
 msgid "Specify whether this act should be featured"
 msgstr "Specificare se questo atto è chiave"
 
-#: acts/models.py:91
+#: acts/models.py:91 votations/models.py:64
 msgid "yes"
 msgstr "sì"
 
-#: acts/models.py:93
+#: acts/models.py:93 votations/models.py:66
 msgid "no"
 msgstr "no"
 
@@ -355,6 +355,18 @@ msgstr "Neutrale"
 #: om_comments/models.py:29
 msgid "Comment mood"
 msgstr "Posizione"
+
+#: om_search/views.py:79 templates/votations/votation_search.html:152
+msgid "last three days"
+msgstr "scorsi tre giorni"
+
+#: om_search/views.py:81 templates/votations/votation_search.html:159
+msgid "last month"
+msgstr "scorso mese"
+
+#: om_search/views.py:83 templates/votations/votation_search.html:166
+msgid "last year"
+msgstr "scorso anno"
 
 #: people/admin.py:46 people/admin.py:70
 msgid "Advanced options"
@@ -726,6 +738,10 @@ msgstr "Cancella"
 msgid "Post"
 msgstr ""
 
+#: templates/acts/act_search.html:166
+msgid "Publishing date"
+msgstr "Data pubblicazione"
+
 #: templates/admin/base_site.html:4
 msgid "openmunicipio site admin"
 msgstr "amministrazione sito Open municipio"
@@ -768,6 +784,10 @@ msgstr "dal"
 msgid "to"
 msgstr "al"
 
+#: templates/votations/votation_search.html:148
+msgid "Sitting date"
+msgstr "Data seduta"
+
 #: users/models.py:41
 msgid "all"
 msgstr "tutti"
@@ -800,11 +820,11 @@ msgstr "desidera newsletter"
 msgid "Any"
 msgstr "Qualsiasi"
 
-#: votations/filters.py:36 votations/models.py:234 votations/models.py:263
+#: votations/filters.py:36 votations/models.py:241 votations/models.py:270
 msgid "Yes"
 msgstr "Si"
 
-#: votations/filters.py:40 votations/models.py:235 votations/models.py:264
+#: votations/filters.py:40 votations/models.py:242 votations/models.py:271
 msgid "No"
 msgstr "No"
 
@@ -820,55 +840,55 @@ msgstr "Respinta"
 msgid "Specify whether this is a key votation"
 msgstr "Specifica se è una votazione chiave"
 
-#: votations/models.py:62
+#: votations/models.py:69
 msgid "votation"
 msgstr "votazione"
 
-#: votations/models.py:63
+#: votations/models.py:70
 msgid "votations"
 msgstr "votazioni"
 
-#: votations/models.py:236 votations/models.py:265
+#: votations/models.py:243 votations/models.py:272
 msgid "Abstained"
 msgstr "Astenuto"
 
-#: votations/models.py:237
+#: votations/models.py:244
 msgid "Non computable"
 msgstr "Non calcolabile"
 
-#: votations/models.py:254
+#: votations/models.py:261
 msgid "group vote"
 msgstr "voto del gruppo"
 
-#: votations/models.py:255
+#: votations/models.py:262
 msgid "group votes"
 msgstr "voti dei gruppi"
 
-#: votations/models.py:266
+#: votations/models.py:273
 msgid "Vote was canceled"
 msgstr "Voto cancellato"
 
-#: votations/models.py:267
+#: votations/models.py:274
 msgid "Present but not voting"
 msgstr "Presente ma non votante"
 
-#: votations/models.py:268
+#: votations/models.py:275
 msgid "Secret votation"
 msgstr "Votazione segreta"
 
-#: votations/models.py:269
+#: votations/models.py:276
 msgid "Is absent"
 msgstr "Assente"
 
-#: votations/models.py:270
+#: votations/models.py:277
 msgid "Vote was not tracked"
 msgstr "Voto non pervenuto"
 
-#: votations/models.py:280
+#: votations/models.py:287
 msgid "charge vote"
 msgstr "voto incarico"
 
-#: votations/models.py:281
+#: votations/models.py:288
 msgid "charge votes"
 msgstr "voti incarico"
 
@@ -884,21 +904,23 @@ msgstr "organo"
 msgid "pub_date"
 msgstr "data pubblicazione"
 
+msgid "votation_date"
+msgstr "data votazione"
 
-#~ msgid "politicians"
-#~ msgstr "Politici"
+msgid "politicians"
+msgstr "Politici"
 
-#~ msgid "Motion"
-#~ msgstr "Mozione"
+msgid "Motion"
+msgstr "Mozione"
 
-#~ msgid "language"
-#~ msgstr "lingua"
+msgid "language"
+msgstr "lingua"
 
-#~ msgid "go"
-#~ msgstr "vai"
+msgid "go"
+msgstr "vai"
 
-#~ msgid "ideated, designed and developed by:"
-#~ msgstr "Ideato, progettato e sviluppato da"
+msgid "ideated, designed and developed by:"
+msgstr "Ideato, progettato e sviluppato da"
 
-#~ msgid "go to page on openparlamento.it"
-#~ msgstr "Vai alla pagina su openparlamento.it"
+msgid "go to page on openparlamento.it"
+msgstr "Vai alla pagina su openparlamento.it"

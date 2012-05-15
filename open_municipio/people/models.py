@@ -649,7 +649,11 @@ class Body(SlugModel):
     name = models.CharField(_('name'), max_length=255)
     slug = models.SlugField(unique=True, blank=True, null=True, help_text=_('Suggested value automatically generated from name, must be unique'))
     description = models.TextField(_('description'), blank=True)
-  
+
+    @property
+    def lowername(self):
+        return self.name.lower()
+
     class Meta:
         abstract = True
     

@@ -57,7 +57,14 @@ class Votation(models.Model):
     # add ``act`` to the ``list_filter`` list in ``admin.py``
     # to filter votations based on the existence of a related act
     act.is_linked_filter = True
-    
+
+    @property
+    def is_key_yesno(self):
+        if self.is_key:
+            return _('yes')
+        else:
+            return _('no')
+
     class Meta:
         verbose_name = _('votation')
         verbose_name_plural = _('votations')

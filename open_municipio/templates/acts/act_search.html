@@ -1,6 +1,7 @@
 {% extends 'base_two_columns.html' %}
 {% load highlight %}
 {% load om_utils %}
+{% load i18n %}
 
 {% block title %}Elenco atti {% endblock title %}
 {% block content_header %}Atti{% endblock %}
@@ -18,8 +19,8 @@ em {
             {% for facet in selected_facets  %}
                 <li>
                     <a href="{{ facet.url }}"><i class="icon-remove"></i></a>
-                    <span style="color:gray;">{{ facet.field }}</span>:
-                    {{ facet.label }}
+                    <span style="color:gray;">{% trans facet.field %}</span>:
+                    {{ facet.r_label }}
                 </li>
                 {% if not forloop.last %}
                     <span class="divider">/</span>

@@ -84,7 +84,14 @@ class Act(TimeStampedModel, MonitorizedItem):
         if self.adj_title:
             uc = u'%s (%s)' % (uc, self.adj_title)
         return uc
-     
+
+    @property
+    def is_key_yesno(self):
+        if self.is_key:
+            return _('yes')
+        else:
+            return _('no')
+
     def downcast(self):
         """
         Returns the "downcasted"[*]_ version of this model instance.
