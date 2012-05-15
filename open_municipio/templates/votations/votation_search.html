@@ -145,25 +145,25 @@
             </dl>
             <dl>
                 {% if not facet_queries_date.is_selected %}
-                    <dt>Data della seduta</dt>
+                    <dt>{% trans 'Sitting date' %}</dt>
                     {% if facet_queries_date.threedays.count %}
                         <dd>
                             <a href="{{ base_url }}&selected_facets={{ facet_queries_date.threedays.key }}">
-                                ultimi tre giorni
+                                {% trans 'last three days' %}
                             </a> ({{ facet_queries_date.threedays.count }})
                         </dd>
                     {% endif %}
                     {% if facet_queries_date.onemonth.count %}
                         <dd>
                             <a href="{{ base_url }}&selected_facets={{ facet_queries_date.onemonth.key }}">
-                                ultimo mese
+                                {% trans 'last month' %}
                             </a> ({{ facet_queries_date.onemonth.count }})
                         </dd>
                     {% endif %}
                     {% if facet_queries_date.oneyear.count %}
                         <dd>
                             <a href="{{ base_url }}&selected_facets={{ facet_queries_date.oneyear.key }}">
-                                ultimo anno
+                                {% trans 'last year' %}
                             </a> ({{ facet_queries_date.oneyear.count }})
                         </dd>
                     {% endif %}
