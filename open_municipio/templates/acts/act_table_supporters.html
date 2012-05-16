@@ -9,7 +9,7 @@
           {% for supporter in act_supporters %}
           <li>
             <a href="{{ supporter.person.get_absolute_url }}">
-                {% thumbnail supporter.img "50x50" crop="center" as im %}
+                {% thumbnail supporter.person.img "50x50" crop="center" as im %}
                     <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
                 {% endthumbnail %}
             </a>
@@ -35,7 +35,7 @@
           {% for supporter in act_cosupporters %}
             <li>
               <a href="{{ supporter.get_absolute_url }}">
-                  {% thumbnail supporter.img "50x50" crop="center" as im %}
+                  {% thumbnail supporter.person.img "50x50" crop="center" as im %}
                       <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
                   {% endthumbnail %}
               </a>
