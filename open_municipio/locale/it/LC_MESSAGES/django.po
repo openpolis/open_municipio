@@ -722,7 +722,7 @@ msgstr "categoria"
 
 #: templates/base.html:6
 msgid "OpenMunicipio"
-msgstr "Amministrazione sito Open municipio"
+msgstr "Open municipio"
 
 #: templates/acts/act_detail.html:187
 #, python-format
