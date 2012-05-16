@@ -1,5 +1,5 @@
-from data_import.lib import GenericVotationReader, XMLVotationWriter, JSONVotationWriter
-from data_import.senigallia import conf
+from data_import.votations.lib import GenericVotationReader, XMLVotationWriter, JSONVotationWriter
+
 
 if __name__ == "__main":
     # set the data source to read from
