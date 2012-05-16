@@ -51,7 +51,9 @@ em {
             <td>
               <h4><a href="{{ result.url }}">{{ result.title }}</a></h4>
               <strong>{{ result.act_type }}</strong>
-              {% comment %}{{ result.highlighted.text.0|safe }}<br/>{% endcomment %}
+              {% if result.highlighted.text %}
+                {{ result.highlighted.text.0|safe }}<br/>
+              {% endif %}
               {% if result.categories %}
                 <br/>Categorie: {% for cat in result.categories %}<a href="{{ cat.get_absolute_url }}">{{ cat }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}
               {% endif %}

@@ -3,7 +3,7 @@ from django.core.urlresolvers import reverse
 
 from open_municipio.votations.models import Votation
 
-from open_municipio.acts.models import Agenda, Deliberation, Interrogation, Interpellation, Motion
+from open_municipio.acts.models import Agenda, Deliberation, Interrogation, Interpellation, Motion, Act
 
 from open_municipio.om_search.forms import RangeFacetedSearchForm
 from open_municipio.om_search.views import ExtendedFacetedSearchView
@@ -45,7 +45,12 @@ class VotationSearchView(ExtendedFacetedSearchView):
         Add extra content here, when needed
         """
         extra = super(VotationSearchView, self).extra_context()
+        extra['act_votations'] = False
         extra['base_url'] = reverse('om_votation_search') + '?' + extra['params'].urlencode()
+        if self.request.GET.get("act_url"):
+            act_id = int(self.request.GET.get('act_url').split("/")[-2])
+            extra['act_votations'] = True
+            extra['act'] = Act.objects.get(pk=act_id).downcast()
         return extra
 
 
