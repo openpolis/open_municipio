@@ -60,12 +60,12 @@
               del {{ result.votation_date}}
             </h4>
               {% if not act_votations %}
+                  <strong>{{ result.act_type }}</strong><br/>
                   <a href="{{ result.act_url }}">{{ result.title }}</a><br/>
               {% endif %}
             {% if result.highlighted.text %}
               {{ result.highlighted.text.0|safe }}<br/>
             {% endif %}
-            <strong>{{ result.act_type }}</strong><br/>
             Presenti: {{ result.votation_n_presents }},
             Maggioranza: {{ result.votation_n_maj }},
             Favorevoli: {{ result.votation_n_yes }},
