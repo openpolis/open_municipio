@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Language" content="it-it" />
+  <title>Open municipio - Progetto</title>
+  <meta name="ROBOTS" content="ALL" />
+
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="stylesheet" href="assets/css/responsive.css">
+
+  <script type="text/javascript" src="assets/js/jquery.js"></script>
+
+</head>
+<body>
+
+<div id="wrapper">
+
+  <header class="container-fluid">
+    <div class="row-fluid">
+      <div class="span12">
+        <a href="http://www.openpolis.it" id="openpolis-tool">
+          <img src="assets/img/openpolis-tool.png" alt="Open municipio è uno strumento Openpolis">
+        </a>
+        <h1>
+          <a href="/">
+            <img src="assets/img/testata_openmunicipio.png" alt="Open municipio. Informati, monitora e intervieni nei lavori del tuo municipio">
+          </a>
+        </h1>
+      </div>
+    </div>
+  </header>
+
+  <div class="navbar">
+    <div class="navbar-inner">
+      <nav class="container-fluid" style="padding:0;">
+        <ul class="nav">
+          <li><a href="project.html">Il progetto e come aderirvi</a></li>
+          <li><a href="http://demo.openmunicipio.it/">La versione demo</a></li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+
+  <article class="container-fluid">
+    <div class="row-fluid">
+      <div class="span8">
+
+        <h1>Il progetto</h1>
+
+        <p>
+          Open municipio è una piattaforma web nazionale che usa i dati politico-amministrativi ufficiali dei comuni affiliati al progetto per offrire alla cittadinanza servizi di informazione, monitoraggio e partecipazione attiva alla vita della propria città. Le informazioni sulle attività di sindaco, giunta e consiglio sono aggiornate in tempo reale e i cittadini possono partecipare ai lavori, documentandosi e interagendo con gli strumenti di relazione del sito.
+          In questa operazione di trasparenza c'è il superamento dell’albo pretorio online in cui tutto ciò che è stato già approvato viene reso pubblico per soli 15 giorni, mentre in Open municipio tutto ciò che viene presentato è reso pubblico e accessibile online prima che sia stato discusso e votato e i cittadini possono finalmente partecipare per commentare e votare gli atti, seguire politici, argomenti e territorio.
+          Così sapere cosa accade nel proprio comune e seguirne con tempestività le iniziative e gli sviluppi, diventa qualcosa di semplice, immediato e alla portata di tutti.
+          Con il recupero di un equilibrio informativo essenziale, si sviluppano più facilmente occasioni di comunicazione e collaborazione in cui cittadini e rappresentanti possono confrontare idee, opinioni e soluzioni.
+        </p>
+
+        <h1>Valorizziamo l'attività politica</h1>
+
+        <p>
+          Atti, votazioni, agenda dei lavori sono costantemente disponibili e correlati in un'organizzazione tematica che ne semplifica la ricerca e la comprensione. Disponibile è anche lo storico di questi dati, una base di conoscenza oggi inutilizzata poiché conservata come documentazione interna dei comuni. Open municipio lavora su questo volume di informazioni e restituisce così memoria e valore al lavoro dei politici.
+        </p>
+
+        <h1>Avviciniamo i cittadini alla politica</h1>
+
+        <p>
+          Tracciamo l'attività degli organi politici, giunta, consiglio fino al singolo politico. Seguiamo lo schema logico di Open parlamento in cui un cittadino, dopo aver eletto un proprio candidato invece di perderne le tracce o riceverne informazioni indirettamente attraverso i giornali o la tv, ha la possibilità di capire cosa vota, cosa propone e come partecipa alle attività delle istituzioni nelle quali è stato eletto il proprio rappresentante. In questo senso l'esperienza di Open parlamento è stata preziosa e tralaltro il progetto Open municipio nasce proprio dalle richieste degli utenti della comunità del sito.
+          Così seguire in tempo reale le attività di un politico e poter intervenire contestualmente ai lavori in uno spazio pubblico neutrale, riattiva il dibattito e il confronto tra i cittadini e i propri rappresentanti.
+        </p>
+
+        <h1>Diffondiamo conoscenza, condividiamo esperienze</h1>
+
+        <p>
+          La prospettiva in cui Open municipio venga adottato da più comuni ha un grande potenziale in termini di condivisione della conoscenza con la comparazione delle esperienze delle diverse città. Sarà possibile sapere, ad esempio, chi nel comune di Roma o di Bologna si occupa di una determinata materia, qual è il dibattito normativo su quella materia, gli atti presentati, e mettere a confronto attività di consiglio e di giunta di più città. Il consigliere di Roma che, ad esempio, vuole introdurre una delibera sul verde pubblico, può sapere su quello specifico argomento cosa viene prodotto discusso e approvato in altre città. I cittadini e le imprese che si occupano di questo argomento hanno la possibilità di tracciare e conoscere cosa si muove nei diversi comuni d'Italia.
+        </p>
+
+
+        <h1>Le funzionalità di Open municipio</h1>
+        <ul>
+          <li>Lavora su dati ufficiali (storico e aggiornamento in tempo reale) del comune</li>
+          <li>Un'organizzazione tematica mette in relazione i dati con categorie e temi</li>
+          <li>Tutti gli atti sono accessibili, contestualizzati, comprensibili</li>
+          <li>Gli utenti-cittadini possono commentare e votare gli atti, monitorare i politici, argomenti e territorio</li>
+        </ul>
+
+        <h1>Funzionalità a cui stiamo lavorando</h1>
+        <ul>
+          <li>Livelli di privacy per gli utenti-cittadini</li>
+          <li>Sistema di messaggistica interno per la comunicazione politici-cittadini</li>
+          <li>Avvisi su parola chiave e riepilogo del monitoraggio in mailbox</li>
+          <li>Open data</li>
+        </ul>
+
+        <h1>Tecnicamente</h1>
+
+        <p>
+          Open municipio è un progetto di software libero (open source): il software prodotto è liberamente e gratuitamente riutilizzabile da chiunque. Il progetto è ospitato su GitHub ed è basato sul framework Django; Solr + Haystack per l'indicizzazione dei documenti. Open municipio è suddiviso in applicazioni, così da ridurne la complessità e favorire il riutilizzo del codice. Per facilitare al massimo l'importazione dei dati nella piattaforma è stato definito un apposito formato XML - con relativo XML Schema - chiamato OM-XML. I comuni che aderiscono al progetto possono velocemente ottenere un'istanza di Open municipio con i propri dati, se questi sono resi disponibili in formato OM-XML.
+        </p>
+
+        <h1>Quanto costa</h1>
+
+        <p>
+          Open municipio è una piattaforma nazionale a cui possono aderire tutte le città interessate a praticare direttamente la strategia dell'apertura e della trasparenza senza dover affrontare investimenti onerosi. Il contributo delle amministrazioni che aderiscono consiste nel fornire i dati aggiornati sui lavori di giunta e consiglio e versare un canone annuo estremamente contenuto per coprire i costi di gestione della piattaforma. L'obiettivo economico del progetto è di ottenere la sostenibilità dei costi di gestione e di mantenimento della piattaforma, non il profitto. Così per far fronte ai costi di gestione del progetto, Openpolis propone ai comuni un modello di partenariato non commerciale che preveda la compartecipazione agli sforzi per perseguire una utilità pubblica.
+        </p>
+
+        <p>
+          I contributi annuali per la partecipazione al progetto sono:
+        </p>
+        <ul class="unstyled">
+          <li>Comuni fino a 50.000 abitanti: 8.000 euro</li>
+          <li>Comuni da 50.001 a 150.000 abitanti: 12.000 euro</li>
+          <li>Comuni oltre i 150.000 abitanti: 16.000 euro</li>
+        </ul>
+
+        <a name="come-aderire"></a>
+        <h1>Come aderire</h1>
+
+        <p>
+          Sei un amministratore comunale e pensi sia arrivato il momento di portare la tua città dentro Open municipio, o semplicemente vuoi ricevere informazioni più approfondite sul progetto. Contattaci subito! 
+          Sei un cittadino o parte di un'associazione di cittadini e vuoi promuovere Open municipio nella tua città. Hai bisogno di qualche informazione in più: scrivici.
+        </p>
+
+        <p>
+          Ti piace il progetto Open municipio e vuoi collaborare con noi per la parte che riguarda la tua città, scrivici anche solo per restare informato sui prossimi sviluppi.
+          Se vuoi lavorare a nuovi funzionalità del progetto, dai uno sguardo al lavoro su Github e mettiti in contatto con noi.
+        </p>
+
+        <address>
+          <strong>Associazione Openpolis</strong> <br>
+          via dei Sabelli 215 - 00185 Roma  <br>
+          T. 06.83608392 <br>
+          <span class="contacts">associazione [at] openpolis [dot] it</span>
+        </address>
+
+
+        <h1>Chi lo fa</h1>
+
+        <p>
+          In seguito al successo di Open parlamento, che in breve tempo si è imposto come il canale di accesso privilegiato per seguire, comprendere e divulgare le attività del parlamento italiano, molti cittadini, soci e utenti di Openpolis, ci hanno suggerito di fare qualcosa di simile per il comune, l’istituzione più prossima ma non sempre quella più accessibile, soprattutto nel caso di città medie e grandi. Abbiamo dato forma a queste richieste con i nostri partner di InformaEtica, ramo informatico del Consorzio di solidarietà di Senigallia, che ha costruito Open municipio insieme a noi.
+        </p>
+
+
+        <a href="http://github.com/openpolis">Il progetto di dettaglio su Github</a>
+
+
+      </div>
+
+      <aside class="span4">
+        <ul id="toc">
+
+
+
+
+
+        </ul>
+      </aside>
+    </div>
+  </article>
+
+  <footer class="container-fluid">
+    <div class="row-fluid">
+      <div class="span4">
+        <p>
+          <strong>Open municipio</strong>
+          è un progetto no-profit dell'associazione Openpolis e di InformaEtica.
+        </p>
+        <ul>
+          <li><a href="project.html">Il progetto e come aderirvi</a></li>
+        </ul>
+      </div>
+      <div class="span4">
+        <strong>Openpolis</strong> <br>
+        via dei Sabelli 215 <br>
+        00185 Roma <br>
+        T. 06.83608392 <br>
+        <span class="contacts">associazione [at] openpolis [dot] it</span>
+      </div>
+      <div class="span4">
+        <strong>InformaEtica</strong> c/o Consorsio Solidarietà <br>
+        Via Corinaldese, 52 <br>
+        60019 Senigallia (AN) <br>
+        T. 071.7938239 <br>
+        <span class="contacts">info [at] informaetica [dot] it</span>
+      </div>
+    </div>
+  </footer>
+
+</div>
+
+
+<script type="text/javascript" src="assets/js/jquery.tableofcontents.min.js"></script>
+<script type="text/javascript" charset="utf-8">
+  $(document).ready(function(){
+    $("#toc").tableOfContents('#wrapper article');
+    $('.contacts').each(function(){
+      var $this = $(this);
+      $(this).text($(this).text().replace(' [at] ', '@').replace(' [dot] ','.'));
+      if( $this.attr('href') && $this.attr('href').indexOf('mailto:') === 0 ) {
+        $this.attr('href', $this.attr('href').replace(' [at] ','@').replace(' [dot] ', '.'));
+      }
+    });
+  })
+</script>
+
+</body>
+</html>
