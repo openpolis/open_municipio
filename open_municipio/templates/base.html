@@ -69,9 +69,8 @@
     <!-- AREA-TITLE -->
     <hgroup class="container-fluid">
       <div class="row-fluid">
-        <h1 class="span11" id="area-title">
-
-          <a href="/" style="color: white;">{{ main_city }}</a> <small>{% block content_header %}{% endblock %}</small>
+        <h1 class="span12" id="area-title">
+          {% block content_header_container %}<a href="/" style="color: white;">{{ main_city }}</a> <small>{% block content_header %}{% endblock %}</small>{% endblock %}
         </h1>
       </div>
     </hgroup>

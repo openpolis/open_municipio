@@ -4236,10 +4236,10 @@ body.politician #wrapper #area-title {
   background-image: url('../img/city-logo/city-logo-politician.png');
 }
 body.tags #wrapper > header {
-  background-color: #ffbf43;
+  background-color: #f4c242;
 }
 body.tags #wrapper .colored {
-  background-color: #ffbf43;
+  background-color: #f4c242;
 }
 body.tags #wrapper #area-title {
   background-image: url('../img/city-logo/city-logo-tags.png');
@@ -4259,6 +4259,7 @@ body h1 span.colored {
 }
 #navbar-top {
   height: 55px;
+  background-color: #ffffff;
 }
 #navbar-top .navbar-inner {
   background-color: #ffffff;
@@ -4361,10 +4362,13 @@ body h1 span.colored {
 #wrapper > header #sub-nav ul.nav > li + li.unpipe:before {
   content: '';
 }
+body.homepage {
+  background-color: #F5F4EE;
+}
 body.homepage #payoff {
   color: #ffffff;
-  padding-top: 20px;
-  padding-bottom: 20px;
+  padding-top: 30px;
+  padding-bottom: 30px;
 }
 body.homepage #payoff h2 {
   font-weight: normal;
@@ -4378,9 +4382,6 @@ body.homepage #payoff img {
 }
 body.homepage #payoff p {
   padding-top: 10px;
-}
-body.homepage #main {
-  background-color: #f5f4ee;
 }
 body.homepage article h1 {
   font-weight: normal;
