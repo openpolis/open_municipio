@@ -6,8 +6,21 @@ register = template.Library()
 
 @register.inclusion_tag('monitoring/summary.html', takes_context=True)
 def object_monitoring(context, object, show_politicians=False):
+
+    object_type = object._meta.verbose_name
+    if object_type.lower() == 'tag':
+        object_type = "l'argomento"
+    if object_type.lower() == 'categoria':
+        object_type = "la categoria"
+    if object_type.lower() == 'persona':
+        object_type = "il politico"
+    if object_type.lower() in ['delibera', 'mozione', 'interrogazione', 'interpellanza']:
+        object_type = "l'atto"
+
+
     args = {
         'object': object,
+        'object_type': object_type,
         'user': context['user'],
         'is_user_monitoring': False,
         'show_politicians': show_politicians

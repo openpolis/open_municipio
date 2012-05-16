@@ -207,14 +207,17 @@
   </section>
   {% endif %}
 
-  <hr>
 
   {% comment %}
+    <hr>
     TODO resolve "Caught AttributeError while rendering: 'Category' object has no attribute 'related_news_set'"
     for Tag, Category and Location
     {% news_for_object topic as topic_news %}
     {% endcomment %}
-  {% include 'commons/news_list.html' with news_list=topic_news news_title="Ultime sull'Argomento" %}
+  {% comment %}
+    TODO: extract news for a topic
+    {% include 'commons/news_list.html' with news_list=topic_news news_title="Ultime sull'Argomento" %}
+  {% endcomment %}
 
 {% endblock %}
 

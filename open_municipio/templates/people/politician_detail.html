@@ -4,6 +4,8 @@
 {% load voting_tags %}
 {% load om_utils %}
 {% load thumbnail %}
+{% load monitoring_tags %}
+
 
 {% block title %}Dettaglio {{ person }}{% endblock %}
 {% block content_header %}Politico{% endblock %}
@@ -228,7 +230,7 @@
 {% block sidebar %}
 
   <section><h3>Monitora</h3>
-    {% include 'monitoring/summary.html' with object=person show_politicians=0 %}
+      {% object_monitoring person %}
   </section>
 
   <hr>
