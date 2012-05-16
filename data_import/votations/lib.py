@@ -1,6 +1,34 @@
 from django.utils import simplejson as json
 
-from data_import.lib import BaseReader, BaseWriter, JSONWriter, XMLWriter
+from data_import.lib import DataSource, BaseReader, BaseWriter, JSONWriter, XMLWriter
+
+
+class VotationDataSource(DataSource):
+    """
+    A data source containing votation-related data.
+    """
+    def get_sittings(self):
+        """
+        Retrieve a list comprising all sittings provided by this data source
+        (as ``Sitting`` instances).
+        """  
+        raise NotImplementedError
+    
+    def get_ballots(self, sitting):
+        """
+        Retrieve a list comprising all ballots of a given sitting
+        (as ``Ballot`` instances).
+        """
+        raise NotImplementedError
+    
+    def get_votes(self, ballot):
+        """
+        Retrieve a list comprising all votes of a given ballot
+        (as ``Vote`` instances).
+        """
+        raise NotImplementedError
+
+
 
 ## classes of "DOM" elements
 
@@ -57,34 +85,18 @@ class BaseVotationReader(BaseReader):
     def read(self):
         # initialize the reader
         self.setup()
-        
-        for sitting in self.get_sittings():
-            sitting.ballots = self.get_ballots(sitting)
+        # get the data source to read from
+        data_source = self.get_data_source()
+        # construct the DOM tree
+        for sitting in data_source.get_sittings():
+            sitting.ballots = data_source.get_ballots(sitting)
             for ballot in sitting.ballots:
-                ballot.votes = self.get_votes(ballot)
+                ballot.votes = data_source.get_votes(ballot)
         
         # as now, ``self.sittings`` should be a object tree 
         # providing a comprehensive representation of all relevant data
         # that can be extracted from the data source
-        return self.sittings       
-    
-    def get_sittings(self):
-        """
-        Retrieve a list comprising all sittings provided by the data source.
-        """  
-        raise NotImplementedError
-    
-    def get_ballots(self, sitting):
-        """
-        Retrieve a list comprising all ballots of a given sitting.
-        """
-        raise NotImplementedError
-    
-    def get_votes(self, ballot):
-        """
-        Retrieve a list comprising all votes of a given ballot.
-        """
-        raise NotImplementedError
+        return self.sittings      
 
     
 class GenericVotationReader(BaseVotationReader):
