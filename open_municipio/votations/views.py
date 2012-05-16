@@ -61,3 +61,14 @@ class VotationDetailView(DetailView):
     model = Votation
     template_name = 'votations/votation_detail.html'
     context_object_name = 'votation'
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(VotationDetailView, self).get_context_data(**kwargs)
+
+        # get last two calendar events
+
+        votation = self.get_object()
+        context['votation_difference'] = abs(votation.n_yes - votation.n_no)
+        return context
+

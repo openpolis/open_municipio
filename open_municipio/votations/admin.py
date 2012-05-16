@@ -31,7 +31,7 @@ class VotationAdmin(admin.ModelAdmin):
             self.inlines = [GroupVoteInline, ChargeVoteInline]
         else:
             self.inlines = []
-            self.fields = ('idnum', 'sitting', 'act', 'act_descr')
+            # self.fields = ('idnum', 'sitting', 'act', 'act_descr')
 
         self.inline_instances = []
         for inline_class in self.inlines:
