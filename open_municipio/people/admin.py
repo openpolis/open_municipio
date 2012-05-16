@@ -10,7 +10,7 @@ class PersonResourceInline(admin.TabularInline):
     extra = 0
 
 class PersonAdminWithResources(AdminImageMixin, admin.ModelAdmin):
-    list_display = ('id', '__unicode__', 'birth_date', 'birth_location' )
+    list_display = ('id', '__unicode__', 'has_current_charges', 'birth_date', 'birth_location' )
     list_display_links = ('__unicode__',)
     search_fields = ['^first_name', '^last_name']
     prepopulated_fields = {"slug": ("first_name","last_name","birth_date", "birth_location",)}

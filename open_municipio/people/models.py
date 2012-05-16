@@ -103,6 +103,13 @@ class Person(models.Model, MonitorizedItem):
             institution=institution
         )
 
+    def has_current_charges(self):
+        if self.institutioncharge_set.current().count() > 0:
+            return True
+        else:
+            return False
+    has_current_charges.short_description = _('Current')
+
     @property
     def resources(self):
         """
