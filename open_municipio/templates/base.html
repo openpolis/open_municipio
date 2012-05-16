@@ -1,6 +1,6 @@
 {% load i18n %}
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="utf-8" />
     <title>{% trans "OpenMunicipio" %} - {% block title %}{% endblock %}</title>
@@ -38,7 +38,7 @@
   <!-- TOPBAR -->
   <div class="navbar" id="navbar-top">
     <nav class="navbar-inner">
-      <a href="/" class="brand">
+      <a href="http://www.openmunicipio.it" class="brand">
         <img src="{{ STATIC_URL }}img/logo-openmunicipio.png" alt="Openmunicipio - Informati, monitora e partecipa ai lavori del tuo municipio">
         <!--open<strong>municipio</strong>{% if site_version %}<span class="version">{{ site_version }}</span>{% endif %}
         <small></small>-->
@@ -71,7 +71,7 @@
       <div class="row-fluid">
         <h1 class="span11" id="area-title">
 
-          {{ main_city }} <small>{% block content_header %}{% endblock %}</small>
+          <a href="/" style="color: white;">{{ main_city }}</a> <small>{% block content_header %}{% endblock %}</small>
         </h1>
       </div>
     </hgroup>
