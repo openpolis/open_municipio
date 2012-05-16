@@ -280,7 +280,7 @@ ul.comments-list, ul.people-list {
     // comment info
     > div {
       margin-left: 60px;
-      strong > a { font-size: 16px; }
+      a > strong { font-size: 16px; }
       .monitoring { color: @grayLight; }
     }
   }
@@ -406,7 +406,7 @@ table.stats {
   .ui-datepicker-calendar tbody td.highlight > a { font-weight: bold; color: @linkColor; }
 }
 .calendar_events {
-  height: 230px;
+  height: 220px;
   overflow-y: scroll;
 }
 
@@ -766,3 +766,19 @@ ul.person-resources {
     font-size: 30px; line-height: 30px;
   }
 }
+
+
+body { padding-top: 35px; }
+#page-alert {
+  .navbar-inner { background-color: #fdf48f; padding:4px 0; color: @black; }
+}
+#home-alert {
+  .modal-footer { text-align:center; }
+  border: 4px solid #fdf48f;
+  .btn {
+    text-transform: capitalize;
+    font-weight: bold;
+  }
+}
+
+.inline-block { white-space: pre; }

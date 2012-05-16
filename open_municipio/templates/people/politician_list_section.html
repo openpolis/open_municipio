@@ -9,7 +9,7 @@
 
   <a href="{{ politician.person.get_absolute_url }}"><strong>{{ politician.person|title }}</strong></a>
 
-  {% if what %}({{ value }} {{ what }}){% else %}{{ value }}{% endif %}
+  <span class="inline-block">{% if what %}{{ value }} {{ what }}{% else %}{{ value }}{% endif %}</span>
 
   <br>
 

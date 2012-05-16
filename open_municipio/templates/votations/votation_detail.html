@@ -330,23 +330,6 @@
         </p>
     </section>
 
-    {% if request.user.is_authenticated %}
-      <form id="comment-form" action="#" method="post" class="form-inline box">
-        <p>
-          <textarea name="" class="input-expanded" data-plugin="autogrow" placeholder="Inserisci un commento" id="comment-form-text" rows="1"></textarea>
-        </p>
-        <button type="submit" class="btn btn-mini pull-right" id="comment-form-submit">{% trans 'Post' %} </button>
-        <p>
-          <label>Scegli la posizione</label>
-        </p>
-      </form>
-    {% endif %}
-
-    <p class="box">
-      <a href="#">Leggi tutti</a> <i class="icon-play-down"></i>
-    </p>
-  </section>
-
   <hr>
 
   {% news_for_object registered_user.get_profile as i_news %}

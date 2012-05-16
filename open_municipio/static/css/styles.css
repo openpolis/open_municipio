@@ -4484,8 +4484,8 @@ ul.comments-list li > div,
 ul.people-list li > div {
   margin-left: 60px;
 }
-ul.comments-list li > div strong > a,
-ul.people-list li > div strong > a {
+ul.comments-list li > div a > strong,
+ul.people-list li > div a > strong {
   font-size: 16px;
 }
 ul.comments-list li > div .monitoring,
@@ -4755,7 +4755,7 @@ table.stats th {
   color: #285698;
 }
 .calendar_events {
-  height: 230px;
+  height: 220px;
   overflow-y: scroll;
 }
 .bg-lighter {
@@ -5310,4 +5310,25 @@ ul.person-resources {
 #content table#votation_outcome i {
   font-size: 30px;
   line-height: 30px;
+}
+body {
+  padding-top: 35px;
+}
+#page-alert .navbar-inner {
+  background-color: #fdf48f;
+  padding: 4px 0;
+  color: #000000;
+}
+#home-alert {
+  border: 4px solid #fdf48f;
+}
+#home-alert .modal-footer {
+  text-align: center;
+}
+#home-alert .btn {
+  text-transform: capitalize;
+  font-weight: bold;
+}
+.inline-block {
+  white-space: pre;
 }

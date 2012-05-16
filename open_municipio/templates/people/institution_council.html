@@ -114,6 +114,8 @@
 
   <section>
     <h3>Agenda del Consiglio</h3>
+    {% include 'commons/calendar.html' with events=events %}
+    {% comment %}
     <div class="calendar_container">
       <div class="row-fluid">
         <div class="span4">
@@ -130,6 +132,7 @@
         </div>
       </div>
     </div>
+    {% endcomment %}
   </section>
 
 {% endblock %}
@@ -184,17 +187,8 @@
 {% endblock %}
 
 
-{% comment %}Calendar blocks{% endcomment %}
-{% block head_css_includes %}
-    {{ block.super }}
-    <link rel="stylesheet" href="{{ STATIC_URL }}css/ui-custom-theme/jquery-ui-1.8.16.custom.css">
-    <!--[if IE]><link rel="stylesheet" href="{{ STATIC_URL }}css/ui-custom-theme/jquery-ui-1.8.16.ie.css"><![endif]-->
-{% endblock %}
-
 {% block footer_js_includes %}
     {{ block.super }}
-    <script src="{{ STATIC_URL }}js/jquery-ui-1.8.18.custom.min.js"></script>
-    <script src="{{ STATIC_URL }}js/jquery-ui.calendar.js"></script>
     <script src="{{ STATIC_URL }}js/jquery.submitlink.js"></script>
 {% endblock %}
 

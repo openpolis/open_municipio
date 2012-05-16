@@ -73,4 +73,34 @@
     </div>
 
   </article>
+
+
+  <div class="modal" id="home-alert">
+    <div class="modal-header">
+      <button class="close" data-dismiss="modal">×</button>
+      <img src="{{ STATIC_URL }}img/logo-openmunicipio.png" alt="Open municipio">
+    </div>
+    <div class="modal-body">
+      <p>
+        Questa è una versione dimostrativa del sito Open municipio:
+        <strong>i contenuti sono simulati</strong> e molte delle funzionalità a cui stiamo lavorando
+        in queste ore non sono attive. Però è un buon punto di partenza per capire come funziona Open municipio.
+      </p>
+      <p>Buona navigazione.</p>
+    </div>
+    <div class="modal-footer">
+      <a href="#" class="btn btn-primary btn-large" data-dismiss="modal">Entra nel sito</a>
+    </div>
+  </div>
 {% endblock container %}
+
+
+{% block footer_js_includes %}
+  {{ block.super }}
+  <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap-modal.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function(){
+      $('#home-alert').modal();
+    })
+  </script>
+{% endblock %}

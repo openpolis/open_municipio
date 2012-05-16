@@ -19,6 +19,7 @@
 
     {% block head_js_includes %}
     <!--[if IE]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+    <!--[if IE]><link rel="stylesheet" href="{{ STATIC_URL }}css/ui-custom-theme/jquery-ui-1.8.16.ie.css"><![endif]-->
     <script type="text/javascript" src="{{ STATIC_URL }}js/include.js" data-url="{{ STATIC_URL }}"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-1.7.1.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap-dropdown.js"></script>
@@ -34,6 +35,20 @@
 <body class="{% block body_class %}{% endblock %}">
 
 <div id="wrapper"><!-- #wrapper -->
+
+  <div class="navbar navbar-fixed-top" id="page-alert">
+    <div class="navbar-inner">
+      <div class="container-fluid">
+
+        <div class="row-fluid">
+          <div class="span12">
+            <strong>Versione dimostrativa del sito Open municipio</strong>. I contenuti sono simulati e le funzionalità di registrazione sono disabilitate.
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
 
   <!-- TOPBAR -->
   <div class="navbar" id="navbar-top">
