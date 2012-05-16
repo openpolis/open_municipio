@@ -37,7 +37,7 @@ class ExtendedFacetedSearchView(SearchView):
         field, that allows easy filtering of the selected facets in the
         navigation filters
         """
-        selected_facets = self._get_extended_selected_facets()
+        selected_facets = self.request.GET.getlist('selected_facets')
         facet_counts_fields = self.results.facet_counts().get('fields', {})
 
         facets = {'fields': {}, 'dates': {}, 'queries': {}}

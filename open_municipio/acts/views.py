@@ -48,10 +48,6 @@ class ActSearchView(ExtendedFacetedSearchView):
         if form_kwargs is None:
             form_kwargs = {}
 
-        # This way the form can always receive a list containing zero or more
-        # facet expressions:
-        form_kwargs['selected_facets'] = self.request.GET.getlist("selected_facets")
-
         return super(ActSearchView, self).build_form(form_kwargs)
 
     def extra_context(self):

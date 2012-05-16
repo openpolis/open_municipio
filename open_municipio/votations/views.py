@@ -34,8 +34,6 @@ class VotationSearchView(ExtendedFacetedSearchView):
 
         # This way the form can always receive a list containing zero or more
         # facet expressions:
-        form_kwargs['selected_facets'] = self.request.GET.getlist("selected_facets")
-
         form_kwargs['act_url'] = self.request.GET.get("act_url")
 
         return super(VotationSearchView, self).build_form(form_kwargs)
