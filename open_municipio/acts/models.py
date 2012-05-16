@@ -16,7 +16,7 @@ from model_utils.managers import InheritanceManager, QueryManager
 from model_utils.models import TimeStampedModel
 from model_utils.fields import StatusField
 
-from open_municipio.newscache.models import News
+from open_municipio.newscache.models import News, NewsTargetMixin
 
 from open_municipio.people.models import Institution, InstitutionCharge, Sitting, Person
 from open_municipio.taxonomy.managers import TopicableManager
@@ -29,15 +29,14 @@ from open_municipio.monitoring.models import MonitorizedItem
 # Acts
 #
 
-class Act(TimeStampedModel, MonitorizedItem):
+class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
     """
     This is the base class for all the different act types: it contains the common fields for
     deliberations, interrogations, interpellations, motions, agendas and emendations.
   
     It is a ``TimeStampedModel``, so it tracks creation and modification timestamps for each record.
 
-    The ``related_news`` attribute can be used  to fetch news related to it (or its subclasses) 
-    from ``newscache.News``.
+    The ``related_news`` attribute can be used  to fetch news related to a given act.
 
     Inheritance is done through multi-table inheritance, since browsing the whole set of acts may be useful.
     The default manager is the ``InheritanceManager`` (from package ``django-model-utils``_),
@@ -70,12 +69,8 @@ class Act(TimeStampedModel, MonitorizedItem):
     
     tag_set = TopicableManager(through=TaggedAct, blank=True)
 
-
-    # manager to handle the list of news that have the act as related object
-    related_news_set = generic.GenericRelation(News,
-                                               content_type_field='related_content_type',
-                                               object_id_field='related_object_pk')
-
+    # manager to handle the list of monitoring having as content_object this instance
+    monitoring_set = generic.GenericRelation(Monitoring, object_id_field='object_pk')
 
     def __unicode__(self):
         uc = u'%s' % (self.title, )
@@ -177,10 +172,6 @@ class Act(TimeStampedModel, MonitorizedItem):
         """
         return self.downcast().status
         
-    @property
-    def related_news(self):
-        return self.related_news_set.all()
-
     def get_transitions_groups(self):
         """
         retrieve a list of transitions grouped by status

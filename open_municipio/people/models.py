@@ -15,7 +15,7 @@ from model_utils.managers import PassThroughManager
 from sorl.thumbnail import ImageField
 
 from open_municipio.monitoring.models import Monitoring, MonitorizedItem
-from open_municipio.newscache.models import News
+from open_municipio.newscache.models import NewsTargetMixin
 from open_municipio.people.managers import TimeFramedQuerySet
 from open_municipio.om_utils.models import SlugModel
 
@@ -169,16 +169,11 @@ class GroupResource(Resource):
     group = models.ForeignKey('Group', verbose_name=_('group'), related_name='resource_set')
 
 
-class Charge(models.Model):
+class Charge(NewsTargetMixin, models.Model):
     """
     This is the base class for the different macro-types of charges (institution, organization, administration).
 
-    The ``related_news`` attribute can be used  to fetch
-    news related to it (or its subclasses) from ``newscache.News``
-
-    The class inherits from ``NewsTargetMixin``, that allows the ``related_news`` attribute, to fetch
-    news related to it (or its subclasses) from ``newscache.News``
-
+    The ``related_news`` attribute can be used  to fetch news items related to a given charge.
     """
     person = models.ForeignKey('Person', verbose_name=_('person'))
     start_date = models.DateField(_('start date'))
@@ -188,11 +183,6 @@ class Charge(models.Model):
                                    help_text=_('Insert the complete description of the charge, if it gives more information than the charge type'))
     
     objects = PassThroughManager.for_queryset_class(TimeFramedQuerySet)()
-
-    # manager to handle the list of news that have the act as related object
-    related_news = generic.GenericRelation(News,
-                                           content_type_field='related_content_type',
-                                           object_id_field='related_object_pk')
 
     class Meta:
         abstract = True
