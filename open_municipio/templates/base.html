@@ -63,14 +63,16 @@
         <p class="text-right pull-right">
           Ciao, <strong>{{ user.username }}</strong>
           <br>
-          <a href="/accounts/logout/?next={% if "/accounts" in request.path %}/{% else %}{{ request.path }}{% endif %}">Esci</a>
+          <a href="/accounts/logout/?next={% if "/accounts" in request.path %}/{% else %}{{ request.path }}{% endif %}">esci</a>
           &middot;
-          <a href="/users/profile/edit/">Impostazioni</a>
+          <a href="/users/profile/edit/">impostazioni</a>
         </p>
       {% else %}
       <ul class="nav pull-right">
+          {% comment %}
           <li>Vuoi partecipare? <a href="/accounts/register/">Registrati</a></li>
           <li class="divider-vertical"></li>
+          {% endcomment %}
           <li>Sei già registrato? <a href="/accounts/login/?next={% if "/accounts" in request.path %}/{% else %}{{ request.path }}{% endif %}">Entra</a></li>
       </ul>
       {% endif %}
@@ -149,9 +151,11 @@
           </li>
           <!-- TODO <li><a href="#">Società partecipate</a></li> -->
         </ul>
+        {%  comment %}
         <form class="navbar-search pull-right" action="{{ haystack_search }}">
           <input type="text" class="search-query" name="q" placeholder="Cerca nel sito">
         </form>
+        {%  endcomment %}
       </nav>
     </div>
   </footer>
@@ -163,18 +167,17 @@
 
 <script type="text/javascript">
 
-  // TODO: google analytics code 
-  var _gaq = _gaq || [];
-  /*
-  _gaq.push(['_setAccount', 'UA-XXXXXX-YY']);
-  _gaq.push(['_trackPageview']);
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-31798244-1']);
+    _gaq.push(['_setDomainName', 'openmunicipio.it']);
+    _gaq.push(['_trackPageview']);
 
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-*/
+    (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+
 </script>
 </body>
 </html>

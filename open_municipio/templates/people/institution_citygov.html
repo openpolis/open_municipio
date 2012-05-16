@@ -24,6 +24,7 @@
 
 {% block sidebar %}
 
+  {% comment %}
   <h2>Ultimi 3 atti della Giunta</h2>
   <ul class="list-plain">
     {% for act in latest_acts %}
@@ -60,7 +61,7 @@
   <hr>
 
   {% include 'commons/news_list.html' with news_list=FILLME news_title='Ultime dalla Giunta' %}
-
+  {% endcomment %}
 {% endblock %}
 
 

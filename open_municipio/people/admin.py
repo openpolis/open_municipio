@@ -117,6 +117,8 @@ class AdministrationChargeAdmin(ChargeAdmin):
 class InstitutionChargeAdmin(ChargeAdmin):
     model = InstitutionCharge
     raw_id_fields = ('person', 'substitutes', 'substituted_by', 'original_charge')
+    search_fields = ['^person__first_name', '^person__last_name']
+
     fieldsets = (
         (None, {
             'fields': (('person', 'op_charge_id', 'institution', 'original_charge'),
