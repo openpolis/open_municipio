@@ -4657,44 +4657,44 @@ table#status-table tbody ul li {
 table#status-table tbody ul li:first-child {
   border-top: 0;
 }
-table.search-results {
+#content table.search-results {
   width: 100%;
   margin-bottom: 17px;
 }
-table.search-results th,
-table.search-results td {
+#content table.search-results th,
+#content table.search-results td {
   padding: 8px;
   line-height: 17px;
   vertical-align: top;
   border-top: 1px solid #dddddd;
 }
-table.search-results th {
+#content table.search-results th {
   font-weight: bold;
 }
-table.search-results thead th {
+#content table.search-results thead th {
   vertical-align: bottom;
 }
-table.search-results colgroup + thead tr:first-child th,
-table.search-results colgroup + thead tr:first-child td,
-table.search-results thead:first-child tr:first-child th,
-table.search-results thead:first-child tr:first-child td {
+#content table.search-results colgroup + thead tr:first-child th,
+#content table.search-results colgroup + thead tr:first-child td,
+#content table.search-results thead:first-child tr:first-child th,
+#content table.search-results thead:first-child tr:first-child td {
   border-top: 0;
 }
-table.search-results tbody + tbody {
+#content table.search-results tbody + tbody {
   border-top: 2px solid #dddddd;
 }
-table.search-results tbody tr:hover td,
-table.search-results tbody tr:hover th {
+#content table.search-results tbody tr:hover td,
+#content table.search-results tbody tr:hover th {
   background-color: #f7f6f1;
 }
-table.search-results h4 {
-  font-size: 16px;
+#content table.search-results h4 {
+  font-size: 15px;
 }
-table.search-results td {
+#content table.search-results td {
   vertical-align: middle;
 }
-table.search-results tbody tr:hover td,
-table.search-results tbody tr:hover th {
+#content table.search-results tbody tr:hover td,
+#content table.search-results tbody tr:hover th {
   background-color: transparent;
 }
 table.stats th {
@@ -5302,4 +5302,12 @@ hr.big {
 ul.person-resources {
   margin: 0;
   list-style: none;
+}
+#content table#votation_outcome {
+  float: right;
+  padding-left: 15px;
+}
+#content table#votation_outcome i {
+  font-size: 30px;
+  line-height: 30px;
 }

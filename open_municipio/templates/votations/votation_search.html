@@ -54,9 +54,11 @@
         <tr>
           <td>{{ result.votation_date|circled:"full" }}</td>
           <td>
-            <a href="{{ result.url }}">Votazione n.{{ result.votation_num }}</a>
-            della seduta n.{{ result.votation_sitting_num }}
-            del {{ result.votation_date}}<br/>
+            <h4>
+              <a href="{{ result.url }}">Votazione n.{{ result.votation_num }}</a>
+              della seduta n.{{ result.votation_sitting_num }}
+              del {{ result.votation_date}}
+            </h4>
               {% if not act_votations %}
                   <a href="{{ result.act_url }}">{{ result.title }}</a><br/>
               {% endif %}
