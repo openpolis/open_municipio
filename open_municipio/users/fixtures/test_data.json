@@ -1,54 +1,6 @@
 [
     {
         "pk": 1, 
-        "model": "auth.group", 
-        "fields": {
-            "name": "editors", 
-            "permissions": [
-                54, 
-                78, 
-                66, 
-                81, 
-                72, 
-                69, 
-                75, 
-                83, 
-                84, 
-                85, 
-                16, 
-                47, 
-                48, 
-                49, 
-                158, 
-                159, 
-                160, 
-                149, 
-                150, 
-                151, 
-                162
-            ]
-        }
-    }, 
-    {
-        "pk": 2, 
-        "model": "auth.group", 
-        "fields": {
-            "name": "politicians", 
-            "permissions": []
-        }
-    }, 
-    {
-        "pk": 3, 
-        "model": "auth.group", 
-        "fields": {
-            "name": "votelinkers", 
-            "permissions": [
-                162
-            ]
-        }
-    }, 
-    {
-        "pk": 1, 
         "model": "auth.user", 
         "fields": {
             "username": "admin", 
@@ -69,9 +21,9 @@
         "pk": 3, 
         "model": "auth.user", 
         "fields": {
-            "username": "user", 
-            "first_name": "User", 
-            "last_name": "User", 
+            "username": "mrossi",
+            "first_name": "Mario",
+            "last_name": "Rossi",
             "is_active": true, 
             "is_superuser": false, 
             "is_staff": false, 
@@ -79,7 +31,7 @@
             "groups": [], 
             "user_permissions": [], 
             "password": "sha1$19aee$2505c68c5b3604cd20cb8a286961ef0578f07c13", 
-            "email": "user@openpolis.it", 
+            "email": "flavia@openpolis.it",
             "date_joined": "2012-03-20 17:37:29"
         }
     }, 
@@ -104,46 +56,6 @@
         }
     }, 
     {
-        "pk": 5, 
-        "model": "auth.user", 
-        "fields": {
-            "username": "puser", 
-            "first_name": "Astelvio", 
-            "last_name": "Pappone", 
-            "is_active": true, 
-            "is_superuser": false, 
-            "is_staff": false, 
-            "last_login": "2012-03-23 23:39:25", 
-            "groups": [
-                2
-            ], 
-            "user_permissions": [], 
-            "password": "sha1$12711$18657dbca5a9a132118744cfebd5021d4d001ce3", 
-            "email": "astelvio@comune.ix.it", 
-            "date_joined": "2012-03-22 17:11:36"
-        }
-    }, 
-    {
-        "pk": 6, 
-        "model": "auth.user", 
-        "fields": {
-            "username": "puser2", 
-            "first_name": "Cicc", 
-            "last_name": "Ardoisio", 
-            "is_active": true, 
-            "is_superuser": false, 
-            "is_staff": false, 
-            "last_login": "2012-03-23 23:39:50", 
-            "groups": [
-                2
-            ], 
-            "user_permissions": [], 
-            "password": "sha1$01e3b$39fdedd6bf98ace3208122a23fa5943b96be959a", 
-            "email": "puser2@openpolis.it", 
-            "date_joined": "2012-03-23 23:36:51"
-        }
-    }, 
-    {
         "pk": 7, 
         "model": "auth.user", 
         "fields": {
@@ -162,12 +74,49 @@
             "email": "", 
             "date_joined": "2012-05-10 23:59:49"
         }
-    }, 
+    },
+    {
+        "pk": 8,
+        "model": "auth.user",
+        "fields": {
+            "username": "gverdi",
+            "first_name": "Giuseppe",
+            "last_name": "Verdi",
+            "is_active": true,
+            "is_superuser": false,
+            "is_staff": false,
+            "last_login": "2012-04-20 17:37:42",
+            "groups": [],
+            "user_permissions": [],
+            "password": "sha1$19aee$2505c68c5b3604cd20cb8a286961ef0578f07c13",
+            "email": "guglielmo@openpolis.it",
+            "date_joined": "2012-04-20 17:37:29"
+        }
+    },
+    {
+        "pk": 9,
+        "model": "auth.user",
+        "fields": {
+            "username": "gbianchi",
+            "first_name": "Giuseppe",
+            "last_name": "Bianchi",
+            "is_active": true,
+            "is_superuser": false,
+            "is_staff": false,
+            "last_login": "2012-05-10 17:37:42",
+            "groups": [],
+            "user_permissions": [],
+            "password": "sha1$19aee$2505c68c5b3604cd20cb8a286961ef0578f07c13",
+            "email": "flavia@openpolis.it",
+            "date_joined": "2012-05-10 17:37:29"
+        }
+    },
+
     {
         "pk": 1, 
         "model": "users.userprofile", 
         "fields": {
-            "city": "Udine", 
+            "city": "Circoscrizione 1",
             "says_is_politician": false, 
             "wants_newsletter": false, 
             "privacy_level": 3, 
@@ -177,28 +126,15 @@
         }
     }, 
     {
-        "pk": 2, 
-        "model": "users.userprofile", 
-        "fields": {
-            "city": "Senigallia", 
-            "says_is_politician": false, 
-            "wants_newsletter": false, 
-            "privacy_level": 3, 
-            "person": null, 
-            "user": 4, 
-            "uses_nickname": true
-        }
-    }, 
-    {
         "pk": 3, 
         "model": "users.userprofile", 
         "fields": {
-            "city": "Roma", 
+            "city": "Circoscrizione 5",
             "says_is_politician": true, 
             "wants_newsletter": false, 
             "privacy_level": 3, 
-            "person": 19, 
-            "user": 5, 
+            "person": null,
+            "user": 4,
             "uses_nickname": false
         }
     }, 
@@ -206,15 +142,42 @@
         "pk": 4, 
         "model": "users.userprofile", 
         "fields": {
-            "city": "Milano", 
+            "city": "Circoscrizione 3",
             "says_is_politician": true, 
             "wants_newsletter": false, 
             "privacy_level": 3, 
-            "person": 41, 
-            "user": 6, 
+            "person": null,
+            "user": 7,
             "uses_nickname": false
         }
-    }, 
+    },
+    {
+        "pk": 5,
+        "model": "users.userprofile",
+        "fields": {
+            "city": "Circoscrizione 4",
+            "says_is_politician": true,
+            "wants_newsletter": false,
+            "privacy_level": 3,
+            "person": null,
+            "user": 8,
+            "uses_nickname": false
+        }
+    },
+    {
+        "pk": 6,
+        "model": "users.userprofile",
+        "fields": {
+            "city": "Circoscrizione 5",
+            "says_is_politician": true,
+            "wants_newsletter": false,
+            "privacy_level": 3,
+            "person": null,
+            "user": 9,
+            "uses_nickname": true
+        }
+    },
+
     {
         "pk": 1, 
         "model": "registration.registrationprofile", 
@@ -236,15 +199,25 @@
         "model": "registration.registrationprofile", 
         "fields": {
             "activation_key": "ALREADY_ACTIVATED", 
-            "user": 5
+            "user": 7
         }
-    }, 
+    },
     {
-        "pk": 4, 
-        "model": "registration.registrationprofile", 
+        "pk": 4,
+        "model": "registration.registrationprofile",
         "fields": {
-            "activation_key": "ALREADY_ACTIVATED", 
-            "user": 6
+            "activation_key": "ALREADY_ACTIVATED",
+            "user": 8
+        }
+    },
+    {
+        "pk": 5,
+        "model": "registration.registrationprofile",
+        "fields": {
+            "activation_key": "ALREADY_ACTIVATED",
+            "user": 9
         }
     }
+
+
 ]
