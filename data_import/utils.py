@@ -17,3 +17,23 @@ def get_row_dicts(cursor, query, params=()):
     colnames = [desc[0] for desc in cursor.description]
     row_dicts = [dict(zip(colnames, row)) for row in cursor.fetchall()]
     return row_dicts
+
+
+def create_table_schema(table_name, table_schema):
+    """
+    Generate the SQL statement to execute in order to create a DB table.
+    
+    Takes the following parameters:
+    
+    * ``table_name``: a string to be used as the table name
+    * ``table_schema``: a dict mapping column names to column types (as strings)
+    
+    Note that supported column types may vary depending on the RDBMS of choice. 
+    """
+    sql = "CREATE TABLE %s \n" % table_name
+    sql += "(\n"
+    for (col_name, col_type) in table_schema.items():
+        sql += "  %(col_name)s\t%(col_type)s,\n" % {'col_name': col_name, 'col_type': col_type}
+    sql += ");\n"
+    
+    return  sql     

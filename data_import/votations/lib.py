@@ -9,21 +9,21 @@ class VotationDataSource(DataSource):
     """
     def get_sittings(self):
         """
-        Retrieve a list comprising all sittings provided by this data source
+        Retrieves a list comprising all sittings provided by this data source
         (as ``Sitting`` instances).
         """  
         raise NotImplementedError
     
     def get_ballots(self, sitting):
         """
-        Retrieve a list comprising all ballots of a given sitting
+        Retrieves a list comprising all ballots of a given sitting
         (as ``Ballot`` instances).
         """
         raise NotImplementedError
     
     def get_votes(self, ballot):
         """
-        Retrieve a list comprising all votes of a given ballot
+        Retrieves a list comprising all votes of a given ballot
         (as ``Vote`` instances).
         """
         raise NotImplementedError

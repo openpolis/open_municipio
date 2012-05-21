@@ -6,15 +6,15 @@ class DataSource(object):
     """
     An object representing a generic source of data.
     
-    In this context, the meaning of *data source* is intentionally very generic: 
-    a data source may be a file, a directory of files, a URLs, a generic stream, etc.
+    In this context, the meaning of *data source* is intentionally left very generic: 
+    a data source may be a file, a directory of files, a URL, a generic stream, etc.
     
-    A concrete data source should provide an API to ease access to the data
+    A concrete data source should expose an API providing easy access to the data
     it contains.  
     """
     def setup(self):
         """
-        Initialize the data source; what this means in practice is strictly
+        Initializes the data source; what this means in practice is strictly
         implementation-dependent.
         """
         pass
