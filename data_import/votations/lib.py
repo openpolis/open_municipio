@@ -132,4 +132,5 @@ class XMLVotationWriter(BaseVotationWriter, XMLWriter):
     
     So, its output can be imported directly into a running instance of OpenMunicipio.
     """
-    raise NotImplementedError
+    def write(self):
+        raise NotImplementedError

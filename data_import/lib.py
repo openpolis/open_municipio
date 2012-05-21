@@ -87,4 +87,5 @@ class XMLWriter(BaseWriter):
     """
     A writer class which outputs provided data as a XML document. 
     """
-    raise NotImplementedError
+    def write(self):
+        raise NotImplementedError
