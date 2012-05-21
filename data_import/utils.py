@@ -34,6 +34,7 @@ def create_table_schema(table_name, table_schema):
     sql += "(\n"
     for (col_name, col_type) in table_schema.items():
         sql += "  %(col_name)s\t%(col_type)s,\n" % {'col_name': col_name, 'col_type': col_type}
+    # remove last comma (otherwise RBDMS may complain)
+    sql = sql[:-2] + '\n'
     sql += ");\n"
-    
     return  sql     

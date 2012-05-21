@@ -1,7 +1,8 @@
+from data_import.utils import create_table_schema, get_row_dicts
 from data_import.votations.lib import Ballot, Sitting, Vote, BaseVotationReader, VotationDataSource
 from data_import.municipalities.senigallia import conf
 
-import re, os
+import re, os, sqlite3
 
 
 class MdbDataSource(VotationDataSource):
@@ -40,7 +41,71 @@ class MdbDataSource(VotationDataSource):
         Takes a path to a MDB file, ``mdb_fpath`` and creates an equivalent 
         SQLite DB file located at ``sqlite_fpath``.        
         """
-        raise NotImplementedError
+        connection = sqlite3.connect(sqlite_fpath)
+        cursor = connection.cursor()
+        ## Re-create DB schema on target SQLite DBs
+        # tables comprising the DB schema 
+        tables = {}
+        # sitting information
+        tables['CostSed'] = {
+                             'Legis': 'varchar(8)', 
+                             'DataSeduta': 'date', 
+                             'Convocazione': 'int', 
+                             'IdPres': 'int', 
+                             'NextVoto': 'int', 
+                             'TempoParola': 'varchar(10)', 
+                             'Plenum': 'int'
+                             }
+        # ballot subjects
+        tables['Oggetti'] = {
+                             'Sintetico': 'varchar(60)', 
+                             'Esteso':  'varchar(400)',
+                             'IdOgg': 'int', 
+                             'Votato': 'int', 
+                             }
+        # ballots 
+        tables['Votazioni'] = {
+                               'NumVoto': 'int',              
+                               'TipoVoto': 'varchar(2)', 
+                               'Presenti': 'int', 
+                               'Votanti': 'int', 
+                               'Favorevoli': 'int', 
+                               'Contrari': 'int', 
+                               'Astenuti': 'int', 
+                               'Plenum': 'int', 
+                               'NumLegale': 'int', 
+                               'Maggioranza': 'int', 
+                               'TipoMagg': 'int', 
+                               'Esito': 'int', 
+                               'OggettoSint': 'varchar(60)', 
+                               'OggettoEste': 'varchar(400)', 
+                               'IdPres': 'int', 
+                               'Data_Ora': 'date', 
+                               'Tessere': 'int', 
+                               'Convocazione': 'int', 
+                               'PostiFissi': 'char', 
+                               'Term_NR': 'int', 
+                               'Term_ErrT': 'int', 
+                               'Term_ErrL': 'int', 
+                               'Dettaglio': 'text(255)', 
+                               'DatiComp': 'text(255)'                            
+                               } 
+        
+        for (table_name, table_schema) in tables.items():
+            cursor.execute('DROP TABLE IF EXISTS %s;' % table_name)
+            create_query = create_table_schema(table_name, table_schema)
+            cursor.execute(create_query)
+        ## Transcoding from MDBs to SQLite
+        for table_name in tables:
+            ## Export data records from MDBs
+            export_command = "mdb-export -I %(fname)s %(table_name)s | sed -e 's/)$/)\;/'"
+            export_output = os.popen(export_command % {'fname': mdb_fpath, 'table_name': table_name}).read()
+            insert_queries = [line for line in export_output.split('\n') if line.startswith('INSERT')]
+            for insert_query in insert_queries:
+                ## Import data records into SQLite
+                cursor.execute(insert_query)    
+        ## close DB connection    
+        connection.close()       
     
     def _get_sitting_seq_n(self, sitting_id):
         """
