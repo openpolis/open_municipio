@@ -40,7 +40,9 @@ class Sitting(object):
         self.seq_n = seq_n
         # ballots comprising this sitting
         self.ballots = []
-
+    
+    def __repr__(self):
+        return "Sitting #%s of %s" % self.seq_n, self.date
 
 class Ballot(object):
     def __init__(self, sitting, seq_n=None, timestamp=None, ballot_type=None, 
@@ -61,7 +63,9 @@ class Ballot(object):
         self.outcome = outcome
         # votes comprising this ballot
         self.votes = []
-        
+
+        def __repr__(self):
+            return "Ballot #%s of sitting %s" % self.seq_n, self.sitting
 
 class Vote(object):
     def __init__(self, ballot, cardID=None, componentID=None, groupID=None, choice=None):
@@ -72,6 +76,9 @@ class Vote(object):
         self.componentID = componentID
         self.groupID = groupID
         self.choice = choice
+        
+        def __repr__(self):
+            return "Vote of %s in ballot %s" % self.componentID, self.ballot
 
 
 class BaseVotationReader(BaseReader):

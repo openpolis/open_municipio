@@ -190,14 +190,14 @@ class MdbDataSource(VotationDataSource):
             ballot = Ballot(
                 sitting = sitting,
                 seq_n = row_dict['NumVoto'],
-                timestamp = datetime.datetime.strptime(row_dict['Data_Ora '], '%m/%d/%y %H:%M:%S'),
-                ballot_type = BALLOT_TYPES[row_dict['TipoVoto']],
+                timestamp = datetime.datetime.strptime(row_dict['Data_Ora'], '%m/%d/%y %H:%M:%S'),
+                ballot_type = BALLOT_TYPES[int(row_dict['TipoVoto'])],
                 n_presents = row_dict['Presenti'],
                 n_partecipants = row_dict['Votanti'],
                 n_yes = row_dict['Favorevoli'],
                 n_no = row_dict['Contrari'],
                 n_abst = row_dict['Astenuti'],
-                n_legal = row_dict['NumLegale '],
+                n_legal = row_dict['NumLegale'],
                 outcome = OUTCOMES[row_dict['Esito']],
                 )
             ballots.append(ballot)
