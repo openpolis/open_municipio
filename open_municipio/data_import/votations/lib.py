@@ -68,7 +68,7 @@ class Ballot(object):
         return "Ballot #%(ballot_n)s of %(sitting)s" % {'ballot_n': self.seq_n, 'sitting': self.sitting}
 
 class Vote(object):
-    def __init__(self, ballot, cardID=None, componentID=None, groupID=None, choice=None):
+    def __init__(self, ballot, cardID=None, componentID=None, groupID=None, component_name=None, choice=None):
         # parent ballot
         self.ballot = ballot
         # vote instance attributes

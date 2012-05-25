@@ -198,6 +198,8 @@ class SenigalliaVotationDataSource(VotationDataSource):
                     4: 'NO Numero Legale',
                     5: 'Annullata',                                                                
                     }
+        # only this kind of ballots are of interest to us
+        RELEVANT_BALLOT_TYPES = (1, 2, 4)
         ballots = []
         # DB to query against
         db_file_path = os.path.join(conf.SQLITE_ROOT_DIR, sitting._id + '.sqlite')            
@@ -206,21 +208,23 @@ class SenigalliaVotationDataSource(VotationDataSource):
         query = 'SELECT * FROM Votazioni'
         row_dicts = get_row_dicts(cursor, query)
         for row_dict in row_dicts:
-            # TODO: filter out irrelevant ballots
-            ballot = Ballot(
-                sitting = sitting,
-                seq_n = row_dict['NumVoto'],
-                timestamp = datetime.datetime.strptime(row_dict['Data_Ora'], '%m/%d/%y %H:%M:%S'),
-                ballot_type = BALLOT_TYPES[int(row_dict['TipoVoto'])],
-                n_presents = row_dict['Presenti'],
-                n_partecipants = row_dict['Votanti'],
-                n_yes = row_dict['Favorevoli'],
-                n_no = row_dict['Contrari'],
-                n_abst = row_dict['Astenuti'],
-                n_legal = row_dict['NumLegale'],
-                outcome = OUTCOMES[row_dict['Esito']],
-                )
-            ballots.append(ballot)
+            ballot_type_code = int(row_dict['TipoVoto'])
+            # filter out irrelevant ballots
+            if ballot_type_code in RELEVANT_BALLOT_TYPES:
+                ballot = Ballot(
+                    sitting = sitting,
+                    seq_n = row_dict['NumVoto'],
+                    timestamp = datetime.datetime.strptime(row_dict['Data_Ora'], '%m/%d/%y %H:%M:%S'),
+                    ballot_type = BALLOT_TYPES[ballot_type_code],
+                    n_presents = row_dict['Presenti'],
+                    n_partecipants = row_dict['Votanti'],
+                    n_yes = row_dict['Favorevoli'],
+                    n_no = row_dict['Contrari'],
+                    n_abst = row_dict['Astenuti'],
+                    n_legal = row_dict['NumLegale'],
+                    outcome = OUTCOMES[row_dict['Esito']],
+                    )
+                ballots.append(ballot)
         return ballots
                      
     def get_votes(self, ballot):
@@ -231,7 +235,7 @@ class SenigalliaVotationDataSource(VotationDataSource):
                       'VOT': 'Votante (Vot. Segreta)',
                       'NVT': 'Non Votante (4 Tasto)',
                       'PRE': 'Presente(Vot N.L.)',
-                      '...': 'Tessera Presente Non Votante (Se presente un numero di tessera)',
+                      '...': 'Tessera Presente Non Votante',
                       '___': 'Terminale NON INSTALLATO',
                       'ECP': 'Tessera Capovolta',
                       'ETP': 'Errore tipo Tessera',
@@ -242,7 +246,10 @@ class SenigalliaVotationDataSource(VotationDataSource):
                       'BDO': 'Errore BDO',
                       'EAB': 'Errore Tessera non abilitata',
                       'EPO': 'Errore Posto (posti fissi)',
-                      }           
+                      }       
+        # interesting outcomes for votes
+        # filter out error conditions, etc.    
+        RELEVANT_VOTE_CODES = ('FAV', 'CON', 'AST', 'VOT', 'NVT', '...')
         votes = []
         db_file_path = os.path.join(conf.SQLITE_ROOT_DIR, ballot.sitting._id + '.sqlite')
         connection = sqlite3.connect(db_file_path)
@@ -269,7 +276,9 @@ class SenigalliaVotationDataSource(VotationDataSource):
             ## ``XXX``: issued vote
             componentID, groupID, cardID, vote_code = struct.unpack('4s4s3s3s', record)
             ## TODO: filter out irrelevant votes
-            if int(componentID) != 0:
+            if (int(componentID) != 0) and (vote_code in RELEVANT_VOTE_CODES):
+                # card missing from voting terminal
+                if vote_code == '...' and int(cardID) == 0: continue                 
                 vote = Vote(
                             ballot = ballot,
                             cardID = int(cardID), 
