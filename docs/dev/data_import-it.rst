@@ -27,7 +27,7 @@ Assieme allo schema, sono fornite istanze di esempio, in formato XML, che implem
 **OM-XML.xsd**
   è lo schema XML (`visualizza`__)
 
-.. __: ../../../../data_import/schema/OM-XML.xsd
+.. __: ../../../data_import/schema/OM-XML.xsd
 
 **institutions_sample.xml**
   esempio di flusso che definisce la composizione degli organi istituzionale di un Comune (`visualizza`__)

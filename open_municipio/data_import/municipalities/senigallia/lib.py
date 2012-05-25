@@ -1,6 +1,6 @@
-from data_import.utils import create_table_schema, get_row_dicts
-from data_import.votations.lib import Ballot, Sitting, Vote, BaseVotationReader, VotationDataSource
-from data_import.municipalities.senigallia import conf
+from open_municipio.data_import.utils import create_table_schema, get_row_dicts
+from open_municipio.data_import.votations.lib import Ballot, Sitting, Vote, BaseVotationReader, VotationDataSource
+from open_municipio.data_import.municipalities.senigallia import conf
 
 import re, os, sqlite3, datetime, logging, struct
 

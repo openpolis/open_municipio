@@ -1,4 +1,4 @@
-from data_import.municipalities.udine import XMLGenerator
+from open_municipio.data_import.municipalities.udine import XMLGenerator
 
 from optparse import OptionParser
 

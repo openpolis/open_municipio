@@ -1,6 +1,6 @@
 from django.utils import simplejson as json
 
-from data_import.lib import DataSource, BaseReader, BaseWriter, JSONWriter, XMLWriter
+from open_municipio.data_import.lib import DataSource, BaseReader, BaseWriter, JSONWriter, XMLWriter
 
 
 class VotationDataSource(DataSource):

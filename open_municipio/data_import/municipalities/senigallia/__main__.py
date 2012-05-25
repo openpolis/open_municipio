@@ -1,4 +1,4 @@
-from data_import.votations.lib import GenericVotationReader, XMLVotationWriter, JSONVotationWriter
+from open_municipio.data_import.votations.lib import GenericVotationReader, XMLVotationWriter, JSONVotationWriter
 
 
 if __name__ == "__main":

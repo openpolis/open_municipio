@@ -33,7 +33,7 @@ class Command(LabelCommand):
         ),
         make_option('--people_file',
                     dest='people_file',
-                    default='data_import/udine/acts/people.xml',
+                    default='open_municipio/data_import/udine/acts/people.xml',
                     help='The xml file containing the persons'
         ),
         )

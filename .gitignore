@@ -8,10 +8,10 @@ open_municipio/urls_*.py
 apache
 fabfile/
 sitestatic
-data_import/municipalities/*/test_data
-data_import/municipalities/udine/votations/sitting_*
-data_import/municipalities/udine/acts/*
-data_import/municipalities/udine/acts_new
+open_municipio/data_import/municipalities/*/test_data
+open_municipio/data_import/municipalities/udine/votations/sitting_*
+open_municipio/data_import/municipalities/udine/acts/*
+open_municipio/data_import/municipalities/udine/acts_new
 open_municipio/media
 open_municipio/*/migrations
 solr
