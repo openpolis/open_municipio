@@ -91,6 +91,21 @@ class SenigalliaVotationDataSource(VotationDataSource):
                                'Dettaglio': 'text(255)', 
                                'DatiComp': 'text(255)'                            
                                } 
+        # information about components of the City Council
+        tables['Componenti'] = {
+                                'IdComp': 'int', 
+                                'IdGruppo': 'int', 
+                                'Cognome': 'varchar(60)', 
+                                'Nome': 'varchar(60)', 
+                                'Stampato': 'varchar(122)', 
+                                'Tabellone': 'varchar(60)', 
+                                'Ordinato': 'varchar(122)', 
+                                'Tessera': 'int', 
+                                'Posto': 'int', 
+                                'Carica': 'varchar(2)', 
+                                'AbilitaVoto': 'char', 
+                                'Deleted': 'char',
+                                }  
         
         for (table_name, table_schema) in tables.items():
             cursor.execute('DROP TABLE IF EXISTS %s' % table_name)
@@ -99,8 +114,13 @@ class SenigalliaVotationDataSource(VotationDataSource):
         ## Transcoding from MDBs to SQLite
         for table_name in tables:
             ## Export data records from MDBs
-            export_command = "mdb-export -I %(fname)s %(table_name)s"
-            export_output = os.popen(export_command % {'fname': mdb_fpath, 'table_name': table_name}).read()
+            export_command = 'mdb-export -I %(fname)s %(table_name)s'            
+            if table_name == 'Componenti': 
+                # component information are stored within another MDB file  
+                fname = os.path.join(self.mdb_root_dir, conf.MDB_COMPONENT_FNAME)
+            else: 
+                fname = mdb_fpath
+            export_output = os.popen(export_command % {'fname': fname, 'table_name': table_name}).read()
             insert_queries = [line for line in export_output.split('\n') if line.startswith('INSERT')]
             for insert_query in insert_queries:
                 ## Import data records into SQLite
@@ -230,8 +250,7 @@ class SenigalliaVotationDataSource(VotationDataSource):
         ## retrieve individual counselors' votes for the given ballot
         query = 'SELECT Dettaglio FROM Votazioni WHERE NumVoto = ?'
         cursor.execute(query, [ballot.seq_n])
-        results = cursor.fetchall()
-        connection.close()
+        results = cursor.fetchall()        
         # sanity check
         if len(results) != 1:
             logging.error("Corrupted table `Votazioni` for sitting #%s" % ballot.sitting._id)
@@ -249,15 +268,28 @@ class SenigalliaVotationDataSource(VotationDataSource):
             ## ``TTT``: card ID
             ## ``XXX``: issued vote
             componentID, groupID, cardID, vote_code = struct.unpack('4s4s3s3s', record)
-            vote = Vote(
-                        ballot = ballot,
-                        cardID = cardID, 
-                        componentID = componentID, 
-                        groupID = groupID, 
-                        choice = VOTE_OUTCOME[vote_code]
-                        )           
-            # TODO: filter out irrelevant votes               
-            votes.append(vote)
+            ## TODO: filter out irrelevant votes
+            if int(componentID) != 0:
+                vote = Vote(
+                            ballot = ballot,
+                            cardID = int(cardID), 
+                            componentID = int(componentID), 
+                            groupID = int(groupID), 
+                            choice = VOTE_OUTCOME[vote_code]
+                            )
+                # retrieve voter's full name
+                query = 'SELECT Cognome, Nome FROM Componenti WHERE IdComp = ?'            
+                results = get_row_dicts(cursor, query, [vote.componentID])          
+                try:
+                    record = results[0]
+                    vote.component_name = ' '.join((record['Cognome'], record['Nome']))
+                except IndexError:
+                    # this componentID is not mapped to a Council component, 
+                    # so we cannot set the vote's ``component_name`` attribute 
+                    pass                           
+                votes.append(vote)
+            # close the connection to the SQLite DB
+        connection.close()
         return votes
 
 

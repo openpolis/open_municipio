@@ -94,6 +94,8 @@ class BaseVotationReader(BaseReader):
         self.setup()
         # get the data source to read from
         data_source = self.get_data_source()
+        # initialize the data source
+        data_source.setup()
         self.sittings = []
         # construct the DOM tree
         for sitting in data_source.get_sittings():

@@ -40,14 +40,14 @@ class BaseReader(object):
     
     def get_data_source(self):
         """
-        Return the data source to read from. 
+        Returns the data source to read from. 
         
         This base implementation returns the ``data_source`` instance attribute, if set;
         otherwise, raises an ``ImproperlyConfigured`` exception. 
         """   
-        if self.data_source:
+        try:
             return self.data_source
-        else:
+        except AttributeError:
             raise ImproperlyConfigured("You must provide a data source")  
      
     def read(self):
