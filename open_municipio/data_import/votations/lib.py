@@ -42,7 +42,7 @@ class Sitting(object):
         self.ballots = []
     
     def __repr__(self):
-        return "Sitting #%s of %s" % self.seq_n, self.date
+        return "Sitting #%(sitting_n)s of %(sitting_date)s" % {'sitting_n': self.seq_n, 'sitting_date': self.date}
 
 class Ballot(object):
     def __init__(self, sitting, seq_n=None, timestamp=None, ballot_type=None, 
@@ -64,8 +64,8 @@ class Ballot(object):
         # votes comprising this ballot
         self.votes = []
 
-        def __repr__(self):
-            return "Ballot #%s of sitting %s" % self.seq_n, self.sitting
+    def __repr__(self):
+        return "Ballot #%(ballot_n)s of %(sitting)s" % {'ballot_n': self.seq_n, 'sitting': self.sitting}
 
 class Vote(object):
     def __init__(self, ballot, cardID=None, componentID=None, groupID=None, choice=None):
@@ -77,8 +77,8 @@ class Vote(object):
         self.groupID = groupID
         self.choice = choice
         
-        def __repr__(self):
-            return "Vote of %s in ballot %s" % self.componentID, self.ballot
+    def __repr__(self):
+        return "Vote of %(component_ID)s in %(ballot)s" % {'component_ID': self.componentID, 'ballot': self.ballot} 
 
 
 class BaseVotationReader(BaseReader):
@@ -94,12 +94,13 @@ class BaseVotationReader(BaseReader):
         self.setup()
         # get the data source to read from
         data_source = self.get_data_source()
+        self.sittings = []
         # construct the DOM tree
         for sitting in data_source.get_sittings():
             sitting.ballots = data_source.get_ballots(sitting)
             for ballot in sitting.ballots:
                 ballot.votes = data_source.get_votes(ballot)
-        
+            self.sittings.append(sitting)
         # as now, ``self.sittings`` should be a object tree 
         # providing a comprehensive representation of all relevant data
         # that can be extracted from the data source
