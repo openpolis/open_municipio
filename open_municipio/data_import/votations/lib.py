@@ -5,6 +5,7 @@ from open_municipio.data_import.lib import DataSource, BaseReader, BaseWriter, J
 from open_municipio.data_import.om_xml import *
 
 from lxml import etree, objectify
+
  
 class VotationDataSource(DataSource):
     """
@@ -144,39 +145,57 @@ class XMLVotationWriter(BaseVotationWriter, XMLWriter):
     
     So, its output can be imported directly into a running instance of OpenMunicipio.
     """
-                
+    def set_element_attrs(self, el, attrs):
+        """
+        Take a tree ``Element`` and a dictionary; set element attributes according
+        to that dictionary.
+        
+        Since attributes names/value MUST be strings, dictionary keys/values are passed 
+        through the ``str()`` function.        
+        """
+        for attname in attrs: 
+            el.set(str(attname), str(attrs[attname]))
+                        
     def write(self):
         ## build XML element tree
         root = SITTINGS()
-        root.set(XSI+'schemaLocation', OMXML_SCHEMA_LOCATION)
+        root.set(XSI + 'schemaLocation', OMXML_SCHEMA_LOCATION)
         for sitting in self.sittings[:-1]:
-            root.append(SITTING(
-                                call=str(sitting.call), 
-                                date=str(sitting.date), 
-                                num=str(sitting.seq_n))
-                                )
+            sitting_el = SITTING()
+            attrs = dict(call=str(sitting.call),
+                                     date=str(sitting.date),
+                                     num=str(sitting.seq_n))
+            self.set_element_attrs(sitting_el, attrs)
+            root.append(sitting_el) 
             for ballot in sitting.ballots[:3]:
-                root.Sitting[-1].append(VOTATION(
-                                                 seq_n=ballot.seq_n,
-                                                 votation_type=ballot.type_,
-                                                 presents=ballot.n_presents,
-                                                 partecipants=ballot.n_partecipants,
-                                                 outcome=ballot.outcome,
-                                                 legal_number=ballot.n_legal,
-                                                 date_time=ballot.time,
-                                                 counter_yes=ballot.n_yes,
-                                                 counter_no=ballot.n_no,
-                                                 counter_abs=ballot.n_abst,                                                                                                    
-                                                 SUBJECT(sintetic='', ''), 
-                                                 VOTES()))
+                ballot_el = VOTATION(SUBJECT('', sintetic=''), VOTES())
+                atts = dict(seq_n=str(ballot.seq_n),
+                                    votation_type=ballot.type_,
+                                    presents=str(ballot.n_presents),
+                                    partecipants=str(ballot.n_partecipants),
+                                    outcome=str(ballot.outcome),
+                                    legal_number=str(ballot.n_legal),
+                                    date_time=str(ballot.time),
+                                    counter_yes=str(ballot.n_yes),
+                                    counter_no=str(ballot.n_no),
+                                    counter_abs=str(ballot.n_abst))
+                self.set_element_attrs(ballot_el, attrs) 
+                sitting_el.append(ballot_el)
                 for vote in ballot.votes[:3]:
-                    root.Sitting[-1].Votation[-1].Votes.append(CHARGEVOTE(
-                                                                          cardID=vote.cardID,
-                                                                          componentID=vote.componentID,
-                                                                          groupID=vote.groupID,
-                                                                          vote=vote.choice,
-                                                                          CHARGEXREF().set(XLINK+'href', '').set(XLINK+'type', 'simple')                                                                                 
-                                                                                     ))
+                    vote_el = CHARGEVOTE()
+                    attrs = dict(cardID=vote.cardID,
+                                          componentID=vote.componentID,
+                                          groupID=vote.groupID,
+                                          vote=vote.choice)
+                    self.set_element_attrs(vote_el, attrs)
+                    ballot_el.append(vote_el)
+                    chargexref_el = CHARGEXREF()
+                    attrs = {
+                             XLINK + 'href': vote.componentID,
+                             XLINK + 'type': 'simple',
+                            }
+                    self.set_element_attrs(chargexref_el, attrs)
+                    vote_el.append(chargexref_el)
         ## serialize generated element tree to a string
         out_xml =  etree.tostring(root, pretty_print=True)
         return out_xml   
