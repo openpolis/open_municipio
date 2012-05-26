@@ -1,5 +1,5 @@
 from open_municipio.data_import.utils import create_table_schema, get_row_dicts
-from open_municipio.data_import.votations.lib import Ballot, Sitting, Vote, BaseVotationReader, VotationDataSource
+from open_municipio.data_import.votations.lib import Ballot, Sitting, Vote, BaseVotationReader, VotationDataSource, XMLVotationWriter
 from open_municipio.data_import.municipalities.senigallia import conf
 
 import re, os, sqlite3, datetime, logging, struct
@@ -216,6 +216,8 @@ class SenigalliaVotationDataSource(VotationDataSource):
                     seq_n = row_dict['NumVoto'],
                     timestamp = datetime.datetime.strptime(row_dict['Data_Ora'], '%m/%d/%y %H:%M:%S'),
                     ballot_type = BALLOT_TYPES[ballot_type_code],
+                    short_subj = row_dict['OggettoSint'],
+                    subj = row_dict['OggettoEste'],
                     n_presents = row_dict['Presenti'],
                     n_partecipants = row_dict['Votanti'],
                     n_yes = row_dict['Favorevoli'],
@@ -311,3 +313,8 @@ class SenigalliaVotationReader(BaseVotationReader):
         In this case, the data source is a filesystem directory containing MDB files
         """
         return SenigalliaVotationDataSource(conf.MDB_ROOT_DIR)
+
+
+class SenigalliaVotationWriter(XMLVotationWriter):
+    def get_out_fname(self, sitting):
+        return os.path.join(conf.XML_ROOT_DIR, 'sitting_%s.xml' % sitting.date)

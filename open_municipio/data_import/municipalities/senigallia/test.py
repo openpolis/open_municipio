@@ -1,5 +1,4 @@
-from open_municipio.data_import.votations.lib import XMLVotationWriter
-from open_municipio.data_import.municipalities.senigallia.lib import SenigalliaVotationReader
+from open_municipio.data_import.municipalities.senigallia.lib import SenigalliaVotationReader, SenigalliaVotationWriter
 
 
 def run():
@@ -9,7 +8,7 @@ def run():
     # the data provided by the data source
     sittings = reader.read()
     # instantiate a writer to output that internal representation in a suitable format    
-    writer = XMLVotationWriter(sittings) 
-    # generate an XML document
-    out_xml = writer.write()
-    print(out_xml)
+    writer = SenigalliaVotationWriter(sittings)
+    # write XML files (one per sitting) 
+    writer.write()
+

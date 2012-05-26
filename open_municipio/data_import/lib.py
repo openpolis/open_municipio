@@ -87,5 +87,16 @@ class XMLWriter(BaseWriter):
     """
     A writer class which outputs provided data as an XML document. 
     """
+    def _set_element_attrs(self, el, attrs):
+        """
+        Take a tree ``Element`` and a dictionary; set element attributes according
+        to that dictionary.
+        
+        Since attributes names/value MUST be strings, dictionary keys/values are passed 
+        through the ``str()`` function.        
+        """
+        for attname in attrs: 
+            el.set(str(attname), str(attrs[attname]))
+
     def write(self):
         raise NotImplementedError

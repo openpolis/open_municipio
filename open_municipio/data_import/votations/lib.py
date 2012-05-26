@@ -4,7 +4,7 @@ from open_municipio.data_import.lib import DataSource, BaseReader, BaseWriter, J
 # import OM-XML language tags
 from open_municipio.data_import.om_xml import *
 
-from lxml import etree, objectify
+from lxml import etree
 
  
 class VotationDataSource(DataSource):
@@ -48,7 +48,7 @@ class Sitting(object):
         return "Sitting #%(sitting_n)s of %(sitting_date)s" % {'sitting_n': self.seq_n, 'sitting_date': self.date}
 
 class Ballot(object):
-    def __init__(self, sitting, seq_n=None, timestamp=None, ballot_type=None, 
+    def __init__(self, sitting, seq_n=None, timestamp=None, ballot_type=None, short_subj=None, subj=None,
                  n_presents=None, n_partecipants=None, n_yes=None, n_no=None, n_abst=None, 
                  n_legal=None, outcome=None):
         # parent sitting
@@ -57,6 +57,8 @@ class Ballot(object):
         self.seq_n = seq_n 
         self.time = timestamp
         self.type_ = ballot_type
+        self.short_subj = short_subj
+        self.subj = subj
         self.n_presents = n_presents
         self.n_partecipants = n_partecipants
         self.n_yes = n_yes
@@ -144,58 +146,64 @@ class XMLVotationWriter(BaseVotationWriter, XMLWriter):
     according to the OM-XML schema specs.
     
     So, its output can be imported directly into a running instance of OpenMunicipio.
-    """
-    def set_element_attrs(self, el, attrs):
-        """
-        Take a tree ``Element`` and a dictionary; set element attributes according
-        to that dictionary.
-        
-        Since attributes names/value MUST be strings, dictionary keys/values are passed 
-        through the ``str()`` function.        
-        """
-        for attname in attrs: 
-            el.set(str(attname), str(attrs[attname]))
-                        
+    """                        
     def write(self):
+        for sitting in self.sittings:
+            out_fname = self.get_out_fname(sitting)
+            tree = self.write_sitting(sitting)
+            tree.write(out_fname, 
+                       pretty_print=True, 
+                       xml_declaration=True, 
+                       encoding='UTF-8')
+            
+    def write_sitting(self, sitting):
+        """
+        Returns the XML representation (as a ``ElementTree`` object) of a given City Council sitting.
+        """   
         ## build XML element tree
         root = SITTINGS()
         root.set(XSI + 'schemaLocation', OMXML_SCHEMA_LOCATION)
-        for sitting in self.sittings[:-1]:
-            sitting_el = SITTING()
-            attrs = dict(call=str(sitting.call),
-                                     date=str(sitting.date),
-                                     num=str(sitting.seq_n))
-            self.set_element_attrs(sitting_el, attrs)
-            root.append(sitting_el) 
-            for ballot in sitting.ballots[:3]:
-                ballot_el = VOTATION(SUBJECT('', sintetic=''), VOTES())
-                atts = dict(seq_n=str(ballot.seq_n),
-                                    votation_type=ballot.type_,
-                                    presents=str(ballot.n_presents),
-                                    partecipants=str(ballot.n_partecipants),
-                                    outcome=str(ballot.outcome),
-                                    legal_number=str(ballot.n_legal),
-                                    date_time=str(ballot.time),
-                                    counter_yes=str(ballot.n_yes),
-                                    counter_no=str(ballot.n_no),
-                                    counter_abs=str(ballot.n_abst))
-                self.set_element_attrs(ballot_el, attrs) 
-                sitting_el.append(ballot_el)
-                for vote in ballot.votes[:3]:
-                    vote_el = CHARGEVOTE()
-                    attrs = dict(cardID=vote.cardID,
-                                          componentID=vote.componentID,
-                                          groupID=vote.groupID,
-                                          vote=vote.choice)
-                    self.set_element_attrs(vote_el, attrs)
-                    ballot_el.append(vote_el)
-                    chargexref_el = CHARGEXREF()
-                    attrs = {
-                             XLINK + 'href': vote.componentID,
-                             XLINK + 'type': 'simple',
-                            }
-                    self.set_element_attrs(chargexref_el, attrs)
-                    vote_el.append(chargexref_el)
-        ## serialize generated element tree to a string
-        out_xml =  etree.tostring(root, pretty_print=True)
-        return out_xml   
+    
+        sitting_el = SITTING()
+        attrs = dict(call=sitting.call,
+                     date=sitting.date,
+                     num=sitting.seq_n)
+        self._set_element_attrs(sitting_el, attrs)
+        root.append(sitting_el) 
+        for ballot in sitting.ballots:
+            ballot_el = VOTATION(SUBJECT(ballot.subj, sintetic=ballot.short_subj), VOTES())
+            attrs = dict(seq_n=ballot.seq_n,
+                         votation_type=ballot.type_,
+                         presents=ballot.n_presents,
+                         partecipants=ballot.n_partecipants,
+                         outcome=ballot.outcome,
+                         legal_number=ballot.n_legal,
+                         date_time=ballot.time,
+                         counter_yes=ballot.n_yes,
+                         counter_no=ballot.n_no,
+                         counter_abs=ballot.n_abst,)
+            self._set_element_attrs(ballot_el, attrs) 
+            sitting_el.append(ballot_el)
+            for vote in ballot.votes:
+                vote_el = CHARGEVOTE()
+                attrs = dict(cardID=vote.cardID,
+                                    componentID=vote.componentID,
+                                    groupID=vote.groupID,
+                                    vote=vote.choice)
+                self._set_element_attrs(vote_el, attrs)
+                ballot_el.append(vote_el)
+                chargexref_el = CHARGEXREF()
+                attrs = {
+                         XLINK + 'href': vote.componentID,
+                         XLINK + 'type': 'simple',
+                        }
+                self._set_element_attrs(chargexref_el, attrs)
+                vote_el.append(chargexref_el)
+        return etree.ElementTree(root)
+    
+    def get_out_fname(self, sitting):
+        """
+        Returns the absolute filesystem path where to store the XML document 
+        containing data related to a given sitting of the City Council.
+        """
+        raise NotImplementedError

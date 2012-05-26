@@ -13,3 +13,5 @@ SQLITE_ROOT_DIR = os.path.join(settings.PROJECT_ROOT, 'data_import/municipalitie
 MDB_SITTING_FNAME_PATTERN = r'SeniS(?P<sitting_id>\d{4})\.Mdb'
 # name of the MDB file containing data about people taking part to City Council's sittings 
 MDB_COMPONENT_FNAME = 'SeniC%(current_legislature)s.Mdb' % {'current_legislature': MUNICIPALITY_CURRENT_LEGISLATURE}
+# where XML files are located on the filesystem
+XML_ROOT_DIR = os.path.join(settings.PROJECT_ROOT, 'data_import/municipalities/senigallia/test_data/xml')
