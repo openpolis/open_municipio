@@ -1,8 +1,11 @@
 from django.utils import simplejson as json
 
 from open_municipio.data_import.lib import DataSource, BaseReader, BaseWriter, JSONWriter, XMLWriter
+# import OM-XML language tags
+from open_municipio.data_import.om_xml import *
 
-
+from lxml import etree, objectify
+ 
 class VotationDataSource(DataSource):
     """
     A data source containing votation-related data.
@@ -27,7 +30,6 @@ class VotationDataSource(DataSource):
         (as ``Vote`` instances).
         """
         raise NotImplementedError
-
 
 
 ## classes of "DOM" elements
@@ -137,10 +139,44 @@ class JSONVotationWriter(BaseVotationWriter, JSONWriter):
 
 class XMLVotationWriter(BaseVotationWriter, XMLWriter):
     """
-    A writer class which outputs votations data as a XML document, 
+    A writer class which outputs votations data as an XML document, 
     according to the OM-XML schema specs.
     
     So, its output can be imported directly into a running instance of OpenMunicipio.
     """
+                
     def write(self):
-        raise NotImplementedError
+        ## build XML element tree
+        root = SITTINGS()
+        root.set(XSI+'schemaLocation', OMXML_SCHEMA_LOCATION)
+        for sitting in self.sittings[:-1]:
+            root.append(SITTING(
+                                call=str(sitting.call), 
+                                date=str(sitting.date), 
+                                num=str(sitting.seq_n))
+                                )
+            for ballot in sitting.ballots[:3]:
+                root.Sitting[-1].append(VOTATION(
+                                                 seq_n=ballot.seq_n,
+                                                 votation_type=ballot.type_,
+                                                 presents=ballot.n_presents,
+                                                 partecipants=ballot.n_partecipants,
+                                                 outcome=ballot.outcome,
+                                                 legal_number=ballot.n_legal,
+                                                 date_time=ballot.time,
+                                                 counter_yes=ballot.n_yes,
+                                                 counter_no=ballot.n_no,
+                                                 counter_abs=ballot.n_abst,                                                                                                    
+                                                 SUBJECT(sintetic='', ''), 
+                                                 VOTES()))
+                for vote in ballot.votes[:3]:
+                    root.Sitting[-1].Votation[-1].Votes.append(CHARGEVOTE(
+                                                                          cardID=vote.cardID,
+                                                                          componentID=vote.componentID,
+                                                                          groupID=vote.groupID,
+                                                                          vote=vote.choice,
+                                                                          CHARGEXREF().set(XLINK+'href', '').set(XLINK+'type', 'simple')                                                                                 
+                                                                                     ))
+        ## serialize generated element tree to a string
+        out_xml =  etree.tostring(root, pretty_print=True)
+        return out_xml   

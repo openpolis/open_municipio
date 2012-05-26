@@ -85,7 +85,7 @@ class JSONWriter(BaseWriter):
 
 class XMLWriter(BaseWriter):
     """
-    A writer class which outputs provided data as a XML document. 
+    A writer class which outputs provided data as an XML document. 
     """
     def write(self):
         raise NotImplementedError
