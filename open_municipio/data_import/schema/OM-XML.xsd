@@ -27,31 +27,6 @@
 		</xs:complexType>
 	</xs:element>
 
-	<xs:complexType name="actBallot">
-		<xs:sequence>
-			<xs:element maxOccurs="1" minOccurs="1" ref="Votes"/>
-		</xs:sequence>
-		<xs:attribute name="record_id" use="optional" type="xs:string"/>
-		<xs:attribute name="sitting_id" use="required" type="xs:string"/>
-		<!-- record_number records the number of the 'verbale' -->
-		<xs:attribute name="date" type="xs:dateTime"/>
-		<xs:attribute name="site" use="required" type="siteType"/>
-		<xs:attribute name="presents" type="xs:nonNegativeInteger"/>
-		<xs:attribute name="partecipants" type="xs:nonNegativeInteger"/>
-		<xs:attribute name="legal_number" type="xs:positiveInteger"/>
-		<xs:attribute name="counter_yes" type="xs:nonNegativeInteger"/>
-		<xs:attribute name="counter_no" type="xs:nonNegativeInteger"/>
-		<xs:attribute name="counter_abs" type="xs:nonNegativeInteger"/>
-		<xs:attribute name="outcome">
-			<xs:simpleType>
-				<xs:restriction base="xs:token">
-					<xs:enumeration value="approved"/>
-					<xs:enumeration value="rejected"/>
-				</xs:restriction>
-			</xs:simpleType>
-		</xs:attribute>
-	</xs:complexType>
-
 	<xs:simpleType name="siteType">
 		<xs:restriction base="xs:token">
 			<xs:enumeration value="commission"/>
@@ -435,8 +410,6 @@
 		</xs:complexType>
 	</xs:element>
 
-	<xs:element name="AgendaBallot" type="actBallot"/>
-
 	<xs:element name="Motion">
 		<xs:complexType>
 			<xs:complexContent>
@@ -452,7 +425,6 @@
 		</xs:complexType>
 	</xs:element>
 
-	<xs:element name="MotionBallot" type="actBallot"/>
 
 	<xs:element name="MotionTransition">
 		<xs:complexType>
@@ -481,7 +453,6 @@
 				<xs:extension base="councilActType">
 					<xs:sequence>
 						<xs:element ref="ReferredDeliberationArticle" minOccurs="1" maxOccurs="1"/>
-						<xs:element ref="EmendationBallot" minOccurs="0" maxOccurs="1"/>
 					</xs:sequence>
 					<xs:attribute name="act" type="xs:string" use="required"/>
 					<xs:attribute name="section" type="xs:string" use="required"/>
@@ -492,8 +463,6 @@
 	</xs:element>
 
 	<xs:element name="ReferredDeliberationArticle" type="contentType"/>
-
-	<xs:element name="EmendationBallot" type="actBallot"/>
 
 	<xs:element name="TransitionStep">
 		<xs:complexType>
@@ -612,7 +581,6 @@
 				<xs:extension base="councilActType">
 					<xs:sequence>
 						<xs:element ref="OfficeOpinion" minOccurs="0" maxOccurs="1"/>
-						<xs:element minOccurs="0" name="CouncilBallot" type="actBallot"/>
 						<xs:element ref="Attachment" minOccurs="0" maxOccurs="unbounded"/>
 						<xs:element ref="CouncilDeliberationTransition" minOccurs="0"
 							maxOccurs="unbounded"/>
@@ -714,7 +682,6 @@
 							maxOccurs="unbounded"/>
 						<!-- Institution keeps track of present people -->
 						<xs:element ref="Institution" minOccurs="1" maxOccurs="unbounded"/>
-						<xs:element ref="DeliberationBallot" minOccurs="0" maxOccurs="1"/>
 						<xs:element ref="Attachment" minOccurs="0" maxOccurs="unbounded"/>
 					</xs:sequence>
 					<xs:attribute name="date_deliberation" use="optional" type="xs:date"/>
@@ -723,8 +690,6 @@
 			</xs:complexContent>
 		</xs:complexType>
 	</xs:element>
-
-	<xs:element name="DeliberationBallot" type="actBallot"/>
 
 	<xs:element name="CityGovernmentDeliberationTransition">
 		<xs:complexType>
@@ -787,7 +752,6 @@
 					<xs:sequence>
 						<!-- Charge records the persons present at the current sitting -->
 						<xs:element ref="PresentingOffice" minOccurs="1" maxOccurs="unbounded"/>
-						<xs:element ref="DecisionBallot" minOccurs="0" maxOccurs="unbounded"/>
 						<xs:element ref="DecisionTransition" minOccurs="0" maxOccurs="unbounded"/>
 						<xs:element ref="Attachment" minOccurs="0" maxOccurs="unbounded"/>
 					</xs:sequence>
@@ -797,8 +761,6 @@
 	</xs:element>
 
 	<xs:element name="PresentingOffice" type="bodyType"/>
-
-	<xs:element name="DecisionBallot" type="actBallot"/>
 
 	<xs:element name="DecisionTransition">
 		<xs:complexType>
