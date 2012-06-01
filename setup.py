@@ -11,7 +11,7 @@ VERSION_FILE_PATH = os.path.join(PROJECT_ROOT, 'VERSION')
 
 setup(
     name = 'OpenMunicipio',
-    version = open(VERSION_FILE_PATH).read().strip()
+    version = open(VERSION_FILE_PATH).read().strip(),
     description = """
                   A web platform for increasing transparency in italian municipalities.
                   """, 
@@ -26,5 +26,5 @@ setup(
                    'License :: OSI Approved :: GNU Affero General Public License v3',
                    'Operating System :: OS Independent',
                    'Programming Language :: Python',
-                   'Programming Language :: Javascript',
+                   'Programming Language :: Javascript',]
 )
