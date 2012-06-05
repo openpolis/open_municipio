@@ -1,9 +1,10 @@
 {% extends 'base_two_columns.html' %}
 {% load highlight %}
 {% load om_utils %}
+{% load i18n %}
 
-{% block title %}| Elenco votazioni {% endblock title %}
-{% block content_header %}Elenco votazioni{% endblock %}
+{% block title %}Elenco votazioni {% endblock title %}
+{% block content_header %}Votazioni{% endblock %}
 {% block votations_class %}active{% endblock %}
 
 {% block extra_style %}
@@ -15,12 +16,12 @@
 {% block content %}
 
     {% if selected_facets %}
-      <ul class="breadcrumb">
+        <ul class="breadcrumb" xmlns="http://www.w3.org/1999/html">
         {% for facet in selected_facets  %}
           <li>
             <a href="{{ facet.url }}"><i class="icon-remove"></i></a>
-            <span style="color:gray;">{{ facet.field }}</span>:
-            {{ facet.label }}
+            <span style="color:gray;">{% trans facet.field %}</span>:
+            {{ facet.r_label }}
           </li>
           {% if not forloop.last %}
             <span class="divider">/</span>
@@ -29,7 +30,7 @@
       </ul>
     {% else %}
       <p>Puoi trovare la votazione che ti interessa scorrendo la lista delle ultime pubblicate, qui sotto.
-        Puoi perfezionare la ricerca usando i filtri nella colonna qui a destra. Oppure puoi usare il form di
+        Puoi perfezionare la ricerca usando i filtri nella colonna qui a destra, oppure puoi usare il form di
         ricerca con una parola che pensi sia contenuta nella votazione o nell'atto che la riguarda,
         in cima alla colonna qui a destra</p>
     {% endif %}
@@ -43,20 +44,28 @@
 
 
       <h3>{% if not query %}Tutte le {% endif %} {{ n_results }} votazioni</h3>
+      {% if act_votations %}
+        per la {{ act.get_type_name }} <a href="{{ act.get_absolute_url }}">{{ act }}</a>
+      {% endif %}
+
       <table class="search-results">
         <tbody>
         {% for result in page.object_list %}
         <tr>
           <td>{{ result.votation_date|circled:"full" }}</td>
           <td>
-            <a href="{{ result.url }}">Votazione n.{{ result.votation_num }}</a>
-            della seduta n.{{ result.votation_sitting_num }}
-            del {{ result.votation_date}}<br/>
-            <a href="{{ result.act_url }}">{{ result.title }}</a><br/>
+            <h4>
+              <a href="{{ result.url }}">Votazione n.{{ result.votation_num }}</a>
+              della seduta n.{{ result.votation_sitting_num }}
+              del {{ result.votation_date}}
+            </h4>
+              {% if not act_votations %}
+                  <strong>{{ result.act_type }}</strong><br/>
+                  <a href="{{ result.act_url }}">{{ result.title }}</a><br/>
+              {% endif %}
             {% if result.highlighted.text %}
               {{ result.highlighted.text.0|safe }}<br/>
             {% endif %}
-            <strong>{{ result.act_type }}</strong><br/>
             Presenti: {{ result.votation_n_presents }},
             Maggioranza: {{ result.votation_n_maj }},
             Favorevoli: {{ result.votation_n_yes }},
@@ -144,25 +153,25 @@
             </dl>
             <dl>
                 {% if not facet_queries_date.is_selected %}
-                    <dt>Data della seduta</dt>
+                    <dt>{% trans 'Sitting date' %}</dt>
                     {% if facet_queries_date.threedays.count %}
                         <dd>
                             <a href="{{ base_url }}&selected_facets={{ facet_queries_date.threedays.key }}">
-                                ultimi tre giorni
+                                {% trans 'last three days' %}
                             </a> ({{ facet_queries_date.threedays.count }})
                         </dd>
                     {% endif %}
                     {% if facet_queries_date.onemonth.count %}
                         <dd>
                             <a href="{{ base_url }}&selected_facets={{ facet_queries_date.onemonth.key }}">
-                                ultimo mese
+                                {% trans 'last month' %}
                             </a> ({{ facet_queries_date.onemonth.count }})
                         </dd>
                     {% endif %}
                     {% if facet_queries_date.oneyear.count %}
                         <dd>
                             <a href="{{ base_url }}&selected_facets={{ facet_queries_date.oneyear.key }}">
-                                ultimo anno
+                                {% trans 'last year' %}
                             </a> ({{ facet_queries_date.oneyear.count }})
                         </dd>
                     {% endif %}

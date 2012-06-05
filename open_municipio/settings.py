@@ -133,6 +133,7 @@ INSTALLED_APPS = (
     'open_municipio.web_services',
     'open_municipio.newscache',
     'haystack',
+    'sorl.thumbnail',
 )
 
 COMMENTS_APP = 'open_municipio.om_comments'
@@ -162,6 +163,7 @@ OM_BOOKMARKING_EMPTY_STAR_CLASS = 'icon-star-empty'
 SITE_INFO = {
     'main_city': u'City',
     'site_version': u'Beta',
+    'main_city_logo': 'img/city-logo/city-logo.png'
 }
 
 ## settings for the ``open_municipio.om_comments`` app

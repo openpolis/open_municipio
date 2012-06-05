@@ -32,7 +32,7 @@ $(document).ready(function() {
       $.post('/bookmark/' + app_label + '/' + model_name + '/' + obj_pk + '/toggle/', 
         function(data){
           if (data.success == true) {
-              $that.toggleClass("icon-star icon-star-empty");
+              $that.find('i').toggleClass("icon-star icon-star-empty").attr('title', data.message);
           } else {
 		      alert('ERROR: ' + data.error_message);
 	        }

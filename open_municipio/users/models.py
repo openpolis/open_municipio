@@ -1,6 +1,7 @@
 from django.contrib.contenttypes import generic
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
+from django.db.models import permalink
 from django.db.models.signals import post_save
 from django.dispatch.dispatcher import receiver
 from django.utils.translation import ugettext_lazy as _
@@ -76,7 +77,7 @@ class UserProfile(models.Model):
     def __unicode__(self):
         return self.public_name
 
-    @models.permalink
+    @permalink
     def get_absolute_url(self):
         return 'profiles_profile_detail', (), { 'username': self.user.username }
 

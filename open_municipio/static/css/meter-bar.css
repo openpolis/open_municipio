@@ -9,8 +9,8 @@
 .meter-bar:hover .meter-average { height: 40px; width: 150px;}
 .meter-bar:hover .meter-average label { display: block; }
 
-.green-meter-bar { background-color: #d9ebd7; margin-bottom: 7px; margin-right: 100px; }
-.red-meter-bar { background-color: #efdad8;  margin-bottom: 7px; margin-right: 100px; }
+.green-meter-bar { background-color: #e5e6dd; margin-bottom: 7px; margin-right: 100px; }
+.red-meter-bar { background-color: #f1dfd9;  margin-bottom: 7px; margin-right: 100px; }
 .blue-meter-bar { background-color: #ddeaea;  margin-bottom: 7px; margin-right: 100px; }
 .violet-meter-bar { background-color: #f3cff0;  margin-bottom: 7px; margin-right: 100px; }
 .violet-meter-bar-short { background-color: #f3cff0;  margin-bottom: 7px; margin-right: 200px; }
@@ -20,8 +20,8 @@
 .meter-label-long { position: absolute; z-index: 15; padding: 2px; right: 0; width: 200px; text-align: left; }
 .meter-label strong { font-size: 120%; }
 
-.green-meter-bar .meter-bar { background-color: #39aa2d; padding: 3px;}
-.red-meter-bar .meter-bar { background-color: #bd3a2e; padding: 3px; }
+.green-meter-bar .meter-bar { background-color: #a7ad8e; padding: 3px;}
+.red-meter-bar .meter-bar { background-color: #d29581; padding: 3px; }
 
 .meter-bar .green-meter-bar,
 .meter-bar .red-meter-bar,
@@ -35,8 +35,8 @@
 
 .meter-bar label { display: block; float: left; font-size: 14px; color: #555; }
 
-.green-meter-bar .meter-value { background-color: #43ca34; }
-.red-meter-bar .meter-value { background-color: #d54235; }
+.green-meter-bar .meter-value { background-color: #a7ad8e; }
+.red-meter-bar .meter-value { background-color: #d29581; }
 .blue-meter-bar .meter-value { background-color: #67abab; }
 .violet-meter-bar .meter-value { background-color: #ce35c4; }
 .violet-meter-bar-short .meter-value { background-color: #ce35c4; }

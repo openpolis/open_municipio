@@ -1,127 +1,72 @@
 {% extends 'base_two_columns.html' %}
 
-{% block content_header %}Organi politici{% endblock %}
+{% block title %}Organi politici | Giunta{% endblock title %}
+{% block content_header %}Giunta{% endblock %}
+{% block institutions_class %}active{% endblock %}
+
+{% load list_partition %}
+{% load om_utils %}
+{% load monitoring_tags %}
 
 {% block content %}
 
-    <section class="clearfix border-bottom">
-        <h1>Giunta</h1>
-        <ul class="people-list list-floated">
-            <!-- mayor -->
-            <li>
-                <a href="{{ mayor.get_absolute_url }}"><img src="http://placehold.it/50" /></a>
-                <strong><a href="{{ mayor.get_absolute_url }}"><i class="icon-ok"></i> {{ mayor.person.first_name|lower|capfirst }} {{ mayor.person.last_name|lower|capfirst }}</a></strong> <br />
-                {{ mayor.denomination }}<br/>
-                <span class="monitoring">
-                    {% if not mayor.person.monitoring_users %}Non monitorato{% else %}Monitorato da {{ mayor.person.monitoring_users|length }} cittadin{{ member.person.monitoring_users_count|pluralize:"o,i" }}{% endif %} - <a href="#"><i class="socialicon-add"></i> Monitora</a>
-                </span>
-            </li>
-            <!-- first deputy -->
-            {% if firstdeputy %}
-                <li>
-                    <a href="{{ firstdeputy.get_absolute_url }}"><img src="http://placehold.it/50" /></a>
-                    <strong><a href="{{ firstdeputy.get_absolute_url }}"><i class="icon-ok"></i> {{ firstdeputy.person.first_name|lower|capfirst }} {{ firstdeputy.person.last_name|lower|capfirst }}</a></strong> <br />
-                    {{ firstdeputy.denomination }}<br/>
-                    <span class="monitoring">
-                        {% if not firstdeputy.person.monitoring_users %}Non monitorato{% else %}Monitorato da {{ firstdeputy.person.monitoring_users|length }} cittadin{{ member.person.monitoring_users_count|pluralize:"o,i" }}{% endif %} - <a href="#"><i class="socialicon-add"></i> Monitora</a>
-                    </span>
-                </li>
-            {% endif %}
+  <h1>Giunta</h1>
 
-            {% for member in citygov.members %}
-            <li>
-                <a href="{{ member.get_absolute_url }}"><img src="{{ STATIC_URL }}img/placehold/50.gif" /></a>
-                <strong><a href="{{ member.get_absolute_url }}"><i class="icon-ok"></i> {{ member.person.first_name|lower|capfirst }} {{ member.person.last_name|lower|capfirst }}</a></strong> <br />
-                {{ member.denomination }}<br/>
-                <span class="monitoring">
-                    {% if not member.person.monitoring_users %}Non monitorato{% else %}Monitorato da {{ member.person.monitoring_users|length }} cittadin{{ member.person.monitoring_users_count|pluralize:"o,i" }}{% endif %} - <a href="#"><i class="socialicon-add"></i> Monitora</a>
-                </span>
-            </li>
-            {% endfor %}
-        </ul>
-    </section>
+  {% include 'acts/act_table_supporters.html' with act_supporters=mayor|to_list act_cosupporters=firstdeputy|to_list %}
+  {% include 'acts/act_table_supporters.html' with act_supporters=citygov.members|split:'first' act_cosupporters=citygov.members|split:'last' %}
 
-    <section>
-        <h2>Prossimi appuntamenti</h2>
-        <div class="row-fluid">
-            <div class="span4">
-                <div class="calendar_container">
-                    <h3>Agenda della commissione</h3>
-                    <div class="calendar" data-events=".calendar_events"></div>
-                </div>
-            </div>
-            <div class="span8">
-                <ul class="list-floated unstyled calendar_events">
-                    {% for event in events %}
-                    {% if not event.is_past_due %}
-                    <li data-day="{{ event.date|date:"d/m/Y" }}"><strong>{{ event.date|date:"d.m.Y" }}</strong> <a href="{{ event.act.downcast.get_absolute_url }}">{{ event.act.title }}</a></li>
-                    {% endif %}
-                    {% endfor %}
-                </ul>
-            </div>
-        </div>
-    </section>
+  <section>
+    <h3>Prossimi appuntamenti</h3>
+    {% include 'commons/calendar.html' with events=events %}
+  </section>
 
 {% endblock %}
 
 {% block sidebar %}
-    <h2>Ultimi 3 atti della Giunta</h2>
-    <ul class="feed-list">
-        {% for act in latest_acts %}
-        <li>{{ act.title }}
-            <span class="monitoring">
-                {% if not act.monitoring_users_count %}
-                Non monitorato
-                {% else %}
-                Monitorato da {{ act.monitoring_users_count }} cittadini
-                {% endif %}
-                - <a href="#"><i class="socialicon-add"></i> Monitora</a>
-            </span>
-        </li>
-        {% endfor %}
-    </ul>
-    <p class="bg-dark"><a href="#"><i class="icon-play"></i> Vedi tutti</a></p>
 
-    <h2>Atti di Giunta</h2>
-    <table>
-        <tr>
-            <td><span class="graybox">{{ num_acts.deliberation }}</span></td>
-            <th class="bg-dark span6">Delibere</th>
-            <td><span class="graybox">{{ num_acts.motion }}</span></td>
-            <th class="bg-dark span6">Mozioni</th>
-        </tr>
-        <tr>
-            <td><span class="graybox">{{ num_acts.agenda }}</span></td>
-            <th class="bg-dark span12" colspan="3">Ordini del giorno</th>
-        </tr>
-        <tr>
-            <td><span class="graybox">{{ num_acts.interrogation }}</span></td>
-            <th class="bg-dark span6">Interrogazioni</th>
-            <td><span class="graybox">{{ num_acts.interpellation }}</span></td>
-            <th class="bg-dark span6">Interpellanze</th>
-        </tr>
-    </table>
+  {% comment %}
+  <h2>Ultimi 3 atti della Giunta</h2>
+  <ul class="list-plain">
+    {% for act in latest_acts %}
+      <li><strong><a href="{{ act.get_absolute_url }}">{{ act.title }}</a></strong>
 
-    <h2>Ultime sulla Giunta <img src="{{ STATIC_URL }}img/feed-icon-14x14.png" alt="" /></h2>
-    <ul class="feed-list">
-        <li><a href="#">Mario Rossi ha commentato il voto</a></li>
-        <li><a href="#">Il voto è inserito nell'ordine del giorno N° 13516</a></li>
-        <li><a href="#">Barcaiuolo, Pellacani, Bellei, Morandi, Santoro (PdL) hanno presentato la mozione...</a></li>
-    </ul>
-    <p class="bg-dark"><a href="#">Vedi tutti <i class="icon-chevron-down"></i></a></p>
+        {% object_inline_monitoring act.downcast %}
+
+      </li>
+    {% endfor %}
+  </ul>
+
+  <hr>
+
+  <h2>Atti della Giunta</h2>
+  <table class="stats">
+    <tr>
+      <td>{{ num_acts.deliberation|circled:"colored" }}</td>
+      <th class="span6">Delibere</th>
+      <td>{{ num_acts.interrogation|circled:"colored" }}</td>
+      <th class="span6">Interrogazioni</th>
+    </tr>
+    <tr>
+      <td>{{ num_acts.motion|circled:"colored" }}</td>
+      <th class="span6">Mozioni</th>
+      <td>{{ num_acts.agenda|circled:"colored" }}</td>
+      <th class="span6">Ordini del giorno</th>
+    </tr>
+    <tr>
+      <td>{{ num_acts.interpellation|circled:"colored" }}</td>
+      <th colspan="3">Interpellanze</th>
+    </tr>
+  </table>
+
+  <hr>
+
+  {% include 'commons/news_list.html' with news_list=FILLME news_title='Ultime dalla Giunta' %}
+  {% endcomment %}
 {% endblock %}
 
-
-{% comment %}Calendar blocks{% endcomment %}
-{% block head_css_includes %}
-    {{ block.super }}
-    <link rel="stylesheet" href="{{ STATIC_URL }}css/ui-custom-theme/jquery-ui-1.8.16.custom.css">
-    <!--[if IE]><link rel="stylesheet" href="{{ STATIC_URL }}css/ui-custom-theme/jquery-ui-1.8.16.ie.css"><![endif]-->
-{% endblock %}
 
 {% block footer_js_includes %}
-    {{ block.super }}
-    <script src="{{ STATIC_URL }}js/jquery-ui-1.8.18.custom.min.js"></script>
-    <script src="{{ STATIC_URL }}js/jquery-ui.calendar.js"></script>
+  {{ block.super }}
+  <script src="{{ STATIC_URL }}js/jquery.submitlink.js"></script>
 {% endblock %}
 

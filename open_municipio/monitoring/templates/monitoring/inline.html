@@ -1,1 +1,18 @@
-INLINE
+<div>
+  <span class="monitoring">Monitorato da {{ object.all_monitoring_count }} cittadin{{ object.all_monitoring_count|pluralize:"o,i" }} - </span>
+  {% if is_user_monitoring %}
+    <form action="{% url om_monitoring_stop %}" method="post" class="monitoring-formlink" data-submit="link">{% csrf_token %}
+      {{ monitoring_form }}
+      <button type="submit" class="btn btn-info btn-mini">Non monitorare più</button>
+    </form>
+
+  {% else %}
+
+    <i class="icon-plus-sign"></i>
+    <form action="{% url om_monitoring_start %}" method="post" class="monitoring-formlink"  data-submit="link">{% csrf_token %}
+      {{ monitoring_form }}
+      <button type="submit" class="btn btn-info btn-mini">Monitora</button>
+    </form>
+
+  {% endif %}
+</div>

@@ -7,5 +7,5 @@
 
   <hr class="big">
 
-  {% include 'acts/act_table_supporters.html' with act_supporters=act.first_signers act_cosupporters=act.co_signers %}
+  {% include 'acts/act_table_supporters.html' with act_supporters=act.first_signers act_cosupporters=act.co_signers supporter_title='Firmatari' cosupporter_title='Co-firmatari' %}
 {% endblock %}

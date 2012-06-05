@@ -1,5 +1,7 @@
 from django.contrib import admin
 from django import forms
+from django.db import models
+from django.contrib.admin.widgets import FilteredSelectMultiple
 
 from open_municipio.acts.models import *
 
@@ -26,6 +28,11 @@ def transition_form_factory(act):
 class PresenterInline(admin.TabularInline):
     fields = ['charge', 'support_type', 'support_date']
     model = ActSupport
+    extra = 0
+
+
+class ActInline(admin.TabularInline):
+    model = Act
     extra = 0
 
 class AttachInline(admin.StackedInline): 
@@ -80,11 +87,39 @@ class ActAdmin(admin.ModelAdmin):
         return super(ActAdmin, self).change_view(request, object_id, extra_context)
 
 
+class CalendarAdmin(admin.ModelAdmin):
+    formfield_overrides = {
+        models.ManyToManyField: {'widget': FilteredSelectMultiple("verbose name", is_stacked=False)},
+    }
+
 class ActAdminWithAttaches(admin.ModelAdmin):
     inlines = [AttachInline, TransitionInline]
 
 class ActAdminWithEmendations(admin.ModelAdmin):
     inlines = [EmendationInline]
+
+class MotionAdmin(ActAdmin):
+    fieldsets = (
+        (None, {
+            'fields': ('idnum', 'title', 'adj_title', 'status')
+        }),
+        ('Presentazione', {
+            'classes': ('collapse',),
+            'fields': ('presentation_date', 'text', 'emitting_institution'),
+            }),
+        )
+
+
+class InterrogationAdmin(ActAdmin):
+    fieldsets = (
+        (None, {
+            'fields': ('idnum', 'title', 'adj_title', 'status')
+        }),
+        ('Presentazione', {
+            'classes': ('collapse',),
+            'fields': ('presentation_date', 'text', 'emitting_institution', 'answer_type'),
+            }),
+        )
 
 class DeliberationAdmin(ActAdmin):
     fieldsets = (
@@ -111,9 +146,10 @@ admin.site.register(Act, ActAdmin)
 # end of our homemade fix!
 
 admin.site.register(Deliberation, DeliberationAdmin)
-admin.site.register(Interrogation)
+admin.site.register(Interrogation, InterrogationAdmin)
 admin.site.register(Interpellation)
-admin.site.register(Motion, ActAdminWithEmendations)
-admin.site.register(Calendar)
+admin.site.register(Motion, MotionAdmin)
+admin.site.register(Calendar, CalendarAdmin)
 admin.site.register(Emendation, ActAdminWithAttaches)
 admin.site.register(Attach)
+admin.site.register(Transition)

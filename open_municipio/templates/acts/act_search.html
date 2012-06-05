@@ -1,9 +1,10 @@
 {% extends 'base_two_columns.html' %}
 {% load highlight %}
 {% load om_utils %}
+{% load i18n %}
 
-{% block title %}| Elenco atti {% endblock title %}
-{% block content_header %}Elenco atti{% endblock %}
+{% block title %}Elenco atti {% endblock title %}
+{% block content_header %}Atti{% endblock %}
 {% block acts_class %}active{% endblock %}
 
 {% block extra_style %}
@@ -13,15 +14,13 @@ em {
 {% endblock %}
 
 {% block content %}
-    <h1>Cerca l'atto</h1>
-
     {% if selected_facets %}
         <ul class="breadcrumb">
             {% for facet in selected_facets  %}
                 <li>
                     <a href="{{ facet.url }}"><i class="icon-remove"></i></a>
-                    <span style="color:gray;">{{ facet.field }}</span>:
-                    {{ facet.label }}
+                    <span style="color:gray;">{% trans facet.field %}</span>:
+                    {{ facet.r_label }}
                 </li>
                 {% if not forloop.last %}
                     <span class="divider">/</span>
@@ -30,7 +29,7 @@ em {
         </ul>
     {% else %}
       <p>Puoi trovare l'atto che ti interessa scorrendo la lista degli ultimi pubblicati, qui sotto.
-        Puoi perfezionare la ricerca usando i filtri nella colonna qui a destra. Oppure puoi usare il form di
+        Puoi perfezionare la ricerca usando i filtri nella colonna qui a destra, oppure puoi usare il form di
         ricerca con una parola che pensi sia contenuta nell'atto ,
         in cima alla colonna qui a destra</p>
     {% endif %}
@@ -52,7 +51,9 @@ em {
             <td>
               <h4><a href="{{ result.url }}">{{ result.title }}</a></h4>
               <strong>{{ result.act_type }}</strong>
-              {% comment %}{{ result.highlighted.text.0|safe }}<br/>{% endcomment %}
+              {% if result.highlighted.text %}
+                {{ result.highlighted.text.0|safe }}<br/>
+              {% endif %}
               {% if result.categories %}
                 <br/>Categorie: {% for cat in result.categories %}<a href="{{ cat.get_absolute_url }}">{{ cat }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}
               {% endif %}
@@ -164,25 +165,25 @@ em {
             </dl>
             <dl>
                 {% if not facet_queries_date.is_selected %}
-                    <dt>Data di pubblicazione</dt>
+                    <dt>{% trans 'Publishing date' %}</dt>
                     {% if facet_queries_date.threedays.count %}
                         <dd>
                             <a href="{{ base_url }}&selected_facets={{ facet_queries_date.threedays.key }}">
-                                ultimi tre giorni
+                                {% trans 'last three days' %}
                             </a> ({{ facet_queries_date.threedays.count }})
                         </dd>
                     {% endif %}
                     {% if facet_queries_date.onemonth.count %}
                         <dd>
                             <a href="{{ base_url }}&selected_facets={{ facet_queries_date.onemonth.key }}">
-                                ultimo mese
+                                {% trans 'last month' %}
                             </a> ({{ facet_queries_date.onemonth.count }})
                         </dd>
                     {% endif %}
                     {% if facet_queries_date.oneyear.count %}
                         <dd>
                             <a href="{{ base_url }}&selected_facets={{ facet_queries_date.oneyear.key }}">
-                                ultimo anno
+                                {% trans 'last year' %}
                             </a> ({{ facet_queries_date.oneyear.count }})
                         </dd>
                     {% endif %}

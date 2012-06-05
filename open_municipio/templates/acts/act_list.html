@@ -148,21 +148,8 @@
     </ul>
     <p class="bg-dark"><a href="#"><i class="icon-play"></i> Vedi tutti</a></p>
 
-    <h2>Ultime sugli atti <img src="{{ STATIC_URL }}img/feed-icon-14x14.png" alt="" /></h2>
-    <ul class="feed-list">
-        <li><a href="#">Mario Rossi ha commentato il voto</a></li>
-        <li><a href="#">Il voto è inserito nell'ordine del giorno N° 13516</a></li>
-        <li><a href="#">Barcaiuolo, Pellacani, Bellei, Morandi, Santoro (PdL) hanno presentato la mozione...</a></li>
-    </ul>
-    <p class="bg-dark"><a href="#">Leggi tutte <i class="icon-chevron-down"></i></a></p>
-
-    <h2>Ultime dalla community <img src="{{ STATIC_URL }}img/feed-icon-14x14.png" alt="" /></h2>
-    <ul class="feed-list">
-        <li><a href="#">Mario Rossi ha commentato il voto</a></li>
-        <li><a href="#">Il voto è inserito nell'ordine del giorno N° 13516</a></li>
-        <li><a href="#">Barcaiuolo, Pellacani, Bellei, Morandi, Santoro (PdL) hanno presentato la mozione...</a></li>
-    </ul>
-    <p class="bg-dark"><a href="#">Leggi tutte <i class="icon-chevron-down"></i></a></p>
+  {% include 'commons/news_list.html' with news_list=FILLME news_title='Ultime sugli Atti' %}
+  {% include 'commons/news_list.html' with news_list=FILLME news_title='Ultime dalla community' %}
 
 
 {% endblock %}

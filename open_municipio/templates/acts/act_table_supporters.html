@@ -1,18 +1,24 @@
 {% load monitoring_tags %}
+{% load thumbnail %}
 
 <div class="row-fluid">
 
     <section class="span6">
-        <h1>{{ supporter_title|default:"Firmatari" }}</h1>
+        {% if supporter_title %}<h2>{{ supporter_title }}</h2>{% endif %}
         <ul class="people-list">
           {% for supporter in act_supporters %}
           <li>
-            <a href="{{ supporter.get_absolute_url }}"><img src="{{ STATIC_URL }}img/placehold/50.gif" /></a>
+            <a href="{{ supporter.person.get_absolute_url }}">
+                {% thumbnail supporter.person.img "50x50" crop="center" as im %}
+                    <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+                {% endthumbnail %}
+            </a>
 
             <div>
-              <strong><a href="{{ supporter.get_absolute_url }}">{{ supporter.person.full_name }}</a></strong>
+              <a href="{{ supporter.get_absolute_url }}"><strong>{{ supporter.person.full_name }}</strong></a>
+
               <br>
-              {{ supporter.council_group }}
+              {{ supporter.denomination }}
               <br>
 
               {% object_inline_monitoring supporter.person %}
@@ -25,16 +31,20 @@
 
     <section class="span6">
         {% if act_cosupporters %}
-        <h1>{{ cosupporter_title|default:"Co-firmatari" }}</h1>
+        {% if cosupporter_title %}<h2>{{ cosupporter_title }}</h2>{% endif %}
         <ul class="people-list">
-          {% for supporter in act_supporters %}
+          {% for supporter in act_cosupporters %}
             <li>
-              <a href="{{ supporter.get_absolute_url }}"><img src="{{ STATIC_URL }}img/placehold/50.gif" /></a>
+              <a href="{{ supporter.get_absolute_url }}">
+                  {% thumbnail supporter.person.img "50x50" crop="center" as im %}
+                      <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+                  {% endthumbnail %}
+              </a>
 
               <div>
                 <strong><a href="{{ supporter.get_absolute_url }}">{{ supporter.person.full_name }}</a></strong>
                 <br>
-                {{ supporter.council_group }}
+                {{ supporter.denomination }}
                 <br>
 
                 {% object_inline_monitoring supporter.person %}

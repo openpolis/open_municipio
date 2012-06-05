@@ -4,7 +4,7 @@
 // Globals
 //@cityColor: #008AC2;
 @politicianColor: #72c056;
-@topicColor: #FFBF43;
+@topicColor: #F4C242; //FFBF43;
 @citizenColor: #dc4630;
 
 body {
@@ -20,13 +20,14 @@ body {
     font-size: 16px;
     font-weight: normal;
   }
+  h2 small {white-space: pre;}
   hgroup { margin-bottom: 0px; }
   #content, #sidebar {
     padding-top: 20px;
     position: relative;
   }
   #sidebar {
-    h3 { font-size: 20px; margin-bottom: 10px; }
+    h3 { font-size: 19px; margin-bottom: 10px; }
     // default for lists
     ul.list-simple {
       list-style: none;
@@ -38,11 +39,12 @@ body {
 
     // default gray boxes
     .box {
-      .bg-light;
+      background-color: #f1efe8;
       margin:1px 0 0 0;
       padding: 3px 10px;
       a { font-weight: bold; }
       p { margin: 9px 0; }
+      i { font-size: 10px; }
     }
 
     .nav-tabs {
@@ -62,13 +64,16 @@ body {
 
   #content {
     hgroup {
-      margin-bottom: 20px;
+      margin-top: 20px;
+      margin-bottom: 30px;
       h2 {
         line-height: 20px;
         margin-bottom: 5px;
       }
       h4 { font-weight: normal; }
     }
+    h2 { font-size: 19px; }
+    h4 { font-size: 13px; }
     > section {
       margin: 20px 0;
       &.party-people { margin: 0; }
@@ -83,18 +88,21 @@ body {
       background-color: @politicianColor;
     }
     .colored { background-color: @politicianColor;}
+    #area-title { background-image: url('../img/city-logo/city-logo-politician.png') ; }
   }
   &.tags #wrapper {
     > header {
       background-color: @topicColor;
     }
     .colored { background-color: @topicColor}
+    #area-title { background-image: url('../img/city-logo/city-logo-tags.png') ; }
   }
   &.citizen #wrapper {
     > header {
       background-color: @citizenColor;
     }
     .colored { background-color: @citizenColor}
+    #area-title { background-image: url('../img/city-logo/city-logo-citizen.png') ; }
   }
   h1 span.colored { padding-left: 5px; padding-right: 5px;}
 }
@@ -102,11 +110,16 @@ body {
 // Top bar for Navigation
 #navbar-top {
   height: 55px;
+  background-color: @white;
 
   .navbar-inner {
     background-color: @white;
     color: @black;
-
+    > p {
+      margin-right: 20px;
+      /*strong { margin-right: 15px; }
+      a { margin: 5px 15px; }*/
+    }
     .nav {
       padding: 8px;
       a {
@@ -156,25 +169,26 @@ body {
     padding-top: 30px;
     padding-bottom: 30px;
     font-size: 40px;
-    background: transparent url('../img/logo-city.png') no-repeat right center;
+    background: transparent url('../img/city-logo/city-logo.png') no-repeat right center;
     small {
       color: @white;
       font-size: 40px;
       line-height: 50px;
       margin-left: 5px;
-      padding-left: 5px;
+      padding-left: 10px;
       border-left: 1px solid @white;
       font-weight: 200;
     }
   }
 
   #sub-nav {
+    background-color: @white;
     .navbar-inner {
       background-color: transparent; background-image: none;
       a {
         color: @black;
         &:hover { background-color: transparent; text-decoration: underline; }
-        &.active { background-color: @white; font-weight: bolder; }
+        &.active { background-color: @white; font-weight: normal; }
       }
     }
     .pipe-separators;
@@ -187,19 +201,22 @@ body {
 body.homepage {
   #payoff {
     color : @white;
-    padding-top: 20px;
-    padding-bottom: 20px;
-    h2 { font-weight: normal; font-size: 30px; padding-bottom: 5px; }
+    padding-top: 30px;
+    padding-bottom: 30px;
+    h2 { font-weight: normal; font-size: 40px; padding-bottom: 5px; font-weight: 200; }
     img { float:left; padding-right: 10px; }
     p { padding-top: 10px; }
 
   }
 
+  background-color:#F5F4EE;
+
   article {
     h1 {
       font-weight: normal;
-      font-size: 30px;
+      font-size: 40px;
       margin: 25px 0;
+      font-weight: 200;
     }
     ul {
       font-weight: bold;
@@ -214,6 +231,7 @@ body.homepage {
         border-top: 0;
         padding-top: 0;
       }
+      &.unstyled {padding-left: 0; }
     }
   }
 
@@ -262,6 +280,7 @@ ul.comments-list, ul.people-list {
     // comment info
     > div {
       margin-left: 60px;
+      a > strong { font-size: 16px; }
       .monitoring { color: @grayLight; }
     }
   }
@@ -337,8 +356,10 @@ table#status-table {
 
 }
 
-table.search-results {
+#content table.search-results {
   .table;
+
+  h4 {font-size: 15px;}
 
   td { vertical-align: middle; }
 
@@ -358,7 +379,7 @@ table.stats {
   .clearfix;
   margin-bottom: 20px;
   padding-bottom: 10px;
-  border-bottom: 5px solid @grayLighter;
+  /*border-bottom: 5px solid @grayLighter;*/
 
   h2 {
     /*color: @grayLight;
@@ -367,6 +388,7 @@ table.stats {
   }
   p { margin: 10px 0; }
   ul li { padding: 5px 0; border-bottom: 1px solid @grayLighter; }
+  a { font-size: 16px; }
 
 }
 
@@ -378,13 +400,13 @@ table.stats {
   min-width: 200px;
   .border-radius;
   h3 { margin: 5px 0; font-size: 15px; text-align:center; border-bottom: 1px solid @grayLight; }*/
-  padding:10px; background-color: @grayLighter;
+  padding:10px; background-color: @semiWhite;
   .calendar { padding: 5px; }
   .ui-datepicker { width: auto; }
   .ui-datepicker-calendar tbody td.highlight > a { font-weight: bold; color: @linkColor; }
 }
 .calendar_events {
-  height: 230px;
+  height: 220px;
   overflow-y: scroll;
 }
 
@@ -537,11 +559,11 @@ ul.feed-list {
   li {
     //background-color: @lightBackground;
 
-    border-bottom: 3px solid @semiWhite;
+    border-bottom: 3px solid @white;
     padding: 10px;
   }
-
 }
+#sidebar ul.feed-list h3 { margin-bottom: 0; }
 
 /* Data lists */
 ul.list-inline {
@@ -585,11 +607,14 @@ dl.data-list {
   td { vertical-align: middle; }
   thead th {
     text-transform: uppercase;
-    color: @blueDark;
+    color: @black;
   }
-  tbody tr:first-child td {
+  thead th {
+    border-bottom: 1px solid @blueDark;
+  }
+  /*tbody tr:first-child td {
     border-top: 1px solid @blueDark;
-  }
+  }*/
   border-bottom: 2px solid @grayLight;
 }
 
@@ -719,4 +744,58 @@ hr.big {
   border-top: 1px solid @hrBorder;
   border-bottom: 5px solid #EBE8E0;
   margin: 25px 0;
+}
+
+.bookmarkable {
+  color: inherit;
+  &:hover { text-decoration: none; }
+}
+
+ul.person-resources {
+  margin:0;
+  list-style: none;
+
+}
+
+#content table#votation_outcome {
+  .pull-right;
+
+  padding-left: 15px;
+
+  i {
+    font-size: 30px; line-height: 30px;
+  }
+}
+
+
+body { padding-top: 35px; }
+#page-alert {
+  .navbar-inner { background-color: #fdf48f; padding:4px 0; color: @black; }
+}
+#home-alert {
+  .modal-footer { text-align:center; }
+  border: 4px solid #fdf48f;
+  .btn {
+    text-transform: capitalize;
+    font-weight: bold;
+  }
+}
+
+.inline-block { white-space: pre; }
+.square {
+  display: inline-block;
+  text-align: center;
+  padding: 4px;
+  background-color: @citizenColor;
+  font-weight: bold;
+  color: @white;
+  min-width: 20px;
+  height: 20px;
+  line-height: 20px;
+}
+
+ul.rank {
+  list-style: none;
+  margin:10px 0 0 0; padding:0;
+  li { padding: 4px 0; }
 }

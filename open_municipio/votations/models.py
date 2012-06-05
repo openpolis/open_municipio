@@ -32,13 +32,13 @@ class Votation(models.Model):
     
     group_set = models.ManyToManyField(Group, through='GroupVote')
     charge_set = models.ManyToManyField(InstitutionCharge, through='ChargeVote')
-    n_legal = models.IntegerField(blank=True, null=True)
+    n_legal = models.IntegerField(default=0)
     n_presents = models.IntegerField(default=0)
     n_absents = models.IntegerField(default=0)
     n_yes = models.IntegerField(default=0)
     n_no = models.IntegerField(default=0)
     n_abst = models.IntegerField(default=0)
-    n_maj = models.IntegerField(blank=True, null=True)
+    n_maj = models.IntegerField(default=0)
     outcome = models.IntegerField(choices=OUTCOMES, blank=True, null=True)
     is_key = models.BooleanField(default=False, help_text=_("Specify whether this is a key votation"))    
     n_rebels = models.IntegerField(default= 0)
@@ -57,7 +57,14 @@ class Votation(models.Model):
     # add ``act`` to the ``list_filter`` list in ``admin.py``
     # to filter votations based on the existence of a related act
     act.is_linked_filter = True
-    
+
+    @property
+    def is_key_yesno(self):
+        if self.is_key:
+            return _('yes')
+        else:
+            return _('no')
+
     class Meta:
         verbose_name = _('votation')
         verbose_name_plural = _('votations')

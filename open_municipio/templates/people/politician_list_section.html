@@ -1,9 +1,15 @@
-<a href="{{ politician.person.get_absolute_url }}"><img src="{{ STATIC_URL }}img/placehold/50.gif" /></a>
+{% load thumbnail %}
+
+<a href="{{ politician.person.get_absolute_url }}">
+    {% thumbnail politician.person.img "50x50" crop="center" as im %}
+        <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+    {% endthumbnail %}
+</a>
 <div>
 
   <a href="{{ politician.person.get_absolute_url }}"><strong>{{ politician.person|title }}</strong></a>
 
-  {% if what %}({{ value }} {{ what }}){% else %}{{ value }}{% endif %}
+  <span class="inline-block">{% if what %}{{ value }} {{ what }}{% else %}{{ value }}{% endif %}</span>
 
   <br>
 

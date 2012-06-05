@@ -22,7 +22,7 @@ from django.conf.urls.defaults import patterns, url, include
 from django.views.generic import TemplateView
 
 from django.contrib import admin
-
+from open_municipio.om.views import HomeView
 from open_municipio.inline_edit.views import InlineEditView
 
 
@@ -33,9 +33,12 @@ urlpatterns = patterns('',
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),   
     # home page
-    url(r'^$', TemplateView.as_view(template_name='om/home.html')),
+    url(r'^$', HomeView.as_view()),
     # info page
     url(r'^info/$', TemplateView.as_view(template_name='om/info.html')),
+    url(r'^rules/$', TemplateView.as_view(template_name='om/rules.html'), name='om_rules'),
+    url(r'^terms-and-conditions/$', TemplateView.as_view(template_name='om/terms-and-conditions.html'), name='om_terms'),
+    url(r'^privacy/$', TemplateView.as_view(template_name='om/privacy.html'), name='om_privacy'),
     url(r'^comments/', include('open_municipio.om_comments.urls')),
     url(r'^people/', include('open_municipio.people.urls.people')),
     url(r'^institutions/', include('open_municipio.people.urls.institutions')),

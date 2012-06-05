@@ -1,5 +1,6 @@
 from haystack.views import SearchView
 from open_municipio.om_search.forms import RangeFacetedSearchForm
+from django.utils.translation import ugettext_lazy as _
 
 class ExtendedFacetedSearchView(SearchView):
     """
@@ -26,7 +27,7 @@ class ExtendedFacetedSearchView(SearchView):
 
         # This way the form can always receive a list containing zero or more
         # facet expressions:
-        form_kwargs['selected_facets'] = self.request.GET.getlist("selected_facets")
+        form_kwargs['selected_facets'] = self.request.GET.getlist('selected_facets')
 
         return super(ExtendedFacetedSearchView, self).build_form(form_kwargs)
 
@@ -36,7 +37,7 @@ class ExtendedFacetedSearchView(SearchView):
         field, that allows easy filtering of the selected facets in the
         navigation filters
         """
-        selected_facets = self.request.GET.getlist('selected_facets')
+        selected_facets = self._get_extended_selected_facets()
         facet_counts_fields = self.results.facet_counts().get('fields', {})
 
         facets = {'fields': {}, 'dates': {}, 'queries': {}}
@@ -71,20 +72,19 @@ class ExtendedFacetedSearchView(SearchView):
             for cf in selected_facets:
                 if cf != f:
                     url += "&amp;selected_facets=%s" % cf
-            field, _, label = f.partition(":")
+            field, x, label = f.partition(":")
 
             # TODO: use an associative array
-            if field[-5:] == 'date':
-                if label == self.THREEDAYS:
-                    label = 'ultimi 3 giorni'
-                elif label == self.ONEMONTH:
-                    label = 'ultimo mese'
-                elif label == self.ONEYEAR:
-                    label = 'ultimo anno'
-                else:
-                    raise Exception
+            if label == self.THREEDAYS:
+                r_label = _('last three days')
+            elif label == self.ONEMONTH:
+                r_label = _('last month')
+            elif label == self.ONEYEAR:
+                r_label = _('last year')
+            else:
+                r_label = label
 
-            sf = {'field': field, 'label': label, 'url': url}
+            sf = {'field': field, 'label': label, 'r_label': r_label, 'url': url}
             extended_selected_facets.append(sf)
 
         return extended_selected_facets

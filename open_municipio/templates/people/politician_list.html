@@ -1,6 +1,7 @@
 {% extends "base_two_columns.html" %}
 {% load i18n %}
 {% load monitoring_tags %}
+{% load list_partition %}
 
 {% block title %} Politici {% endblock %}
 {% block content_header %}Politici{% endblock %}
@@ -14,11 +15,74 @@
 {% endblock %}
 
 {% block content %}
+
+  <div class="row-fluid">
+
+    <section class="span6">
+      <h2>Ultimi cambiamenti di gruppo</h2>
+      <ul class="people-list">
+        {% for politician in last_group_changes %}
+          <li>
+            {% include 'people/politician_list_section.html' with value=politician.start_date %}
+            {% object_inline_monitoring politician.person %}
+          </li>
+        {% endfor %}
+      </ul>
+    </section>
+
+    <section class="span6">
+      <h2>I più ribelli</h2>
+      <ul class="people-list">
+        {% for politician in most_rebellious %}
+          <li>
+            {% include 'people/politician_list_section.html' with value=politician.n_rebel_votations what='ribellioni' %}
+            {% object_inline_monitoring politician.person %}
+          </li>
+        {% endfor %}
+      </ul>
+    </section>
+
+  </div>
+
+  <hr class="big">
+
+  <div class="row-fluid">
+
+    <section class="span6">
+      <h2>I meno assenti</h2>
+      <ul class="people-list">
+        {% for politician in least_absent %}
+          <li>
+            {% include 'people/politician_list_section.html' with value=politician.n_absent_votations what='assenze' %}
+            {% object_inline_monitoring politician.person %}
+          </li>
+        {% endfor %}
+      </ul>
+    </section>
+
+    <section class="span6">
+      <h2>I più assenti</h2>
+      <ul class="people-list">
+        {% for politician in most_absent %}
+          <li>
+            {% include 'people/politician_list_section.html' with value=politician.n_absent_votations what='assenze' %}
+            {% object_inline_monitoring politician.person %}
+          </li>
+        {% endfor %}
+      </ul>
+    </section>
+
+  </div>
+
+  <hr class="big">
+
   <section class="row-fluid party-people">
     <div class="span4">
       <h2>Sindaco</h2>
 
-      <p><a href="{{ mayor.person.get_absolute_url }}"><strong>{{ mayor.person|title }}</strong></a></p>
+      <ul class="list-plain">
+        <li><a href="{{ mayor.person.get_absolute_url }}"><strong>{{ mayor.person|title }}</strong></a></li>
+      </ul>
 
       <h2>Giunta</h2>
       <ul class="list-plain">
@@ -32,74 +96,29 @@
     <div class="span8">
 
       <h2>Consiglio</h2>
-      <ul class="list-floated">
-        {% for c in counselors %}
-          <li><a href="{{ c.person.get_absolute_url }}"><strong>{{ c.person|title }}</strong>
-            ({{ c.council_group.acronym }})</a></li>
-        {% endfor %}
-      </ul>
+
+      <div class="row-fluid">
+        <div class="span6">
+          <ul class="list-plain">
+            {% for c in counselors|split:'first' %}
+              <li><a href="{{ c.person.get_absolute_url }}"><strong>{{ c.person|title }}</strong>
+                ({{ c.council_group.acronym }})</a></li>
+            {% endfor %}
+          </ul>
+        </div>
+        <div class="span6">
+          <ul class="list-plain">
+            {% for c in counselors|split:'last' %}
+              <li><a href="{{ c.person.get_absolute_url }}"><strong>{{ c.person|title }}</strong>
+                ({{ c.council_group.acronym }})</a></li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
 
     </div>
   </section>
 
-
-    <div class="row-fluid">
-
-      <section class="span6">
-        <h2>Ultimi cambiamenti di gruppo</h2>
-        <ul class="people-list">
-          {% for politician in last_group_changes %}
-          <li>
-            {% include 'people/politician_list_section.html' with value=politician.start_date %}
-            {% object_inline_monitoring politician.person %}
-          </li>
-          {% endfor %}
-        </ul>
-      </section>
-
-      <section class="span6">
-        <h2>I più ribelli</h2>
-        <ul class="people-list">
-          {% for politician in most_rebellious %}
-          <li>
-            {% include 'people/politician_list_section.html' with value=politician.n_rebel_votations what='ribellioni' %}
-            {% object_inline_monitoring politician.person %}
-          </li>
-          {% endfor %}
-        </ul>
-      </section>
-
-    </div>
-
-    <hr>
-
-    <div class="row-fluid">
-
-      <section class="span6">
-        <h2>I meno assenti</h2>
-        <ul class="people-list">
-          {% for politician in least_absent %}
-          <li>
-            {% include 'people/politician_list_section.html' with value=politician.n_absent_votations what='assenze' %}
-            {% object_inline_monitoring politician.person %}
-          </li>
-          {% endfor %}
-        </ul>
-      </section>
-
-      <section class="span6">
-        <h2>I più assenti</h2>
-        <ul class="people-list">
-          {% for politician in most_absent %}
-          <li>
-            {% include 'people/politician_list_section.html' with value=politician.n_absent_votations what='assenze' %}
-            {% object_inline_monitoring politician.person %}
-          </li>
-          {% endfor %}
-        </ul>
-      </section>
-
-    </div>
 
 {% endblock %}
 
@@ -109,7 +128,7 @@
     <h3>I 3 politici più monitorati</h3>
     <ul class="people-list">
       {% for politician in most_monitorized %}
-        <li><span class="rank-value pull-right">{{ forloop.counter }}</span>
+        <li>
           {% include 'people/politician_list_section.html' %}
           {% object_inline_monitoring politician.person %}
         </li>
@@ -119,6 +138,7 @@
 
   <hr>
 
+  {% comment %}
   <div class="tabbable">
     <ul class="nav nav-tabs">
       <li class="active"><a href="#gender_tab" data-toggle="tab">Sesso</a></li>
@@ -136,15 +156,8 @@
           <p><img src="https://chart.googleapis.com/chart?cht=p3&chd=s:Uf9a&chs=400x130&chdl=con%20oltre%2020%20anni%20di%20incarichi:%203%20(7.89%)|da%2015%20a%2020%20anni%20di%20incarichi:%205%20(13.16%)|da%2010%20a%2015%20anni%20di%20incarichi:%207%20(18.42%)|da%205%20a%2010%20anni%20di%20incarichi:%2016%20(42.11%)|con+meno%20di%205%20anni%20di%20incarichi:%207%20(18.42%)&chd=t:3,5,7,16,7&chco=FF0000,FFFF10"></p>
       </div>
     </div>
-  </div>
+  </div>{% endcomment %}
 
-
-    <h2>Ultime sui politici <img src="{{ STATIC_URL }}img/feed-icon-14x14.png" alt="" /></h2>
-    <ul class="list-simple">
-        <li><a href="#">Mario Rossi ha commentato il voto</a></li>
-        <li><a href="#">Il voto è inserito nell'ordine del giorno N° 13516</a></li>
-        <li><a href="#">Barcaiuolo, Pellacani, Bellei, Morandi, Santoro (PdL) hanno presentato la mozione...</a></li>
-    </ul>
-    <p class="box"><a href="#">Leggi tutte <i class="icon-play-down"></i></a></p>
+  {% include 'commons/news_list.html' with news_list=FILLME news_title='Ultime sui politici' %}
 
 {% endblock %}

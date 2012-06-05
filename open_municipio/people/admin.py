@@ -2,13 +2,15 @@ from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 from open_municipio.people.models import *
 from open_municipio.votations.admin import VotationsInline
+from sorl.thumbnail.admin import AdminImageMixin
+
 
 class PersonResourceInline(admin.TabularInline):
     model = PersonResource
     extra = 0
 
-class PersonAdminWithResources(admin.ModelAdmin):
-    list_display = ('id', '__unicode__', 'birth_date', 'birth_location' )
+class PersonAdminWithResources(AdminImageMixin, admin.ModelAdmin):
+    list_display = ('id', '__unicode__', 'has_current_charges', 'birth_date', 'birth_location' )
     list_display_links = ('__unicode__',)
     search_fields = ['^first_name', '^last_name']
     prepopulated_fields = {"slug": ("first_name","last_name","birth_date", "birth_location",)}
@@ -30,7 +32,7 @@ class GroupIsMajorityInline(admin.TabularInline):
     model = GroupIsMajority
     extra = 1
 
-class GroupAdminWithCharges(admin.ModelAdmin):
+class GroupAdminWithCharges(AdminImageMixin, admin.ModelAdmin):
     list_display = ('name', 'acronym', 'is_majority_now')
     inlines = [GroupResourceInline, GroupIsMajorityInline, GroupChargeInline]
     
@@ -115,6 +117,8 @@ class AdministrationChargeAdmin(ChargeAdmin):
 class InstitutionChargeAdmin(ChargeAdmin):
     model = InstitutionCharge
     raw_id_fields = ('person', 'substitutes', 'substituted_by', 'original_charge')
+    search_fields = ['^person__first_name', '^person__last_name']
+
     fieldsets = (
         (None, {
             'fields': (('person', 'op_charge_id', 'institution', 'original_charge'),

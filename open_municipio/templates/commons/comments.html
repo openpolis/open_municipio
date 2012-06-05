@@ -1,0 +1,156 @@
+{% load i18n %}
+{% load om_comments_tags %}
+{% load comments %}
+{% load voting_tags %}
+
+{% get_comment_count for object as comment_count %}
+{% get_comment_list for object as comment_list %}
+{% get_comment_form for object as form %}
+<section>
+  <h3>Commenti ({{ comment_count }})</h3>
+
+  <ul class="comments-list">
+    {% for comment in comment_list %}
+      <li{% if user.is_authenticated and user.get_profile.person %} class="bg-highlight"{% endif %}>
+        <a href="{% url users_user_detail comment.user.username %}">
+          <img src="{{ STATIC_URL }}img/placehold/50.gif" />
+        </a>
+
+        <div>
+          {% if comment.user == request.user and comment|comment_TTL > 0 %}
+            <a href="#" class="pull-right bg-light" title="{% blocktrans with seconds=comment|comment_TTL %}You still have {{ seconds }} seconds to delete this comment{% endblocktrans %}"><i class="icon-remove"></i></a>
+            <form action="{% url comments-delete-own-comment comment.id %}" class="comment-form-delete" method="post">{% csrf_token %}
+              <button type="submit" class="btn btn-danger btn-mini">{% trans 'Delete' %}</button>
+            </form>
+          {% endif %}
+
+          <p>
+            <a href="{% url users_user_detail comment.user.username %}">{{ comment.user.username|capfirst }}</a>
+            {{ comment.comment }}
+          </p>
+
+          {% if comment.mood == "+" %}<i class="hand-ok hand-active"></i>{% else %}
+            {% if comment.mood == "-" %}<i class="hand-ko hand-active"></i>{% else %}
+              {% if comment.mood == "0" %}<i class="hand-five hand-active"></i>{% endif %}{% endif %}{% endif %}
+          &middot; {{ comment.submit_date|date:"d M Y" }}  &middot;
+          {% score_for_object comment as comment_score %}
+          {% if request.user.is_authenticated %}
+            {% vote_by_user request.user on comment as vote %}
+            <a href="#" id="comments-vote-{{ comment.id }}-up" class='vote{% if vote.vote and vote.vote > 0 %} up-voted{% endif %}'></a>
+          {% else %}
+            <a href="#" class="vote"><span class='like'>Mi piace</span></a>  &middot;
+          {% endif %}
+          <i class="hand-like"></i> <span class="okscore">{{ comment_score.score }}</span>
+        </div>
+      </li>
+    {% endfor %}
+  </ul>
+
+  {% if request.user.is_authenticated %}
+    <form id="comment-form" action="{% comment_form_target %}" method="post" class="form-inline box">
+      <input type="hidden" name="next" value="{{ object.get_absolute_url }}" />
+      {% csrf_token %}
+      {% for hidden in form.hidden_fields %}
+        {{ hidden }}
+      {% endfor %}
+
+      <p>
+        <textarea name="{{ form.comment.html_name }}" class="input-expanded" data-plugin="autogrow" placeholder="Inserisci un commento" id="comment-form-text" rows="1"></textarea>
+      </p>
+
+      <button type="submit" class="btn btn-mini pull-right" id="comment-form-submit">{% trans 'Post' %} </button>
+
+      <p>
+        <label for="{{ form.mood.html_name }}">Scegli la posizione</label> {{ form.mood }}
+      </p>
+
+    </form>
+  {% endif %}
+
+  <p class="box">
+    <a href="#">Leggi tutti</a> <i class="icon-play-down"></i>
+  </p>
+</section>
+
+<script type="text/javascript">
+
+
+
+    $(document).ready(function(){
+
+      // Replace form to remove own comments with link
+      $('.comments-list').find('form.comment-form-delete').each(function(){
+        $(this).submitLink({ link: $(this).prev('a') })
+      });
+
+      // ----------------------------
+
+      // Commenting Form
+      var $comment_form = $('#comment-form')
+      var $comment_form_submit = $('#comment-form-submit')
+
+      // prevent empty submit
+      $comment_form.submit(function(){
+        var field = $(this).find('textarea');
+        if (field.length && (field.val().length == 0) ) {
+          alert('Attenzione, il commento è vuoto.');
+          return false;
+        }
+      });
+
+      var selectHand = function() {
+        el = $(this);
+        // de-activate icon
+        el.parent().find('.hand-active').removeClass('hand-active');
+        // clean send button
+        $('i', $comment_form_submit).remove();
+        // inject new hand
+        $comment_form_submit.prepend($('<i />').addClass( el.data('icon') ).addClass('hand-active'));
+        // set radiobox as checked
+        el.addClass('hand-active').find('input').prop('checked', true);
+      };
+
+      $comment_form.find('label').each(function(){
+        var icon,
+            $label = $(this),
+            $input = $label.find('input:radio')
+
+        if ( $input.length == 0 ) return
+
+        // store icon
+        switch ($input.prop('value'))
+        {
+          case '+':
+            $label.data('icon','hand-ok')
+            break;
+          case '0':
+            $label.data('icon','hand-five')
+            break;
+          case '-':
+            $label.data('icon','hand-ko')
+            break;
+        }
+
+        // default radio
+        if ($input.prop('checked'))
+        {
+          $comment_form_submit.prepend(
+              $('<i />').addClass( $label.data('icon')).addClass('hand-active')
+          )
+          $label.addClass('hand-active')
+        }
+
+        $label
+            .prop('title', $label.text().trim() )
+            .css({
+              'text-indent': '-99999px',
+              'overflow': 'hidden',
+              'cursor': 'pointer'
+            })
+            .addClass( $label.data('icon') )
+            .click( selectHand )
+      })
+
+    });
+
+</script>

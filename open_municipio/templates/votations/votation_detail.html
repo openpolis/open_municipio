@@ -1,23 +1,18 @@
 {% extends "base_two_columns.html" %}
 {% load i18n %}
 {% load om_utils %}
+{% load voting_tags %}
 {% load bookmarking_tags %}
+{% load newscache_tags %}
 
-{% block title %}| Dettaglio {{ votation }}{% endblock %}
-
+{% block title %}Dettaglio {{ votation }}{% endblock %}
 {% block content_header %}Votazione{% endblock %}
-
 {% block votations_class %}active{% endblock %}
 
 
 {% block head_css_includes %}
     {{ block.super }}
     <link rel="stylesheet" href="{{ STATIC_URL }}css/bookmarking.css" />
-    <style type="text/css">
-      #content table#votation_outcome i {
-        font-size: 30px; line-height: 30px;
-      }
-    </style>
 {% endblock head_css_includes %}
 
 {% block footer_js_includes %}
@@ -25,6 +20,10 @@
     <script type="text/javascript" src="{{ STATIC_URL }}js/ajax_csrf.js" charset="utf-8"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap-tab.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.tablesorter.min.js"></script>
+    <script src="{{ STATIC_URL }}js/jquery.jeditable.js" type="text/javascript"></script>
+    <script src="{{ STATIC_URL }}js/jquery.submitlink.js" type="text/javascript"></script>
+    <script src="{{ STATIC_URL }}js/jquery.autogrow.js" type="text/javascript"></script>
+    <script src="{{ STATIC_URL }}js/bootstrap-modal.js" type="text/javascript" charset="utf-8"></script>
     {% if user.is_staff %}
         <script src="{{ STATIC_URL }}js/bookmarking.js" type="text/javascript" charset="utf-8"></script>
     {% endif %}
@@ -39,7 +38,7 @@
 
 {% block content %}
 
-  <table class="pull-right bg-lighter" id="votation_outcome">
+  <table class="pull-right" id="votation_outcome">
     <tr>
       {% if votation.outcome == votation.PASSED %}
       <td>{{ '<i class="icon-thumbs-up"></i>'|safe|circled:"voteok" }}</td>
@@ -54,13 +53,15 @@
   <hgroup>
     <h1 class="highlight">Votazione <strong>N.{{ votation.idnum }}</strong></h1>
     <h2>
-      <i id="{{ votation|as_token }}" class="bookmarkable {% is_key_class votation %}"></i>{{ votation.act.title }}
+      <a href="#" id="{{ votation|as_token }}" class="bookmarkable"><i class="{% is_key_class votation %}"></i></a>
+      {{ votation.act.title }}
     </h2>
     <h4>
       {% if votation.act %}
-        Proposta di <strong>{{ votation.act_type }}</strong>
+        <strong>{{ votation.act.get_type_name|capfirst }}</strong>
         del {{ votation.act.emitting_institution }} N° <strong>{{ votation.act.idnum }}</strong>
         del <strong>{{ votation.act.presentation_date|date:"d F Y" }}</strong>
+         (<a href="{{ votation.act.get_absolute_url }}">vai all'atto</a>)
       {% else %}
         {{ votation.act_descr }}
       {% endif %}
@@ -75,7 +76,6 @@
         <th>Contrari</th>
         <th>Astenuti</th>
         <th>Assenti</th>
-        <th>In missione</th>
       </tr>
     </thead>
     <tbody>
@@ -86,7 +86,6 @@
         <td>{{ group_vote.n_no }}</td>
         <td>{{ group_vote.n_abst }}</td>
         <td>{{ group_vote.n_absent }}</td>
-        <td>{{ group_vote.n_mission }}</td>
       </tr>
       {% endfor %}
     </tbody>
@@ -97,12 +96,11 @@
         <td>{{ votation.n_no }}</td>
         <td>{{ votation.n_abst }}</td>
         <td>{{ votation.n_absent }}</td>
-        <td>{{ votation.n_mission }}</td>
       </tr>
     </tfoot>
   </table>
 
-
+  <br>
   <section>
     <ul class="nav nav-tabs page-tabs">
       <li class="active">
@@ -115,12 +113,11 @@
         <table class="data text-right tablesorter">
           <thead>
           <tr>
-            <th class="sorter-left text-left">Politico</th>
+            <th class="sorter-left text-left span4">Politico</th>
             <th>Favorevole</th>
             <th>Contrario</th>
             <th>Astenuto</th>
             <th>Assente</th>
-            <th>In missione</th>
           </tr>
           </thead>
           <tbody>
@@ -152,11 +149,6 @@
                     <span class="label label-text">Assente</span>
                   {% endif %}
                 </td>
-                <td>
-                  {% if charge_vote.vote == charge_vote.VOTES.mission %}
-                    <span class="label label-info">Missione</span>
-                  {% endif %}
-                </td>
               </tr>
             {% endwith %}
           {% endfor %}
@@ -169,12 +161,11 @@
         <table class="data text-right tablesorter">
           <thead>
           <tr>
-            <th class="sorter-left text-left">Politico</th>
+            <th class="sorter-left text-left span4">Politico</th>
             <th>Favorevole</th>
             <th>Contrario</th>
             <th>Astenuto</th>
             <th>Assente</th>
-            <th>In missione</th>
           </tr>
           </thead>
           <tbody>
@@ -231,7 +222,7 @@
     <tr>
       <td>{{ votation.n_abst|circled }}</td>
       <th class="span6">Astenuti</th>
-      <td>{{ '-'|circled }}</td>
+      <td>{{ votation_difference|circled }}</td>
       <th class="span6">Voti di scarto</th>
     </tr>
     <tr>
@@ -251,19 +242,19 @@
     </ul>
     <div class="tab-content">
       <div class="tab-pane active" id="chart-tab-yes">
-        <p><img src="https://chart.googleapis.com/chart?cht=p&chs=368x154&chl={% for group_vote in votation.group_votes %}{{ group_vote.group.acronym }} {{ group_vote.n_yes }}{% if not forloop.last %}|{% endif %}{% endfor %}&chd=t:{% for group_vote in votation.group_votes %}{{ group_vote.n_yes }}{% if not forloop.last %},{% endif %}{% endfor %}&chco=CC0000,FFFF33">
+        <p><img src="https://chart.googleapis.com/chart?cht=p&chs=368x154&chl={% for group_vote in votation.group_votes %}{{ group_vote.group.acronym }} {{ group_vote.n_yes }}{% if not forloop.last %}|{% endif %}{% endfor %}&chd=t:{% for group_vote in votation.group_votes %}{{ group_vote.n_yes }}{% if not forloop.last %},{% endif %}{% endfor %}&chco=285698,e2e4e6">
         </p>
       </div>
       <div class="tab-pane" id="chart-tab-no">
-        <p><img src="https://chart.googleapis.com/chart?cht=p&chs=368x154&chl={% for group_vote in votation.group_votes %}{{ group_vote.group.acronym }} {{ group_vote.n_no }}{% if not forloop.last %}|{% endif %}{% endfor %}&chd=t:{% for group_vote in votation.group_votes %}{{ group_vote.n_no }}{% if not forloop.last %},{% endif %}{% endfor %}&chco=CC0000,FFFF33">
+        <p><img src="https://chart.googleapis.com/chart?cht=p&chs=368x154&chl={% for group_vote in votation.group_votes %}{{ group_vote.group.acronym }} {{ group_vote.n_no }}{% if not forloop.last %}|{% endif %}{% endfor %}&chd=t:{% for group_vote in votation.group_votes %}{{ group_vote.n_no }}{% if not forloop.last %},{% endif %}{% endfor %}&chco=285698,e2e4e6">
         </p>
       </div>
       <div class="tab-pane" id="chart-tab-abst">
-        <p><img src="https://chart.googleapis.com/chart?cht=p&chs=368x154&chl={% for group_vote in votation.group_votes %}{{ group_vote.group.acronym }} {{ group_vote.n_abst }}{% if not forloop.last %}|{% endif %}{% endfor %}&chd=t:{% for group_vote in votation.group_votes %}{{ group_vote.n_abst }}{% if not forloop.last %},{% endif %}{% endfor %}&chco=CC0000,FFFF33">
+        <p><img src="https://chart.googleapis.com/chart?cht=p&chs=368x154&chl={% for group_vote in votation.group_votes %}{{ group_vote.group.acronym }} {{ group_vote.n_abst }}{% if not forloop.last %}|{% endif %}{% endfor %}&chd=t:{% for group_vote in votation.group_votes %}{{ group_vote.n_abst }}{% if not forloop.last %},{% endif %}{% endfor %}&chco=285698,e2e4e6">
         </p>
       </div>
       <div class="tab-pane" id="chart-tab-rebels">
-        <p><img src="https://chart.googleapis.com/chart?cht=p&chs=368x154&chl={% for group_vote in votation.group_votes %}{{ group_vote.group.acronym }} {{ group_vote.n_rebels }}{% if not forloop.last %}|{% endif %}{% endfor %}&chd=t:{% for group_vote in votation.group_votes %}{{ group_vote.n_rebels }}{% if not forloop.last %},{% endif %}{% endfor %}&chco=CC0000,FFFF33">
+        <p><img src="https://chart.googleapis.com/chart?cht=p&chs=368x154&chl={% for group_vote in votation.group_votes %}{{ group_vote.group.acronym }} {{ group_vote.n_rebels }}{% if not forloop.last %}|{% endif %}{% endfor %}&chd=t:{% for group_vote in votation.group_votes %}{{ group_vote.n_rebels }}{% if not forloop.last %},{% endif %}{% endfor %}&chco=285698,e2e4e6">
         </p>
       </div>
     </div>
@@ -271,71 +262,11 @@
 
   <hr>
 
-  <section>
-    <h3>Commenti (20)</h3>
-    <ul class="comments-list">
-      <li>
-        <a href="#"><img src="{{ STATIC_URL }}img/placehold/50.gif" /></a>
-        <div>
-          <p>
-            <a href="#">User</a>
-            Lorem ipsum dolor sit amet,consectetuer adipiscing elit. Suspendisse ut purus.
-          </p>
-          <i class="hand-ok hand-active"></i> &middot; 05 Feb 2012  &middot; <a href="#">Mi piace</a> <i class="hand-like"></i> 10
-        </div>
-      </li>
-      <li class="bg-highlight">
-        <a href="#"><img src="{{ STATIC_URL }}img/placehold/50.gif" /></a>
-        <div>
-          <p>
-            <a href="#">User</a>
-            Lorem ipsum dolor sit amet,consectetuer adipiscing elit. Suspendisse ut purus.
-          </p>
-          <i class="hand-ok hand-active"></i> &middot; 06 Feb 2012  &middot; <a href="#">Mi piace</a> <i class="hand-like"></i> 10
-        </div>
-      </li>
-      <li>
-        <a href="#"><img src="{{ STATIC_URL }}img/placehold/50.gif" /></a>
-        <div>
-          <p>
-            <a href="#">User</a>
-            Lorem ipsum dolor sit amet,consectetuer adipiscing elit. Suspendisse ut purus.
-          </p>
-          <i class="hand-ok hand-active"></i> &middot; 07 Feb 2012  &middot; <a href="#">Non mi piace più</a> <i class="hand-like"></i> 10
-        </div>
-      </li>
-    </ul>
-
-    {% if request.user.is_authenticated %}
-      <form id="comment-form" action="#" method="post" class="form-inline box">
-        <p>
-          <textarea name="" class="input-expanded" data-plugin="autogrow" placeholder="Inserisci un commento" id="comment-form-text" rows="1"></textarea>
-        </p>
-        <button type="submit" class="btn btn-mini pull-right" id="comment-form-submit">{% trans 'Post' %} </button>
-        <p>
-          <label>Scegli la posizione</label>
-        </p>
-      </form>
-    {% endif %}
-
-    <p class="box">
-      <a href="#">Leggi tutti</a> <i class="icon-play-down"></i>
-    </p>
-  </section>
+  {% include 'commons/comments.html' with object=votation %}
 
   <hr>
 
-  <section>
-    <h3>Ultime sul Voto <img src="{{ STATIC_URL }}img/feed-icon-14x14.png" alt="" /></h3>
+  {% news_for_object registered_user.get_profile as i_news %}
+  {% include 'commons/news_list.html' with news_list=i_news news_title='Ultime sul Voto' %}
 
-    <ul class="list-simple">
-      <li>01.01.2012 - Mario Rossi ha commentato il voto</li>
-      <li>01.01.2012 - Mario Rossi ha commentato il voto</li>
-      <li>01.01.2012 - Mario Rossi ha commentato il voto</li>
-    </ul>
-
-    <p class="box">
-      <a href="#">Leggi tutti</a> <i class="icon-play-down"></i>
-    </p>
-  </section>
 {% endblock sidebar %}

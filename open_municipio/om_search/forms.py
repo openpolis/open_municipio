@@ -5,6 +5,7 @@ class RangeFacetedSearchForm(SearchForm):
 
     def __init__(self, *args, **kwargs):
         self.selected_facets = kwargs.pop("selected_facets", [])
+        self.act_url = kwargs.pop("act_url", [])
         super(RangeFacetedSearchForm, self).__init__(*args, **kwargs)
 
     def no_query_found(self):
@@ -16,6 +17,9 @@ class RangeFacetedSearchForm(SearchForm):
     def search(self):
         sqs = super(RangeFacetedSearchForm, self).search()
 
+        # filter for votations in single act
+        if self.act_url:
+            sqs = sqs.filter(act_url=self.act_url)
 
         # We need to process each facet to ensure that the field name and the
         # value are quoted correctly and separately:

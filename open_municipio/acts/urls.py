@@ -19,6 +19,7 @@ sqs = SearchQuerySet().filter(django_ct='acts.act').\
     query_facet('pub_date', ActSearchView.THREEDAYS).\
     query_facet('pub_date', ActSearchView.ONEMONTH).\
     query_facet('pub_date', ActSearchView.ONEYEAR).\
+    order_by('-pub_date').\
     highlight()
 
 urlpatterns = patterns('',

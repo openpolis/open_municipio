@@ -2,14 +2,16 @@
 
 {% load om_utils %}
 {% load monitoring_tags %}
+{% load thumbnail %}
+
 
 {% block title %}Organi politici | Consiglio{% endblock title %}
-{% block content_header %}Organi politici{% endblock %}
+{% block content_header %}Consiglio{% endblock %}
 {% block institutions_class %}active{% endblock %}
 
 {% block content %}
 
-  <h1>Consiglio</h1>
+  <h2>Consiglio</h2>
   <ul class="list-floated clearfix unstyled party-people">
     <!-- president -->
     <li>
@@ -40,11 +42,18 @@
 
   </ul>
 
+  <hr class="big">
+
   <section>
     {% for group in groups %}
       {% if group.is_current %}
         <div class="party-people">
-          <h2><img src="{{ STATIC_URL }}img/placehold/50.gif">{{ group.name }} ({{ group.acronym }})</h2>
+          <h2>
+              {% thumbnail group.img "50x50" crop="center" as im %}
+                  <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+              {% endthumbnail %}
+            {{ group.name }} ({{ group.acronym }})
+          </h2>
           {% if group.resources|length > 0 %}
           <address>
             {% for r in group.resources %}
@@ -98,34 +107,37 @@
             </div>
           </div>
         </div>
+        <hr class="big">
       {% endif %}
     {% endfor %}
   </section>
 
   <section>
-    <h2>Agenda del consiglio</h2>
-
-    <div class="row-fluid">
-      <div class="span4">
-        <div class="calendar" data-events=".calendar_events"></div>
-      </div>
-      <div class="span8">
-        <ul class="list-floated unstyled calendar_events">
-          {% for event in events %}
-            {% if not event.is_past_due %}
-              <li data-day="{{ event.date|date:"d/m/Y" }}"><strong>{{ event.date|date:"d.m.Y" }}</strong> <a
-                  href="{{ event.act.downcast.get_absolute_url }}">{{ event.act.title }}</a></li>
-            {% endif %}
-          {% endfor %}
-        </ul>
+    <h3>Agenda del Consiglio</h3>
+    {% include 'commons/calendar.html' with events=events %}
+    {% comment %}
+    <div class="calendar_container">
+      <div class="row-fluid">
+        <div class="span4">
+          <div class="calendar" data-events=".calendar_events"></div>
+        </div>
+        <div class="span8">
+          <ul class="data-list calendar_events">
+            {% for event in events %}
+              {% if not event.is_past_due %}
+                <li data-day="{{ event.date|date:"m/d/Y" }}"><strong>{{ event.date|date:"d.m.Y" }}</strong> <a href="{{ event.act.downcast.get_absolute_url }}">{{ event.act.title }}</a></li>
+              {% endif %}
+            {% endfor %}
+          </ul>
+        </div>
       </div>
     </div>
+    {% endcomment %}
   </section>
 
 {% endblock %}
 
 {% block sidebar %}
-
   <h2>Commissioni</h2>
   <ul class="list-plain">
       {% for committee in committees %}
@@ -171,30 +183,12 @@
   <hr>
 
 
-  <h2>Ultime sul Consiglio <img src="{{ STATIC_URL }}img/feed-icon-14x14.png" alt="" /></h2>
-  <ul class="list-simple">
-    <li><a href="#">Mario Rossi ha commentato il voto</a></li>
-    <li><a href="#">Il voto è inserito nell'ordine del giorno N° 13516</a></li>
-    <li><a href="#">Barcaiuolo, Pellacani, Bellei, Morandi, Santoro (PdL) hanno presentato la mozione...</a></li>
-  </ul>
-
-  <p class="box">
-    <a href="#">Leggi tutti</a> <i class="icon-play-down"></i>
-  </p>
+  {% include 'commons/news_list.html' with news_list=FILLME news_title='Ultime sul Consiglio' %}
 {% endblock %}
 
-
-{% comment %}Calendar blocks{% endcomment %}
-{% block head_css_includes %}
-    {{ block.super }}
-    <link rel="stylesheet" href="{{ STATIC_URL }}css/ui-custom-theme/jquery-ui-1.8.16.custom.css">
-    <!--[if IE]><link rel="stylesheet" href="{{ STATIC_URL }}css/ui-custom-theme/jquery-ui-1.8.16.ie.css"><![endif]-->
-{% endblock %}
 
 {% block footer_js_includes %}
     {{ block.super }}
-    <script src="{{ STATIC_URL }}js/jquery-ui-1.8.18.custom.min.js"></script>
-    <script src="{{ STATIC_URL }}js/jquery-ui.calendar.js"></script>
     <script src="{{ STATIC_URL }}js/jquery.submitlink.js"></script>
 {% endblock %}
 

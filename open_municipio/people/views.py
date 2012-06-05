@@ -154,7 +154,7 @@ class CommitteeDetailView(DetailView):
         events = Event.future.filter(institution=self.object)
 
         extra_context = {
-            'committee_list': committee_list,
+            'committees': committee_list,
             'members': members,
             'president': president,
             'resources': resources,

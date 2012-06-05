@@ -1,1 +1,64 @@
-SUMMARY
+{% load om_utils %}
+<table id="monitoring-table">
+  <tr>
+    <td>
+      {{ object.monitoring_users_count|default:'0'|circled }}
+    </td>
+    <td>
+      {% if user.is_authenticated and not user.get_profile.person %}
+        {% if is_user_monitoring %}
+          <h4>Cittadini che monitorano l'atto, incluso te</h4>
+          <form action="{% url om_monitoring_stop %}" method="post">{% csrf_token %}
+            {{ monitoring_form }}
+            <button type="submit" class="btn btn-info btn-mini">Non monitorare più</button>
+          </form>
+        {% else %}
+          <h4>Cittadini che monitorano {{ object_type }}</h4>
+          <i class="icon-plus-sign"></i>
+          <form action="{% url om_monitoring_start %}" method="post">{% csrf_token %}
+            {{ monitoring_form }}
+            <button type="submit" class="btn btn-info btn-mini">Monitora</button>
+          </form>
+        {% endif %}
+      {% else %}
+        <h4>Cittadini che monitorano {{ object_type }}</h4>
+      {% endif %}
+    </td>
+  </tr>
+  {% if show_politicians %}
+    <tr>
+      <td>
+        {{ object.monitoring_politicians|length|circled }}
+      </td>
+      <td>
+        {% if user.is_authenticated and user.get_profile.person %}
+          {% if is_user_monitoring %}
+            <h4>Politici monitorano {{ object_type }}, incluso te</h4>
+            <form action="{% url om_monitoring_stop %}" method="post">{% csrf_token %}
+              {{ monitoring_form }}
+              <button type="submit" class="btn btn-info btn-mini">Non monitorare più</button>
+            </form>
+          {% else %}
+            <h4>Politici monitorano {{ object_type }}</h4>
+            <i class="icon-plus-sign"></i>
+            <form action="{% url om_monitoring_start %}" method="post">{% csrf_token %}
+              {{ monitoring_form }}
+              <button type="submit" class="btn btn-info btn-mini">Monitora</button>
+            </form>
+          {% endif %}
+        {% else %}
+          <h4>Politici monitorano {{ object_type }}</h4>
+        {% endif %}
+      </td>
+    </tr>
+  {% endif %}
+</table>
+
+{% if user.is_authenticated %}
+  {% comment %}Send Monitoring form with anchor link{% endcomment %}
+  <script type="text/javascript">
+    $(document).ready(function () {
+      $('#monitoring-table form').submitLink();
+    });
+  </script>
+{% endif %}

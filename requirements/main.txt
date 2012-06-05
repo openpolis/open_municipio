@@ -9,4 +9,6 @@ django-extensions
 django-haystack
 pysolr
 lxml
+pil
+sorl-thumbnail
 

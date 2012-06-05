@@ -3,7 +3,7 @@ from django.core.urlresolvers import reverse
 
 from open_municipio.votations.models import Votation
 
-from open_municipio.acts.models import Agenda, Deliberation, Interrogation, Interpellation, Motion
+from open_municipio.acts.models import Agenda, Deliberation, Interrogation, Interpellation, Motion, Act
 
 from open_municipio.om_search.forms import RangeFacetedSearchForm
 from open_municipio.om_search.views import ExtendedFacetedSearchView
@@ -36,6 +36,8 @@ class VotationSearchView(ExtendedFacetedSearchView):
         # facet expressions:
         form_kwargs['selected_facets'] = self.request.GET.getlist("selected_facets")
 
+        form_kwargs['act_url'] = self.request.GET.get("act_url")
+
         return super(VotationSearchView, self).build_form(form_kwargs)
 
     def extra_context(self):
@@ -43,7 +45,12 @@ class VotationSearchView(ExtendedFacetedSearchView):
         Add extra content here, when needed
         """
         extra = super(VotationSearchView, self).extra_context()
+        extra['act_votations'] = False
         extra['base_url'] = reverse('om_votation_search') + '?' + extra['params'].urlencode()
+        if self.request.GET.get("act_url"):
+            act_id = int(self.request.GET.get('act_url').split("/")[-2])
+            extra['act_votations'] = True
+            extra['act'] = Act.objects.get(pk=act_id).downcast()
         return extra
 
 
@@ -53,33 +60,15 @@ class VotationDetailView(DetailView):
     """
     model = Votation
     template_name = 'votations/votation_detail.html'
+    context_object_name = 'votation'
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super(VotationDetailView, self).get_context_data(**kwargs)
 
-        votation = self.object
+        # get last two calendar events
 
-        # So we have an act. What kind of act, specifically? (FIXME: I
-        # don't like the way act types are hardcoded here with their
-        # Italian names.)
-        if votation.act.downcast().__class__() == Agenda().__class__():
-            act_type = "Ordine del Giorno"
-        elif votation.act.downcast().__class__() == Deliberation().__class__():
-            act_type = "Delibera"
-        elif votation.act.downcast().__class__() == Interpellation().__class__():
-            act_type = "Interpellanza"
-        elif votation.act.downcast().__class__() == Interrogation().__class__():
-            act_type = "Interrogazione"
-        elif votation.act.downcast().__class__() == Motion().__class__():
-            act_type = "Mozione"
-
-        votation.act_type = act_type
-
-        extra_context = {
-            'votation': votation,
-            }
-
-        # Update context with extra values we need
-        context.update(extra_context)
+        votation = self.get_object()
+        context['votation_difference'] = abs(votation.n_yes - votation.n_no)
         return context
+

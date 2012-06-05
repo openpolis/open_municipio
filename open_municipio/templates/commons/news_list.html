@@ -1,0 +1,16 @@
+<section>
+  <h3>
+    {{ news_title|default:'Ultime novità' }}
+    {% comment %}<img src="{{ STATIC_URL }}img/feed-icon-14x14.png" alt="" />{% endcomment %}
+  </h3>
+
+  <ul class="feed-list">
+    {% for n in news_list %}
+      <li>{{ n.created|date:"d-m-Y" }} - {{ n.text|safe }}</li>
+    {% endfor %}
+  </ul>
+
+  <p class="box">
+    <a href="{{ news_expands_url|default:'#' }}">{{ news_expands|default:'Leggi tutte' }}</a> <i class="icon-play-down"></i>
+  </p>
+</section>
