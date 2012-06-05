@@ -72,8 +72,8 @@ urlpatterns += patterns('',
 urlpatterns += patterns('',
     url(r'^accounts/', include('open_municipio.registration.backends.om.urls')),
     url(r'^users/', include('open_municipio.users.urls')),
+    url(r'', include('social_auth.urls')),
 )
-
 
 # search test
 urlpatterns += patterns('',

@@ -96,6 +96,9 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.static",
     "django.contrib.messages.context_processors.messages",
     "django.core.context_processors.request",
+    "social_auth.context_processors.social_auth_by_name_backends",
+    "social_auth.context_processors.social_auth_backends",
+    "social_auth.context_processors.social_auth_by_type_backends",
 )
 
 INSTALLED_APPS = (
@@ -134,6 +137,16 @@ INSTALLED_APPS = (
     'open_municipio.newscache',
     'haystack',
     'sorl.thumbnail',
+    'social_auth',
+)
+
+AUTHENTICATION_BACKENDS = (
+    'social_auth.backends.twitter.TwitterBackend',
+    'social_auth.backends.facebook.FacebookBackend',
+    'social_auth.backends.google.GoogleOAuth2Backend',
+    'social_auth.backends.contrib.github.GithubBackend',
+    'social_auth.backends.OpenIDBackend',
+    'django.contrib.auth.backends.ModelBackend',
 )
 
 COMMENTS_APP = 'open_municipio.om_comments'
