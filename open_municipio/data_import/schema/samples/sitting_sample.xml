@@ -7,35 +7,19 @@
         <om:Votation seq_n="1" votation_type="Palese" presents="39" partecipants="39" outcome="approved" legal_number="20" date_time="2010-02-15T21:00:00" counter_yes="23" counter_no="16" counter_abs="0">
             <om:Subject >Titolo che descrive l'atto per esteso</om:Subject>
             <om:Votes>
-                <om:ChargeVote chargeID="0011" groupID="0001" vote="yes">
-                    <om:ChargeXRef xlink:href="people_sample.xml#0012" xlink:type="simple"/>
-                </om:ChargeVote>
-                <om:ChargeVote chargeID="0010" groupID="0002" vote="no">
-                    <om:ChargeXRef xlink:href="people_sample.xml#0010" xlink:type="simple"/>
-                </om:ChargeVote>
-                <om:ChargeVote chargeID="0013" groupID="0001" vote="yes">
-                    <om:ChargeXRef xlink:href="people_sample.xml#0013" xlink:type="simple"/>
-                </om:ChargeVote>
-                <om:ChargeVote chargeID="0014" groupID="0002" vote="no">
-                    <om:ChargeXRef xlink:href="people_sample.xml#0014" xlink:type="simple"/>
-                </om:ChargeVote>
+                <om:ChargeVote chargeID="0011" groupID="0001" vote="yes" />
+                <om:ChargeVote chargeID="0010" groupID="0002" vote="no" />
+                <om:ChargeVote chargeID="0013" groupID="0001" vote="yes" />
+                <om:ChargeVote chargeID="0014" groupID="0002" vote="no" />
             </om:Votes>            
         </om:Votation>             
         <om:Votation seq_n="2" votation_type="Palese" presents="39" partecipants="37" outcome="approved" legal_number="20" date_time="2010-02-15T21:00:00" counter_yes="22" counter_no="15" counter_abs="0">
             <om:Subject />
             <om:Votes>
-                <om:ChargeVote chargeID="0011" groupID="0001" vote="no">
-                    <om:ChargeXRef xlink:href="people_sample.xml#0011" xlink:type="simple"/>
-                </om:ChargeVote>
-                <om:ChargeVote chargeID="0013" groupID="0001" vote="yes">
-                    <om:ChargeXRef xlink:href="people_sample.xml#0013" xlink:type="simple"/>
-                </om:ChargeVote>
-                <om:ChargeVote chargeID="0010" groupID="0002" vote="no">
-                    <om:ChargeXRef xlink:href="people_sample.xml#0010" xlink:type="simple"/>
-                </om:ChargeVote>
-                <om:ChargeVote chargeID="0014" groupID="0002" vote="no">
-                    <om:ChargeXRef xlink:href="people_sample.xml#0014" xlink:type="simple"/>
-                </om:ChargeVote>
+                <om:ChargeVote chargeID="0011" groupID="0001" vote="no" />
+                <om:ChargeVote chargeID="0013" groupID="0001" vote="yes" />
+                <om:ChargeVote chargeID="0010" groupID="0002" vote="no" />
+                <om:ChargeVote chargeID="0014" groupID="0002" vote="no" />
             </om:Votes>            
         </om:Votation>             
     </om:Sitting>

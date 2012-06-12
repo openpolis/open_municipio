@@ -88,21 +88,13 @@
 		<xs:attribute name="note" type="xs:string"/>
 	</xs:complexType>
 
-    <xs:element name="ActSubscriber">
-        <xs:complexType>
-            <xs:attribute name="chargeID" type="xs:string" />
-        </xs:complexType>
-    </xs:element>
-
 	<!-- an act can be subscribed by institutions -->
 	<xs:element name="ActSubscribers">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element maxOccurs="unbounded" name="ActSupport">
+				<xs:element maxOccurs="unbounded" name="ActSubscriber">
 					<xs:complexType>
-						<xs:sequence>
-							<xs:element ref="ActSubscriber"/>
-						</xs:sequence>
+                        <xs:attribute name="chargeID" type="xs:string" />
 						<xs:attribute name="date" type="xs:date"/>
 					</xs:complexType>
 				</xs:element>
@@ -893,9 +885,6 @@
 
 	<xs:element name="ChargeVote">
 		<xs:complexType>
-			<xs:sequence minOccurs="0">
-				<xs:element maxOccurs="1" ref="ChargeXRef"/>
-			</xs:sequence>
 			<xs:attribute name="vote">
 				<xs:simpleType>
 					<xs:restriction base="xs:token">
@@ -961,15 +950,24 @@
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:attribute>
+            <xs:attribute name="votation_type">
+                <xs:simpleType>
+                    <xs:restriction base="xs:token">
+                        <xs:enumeration value="Palese" />
+                        <xs:enumeration value="Segreta" />
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
 		</xs:complexType>
 	</xs:element>
+
 	<xs:element name="ChargeXRef">
 		<xs:complexType>
 			<xs:attribute ref="xlink:href" use="required"/>
 			<xs:attribute ref="xlink:type" fixed="simple"/>
 			<xs:attribute name="description" type="xs:string"/>
 		</xs:complexType>
-	</xs:element>
+	</xs:element> 
 	<xs:element name="People">
 		<xs:complexType>
 			<xs:sequence>

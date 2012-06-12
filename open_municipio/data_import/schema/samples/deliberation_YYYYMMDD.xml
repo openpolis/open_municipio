@@ -48,17 +48,11 @@
     E' possibile che l'elenco di firmatari vari nel tempo.
     -->
     <om:ActSubscribers type="first_subscriber">
-        <om:ActSupport date="2012-03-05">
-            <om:ChargeXRef xlink:href="people.xml#MICA" xlink:type="simple"/>
-        </om:ActSupport>
-        <om:ActSupport date="2012-03-07">
-            <om:ChargeXRef xlink:href="people.xml#CINI" xlink:type="simple"/>
-        </om:ActSupport>
+        <om:ActSubscriber date="2012-03-05" chargeID="MICA" />
+        <om:ActSubscriber date="2012-03-07" chargeID="CINI"  />
     </om:ActSubscribers>
     <om:ActSubscribers type="co_signer">
-        <om:ActSupport>
-            <om:ChargeXRef xlink:href="people.xml#ANRE" xlink:type="simple"/>
-        </om:ActSupport>
+        <om:ActSubscriber chargeID="ANRE" /> 
     </om:ActSubscribers> 
     
     <!-- 

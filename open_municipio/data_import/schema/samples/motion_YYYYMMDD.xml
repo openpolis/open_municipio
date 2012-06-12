@@ -25,12 +25,8 @@
     </om:Content>
     
     <om:ActSubscribers>
-        <om:ActSupport  date="2010-03-12">
-            <om:ChargeXRef xlink:href="people.xml#MICA" xlink:type="simple"/>
-        </om:ActSupport>
-        <om:ActSupport  date="2010-03-12">
-            <om:ChargeXRef xlink:href="people.xml#CINI" xlink:type="simple"/>
-        </om:ActSupport>
+        <om:ActSubscriber  date="2010-03-12" chargeID="MICA" />
+        <om:ActSubscriber  date="2010-03-12" chargeID="CINI" />
     </om:ActSubscribers>
     
     <!-- 

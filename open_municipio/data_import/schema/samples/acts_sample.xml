@@ -36,7 +36,7 @@
 					</Section>
 				</Content>
 				<ActSubscribers type="first_subscriber">
-					<ChargeXRef href="http://www.openmunicipio.it/ilsindaco"/>
+					<ActSubscriber chargeID="ilsindaco"/>
 				</ActSubscribers>
 				<MotionTransition name="Presented" date="2012-01-01T00:00:00" />
 			</Motion>
@@ -45,10 +45,10 @@
 					Contenuto della mozione
 				</Content>
 				<ActSubscribers type="first_subscriber">
-					<ChargeXRef href="#assessoresport" />
+					<ActSubscriber chargeID="assessoresport" />
 				</ActSubscribers>
 				<ActSubscribers type="cosignatory">
-					<ChargeXRef href="#assessoretempolibero" />
+					<ActSubscriber chargeID="assessoretempolibero" />
 				</ActSubscribers>
 				<MotionTransition name="Presented" date="2012-01-01T00:00:00" />
 				<MotionTransition name="Voted" date="2012-01-02T00:00:00" />
