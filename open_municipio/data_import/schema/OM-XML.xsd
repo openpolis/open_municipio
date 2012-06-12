@@ -88,6 +88,11 @@
 		<xs:attribute name="note" type="xs:string"/>
 	</xs:complexType>
 
+    <xs:element name="ActSubscriber">
+        <xs:complexType>
+            <xs:attribute name="chargeID" type="xs:string" />
+        </xs:complexType>
+    </xs:element>
 
 	<!-- an act can be subscribed by institutions -->
 	<xs:element name="ActSubscribers">
@@ -96,7 +101,7 @@
 				<xs:element maxOccurs="unbounded" name="ActSupport">
 					<xs:complexType>
 						<xs:sequence>
-							<xs:element ref="ChargeXRef"/>
+							<xs:element ref="ActSubscriber"/>
 						</xs:sequence>
 						<xs:attribute name="date" type="xs:date"/>
 					</xs:complexType>
@@ -977,7 +982,6 @@
 	</xs:element>
 	<xs:element name="Subject">
 		<xs:complexType mixed="true">
-			<xs:attribute name="sintetic" type="xs:string"/>
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="SittingXRef">
