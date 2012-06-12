@@ -912,7 +912,7 @@
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:attribute>
-			<xs:attribute name="componentID" type="xs:string"/>
+			<xs:attribute name="chargeID" type="xs:string"/>
 			<xs:attribute name="groupID" type="xs:string"/>
 		</xs:complexType>
 	</xs:element>
