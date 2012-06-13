@@ -329,7 +329,7 @@ First of all, we need to perform a few server-level configuration tasks; then, w
 
     .. code-block:: bash 
     
-        ln -s $SOLR_HOME/context.xml /etc/tomcat6/conf/Catalina/localhost/solr.xml
+        ln -s $SOLR_HOME/context.xml /etc/tomcat6/Catalina/localhost/solr.xml
 
 #. Restart Tomcat:
 
@@ -359,8 +359,8 @@ new core to the existing set of cores, you have to edit this file.  Follow these
         <?xml version="1.0" encoding="UTF-8" ?>
         <solr persistent="false" sharedLib="lib">
             <cores adminPath="/admin/cores" shareSchema="true">
-                <core name="XXX.openmunicipio.it" instanceDir="XXX.openmunicipio.it" dataDir="${solr.data.dir:../../data}/XXX.openmunicipio.it" />
-                <core name="YYY.openmunicipio.it" instanceDir="YYY.openmunicipio.it" dataDir="${solr.data.dir:../../data}/YYY.openmunicipio.it" />
+                <core name="om-XXX" instanceDir="XXX.openmunicipio.it" dataDir="${solr.data.dir:../../data}/XXX.openmunicipio.it" />
+                <core name="om-YYY" instanceDir="YYY.openmunicipio.it" dataDir="${solr.data.dir:../../data}/YYY.openmunicipio.it" />
              </cores>
         </solr>
 
@@ -368,7 +368,7 @@ new core to the existing set of cores, you have to edit this file.  Follow these
 
    .. code-block:: xml
 
-      <core name="ZZZ.openmunicipio.it" instanceDir="ZZZ.openmunicipio.it" dataDir="${solr.data.dir:../../data}/ZZZ.openmunicipio.it"/>
+      <core name="om-ZZZ" instanceDir="ZZZ.openmunicipio.it" dataDir="${solr.data.dir:../../data}/ZZZ.openmunicipio.it"/>
 
    where the ``name`` attribute is a label for the core and the ``instanceDir`` attribute is the the configuration directory
    for this core (under ``$SOLR_HOME/cores``).
@@ -388,17 +388,11 @@ new core to the existing set of cores, you have to edit this file.  Follow these
 #. Create the directory ``/home/solr/data/ZZZ.openmunicipio.it``.  Tomcat needs write access to it, so make sure that
    filesystem permissions are properly set.
 
-#. Edit the The ``solrconfig.xml`` file in ``ZZZ.openmunicipio.it/cores/conf``, so that the ``dataDir`` element looks this way:
-
-   .. sourcecode:: xml
-
-      <dataDir>${solr.data.dir:/home/solr/data/ZZZ.openmunicipio.it}</dataDir>
-
 #. Restart Tomcat.
 
-Now Solr should be up and running, and accessible at the URL ``http://hostname:8080/solr``. There, you should see a link
-similar to *Admin ZZZ.openmunicipio.it*, pointing to ``http://hostname:8080/solr/admin/ZZZ.openmunicipio.it``.  At this
-point you may even query the search index, but no results would be returned -- since no content has been indexed, yet.
+Now Solr should be up and running, and accessible at the URL ``http://localhost:8080/solr``. There, you should see a link
+similar to *Admin om-ZZZ*, pointing to ``http://localhost:8080/solr/admin/om-ZZZ``.  At this point you may even query
+the search index, but no results would be returned -- since no content has been indexed, yet.
 
 
 Modifying core-specific configuration
