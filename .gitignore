@@ -15,6 +15,7 @@ open_municipio/media
 open_municipio/*/migrations
 solr
 uploads/
+logfile*
 docs/_build
 docs/ignored
 docs/dev/data_import/README-it.html
