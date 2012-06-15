@@ -138,6 +138,7 @@ INSTALLED_APPS = (
     'haystack',
     'sorl.thumbnail',
     'social_auth',
+    'open_municipio.om_auth',
 )
 
 AUTHENTICATION_BACKENDS = (
@@ -154,6 +155,9 @@ COMMENTS_APP = 'open_municipio.om_comments'
 # registration settings
 ACCOUNT_ACTIVATION_DAYS = 7 # One-week activation window; you may, of course, use a different value.
 REGISTRATION_AUTO_LOGIN = True
+
+# ''django-social-auth'' settings
+FACEBOOK_EXTENDED_PERMISSIONS = ['email']
 
 # use app shortcut (app.class)
 AUTH_PROFILE_MODULE = 'users.UserProfile'

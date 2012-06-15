@@ -11,4 +11,4 @@ pysolr
 lxml
 pil
 sorl-thumbnail
-django-social-auth
+django-social-auth==0.6.9
