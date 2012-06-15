@@ -42,7 +42,7 @@ class Person(models.Model, MonitorizedItem):
 
     img = ImageField(upload_to="person_images", blank=True, null=True)
 
-# manager to handle the list of monitoring having as content_object this instance
+    # manager to handle the list of monitoring having as content_object this instance
     #monitoring_set = generic.GenericRelation(Monitoring, object_id_field='object_pk')
     
     class Meta:
@@ -705,7 +705,7 @@ class Institution(Body):
     def charges(self):
         """
         The QuerySet of all *current* charges (``InstitutionCharge`` instances) 
-        associated with this institution.  
+        associated with this institution.
         """
         return self.charge_set.current()
 

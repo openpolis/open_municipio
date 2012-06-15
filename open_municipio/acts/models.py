@@ -22,7 +22,7 @@ from open_municipio.people.models import Institution, InstitutionCharge, Sitting
 from open_municipio.taxonomy.managers import TopicableManager
 from open_municipio.taxonomy.models import Category, TaggedAct
 from open_municipio.locations.models import Location, TaggedActByLocation
-from open_municipio.monitoring.models import MonitorizedItem
+from open_municipio.monitoring.models import MonitorizedItem, Monitoring
 
 
 #
