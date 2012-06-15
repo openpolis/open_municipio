@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OpenMunicipio
+	xmlns="http://www.openmunicipio.it"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.openmunicipio.it OM-XML.xsd">
+	<People>
+		<Institutions>
+			<Mayor name="sior Sindaco">
+				<Charge id="ilsindaco">
+					<Person last_name="Poppi" first_name="Pippo"/>
+				</Charge>
+			</Mayor>
+			<Council >
+					<Charge id="assessoreuniverso" start_date="2011-01-01T00:00:00" >
+						<Person ssn="1112223334445556" last_name="AAAA" 
+							first_name="BBBB" />
+					</Charge>
+					<Charge  id="assessoresport" start_date="2011-01-01T00:00:00" end_date="2011-12-31T00:00:00">
+						<Person ssn="1231231231231234" last_name="Foo" first_name="Fie" birth_date="2008-01-01" sex="m" birth_place="Senigallia (AN)"/>
+					</Charge>
+					<Charge  id="assessoretempolibero" start_date="2011-01-01T00:00:00" end_date="2011-12-31T00:00:00">
+						<Person ssn="1231231231231234" last_name="Foo" first_name="Fie" birth_date="2008-01-01" sex="m" birth_place="Senigallia (AN)"/>
+					</Charge>
+					
+			</Council>
+		</Institutions>
+	</People>
+	<Acts>
+		<ActsCouncil>
+			<Motion id="M.123.a" title="This is a very important motion" >
+				<Content title="Title of the motion">
+					<Section title="Introduzione">
+					</Section>
+					<Section title="Capitolo 1">
+						This is the first and most important part of this motion
+					</Section>
+				</Content>
+				<ActSubscribers type="first_subscriber">
+					<ActSubscriber chargeID="ilsindaco"/>
+				</ActSubscribers>
+				<MotionTransition name="Presented" date="2012-01-01T00:00:00" />
+			</Motion>
+			<Motion id="M.123.b" title="This is a very important motion2" >
+				<Content title="Titolo della mozione" >
+					Contenuto della mozione
+				</Content>
+				<ActSubscribers type="first_subscriber">
+					<ActSubscriber chargeID="assessoresport" />
+				</ActSubscribers>
+				<ActSubscribers type="cosignatory">
+					<ActSubscriber chargeID="assessoretempolibero" />
+				</ActSubscribers>
+				<MotionTransition name="Presented" date="2012-01-01T00:00:00" />
+				<MotionTransition name="Voted" date="2012-01-02T00:00:00" />
+				<MotionTransition name="Accepted" date="2012-01-02T00:00:00" />
+			</Motion>
+		</ActsCouncil>
+	</Acts>
+</OpenMunicipio>

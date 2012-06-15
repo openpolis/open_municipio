@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<om:Sittings xmlns:xlink="http://www.w3.org/1999/xlink"
+ xmlns:om="http://www.openmunicipio.it"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://www.openmunicipio.it OM-XML.xsd">
+    <om:Sitting call="1" date="2011-11-23" num="12">
+        <om:Votation seq_n="1" votation_type="Palese" presents="39" partecipants="39" outcome="approved" legal_number="20" date_time="2010-02-15T21:00:00" counter_yes="23" counter_no="16" counter_abs="0">
+            <om:Subject >Titolo che descrive l'atto per esteso</om:Subject>
+            <om:Votes>
+                <om:ChargeVote chargeID="0011" groupID="0001" vote="yes" />
+                <om:ChargeVote chargeID="0010" groupID="0002" vote="no" />
+                <om:ChargeVote chargeID="0013" groupID="0001" vote="yes" />
+                <om:ChargeVote chargeID="0014" groupID="0002" vote="no" />
+            </om:Votes>            
+        </om:Votation>             
+        <om:Votation seq_n="2" votation_type="Palese" presents="39" partecipants="37" outcome="approved" legal_number="20" date_time="2010-02-15T21:00:00" counter_yes="22" counter_no="15" counter_abs="0">
+            <om:Subject />
+            <om:Votes>
+                <om:ChargeVote chargeID="0011" groupID="0001" vote="no" />
+                <om:ChargeVote chargeID="0013" groupID="0001" vote="yes" />
+                <om:ChargeVote chargeID="0010" groupID="0002" vote="no" />
+                <om:ChargeVote chargeID="0014" groupID="0002" vote="no" />
+            </om:Votes>            
+        </om:Votation>             
+    </om:Sitting>
+</om:Sittings>

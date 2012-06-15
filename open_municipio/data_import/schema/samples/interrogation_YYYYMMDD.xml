@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    Una Interrogation è una interrogazione,
+    che può ricevere una risposta o no.
+    
+    Attributi:
+    id - identifica l'atto internamente, 
+         secondo le specifiche del sistema informativo che lo genera
+    presentation_date - è la data della seduta in cui l'interrogazione è posta
+    title - è il titolo con cui l'interrogazione è identificata
+-->
+<om:Interrogation xmlns:xlink="http://www.w3.org/1999/xlink"
+ xmlns:om="http://www.openmunicipio.it"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://www.openmunicipio.it OM-XML.xsd" answer_type="written" 
+ id="2009/I/23" presentation_date="2009-09-25">
+    <!--
+        Il titolo della proposta, se possibile,
+        se non è possibile, il tag deve essere presente lo stesso, vuoto.
+    -->
+    <om:Title>
+        <![CDATA[
+        Interrogazione numero 23
+        ]]>
+    </om:Title>
+    
+    <!-- 
+        Testo dell'interrogazione.
+    -->
+    <om:Content>
+        <![CDATA[
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit, 
+        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+        ]]>
+    </om:Content>
+    <om:ActSubscribers>
+        <om:ActSubscriber  date="2009-09-25" chargeID="MICA" />
+        <om:ActSubscriber date="2009-09-25" chargeID="CINI" />
+    </om:ActSubscribers>
+    
+    <om:ActTargets>
+        <om:ChargeXRef xlink:href="people.xml#ANRE" xlink:type="simple"/>
+    </om:ActTargets>
+
+    <!-- 
+        Testo della motivazione per la domanda.
+        Non è sempre presente, ma se c'è va qui.
+    -->
+    <om:QuestionMotivationText>
+        <![CDATA[
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit, 
+        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+        ]]>
+    </om:QuestionMotivationText>
+    
+    <!-- 
+        Answer contiene i dettagli della risposta.
+        Il tag è presente solo se è stata data una risposta.
+        In quel caso il tag AnswerText deve essere presente.
+        La data della risposta è specificata nell'attributo answer_date di Answer.
+        ReplyText può contenere il testo del reply alla risposta.
+    -->
+    <om:Answer answer_date="2010-08-04">
+        <om:AnswerText>
+            <![CDATA[
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit, 
+            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+            ]]>
+        </om:AnswerText>
+        <om:ReplyText>
+            <![CDATA[
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit, 
+            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+            ]]>            
+        </om:ReplyText>
+    </om:Answer>
+    
+    <!-- 
+    Attachment (esempio per documento PDF)
+    Occorre specificare il tipo (PDF, DOC, XLS, ...)
+    e il link:
+     - xlink:type="sumple" (sempre)
+     - xlink:href="{PATH}" (path relativo rispetto al file xml)
+    -->
+    <om:Attachment xlink:href="docs/interrogazione_23.pdf" xlink:type="simple" type="PDF">
+        <!-- 
+        Descrizione breve del contenuto del documento
+        -->
+        <om:AttachmentDescription>
+            <![CDATA[
+            Scan dell'originale del documento.
+            ]]>        
+        </om:AttachmentDescription>
+        
+        <!-- 
+        Contenuto testuale del documento allegato (se disponibile)
+        -->
+        <om:AttachmentContent>
+            <![CDATA[
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit, 
+            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+            ]]>        
+        </om:AttachmentContent>
+        
+    </om:Attachment>
+    
+</om:Interrogation>

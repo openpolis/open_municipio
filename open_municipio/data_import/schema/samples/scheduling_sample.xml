@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<om:Scheduling xmlns:xlink="http://www.w3.org/1999/xlink"
+ xmlns:om="http://www.openmunicipio.it"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://www.openmunicipio.it OM-XML.xsd">
+    <om:Event>
+        <om:ActXRef xlink:href="deliberation_001.xml#2012/D/001" xlink:type="simple"/>
+        <om:Description>
+            Discussione e approvazione in consiglio
+        </om:Description>
+    </om:Event>
+    <om:Event>
+        <om:ActXRef xlink:href="deliberation_002.xml#2012/D/002" xlink:type="simple"/>
+        <om:Description>
+            Votazione emendamenti
+        </om:Description>
+    </om:Event>
+</om:Scheduling>
