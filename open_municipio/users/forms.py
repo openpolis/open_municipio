@@ -18,7 +18,7 @@ class UserProfileForm(ModelForm):
 class ProfileSocialRegistrationForm(ModelForm):
     class Meta:
         model = UserProfile
-        exclude = ('user',)
+        exclude = ('user', 'person')
 
 
 class UserSocialRegistrationForm(ModelForm):
@@ -30,6 +30,8 @@ class UserSocialRegistrationForm(ModelForm):
 class UserRegistrationForm(RegistrationFormUniqueEmail):
     first_name = forms.CharField(max_length=30, required=True, label=_('First Name'))
     last_name = forms.CharField(max_length=30, label=_('Last Name'))
+    uses_nickname = forms.BooleanField(required=False, label=_('Show my nickname, not my name'))
+    says_is_politician = forms.BooleanField(required=False, label=_('I am a politician'))
     wants_newsletter = forms.BooleanField(required=False, label=_('Wants newsletter'))
     privacy_level = forms.ChoiceField(choices=UserProfile.PRIVACY_LEVELS, label=_('Privacy level'))
     city = forms.CharField(max_length=128, label=_('Location'))
