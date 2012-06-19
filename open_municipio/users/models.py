@@ -115,7 +115,7 @@ class UserProfile(models.Model):
 
 
 
-@receiver(post_save, sender=UserProfile)
+#@receiver(post_save, sender=UserProfile)
 def update_group(**kwargs):
     """
     see if user has been linked/unlinked to a politician and

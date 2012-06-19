@@ -69,10 +69,8 @@
         </p>
       {% else %}
       <ul class="nav pull-right">
-          {% comment %}
           <li>Vuoi partecipare? <a href="/accounts/register/">Registrati</a></li>
           <li class="divider-vertical"></li>
-          {% endcomment %}
           <li>Sei già registrato? <a href="/accounts/login/?next={% if "/accounts" in request.path %}/{% else %}{{ request.path }}{% endif %}">Entra</a></li>
       </ul>
       {% endif %}

@@ -36,4 +36,4 @@ def extra_data(request, *args, **kwargs):
 def redirect_to_form(*args, **kwargs):
     if not kwargs['request'].session.get('saved_username') and \
        kwargs.get('user') is None:
-        return HttpResponseRedirect('/form/')
+        return HttpResponseRedirect('/login-form/')

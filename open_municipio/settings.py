@@ -114,7 +114,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django_extensions',
     'registration',
-    'open_municipio.registration',
+#    'open_municipio.registration',
     'profiles',
     'south',
     'taggit',

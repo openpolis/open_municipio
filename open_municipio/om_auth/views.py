@@ -13,16 +13,12 @@ from open_municipio.users.forms import UserSocialRegistrationForm, ProfileSocial
 
 
 @login_required
-def done(request):
+def login_done(request):
     """Login complete view, displays user data"""
-    ctx = {
-        'version': version,
-        'last_login': request.session.get('social_auth_last_login_backend')
-    }
-    return render_to_response('om_auth/done.html', ctx, RequestContext(request))
+    return redirect(request.user.get_profile())
 
 
-def error(request):
+def login_error(request):
     """Error view"""
     messages = get_messages(request)
     return render_to_response('om_auth/error.html', {'version': version,
@@ -36,7 +32,7 @@ def logout(request):
     return HttpResponseRedirect('/')
 
 
-def form(request):
+def login_form(request):
     error = None
     if request.method == 'POST':
         profile_form = ProfileSocialRegistrationForm(request.POST)

@@ -4,7 +4,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
 
 from model_utils import Choices
-from registration.forms import RegistrationForm
+from registration.forms import RegistrationForm, RegistrationFormUniqueEmail
 
 from open_municipio.users.models import UserProfile
 
@@ -27,7 +27,7 @@ class UserSocialRegistrationForm(ModelForm):
         fields = ('username',)
 
 
-class UserRegistrationForm(RegistrationForm):
+class UserRegistrationForm(RegistrationFormUniqueEmail):
     first_name = forms.CharField(max_length=30, required=True, label=_('First Name'))
     last_name = forms.CharField(max_length=30, label=_('Last Name'))
     wants_newsletter = forms.BooleanField(required=False, label=_('Wants newsletter'))
