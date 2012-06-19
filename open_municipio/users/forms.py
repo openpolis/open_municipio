@@ -27,11 +27,21 @@ class UserSocialRegistrationForm(ModelForm):
         fields = ('username',)
 
 
+attrs_dict = {'class': 'required'}
+
 class UserRegistrationForm(RegistrationFormUniqueEmail):
     first_name = forms.CharField(max_length=30, required=True, label=_('First Name'))
     last_name = forms.CharField(max_length=30, label=_('Last Name'))
-    uses_nickname = forms.BooleanField(required=False, label=_('Show my nickname, not my name'))
+    city = forms.CharField(widget=forms.TextInput(attrs=attrs_dict))
     says_is_politician = forms.BooleanField(required=False, label=_('I am a politician'))
+    uses_nickname = forms.BooleanField(widget=forms.CheckboxInput(attrs=attrs_dict),
+                                       label=_(u'User wants only his nickname to be publicly shown'),
+                                       required=False)
     wants_newsletter = forms.BooleanField(required=False, label=_('Wants newsletter'))
     privacy_level = forms.ChoiceField(choices=UserProfile.PRIVACY_LEVELS, label=_('Privacy level'))
-    city = forms.CharField(max_length=128, label=_('Location'))
+    tos = forms.BooleanField(widget=forms.CheckboxInput(attrs=attrs_dict),
+                             label=_(u'I have read and agree to the Terms of Service'),
+                             error_messages={'required': _("You must agree to the terms to register")})
+    pri = forms.BooleanField(widget=forms.CheckboxInput(attrs=attrs_dict),
+                             label=_(u'I have read and agree to the Privacy conditions'),
+                             error_messages={'required': _("You must agree to the conditions to register")})
