@@ -1,4 +1,7 @@
+from django.conf import settings
+from django.contrib.auth import login, get_backends
 from django.contrib.auth.models import User
+
 from users.forms import UserRegistrationForm
 from users.models import UserProfile
 
@@ -18,6 +21,17 @@ def user_created(sender, user, request, **kwargs):
         extra_data.wants_newsletter = form.data['wants_newsletter']
     extra_data.city = form.data['city']
     extra_data.save()
-       
+
+   
 from registration.signals import user_registered
 user_registered.connect(user_created)
+
+
+def log_in_user(sender, user, request, **kwargs):
+    if getattr(settings, 'REGISTRATION_AUTO_LOGIN', False):
+        backend = get_backends()[0] # A bit of a hack to bypass `authenticate()`.
+        user.backend = "%s.%s" % (backend.__module__, backend.__class__.__name__)
+        login(request, user)
+
+from registration.signals import user_activated
+user_activated.connect(log_in_user)
