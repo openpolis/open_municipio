@@ -7,7 +7,7 @@ def create_profile(request, user, response, details, is_new=False, *args, **kwar
         privacy_level = request.session.get('saved_privacy_level')
         wants_newsletter = request.session.get('saved_wants_newsletter')
         city = request.session.get('saved_city')
-        profile, cretaed = UserProfile.objects.get_or_create(user=user, defaults={
+        profile, created = UserProfile.objects.get_or_create(user=user, defaults={
                 'privacy_level': privacy_level,
                 'wants_newsletter': wants_newsletter,
                 'city': city,
