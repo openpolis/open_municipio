@@ -231,7 +231,7 @@ class Command(LabelCommand):
                 )
                 continue
                 # transform xml value into database string
-            initiative = Deliberation.INITIATIVE_CHOICES.__dict__['_choice_dict'][initiative]
+            initiative = Deliberation.INITIATIVE_TYPES.__dict__['_choice_dict'][initiative]
 
             presentation_date = xml_act.get("presentation_date")
             if presentation_date is None:
