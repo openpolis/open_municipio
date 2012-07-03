@@ -5,26 +5,20 @@ from django.utils.encoding import force_unicode
 from django.contrib.comments.forms import CommentForm
 from django.contrib.contenttypes.models import ContentType
 
-from django.utils.safestring import mark_safe
+from open_municipio.om_utils.widgets import HorizontalRadioRenderer
 from open_municipio.om_comments.models import CommentWithMood
 
 import datetime
 
-class HorizontalRadioRenderer(forms.RadioSelect.renderer):
-    """ this overrides widget method to put radio buttons horizontally
-        instead of vertically.
-    """
-    def render(self):
-        """
-        Outputs radios
-        """
-        return mark_safe(u'\n'.join([u'%s\n' % w for w in self]))
+
 
 class CommentFormWithMood(CommentForm):
     """
-    A comment form which matches the default djanago.contrib.comments
-    one, plus a few custom fields.
+    A custom comment form, adding a ``mood`` field to the built-in form
+    provided by ``django.contrib.comments``.
     """
+    # FIXME: this class should inherit from ``CommentSecurityForm``, a subclass of ``CommentDetailsForm``
+    # see: https://docs.djangoproject.com/en/1.3/ref/contrib/comments/forms/#abstract-comment-forms-for-custom-comment-apps
     mood = forms.ChoiceField(widget=forms.widgets.RadioSelect(renderer=HorizontalRadioRenderer), 
                              choices=CommentWithMood.MOOD_CHOICES, 
                              initial=CommentWithMood.NEUTRAL)
