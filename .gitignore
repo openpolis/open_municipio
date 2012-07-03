@@ -5,16 +5,9 @@
 .idea
 open_municipio/settings_*.py
 open_municipio/urls_*.py
-apache
-fabfile/
 sitestatic
-open_municipio/data_import/municipalities/*/test_data
-open_municipio/data_import/municipalities/udine/votations/sitting_*
-open_municipio/data_import/municipalities/udine/acts/*
-open_municipio/data_import/municipalities/udine/acts_new
 open_municipio/media
 open_municipio/*/migrations
-solr
 uploads/
 logfile*
 docs/_build

@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Context docBase="/home/www.openmunicipio.it/solr/solr.war" debug="0" crossContext="true">
-  <Environment name="solr/home" type="java.lang.String" value="/home/www.openmunicipio.it/solr/cores" override="true"/>
+
+<!--
+    Context for Solr (multicore)
+    ============================
+
+    All solr indexes will be reachable through http://localhost:8080/solr.
+-->
+
+<Context docBase="/home/apache-solr-3.6.0/dist/apache-solr-3.6.0.war" debug="0" crossContext="true">
+  <Environment name="solr/home" type="java.lang.String" value="/home/solr/cores" override="true"/>
 </Context>
+
 

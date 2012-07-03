@@ -1,0 +1,40 @@
+<VirtualHost *:80>
+    ServerName xxx.openmunicipio.it
+    ServerAlias www.xxx.openmunicipio.it
+
+    WSGIScriptReloading On
+
+    WSGIDaemonProcess om-xxx_staging
+    WSGIProcessGroup om-xxx_staging
+    WSGIApplicationGroup om-xxx_staging
+
+    WSGIPassAuthorization On
+
+
+    DocumentRoot /home/open_municipio/xxx.openmunicipio.it/public
+
+    <Directory /home/open_municipio/xxx.openmunicipio.it/public>
+    Order allow,deny
+    Allow from all
+    </Directory>
+
+    Alias /static/ /home/open_municipio/xxx.openmunicipio.it/public/static/
+
+    <Directory /home/open_municipio/xxx.openmunicipio.it/public/static/>
+    Order deny,allow
+    Allow from all
+    </Directory>
+
+
+    WSGIScriptAlias / /home/open_municipio/xxx.openmunicipio.it/private/apache/django.wsgi
+
+    <Directory /home/open_municipio/xxx.openmunicipio.it/private/apache>
+    Order allow,deny
+    Allow from all
+    </Directory>
+
+
+    LogLevel info
+    ErrorLog /home/open_municipio/xxx.openmunicipio.it/log/error.log
+    CustomLog /home/open_municipio/xxx.openmunicipio.it/log/access.log combined
+</VirtualHost>
