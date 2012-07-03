@@ -55,7 +55,7 @@
 		<xs:complexContent>
 			<xs:extension base="actType">
 				<xs:sequence>
-					<xs:element ref="ActSubscribers" minOccurs="1" maxOccurs="2"/>
+					<xs:element ref="ActSubscribers" minOccurs="1" maxOccurs="1"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
@@ -96,27 +96,32 @@
 					<xs:complexType>
                         <xs:attribute name="chargeID" type="xs:string" />
 						<xs:attribute name="date" type="xs:date"/>
+            			<xs:attribute name="type">
+            				<xs:simpleType>
+            					<xs:restriction base="xs:token">
+            						<!-- denotes the "primo firmatario" -->
+            						<xs:enumeration value="first_subscriber"/>
+            						<!-- denotes the "cofirmatario" -->
+            						<xs:enumeration value="co_signer"/>
+            					</xs:restriction>
+            				</xs:simpleType>
+            			</xs:attribute>
 					</xs:complexType>
 				</xs:element>
 			</xs:sequence>
-			<xs:attribute name="type">
-				<xs:simpleType>
-					<xs:restriction base="xs:token">
-						<!-- denotes the italian "primo firmatario" -->
-						<xs:enumeration value="first_subscriber"/>
-						<!-- denotes the italian "cofirmatario" -->
-						<xs:enumeration value="co_signer"/>
-					</xs:restriction>
-				</xs:simpleType>
-			</xs:attribute>
 		</xs:complexType>
 	</xs:element>
 
-	<!-- unused at the moment -->
+    <xs:element name="ChargeRef">
+        <xs:complexType>
+            <xs:attributte name="chargeID" type="xs:string" />
+        </xs:complexType>
+    </xs:element>
+
 	<xs:element name="ActTargets">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element maxOccurs="unbounded" ref="ChargeXRef"/>
+				<xs:element maxOccurs="unbounded" ref="ChargeRef"/>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
@@ -202,7 +207,7 @@
 	<xs:element name="Group">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element maxOccurs="unbounded" minOccurs="1" ref="ChargeXRef"/>
+				<xs:element maxOccurs="unbounded" minOccurs="1" ref="ChargeRef"/>
 			</xs:sequence>
 			<xs:attribute name="name" type="xs:string"/>
 			<xs:attribute name="acronym" type="xs:string"/>
@@ -247,7 +252,7 @@
 				<xs:element name="Commission" minOccurs="0" maxOccurs="unbounded">
 					<xs:complexType>
 						<xs:sequence>
-							<xs:element ref="ChargeXRef" maxOccurs="unbounded"/>
+							<xs:element ref="ChargeRef" maxOccurs="unbounded"/>
 						</xs:sequence>
 						<xs:attribute name="name" type="xs:string" use="required"/>
 						<xs:attribute name="description" type="xs:string" use="optional"/>
@@ -967,13 +972,6 @@
 		</xs:complexType>
 	</xs:element>
 
-	<xs:element name="ChargeXRef">
-		<xs:complexType>
-			<xs:attribute ref="xlink:href" use="required"/>
-			<xs:attribute ref="xlink:type" fixed="simple"/>
-			<xs:attribute name="description" type="xs:string"/>
-		</xs:complexType>
-	</xs:element> 
 	<xs:element name="People">
 		<xs:complexType>
 			<xs:sequence>
@@ -986,6 +984,7 @@
 	</xs:element>
 	<xs:element name="Subject">
 		<xs:complexType mixed="true">
+            <xs:attribute name="short" type="xs:string" />
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="SittingXRef">
