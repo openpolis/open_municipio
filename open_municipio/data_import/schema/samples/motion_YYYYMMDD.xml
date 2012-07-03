@@ -3,27 +3,28 @@
  xmlns:om="http://www.openmunicipio.it"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="http://www.openmunicipio.it OM-XML.xsd" 
- id="2010/M/2" presentation_date="2010-03-12">
-    <!--
-        Il titolo della proposta, se possibile,
-        se non è possibile, il tag deve essere presente lo stesso, vuoto.
-    -->
-    <om:Title>
-        <![CDATA[
-        Mozione numero 2
-        ]]>
-    </om:Title>
-
-    <!-- 
-        Testo della mozione.
-    -->
+ id="2010/M/2" >
     <om:Content>
-        <![CDATA[
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit, 
-        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-        ]]>        
-    </om:Content>
-    
+        <!--
+            Il titolo della proposta, se possibile,
+            se non è possibile, il tag deve essere presente lo stesso, vuoto.
+        -->
+        <om:Title>
+            <![CDATA[
+            Mozione numero 2
+            ]]>
+        </om:Title>
+
+        <!-- 
+            Testo della mozione.
+        -->
+        <om:Content>
+            <![CDATA[
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit, 
+            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+            ]]>        
+        </om:Content>
+    </om:Content>    
     <om:ActSubscribers>
         <om:ActSubscriber  date="2010-03-12" chargeID="MICA" />
         <om:ActSubscriber  date="2010-03-12" chargeID="CINI" />
@@ -57,5 +58,7 @@
         </om:AttachmentContent>
         
     </om:Attachment>
+
+    <om:MotionTransition name="Presented" date="2010-03-12" />
     
 </om:Motion>
