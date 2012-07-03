@@ -44,7 +44,7 @@ def add_new_core():
     """
     Add a Solr core for the current OpenMunicipio instance.
     """
-    require('domain_root', 'app_domain', 'local_repo_root', 'solr_home', 
+    require('domain_root', 'app_domain', 'local_repo_root', 'solr_home', 'om_user', 
             provided_by=('staging', 'production'))
     execute(update_core_conf)
     ## symlink configuration dir for the new core
@@ -82,10 +82,10 @@ def add_new_core():
             # if a core definition for this OpenMunicipio instance already exists, 
             # drop it.
             existing_cores = [el.attrib['name'] for el in cores_el.iterchildren()]
-            if 'om-udine' in existing_cores:
-                [cores_el.remove(el) for el in cores_el.iterchildren() if el.attrib['name'] == 'om-udine']
+            if env.om_user in existing_cores:
+                [cores_el.remove(el) for el in cores_el.iterchildren() if el.attrib['name'] == env.om_user]
             # append a new ``<core>`` element to ``<cores>``
-            cores_el.append(CORE(name='om-udine',  
+            cores_el.append(CORE(name=env.om_user,  
                                  instanceDir=env.app_domain,
                                  dataDir='%(solr_home)s/data/%(app_domain)s' % env
                                  ))
