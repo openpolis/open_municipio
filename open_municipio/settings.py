@@ -132,6 +132,7 @@ INSTALLED_APPS = (
     'open_municipio.monitoring',
     'open_municipio.web_services',
     'open_municipio.newscache',
+    'open_municipio.data_import',
     'haystack',
     'sorl.thumbnail',
 )
