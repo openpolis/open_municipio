@@ -7,7 +7,7 @@ from django.template.context import Context
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes import generic
 
-from django.db.models.signals import post_save, post_delete
+from django.db.models.signals import post_save, pre_delete
 from django.dispatch import receiver
 
 from model_utils import Choices
@@ -15,8 +15,8 @@ from model_utils.managers import InheritanceManager, QueryManager
 from model_utils.models import TimeStampedModel
 from model_utils.fields import StatusField
 
+from open_municipio.acts.exceptions import WorkflowError
 from open_municipio.newscache.models import News, NewsTargetMixin
-
 from open_municipio.people.models import Institution, InstitutionCharge, Sitting, Person
 from open_municipio.taxonomy.managers import TopicableManager
 from open_municipio.taxonomy.models import Category, TaggedAct
@@ -80,7 +80,12 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
         if self.adj_title:
             rv = u'%s (%s)' % (rv, self.adj_title)
         return rv
-
+    
+    def save(self, *args, **kwargs):
+        # update ``status_is_final`` cache field
+        self._update_status_is_final()
+        super(Act, self).save(*args, **kwargs)
+    
     def downcast(self):
         """
         Returns the "downcasted"[*]_ version of this model instance.
@@ -173,19 +178,19 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
         else:
             return _('no')
 
-
+    @property    
     def status(self):
         """
-        Return the current status for the downcasted version of this act instance.
+        Return the current status of a *concrete* act instance.
         
-        .. note:: 
-
-            It seems that this method cannot be made into a property,
-            since doing that would trigger an ``AttributeError: can't set attribute`` exception 
-            during Django initialization. 
-
+        If this property is being accessed from an ``Act`` instance,
+        raise ``AttributeError``.
         """
-        return self.downcast().status
+        # retrieving the current status makes only sense for a concrete act instance
+        if not self._meta.object_name == 'Act':
+            return self._status
+        else:
+            raise AttributeError("Only concrete act instances have a `status' attribute")
         
     def get_transitions_groups(self):
         """
@@ -207,34 +212,51 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
 
     def is_final_status(self, status=None):
         """
-        WRITEME
-        """
-        # TODO: review implementation
-        this = self.downcast()
-        if status is None:
-            status = this.status
-
-        if not hasattr(this, 'FINAL_STATUSES'):
-            return False
-
-        for final_status in this.FINAL_STATUSES:
-            if status == final_status[0]:
+        Return ``True`` iff the ``status`` argument is a final status for this act instance. 
+        
+        If no ``status`` argument is provided, checks if the *current status* for this act
+        is a final one.
+        
+        This method only makes sense for concrete act instances: when invoked from an ``Act``
+        instance, raise ``AttributeError``.
+        """ 
+        if not self._meta.object_name == 'Act':
+            # checking for final statuses only makes sense for concrete act instances
+            status = status or self.status
+            if status in [t[0] for t in self.FINAL_STATUSES]:     
                 return True
-        return False
-
-    def get_last_transition(self):
+            else:
+                return False
+        else:
+            raise AttributeError("`is_final_status()` may only be accessed from concrete act instances")       
+   
+    def _update_status_is_final(self):
         """
-        WRITEME
+        Update the ``status_is_final`` cache field based on the current act status.
+        
+        This method only makes sense for concrete act instances: when invoked from an ``Act``
+        instance, raise ``AttributeError``.
+        """ 
+        if not self._meta.object_name == 'Act':
+            # this makes sense only for concrete act instances
+            if self.is_final_status():
+                self.status_is_final = True
+            else:
+                self.status_is_final = False
+        else:
+            raise AttributeError("This method may only be invoked from concrete act instances")
+    
+    @property
+    def last_transition(self):
         """
-        # TODO: review implementation
+        Return the last created transition for this act.
+        
+        If no transitions are associated to this act, return ``None``
+        """
         if self.transitions:
-            # FIXME: this assume that transitions are ordered by date
-            return list(self.transitions)[-1]
-        # FIXME: this method returns different kind of objects (list or boolean) 
-        # under different conditions: this is not an ideal API!
-        # A better approach would be to return ``None`` or raise an exception
-        # if no transitions exist for this act
-        return False
+            return self.transitions.order_by('-transition_date')[0]
+        else:
+            return None
 
     def get_absolute_url(self):
         return self.downcast().get_absolute_url()
@@ -333,7 +355,7 @@ class Deliberation(Act):
         ('REJECTED', 'rejected', _('rejected')),
     )
     
-    status = StatusField()
+    _status = StatusField()
     approval_date = models.DateField(_('approval date'), null=True, blank=True)
     publication_date = models.DateField(_('publication date'), null=True, blank=True)
     execution_date = models.DateField(_('execution date'), null=True, blank=True)
@@ -369,7 +391,7 @@ class Interrogation(Act):
         ('NOTANSWERED', 'notanswered', _('not answered')),
     )
     
-    status = StatusField()
+    _status = StatusField()
     answer_type = models.CharField(_('answer type'), max_length=8, choices=ANSWER_TYPES)
     question_motivation = models.TextField(blank=True)
     answer_text = models.TextField(blank=True)
@@ -404,7 +426,7 @@ class Interpellation(Act):
         ('NOTANSWERED', 'notanswered', _('not answered')),
     )
 
-    status = StatusField()
+    _status = StatusField()
     answer_type = models.CharField(_('answer type'), max_length=8, choices=ANSWER_TYPES)
     question_motivation = models.TextField(blank=True)
     answer_text = models.TextField(blank=True)
@@ -436,7 +458,7 @@ class Motion(Act):
         ('REJECTED', 'rejected', _('rejected')),
     )
 
-    status = StatusField()
+    _status = StatusField()
     
     class Meta:
         verbose_name = _('motion')
@@ -466,7 +488,7 @@ class Agenda(Act):
         ('REJECTED', 'rejected', _('rejected')),
     )
 
-    status = StatusField()
+    _status = StatusField()
 
     class Meta:
         verbose_name = _('agenda')
@@ -490,7 +512,7 @@ class Emendation(Act):
         ('APPROVED', 'approved', _('approved'))
     )
     
-    status = StatusField()
+    _status = StatusField()
     act = models.ForeignKey(Act, related_name='emendation_set', on_delete=models.PROTECT)
     act_section = models.ForeignKey(ActSection, related_name='emendation_set', null=True, blank=True, 
                                     on_delete=models.PROTECT)
@@ -516,6 +538,26 @@ class Transition(models.Model):
         db_table = u'acts_transition'
         verbose_name = _('status transition')
         verbose_name_plural = _('status transition')
+        
+        
+@receiver(pre_delete, sender=Transition)
+def update_act_status(**kwargs):
+    """
+    Before a transition being deleted from the DB, accordingly update the status 
+    of its associated act.
+    """   
+    transition = kwargs['instance']
+    act = transition.act.downcast()
+    if act.last_transition:
+        act.status = act.last_transition.target_status
+    else: 
+        # no more transitions would exist for this act
+        # this may happen only if the initial transition 
+        # (created when an act "reaches" its initial status)
+        # will be deleted from the DB, leaving that act in an "undefined" status
+        # this is a patologic condition, so an exception should be raised here
+        raise WorkflowError("You cannot delete the first transition for act %s" % act)
+    act.save()
 
 
 #
@@ -701,7 +743,9 @@ def new_signature(**kwargs):
 
 @receiver(post_save, sender=Transition)
 def new_transition(**kwargs):
-    if not kwargs.get('raw', False) and kwargs.get('created', False):
+    raw = kwargs.get('raw', False) # ``True`` iff during fixtures-loading phase
+    created = kwargs.get('created', False) # ``True`` iff a new instance has been created
+    if not raw and created:
         generating_item = kwargs['instance']
         act = generating_item.act.downcast()
 
@@ -721,16 +765,3 @@ def new_transition(**kwargs):
                 generating_object=generating_item, related_object=act, priority=2,
                 text=News.get_text_for_news(ctx, 'newscache/act_changed_status.html')
             )
-
-@receiver(post_delete, sender=Transition)
-def delete_transition(**kwargs):
-    if not kwargs.get('raw', False):
-        deleting_item = kwargs['instance']
-        act = deleting_item.act.downcast()
-
-        if act.get_last_transition():
-            act.status = act.get_last_transition().target_status
-            if act.is_final_status(deleting_item.target_status):
-                act.status_is_final = False
-
-        act.save()
