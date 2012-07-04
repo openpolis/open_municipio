@@ -6,32 +6,33 @@
     Attributi:
     id - identifica l'atto internamente, 
          secondo le specifiche del sistema informativo che lo genera
-    presentation_date - è la data della seduta in cui l'interrogazione è posta
     title - è il titolo con cui l'interrogazione è identificata
 -->
 <om:Interrogation xmlns:xlink="http://www.w3.org/1999/xlink"
  xmlns:om="http://www.openmunicipio.it"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="http://www.openmunicipio.it OM-XML.xsd" answer_type="written" 
- id="2009/I/23" presentation_date="2009-09-25">
-    <!--
-        Il titolo della proposta, se possibile,
-        se non è possibile, il tag deve essere presente lo stesso, vuoto.
-    -->
-    <om:Title>
-        <![CDATA[
-        Interrogazione numero 23
-        ]]>
-    </om:Title>
-    
-    <!-- 
-        Testo dell'interrogazione.
-    -->
+ id="2009/I/23">
     <om:Content>
-        <![CDATA[
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit, 
-        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-        ]]>
+        <!--
+            Il titolo della proposta, se possibile,
+            se non è possibile, il tag deve essere presente lo stesso, vuoto.
+        -->
+        <om:Title>
+            <![CDATA[
+            Interrogazione numero 23
+            ]]>
+        </om:Title>
+    
+        <!-- 
+            Testo dell'interrogazione.
+        -->
+        <om:Content>
+            <![CDATA[
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit, 
+            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+            ]]>
+        </om:Content>
     </om:Content>
     <om:ActSubscribers>
         <om:ActSubscriber  date="2009-09-25" chargeID="MICA" />
@@ -39,7 +40,7 @@
     </om:ActSubscribers>
     
     <om:ActTargets>
-        <om:ChargeXRef xlink:href="people.xml#ANRE" xlink:type="simple"/>
+        <om:ChargeRef chargeID="ANRE"/>
     </om:ActTargets>
 
     <!-- 
@@ -103,5 +104,6 @@
         </om:AttachmentContent>
         
     </om:Attachment>
-    
+    <om:InterrogationTransition name="Presented" date="2009-09-25" />
+        
 </om:Interrogation>

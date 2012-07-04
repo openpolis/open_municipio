@@ -3,8 +3,8 @@
 	targetNamespace="http://www.openmunicipio.it" xmlns="http://www.openmunicipio.it"
 	elementFormDefault="qualified">
 
-	<xs:import namespace="http://www.w3.org/1999/xlink"
-		schemaLocation="http://www.w3.org/1999/xlink.xsd"/>
+    <xs:import namespace="http://www.w3.org/1999/xlink"
+        schemaLocation="http://www.w3.org/1999/xlink.xsd"/>
 
 	<!-- BEGIN auxiliary types and common elements -->
 	<xs:element name="AttachmentDescription">
@@ -36,19 +36,17 @@
 
 	<xs:complexType name="contentType" mixed="true">
 		<xs:sequence>
+            <xs:element ref="Title" minOccurs="0" maxOccurs="1" />
 			<xs:element ref="Section" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element ref="Content" minOccurs="0" maxOccurs="unbounded" />
 		</xs:sequence>
 	</xs:complexType>
 
 	<xs:complexType name="actType">
-		<xs:sequence>
-			<xs:element ref="Title"/>
-			<xs:element ref="Content" minOccurs="1" maxOccurs="1"/>
-		</xs:sequence>
-		<xs:attribute name="id" use="required" type="xs:string"/>
-		<!-- presentation date is not present because every it is derived from the first TransitionStep -->
-		<!-- the text of the act must be wrapped in a Section -->
-		<xs:attribute name="presentation_date" type="xs:date"/>
+        <xs:sequence>
+            <xs:element ref="Content" />
+        </xs:sequence>
+        <xs:attribute name="id" use="required" type="xs:string"/>
 	</xs:complexType>
 
 	<xs:complexType name="councilActType">
@@ -114,7 +112,7 @@
 
     <xs:element name="ChargeRef">
         <xs:complexType>
-            <xs:attributte name="chargeID" type="xs:string" />
+            <xs:attribute name="chargeID" type="xs:string" />
         </xs:complexType>
     </xs:element>
 
@@ -147,8 +145,10 @@
 		</xs:restriction>
 	</xs:simpleType>
 
+    <!-- a valid date is "unknown", or a xs:date (eg "2012-01-20"), 
+        or a xs:dateTime (eg "2012-01-20T13:40:50" ) -->
 	<xs:simpleType name="dateType">
-		<xs:union memberTypes="xs:dateTime">
+		<xs:union memberTypes="xs:date xs:dateTime">
 			<xs:simpleType>
 				<xs:restriction base="xs:token">
 					<xs:enumeration value="unknown"/>
@@ -158,10 +158,8 @@
 	</xs:simpleType>
 
 	<xs:complexType name="chargeType">
-		<xs:sequence>
-			<xs:element ref="Person" minOccurs="1" maxOccurs="1"/>
-		</xs:sequence>
 		<xs:attribute name="id" type="xs:string" use="optional"/>
+        <xs:attribute name="personID" type="xs:string" use="required"/>
 		<xs:attribute name="name" type="xs:string"/>
 		<xs:attribute name="description" type="xs:string" use="optional"/>
 		<xs:attribute name="start_date" type="dateType" use="optional"/>
@@ -175,7 +173,7 @@
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element ref="Scheduling" minOccurs="0"/>
-				<xs:element minOccurs="0" maxOccurs="1" ref="People"/>
+				<xs:element minOccurs="0" maxOccurs="1" ref="Subjects"/>
 				<xs:element ref="Acts" minOccurs="0" maxOccurs="1"/>
 				<xs:element maxOccurs="1" minOccurs="0" ref="Sittings"/>
 			</xs:sequence>
@@ -184,8 +182,17 @@
 
 
 	<!-- BEGIN groups and people -->
+    <xs:element name="People">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="Person" minOccurs="1" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
 	<xs:element name="Person">
 		<xs:complexType>
+            <xs:attribute name="id" use="required" type="xs:string" />
 			<xs:attribute name="first_name" use="required" type="xs:string"/>
 			<xs:attribute name="last_name" use="required" type="xs:string"/>
 			<xs:attribute name="birth_date" type="xs:date" use="optional"/>
@@ -585,14 +592,18 @@
 			<xs:complexContent>
 				<xs:extension base="councilActType">
 					<xs:sequence>
-						<xs:element ref="OfficeOpinion" minOccurs="0" maxOccurs="1"/>
-						<xs:element ref="Attachment" minOccurs="0" maxOccurs="unbounded"/>
-						<xs:element ref="CouncilDeliberationTransition" minOccurs="0"
-							maxOccurs="unbounded"/>
+						<xs:element ref="OfficeOpinion" 
+                            minOccurs="0" maxOccurs="1"/>
+						<xs:element ref="Attachment" 
+                            minOccurs="0" maxOccurs="unbounded"/>
+						<xs:element ref="CouncilDeliberationTransition" 
+                            minOccurs="0" maxOccurs="unbounded"/>
 						<xs:element maxOccurs="unbounded" minOccurs="0" ref="Emendation"/>
 					</xs:sequence>
 					<xs:attribute name="final_id" type="xs:string"/>
-					<xs:attribute name="approval_date" type="xs:date" use="optional"/>
+<!-- no need fro approval_date, add a CouncilDeliberationTransition with
+    name="Accepted"
+					<xs:attribute name="approval_date" type="xs:date" use="optional"/> -->
 					<!-- publication_date is the same as presentation_date, see actType -->
 					<xs:attribute name="execution_date" type="xs:date" use="optional"/>
 					<xs:attribute name="initiative" use="required">
@@ -972,9 +983,10 @@
 		</xs:complexType>
 	</xs:element>
 
-	<xs:element name="People">
+	<xs:element name="Subjects">
 		<xs:complexType>
 			<xs:sequence>
+                <xs:element ref="People" minOccurs="0" maxOccurs="1"/>
 				<xs:element ref="Offices" minOccurs="0" maxOccurs="1"/>
 				<xs:element ref="Companies" minOccurs="0" maxOccurs="1"/>
 				<xs:element ref="Institutions" minOccurs="0" maxOccurs="1"/>
@@ -982,6 +994,7 @@
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
+
 	<xs:element name="Subject">
 		<xs:complexType mixed="true">
             <xs:attribute name="short" type="xs:string" />
@@ -1026,5 +1039,5 @@
 	<xs:element name="QuestionMotivationText">
 		<xs:complexType mixed="true"/>
 	</xs:element>
-	<xs:element name="Title" type="contentType"/>
+	<xs:element name="Title" type="xs:string"/> 
 </xs:schema>
