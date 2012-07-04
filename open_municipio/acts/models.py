@@ -312,7 +312,7 @@ class Deliberation(Act):
     """
     WRITEME
     """
-    INITIATIVE_TYPE = Choices(
+    INITIATIVE_TYPES = Choices(
         ('COUNSELOR', 'counselor', _('Counselor')),
         ('PRESIDENT', 'president', _('President')),
         ('ASSESSOR', 'assessor', _('City Government Member')),
