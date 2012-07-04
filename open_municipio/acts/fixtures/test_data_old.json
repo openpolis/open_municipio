@@ -1796,7 +1796,7 @@
             "votation": null, 
             "note": null, 
             "act": 1, 
-            "final_status": "PRESENTED", 
+            "target_status": "PRESENTED", 
             "transition_date": "2012-04-20"
         }
     }, 
@@ -1808,7 +1808,7 @@
             "votation": null, 
             "note": null, 
             "act": 2, 
-            "final_status": "PRESENTED", 
+            "target_status": "PRESENTED", 
             "transition_date": "2012-04-24"
         }
     }, 
@@ -1820,7 +1820,7 @@
             "votation": null, 
             "note": null, 
             "act": 3, 
-            "final_status": "PRESENTED", 
+            "target_status": "PRESENTED", 
             "transition_date": "2012-04-24"
         }
     }, 
@@ -1832,7 +1832,7 @@
             "votation": null, 
             "note": null, 
             "act": 4, 
-            "final_status": "PRESENTED", 
+            "target_status": "PRESENTED", 
             "transition_date": "2012-04-24"
         }
     }, 
@@ -1844,7 +1844,7 @@
             "votation": null, 
             "note": null, 
             "act": 5, 
-            "final_status": "PRESENTED", 
+            "target_status": "PRESENTED", 
             "transition_date": "2012-04-23"
         }
     }, 
@@ -1856,7 +1856,7 @@
             "votation": null, 
             "note": null, 
             "act": 6, 
-            "final_status": "PRESENTED", 
+            "target_status": "PRESENTED", 
             "transition_date": "2012-04-17"
         }
     }, 
@@ -1868,7 +1868,7 @@
             "votation": null, 
             "note": null, 
             "act": 7, 
-            "final_status": "PRESENTED", 
+            "target_status": "PRESENTED", 
             "transition_date": "2012-04-18"
         }
     }, 
@@ -1880,7 +1880,7 @@
             "votation": null, 
             "note": null, 
             "act": 8, 
-            "final_status": "PRESENTED", 
+            "target_status": "PRESENTED", 
             "transition_date": "2012-04-22"
         }
     }, 
@@ -1892,7 +1892,7 @@
             "votation": null, 
             "note": null, 
             "act": 9, 
-            "final_status": "PRESENTED", 
+            "target_status": "PRESENTED", 
             "transition_date": "2012-04-18"
         }
     }, 
@@ -1904,7 +1904,7 @@
             "votation": null, 
             "note": null, 
             "act": 10, 
-            "final_status": "PRESENTED", 
+            "target_status": "PRESENTED", 
             "transition_date": "2012-04-20"
         }
     }, 
@@ -1916,7 +1916,7 @@
             "votation": null, 
             "note": null, 
             "act": 11, 
-            "final_status": "PRESENTED", 
+            "target_status": "PRESENTED", 
             "transition_date": "2012-04-23"
         }
     }, 
@@ -1928,7 +1928,7 @@
             "votation": null, 
             "note": null, 
             "act": 12, 
-            "final_status": "PRESENTED", 
+            "target_status": "PRESENTED", 
             "transition_date": "2012-04-20"
         }
     }, 
@@ -1940,7 +1940,7 @@
             "votation": null, 
             "note": null, 
             "act": 13, 
-            "final_status": "PRESENTED", 
+            "target_status": "PRESENTED", 
             "transition_date": "2012-04-18"
         }
     }, 
@@ -1952,7 +1952,7 @@
             "votation": null, 
             "note": null, 
             "act": 14, 
-            "final_status": "PRESENTED", 
+            "target_status": "PRESENTED", 
             "transition_date": "2012-04-15"
         }
     }, 
@@ -1964,7 +1964,7 @@
             "votation": null, 
             "note": null, 
             "act": 15, 
-            "final_status": "PRESENTED", 
+            "target_status": "PRESENTED", 
             "transition_date": "2012-04-20"
         }
     }, 
@@ -1976,7 +1976,7 @@
             "votation": null, 
             "note": null, 
             "act": 16, 
-            "final_status": "PRESENTED", 
+            "target_status": "PRESENTED", 
             "transition_date": "2012-04-23"
         }
     }, 
@@ -1988,7 +1988,7 @@
             "votation": null, 
             "note": null, 
             "act": 17, 
-            "final_status": "PRESENTED", 
+            "target_status": "PRESENTED", 
             "transition_date": "2012-04-17"
         }
     }, 
@@ -2000,7 +2000,7 @@
             "votation": null, 
             "note": null, 
             "act": 18, 
-            "final_status": "PRESENTED", 
+            "target_status": "PRESENTED", 
             "transition_date": "2012-04-24"
         }
     }, 
@@ -2012,7 +2012,7 @@
             "votation": null, 
             "note": null, 
             "act": 19, 
-            "final_status": "PRESENTED", 
+            "target_status": "PRESENTED", 
             "transition_date": "2012-04-19"
         }
     }, 
@@ -2024,7 +2024,7 @@
             "votation": null, 
             "note": null, 
             "act": 20, 
-            "final_status": "PRESENTED", 
+            "target_status": "PRESENTED", 
             "transition_date": "2012-04-23"
         }
     }, 
@@ -2036,7 +2036,7 @@
             "votation": null, 
             "note": null, 
             "act": 21, 
-            "final_status": "PRESENTED", 
+            "target_status": "PRESENTED", 
             "transition_date": "2012-04-24"
         }
     }, 
@@ -2048,7 +2048,7 @@
             "votation": null, 
             "note": null, 
             "act": 22, 
-            "final_status": "PRESENTED", 
+            "target_status": "PRESENTED", 
             "transition_date": "2012-04-18"
         }
     }, 
@@ -2060,7 +2060,7 @@
             "votation": null, 
             "note": null, 
             "act": 23, 
-            "final_status": "PRESENTED", 
+            "target_status": "PRESENTED", 
             "transition_date": "2012-04-15"
         }
     }, 
@@ -2072,7 +2072,7 @@
             "votation": null, 
             "note": null, 
             "act": 24, 
-            "final_status": "PRESENTED", 
+            "target_status": "PRESENTED", 
             "transition_date": "2012-04-15"
         }
     }, 
@@ -2084,7 +2084,7 @@
             "votation": null, 
             "note": null, 
             "act": 25, 
-            "final_status": "PRESENTED", 
+            "target_status": "PRESENTED", 
             "transition_date": "2012-04-24"
         }
     }, 
@@ -2096,7 +2096,7 @@
             "votation": null, 
             "note": null, 
             "act": 26, 
-            "final_status": "PRESENTED", 
+            "target_status": "PRESENTED", 
             "transition_date": "2012-04-16"
         }
     }, 
@@ -2108,7 +2108,7 @@
             "votation": null, 
             "note": null, 
             "act": 27, 
-            "final_status": "PRESENTED", 
+            "target_status": "PRESENTED", 
             "transition_date": "2012-04-20"
         }
     }, 
@@ -2120,7 +2120,7 @@
             "votation": null, 
             "note": null, 
             "act": 28, 
-            "final_status": "PRESENTED", 
+            "target_status": "PRESENTED", 
             "transition_date": "2012-04-20"
         }
     }, 
@@ -2132,7 +2132,7 @@
             "votation": null, 
             "note": "", 
             "act": 1, 
-            "final_status": "COMMITTEE", 
+            "target_status": "COMMITTEE", 
             "transition_date": "2012-04-23"
         }
     }, 

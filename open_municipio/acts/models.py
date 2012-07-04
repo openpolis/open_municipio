@@ -6,7 +6,6 @@ from django.db import models
 from django.template.context import Context
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes import generic
-from django.contrib.contenttypes.models import ContentType
 
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
@@ -202,8 +201,8 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
             groups[status[0]] = []
         # fill groups with ordered transitions
         for transition in this.transitions.order_by('-transition_date'):
-            if groups.has_key(transition.final_status):
-                groups.get(transition.final_status).append(transition)
+            if groups.has_key(transition.target_status):
+                groups.get(transition.target_status).append(transition)
         return groups
 
     def is_final_status(self, status=None):
@@ -506,7 +505,7 @@ class Emendation(Act):
 # Workflows
 #
 class Transition(models.Model):
-    final_status = models.CharField(_('final status'), max_length=100)
+    target_status = models.CharField(_('target status'), max_length=100)
     act = models.ForeignKey(Act, related_name='transition_set')
     votation = models.ForeignKey('votations.Votation', null=True, blank=True)
     transition_date = models.DateField(default=None)
@@ -663,7 +662,7 @@ def new_act_published(sender, **kwargs):
         # create transition: act is presented
         generating_item.transition_set.create(
             act=generating_item.act_ptr,
-            final_status=generating_item.STATUS.presented,
+            target_status=generating_item.STATUS.presented,
             transition_date=generating_item.presentation_date,
             )
 
@@ -707,10 +706,10 @@ def new_transition(**kwargs):
         act = generating_item.act.downcast()
 
         # Presentation is already handled by new_act_published handler
-        if generating_item.final_status != 'PRESENTED':
+        if generating_item.target_status != 'PRESENTED':
             # set act's status according to transition status
-            act.status = generating_item.final_status
-            if act.is_final_status(generating_item.final_status):
+            act.status = generating_item.target_status
+            if act.is_final_status(generating_item.target_status):
                 act.status_is_final = True
 
             act.save()
@@ -730,8 +729,8 @@ def delete_transition(**kwargs):
         act = deleting_item.act.downcast()
 
         if act.get_last_transition():
-            act.status = act.get_last_transition().final_status
-            if act.is_final_status(deleting_item.final_status):
+            act.status = act.get_last_transition().target_status
+            if act.is_final_status(deleting_item.target_status):
                 act.status_is_final = False
 
         act.save()
