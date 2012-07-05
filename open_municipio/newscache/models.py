@@ -127,7 +127,7 @@ def act_presented_create_news_item(sender, **kwargs):
 @receiver(act_signed)        
 def new_signature_create_news_item(sender, **kwargs):
     """
-    Generate a news item when an act has been signed.
+    Generate a news item when an act has been signed by a politician.
     
     Note that news items are not generated when the ORM is operating 
     in raw mode (i.e. during the fixture-loading phase). 
@@ -184,4 +184,3 @@ def act_changed_status_create_news_item(sender, **kwargs):
                 priority=2,
                 text=News.get_text_for_news(ctx, 'newscache/act_changed_status.html')
             )
-

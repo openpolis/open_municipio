@@ -1,9 +1,6 @@
 # -*- coding: utf-8 -*-
 from south.modelsinspector import add_ignored_fields
-from django.conf import settings
-from django.contrib.sites.models import Site
 from django.db import models
-from django.template.context import Context
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes import generic
 
@@ -17,7 +14,7 @@ from model_utils.fields import StatusField
 
 from open_municipio.acts.exceptions import WorkflowError
 from open_municipio.acts.signals import act_presented, act_signed, act_status_changed
-from open_municipio.newscache.models import News, NewsTargetMixin
+from open_municipio.newscache.models import NewsTargetMixin
 from open_municipio.people.models import Institution, InstitutionCharge, Sitting, Person
 from open_municipio.taxonomy.managers import TopicableManager
 from open_municipio.taxonomy.models import Category, TaggedAct
@@ -94,10 +91,17 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
         return rv
     
     def save(self, *args, **kwargs):
-        # update ``status_is_final`` cache field
-        self._update_status_is_final()
-        super(Act, self).save(*args, **kwargs)
-   
+        # override default ``save()`` behaviour only for concrete instances
+        if not self._meta.object_name == 'Act': 
+            # update ``status_is_final`` cache field
+            self._update_status_is_final()
+            # call base implementation of ``save()`` method
+            super(Act, self).save(*args, **kwargs)
+            # signal creation ("presentation") of a new act
+            self._signal_act_presented(**kwargs)
+        else: # default ``save()`` behaviour for ``Act`` instances
+            super(Act, self).save(*args, **kwargs)
+            
     def get_absolute_url(self):
         return self.downcast().get_absolute_url()
     
@@ -180,7 +184,7 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
     @property
     def act_descriptors(self):
         """
-        Return the QuerySet of all those users which modified this act's description.
+        Return the queryset of all those users which modified this act's description.
         """
         return self.actdescriptor_set.all()
     
@@ -192,6 +196,22 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
             return _('yes')
         else:
             return _('no')
+
+    def _signal_act_presented(self, **kwargs):
+        """
+        Notify the system when a new act has been presented,
+        by sending an ``act_presented`` signal.
+        
+        .. note::
+        
+            This signal is being sent only *after* a *new* act has been created, 
+            (not when an act has been updated), and only after the fixture-loading phase.
+           
+        """
+        raw = kwargs['raw']
+        created = kwargs['created']
+        if not raw and created:
+            act_presented.send(sender=self)
 
     @property    
     def status(self):
@@ -209,27 +229,27 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
         
     def get_transitions_groups(self):
         """
-        Retrieve a list of transitions grouped by status.
+        Return a dictionary having as keys the allowed statuses 
+        for this *concrete* act instance, and as values a queryset 
+        of transitions having that target status, in reverse chronological order.
+        
+        If this property is being accessed from an ``Act`` instance,
+        raise ``AttributeError``.
         """
-        # TODO: review implementation
-        groups = {}
-        this = self.downcast()
-        if not hasattr(this, 'STATUS'):
+        if not self._meta.object_name == 'Act':
+            groups = {}
+            states = [t[0] for t in self.STATUS]
+            for state in states:
+                groups[state] = self.transitions.filter(target_status=state).order_by('-transition_date')
             return groups
-        # initialize all status with an empty list of transitions
-        for status in this.STATUS:
-            groups[status[0]] = []
-        # fill groups with ordered transitions
-        for transition in this.transitions.order_by('-transition_date'):
-            if groups.has_key(transition.target_status):
-                groups.get(transition.target_status).append(transition)
-        return groups
+        else:
+            raise AttributeError("This method may only be invoked from concrete act instances")       
 
     def is_final_status(self, status=None):
         """
         Return ``True`` iff the ``status`` argument is a final status for this act instance. 
         
-        If no ``status`` argument is provided, checks if the *current status* for this act
+        If no ``status`` argument is provided, check if the *current status* for this act
         is a final one.
         
         This method only makes sense for concrete act instances: when invoked from an ``Act``
@@ -243,7 +263,7 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
             else:
                 return False
         else:
-            raise AttributeError("`is_final_status()` may only be accessed from concrete act instances")       
+            raise AttributeError("This method may only be invoked from concrete act instances")       
    
     def _update_status_is_final(self):
         """
@@ -266,7 +286,7 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
         """
         Return the last created transition for this act.
         
-        If no transitions are associated to this act, return ``None``
+        If no transitions are associated to this act, return ``None``.
         """
         if self.transitions:
             return self.transitions.order_by('-transition_date')[0]
@@ -284,25 +304,6 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
         WRITEME
         """
         return self.downcast()._meta.verbose_name
-
-
-## Signal handlers
-@receiver(post_save, sender=Act)
-def signal_act_presented(self, **kwargs):
-    """
-    Notify the system when a new act has been presented,
-    by sending an ``act_presented`` signal.
-    
-    .. note::
-    
-        This signal is being sent only *after* a *new* act has been created, 
-        (not when an act has been updated), and only after the fixture-loading phase.
-        
-    """
-    raw = kwargs.get('raw')
-    created = kwargs.get('created')
-    if not raw and created:
-        act_presented.send(sender=self)
 
 
 class ActSection(models.Model):
@@ -354,12 +355,28 @@ class ActSupport(models.Model):
     def save(self, *args, **kwargs):        
         super(ActSupport, self).save(*args, **kwargs)
         # signal that a new act has been signed
-        act_signed.send(sender=self)
+        self._signal_act_signed(**kwargs)
+    
+    def _signal_act_signed(self, **kwargs):
+        """
+        Notify the system when an act has been signed, 
+        by sending an ``act_signed`` signal.
+        
+        .. note::
+        
+            This signal is being sent only *after* an act has been signed, 
+            and only after the fixture-loading phase.          
+
+        """
+        raw = kwargs['raw']
+        created = kwargs['created']
+        if not raw and created:
+            act_signed.send(sender=self)
 
 
 class ActDescriptor(TimeStampedModel):
     """
-    A relationship mapping politicians who added or modified an act's description.
+    A relationship mapping politicians who added or modified an act's description. 
     """
     person = models.ForeignKey(Person)
     act = models.ForeignKey(Act)
@@ -578,7 +595,56 @@ class Transition(models.Model):
         verbose_name = _('status transition')
         verbose_name_plural = _('status transition')
 
+    def get_previous(self):
+        """
+        Return the previous transition (i.e. that happened just before this one, if any).
         
+        If this is the initial transition for a given act, return ``None``.
+        """
+        # TODO: add model-level caching
+        previous = Transition.objects.filter(act=self.act, transition_date__lt=self.transition_date).order_by('-transition_date')
+        if previous.count() == 1: # initial transition
+            return None
+        else:
+            return previous[0]  
+    
+    def get_next(self):
+        """
+        Return the next transition (i.e. that happened just after this one, if any).
+        
+        If this is the last transition for a given act, return ``None``.
+        """
+        # TODO: add model-level caching
+        next = Transition.objects.filter(act=self.act, transition_date__gt=self.transition_date).order_by('transition_date')
+        if next.count() == 0: # last transition
+            return None
+        else:
+            return next[0]  
+    
+    @property
+    def is_initial(self):
+        """
+        Return ``True`` if this transition is the initial one; ``False`` otherwise.
+        """
+        # TODO: add model-level caching
+        if self.get_previous():
+            return False
+        else:
+            return True       
+    
+    @property
+    def is_final(self):
+        """
+        Return ``True`` if this transition is the final one; ``False`` otherwise.
+        """
+        # TODO: add model-level caching
+        if self.get_next():
+            return False
+        else:
+            return True       
+
+   
+    
 ## Signal handlers
 
 @receiver(act_presented)
@@ -594,7 +660,7 @@ def create_initial_transition(sender, **kwargs):
     """
     # the ``sender`` of this signal is a concrete act instance
     act = sender
-    Transition.object.create(
+    Transition.objects.create(
             act=act.act_ptr,
             target_status=act.STATUS.presented,
             transition_date=act.presentation_date,
@@ -602,11 +668,11 @@ def create_initial_transition(sender, **kwargs):
 
     
 @receiver(post_save, sender=Transition)
-def update_act_status(**kwargs):
+def update_act_status(sender, **kwargs):
     """
     When a *new* transition has been *created*, perform the following tasks:
     
-    #. update act current status
+    #. update act's current status
     #. notify the system about that status change, by sending an 
        ``act_status_changed`` signal.
     
@@ -616,37 +682,46 @@ def update_act_status(**kwargs):
         and only after the fixture-loading phase.
         
     """
-    raw = kwargs.get('raw')
-    created = kwargs.get('created')
+    raw = kwargs['raw']
+    created = kwargs['created']
     if not raw and created:
         # update current act status
-        transition = kwargs.get('instance')
+        transition = kwargs['instance']
         act = transition.act.downcast()
         act._status = transition.target_status
         act.save()
         # signal the status change 
-        act_status_changed.send(sender=self)
+        act_status_changed.send(sender=act)
 
         
 @receiver(pre_delete, sender=Transition)
-def revert_act_status(**kwargs):
+def revert_act_status(sender, **kwargs):
     """
     Before a transition being deleted from the DB, accordingly revert the status 
     of its associated act.
+    
+    .. note::
+    
+        Deleting a transition other than the last one should be considered an illegal operation, 
+        since doing so will leave the act's workflow in an inconsistent state 
+        (for example, that act will have no longer such a thing as a "current status").     
+        Therefore, deleting such a transition will raise a ``WorkflowError`` exception.
+        
+        For a similar reason, the *initial transition* -- the one which had been created
+        when the act "reached" its initial status -- cannot be deleted, neither, 
+        since doing that would leave the act in an "undefined" status, 
+        a pathological condition that must be avoided.
     """   
     transition = kwargs['instance']
     act = transition.act.downcast()
-    if act.last_transition:
-        act._status = act.last_transition.target_status
-    else: 
-        # no more transitions would exist for this act
-        # this may happen only if the initial transition 
-        # (created when an act "reaches" its initial status)
-        # will be deleted from the DB, leaving that act in an "undefined" status
-        # this is a patologic condition, so an exception should be raised here
-        raise WorkflowError("You cannot delete the first transition for act %s" % act)
-    act.save()
-
+    if transition.is_initial:
+        raise WorkflowError("Cannot delete initial transition")
+    elif not transition.is_final:
+        raise WorkflowError("Only the final transition can be deleted")
+    else:
+        act = transition.act.downcast()
+        act._status = transition.get_previous().target_status
+        act.save()
 
 #
 # Documents
