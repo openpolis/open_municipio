@@ -16,6 +16,7 @@ from model_utils.models import TimeStampedModel
 from model_utils.fields import StatusField
 
 from open_municipio.acts.exceptions import WorkflowError
+from open_municipio.acts.signals import act_presented, act_signed, act_status_changed
 from open_municipio.newscache.models import News, NewsTargetMixin
 from open_municipio.people.models import Institution, InstitutionCharge, Sitting, Person
 from open_municipio.taxonomy.managers import TopicableManager
@@ -96,7 +97,7 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
         # update ``status_is_final`` cache field
         self._update_status_is_final()
         super(Act, self).save(*args, **kwargs)
-    
+   
     def get_absolute_url(self):
         return self.downcast().get_absolute_url()
     
@@ -284,7 +285,26 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
         """
         return self.downcast()._meta.verbose_name
 
-      
+
+## Signal handlers
+@receiver(post_save, sender=Act)
+def signal_act_presented(self, **kwargs):
+    """
+    Notify the system when a new act has been presented,
+    by sending an ``act_presented`` signal.
+    
+    .. note::
+    
+        This signal is being sent only *after* a *new* act has been created, 
+        (not when an act has been updated), and only after the fixture-loading phase.
+        
+    """
+    raw = kwargs.get('raw')
+    created = kwargs.get('created')
+    if not raw and created:
+        act_presented.send(sender=self)
+
+
 class ActSection(models.Model):
     """
     A section (or sub-section) of an act's text content.
@@ -319,14 +339,22 @@ class ActSupport(models.Model):
         ('FIRSTSIGNER', 'first_signer', _('first signer')),
         ('COSIGNER', 'co_signer', _('co-signer'))
     )
-
+    # who signed the act (a politician)
     charge = models.ForeignKey(InstitutionCharge)
+    # the act being signed
     act = models.ForeignKey(Act)
+    # type of support being provided by the signer to the act
     support_type = models.CharField(choices=SUPPORT_TYPE, max_length=12)
+    # when the act was signed
     support_date = models.DateField(_('support date'), default=None, blank=True, null=True)
 
     class Meta:
         db_table = u'acts_act_support'
+    
+    def save(self, *args, **kwargs):        
+        super(ActSupport, self).save(*args, **kwargs)
+        # signal that a new act has been signed
+        act_signed.send(sender=self)
 
 
 class ActDescriptor(TimeStampedModel):
@@ -549,18 +577,67 @@ class Transition(models.Model):
         db_table = u'acts_transition'
         verbose_name = _('status transition')
         verbose_name_plural = _('status transition')
+
         
-        
-@receiver(pre_delete, sender=Transition)
+## Signal handlers
+
+@receiver(act_presented)
+def create_initial_transition(sender, **kwargs):
+    """
+    When an act reaches its initial status (i.e. when it's presented),
+    create the initial transition.
+    
+    .. note::
+    
+        This routine won't be performed during the fixture-loading phase.
+    
+    """
+    # the ``sender`` of this signal is a concrete act instance
+    act = sender
+    Transition.object.create(
+            act=act.act_ptr,
+            target_status=act.STATUS.presented,
+            transition_date=act.presentation_date,
+            )
+
+    
+@receiver(post_save, sender=Transition)
 def update_act_status(**kwargs):
     """
-    Before a transition being deleted from the DB, accordingly update the status 
+    When a *new* transition has been *created*, perform the following tasks:
+    
+    #. update act current status
+    #. notify the system about that status change, by sending an 
+       ``act_status_changed`` signal.
+    
+    .. note::
+    
+        This routine will be performed only *after* a *new* transition has been created, 
+        and only after the fixture-loading phase.
+        
+    """
+    raw = kwargs.get('raw')
+    created = kwargs.get('created')
+    if not raw and created:
+        # update current act status
+        transition = kwargs.get('instance')
+        act = transition.act.downcast()
+        act._status = transition.target_status
+        act.save()
+        # signal the status change 
+        act_status_changed.send(sender=self)
+
+        
+@receiver(pre_delete, sender=Transition)
+def revert_act_status(**kwargs):
+    """
+    Before a transition being deleted from the DB, accordingly revert the status 
     of its associated act.
     """   
     transition = kwargs['instance']
     act = transition.act.downcast()
     if act.last_transition:
-        act.status = act.last_transition.target_status
+        act._status = act.last_transition.target_status
     else: 
         # no more transitions would exist for this act
         # this may happen only if the initial transition 
@@ -670,109 +747,3 @@ class Calendar(models.Model):
     @property
     def acts(self):
         return self.act_set.all()
-
-
-
-#
-# Signals handlers
-#
-
-
-# TODO: can't find a DRY-way to do it
-@receiver(post_save, sender=Deliberation)
-def new_deliberation_published(sender, **kwargs):
-    new_act_published(sender, **kwargs)
-
-@receiver(post_save, sender=Interrogation)
-def new_interrogation_published(sender, **kwargs):
-    new_act_published(sender, **kwargs)
-
-def new_act_published(sender, **kwargs):
-    """
-    Generates a newscache record when an act is presented,
-    i.e. created within our DB.
-
-    This news is only generated  when an act is created, 
-    not when it's updated, and only after the fixture loading phase.
-
-    below, a trick used to handle signals when loading fixtures,
-    it is not used now, but it may be useful, for testing purposes
-    # instance for subclass fix, while loading fixtures
-    # see http://bit.ly/yimn9S and
-    # https://code.djangoproject.com/ticket/13299
-    if kwargs.get('raw', False):
-        instance = kwargs['instance']
-        generating_item = instance.__class__._default_manager.get(pk=instance.pk)
-    else:
-        generating_item = kwargs['instance']
-    """
-
-    # generates news only if not in raw mode (fixtures)
-    # and for objects creation
-    if not kwargs.get('raw', False) and kwargs.get('created', False):
-        generating_item = kwargs['instance']
-
-        # create transition: act is presented
-        generating_item.transition_set.create(
-            act=generating_item.act_ptr,
-            target_status=generating_item.STATUS.presented,
-            transition_date=generating_item.presentation_date,
-            )
-
-        # define context for textual representation of the news
-        ctx = Context({  })
-
-        # generate news in newscache
-        News.objects.create(
-            generating_object=generating_item, related_object=generating_item, priority=1,
-            text=News.get_text_for_news(ctx, 'newscache/act_published.html')
-        )
-
-
-@receiver(post_save, sender=ActSupport)
-def new_signature(**kwargs):
-    """
-    generates a record in newscache, when an act is signed
-    """
-    # generates news only if not in raw mode (fixtures)
-    # and for objects creation
-    if not kwargs.get('raw', False) and kwargs.get('created', False):
-        generating_item = kwargs['instance']
-        act = generating_item.act.downcast()
-        signer = generating_item.charge
-        # define context for textual representation of the news
-        ctx = Context({ 'current_site': Site.objects.get(id=settings.SITE_ID),
-                        'signature': generating_item, 'act': act, 'signer': signer })
-        News.objects.create(
-            generating_object=generating_item, related_object=act, priority=3,
-            text=News.get_text_for_news(ctx, 'newscache/act_signed.html')
-        )
-        News.objects.create(
-            generating_object=generating_item, related_object=signer, priority=1,
-            text=News.get_text_for_news(ctx, 'newscache/user_signed.html')
-        )
-
-@receiver(post_save, sender=Transition)
-def new_transition(**kwargs):
-    raw = kwargs.get('raw', False) # ``True`` iff during fixtures-loading phase
-    created = kwargs.get('created', False) # ``True`` iff a new instance has been created
-    if not raw and created:
-        generating_item = kwargs['instance']
-        act = generating_item.act.downcast()
-
-        # Presentation is already handled by new_act_published handler
-        if generating_item.target_status != 'PRESENTED':
-            # set act's status according to transition status
-            act.status = generating_item.target_status
-            if act.is_final_status(generating_item.target_status):
-                act.status_is_final = True
-
-            act.save()
-
-            # generate news
-            ctx = Context({ 'current_site': Site.objects.get(id=settings.SITE_ID),
-                            'transition': generating_item, 'act': act })
-            News.objects.create(
-                generating_object=generating_item, related_object=act, priority=2,
-                text=News.get_text_for_news(ctx, 'newscache/act_changed_status.html')
-            )
