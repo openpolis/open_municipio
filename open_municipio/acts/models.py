@@ -68,8 +68,6 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
     category_set = models.ManyToManyField(Category, verbose_name=_('categories'), blank=True, null=True)
     # locations associated to this act
     location_set = models.ManyToManyField(Location, through=TaggedActByLocation, verbose_name=_('locations'), blank=True, null=True)
-    # whether this act has reached a final (definitive) status
-    status_is_final = models.BooleanField(default=False)
     # wheter this act is a "key" one
     is_key = models.BooleanField(default=False, help_text=_("Specify whether this act should be featured"))
     # default manager
@@ -89,19 +87,7 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
         if self.adj_title:
             rv = u'%s (%s)' % (rv, self.adj_title)
         return rv
-    
-    def save(self, *args, **kwargs):
-        # override default ``save()`` behaviour only for concrete instances
-        if not self._meta.object_name == 'Act': 
-            # update ``status_is_final`` cache field
-            self._update_status_is_final()
-            # call base implementation of ``save()`` method
-            super(Act, self).save(*args, **kwargs)
-            # signal creation ("presentation") of a new act
-            self._signal_act_presented(**kwargs)
-        else: # default ``save()`` behaviour for ``Act`` instances
-            super(Act, self).save(*args, **kwargs)
-            
+                
     def get_absolute_url(self):
         return self.downcast().get_absolute_url()
     
@@ -197,6 +183,34 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
         else:
             return _('no')
 
+    def get_type_name(self):
+        """
+        WRITEME
+        """
+        return self.downcast()._meta.verbose_name
+
+
+class ActStatusMixin(models.Model):
+    """
+    An abstract, mixin model class encapsulating workflow-related data & logic
+    shared by every *concrete* ``Act`` subclasses.
+    """
+    # current act status
+    _status = StatusField()
+    # whether this act has reached a final (definitive) status
+    status_is_final = models.BooleanField(default=False)
+      
+    class Meta:
+        abstract = True
+
+    def save(self, *args, **kwargs):
+        # update ``status_is_final`` cache field
+        self._update_status_is_final()
+        # call base implementation of ``save()`` method
+        super(Act, self).save(*args, **kwargs)
+        # signal creation ("presentation") of a new act
+        self._signal_act_presented(**kwargs)
+   
     def _signal_act_presented(self, **kwargs):
         """
         Notify the system when a new act has been presented,
@@ -216,34 +230,21 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
     @property    
     def status(self):
         """
-        Return the current status of a *concrete* act instance.
-        
-        If this property is being accessed from an ``Act`` instance,
-        raise ``AttributeError``.
+        Return the current status of this act instance.
         """
-        # retrieving the current status makes only sense for a concrete act instance
-        if not self._meta.object_name == 'Act':
-            return self._status
-        else:
-            raise AttributeError("Only concrete act instances have a `status' attribute")
+        return self._status
         
     def get_transitions_groups(self):
         """
         Return a dictionary having as keys the allowed statuses 
-        for this *concrete* act instance, and as values a queryset 
-        of transitions having that target status, in reverse chronological order.
-        
-        If this property is being accessed from an ``Act`` instance,
-        raise ``AttributeError``.
+        for this act instance, and as values a queryset of transitions 
+        having that target status, in reverse chronological order.
         """
-        if not self._meta.object_name == 'Act':
-            groups = {}
-            states = [t[0] for t in self.STATUS]
-            for state in states:
-                groups[state] = self.transitions.filter(target_status=state).order_by('-transition_date')
-            return groups
-        else:
-            raise AttributeError("This method may only be invoked from concrete act instances")       
+        groups = {}
+        states = [t[0] for t in self.STATUS]
+        for state in states:
+            groups[state] = self.transitions.filter(target_status=state).order_by('-transition_date')
+        return groups
 
     def is_final_status(self, status=None):
         """
@@ -251,35 +252,21 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
         
         If no ``status`` argument is provided, check if the *current status* for this act
         is a final one.
-        
-        This method only makes sense for concrete act instances: when invoked from an ``Act``
-        instance, raise ``AttributeError``.
         """ 
-        if not self._meta.object_name == 'Act':
-            # checking for final statuses only makes sense for concrete act instances
-            status = status or self.status
-            if status in [t[0] for t in self.FINAL_STATUSES]:     
-                return True
-            else:
-                return False
+        status = status or self.status
+        if status in [t[0] for t in self.FINAL_STATUSES]:     
+            return True
         else:
-            raise AttributeError("This method may only be invoked from concrete act instances")       
+            return False
    
     def _update_status_is_final(self):
         """
         Update the ``status_is_final`` cache field based on the current act status.
-        
-        This method only makes sense for concrete act instances: when invoked from an ``Act``
-        instance, raise ``AttributeError``.
         """ 
-        if not self._meta.object_name == 'Act':
-            # this makes sense only for concrete act instances
-            if self.is_final_status():
-                self.status_is_final = True
-            else:
-                self.status_is_final = False
+        if self.is_final_status():
+            self.status_is_final = True
         else:
-            raise AttributeError("This method may only be invoked from concrete act instances")
+            self.status_is_final = False
     
     @property
     def last_transition(self):
@@ -292,19 +279,7 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
             return self.transitions.order_by('-transition_date')[0]
         else:
             return None
-
-    def get_status_display(self):
-        """
-        WRITEME
-        """
-        return self.downcast().get_status_display()
-
-    def get_type_name(self):
-        """
-        WRITEME
-        """
-        return self.downcast()._meta.verbose_name
-
+   
 
 class ActSection(models.Model):
     """
@@ -386,7 +361,7 @@ class ActDescriptor(TimeStampedModel):
 
 
 
-class Deliberation(Act):
+class Deliberation(ActStatusMixin, Act):
     """
     WRITEME
     """
@@ -411,7 +386,6 @@ class Deliberation(Act):
         ('REJECTED', 'rejected', _('rejected')),
     )
     
-    _status = StatusField()
     approval_date = models.DateField(_('approval date'), null=True, blank=True)
     publication_date = models.DateField(_('publication date'), null=True, blank=True)
     execution_date = models.DateField(_('execution date'), null=True, blank=True)
@@ -427,7 +401,7 @@ class Deliberation(Act):
         return ('om_deliberation_detail', (), {'pk': str(self.pk)})
     
 
-class Interrogation(Act):
+class Interrogation(ActStatusMixin, Act):
     """
     WRITEME
     """
@@ -447,7 +421,7 @@ class Interrogation(Act):
         ('NOTANSWERED', 'notanswered', _('not answered')),
     )
     
-    _status = StatusField()
+
     answer_type = models.CharField(_('answer type'), max_length=8, choices=ANSWER_TYPES)
     question_motivation = models.TextField(blank=True)
     answer_text = models.TextField(blank=True)
@@ -462,7 +436,7 @@ class Interrogation(Act):
         return 'om_interrogation_detail', (), {'pk': str(self.pk)}
     
 
-class Interpellation(Act):
+class Interpellation(ActStatusMixin, Act):
     """
     WRITEME
     """
@@ -482,7 +456,7 @@ class Interpellation(Act):
         ('NOTANSWERED', 'notanswered', _('not answered')),
     )
 
-    _status = StatusField()
+
     answer_type = models.CharField(_('answer type'), max_length=8, choices=ANSWER_TYPES)
     question_motivation = models.TextField(blank=True)
     answer_text = models.TextField(blank=True)
@@ -496,7 +470,7 @@ class Interpellation(Act):
         return 'om_interpellation_detail', (), {'pk': str(self.pk)}
     
 
-class Motion(Act):
+class Motion(ActStatusMixin, Act):
     """
     It is a political act, used to publicly influence members of the City Government, or the Mayor,
     on a broad type of issues (specific to the Comune proceedings, or of a more general category)
@@ -514,7 +488,6 @@ class Motion(Act):
         ('REJECTED', 'rejected', _('rejected')),
     )
 
-    _status = StatusField()
     
     class Meta:
         verbose_name = _('motion')
@@ -525,7 +498,7 @@ class Motion(Act):
         return ('om_motion_detail', (), {'pk': str(self.pk)})
 
 
-class Agenda(Act):
+class Agenda(ActStatusMixin, Act):
     """
     Maps the *Ordine del Giorno* act type.
     It is a political act, used to publicly influence the following discussions on Deliberations.
@@ -544,7 +517,6 @@ class Agenda(Act):
         ('REJECTED', 'rejected', _('rejected')),
     )
 
-    _status = StatusField()
 
     class Meta:
         verbose_name = _('agenda')
@@ -555,7 +527,7 @@ class Agenda(Act):
         return ('om_agenda_detail', (), {'pk': str(self.pk)})
 
 
-class Emendation(Act):
+class Emendation(ActStatusMixin, Act):
     """
     It is a modification of a particular act, that can be voted specifically and separately from the act itself.
     
@@ -568,7 +540,6 @@ class Emendation(Act):
         ('APPROVED', 'approved', _('approved'))
     )
     
-    _status = StatusField()
     act = models.ForeignKey(Act, related_name='emendation_set', on_delete=models.PROTECT)
     act_section = models.ForeignKey(ActSection, related_name='emendation_set', null=True, blank=True, 
                                     on_delete=models.PROTECT)
