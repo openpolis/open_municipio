@@ -97,6 +97,9 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
         self._update_status_is_final()
         super(Act, self).save(*args, **kwargs)
     
+    def get_absolute_url(self):
+        return self.downcast().get_absolute_url()
+    
     def downcast(self):
         """
         Returns the "downcasted"[*]_ version of this model instance.
@@ -268,9 +271,6 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
             return self.transitions.order_by('-transition_date')[0]
         else:
             return None
-
-    def get_absolute_url(self):
-        return self.downcast().get_absolute_url()
 
     def get_status_display(self):
         """
