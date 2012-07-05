@@ -48,27 +48,38 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
     """
     # added to avoid problems with South migrations
     add_ignored_fields(["^open_municipio\.taxonomy\.managers"])
-
+    # internal ID string for this act within a given municipality
     idnum = models.CharField(max_length=64, blank=True, help_text=_("A string representing the identification or sequence number for this act, used internally by the municipality's administration."))
+    # official act title, as defined by the municipality
     title = models.CharField(_('title'), max_length=255, blank=True)
+    # editorial (descriptive) act title
     adj_title = models.CharField(_('adjoint title'), max_length=255, blank=True, help_text=_("An adjoint title, added to further explain an otherwise cryptic title"))
+    # when this act was officially presented
     presentation_date = models.DateField(_('presentation date'), null=True, help_text=_("Date of presentation, as stated in the act"))
+    # a textual description for this act
     description = models.TextField(_('description'), blank=True)
+    # official act text
     text = models.TextField(_('text'), blank=True)
+    # which people presented this act
     presenter_set = models.ManyToManyField(InstitutionCharge, blank=True, null=True, through='ActSupport', related_name='presented_act_set', verbose_name=_('presenters'))
+    # intended recipients for this act (if any)
     recipient_set = models.ManyToManyField(InstitutionCharge, blank=True, null=True, related_name='received_act_set', verbose_name=_('recipients'))
+    # the instititution which emitted this act
     emitting_institution = models.ForeignKey(Institution, related_name='emitted_act_set', verbose_name=_('emitting institution'))
+    # categories associated to this act
     category_set = models.ManyToManyField(Category, verbose_name=_('categories'), blank=True, null=True)
+    # locations associated to this act
     location_set = models.ManyToManyField(Location, through=TaggedActByLocation, verbose_name=_('locations'), blank=True, null=True)
+    # whether this act has reached a final (definitive) status
     status_is_final = models.BooleanField(default=False)
+    # wheter this act is a "key" one
     is_key = models.BooleanField(default=False, help_text=_("Specify whether this act should be featured"))
-
+    # default manager
     objects = InheritanceManager()
     # use this manager to retrieve only key acts
     featured = QueryManager(is_key=True).order_by('-presentation_date') 
-    
+    # tags associated to this act
     tag_set = TopicableManager(through=TaggedAct, blank=True)
-
     # use this manager to retrieve the QuerySet of ``Monitoring`` instances 
     # having as their ``content_object`` this act
     monitoring_set = generic.GenericRelation(Monitoring, object_id_field='object_pk')
