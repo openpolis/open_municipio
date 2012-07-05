@@ -158,7 +158,7 @@ def new_signature_create_news_item(sender, **kwargs):
         text=News.get_text_for_news(ctx, 'newscache/user_signed.html')
     )
     
-@receiver(act_signed)        
+@receiver(act_status_changed)        
 def act_changed_status_create_news_item(sender, **kwargs):
     """
     Generate a news item when an act changes its current status.

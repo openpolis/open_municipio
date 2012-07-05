@@ -56,9 +56,9 @@ class Monitoring(models.Model):
 
 
 class MonitorizedItem():
-
-
-
+    """
+    WRITEME
+    """
     def monitorings(self, user_type=None):
         """
         Returns the list of monitorings for this act.
