@@ -6,7 +6,7 @@ from os import path
 from open_municipio.people.models import InstitutionCharge, Person, CityCouncil
 
 import traceback
-from open_municipio.settings_import import XML_TO_OM_INST, IMPORT_NS, BIRTH_DATE_DEF, SEX_DEF, START_DATE_DEF
+from open_municipio.settings_import import XML_TO_OM_INST, IMPORT_NS, BIRTH_DATE_DEF, GENDER_DEF, START_DATE_DEF
 
 class Command(BaseCommand):
     args = "<filename filename ...>"
@@ -34,7 +34,7 @@ class Command(BaseCommand):
         om_person.first_name = first_name
         om_person.last_name = last_name
         om_person.birth_date = BIRTH_DATE_DEF
-        om_person.sex = SEX_DEF
+        om_person.gender = GENDER_DEF
         om_person.save()
         return om_person
     

@@ -316,9 +316,9 @@ class PoliticianListView(TemplateView):
         context['gender_stats'] = {'Uomini': 0, 'Donne': 0}
         context['age_stats'] = context['degree_stats'] = {}
         for charge in municipality.council.members:
-            if charge.person.sex == Person.MALE_SEX:
+            if charge.person.gender == Person.GENDERS.male:
                 context['gender_stats']['Uomini'] += 1
-            elif charge.person.sex == Person.FEMALE_SEX:
+            elif charge.person.gender == Person.GENDERS.female:
                 context['gender_stats']['Donne'] += 1
 
             if not charge.person.age in context['age_stats']:

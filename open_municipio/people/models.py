@@ -24,19 +24,15 @@ from open_municipio.newscache.models import NewsTargetMixin
 #
 
 class Person(SlugModel, MonitorizedItem):
-    # FIXME: are those constants really necessary? (given that we use ``Choices``)
-    FEMALE_SEX = 0
-    MALE_SEX = 1
-    # FIXME: maybe ``GENDERS`` would be more appropriate, here.
-    SEX = Choices(
-        (MALE_SEX, _('Male')),    
-        (FEMALE_SEX, _('Female')),
+    GENDERS = Choices(
+        (0, 'female', _('Female')),
+        (1, 'male', _('Male')),
         )
     first_name = models.CharField(_('first name'), max_length=128)
     last_name = models.CharField(_('last name'), max_length=128)
     birth_date = models.DateField(_('birth date'))
     birth_location = models.CharField(_('birth location'), blank=True, max_length=128)
-    sex = models.IntegerField(_('sex'), choices=SEX)
+    gender = models.IntegerField(_('gender'), choices=GENDERS)
     op_politician_id = models.IntegerField(_('openpolis politician ID'), blank=True, null=True)
     # FIXME: find a more descriptive name
     img = ImageField(upload_to="person_images", blank=True, null=True)

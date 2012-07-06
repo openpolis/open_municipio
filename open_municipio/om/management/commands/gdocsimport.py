@@ -82,16 +82,16 @@ class Command(BaseCommand):
             if row.custom['nome'].text:
                 first_name = row.custom['nome'].text.encode('utf-8')
                 last_name = row.custom['cognome'].text.encode('utf-8')
-                sex = row.custom['sesso'].text
-                if sex == 'M':
-                    sex = Person.MALE_SEX
+                gender = row.custom['sesso'].text
+                if gender == 'M':
+                    gender = Person.GENDERS.male
                 else:
-                    sex = Person.FEMALE_SEX
+                    gender = Person.GENDERS.female
 
                 birth_date = datetime.datetime.strptime(row.custom['datanascita'].text, '%d/%m/%Y').strftime('%Y-%m-%d')
                 birth_location = row.custom['luogonascita'].text
                 self.stdout.write("%s %s (%s) - nascita: %s a %s\n" %
-                                  (first_name, last_name, sex,
+                                  (first_name, last_name, gender,
                                    birth_date,
                                    birth_location))
 
@@ -101,7 +101,7 @@ class Command(BaseCommand):
                     first_name=first_name,
                     last_name=last_name,
                     birth_date=birth_date,
-                    sex=sex
+                    gender=gender
                 )
                 if p_created or options['overwrite']:
                     p.birth_location = birth_location

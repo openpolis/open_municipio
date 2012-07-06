@@ -66,10 +66,10 @@ class Command(LabelCommand):
                     # date reduction
                     birth_date = member['birth_date'][0:10]
                     start_date = member['date_start'][0:10]
-                    if member['sex'] == 'M':
-                        member_sex = Person.MALE_SEX
+                    if member['gender'] == 'M':
+                        member_gender = Person.GENDERS.male
                     else:
-                        member_sex = Person.FEMALE_SEX
+                        member_gender = Person.GENDERS.male
 
                     # fetch or create person
                     p, p_created = Person.objects.get_or_create(
@@ -77,7 +77,7 @@ class Command(LabelCommand):
                         last_name=member['last_name'],
                         birth_date=birth_date,
                         birth_location=member['birth_location'],
-                        sex=member_sex
+                        gender=member_gender
                     )
 
                     if 'party' in member:

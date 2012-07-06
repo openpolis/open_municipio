@@ -61,11 +61,11 @@ def create_person():
         first_name = random.choice(first_names)
         first_names.remove(first_name)
         first_name = first_name.strip()
-        (names, sex) = first_name.split(',')
-        if sex == 'M':
-            sex = Person.MALE_SEX
+        (names, gender) = first_name.split(',')
+        if gender == 'M':
+            gender = Person.GENDERS.male
         else:
-            sex = Person.FEMALE_SEX
+            gender = Person.GENDERS.female
         names = names.split()
         first_name = random.choice(names)
 
@@ -84,7 +84,7 @@ def create_person():
 
         persons = Person.objects.filter(first_name=first_name, last_name=last_name, birth_date=birth_date, birth_location=birth_location)
         if not persons:
-            p = Person(first_name=first_name, last_name=last_name, birth_date=birth_date, birth_location=birth_location, sex=sex)
+            p = Person(first_name=first_name, last_name=last_name, birth_date=birth_date, birth_location=birth_location, gender=gender)
             p.save()
         else:
             p = persons[0]
