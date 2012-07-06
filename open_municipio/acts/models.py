@@ -5,8 +5,6 @@ from django.contrib.sites.models import Site
 from django.db import models
 from django.template.context import Context
 from django.utils.translation import ugettext_lazy as _
-from django.contrib.contenttypes import generic
-from django.contrib.contenttypes.models import ContentType
 
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver

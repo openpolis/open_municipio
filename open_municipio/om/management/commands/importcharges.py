@@ -3,10 +3,9 @@ from django.core.management.base import BaseCommand, CommandError
 from lxml import etree
 from os import path
 
-from open_municipio.people.models import Person, Sitting, CityCouncil
-from open_municipio.votations.models import Votation, ChargeVote, InstitutionCharge
+from open_municipio.people.models import InstitutionCharge, Person, CityCouncil
 
-import sys, traceback
+import traceback
 from open_municipio.settings_import import XML_TO_OM_INST, IMPORT_NS, BIRTH_DATE_DEF, SEX_DEF, START_DATE_DEF
 
 class Command(BaseCommand):
@@ -41,8 +40,7 @@ class Command(BaseCommand):
     
     def lookupCharge(self, om_person, om_institution):
         try:
-            om_charge = InstitutionCharge.objects.all().get(person=om_person,
-                institution=om_institution)
+            om_charge = InstitutionCharge.objects.all().get(person=om_person, institution=om_institution)
         except Exception:
             om_charge = None
 

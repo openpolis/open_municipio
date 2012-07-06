@@ -6,7 +6,6 @@ from django.utils.datetime_safe import date
 from django.utils.translation import ugettext_lazy as _
 from django.template.defaultfilters import slugify
 from django.core.urlresolvers import reverse
-from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
 
 from model_utils import Choices

@@ -150,8 +150,8 @@ class Command(LabelCommand):
                 self.logger.debug("Votation in XML contains %d ChargeVotes\n" % len(chargevotes))
 
                 # loop over all members of the institution
-                # at the moment of the sitting
-                for m in curr_inst.charge_set.current(moment=sitting_date):
+                # at the time of the sitting
+                for m in curr_inst.charge_set.current(as_of=sitting_date):
                     om_id = m.person.id
                     xml_id = self.lookupCharge(om_id)
                     self.logger.debug("Member: %s (om_id:%s => xml_id:%s)" % (m, om_id, xml_id ))

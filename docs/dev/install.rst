@@ -142,7 +142,7 @@ while, to deactivate it, just type:
 
   (open_municipio)$ deactivate
 
-Before continuing, take a few moment for configuring the new virtual environment.  Virtualenwrapper provides a few
+Before continuing, take a few moments for configuring the new virtual environment.  Virtualenwrapper provides a few
 "hooks", i.e. scripts which will be executed when virtualenwrapper-related events happen.  Particularly interesting to us are
 ``postactivate`` and ``postdeactivate``. So go to the virtualenv root directory
 (i.e. ``~/.virtualenvs/open_municipio``), find ``postactivate`` and ``postdeactivate`` under ``bin``, and edit them as
