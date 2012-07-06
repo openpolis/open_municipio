@@ -55,9 +55,16 @@ class Monitoring(models.Model):
         return reverse('om_monitoring_url_redirect', args=(), kwargs=(self.content_type.pk, self.object_pk))
 
 
-class MonitorizedItem():
-
-
+class MonitorizedItem(models.Model):
+    """
+    WRITEME
+    """
+    # use this manager to retrieve the queryset of ``Monitoring`` instances 
+    # having as their ``content_object`` this model instance
+    monitoring_set = generic.GenericRelation(Monitoring, object_id_field='object_pk')
+    
+    class Meta:
+        abstract = True
 
     def monitorings(self, user_type=None):
         """
@@ -122,6 +129,7 @@ class MonitorizedItem():
         Returns id of the content type associated with this instance.
         """
         return ContentType.objects.get_for_model(self).id
+   
 
 #
 # Signals handlers

@@ -9,7 +9,7 @@ from django.contrib.contenttypes import generic
 
 from taggit.models import TagBase, ItemBase
 
-from open_municipio.monitoring.models import Monitoring, MonitorizedItem
+from open_municipio.monitoring.models import Monitoring
 from open_municipio.om_utils.models import SlugModel
 from open_municipio.taxonomy.managers import post_tagging, post_untagging
 
@@ -88,9 +88,6 @@ class Category(SlugModel, MonitorizedItem):
     tag_set = models.ManyToManyField(Tag, related_name='category_set', null=True, blank=True)
     # cached value of how many act uses it
     count = models.IntegerField(default=0)
-  
-    # manager to handle the list of monitoring having as content_object this instance
-#    monitoring_set = generic.GenericRelation(Monitoring, object_id_field='object_pk')
   
     class Meta:
         verbose_name = _('category')

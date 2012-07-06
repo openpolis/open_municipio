@@ -41,9 +41,6 @@ class Person(SlugModel, MonitorizedItem):
     op_politician_id = models.IntegerField(_('openpolis politician ID'), blank=True, null=True)
 
     img = ImageField(upload_to="person_images", blank=True, null=True)
-
-    # manager to handle the list of monitoring having as content_object this instance
-    #monitoring_set = generic.GenericRelation(Monitoring, object_id_field='object_pk')
     
     class Meta:
         verbose_name = _('person')

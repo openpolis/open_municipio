@@ -22,7 +22,7 @@ from open_municipio.people.models import Institution, InstitutionCharge, Sitting
 from open_municipio.taxonomy.managers import TopicableManager
 from open_municipio.taxonomy.models import Category, TaggedAct
 from open_municipio.locations.models import Location, TaggedActByLocation
-from open_municipio.monitoring.models import MonitorizedItem, Monitoring
+from open_municipio.monitoring.models import MonitorizedItem
 
 
 #
@@ -69,10 +69,6 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
     featured = QueryManager(is_key=True).order_by('-presentation_date') 
     
     tag_set = TopicableManager(through=TaggedAct, blank=True)
-
-    # use this manager to retrieve the QuerySet of ``Monitoring`` instances 
-    # having as their ``content_object`` this act
-    monitoring_set = generic.GenericRelation(Monitoring, object_id_field='object_pk')
 
     def __unicode__(self):
         rv = u'%s' % (self.title, )
