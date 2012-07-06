@@ -14,11 +14,10 @@ from model_utils.managers import PassThroughManager
 
 from sorl.thumbnail import ImageField
 
-from open_municipio.monitoring.models import Monitoring, MonitorizedItem
-from open_municipio.newscache.models import NewsTargetMixin
-from open_municipio.people.managers import TimeFramedQuerySet
+from open_municipio.om_utils.managers import TimeFramedQuerySet
 from open_municipio.om_utils.models import SlugModel
-
+from open_municipio.monitoring.models import MonitorizedItem
+from open_municipio.newscache.models import NewsTargetMixin
 
 
 #
