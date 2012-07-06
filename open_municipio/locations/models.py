@@ -18,7 +18,6 @@ class Location(SlugModel, MonitorizedItem):
     for content objects (particularly, ``Act`` instances).       
     """
     name = models.CharField(verbose_name=_('Name'), max_length=100)
-    slug = models.SlugField(verbose_name=_('Slug'), blank=True, unique=True, max_length=100)
     address = models.CharField(verbose_name=_('Address'), max_length=100, blank=True)
     # FIXME: choose the right number of significant digits
     latitude = models.FloatField(verbose_name=_('Latitude'), blank=True, null=True)

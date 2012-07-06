@@ -25,7 +25,8 @@ from open_municipio.om_utils.models import SlugModel
 # Persons, charges and groups
 #
 
-class Person(models.Model, MonitorizedItem):
+class Person(SlugModel, MonitorizedItem):
+    # FIXME: are those constants really necessary? (given that we use ``Choices``)
     FEMALE_SEX = 0
     MALE_SEX = 1
     SEX = Choices(
@@ -36,7 +37,6 @@ class Person(models.Model, MonitorizedItem):
     last_name = models.CharField(_('last name'), max_length=128)
     birth_date = models.DateField(_('birth date'))
     birth_location = models.CharField(_('birth location'), blank=True, max_length=128)
-    slug = models.SlugField(unique=True, blank=True, null=True, max_length=128)
     sex = models.IntegerField(_('sex'), choices=SEX)
     op_politician_id = models.IntegerField(_('openpolis politician ID'), blank=True, null=True)
 
@@ -51,15 +51,14 @@ class Person(models.Model, MonitorizedItem):
    
     def __unicode__(self):
         return '%s %s' % (self.first_name, self.last_name)
-
-    def save(self, *args, **kwargs):
-        if self.slug is None:
-            self.slug = slugify("%s %s %s" % (self.first_name, self.last_name, self.birth_date))
-        super(Person, self).save(*args, **kwargs)
-
+    
     @permalink
     def get_absolute_url(self):
         return 'om_politician_detail', (), { 'slug': self.slug }
+
+    def calculate_slug(self):
+        slug = slugify("%s %s %s" % (self.first_name, self.last_name, self.birth_date))
+        return slug
 
     @property
     def is_om_user(self):
@@ -644,7 +643,6 @@ class Body(SlugModel):
     Uses the *abstract base class* inheritance model.
     """
     name = models.CharField(_('name'), max_length=255)
-    slug = models.SlugField(unique=True, blank=True, null=True, help_text=_('Suggested value automatically generated from name, must be unique'))
     description = models.TextField(_('description'), blank=True)
 
     @property
@@ -684,13 +682,7 @@ class Institution(Body):
     class Meta(Body.Meta):
         verbose_name = _('institution')
         verbose_name_plural = _('institutions')
-    
-    def save(self, *args, **kwargs):
-        """slugify name on first save"""
-        if not self.id:
-            self.slug = slugify(self.name)
-        super(Institution, self).save(*args, **kwargs)
-        
+          
     def get_absolute_url(self):
         if self.institution_type == self.MAYOR:
             return reverse("om_institution_mayor")

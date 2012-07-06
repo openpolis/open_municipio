@@ -85,7 +85,6 @@ class Category(SlugModel, MonitorizedItem):
     while tags are assigned (and created, if not already existing) on a per-instance basis. 
     """
     name = models.CharField(verbose_name=_('Name'), max_length=100)
-    slug = models.SlugField(verbose_name=_('Slug'), blank=True, unique=True, max_length=100)
     tag_set = models.ManyToManyField(Tag, related_name='category_set', null=True, blank=True)
     # cached value of how many act uses it
     count = models.IntegerField(default=0)
