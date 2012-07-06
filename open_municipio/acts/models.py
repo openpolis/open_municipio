@@ -34,7 +34,7 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
     This is the base class for all the different act types: it contains the common fields for
     deliberations, interrogations, interpellations, motions, agendas and emendations.
   
-    it is a ``TimeStampedModel``, so it tracks creation and modification timestamps for each record.
+    It is a ``TimeStampedModel``, so it tracks creation and modification timestamps for each record.
 
     The ``related_news`` attribute can be used  to fetch news related to a given act.
 

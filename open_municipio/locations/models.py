@@ -24,7 +24,7 @@ class Location(SlugModel, MonitorizedItem):
     # FIXME: choose the right number of significant digits
     longitude = models.FloatField(verbose_name=_('Longitude'), blank=True, null=True)
 
-    # cached value of how many act uses it
+    # cached value of how many acts use it
     count = models.IntegerField(default=0)
     
     class Meta:
