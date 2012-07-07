@@ -156,14 +156,23 @@ class Resource(models.Model):
 
 
 class PersonResource(Resource):
+    """
+    WRITEME
+    """
     person = models.ForeignKey('Person', verbose_name=_('person'), related_name='resource_set')
 
 
 class InstitutionResource(Resource):
+    """
+    WRITEME
+    """
     institution = models.ForeignKey('Institution', verbose_name=_('institution'), related_name='resource_set')
 
 
 class GroupResource(Resource):
+    """
+    WRITEME
+    """
     group = models.ForeignKey('Group', verbose_name=_('group'), related_name='resource_set')
 
 
@@ -199,16 +208,22 @@ class ChargeResponsability(models.Model):
     This is an abstract class, that must be subclassed in order to specify
     the context (institution charge or group charge).
     """
+    # when this responsability started
     start_date = models.DateField(_('start date'))
+    # when this responsability ended
     end_date = models.DateField(_('end date'), blank=True, null=True)
+    # extended description for this responsability 
     description = models.CharField(_('description'), blank=True, max_length=255,
                                    help_text=_('Insert an extended description of the responsability'))
 
     objects = PassThroughManager.for_queryset_class(TimeFramedQuerySet)()
-
+    
+    # TODO: add model level validation
+    # - the time-frame of a responsability must be included within that of its "container" charge
+    
     class Meta:
         abstract = True
-
+    
 
 class InstitutionCharge(Charge):
     """
@@ -415,7 +430,7 @@ class InstitutionResponsability(ChargeResponsability):
         ('VICE', 'vice', _('Vice president')),
         ('VICE_VICE', 'vice_vice', _('Vice vice president')),
                                       )
-    # the institutionale charge this responsability refers to
+    # the institutional charge this responsability refers to
     charge = models.ForeignKey(InstitutionCharge, verbose_name=_('charge'))
     # responsability type
     charge_type = models.CharField(_('charge type'), max_length=16, choices=CHARGE_TYPES)
@@ -429,18 +444,15 @@ class CompanyCharge(Charge):
     """
     This is a charge within a municipality-controlled company  (IT: "Azienda Partecipata").
     """  
-    CEO_CHARGE = 1
-    PRES_CHARGE = 2
-    VICE_CHARGE = 3
-    DIR_CHARGE = 4
     CHARGE_TYPES = Choices(
-        (CEO_CHARGE, _('Chief Executive Officer')),
-        (PRES_CHARGE, _('President')),    
-        (VICE_CHARGE, _('Vice president')),
-        (DIR_CHARGE, _('Member of the board')),
+        (1, 'ceo', _('Chief Executive Officer')),
+        (2, 'president', _('President')),    
+        (3, 'vice_president', _('Vice president')),
+        (4, 'board_member', _('Member of the board')),
     )
-    
+    # the company this charge refers to
     company = models.ForeignKey('Company', on_delete=models.PROTECT, verbose_name=_('company'), related_name='charge_set')
+    # charge type
     charge_type = models.IntegerField(_('charge type'), choices=CHARGE_TYPES)
     
     class Meta(Charge.Meta):
@@ -449,7 +461,6 @@ class CompanyCharge(Charge):
         verbose_name_plural = _('organization charges')
     
     def __unicode__(self):
-        # TODO: implement ``get_charge_type_display()`` method
         return u'%s - %s' % (self.get_charge_type_display(), self.company.name)
     
     
@@ -457,14 +468,13 @@ class AdministrationCharge(Charge):
     """
     This is a charge in the internal municipality administration.
     """
-    DIR_CHARGE = 1
-    EXEC_CHARGE = 2
     CHARGE_TYPES = Choices(
-      (DIR_CHARGE, _('Director')),    
-      (EXEC_CHARGE, _('Executive')),
+      (1, 'director', _('Director')),    
+      (2, 'executive', _('Executive')),
     )
-    
+    # the office this charge refers to
     office = models.ForeignKey('Office', on_delete=models.PROTECT, verbose_name=_('office'), related_name='charge_set')
+    # charge type
     charge_type = models.IntegerField(_('charge type'), choices=CHARGE_TYPES)
 
     class Meta(Charge.Meta):
@@ -473,18 +483,20 @@ class AdministrationCharge(Charge):
         verbose_name_plural = _('administration charges')
     
     def __unicode__(self):
-        # TODO: implement ``get_charge_type_display()`` method
         return u'%s - %s' % (self.get_charge_type_display(), self.office.name)
   
   
 class Group(models.Model):
     """
-    This model represents a group of counselors.
+    A group of counselors.
     """
+    # group name
     name = models.CharField(max_length=100)
+    # a short name/acronym for this group (if any)
     acronym = models.CharField(blank=True, max_length=16)
-    charge_set = models.ManyToManyField('InstitutionCharge', through='GroupCharge')
-
+    # institution charges belonging to this group (at a given point in time) 
+    charge_set = models.ManyToManyField(InstitutionCharge, through='GroupCharge')
+    # FIXME: find a more descriptive name
     img = ImageField(upload_to="group_images", blank=True, null=True)
 
     class Meta:
@@ -497,16 +509,15 @@ class Group(models.Model):
     @property
     def leader(self):
         """
-        The current leader of the Group as GroupResponsability.
-        None if not found.
-
-        To fetch the InstitutionCharge, .groupcharge.charge.
+        The current leader of this group (as a ``GroupResponsability`` instance).
+        
+        If this group has no leader, return ``None``.
         """
         try:
             leader = GroupResponsability.objects.select_related().get(
                 charge__group=self,
                 charge_type=GroupResponsability.CHARGE_TYPES.leader,
-                end_date__isnull=True
+                end_date__isnull=True,
             )
             return leader
         except ObjectDoesNotExist:
@@ -515,16 +526,15 @@ class Group(models.Model):
     @property
     def deputy(self):
         """
-        The current deputy leader of the Group as GroupResponsability.
-        None if not found.
-
-        To fetch the InstitutionCharge, .groupcharge.charge.
+        The current deputy-leader of this group (as a ``GroupResponsability`` instance).
+        
+        If this group has no deputy-leader, return ``None``.
         """
         try:
             deputy = GroupResponsability.objects.select_related().get(
                 charge__group=self,
                 charge_type=GroupResponsability.CHARGE_TYPES.deputy,
-                end_date__isnull=True
+                end_date__isnull=True,
             )
             return deputy
         except ObjectDoesNotExist:
@@ -533,19 +543,20 @@ class Group(models.Model):
     @property
     def members(self):
         """
-        Current members of the group, as institution charges, leader and
-        council president and vice presidents **excluded**.
+        Current members of this group, as a queryset of ``InstitutionCharge``s. 
+        
+        The group's leader, City Council president & vice presidents are **excluded**.
         """
         return self.institution_charges.select_related().exclude(
             groupcharge__groupresponsability__charge_type__in=(
                 GroupResponsability.CHARGE_TYPES.leader,
                 GroupResponsability.CHARGE_TYPES.deputy
                 ),
-            groupcharge__groupresponsability__end_date__isnull=True
+            groupcharge__groupresponsability__end_date__isnull=True,
         ).exclude(
             groupcharge__charge__institutionresponsability__charge_type__in=(
                 InstitutionResponsability.CHARGE_TYPES.president,
-                InstitutionResponsability.CHARGE_TYPES.vice
+                InstitutionResponsability.CHARGE_TYPES.vice,
             )
         )
 
@@ -559,7 +570,8 @@ class Group(models.Model):
     @property
     def institution_charges(self):
         """
-        All current institution charges in the group, leader **included**
+        A queryset of all current institution charges belonging to this group, 
+        **including** its leader.
         """
         return self.charge_set.filter(groupcharge__end_date__isnull=True)
 
@@ -583,6 +595,7 @@ class Group(models.Model):
     @property
     def resources(self):
         return self.resource_set.all()
+
 
 class GroupCharge(models.Model):
     """
