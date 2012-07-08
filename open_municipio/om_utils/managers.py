@@ -1,6 +1,8 @@
 from django.db.models import Q
 from django.db.models.query import QuerySet
 
+from model_utils.managers import PassThroughManager
+
 from datetime import datetime
 
 class TimeFramedQuerySet(QuerySet):
@@ -40,3 +42,6 @@ class TimeFramedQuerySet(QuerySet):
         time = as_of or datetime.now()
         return self.filter(Q(start_date__lte=time) &
                            Q(end_date__gte=time) | Q(end_date__isnull=True))
+        
+# just a DRY shortcut        
+TimeFramedManager = PassThroughManager.for_queryset_class(TimeFramedQuerySet)

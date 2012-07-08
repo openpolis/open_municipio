@@ -9,11 +9,10 @@ from django.core.urlresolvers import reverse
 from django.contrib.contenttypes.models import ContentType
 
 from model_utils import Choices
-from model_utils.managers import PassThroughManager
 
 from sorl.thumbnail import ImageField
 
-from open_municipio.om_utils.managers import TimeFramedQuerySet
+from open_municipio.om_utils.managers import TimeFramedManager
 from open_municipio.om_utils.models import SlugModel
 from open_municipio.monitoring.models import MonitorizedItem
 from open_municipio.newscache.models import NewsTargetMixin
@@ -189,7 +188,7 @@ class Charge(NewsTargetMixin):
     description = models.CharField(_('description'), blank=True, max_length=255,
                                    help_text=_('Insert the complete description of the charge, if it gives more information than the charge type'))
     
-    objects = PassThroughManager.for_queryset_class(TimeFramedQuerySet)()
+    objects = TimeFramedManager()
 
     class Meta:
         abstract = True
@@ -216,7 +215,7 @@ class ChargeResponsability(models.Model):
     description = models.CharField(_('description'), blank=True, max_length=255,
                                    help_text=_('Insert an extended description of the responsability'))
 
-    objects = PassThroughManager.for_queryset_class(TimeFramedQuerySet)()
+    objects = TimeFramedManager()
     
     # TODO: add model level validation
     # - the time-frame of a responsability must be included within that of its "container" charge
@@ -610,7 +609,7 @@ class GroupCharge(models.Model):
     end_date = models.DateField(blank=True, null=True)
     end_reason = models.CharField(blank=True, max_length=255)
     
-    objects = PassThroughManager.for_queryset_class(TimeFramedQuerySet)()    
+    objects = TimeFramedManager()    
 
     @property
     def responsabilities(self):
@@ -662,7 +661,7 @@ class GroupIsMajority(models.Model):
     start_date = models.DateField(_('Start date'))
     end_date = models.DateField(_('End date'), blank=True, null=True)
     
-    objects = PassThroughManager.for_queryset_class(TimeFramedQuerySet)() 
+    objects = TimeFramedManager() 
 
     class Meta:
         verbose_name = _('group majority')
