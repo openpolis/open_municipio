@@ -217,8 +217,8 @@ class ChargeResponsability(models.Model):
 
     objects = TimeFramedManager()
     
-    # TODO: add model level validation
-    # - the time-frame of a responsability must be included within that of its "container" charge
+    # TODO: add model-level validation
+    # - the time-frame of a responsability must lay within that of its "container" charge
     
     class Meta:
         abstract = True

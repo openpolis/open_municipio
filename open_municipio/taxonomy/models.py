@@ -1,15 +1,13 @@
 from django.db import models
 from django.db.models import permalink
-from django.db.models.signals import post_save, post_delete, pre_delete
 from django.dispatch.dispatcher import receiver
 from django.utils.translation import ugettext_lazy as _, ugettext
 
 from django.contrib.auth.models import User
-from django.contrib.contenttypes import generic
 
 from taggit.models import TagBase, ItemBase
 
-from open_municipio.monitoring.models import Monitoring
+from open_municipio.monitoring.models import MonitorizedItem
 from open_municipio.om_utils.models import SlugModel
 from open_municipio.taxonomy.managers import post_tagging, post_untagging
 
