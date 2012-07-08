@@ -27,10 +27,10 @@ class ActTransitionForm(forms.ModelForm):
 
     class Meta:
         model = Transition
-        fields = ('transition_date', 'note', 'final_status', 'act')
+        fields = ('transition_date', 'note', 'target_status', 'act')
         widgets = {
             'act': forms.HiddenInput(),
-            'final_status': forms.HiddenInput(),
+            'target_status': forms.HiddenInput(),
             'transition_date': forms.DateTimeInput(attrs={'class':'datepicker'})
         }
 
@@ -41,9 +41,9 @@ class ActFinalTransitionForm(ActTransitionForm):
     """
 
     class Meta(ActTransitionForm.Meta):
-        fields = ('transition_date', 'note', 'final_status', 'act', 'votation')
+        fields = ('transition_date', 'note', 'target_status', 'act', 'votation')
         widgets = {
             'act': forms.HiddenInput(),
-            'final_status': forms.Select(choices=[]),
+            'target_status': forms.Select(choices=[]),
             'transition_date': forms.DateTimeInput(attrs={'class':'datepicker'})
         }

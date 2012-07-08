@@ -194,10 +194,10 @@ class ActDetailView(DetailView):
         if self.request.user.has_perm('acts.change_transition') : #and context['status_list']
             context['transition_forms'] = {}
             if len(context['transition_groups']) == 5:
-                context['transition_forms']['transition_to_council_form'] = ActTransitionForm(initial={'act': act, 'final_status': 'COUNCIL' },prefix="council")
-                context['transition_forms']['transition_to_committee_form'] = ActTransitionForm(initial={'act': act, 'final_status': 'COMMITTEE' },prefix="committee")
+                context['transition_forms']['transition_to_council_form'] = ActTransitionForm(initial={'act': act, 'target_status': 'COUNCIL' },prefix="council")
+                context['transition_forms']['transition_to_committee_form'] = ActTransitionForm(initial={'act': act, 'target_status': 'COMMITTEE' },prefix="committee")
             context['transition_forms']['transition_to_final_form'] = ActFinalTransitionForm(initial={'act': act },prefix="final")
-            context['transition_forms']['transition_to_final_form'].fields['final_status'].widget.choices = act.FINAL_STATUSES
+            context['transition_forms']['transition_to_final_form'].fields['target_status'].widget.choices = act.FINAL_STATUSES
 
         return context
     
@@ -320,7 +320,7 @@ class ActTransitionAddView(ActTransitionToggleBaseView):
 
         if 'final' == nameprefix:
             form = ActFinalTransitionForm(request.POST,prefix=nameprefix)
-            form.fields['final_status'].widget.choices = self.act.downcast().FINAL_STATUSES
+            form.fields['target_status'].widget.choices = self.act.downcast().FINAL_STATUSES
         else:
             form = ActTransitionForm(request.POST,prefix=nameprefix)
 

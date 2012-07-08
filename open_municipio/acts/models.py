@@ -1,21 +1,19 @@
 # -*- coding: utf-8 -*-
-from south.modelsinspector import add_ignored_fields
-from django.conf import settings
-from django.contrib.sites.models import Site
 from django.db import models
-from django.template.context import Context
-from django.utils.translation import ugettext_lazy as _
-
-from django.db.models.signals import post_save, post_delete
+from django.db.models.signals import post_save, pre_delete
 from django.dispatch import receiver
+from django.utils.translation import ugettext_lazy as _
 
 from model_utils import Choices
 from model_utils.managers import InheritanceManager, QueryManager
 from model_utils.models import TimeStampedModel
 from model_utils.fields import StatusField
 
-from open_municipio.newscache.models import News, NewsTargetMixin
+from south.modelsinspector import add_ignored_fields
 
+from open_municipio.acts.exceptions import WorkflowError
+from open_municipio.acts.signals import act_presented, act_signed, act_status_changed
+from open_municipio.newscache.models import NewsTargetMixin
 from open_municipio.people.models import Institution, InstitutionCharge, Sitting, Person
 from open_municipio.taxonomy.managers import TopicableManager
 from open_municipio.taxonomy.models import Category, TaggedAct
@@ -47,25 +45,35 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
     """
     # added to avoid problems with South migrations
     add_ignored_fields(["^open_municipio\.taxonomy\.managers"])
-
+    # internal ID string for this act within a given municipality
     idnum = models.CharField(max_length=64, blank=True, help_text=_("A string representing the identification or sequence number for this act, used internally by the municipality's administration."))
+    # official act title, as defined by the municipality
     title = models.CharField(_('title'), max_length=255, blank=True)
+    # editorial (descriptive) act title
     adj_title = models.CharField(_('adjoint title'), max_length=255, blank=True, help_text=_("An adjoint title, added to further explain an otherwise cryptic title"))
+    # when this act was officially presented
     presentation_date = models.DateField(_('presentation date'), null=True, help_text=_("Date of presentation, as stated in the act"))
+    # a textual description for this act
     description = models.TextField(_('description'), blank=True)
+    # official act text
     text = models.TextField(_('text'), blank=True)
+    # which people presented this act
     presenter_set = models.ManyToManyField(InstitutionCharge, blank=True, null=True, through='ActSupport', related_name='presented_act_set', verbose_name=_('presenters'))
+    # intended recipients for this act (if any)
     recipient_set = models.ManyToManyField(InstitutionCharge, blank=True, null=True, related_name='received_act_set', verbose_name=_('recipients'))
+    # the instititution which emitted this act
     emitting_institution = models.ForeignKey(Institution, related_name='emitted_act_set', verbose_name=_('emitting institution'))
+    # categories associated to this act
     category_set = models.ManyToManyField(Category, verbose_name=_('categories'), blank=True, null=True)
+    # locations associated to this act
     location_set = models.ManyToManyField(Location, through=TaggedActByLocation, verbose_name=_('locations'), blank=True, null=True)
-    status_is_final = models.BooleanField(default=False)
+    # wheter this act is a "key" one
     is_key = models.BooleanField(default=False, help_text=_("Specify whether this act should be featured"))
-
+    # default manager
     objects = InheritanceManager()
     # use this manager to retrieve only key acts
     featured = QueryManager(is_key=True).order_by('-presentation_date') 
-    
+    # tags associated to this act
     tag_set = TopicableManager(through=TaggedAct, blank=True)
 
     def __unicode__(self):
@@ -75,7 +83,10 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
         if self.adj_title:
             rv = u'%s (%s)' % (rv, self.adj_title)
         return rv
-
+                
+    def get_absolute_url(self):
+        return self.downcast().get_absolute_url()
+    
     def downcast(self):
         """
         Returns the "downcasted"[*]_ version of this model instance.
@@ -155,7 +166,7 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
     @property
     def act_descriptors(self):
         """
-        Return the QuerySet of all those users which modified this act's description.
+        Return the queryset of all those users which modified this act's description.
         """
         return self.actdescriptor_set.all()
     
@@ -168,85 +179,104 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
         else:
             return _('no')
 
-
-    def status(self):
-        """
-        Return the current status for the downcasted version of this act instance.
-        
-        .. note:: 
-
-            It seems that this method cannot be made into a property,
-            since doing that would trigger an ``AttributeError: can't set attribute`` exception 
-            during Django initialization. 
-
-        """
-        return self.downcast().status
-        
-    def get_transitions_groups(self):
-        """
-        Retrieve a list of transitions grouped by status.
-        """
-        # TODO: review implementation
-        groups = {}
-        this = self.downcast()
-        if not hasattr(this, 'STATUS'):
-            return groups
-        # initialize all status with an empty list of transitions
-        for status in this.STATUS:
-            groups[status[0]] = []
-        # fill groups with ordered transitions
-        for transition in this.transitions.order_by('-transition_date'):
-            if groups.has_key(transition.final_status):
-                groups.get(transition.final_status).append(transition)
-        return groups
-
-    def is_final_status(self, status=None):
-        """
-        WRITEME
-        """
-        # TODO: review implementation
-        this = self.downcast()
-        if status is None:
-            status = this.status
-
-        if not hasattr(this, 'FINAL_STATUSES'):
-            return False
-
-        for final_status in this.FINAL_STATUSES:
-            if status == final_status[0]:
-                return True
-        return False
-
-    def get_last_transition(self):
-        """
-        WRITEME
-        """
-        # TODO: review implementation
-        if self.transitions:
-            # FIXME: this assume that transitions are ordered by date
-            return list(self.transitions)[-1]
-        # FIXME: this method returns different kind of objects (list or boolean) 
-        # under different conditions: this is not an ideal API!
-        # A better approach would be to return ``None`` or raise an exception
-        # if no transitions exist for this act
-        return False
-
-    def get_absolute_url(self):
-        return self.downcast().get_absolute_url()
-
-    def get_status_display(self):
-        """
-        WRITEME
-        """
-        return self.downcast().get_status_display()
-
     def get_type_name(self):
         """
         WRITEME
         """
         return self.downcast()._meta.verbose_name
 
+
+class ActStatusMixin(models.Model):
+    """
+    An abstract, mixin model class encapsulating workflow-related data & logic
+    shared by every *concrete* ``Act`` subclasses.
+    """
+    # current act status
+    _status = StatusField()
+    # whether this act has reached a final (definitive) status
+    status_is_final = models.BooleanField(default=False)
       
+    class Meta:
+        abstract = True
+
+    def save(self, *args, **kwargs):
+        # update ``status_is_final`` cache field
+        self._update_status_is_final()
+        # call base implementation of ``save()`` method
+        super(Act, self).save(*args, **kwargs)
+        # signal creation ("presentation") of a new act
+        self._signal_act_presented(**kwargs)
+   
+    def _signal_act_presented(self, **kwargs):
+        """
+        Notify the system when a new act has been presented,
+        by sending an ``act_presented`` signal.
+        
+        .. note::
+        
+            This signal is being sent only *after* a *new* act has been created, 
+            (not when an act has been updated), and only after the fixture-loading phase.
+           
+        """
+        raw = kwargs['raw']
+        created = kwargs['created']
+        if not raw and created:
+            act_presented.send(sender=self)
+
+    @property    
+    def status(self):
+        """
+        Return the current status of this act instance.
+        """
+        return self._status
+        
+    def get_transitions_groups(self):
+        """
+        Return a dictionary having as keys the allowed statuses 
+        for this act instance, and as values a queryset of transitions 
+        having that target status, in reverse chronological order.
+        """
+        groups = {}
+        states = [t[0] for t in self.STATUS]
+        for state in states:
+            groups[state] = self.transitions.filter(target_status=state).order_by('-transition_date')
+        return groups
+
+    def is_final_status(self, status=None):
+        """
+        Return ``True`` iff the ``status`` argument is a final status for this act instance. 
+        
+        If no ``status`` argument is provided, check if the *current status* for this act
+        is a final one.
+        """ 
+        status = status or self.status
+        if status in [t[0] for t in self.FINAL_STATUSES]:     
+            return True
+        else:
+            return False
+   
+    def _update_status_is_final(self):
+        """
+        Update the ``status_is_final`` cache field based on the current act status.
+        """ 
+        if self.is_final_status():
+            self.status_is_final = True
+        else:
+            self.status_is_final = False
+    
+    @property
+    def last_transition(self):
+        """
+        Return the last created transition for this act.
+        
+        If no transitions are associated to this act, return ``None``.
+        """
+        if self.transitions:
+            return self.transitions.order_by('-transition_date')[0]
+        else:
+            return None
+   
+
 class ActSection(models.Model):
     """
     A section (or sub-section) of an act's text content.
@@ -281,19 +311,43 @@ class ActSupport(models.Model):
         ('FIRSTSIGNER', 'first_signer', _('first signer')),
         ('COSIGNER', 'co_signer', _('co-signer'))
     )
-
+    # who signed the act (a politician)
     charge = models.ForeignKey(InstitutionCharge)
+    # the act being signed
     act = models.ForeignKey(Act)
+    # type of support being provided by the signer to the act
     support_type = models.CharField(choices=SUPPORT_TYPE, max_length=12)
+    # when the act was signed
     support_date = models.DateField(_('support date'), default=None, blank=True, null=True)
 
     class Meta:
         db_table = u'acts_act_support'
+    
+    def save(self, *args, **kwargs):        
+        super(ActSupport, self).save(*args, **kwargs)
+        # signal that a new act has been signed
+        self._signal_act_signed(**kwargs)
+    
+    def _signal_act_signed(self, **kwargs):
+        """
+        Notify the system when an act has been signed, 
+        by sending an ``act_signed`` signal.
+        
+        .. note::
+        
+            This signal is being sent only *after* an act has been signed, 
+            and only after the fixture-loading phase.          
+
+        """
+        raw = kwargs['raw']
+        created = kwargs['created']
+        if not raw and created:
+            act_signed.send(sender=self)
 
 
 class ActDescriptor(TimeStampedModel):
     """
-    A relationship mapping politicians who added or modified an act's description.
+    A relationship mapping politicians who added or modified an act's description. 
     """
     person = models.ForeignKey(Person)
     act = models.ForeignKey(Act)
@@ -303,7 +357,7 @@ class ActDescriptor(TimeStampedModel):
 
 
 
-class Deliberation(Act):
+class Deliberation(ActStatusMixin, Act):
     """
     WRITEME
     """
@@ -328,7 +382,6 @@ class Deliberation(Act):
         ('REJECTED', 'rejected', _('rejected')),
     )
     
-    status = StatusField()
     approval_date = models.DateField(_('approval date'), null=True, blank=True)
     publication_date = models.DateField(_('publication date'), null=True, blank=True)
     execution_date = models.DateField(_('execution date'), null=True, blank=True)
@@ -344,7 +397,7 @@ class Deliberation(Act):
         return ('om_deliberation_detail', (), {'pk': str(self.pk)})
     
 
-class Interrogation(Act):
+class Interrogation(ActStatusMixin, Act):
     """
     WRITEME
     """
@@ -364,7 +417,7 @@ class Interrogation(Act):
         ('NOTANSWERED', 'notanswered', _('not answered')),
     )
     
-    status = StatusField()
+
     answer_type = models.CharField(_('answer type'), max_length=8, choices=ANSWER_TYPES)
     question_motivation = models.TextField(blank=True)
     answer_text = models.TextField(blank=True)
@@ -379,7 +432,7 @@ class Interrogation(Act):
         return 'om_interrogation_detail', (), {'pk': str(self.pk)}
     
 
-class Interpellation(Act):
+class Interpellation(ActStatusMixin, Act):
     """
     WRITEME
     """
@@ -399,7 +452,7 @@ class Interpellation(Act):
         ('NOTANSWERED', 'notanswered', _('not answered')),
     )
 
-    status = StatusField()
+
     answer_type = models.CharField(_('answer type'), max_length=8, choices=ANSWER_TYPES)
     question_motivation = models.TextField(blank=True)
     answer_text = models.TextField(blank=True)
@@ -413,7 +466,7 @@ class Interpellation(Act):
         return 'om_interpellation_detail', (), {'pk': str(self.pk)}
     
 
-class Motion(Act):
+class Motion(ActStatusMixin, Act):
     """
     It is a political act, used to publicly influence members of the City Government, or the Mayor,
     on a broad type of issues (specific to the Comune proceedings, or of a more general category)
@@ -431,7 +484,6 @@ class Motion(Act):
         ('REJECTED', 'rejected', _('rejected')),
     )
 
-    status = StatusField()
     
     class Meta:
         verbose_name = _('motion')
@@ -442,7 +494,7 @@ class Motion(Act):
         return ('om_motion_detail', (), {'pk': str(self.pk)})
 
 
-class Agenda(Act):
+class Agenda(ActStatusMixin, Act):
     """
     Maps the *Ordine del Giorno* act type.
     It is a political act, used to publicly influence the following discussions on Deliberations.
@@ -461,7 +513,6 @@ class Agenda(Act):
         ('REJECTED', 'rejected', _('rejected')),
     )
 
-    status = StatusField()
 
     class Meta:
         verbose_name = _('agenda')
@@ -472,7 +523,7 @@ class Agenda(Act):
         return ('om_agenda_detail', (), {'pk': str(self.pk)})
 
 
-class Emendation(Act):
+class Emendation(ActStatusMixin, Act):
     """
     It is a modification of a particular act, that can be voted specifically and separately from the act itself.
     
@@ -485,7 +536,6 @@ class Emendation(Act):
         ('APPROVED', 'approved', _('approved'))
     )
     
-    status = StatusField()
     act = models.ForeignKey(Act, related_name='emendation_set', on_delete=models.PROTECT)
     act_section = models.ForeignKey(ActSection, related_name='emendation_set', null=True, blank=True, 
                                     on_delete=models.PROTECT)
@@ -500,7 +550,7 @@ class Emendation(Act):
 # Workflows
 #
 class Transition(models.Model):
-    final_status = models.CharField(_('final status'), max_length=100)
+    target_status = models.CharField(_('target status'), max_length=100)
     act = models.ForeignKey(Act, related_name='transition_set')
     votation = models.ForeignKey('votations.Votation', null=True, blank=True)
     transition_date = models.DateField(default=None)
@@ -512,6 +562,133 @@ class Transition(models.Model):
         verbose_name = _('status transition')
         verbose_name_plural = _('status transition')
 
+    def get_previous(self):
+        """
+        Return the previous transition (i.e. that happened just before this one, if any).
+        
+        If this is the initial transition for a given act, return ``None``.
+        """
+        # TODO: add model-level caching
+        previous = Transition.objects.filter(act=self.act, transition_date__lt=self.transition_date).order_by('-transition_date')
+        if previous.count() == 1: # initial transition
+            return None
+        else:
+            return previous[0]  
+    
+    def get_next(self):
+        """
+        Return the next transition (i.e. that happened just after this one, if any).
+        
+        If this is the last transition for a given act, return ``None``.
+        """
+        # TODO: add model-level caching
+        next = Transition.objects.filter(act=self.act, transition_date__gt=self.transition_date).order_by('transition_date')
+        if next.count() == 0: # last transition
+            return None
+        else:
+            return next[0]  
+    
+    @property
+    def is_initial(self):
+        """
+        Return ``True`` if this transition is the initial one; ``False`` otherwise.
+        """
+        # TODO: add model-level caching
+        if self.get_previous():
+            return False
+        else:
+            return True       
+    
+    @property
+    def is_final(self):
+        """
+        Return ``True`` if this transition is the final one; ``False`` otherwise.
+        """
+        # TODO: add model-level caching
+        if self.get_next():
+            return False
+        else:
+            return True       
+
+   
+    
+## Signal handlers
+
+@receiver(act_presented)
+def create_initial_transition(sender, **kwargs):
+    """
+    When an act reaches its initial status (i.e. when it's presented),
+    create the initial transition.
+    
+    .. note::
+    
+        This routine won't be performed during the fixture-loading phase.
+    
+    """
+    # the ``sender`` of this signal is a concrete act instance
+    act = sender
+    Transition.objects.create(
+            act=act.act_ptr,
+            target_status=act.STATUS.presented,
+            transition_date=act.presentation_date,
+            )
+
+    
+@receiver(post_save, sender=Transition)
+def update_act_status(sender, **kwargs):
+    """
+    When a *new* transition has been *created*, perform the following tasks:
+    
+    #. update act's current status
+    #. notify the system about that status change, by sending an 
+       ``act_status_changed`` signal.
+    
+    .. note::
+    
+        This routine will be performed only *after* a *new* transition has been created, 
+        and only after the fixture-loading phase.
+        
+    """
+    raw = kwargs['raw']
+    created = kwargs['created']
+    if not raw and created:
+        # update current act status
+        transition = kwargs['instance']
+        act = transition.act.downcast()
+        act._status = transition.target_status
+        act.save()
+        # signal the status change 
+        act_status_changed.send(sender=act)
+
+        
+@receiver(pre_delete, sender=Transition)
+def revert_act_status(sender, **kwargs):
+    """
+    Before a transition being deleted from the DB, accordingly revert the status 
+    of its associated act.
+    
+    .. note::
+    
+        Deleting a transition other than the last one should be considered an illegal operation, 
+        since doing so will leave the act's workflow in an inconsistent state 
+        (for example, that act will have no longer such a thing as a "current status").     
+        Therefore, deleting such a transition will raise a ``WorkflowError`` exception.
+        
+        For a similar reason, the *initial transition* -- the one which had been created
+        when the act "reached" its initial status -- cannot be deleted, neither, 
+        since doing that would leave the act in an "undefined" status, 
+        a pathological condition that must be avoided.
+    """   
+    transition = kwargs['instance']
+    act = transition.act.downcast()
+    if transition.is_initial:
+        raise WorkflowError("Cannot delete initial transition")
+    elif not transition.is_final:
+        raise WorkflowError("Only the final transition can be deleted")
+    else:
+        act = transition.act.downcast()
+        act._status = transition.get_previous().target_status
+        act.save()
 
 #
 # Documents
@@ -612,120 +789,3 @@ class Calendar(models.Model):
     @property
     def acts(self):
         return self.act_set.all()
-
-
-
-#
-# Signals handlers
-#
-
-
-# TODO: can't find a DRY-way to do it
-@receiver(post_save, sender=Deliberation)
-def new_deliberation_published(sender, **kwargs):
-    new_act_published(sender, **kwargs)
-
-@receiver(post_save, sender=Interrogation)
-def new_interrogation_published(sender, **kwargs):
-    new_act_published(sender, **kwargs)
-
-def new_act_published(sender, **kwargs):
-    """
-    Generates a newscache record when an act is presented,
-    i.e. created within our DB.
-
-    This news is only generated  when an act is created, 
-    not when it's updated, and only after the fixture loading phase.
-
-    below, a trick used to handle signals when loading fixtures,
-    it is not used now, but it may be useful, for testing purposes
-    # instance for subclass fix, while loading fixtures
-    # see http://bit.ly/yimn9S and
-    # https://code.djangoproject.com/ticket/13299
-    if kwargs.get('raw', False):
-        instance = kwargs['instance']
-        generating_item = instance.__class__._default_manager.get(pk=instance.pk)
-    else:
-        generating_item = kwargs['instance']
-    """
-
-    # generates news only if not in raw mode (fixtures)
-    # and for objects creation
-    if not kwargs.get('raw', False) and kwargs.get('created', False):
-        generating_item = kwargs['instance']
-
-        # create transition: act is presented
-        generating_item.transition_set.create(
-            act=generating_item.act_ptr,
-            final_status=generating_item.STATUS.presented,
-            transition_date=generating_item.presentation_date,
-            )
-
-        # define context for textual representation of the news
-        ctx = Context({  })
-
-        # generate news in newscache
-        News.objects.create(
-            generating_object=generating_item, related_object=generating_item, priority=1,
-            text=News.get_text_for_news(ctx, 'newscache/act_published.html')
-        )
-
-
-@receiver(post_save, sender=ActSupport)
-def new_signature(**kwargs):
-    """
-    generates a record in newscache, when an act is signed
-    """
-    # generates news only if not in raw mode (fixtures)
-    # and for objects creation
-    if not kwargs.get('raw', False) and kwargs.get('created', False):
-        generating_item = kwargs['instance']
-        act = generating_item.act.downcast()
-        signer = generating_item.charge
-        # define context for textual representation of the news
-        ctx = Context({ 'current_site': Site.objects.get(id=settings.SITE_ID),
-                        'signature': generating_item, 'act': act, 'signer': signer })
-        News.objects.create(
-            generating_object=generating_item, related_object=act, priority=3,
-            text=News.get_text_for_news(ctx, 'newscache/act_signed.html')
-        )
-        News.objects.create(
-            generating_object=generating_item, related_object=signer, priority=1,
-            text=News.get_text_for_news(ctx, 'newscache/user_signed.html')
-        )
-
-@receiver(post_save, sender=Transition)
-def new_transition(**kwargs):
-    if not kwargs.get('raw', False) and kwargs.get('created', False):
-        generating_item = kwargs['instance']
-        act = generating_item.act.downcast()
-
-        # Presentation is already handled by new_act_published handler
-        if generating_item.final_status != 'PRESENTED':
-            # set act's status according to transition status
-            act.status = generating_item.final_status
-            if act.is_final_status(generating_item.final_status):
-                act.status_is_final = True
-
-            act.save()
-
-            # generate news
-            ctx = Context({ 'current_site': Site.objects.get(id=settings.SITE_ID),
-                            'transition': generating_item, 'act': act })
-            News.objects.create(
-                generating_object=generating_item, related_object=act, priority=2,
-                text=News.get_text_for_news(ctx, 'newscache/act_changed_status.html')
-            )
-
-@receiver(post_delete, sender=Transition)
-def delete_transition(**kwargs):
-    if not kwargs.get('raw', False):
-        deleting_item = kwargs['instance']
-        act = deleting_item.act.downcast()
-
-        if act.get_last_transition():
-            act.status = act.get_last_transition().final_status
-            if act.is_final_status(deleting_item.final_status):
-                act.status_is_final = False
-
-        act.save()

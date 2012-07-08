@@ -142,7 +142,7 @@
         <ul>
           {% for transition in transition_groups.COMMITTEE %}
             <li>
-              {% if transition_forms and transition == act.get_last_transition %}
+              {% if transition_forms and transition == act.last_transition %}
                 <form action="{% url om_act_transition_remove act.id %}" class="transition_delete_form"
                       method="post">{% csrf_token %}
                   <input type="hidden" name="transition_id" value="{{ transition.id }}"/>
@@ -158,7 +158,7 @@
         <ul>
           {% for transition in transition_groups.COUNCIL %}
             <li>
-              {% if transition_forms and transition == act.get_last_transition %}
+              {% if transition_forms and transition == act.last_transition %}
                 <form action="{% url om_act_transition_remove act.id %}" class="transition_delete_form"
                       method="post">{% csrf_token %}
                   <input type="hidden" name="transition_id" value="{{ transition.id }}"/>
@@ -173,7 +173,7 @@
     {% endif %}
     <td>
       {% if act.status_is_final %}
-        {% with transition=act.get_last_transition %}
+        {% with transition=act.last_transition %}
         <ul>
           <li>
             {% if transition_forms %}

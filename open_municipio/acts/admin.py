@@ -8,17 +8,17 @@ from open_municipio.acts.models import *
 
 def transition_form_factory(act):
     """
-    allows to change the final_status field in the transition form
+    Allows to change the target_status field in the transition form
     see: http://www.artfulcode.net/articles/runtime-choicefield-filtering-in-djangos-admin/
     see: TransitionInline class, below, too for how to use this
 
-    final_status is a charfield in the model,
+    target_status is a charfield in the model,
     the form field is rendered as a ChoiceField,
     the choices are dynamically generated starting from the act instance,
     passed inside the get_formset method
     """
     class RuntimeTransitionForm(forms.ModelForm):
-        final_status = forms.ChoiceField(label='Status', choices=act.downcast().STATUS)
+        target_status = forms.ChoiceField(label='Status', choices=act.downcast().STATUS)
 
         class Meta:
             model = Transition
