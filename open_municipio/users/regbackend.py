@@ -2,8 +2,8 @@ from django.conf import settings
 from django.contrib.auth import login, get_backends
 from django.contrib.auth.models import User
 
-from users.forms import UserRegistrationForm
-from users.models import UserProfile
+from open_municipio.users.forms import UserRegistrationForm
+from open_municipio.users.models import UserProfile
 
 
 """
