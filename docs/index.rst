@@ -12,6 +12,7 @@ Contents:
    dev/code/queries
    dev/code/apps/testdatabuilder
    dev/code/apps/newscache
+   dev/code/apps/om_utils
    dev/data_import-it
 
 
