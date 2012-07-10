@@ -150,17 +150,37 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
-COMMENTS_APP = 'open_municipio.om_comments'
-
-# registration settings
-ACCOUNT_ACTIVATION_DAYS = 7 # One-week activation window; you may, of course, use a different value.
-REGISTRATION_AUTO_LOGIN = True
-
-# ''django-social-auth'' settings
+# ``django-social-auth`` settings
 FACEBOOK_EXTENDED_PERMISSIONS = ['email']
+LOGIN_URL          = '/login/'
+LOGIN_REDIRECT_URL = '/'
+LOGIN_ERROR_URL    = '/login-error/'
+SOCIAL_AUTH_COMPLETE_URL_NAME  = 'socialauth_complete'
+SOCIAL_AUTH_ASSOCIATE_URL_NAME = 'socialauth_associate_complete'
+SOCIAL_AUTH_EXPIRATION = 'expires'
+SOCIAL_AUTH_RAISE_EXCEPTIONS = DEBUG
+SOCIAL_AUTH_PIPELINE = (
+    'social_auth.backends.pipeline.social.social_auth_user',
+    'social_auth.backends.pipeline.associate.associate_by_email',
+    'social_auth.backends.pipeline.misc.save_status_to_session',
+    'om_auth.pipeline.redirect_to_form',
+    'om_auth.pipeline.extra_data',
+    'social_auth.backends.pipeline.user.create_user',
+    'om_auth.pipeline.create_profile',
+    'social_auth.backends.pipeline.social.associate_user',
+    'social_auth.backends.pipeline.social.load_extra_data',
+    'social_auth.backends.pipeline.user.update_user_details',
+)
+
+# ``django-registration`` settings
+ACCOUNT_ACTIVATION_DAYS = 7 # Activation window
+REGISTRATION_AUTO_LOGIN = True
 
 # use app shortcut (app.class)
 AUTH_PROFILE_MODULE = 'users.UserProfile'
+
+# comments settings
+COMMENTS_APP = 'open_municipio.om_comments'
 
 # external web services configuration
 WEB_SERVICES = {
