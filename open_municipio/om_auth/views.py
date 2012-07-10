@@ -33,6 +33,10 @@ def logout(request):
 
 
 def login_form(request):
+    """
+    When a user registers through a social network we need some
+    additional information.
+    """
     error = None
     if request.method == 'POST':
         profile_form = ProfileSocialRegistrationForm(request.POST)

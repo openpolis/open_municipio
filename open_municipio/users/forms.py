@@ -9,27 +9,20 @@ from registration.forms import RegistrationForm, RegistrationFormUniqueEmail
 from open_municipio.users.models import UserProfile
 
 
-class UserProfileForm(ModelForm):
-    class Meta:
-        model = UserProfile
-        exclude = ('user', 'person')
+"""
+``User`` and ``UserProfile`` model forms. A few of them are used in
+the ``django-social-auth`` registration process, whenever some extra
+data are needed.
+"""
 
-
-class ProfileSocialRegistrationForm(ModelForm):
-    class Meta:
-        model = UserProfile
-        exclude = ('user', 'person')
-
-
-class UserSocialRegistrationForm(ModelForm):
-    class Meta:
-        model = User
-        fields = ('username',)
-
-
+# This is just a shortcut
 attrs_dict = {'class': 'required'}
 
 class UserRegistrationForm(RegistrationFormUniqueEmail):
+    """
+    ``User`` and ``UserProfile`` model form for standard (non-social)
+    registration.
+    """
     first_name = forms.CharField(max_length=30, required=True, label=_('First Name'))
     last_name = forms.CharField(max_length=30, label=_('Last Name'))
     city = forms.CharField(widget=forms.TextInput(attrs=attrs_dict))
@@ -45,3 +38,33 @@ class UserRegistrationForm(RegistrationFormUniqueEmail):
     pri = forms.BooleanField(widget=forms.CheckboxInput(attrs=attrs_dict),
                              label=_(u'I have read and agree to the Privacy conditions'),
                              error_messages={'required': _("You must agree to the conditions to register")})
+
+
+class UserSocialRegistrationForm(ModelForm):
+    """
+    ``User`` model form for social registration: collecting
+    some extra data not provided by social networks.
+    """
+    class Meta:
+        model = User
+        fields = ('username',)
+
+
+class ProfileSocialRegistrationForm(ModelForm):
+    """
+    ``UserProfile`` model form for social registration: collecting
+    some extra data not provided by social networks.
+    """
+    class Meta:
+        model = UserProfile
+        exclude = ('user', 'person')
+
+
+class UserProfileForm(ModelForm):
+    """
+    ``UserProfile`` model form: used by users to edit their own
+    profiles.
+    """
+    class Meta:
+        model = UserProfile
+        exclude = ('user', 'person')
