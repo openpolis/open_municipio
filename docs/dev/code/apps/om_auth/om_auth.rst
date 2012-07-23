@@ -150,7 +150,7 @@ functions. Source code can be found in ``om_auth/pipeline.py``.
 
 .. _redirect-to-form-label:
 
-.. function:: om_auth.pipeline.redirect_to_form(*args, **kwargs)
+.. autofunction:: om_auth.pipeline.redirect_to_form
 	
     This function redirect the user, during the registration process,
     to a form where he's asked for the extra data needed (and not
@@ -164,12 +164,12 @@ functions. Source code can be found in ``om_auth/pipeline.py``.
     this step, the IF cicle is bypassed and the pipeline continues to
     the next step.
 
-.. function:: om_auth.pipeline.extra_data(*args, **kwargs)
+.. autofunction:: om_auth.pipeline.extra_data
 	
     This function initialize the extra data collect in the previous
     step and pass them to the next pipeline's step.
 
-.. function:: om_auth.pipeline.create_profile(request, user, response, details, is_new=False, *args, **kwargs)
+.. autofunction:: om_auth.pipeline.create_profile
 	
     This function is called after the user creation (which is
     performed by the “default” pipeline's step
@@ -193,24 +193,25 @@ Fields
 
 Methods
 ----------
-.. function:: login_done(request)
+
+.. autofunction:: om_auth.views.login_done
 	
-    return a redirect to user's detail page (use the ``get_profile()``
+    Return a redirect to user's detail page (use the ``get_profile()``
     `method`_ of the User class)
 
-.. function:: login_error(request)
+.. autofunction:: om_auth.views.login_error
 	
-    render the template ``error.html`` (can be founded in the `om_auth
+    Render the template ``error.html`` (can be founded in the `om_auth
     template directory`_),
 	
-.. function:: logout(request)
+.. autofunction:: om_auth.views.logout
 	
-    call the ``logout`` function from the `django.contrib.auth`_
+    Call the ``logout`` function from the `django.contrib.auth`_
     module, then return a redirect to the root web directory.
 
-.. function:: login_form(request)
+.. autofunction:: om_auth.views.login_form
 
-    called at the “om_auth.pipeline.redirect_to_form” pipeline's
+    Called at the “om_auth.pipeline.redirect_to_form” pipeline's
     step. During its first iteration, the IF statement isn't met, so
     this function renders the ``form.html`` template, and stores the
     extra user's data inserted into the form. At this time, the IF
