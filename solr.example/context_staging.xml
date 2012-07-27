@@ -4,10 +4,10 @@
     Context for Solr (multicore)
     ============================
 
-    All solr indexes will be reachable through http://localhost:8180/solr.
+    All solr indexes will be reachable through http://localhost:8080/solr.
 -->
 
-<Context docBase="/home/apache-solr-3.5.0/dist/apache-solr-3.5.0.war" debug="0" crossContext="true">
+<Context docBase="/home/apache-solr-3.6.0/dist/apache-solr-3.6.0.war" debug="0" crossContext="true">
   <Environment name="solr/home" type="java.lang.String" value="/home/solr/cores" override="true"/>
 </Context>
 
