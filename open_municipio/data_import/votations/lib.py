@@ -105,8 +105,6 @@ class BaseVotationReader(BaseReader):
         # construct the DOM tree
         for sitting in data_source.get_sittings():
             sitting.ballots = data_source.get_ballots(sitting)
-            for ballot in sitting.ballots:
-                ballot.votes = data_source.get_votes(ballot)
             self.sittings.append(sitting)
         # as now, ``self.sittings`` should be a object tree 
         # providing a comprehensive representation of all relevant data
@@ -189,7 +187,8 @@ class XMLVotationWriter(BaseVotationWriter, XMLWriter):
                 attrs = dict(cardID=vote.cardID,
                                     componentID=vote.componentID,
                                     groupID=vote.groupID,
-                                    vote=vote.choice)
+                                    vote=vote.choice,
+                                    component_name=vote.componentName)
                 self._set_element_attrs(vote_el, attrs)
                 ballot_el.append(vote_el)
                 chargexref_el = CHARGEXREF()

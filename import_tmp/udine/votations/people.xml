@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <om:People xmlns:om="http://www.openmunicipio.it" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openmunicipio.it DataImport.xsd">
-  <om:Person id="1" name="Enzo" last_name="CAINERO"/>
+  <om:Person id="1" om_id="53" name="Enzo" last_name="CAINERO"/>
   <om:Person id="2" om_id="36" first_name="Giovanni" last_name="ORTIS"/>
-  <om:Person id="3" first_name="Diego" last_name="VOLPE PASINI"/>
+  <om:Person id="3" om_id="66" first_name="Diego" last_name="VOLPE PASINI"/>
   <om:Person id="4" om_id="12" first_name="Daniele" last_name="CORTOLEZZIS"/>
   <om:Person id="5" om_id="23" first_name="Cinzia" last_name="DEL TORRE"/>
   <om:Person id="6" om_id="28" first_name="Claudio" last_name="GALLUZZO"/>
@@ -22,14 +22,14 @@
   <om:Person id="20" om_id="24" first_name="Franco" last_name="DELLA ROSSA"/>
   <om:Person id="21" om_id="26" first_name="Chiara" last_name="FRANCESCHINI"/>
   <om:Person id="22" om_id="35" first_name="Antonella" last_name="NONINO"/>
-  <om:Person id="23" first_name="Anna Paola" last_name="PERATONER"/>
+  <om:Person id="23" om_id="58" first_name="Anna Paola" last_name="PERATONER"/>
   <om:Person id="24" om_id="39" first_name="Federico Angelo" last_name="PIRONE"/>
   <om:Person id="25" om_id="16" first_name="Giovanni" last_name="BARILLARI"/>
   <om:Person id="26" om_id="19" first_name="Alberto" last_name="BERTOSSI"/>
   <om:Person id="27" om_id="4" first_name="Antonio" last_name="CORRIAS"/>
   <om:Person id="28" om_id="43" first_name="Aldo" last_name="RINALDI"/>
   <om:Person id="29" om_id="14" first_name="Stefano" last_name="ARPINO"/>
-  <om:Person id="30" first_name="Roberto" last_name="BARDINI"/>
+  <om:Person id="30" om_id="52" first_name="Roberto" last_name="BARDINI"/>
   <om:Person id="31" om_id="17" first_name="Enrico" last_name="BERTI"/>
   <om:Person id="32" om_id="18" first_name="Piergiorgio" last_name="BERTOLI"/>
   <om:Person id="33" om_id="34" first_name="Loris" last_name="MICHELINI"/>
