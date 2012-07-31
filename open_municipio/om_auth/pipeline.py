@@ -1,3 +1,4 @@
+from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 
 from users.models import UserProfile
@@ -16,7 +17,7 @@ def redirect_to_form(*args, **kwargs):
     """
     if not kwargs['request'].session.get('saved_username') and \
        kwargs.get('user') is None:
-        return HttpResponseRedirect('/login-form/')
+        return HttpResponseRedirect(reverse('login-form'))
 
 
 def extra_data(request, *args, **kwargs):
