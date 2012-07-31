@@ -5,6 +5,12 @@ from django.contrib.auth.models import User
 from open_municipio.users.forms import UserRegistrationForm
 from open_municipio.users.models import UserProfile
 
+from registration.signals import user_registered
+from registration.signals import user_activated
+
+user_registered.connect(user_created)
+user_activated.connect(log_in_user)
+
 
 """
 Functions listed below act as receivers and are used along the
@@ -33,9 +39,6 @@ def user_created(sender, user, request, **kwargs):
     extra_data.city = form.data['city']
     extra_data.save()
    
-from registration.signals import user_registered
-user_registered.connect(user_created)
-
 
 def log_in_user(sender, user, request, **kwargs):
     """
@@ -47,5 +50,3 @@ def log_in_user(sender, user, request, **kwargs):
         user.backend = "%s.%s" % (backend.__module__, backend.__class__.__name__)
         login(request, user)
 
-from registration.signals import user_activated
-user_activated.connect(log_in_user)
