@@ -7,6 +7,7 @@ django-extensions
 -e hg+https://bitbucket.org/guglielmo/django-registration#egg=django-registration
 -e hg+https://bitbucket.org/ubernostrum/django-profiles#egg=django-profiles
 django-haystack
+beautifulsoup
 pysolr
 lxml
 pil
