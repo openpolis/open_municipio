@@ -18,7 +18,7 @@ class Command(BaseCommand):
     Poiticians anagraphical data and their current and past charges are imported
     from a google spreadsheet.
 
-    The title of the spreadsheet and access credentials are stored in local settings.
+    Access credentials are stored in local settings.
 
     Data may be compared or re-written. By default they're compared,
     to overwrite use the --overwrite option.
