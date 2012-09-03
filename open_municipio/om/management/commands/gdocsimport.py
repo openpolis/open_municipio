@@ -10,6 +10,8 @@ import gdata.docs
 import gdata.docs.service
 import gdata.spreadsheet.service
 
+import logging
+
 from open_municipio.people.models import Person, Group, InstitutionCharge, Institution, GroupCharge, InstitutionResponsability, GroupResponsability
 
 
@@ -36,7 +38,9 @@ class Command(BaseCommand):
                     help='Re-write charge from scratch'),
         )
 
-    def handle(self, **options):
+    logger = logging.getLogger('import')
+
+def handle(self, **options):
         """
         access the google spreadsheet,
         fetch institutional and group charges and responsabilities;
@@ -90,22 +94,27 @@ class Command(BaseCommand):
 
                 birth_date = datetime.datetime.strptime(row.custom['datanascita'].text, '%d/%m/%Y').strftime('%Y-%m-%d')
                 birth_location = row.custom['luogonascita'].text
-                self.stdout.write("%s %s (%s) - nascita: %s a %s\n" %
+                self.logger.debug("%s %s (%s) - nascita: %s a %s\n" %
                                   (first_name, last_name, sex,
                                    birth_date,
                                    birth_location))
 
 
                 # fetch or create person
-                p, p_created = Person.objects.get_or_create(
+                created = False
+                p, created = Person.objects.get_or_create(
                     first_name=first_name,
                     last_name=last_name,
                     birth_date=birth_date,
-                    sex=sex
+                    sex=sex,
+                    defaults={
+                        'birth_location': birth_location
+                    }
                 )
-                if p_created or options['overwrite']:
-                    p.birth_location = birth_location
-                    p.save()
+                if created:
+                    self.logger.info("Aggiunta persona: %s" % (p,))
+                else:
+                    self.logger.debug("Trovata persona: %s" % (p,))
 
 
             # get charge start and end dates
