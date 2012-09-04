@@ -5,7 +5,7 @@ from open_municipio.acts.models import Act
 from django.utils.translation import activate
 from django.conf import settings
 
-class ActIndex(RealTimeSearchIndex):
+class ActIndex(SearchIndex):
     text = CharField(document=True, use_template=True)
 
     # faceting fields
