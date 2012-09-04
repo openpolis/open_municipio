@@ -50,7 +50,7 @@ class Person(models.Model, MonitorizedItem):
         verbose_name_plural = _('people')
    
     def __unicode__(self):
-        return '%s %s' % (self.first_name, self.last_name)
+        return u'%s %s' % (self.first_name, self.last_name)
 
     def save(self, *args, **kwargs):
         if self.slug is None:
@@ -388,7 +388,7 @@ class InstitutionResponsability(ChargeResponsability):
         ('FIRSTDEPUTYMAYOR', 'firstdeputymayor', _('First deputy mayor')),
         ('PRESIDENT', 'president', _('President')),
         ('VICE', 'vice', _('Vice president')),
-        ('VICEVICE', 'vicevice', _('Vice vice precident')),
+        ('VICEVICE', 'vicevice', _('Vice vice president')),
                                       )
 
     charge = models.ForeignKey(InstitutionCharge, verbose_name=_('charge'))
