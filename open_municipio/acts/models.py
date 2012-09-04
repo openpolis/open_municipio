@@ -51,8 +51,8 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
     add_ignored_fields(["^open_municipio\.taxonomy\.managers"])
 
     idnum = models.CharField(max_length=64, blank=True, help_text=_("A string representing the identification or sequence number for this act, used internally by the municipality's administration."))
-    title = models.CharField(_('title'), max_length=255, blank=True)
-    adj_title = models.CharField(_('adjoint title'), max_length=255, blank=True, help_text=_("An adjoint title, added to further explain an otherwise cryptic title"))
+    title = models.CharField(_('title'), max_length=512, blank=True)
+    adj_title = models.CharField(_('adjoint title'), max_length=512, blank=True, help_text=_("An adjoint title, added to further explain an otherwise cryptic title"))
     presentation_date = models.DateField(_('presentation date'), null=True, help_text=_("Date of presentation, as stated in the act"))
     description = models.TextField(_('description'), blank=True)
     text = models.TextField(_('text'), blank=True)
@@ -264,7 +264,7 @@ class ActSection(models.Model):
     """
     act = models.ForeignKey(Act, on_delete=models.PROTECT)
     parent_section = models.ForeignKey('self', on_delete=models.PROTECT)  
-    title = models.CharField(max_length=128, blank=True)
+    title = models.CharField(max_length=512, blank=True)
     text = models.TextField(blank=True)
   
     def __unicode__(self):
