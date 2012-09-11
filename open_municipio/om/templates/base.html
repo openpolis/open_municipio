@@ -36,21 +36,26 @@
 
 <div id="wrapper"><!-- #wrapper -->
 
-  <div class="navbar navbar-fixed-top" id="page-alert">
-    <div class="navbar-inner">
-      <div class="container-fluid">
 
-        <div class="row-fluid">
-          <div class="span12">
-            <strong>Versione dimostrativa del sito Open municipio</strong>. I contenuti sono simulati e le funzionalità di registrazione sono disabilitate.
+  {% if IS_DEMO %}
+      <!-- DEMO ALERT -->
+      <div class="navbar navbar-fixed-top" id="page-alert">
+        <div class="navbar-inner">
+          <div class="container-fluid">
+
+            <div class="row-fluid">
+              <div class="span12">
+                <strong>Versione dimostrativa del sito Open municipio</strong>. I contenuti sono simulati e le funzionalità
+                  di registrazione sono disabilitate.
+              </div>
+            </div>
+
           </div>
         </div>
-
       </div>
-    </div>
-  </div>
+  {% endif %}
 
-  <!-- TOPBAR -->
+    <!-- TOPBAR -->
   <div class="navbar" id="navbar-top">
     <nav class="navbar-inner">
       <a href="http://www.openmunicipio.it" class="brand">
