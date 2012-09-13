@@ -133,16 +133,16 @@ class CommitteeDetailView(DetailView):
         # fetch charges and add group
         president = self.object.president
         if president:
-            president.group = InstitutionCharge.objects.select_related().\
+            president.group = InstitutionCharge.objects.current().select_related().\
                                   get(pk=president.charge.original_charge_id).council_group
         vicepresidents = self.object.vicepresidents
         for vp in vicepresidents:
             if vp:
-                vp.group = InstitutionCharge.objects.select_related().\
+                vp.group = InstitutionCharge.objects.current().select_related().\
                     get(pk=vp.charge.original_charge_id).council_group
         members = self.object.members.order_by('person__last_name')
         for m in members:
-            m.group = InstitutionCharge.objects.select_related().\
+            m.group = InstitutionCharge.objects.current().select_related().\
                 get(pk=m.original_charge_id).council_group
 
 
