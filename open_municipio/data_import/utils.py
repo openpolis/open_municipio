@@ -2,6 +2,26 @@
 A misc set of utilities useful in the data-import domain.
 """
 
+
+import socket
+
+def netcat(hostname, port, content):
+    """
+    netcat (nc) implementation in python
+    """
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.connect((hostname, port))
+    s.sendall(content)
+    s.shutdown(socket.SHUT_WR)
+    res = ''
+    while 1:
+        data = s.recv(1024)
+        if data == "":
+            break
+        res += data
+    s.close()
+    return res
+
 def get_row_dicts(cursor, query, params=()):
     """
     Convert a sequence of row (record) tuples -- as returned by a call to Python DBAPI's ``cursor.connect()``
