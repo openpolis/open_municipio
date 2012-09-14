@@ -191,7 +191,7 @@ class Command(LabelCommand):
             om_att.file.save(attach_dir + "_" + attach_filename, File(attach_f))
             om_att.document_type = os.path.splitext(attach_filename)[1][1:]
             om_att.document_size = File(attach_f).size
-            self.logger.info(" will attach %s - %s (%s)" % (attach_file, attach_title, attach_dir + "_" + attach_filename))
+            self.logger.info(" will attach %s" % (attach_file, attach_title, attach_dir + "_" + attach_filename))
             om_att.save()
 
             # text extraction (using tika inside solr)
@@ -240,12 +240,15 @@ class Command(LabelCommand):
                 html_content = html.fromstring(file_content['contents'].encode('utf-8'))
                 document_text = html_content.cssselect('body')[0].text_content()
 
+                self.logger.info("  textual content extracted from file")
+
                 # text content saved into attachment's text
                 om_att.text = document_text
                 om_att.save()
 
                 # for proposale, text content goes into act's content field
                 if 'testoproposta' in attach_filename.lower():
+                    self.logger.info("  textual version of proposal added to act")
                     om_act.text = document_text
                     om_act.save()
 
