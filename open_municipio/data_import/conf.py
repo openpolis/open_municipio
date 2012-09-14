@@ -19,14 +19,6 @@ XML_ROOT_DIR = os.path.join(settings.REPO_ROOT, 'test_data/votations/xml')
 
 ACTS_PEOPLE_FILE = os.path.join(settings.REPO_ROOT, 'test_data/acts/people.xml')
 
-# text content extraction from pdf or doc attachments
-# if there's an active tika server and how to contact it
-# usage:
-#   document_text = open_municipio.data_import.utils.netcat(conf.TIKA_HOST, conf.TIKA_PORT, document_binary_content)
-TIKA_IS_ACTIVE = True
-TIKA_HOST = 'localhost'
-TIKA_PORT = 21000
-
 
 # Django settings specific for the data import features
 
