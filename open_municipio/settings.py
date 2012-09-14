@@ -116,6 +116,7 @@ INSTALLED_APPS = (
     'south',
     'taggit',
     'voting',
+    'haystack',
     'open_municipio.events',
     'open_municipio.inline_edit',
     'open_municipio.autocomplete',
@@ -133,7 +134,6 @@ INSTALLED_APPS = (
     'open_municipio.web_services',
     'open_municipio.newscache',
     'open_municipio.data_import',
-    'haystack',
     'sorl.thumbnail',
 )
 

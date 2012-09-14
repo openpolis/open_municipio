@@ -5,10 +5,11 @@ from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.core.management.base import LabelCommand, CommandError, BaseCommand
 from django.core.files import File
 
-from lxml import etree
+from lxml import etree, html
 from os import path
 
 from open_municipio.data_import.utils import netcat
+from haystack.backends.solr_backend import SolrSearchBackend
 from open_municipio.people.models import Person, municipality
 from open_municipio.acts.models import *
 
@@ -186,25 +187,58 @@ class Command(LabelCommand):
 
             # overwrite attach file and save it under media (/uploads)
             attach_filename = path.basename(attach_file)
-            f = open(attach_file, 'r')
-            om_att.file.save(attach_dir + "_" + attach_filename, File(f))
+            attach_f = open(attach_file, 'r')
+            om_att.file.save(attach_dir + "_" + attach_filename, File(attach_f))
             om_att.document_type = os.path.splitext(attach_filename)[1][1:]
-            om_att.document_size = File(f).size
+            om_att.document_size = File(attach_f).size
             self.logger.info(" will attach %s - %s (%s)" % (attach_file, attach_title, attach_dir + "_" + attach_filename))
             om_att.save()
 
-            # text extraction (using tika as a server on port 21000)
-            # for proposal and discussion texts
-            if conf.TIKA_IS_ACTIVE and \
-               'testoproposta' in attach_filename.lower() or\
+            # text extraction (using tika inside solr)
+            if 'testoproposta' in attach_filename.lower() or\
                'testodiscussione' in attach_filename.lower():
 
-                # read binary document content
-                f = open(attach_file, 'r')
-                document_content = f.read()
+                """
+                Streamlines content extraction from a doc (pdf, or other format file, as specified in Tika) within a solr request.
+                Requires Haystack 2.0.0.
+                Handles unicode characters, as well.
 
-                # text extraction, contacting tika server
-                document_text = netcat(conf.TIKA_HOST, conf.TIKA_PORT, document_content)
+                In settings, define this hash:
+                HAYSTACK_CONNECTIONS = {
+                    'default': {
+                        'ENGINE': 'haystack.backends.solr_backend.SolrEngine',
+                        'URL': 'http://127.0.0.1:8983/solr',
+                        'TIMEOUT': 60 * 5,
+                        'BATCH_SIZE': 100,
+                        'SEARCH_RESULTS_PER_PAGE': 10,
+                    }
+                }
+
+
+                from django.conf import settings
+                from haystack.backends.solr_backend import SolrSearchBackend
+                from lxml import html
+
+                file_path = '/Users/guglielmo/Workspace/open_municipio/test_data/acts/20120622_ATTI_2008/DC_2008401100013/TestoProposta.doc'
+                solr_backend = SolrSearchBackend('default', **settings.HAYSTACK_CONNECTIONS['default'])
+
+                attach_f = open(file_path)
+                file_content = solr_backend.extract_file_contents(attach_f)
+                html_content = html.fromstring(file_content['contents'].encode('utf-8'))
+                document_text = html_content.cssselect('body')[0].text_content()
+
+                print document_text
+                """
+
+
+                # reset attach file pointer
+                attach_f.seek(0)
+
+                # text extraction, through haystack-solr and lxml.html
+                solr_backend = SolrSearchBackend('default', **settings.HAYSTACK_CONNECTIONS['default'])
+                file_content = solr_backend.extract_file_contents(attach_f)
+                html_content = html.fromstring(file_content['contents'].encode('utf-8'))
+                document_text = html_content.cssselect('body')[0].text_content()
 
                 # text content saved into attachment's text
                 om_att.text = document_text

@@ -1,28 +1,28 @@
-import datetime
-from haystack.indexes import *
-from haystack import site
+from haystack import indexes
 from open_municipio.acts.models import Act
 from django.utils.translation import activate
 from django.conf import settings
 
-class ActIndex(SearchIndex):
-    text = CharField(document=True, use_template=True)
-
+class ActIndex(indexes.SearchIndex, indexes.Indexable):
+    text = indexes.CharField(document=True, use_template=True)
     # faceting fields
-    act_type = FacetCharField( )
-    is_key = FacetCharField(model_attr='is_key_yesno')
-    initiative = FacetCharField()
-    organ = FacetCharField(model_attr='emitting_institution__lowername')
-    pub_date = FacetDateField(model_attr='presentation_date')
-    facet_categories = MultiValueField(indexed=True, stored=True, faceted=True)
-    tags_with_urls = MultiValueField(indexed=False, stored=True)
-    categories_with_urls = MultiValueField(indexed=False, stored=True)
-    locations_with_urls = MultiValueField(indexed=False, stored=True)
+    act_type = indexes.FacetCharField( )
+    is_key = indexes.FacetCharField(model_attr='is_key_yesno')
+    initiative = indexes.FacetCharField()
+    organ = indexes.FacetCharField(model_attr='emitting_institution__lowername')
+    pub_date = indexes.FacetDateField(model_attr='presentation_date')
+    facet_categories = indexes.MultiValueField(indexed=True, stored=True, faceted=True)
+    tags_with_urls = indexes.MultiValueField(indexed=False, stored=True)
+    categories_with_urls = indexes.MultiValueField(indexed=False, stored=True)
+    locations_with_urls = indexes.MultiValueField(indexed=False, stored=True)
 
     # stored fields, used not to touch DB
     # while showing results
-    url = CharField(indexed=False, stored=True)
-    title = CharField(indexed=False, stored=True, model_attr='title')
+    url = indexes.CharField(indexed=False, stored=True)
+    title = indexes.CharField(indexed=False, stored=True, model_attr='title')
+
+    def get_model(self):
+        return Act
 
     def prepare_tags_with_urls(self, obj):
         d_obj = obj.downcast()
@@ -54,5 +54,3 @@ class ActIndex(SearchIndex):
     def prepare_url(self, obj):
         return obj.downcast().get_absolute_url()
 
-
-site.register(Act, ActIndex)
