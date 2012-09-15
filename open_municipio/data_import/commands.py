@@ -27,12 +27,6 @@ XLINK = "{%s}" % XLINK_NAMESPACE
 
 class ImportActsCommand(LabelCommand):
     option_list = BaseCommand.option_list + (
-        make_option('--overwrite',
-                    action='store_true',
-                    dest='overwrite',
-                    default=False,
-                    help='Re-write act from scratch'
-        ),
         make_option('--people-file',
                     dest='people_file',
                     default=conf.ACTS_PEOPLE_FILE,
@@ -43,11 +37,19 @@ class ImportActsCommand(LabelCommand):
                     default='CouncilDeliberation',
                     help='The type of act to import'
         ),
-        )
+        make_option('--dry-run',
+                    action='store_true',
+                    dest='dry_run',
+                    default=False,
+                    help='Execute without actually writing into the DB'
+        ),
+    )
 
     args = "<filename filename ...>"
     help = "Import the act(s) of type act_type, contained in the specified XML document(s)."
     label = 'filename'
+
+    dry_run = False
 
     logger = logging.getLogger('import')
 
@@ -100,7 +102,7 @@ class ImportActsCommand(LabelCommand):
                 self.logger.warning("could not find person for id %s in peopkle XML file. Skipping." % charge_id)
                 return None
         except ObjectDoesNotExist:
-            self.logger.warning("could not find charge with id %s in Open Municipio DB. Skipping." % component_id)
+            self.logger.warning("could not find charge for %s in Open Municipio DB. Skipping." % xml_chargexref)
             return None
 
     def fetch_signers(self, om_act, xml_subscribers_set, support_type, charge_lookup_institution):
@@ -134,7 +136,9 @@ class ImportActsCommand(LabelCommand):
 
             # always rewrite support date
             om_as.support_date = support_date
-            om_as.save()
+
+            if not self.dry_run:
+                om_as.save()
 
     def fetch_attachments(self, filename, om_act, xml_act):
         """
@@ -173,23 +177,28 @@ class ImportActsCommand(LabelCommand):
                 title=attach_title
             )
             om_att.document_date = om_act.presentation_date
-            om_att.save()
+            if not self.dry_run:
+                om_att.save()
 
             # remove old attach file to avoid _1 files whenb rewriting
-            try:
-                old_attach_file = om_att.file.file
-                os.remove(old_attach_file.name)
-            except ValueError:
-                pass
+            if not self.dry_run:
+                try:
+                    old_attach_file = om_att.file.file
+                    os.remove(old_attach_file.name)
+                except ValueError:
+                    pass
 
             # overwrite attach file and save it under media (/uploads)
             attach_filename = path.basename(attach_file)
             attach_f = open(attach_file, 'r')
-            om_att.file.save(attach_dir + "_" + attach_filename, File(attach_f))
+
+            if not self.dry_run:
+                om_att.file.save(attach_dir + "_" + attach_filename, File(attach_f))
             om_att.document_type = os.path.splitext(attach_filename)[1][1:]
             om_att.document_size = File(attach_f).size
             self.logger.info(" will attach %s" % (attach_file, ))
-            om_att.save()
+            if not self.dry_run:
+                om_att.save()
 
             # text extraction (using tika inside solr)
             if 'testoproposta' in attach_filename.lower() or\
@@ -241,13 +250,18 @@ class ImportActsCommand(LabelCommand):
 
                 # text content saved into attachment's text
                 om_att.text = document_text
-                om_att.save()
+                if not self.dry_run:
+                    om_att.save()
 
                 # for proposale, text content goes into act's content field
                 if 'testoproposta' in attach_filename.lower():
                     self.logger.info("  textual version of proposal added to act")
                     om_act.text = document_text
-                    om_act.save()
+                    if not self.dry_run:
+                        om_act.save()
+
+            attach_f.close()
+
 
     def handle_deliberation(self, filename, **options):
 
@@ -334,7 +348,8 @@ class ImportActsCommand(LabelCommand):
             # call parent class save to trigger
             # real-time search index update
             # since signals do not handle hierarchy well
-            om_act.act_ptr.save()
+            if not self.dry_run:
+                om_act.act_ptr.save()
 
     def handle_interrogation(self, filename, **options):
 
@@ -406,7 +421,8 @@ class ImportActsCommand(LabelCommand):
             # call parent class save to trigger
             # real-time search index update
             # since signals do not handle hierarchy well
-            om_act.act_ptr.save()
+            if not self.dry_run:
+                om_act.act_ptr.save()
 
     def handle_motion(self, filename, **options):
 
@@ -470,7 +486,8 @@ class ImportActsCommand(LabelCommand):
             # call parent class save to trigger
             # real-time search index update
             # since signals do not handle hierarchy well
-            om_act.act_ptr.save()
+            if not self.dry_run:
+                om_act.act_ptr.save()
 
     def handle_label(self, filename, **options):
         if not path.isfile(filename):
@@ -496,6 +513,8 @@ class ImportActsCommand(LabelCommand):
             raise IOError("File %s does not exist" % people_file)
 
         self.people_tree = etree.parse(people_file)
+
+        self.dry_run = options['dry_run']
 
         # parse passed acts
         for label in labels:
