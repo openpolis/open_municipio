@@ -167,7 +167,7 @@ class ImportActsCommand(LabelCommand):
                 continue
 
             attach_dir = attach_href.split('/')[-2]
-            attach_file = path.join(path.dirname(filename), attach_href.encode('utf8'))
+            attach_file = path.join(path.dirname(filename), attach_href).encode('utf8')
             if not path.isfile(attach_file):
                 self.stderr.write("File %s does not exist. Skipping!\n" % attach_file)
                 continue
@@ -194,7 +194,11 @@ class ImportActsCommand(LabelCommand):
             attach_f = open(attach_file, 'r')
 
             if not self.dry_run:
-                om_att.file.save(attach_dir + "_" + attach_filename, File(attach_f))
+                try:
+                    om_att.file.save("%s_%s" % (attach_dir, attach_filename.decode('utf8')), File(attach_f))
+                except UnicodeDecodeError:
+                    self.logger.error("Could not save attachment with unicode characters: %s. Skipping." % (attach_filename,))
+
             om_att.document_type = os.path.splitext(attach_filename)[1][1:]
             om_att.document_size = File(attach_f).size
             self.logger.info(" will attach %s" % (attach_file, ))
