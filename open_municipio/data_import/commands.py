@@ -35,7 +35,7 @@ class ImportActsCommand(LabelCommand):
         make_option('--act-type',
                     dest='act_type',
                     default='CouncilDeliberation',
-                    help='The type of act to import'
+                    help='The type of act to import (CouncilDeliberation, Motion, Interrogation)'
         ),
         make_option('--dry-run',
                     action='store_true',
@@ -99,7 +99,7 @@ class ImportActsCommand(LabelCommand):
                     self.stderr.write("Error: found more than one person or charge for id %s in open municipio db. Skipping.\n" % charge_id)
                     return None
             else:
-                self.logger.warning("could not find person for id %s in peopkle XML file. Skipping." % charge_id)
+                self.logger.warning("could not find person for id %s in people XML file. Skipping." % charge_id)
                 return None
         except ObjectDoesNotExist:
             self.logger.warning("could not find charge for %s in Open Municipio DB. Skipping." % xml_chargexref)
@@ -265,7 +265,11 @@ class ImportActsCommand(LabelCommand):
 
     def handle_deliberation(self, filename, **options):
 
-        tree = etree.parse(filename)
+        try:
+            tree = etree.parse(filename)
+        except etree.XMLSyntaxError:
+            self.logger.error("Syntax error while parsing %s. Skipping." % (filename,))
+            return
 
         acts = tree.xpath("/om:CouncilDeliberation",namespaces=NS)
         self.logger.info("%d Deliberation to import" % len(acts))
@@ -353,7 +357,11 @@ class ImportActsCommand(LabelCommand):
 
     def handle_interrogation(self, filename, **options):
 
-        tree = etree.parse(filename)
+        try:
+            tree = etree.parse(filename)
+        except etree.XMLSyntaxError:
+            self.logger.error("Syntax error while parsing %s. Skipping." % (filename,))
+            return
 
         acts = tree.xpath("/om:Interrogation",namespaces=NS)
         self.logger.info("%d Interrogations to import" % len(acts))
@@ -426,7 +434,11 @@ class ImportActsCommand(LabelCommand):
 
     def handle_motion(self, filename, **options):
 
-        tree = etree.parse(filename)
+        try:
+            tree = etree.parse(filename)
+        except etree.XMLSyntaxError:
+            self.logger.error("Syntax error while parsing %s. Skipping." % (filename,))
+            return
 
         acts = tree.xpath("/om:Motion",namespaces=NS)
         self.logger.info("%d Motions to import" % len(acts))
