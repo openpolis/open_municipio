@@ -96,7 +96,7 @@ class ImportActsCommand(LabelCommand):
                     self.logger.warning("could not find person or charge for id = %s in open municipio DB. Skipping." % charge_id)
                     return None
                 except MultipleObjectsReturned:
-                    self.stderr.write("Error: found more than one person or charge for id %s in open municipio db. Skipping.\n" % charge_id)
+                    self.logger.error("found more than one person or charge for id %s in open municipio db. Skipping." % charge_id)
                     return None
             else:
                 self.logger.warning("could not find person for id %s in people XML file. Skipping." % charge_id)
