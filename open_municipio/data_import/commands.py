@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from optparse import make_option
 import os
+import re
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.core.management.base import LabelCommand, CommandError, BaseCommand
 from django.core.files import File
@@ -364,7 +365,7 @@ class ImportActsCommand(LabelCommand):
             return
 
         acts = tree.xpath("/om:Interrogation",namespaces=NS)
-        self.logger.info("%d Interrogations to import" % len(acts))
+        self.logger.info("%d Interrogations/Interpellations to import" % len(acts))
         for xml_act in acts:
 
             # get important attributes
@@ -397,21 +398,35 @@ class ImportActsCommand(LabelCommand):
                 continue
             title = title[0].text
 
-
-            # get or create the interrogation object
-            curr_inst = municipality.council.as_institution
-            om_act, created = Interrogation.objects.get_or_create(
-                idnum=id,
-                presentation_date=presentation_date,
-                emitting_institution=curr_inst,
-                answer_type=answer_type,
-                title=title
-            )
-
-            if not created:
-                self.logger.info("Found interrogation %s" % om_act.idnum)
+            if re.match("interpellanza\s.*", title.lower()):
+                # get or create the interrogation object
+                curr_inst = municipality.council.as_institution
+                om_act, created = Interpellation.objects.get_or_create(
+                    idnum=id,
+                    presentation_date=presentation_date,
+                    emitting_institution=curr_inst,
+                    answer_type=answer_type,
+                    title=title
+                )
+                if not created:
+                    self.logger.info("Found interpellation %s" % om_act.idnum)
+                else:
+                    self.logger.info("Created interpellation %s" % om_act.idnum)
             else:
-                self.logger.info("Created interrogation %s" % om_act.idnum)
+                # get or create the interrogation object
+                curr_inst = municipality.council.as_institution
+                om_act, created = Interrogation.objects.get_or_create(
+                    idnum=id,
+                    presentation_date=presentation_date,
+                    emitting_institution=curr_inst,
+                    answer_type=answer_type,
+                    title=title
+                )
+                if not created:
+                    self.logger.info("Found interrogation %s" % om_act.idnum)
+                else:
+                    self.logger.info("Created interrogation %s" % om_act.idnum)
+
 
             # fetch all subscribers for the act in the XML
             subscribers = xml_act.xpath("./om:ActSubscribers", namespaces=NS)
