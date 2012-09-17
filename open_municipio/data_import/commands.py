@@ -167,7 +167,7 @@ class ImportActsCommand(LabelCommand):
                 continue
 
             attach_dir = attach_href.split('/')[-2]
-            attach_file = path.join(path.dirname(filename), attach_href)
+            attach_file = path.join(path.dirname(filename), attach_href.encode('utf8'))
             if not path.isfile(attach_file):
                 self.stderr.write("File %s does not exist. Skipping!\n" % attach_file)
                 continue
