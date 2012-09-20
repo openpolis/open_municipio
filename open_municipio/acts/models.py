@@ -337,6 +337,7 @@ class Deliberation(Act):
     status = StatusField()
     approval_date = models.DateField(_('approval date'), null=True, blank=True)
     publication_date = models.DateField(_('publication date'), null=True, blank=True)
+    final_idnum = models.CharField(max_length=64, blank=True, help_text=_("Internal identification string for the deliberation, when approved"))
     execution_date = models.DateField(_('execution date'), null=True, blank=True)
     initiative = models.CharField(_('initiative'), max_length=12, choices=INITIATIVE_TYPES)
     approved_text = models.TextField(blank=True)
@@ -633,6 +634,14 @@ def new_deliberation_published(sender, **kwargs):
 
 @receiver(post_save, sender=Interrogation)
 def new_interrogation_published(sender, **kwargs):
+    new_act_published(sender, **kwargs)
+
+@receiver(post_save, sender=Interpellation)
+def new_interpellation_published(sender, **kwargs):
+    new_act_published(sender, **kwargs)
+
+@receiver(post_save, sender=Motion)
+def new_motion_published(sender, **kwargs):
     new_act_published(sender, **kwargs)
 
 def new_act_published(sender, **kwargs):
