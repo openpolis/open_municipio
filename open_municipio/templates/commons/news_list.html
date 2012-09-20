@@ -6,7 +6,7 @@
 
   <ul class="feed-list">
     {% for n in news_list %}
-      <li>{{ n.created|date:"d-m-Y" }} - {{ n.text|safe }}</li>
+      <li>{{ n.news_date|date:"d-m-Y" }} - {{ n.text|safe }}</li>
     {% endfor %}
   </ul>
 
