@@ -544,7 +544,7 @@ class Document(TimeStampedModel):
     text = models.TextField(blank=True)
     text_url = models.URLField(blank=True)
     file_url = models.URLField(blank=True)
-    file = models.FileField(upload_to="attached_documents/%Y%d%m", blank=True, max_length=255)
+    file = models.FileField(upload_to="attached_documents/%Y%m%d", blank=True, max_length=255)
     
     class Meta:
         abstract = True
