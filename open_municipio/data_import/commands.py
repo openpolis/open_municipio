@@ -284,7 +284,7 @@ class ImportActsCommand(LabelCommand):
             id = xml_act.get("id")
             if id is None:
                 self.stderr.write(
-                    "Error: Act has no id attribute! Skipping this sitting."
+                    "Error: Act has no id attribute! Skipping."
                 )
                 continue
 
@@ -292,8 +292,8 @@ class ImportActsCommand(LabelCommand):
 
             initiative = conf.XML_TO_OM_INITIATIVE[xml_act.get("initiative")]
             if initiative is None:
-                self.stderr.write(
-                    "Error: Act %s has no initiative attribute! Skipping this sitting." % id
+                self.logger.error(
+                    "Error: Act %s has no initiative attribute! Skipping." % id
                 )
                 continue
                 # transform xml value into database string
@@ -301,18 +301,20 @@ class ImportActsCommand(LabelCommand):
 
             presentation_date = xml_act.get("presentation_date")
             if presentation_date is None:
-                self.stderr.write(
-                    "Error: Act %s has no presentation_date attribute! Skipping this sitting." % id
+                self.logger.error(
+                    "Error: Act %s has no presentation_date attribute! Skippingg." % id
                 )
                 continue
 
             title = xml_act.xpath("./om:Title", namespaces=NS)
             if title is None:
-                self.stderr.write(
-                    "Error: Act %s has no title attribute! Skipping this sitting." % id
+                self.logger.error(
+                    "Error: Act %s has no title attribute! Skipping." % id
                 )
                 continue
             title = title[0].text
+
+
 
 
             # get or create the deliberation object
@@ -338,7 +340,7 @@ class ImportActsCommand(LabelCommand):
                 # check that support type exists (for deliberations)
                 support_type = xml_subscribers_set.get("type")
                 if support_type is None:
-                    self.stderr.write(
+                    self.logger.error(
                         "ActSubscriber has no type attribute! Skipping it."
                     )
                     continue
