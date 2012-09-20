@@ -676,6 +676,15 @@ def new_act_published(sender, **kwargs):
             transition_date=generating_item.presentation_date,
             )
 
+        # create approval transition if approval_date has value
+        if (isinstance(generating_item.act_ptr, Deliberation) and
+            generating_item.approval_date is not None):
+            generating_item.transition_set.create(
+                act=generating_item.act_ptr,
+                final_status=generating_item.STATUS.approved,
+                transition_date=generating_item.approval_date,
+            )
+
         # define context for textual representation of the news
         ctx = Context({  })
 

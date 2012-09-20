@@ -315,6 +315,9 @@ class ImportActsCommand(LabelCommand):
             title = title[0].text
 
 
+            approval_date = xml_act.get("approval_date")
+            execution_date = xml_act.get("execution_date")
+            final_idnum = xml_act.get("final_id")
 
 
             # get or create the deliberation object
@@ -324,7 +327,12 @@ class ImportActsCommand(LabelCommand):
                 presentation_date=presentation_date,
                 emitting_institution=curr_inst,
                 initiative=initiative,
-                title=title
+                title=title,
+                defaults = {
+                    'approval_date': approval_date,
+                    'execution_date': execution_date,
+                    'final_idnum': final_idnum
+                }
             )
 
             if not created:
