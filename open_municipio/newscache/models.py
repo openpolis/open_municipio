@@ -8,6 +8,7 @@ from django.contrib.contenttypes import generic
 from model_utils import Choices
 from model_utils.models import TimeStampedModel
 
+
 import re
 
 #
@@ -52,13 +53,33 @@ class News(TimeStampedModel):
 
     text                      = models.TextField(verbose_name=_('text'), max_length=512)
 
-
     class Meta:
         verbose_name = _('cached news')
         verbose_name_plural = _('cached news')
 
     def __unicode__(self):
-        return u'%s - %s - %s' % (self.id, self.created.strftime('%d/%m/%Y - %H:%I'), self.text)
+        return u'%s - %s - %s %s' % \
+               (self.id, self.created.strftime('%d/%m/%Y - %H:%I'), self.news_date.strftime("%d/%m/%Y"), self.text)
+
+    @property
+    def news_date(self):
+        """
+        Return the generating object's date, according to type of object
+        The date is used in the news
+        """
+        from open_municipio.acts.models import Act, ActSupport, Transition
+
+        generator = self.generating_object
+        if isinstance(generator, Act):
+            return generator.presentation_date
+        elif isinstance(generator, ActSupport):
+            return generator.support_date
+        elif isinstance(generator, Transition):
+            return generator.transition_date
+        else:
+            return None
+
+
 
     @classmethod
     def get_text_for_news(cls, context, template_file):
@@ -85,9 +106,10 @@ class NewsTargetMixin(models.Model):
     @property
     def related_news(self):
         """
-        Retunrn the QuerySet of news items targeting this content object.
+        Return the QuerySet of news items targeting this content object.
         """
         return self.related_news_set.all()
-    
+
+
     class Meta:
         abstract = True
