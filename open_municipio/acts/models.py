@@ -677,7 +677,7 @@ def new_act_published(sender, **kwargs):
             )
 
         # create approval transition if approval_date has value
-        if (isinstance(generating_item.act_ptr, Deliberation) and
+        if (isinstance(generating_item, Deliberation) and
             generating_item.approval_date is not None):
             generating_item.transition_set.create(
                 act=generating_item.act_ptr,
@@ -728,10 +728,11 @@ def new_transition(**kwargs):
         if generating_item.final_status != 'PRESENTED':
             # set act's status according to transition status
             act.status = generating_item.final_status
-            if act.is_final_status(generating_item.final_status):
-                act.status_is_final = True
-
             act.save()
+            # if it's a final status, set the according flag in the act's parent
+            if act.is_final_status(act.status):
+                act.act_ptr.status_is_final = True
+                act.act_ptr.save()
 
             # generate news
             ctx = Context({ 'current_site': Site.objects.get(id=settings.SITE_ID),
