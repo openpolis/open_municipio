@@ -10,6 +10,7 @@ from lxml import etree, html
 from os import path
 
 from haystack.backends.solr_backend import SolrSearchBackend
+from pysolr import SolrError
 from open_municipio.people.models import Person, municipality
 from open_municipio.acts.models import *
 
@@ -255,25 +256,29 @@ class ImportActsCommand(LabelCommand):
 
                 # text extraction, through haystack-solr and lxml.html
                 solr_backend = SolrSearchBackend('default', **settings.HAYSTACK_CONNECTIONS['default'])
-                file_content = solr_backend.extract_file_contents(attach_f)
-                html_content = html.fromstring(file_content['contents'].encode('utf-8'))
-                document_text = html_content.cssselect('body')[0].text_content()
 
-                self.logger.info("  textual content extracted from file")
+                try:
+                    file_content = solr_backend.extract_file_contents(attach_f)
+                    html_content = html.fromstring(file_content['contents'].encode('utf-8'))
+                    document_text = html_content.cssselect('body')[0].text_content()
 
-                # text content saved into attachment's text
-                om_att.text = document_text
-                if not self.dry_run:
-                    om_att.save()
+                    self.logger.info("  textual content extracted from file")
 
-                # for proposale, text content goes into act's content field
-                if 'testoproposta' in attach_filename.lower():
-                    self.logger.info("  textual version of proposal added to act")
-                    om_act.text = document_text
+                    # text content saved into attachment's text
+                    om_att.text = document_text
                     if not self.dry_run:
-                        om_act.save()
+                        om_att.save()
 
-            attach_f.close()
+                    # for proposale, text content goes into act's content field
+                    if 'testoproposta' in attach_filename.lower():
+                        self.logger.info("  textual version of proposal added to act")
+                        om_act.text = document_text
+                        if not self.dry_run:
+                            om_act.save()
+                except SolrError:
+                    self.logger.warning("  could not extract textual content with solr-tika")
+
+                attach_f.close()
 
 
     def handle_deliberation(self, filename, **options):
