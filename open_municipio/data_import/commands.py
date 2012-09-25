@@ -44,6 +44,12 @@ class ImportActsCommand(LabelCommand):
                     default=False,
                     help='Execute without actually writing into the DB'
         ),
+        make_option('--overwrite',
+                    action='store_true',
+                    dest='overwrite',
+                    default=False,
+                    help='Import data and overwrite existing information'
+        ),
     )
 
     args = "<filename filename ...>"
@@ -85,7 +91,7 @@ class ImportActsCommand(LabelCommand):
                 elif charge_type == 'mayor':
                     institution = municipality.mayor.as_institution
                 else:
-                    self.stderr.write("Warning: charge with id %s has wrong charge attribute %s. Skipping.\n" %
+                    self.logger.error("Warning: charge with id %s has wrong charge attribute %s. Skipping." %
                                       (charge_id, charge_type))
                     return None
 
@@ -188,6 +194,8 @@ class ImportActsCommand(LabelCommand):
                     os.remove(old_attach_file.name)
                 except ValueError:
                     pass
+                except IOError:
+                    pass
 
             # overwrite attach file and save it under media (/uploads)
             attach_filename = path.basename(attach_file)
@@ -287,8 +295,6 @@ class ImportActsCommand(LabelCommand):
                     "Error: Act has no id attribute! Skipping."
                 )
                 continue
-
-            final_id = xml_act.get('final_id')
 
             initiative = conf.XML_TO_OM_INITIATIVE[xml_act.get("initiative")]
             if initiative is None:
