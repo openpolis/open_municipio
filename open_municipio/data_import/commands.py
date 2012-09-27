@@ -51,6 +51,12 @@ class ImportActsCommand(LabelCommand):
                     default=False,
                     help='Remove news related to an act, before importing it. News are re-created.'
         ),
+        make_option('--rewrite-signatures',
+                    action='store_true',
+                    dest='rewrite_signatures',
+                    default=False,
+                    help="Remove act's presenters before importing."
+        ),
     )
 
     args = "<filename filename ...>"
@@ -63,9 +69,10 @@ class ImportActsCommand(LabelCommand):
 
     people_tree = None
 
-    def lookupCharge(self, xml_chargexref, institution=None):
+    def lookupCharge(self, xml_chargexref, institution=None, moment=None):
         """
         look for the correct open municipio charge, or return None
+        if the date parameter is not passed, then current charges are looked up
         """
         try:
             file, charge_id = xml_chargexref.get(XLINK+"href").split("#")
@@ -98,7 +105,9 @@ class ImportActsCommand(LabelCommand):
 
                 try:
                     person = Person.objects.get(pk=int(om_id))
-                    charge =  person.current_institution_charge(institution)
+                    charge =  person.current_institution_charge(institution, moment=moment)
+                    self.logger.debug("id %s (%s) mapped to %s (%s)" %
+                                      (charge_id, charge_type, person, charge))
                     return charge
                 except ObjectDoesNotExist:
                     self.logger.warning("could not find person or charge for id = %s in open municipio DB. Skipping." % charge_id)
@@ -128,10 +137,9 @@ class ImportActsCommand(LabelCommand):
             support_date = xml_support.get("date")
             # if date is not specified, get it from act's presentation date
             if support_date is None:
-                support_date = om_act.presentation_date
-
+                support_date = str(om_act.presentation_date)
             chargexref = xml_support.xpath("./om:ChargeXRef", namespaces=NS)[0]
-            om_charge = self.lookupCharge(chargexref, charge_lookup_institution)
+            om_charge = self.lookupCharge(chargexref, charge_lookup_institution, moment=support_date)
             if om_charge is None:
                 continue
 
@@ -377,6 +385,9 @@ class ImportActsCommand(LabelCommand):
                 self.logger.info("Created deliberation %s" % om_act.idnum)
 
 
+            if options['rewrite_signatures'] and not options['dry_run']:
+                om_act.actsupport_set.all().delete()
+
             # fetch all subscribers for the act in the XML
             subscribers = xml_act.xpath("./om:ActSubscribers", namespaces=NS)
             self.logger.info("%d Subscribers sets to import" % len(subscribers))
@@ -484,7 +495,8 @@ class ImportActsCommand(LabelCommand):
                 else:
                     self.logger.info("Created interrogation %s" % om_act.idnum)
 
-
+            if options['rewrite_signatures'] and not options['dry_run']:
+                om_act.actsupport_set.all().delete()
 
             # fetch all subscribers for the act in the XML
             subscribers = xml_act.xpath("./om:ActSubscribers", namespaces=NS)
@@ -558,6 +570,9 @@ class ImportActsCommand(LabelCommand):
                     self.remove_news(om_act)
             else:
                 self.logger.info("Created motion %s" % om_act.idnum)
+
+            if options['rewrite_signatures'] and not options['dry_run']:
+                om_act.actsupport_set.all().delete()
 
             # fetch all subscribers for the act in the XML
             subscribers = xml_act.xpath("./om:ActSubscribers", namespaces=NS)

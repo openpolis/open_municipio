@@ -84,27 +84,27 @@ class Person(models.Model, MonitorizedItem):
         return self.institutioncharge_set.select_related().all()
     
     @property
-    def current_institution_charges(self):
+    def current_institution_charges(self, moment=None):
         """
         Returns the current institution charges (no committees).
         """
-        return self.institutioncharge_set.select_related().current().exclude(
+        return self.institutioncharge_set.select_related().current(moment=moment).exclude(
             institution__institution_type__in=(Institution.COMMITTEE, Institution.JOINT_COMMITTEE)
         )
 
     @property
-    def current_committee_charges(self):
-        return self.institutioncharge_set.select_related().current().filter(
+    def current_committee_charges(self, moment=None):
+        return self.institutioncharge_set.select_related().current(moment=moment).filter(
             institution__institution_type__in=(Institution.COMMITTEE, Institution.JOINT_COMMITTEE)
         ).order_by('-institutionresponsability__charge_type')
 
-    def current_institution_charge(self, institution):
-        return self.institutioncharge_set.select_related().current().get(
+    def current_institution_charge(self, institution, moment=None):
+        return self.institutioncharge_set.select_related().current(moment=moment).get(
             institution=institution
         )
 
-    def has_current_charges(self):
-        if self.institutioncharge_set.current().count() > 0:
+    def has_current_charges(self, moment=None):
+        if self.institutioncharge_set.current(moment=moment).count() > 0:
             return True
         else:
             return False
