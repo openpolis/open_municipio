@@ -82,7 +82,7 @@ class Person(models.Model, MonitorizedItem):
         Returns the QuerySet of all institution charges held by this person during his/her career.
         """
         return self.institutioncharge_set.select_related().all()
-    
+
     @property
     def current_institution_charges(self, moment=None):
         """
@@ -849,6 +849,7 @@ class Sitting(models.Model):
     idnum = models.CharField(blank=True, max_length=64)
     date = models.DateField()
     number = models.IntegerField(blank=True, null=True)
+    call = models.IntegerField(blank=True, null=True)
     institution = models.ForeignKey(Institution, on_delete=models.PROTECT)
  
     class Meta:
