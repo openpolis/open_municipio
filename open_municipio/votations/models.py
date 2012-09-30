@@ -14,13 +14,15 @@ class Votation(models.Model):
     """
     WRITEME
     """
-    REJECTED = 0
-    PASSED = 1
     OUTCOMES = Choices(
-      (PASSED, _('Passed')),    
-      (REJECTED, _('Rejected')),
+        (0, 'No Esito'),
+        (1, 'Approvato'),
+        (2, 'Respinto'),
+        (3, 'SI Numero Legale'),
+        (4, 'NO Numero Legale'),
+        (5, 'Annullata'),
     )
-    
+
     idnum = models.CharField(blank=True, max_length=64)
     sitting = models.ForeignKey(Sitting, null=True)
     act = models.ForeignKey(Act, null=True)
@@ -33,6 +35,7 @@ class Votation(models.Model):
     charge_set = models.ManyToManyField(InstitutionCharge, through='ChargeVote')
     n_legal = models.IntegerField(default=0)
     n_presents = models.IntegerField(default=0)
+    n_partecipants = models.IntegerField(default=0)
     n_absents = models.IntegerField(default=0)
     n_yes = models.IntegerField(default=0)
     n_no = models.IntegerField(default=0)
@@ -168,7 +171,7 @@ class Votation(models.Model):
 
         # the computation is done only if ChargeVote is populated,
         # for this votation
-        if ChargeVote.objects.filter(votation__id=self.id).count() > 0:
+        if self.charge_votes.count() > 0:
 
             for g in Group.objects.all():
                 # compute votation details for the group
@@ -285,3 +288,6 @@ class ChargeVote(TimeStampedModel):
         db_table = u'votations_charge_vote'    
         verbose_name = _('charge vote')
         verbose_name_plural = _('charge votes')
+
+    def __unicode__(self):
+        return u"%s - %s" % (self.charge.person, self.get_vote_display())
