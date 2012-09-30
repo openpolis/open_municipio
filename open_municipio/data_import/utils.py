@@ -1,9 +1,80 @@
 """
 A misc set of utilities useful in the data-import domain.
 """
-
+import logging
+from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
+from open_municipio.people.models import Person, municipality
 
 import socket
+
+# configure xml namespaces
+NS = {
+    'xsi': 'http://www.w3.org/2001/XMLSchema-instance',
+    'om': 'http://www.openmunicipio.it',
+    'xlink': 'http://www.w3.org/1999/xlink'
+}
+XLINK_NAMESPACE = NS['xlink']
+XLINK = "{%s}" % XLINK_NAMESPACE
+
+
+class ChargeSeekerMixin:
+    logger = logging.getLogger('import')
+
+    def lookupCharge(self, people_tree, ds_charge_id, institution=None, moment=None):
+        """
+        look for the correct open municipio charge, or return None
+        starting from an internal, domain-specific, charge id
+        using the mapping in people_tree (lxml.etree)
+        if the moment parameter is not passed, then current charges are looked up
+        """
+        try:
+            people_charges = people_tree.xpath(
+                '//om:Person[@id="%s"]' % ds_charge_id,
+                namespaces=NS
+            )
+            if len(people_charges):
+                om_id = people_charges[0].get('om_id')
+                if om_id is None:
+                    self.logger.warning("charge with id %s has no om_id (past charge?). Skipping." % ds_charge_id)
+                    return None
+
+                if institution is None:
+                    charge_type = people_charges[0].get('charge')
+                    if charge_type is None:
+                        self.logger.warning("charge with id %s has no charge attribute. Skipping." % ds_charge_id)
+                        return None
+
+                    # institution is grabbed from charge attribute, in acts import
+                    # since mayor and deputies may sign acts, not only counselor
+                    if charge_type == 'counselor':
+                        institution = municipality.council.as_institution
+                    elif charge_type == 'deputy' or charge_type == 'firstdeputy':
+                        institution = municipality.gov.as_institution
+                    elif charge_type == 'mayor':
+                        institution = municipality.mayor.as_institution
+                    else:
+                        self.logger.error("Warning: charge with id %s has wrong charge attribute %s. Skipping." %
+                                          (ds_charge_id, charge_type))
+                        return None
+
+                try:
+                    person = Person.objects.get(pk=int(om_id))
+                    charge =  person.current_institution_charge(institution, moment=moment)
+                    self.logger.debug("id %s (%s) mapped to %s (%s)" %
+                                      (ds_charge_id, institution, person, charge))
+                    return charge
+                except ObjectDoesNotExist:
+                    self.logger.warning("could not find person or charge for id = %s (%s) in OM DB. Skipping." % (ds_charge_id, institution))
+                    return None
+                except MultipleObjectsReturned:
+                    self.logger.error("found more than one person or charge for id %s (%s) in OM DB. Skipping." % (ds_charge_id, institution))
+                    return None
+            else:
+                self.logger.warning("could not find person for id %s in people XML file. Skipping." % ds_charge_id)
+                return None
+        except ObjectDoesNotExist:
+            self.logger.warning("could not find charge for %s in Open Municipio DB. Skipping." % ds_charge_id)
+            return None
 
 def netcat(hostname, port, content):
     """

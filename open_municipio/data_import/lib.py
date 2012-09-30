@@ -68,7 +68,13 @@ class BaseWriter(object):
     """
     def __init__(self, data):
         self.data = data
-        
+
+    def setup(self):
+        """
+        Writer's initialization code goes here.
+        """
+        pass
+
     def write(self):
         raise NotImplementedError
 
