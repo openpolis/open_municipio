@@ -91,7 +91,6 @@ class Command(LabelCommand):
 
             # get or create the sitting object
             curr_inst = Institution.objects.get(name=settings.XML_TO_OM_INST[site])
-            council_inst = Institution.objects.get(name=settings.XML_TO_OM_INST['SCN'])
             self.logger.debug("Working in institution %s" % curr_inst)
 
             sitting_date = xml_sitting.get("date")[0:10]
