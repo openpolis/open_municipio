@@ -100,3 +100,10 @@ class XMLWriter(BaseWriter):
 
     def write(self):
         raise NotImplementedError
+    
+class OMWriter(BaseWriter):
+    """
+    A writer class which outputs provided data as an OM objects. 
+    """
+    def write(self):
+        raise NotImplementedError
