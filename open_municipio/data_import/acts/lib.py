@@ -15,7 +15,7 @@ class ActsDataSource(DataSource):
 
 class BaseActsReader(BaseReader):
     """
-    An abstract reader class parsing acts-related data.
+    An abstract reader class parsing acts-relate//d data.
     
     This class encapsulates generic -- but acts-specific -- parsing logic. 
     It's intended to be subclassed (and its methods overriden) in order to adapt to 

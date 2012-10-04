@@ -14,7 +14,7 @@ class DataSource(object):
     it contains.  
     """
     
-    logger = logging.getLogger('source')
+    logger = logging.getLogger('import')
     
     def setup(self):
         """
@@ -34,7 +34,7 @@ class BaseReader(object):
     concrete scenarios.    
     """
     
-    logger = logging.getLogger('reader')
+    logger = logging.getLogger('import')
     
     def __init__(self, data_source=None):
         self.data_source = data_source
@@ -74,7 +74,7 @@ class BaseWriter(object):
     provide support for a given serialization format.
     """
     
-    logger = logging.getLogger('writer')
+    logger = logging.getLogger('import')
     
     def __init__(self, data):
         self.data = data
