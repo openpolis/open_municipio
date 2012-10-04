@@ -88,7 +88,7 @@ class Command(LabelCommand):
 
                 try:
                     person = Person.objects.get(pk=int(om_id))
-                    charge =  person.current_institution_charge(institution)
+                    charge =  person.get_current_charge_in_institution(institution)
                     return charge
                 except ObjectDoesNotExist:
                     self.stderr.write("Warning: could not find person or charge for id = %s in open municipio DB. Skipping.\n" % charge_id)
