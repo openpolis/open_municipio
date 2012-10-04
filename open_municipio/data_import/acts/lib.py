@@ -106,6 +106,12 @@ class Person:
         self.name = name
         self.surname = surname
         self.ssn = ssn
+        
+    def __str__(self):
+        return "%s %s (%s)" % (self.name, self.surname, self.id)
+    
+    def __unicode__(self):
+        return u"%s %s (%s)" % (self.name, self.surname, self.id)
 
 class Charge:
     id = ""
