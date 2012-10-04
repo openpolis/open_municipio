@@ -1,5 +1,5 @@
 from django.utils import simplejson as json
-from open_municipio.data_import.lib import DataSource, BaseReader, BaseWriter, JSONWriter, XMLWriter
+from open_municipio.data_import.lib import DataSource, BaseReader, BaseWriter, JSONWriter, XMLWriter, valid_XML_char_ordinal
 # import OM-XML language tags
 from open_municipio.data_import.om_xml import *
 # import models used in DBVotationWriter
@@ -205,6 +205,9 @@ class DBVotationWriter(BaseVotationWriter):
                     self.logger.debug("processing %s in Mdb" % vote)
                     self.write_vote(vote, db_ballot=b)
 
+                # update votation caches
+                b.update_caches()
+                self.logger.debug("caches for this votation updated.\n")
 
 
 class XMLVotationWriter(BaseVotationWriter, XMLWriter):

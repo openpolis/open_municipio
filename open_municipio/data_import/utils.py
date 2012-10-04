@@ -59,7 +59,7 @@ class ChargeSeekerMixin:
 
                 try:
                     person = Person.objects.get(pk=int(om_id))
-                    charge =  person.current_institution_charge(institution, moment=moment)
+                    charge =  person.get_current_charge_in_institution(institution, moment=moment)
                     self.logger.debug("id %s (%s) mapped to %s (%s)" %
                                       (ds_charge_id, institution, person, charge))
                     return charge
