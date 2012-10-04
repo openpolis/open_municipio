@@ -219,7 +219,7 @@ for c_inst in commissioni:
                     person = pers,
                     institution = c_inst,
                 )
-                charge.original_charge = pers.current_institution_charges[0]
+                charge.original_charge = pers.get_current_institution_charges[0]
                 charge.save()
                 print "        %s - %s" % (i, pers)
 
