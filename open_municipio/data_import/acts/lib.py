@@ -5,7 +5,6 @@ from open_municipio.data_import.lib import DataSource, BaseReader, BaseWriter, J
 from open_municipio.data_import.om_xml import *
 
 from lxml import etree
-from mechanize._beautifulsoup import Null
 
 class ActsDataSource(DataSource):
     """
@@ -60,7 +59,7 @@ class OMActsWriter(BaseActsWriter, OMWriter):
 class Act:
     id = ""
     content = ""
-    file = Null
+    file = None
     subscribers = [] # list of Charges
     
     def add_subscriber(self, charge):
@@ -91,7 +90,7 @@ class Emendation(Act):
 
 class Attachment:
     description = ""
-    file = Null
+    file = None
     type = "" # type of file (define an array of possible file types)
     
 # people section
@@ -111,8 +110,8 @@ class Person:
 class Charge:
     id = ""
     start_date = ""
-    person = Null
-    name = Null
+    person = None
+    name = None
     description = ""
     
     def __init__(self, id, start_date, person, name, description):
@@ -142,6 +141,6 @@ class CityCouncil(Institution):
     pass
     
 class Subscriber:
-    charge = Null
+    charge = None
     type = "" # first subscriber or co-subscriber
     
