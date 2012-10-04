@@ -182,13 +182,13 @@ class PoliticianDetailView(DetailView):
             (r['resource_type'], {'value': r['value'], 'description': r['description']})
             for r in self.object.resources.values('resource_type', 'value', 'description')
         )
-        context['current_charges'] = self.object.current_institution_charges.exclude(
+        context['current_charges'] = self.object.get_current_institution_charges.exclude(
             institutionresponsability__charge_type__in=(
                 InstitutionResponsability.CHARGE_TYPES.mayor,
             ),
             institutionresponsability__end_date__isnull=True
         )
-        context['current_committee_charges'] = self.object.current_committee_charges
+        context['get_current_committee_charges'] = self.object.get_current_committee_charges
 
         # Is politician a counselor? If so, we show present/absent
         # graph
@@ -263,7 +263,7 @@ class PoliticianDetailView(DetailView):
             context['is_user_monitoring'] = False
 
         context['person_topics'] = []
-        for topics in [y.topics for x in self.object.current_institution_charges for y in x.presented_act_set.all() ]:
+        for topics in [y.topics for x in self.object.get_current_institution_charges for y in x.presented_act_set.all() ]:
             for topic in topics:
                 context['person_topics'].append(topic)
 
