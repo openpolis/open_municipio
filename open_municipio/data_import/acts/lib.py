@@ -36,9 +36,6 @@ class BaseActsReader(BaseReader):
         return self.acts;      
 
 
-class GenericActsReader(BaseActsReader):
-    pass
-
 class BaseActsWriter(BaseWriter):
     """
     An abstract writer class that serializes internal representations 
@@ -104,6 +101,12 @@ class Person:
     name = ""
     surname = ""
     ssn = ""
+    
+    def __init__(self, id, name, surname, ssn):
+        self.id = id
+        self.name = name
+        self.surname = surname
+        self.ssn = ssn
 
 class Charge:
     id = ""
@@ -112,13 +115,12 @@ class Charge:
     name = Null
     description = ""
     
-#    def __init__(self, id, name, surname, ssn):
-#        new_person = Person()
-#        new_person.id = id
-#        new_person.name = name
-#        new_person.surname = surname
-#        new_person.ssn = ssn
-#        self.person = person
+    def __init__(self, id, start_date, person, name, description):
+        self.id = id
+        self.start_date = start_date
+        self.person = person
+        self.name = name
+        self.description = description
     
 # institution section
     
