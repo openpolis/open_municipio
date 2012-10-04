@@ -27,6 +27,53 @@ NS = {
 XLINK_NAMESPACE = NS['xlink']
 XLINK = "{%s}" % XLINK_NAMESPACE
 
+class ImportVotationsCommand(LabelCommand):
+    option_list = BaseCommand.option_list + (
+        make_option('--people-file',
+                    dest='people_file',
+                    default="people.xml",
+                    help='The xml file containing the persons ids mappings'
+        ),
+        make_option('--dry-run',
+                    action='store_true',
+                    dest='dry_run',
+                    default=False,
+                    help='Execute without actually writing into the DB'
+        ),
+    )
+
+    args = "<filename filename ...>"
+    help = "Import the votation(s) contained in the specified MDB file(s)."
+    label = 'filename'
+
+    dry_run = False
+
+    logger = logging.getLogger('import')
+
+    people_tree = None
+
+    def handle_label(self, filename, **options):
+        raise Exception("Not implemented")
+
+    def handle(self, *labels, **options):
+        if not labels:
+            raise CommandError('Enter at least one %s.' % self.label)
+
+        # parse people xml file into an lxml.etree
+        people_file = options['people_file']
+        if not path.isfile(people_file):
+            raise IOError("File %s does not exist" % people_file)
+
+        self.people_tree = etree.parse(people_file)
+
+        self.dry_run = options['dry_run']
+
+        # parse passed votations
+        for label in labels:
+            self.handle_label(label, **options)
+        return 'done'
+
+
 class ImportActsCommand(LabelCommand):
     option_list = BaseCommand.option_list + (
         make_option('--people-file',
@@ -105,7 +152,7 @@ class ImportActsCommand(LabelCommand):
 
                 try:
                     person = Person.objects.get(pk=int(om_id))
-                    charge =  person.current_institution_charge(institution, moment=moment)
+                    charge =  person.get_current_charge_in_institution(institution, moment=moment)
                     self.logger.debug("id %s (%s) mapped to %s (%s)" %
                                       (charge_id, charge_type, person, charge))
                     return charge
