@@ -10,6 +10,7 @@ from lxml import etree, html
 from os import path
 
 from haystack.backends.solr_backend import SolrSearchBackend
+from pysolr import SolrError
 from open_municipio.people.models import Person, municipality
 from open_municipio.acts.models import *
 
@@ -25,6 +26,53 @@ NS = {
 }
 XLINK_NAMESPACE = NS['xlink']
 XLINK = "{%s}" % XLINK_NAMESPACE
+
+class ImportVotationsCommand(LabelCommand):
+    option_list = BaseCommand.option_list + (
+        make_option('--people-file',
+                    dest='people_file',
+                    default="people.xml",
+                    help='The xml file containing the persons ids mappings'
+        ),
+        make_option('--dry-run',
+                    action='store_true',
+                    dest='dry_run',
+                    default=False,
+                    help='Execute without actually writing into the DB'
+        ),
+    )
+
+    args = "<filename filename ...>"
+    help = "Import the votation(s) contained in the specified MDB file(s)."
+    label = 'filename'
+
+    dry_run = False
+
+    logger = logging.getLogger('import')
+
+    people_tree = None
+
+    def handle_label(self, filename, **options):
+        raise Exception("Not implemented")
+
+    def handle(self, *labels, **options):
+        if not labels:
+            raise CommandError('Enter at least one %s.' % self.label)
+
+        # parse people xml file into an lxml.etree
+        people_file = options['people_file']
+        if not path.isfile(people_file):
+            raise IOError("File %s does not exist" % people_file)
+
+        self.people_tree = etree.parse(people_file)
+
+        self.dry_run = options['dry_run']
+
+        # parse passed votations
+        for label in labels:
+            self.handle_label(label, **options)
+        return 'done'
+
 
 class ImportActsCommand(LabelCommand):
     option_list = BaseCommand.option_list + (
@@ -44,6 +92,18 @@ class ImportActsCommand(LabelCommand):
                     default=False,
                     help='Execute without actually writing into the DB'
         ),
+        make_option('--refresh-news',
+                    action='store_true',
+                    dest='refresh_news',
+                    default=False,
+                    help='Remove news related to an act, before importing it. News are re-created.'
+        ),
+        make_option('--rewrite-signatures',
+                    action='store_true',
+                    dest='rewrite_signatures',
+                    default=False,
+                    help="Remove act's presenters before importing."
+        ),
     )
 
     args = "<filename filename ...>"
@@ -56,9 +116,10 @@ class ImportActsCommand(LabelCommand):
 
     people_tree = None
 
-    def lookupCharge(self, xml_chargexref, institution=None):
+    def lookupCharge(self, xml_chargexref, institution=None, moment=None):
         """
         look for the correct open municipio charge, or return None
+        if the date parameter is not passed, then current charges are looked up
         """
         try:
             file, charge_id = xml_chargexref.get(XLINK+"href").split("#")
@@ -85,13 +146,15 @@ class ImportActsCommand(LabelCommand):
                 elif charge_type == 'mayor':
                     institution = municipality.mayor.as_institution
                 else:
-                    self.stderr.write("Warning: charge with id %s has wrong charge attribute %s. Skipping.\n" %
+                    self.logger.error("Warning: charge with id %s has wrong charge attribute %s. Skipping." %
                                       (charge_id, charge_type))
                     return None
 
                 try:
                     person = Person.objects.get(pk=int(om_id))
-                    charge =  person.current_institution_charge(institution)
+                    charge =  person.get_current_charge_in_institution(institution, moment=moment)
+                    self.logger.debug("id %s (%s) mapped to %s (%s)" %
+                                      (charge_id, charge_type, person, charge))
                     return charge
                 except ObjectDoesNotExist:
                     self.logger.warning("could not find person or charge for id = %s in open municipio DB. Skipping." % charge_id)
@@ -121,10 +184,9 @@ class ImportActsCommand(LabelCommand):
             support_date = xml_support.get("date")
             # if date is not specified, get it from act's presentation date
             if support_date is None:
-                support_date = om_act.presentation_date
-
+                support_date = str(om_act.presentation_date)
             chargexref = xml_support.xpath("./om:ChargeXRef", namespaces=NS)[0]
-            om_charge = self.lookupCharge(chargexref, charge_lookup_institution)
+            om_charge = self.lookupCharge(chargexref, charge_lookup_institution, moment=support_date)
             if om_charge is None:
                 continue
 
@@ -188,6 +250,8 @@ class ImportActsCommand(LabelCommand):
                     os.remove(old_attach_file.name)
                 except ValueError:
                     pass
+                except IOError:
+                    pass
 
             # overwrite attach file and save it under media (/uploads)
             attach_filename = path.basename(attach_file)
@@ -247,25 +311,50 @@ class ImportActsCommand(LabelCommand):
 
                 # text extraction, through haystack-solr and lxml.html
                 solr_backend = SolrSearchBackend('default', **settings.HAYSTACK_CONNECTIONS['default'])
-                file_content = solr_backend.extract_file_contents(attach_f)
-                html_content = html.fromstring(file_content['contents'].encode('utf-8'))
-                document_text = html_content.cssselect('body')[0].text_content()
 
-                self.logger.info("  textual content extracted from file")
+                try:
+                    file_content = solr_backend.extract_file_contents(attach_f)
+                    html_content = html.fromstring(file_content['contents'].encode('utf-8'))
+                    document_text = html_content.cssselect('body')[0].text_content()
 
-                # text content saved into attachment's text
-                om_att.text = document_text
-                if not self.dry_run:
-                    om_att.save()
+                    self.logger.info("  textual content extracted from file")
 
-                # for proposale, text content goes into act's content field
-                if 'testoproposta' in attach_filename.lower():
-                    self.logger.info("  textual version of proposal added to act")
-                    om_act.text = document_text
+                    # text content saved into attachment's text
+                    om_att.text = document_text
                     if not self.dry_run:
-                        om_act.save()
+                        om_att.save()
 
-            attach_f.close()
+                    # for proposale, text content goes into act's content field
+                    if 'testoproposta' in attach_filename.lower():
+                        self.logger.info("  textual version of proposal added to act")
+                        om_act.text = document_text
+                        if not self.dry_run:
+                            om_act.save()
+                except SolrError:
+                    self.logger.warning("  could not extract textual content with solr-tika")
+
+                attach_f.close()
+
+    def remove_news(self, act):
+        """
+        if required by the --refresh-news options, related news are removed
+        i.e., all news having related_object of type
+           Act (act)
+           Transition with t in act.transition_set.all(), and
+           ActSupport with s in act.actsupport_set.all()
+        """
+
+        # remove news related to om_act
+        act.related_news.delete()
+        self.logger.debug("  news related to act removed")
+
+        # remove news generated by ActSupport originated by om_act
+        # this removes the news regarding the politician
+        News.objects.filter(
+            generating_object_pk__in=act.actsupport_set.values('id'),
+            generating_content_type=ContentType.objects.get_for_model(ActSupport)
+        ).delete()
+        self.logger.debug("  news generated by ActSupport removed")
 
 
     def handle_deliberation(self, filename, **options):
@@ -283,12 +372,10 @@ class ImportActsCommand(LabelCommand):
             # get important attributes
             id = xml_act.get("id")
             if id is None:
-                self.stderr.write(
+                self.logger.error(
                     "Error: Act has no id attribute! Skipping."
                 )
                 continue
-
-            final_id = xml_act.get('final_id')
 
             initiative = conf.XML_TO_OM_INITIATIVE[xml_act.get("initiative")]
             if initiative is None:
@@ -337,8 +424,16 @@ class ImportActsCommand(LabelCommand):
 
             if not created:
                 self.logger.info("Found deliberation %s" % om_act.idnum)
+                # remove news of an existing act, if required
+                if options['refresh_news']:
+                    self.remove_news(om_act)
+                    om_act.save()
             else:
                 self.logger.info("Created deliberation %s" % om_act.idnum)
+
+
+            if options['rewrite_signatures'] and not options['dry_run']:
+                om_act.actsupport_set.all().delete()
 
             # fetch all subscribers for the act in the XML
             subscribers = xml_act.xpath("./om:ActSubscribers", namespaces=NS)
@@ -424,6 +519,9 @@ class ImportActsCommand(LabelCommand):
                 )
                 if not created:
                     self.logger.info("Found interpellation %s" % om_act.idnum)
+                    # remove news if required
+                    if options['refresh_news']:
+                        self.remove_news(om_act)
                 else:
                     self.logger.info("Created interpellation %s" % om_act.idnum)
             else:
@@ -438,9 +536,14 @@ class ImportActsCommand(LabelCommand):
                 )
                 if not created:
                     self.logger.info("Found interrogation %s" % om_act.idnum)
+                    # remove news if required
+                    if options['refresh_news']:
+                        self.remove_news(om_act)
                 else:
                     self.logger.info("Created interrogation %s" % om_act.idnum)
 
+            if options['rewrite_signatures'] and not options['dry_run']:
+                om_act.actsupport_set.all().delete()
 
             # fetch all subscribers for the act in the XML
             subscribers = xml_act.xpath("./om:ActSubscribers", namespaces=NS)
@@ -508,8 +611,15 @@ class ImportActsCommand(LabelCommand):
 
             if not created:
                 self.logger.info("Found motion %s" % om_act.idnum)
+                # remove news of an existing act, if required
+                if options['refresh_news']:
+                    om_act.save()
+                    self.remove_news(om_act)
             else:
                 self.logger.info("Created motion %s" % om_act.idnum)
+
+            if options['rewrite_signatures'] and not options['dry_run']:
+                om_act.actsupport_set.all().delete()
 
             # fetch all subscribers for the act in the XML
             subscribers = xml_act.xpath("./om:ActSubscribers", namespaces=NS)
@@ -552,6 +662,9 @@ class ImportActsCommand(LabelCommand):
         people_file = options['people_file']
         if not path.isfile(people_file):
             raise IOError("File %s does not exist" % people_file)
+
+        if options['refresh_news'] and options['dry_run']:
+            raise CommandError("refresh-news and dry-run cannot be specified together")
 
         self.people_tree = etree.parse(people_file)
 

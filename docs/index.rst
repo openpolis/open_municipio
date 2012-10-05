@@ -13,6 +13,7 @@ Contents:
    dev/code/apps/testdatabuilder
    dev/code/apps/newscache
    dev/data_import-it
+   dev/import_acts.rst
 
 
 Indices and tables

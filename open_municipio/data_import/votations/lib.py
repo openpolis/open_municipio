@@ -1,10 +1,16 @@
 from django.utils import simplejson as json
-
-from open_municipio.data_import.lib import DataSource, BaseReader, BaseWriter, JSONWriter, XMLWriter
+from open_municipio.data_import.lib import DataSource, BaseReader, BaseWriter, JSONWriter, XMLWriter, valid_XML_char_ordinal
 # import OM-XML language tags
 from open_municipio.data_import.om_xml import *
+# import models used in DBVotationWriter
+from open_municipio.people.models import Institution
+from open_municipio.votations.models import Sitting as DBSitting
+from open_municipio.votations.models import Votation as DBBallot
+from open_municipio.votations.models import ChargeVote as DBVote
 
 from lxml import etree
+
+import logging
 
  
 class VotationDataSource(DataSource):
@@ -36,11 +42,12 @@ class VotationDataSource(DataSource):
 ## classes of "DOM" elements
 
 class Sitting(object):
-    def __init__(self, call=None, date=None, seq_n=None):
+    def __init__(self, call=None, date=None, seq_n=None, site=None):
         # sitting instance attributes
         self.call = call         
         self.date =  date
         self.seq_n = seq_n
+        self.site = site
         # ballots comprising this sitting
         self.ballots = []
     
@@ -49,7 +56,7 @@ class Sitting(object):
 
 class Ballot(object):
     def __init__(self, sitting, seq_n=None, timestamp=None, ballot_type=None, short_subj=None, subj=None,
-                 n_presents=None, n_partecipants=None, n_yes=None, n_no=None, n_abst=None, 
+                 n_presents=None, n_partecipants=None, n_majority=None, n_yes=None, n_no=None, n_abst=None,
                  n_legal=None, outcome=None):
         # parent sitting
         self.sitting = sitting
@@ -61,6 +68,7 @@ class Ballot(object):
         self.subj = subj
         self.n_presents = n_presents
         self.n_partecipants = n_partecipants
+        self.n_majority = n_majority
         self.n_yes = n_yes
         self.n_no = n_no
         self.n_abst = n_abst
@@ -136,7 +144,71 @@ class JSONVotationWriter(BaseVotationWriter, JSONWriter):
     """
     def write(self):
         return json.dumps(self.sittings)
-    
+
+class DBVotationWriter(BaseVotationWriter):
+
+    logger = logging.getLogger('import')
+
+    def setup(self):
+        self.conf = None
+
+
+    def write_vote(self, vote, db_ballot=None):
+        raise Exception("Not implemented")
+
+    def write(self):
+        self.setup()
+
+        for sitting in self.sittings:
+            self.logger.debug("processing %s in Mdb" % sitting)
+            inst = Institution.objects.get(name=self.conf.XML_TO_OM_INST[sitting.site])
+
+            s, created = DBSitting.objects.get_or_create(
+                idnum=sitting._id,
+                defaults={
+                    'number':      sitting.seq_n,
+                    'date':        sitting.date,
+                    'call':        sitting.call,
+                    'institution': inst,
+                    }
+            )
+            if created:
+                self.logger.info("%s created in DB" % s)
+            else:
+                self.logger.debug("%s found in DB" % s)
+
+            for ballot in sitting.ballots:
+                self.logger.debug("processing %s in Mdb" % ballot)
+
+                # get or create the sitting in the DB
+                b, created = DBBallot.objects.get_or_create(
+                    idnum=int(ballot.seq_n),
+                    sitting=s,
+                    defaults={
+                        'act_descr': ballot.subj or ballot.short_subj or "",
+                        'n_legal': int(ballot.n_legal),
+                        'n_presents': int(ballot.n_presents),
+                        'n_partecipants': int(ballot.n_partecipants),
+                        'n_maj': int(ballot.n_majority),
+                        'n_yes': int(ballot.n_yes),
+                        'n_no': int(ballot.n_no),
+                        'n_abst': int(ballot.n_abst),
+                        'outcome': int(ballot.outcome),
+                    }
+                )
+                if created:
+                    self.logger.debug("%s created in DB" % b)
+                else:
+                    self.logger.debug("%s found in DB" % b)
+
+                for vote in ballot.votes:
+                    self.logger.debug("processing %s in Mdb" % vote)
+                    self.write_vote(vote, db_ballot=b)
+
+                # update votation caches
+                b.update_caches()
+                self.logger.debug("caches for this votation updated.\n")
+
 
 class XMLVotationWriter(BaseVotationWriter, XMLWriter):
     """
@@ -144,8 +216,14 @@ class XMLVotationWriter(BaseVotationWriter, XMLWriter):
     according to the OM-XML schema specs.
     
     So, its output can be imported directly into a running instance of OpenMunicipio.
-    """                        
+    """
+
+    def setup(self):
+        self.conf = None
+
     def write(self):
+        self.setup()
+
         for sitting in self.sittings:
             out_fname = self.get_out_fname(sitting)
             tree = self.write_sitting(sitting)
@@ -165,7 +243,8 @@ class XMLVotationWriter(BaseVotationWriter, XMLWriter):
         sitting_el = SITTING()
         attrs = dict(call=sitting.call,
                      date=sitting.date,
-                     num=sitting.seq_n)
+                     num=sitting.seq_n,
+                     site=sitting.site)
         self._set_element_attrs(sitting_el, attrs)
         root.append(sitting_el) 
         for ballot in sitting.ballots:
@@ -174,7 +253,8 @@ class XMLVotationWriter(BaseVotationWriter, XMLWriter):
                          votation_type=ballot.type_,
                          presents=ballot.n_presents,
                          partecipants=ballot.n_partecipants,
-                         outcome=ballot.outcome,
+                         majority=ballot.n_majority,
+                         outcome=self.conf.OUTCOMES[int(ballot.outcome)],
                          legal_number=ballot.n_legal,
                          date_time=ballot.time,
                          counter_yes=ballot.n_yes,
@@ -187,7 +267,7 @@ class XMLVotationWriter(BaseVotationWriter, XMLWriter):
                 attrs = dict(cardID=vote.cardID,
                                     componentID=vote.componentID,
                                     groupID=vote.groupID,
-                                    vote=vote.choice,
+                                    vote=self.conf.XML_TO_OM_VOTE[vote.choice],
                                     component_name=vote.componentName)
                 self._set_element_attrs(vote_el, attrs)
                 ballot_el.append(vote_el)

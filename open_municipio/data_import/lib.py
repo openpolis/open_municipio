@@ -3,6 +3,18 @@ from django.core.exceptions import ImproperlyConfigured
 
 import logging
 
+def valid_XML_char_ordinal(i):
+    """
+    Return when a character is a valid XML char,
+    according to http://www.w3.org/TR/2008/REC-xml-20081126/#charsets
+    """
+    return ( # conditions ordered by presumed frequency
+             0x20 <= i <= 0xD7FF
+             or i in (0x9, 0xA, 0xD)
+             or 0xE000 <= i <= 0xFFFD
+             or 0x10000 <= i <= 0x10FFFF
+    )
+
 class DataSource(object):
     """
     An object representing a generic source of data.

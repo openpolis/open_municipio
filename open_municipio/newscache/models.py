@@ -58,8 +58,12 @@ class News(TimeStampedModel):
         verbose_name_plural = _('cached news')
 
     def __unicode__(self):
-        return u'%s - %s - %s %s' % \
-               (self.id, self.created.strftime('%d/%m/%Y - %H:%I'), self.news_date.strftime("%d/%m/%Y"), self.text)
+        if self.news_date:
+            return u'%s - %s - %s %s' % \
+                   (self.id, self.created.strftime('%d/%m/%Y - %H:%I'), self.news_date.strftime("%d/%m/%Y"), self.text)
+        else:
+            return u'%s - %s - no date - %s' % \
+                   (self.id, self.created.strftime('%d/%m/%Y - %H:%I'), self.text)
 
     @property
     def news_date(self):

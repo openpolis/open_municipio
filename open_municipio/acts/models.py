@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import logging
+from django.core.exceptions import ObjectDoesNotExist
 from south.modelsinspector import add_ignored_fields
 from django.conf import settings
 from django.contrib.sites.models import Site
@@ -8,7 +10,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
 
-from django.db.models.signals import post_save, post_delete
+from django.db.models.signals import post_save, post_delete, pre_delete
 from django.dispatch import receiver
 
 from model_utils import Choices
@@ -626,6 +628,7 @@ class Calendar(models.Model):
 # Signals handlers
 #
 
+logger = logging.getLogger('import')
 
 # TODO: can't find a DRY-way to do it
 @receiver(post_save, sender=Deliberation)
@@ -649,8 +652,7 @@ def new_act_published(sender, **kwargs):
     Generates a newscache record when an act is presented,
     i.e. created within our DB.
 
-    This news is only generated  when an act is created, 
-    not when it's updated, and only after the fixture loading phase.
+    This news is only generated if not in a fixture loading and if not already there.
 
     below, a trick used to handle signals when loading fixtures,
     it is not used now, but it may be useful, for testing purposes
@@ -665,34 +667,55 @@ def new_act_published(sender, **kwargs):
     """
 
     # generates news only if not in raw mode (fixtures)
-    # and for objects creation
-    if not kwargs.get('raw', False) and kwargs.get('created', False):
+    # existing news are not re-created
+    if not kwargs.get('raw', False):
         generating_item = kwargs['instance']
 
         # create transition: act is presented
-        generating_item.transition_set.create(
+        created = False
+        trans, created = generating_item.transition_set.get_or_create(
             act=generating_item.act_ptr,
             final_status=generating_item.STATUS.presented,
             transition_date=generating_item.presentation_date,
             )
+        if created:
+            logger.debug("  presentation transition created")
+        else:
+            logger.debug("  presentation transition found")
+            trans.save()
 
         # create approval transition if approval_date has value
         if (isinstance(generating_item, Deliberation) and
             generating_item.approval_date is not None):
-            generating_item.transition_set.create(
+            trans, created = generating_item.transition_set.get_or_create(
                 act=generating_item.act_ptr,
                 final_status=generating_item.STATUS.approved,
                 transition_date=generating_item.approval_date,
             )
+            if created:
+                logger.debug("  approval transition created")
+            else:
+                logger.debug("  approval transition found")
+                trans.save()
 
         # define context for textual representation of the news
         ctx = Context({  })
 
         # generate news in newscache
-        News.objects.create(
-            generating_object=generating_item, related_object=generating_item, priority=1,
+        created = False
+        news, created = News.objects.get_or_create(
+            generating_object_pk=generating_item.pk,
+            generating_content_type=ContentType.objects.get_for_model(generating_item),
+            related_object_pk=generating_item.pk,
+            related_content_type=ContentType.objects.get_for_model(generating_item),
+            priority=1,
             text=News.get_text_for_news(ctx, 'newscache/act_published.html')
         )
+        if created:
+            logger.debug("  publication news created")
+        else:
+            logger.debug("  publication news found")
+
 
 
 @receiver(post_save, sender=ActSupport)
@@ -701,56 +724,125 @@ def new_signature(**kwargs):
     generates a record in newscache, when an act is signed
     """
     # generates news only if not in raw mode (fixtures)
-    # and for objects creation
-    if not kwargs.get('raw', False) and kwargs.get('created', False):
+    if not kwargs.get('raw', False):
         generating_item = kwargs['instance']
         act = generating_item.act.downcast()
         signer = generating_item.charge
         # define context for textual representation of the news
         ctx = Context({ 'current_site': Site.objects.get(id=settings.SITE_ID),
                         'signature': generating_item, 'act': act, 'signer': signer })
-        News.objects.create(
-            generating_object=generating_item, related_object=act, priority=3,
+        created = False
+        news, created = News.objects.get_or_create(
+            generating_object_pk=generating_item.pk,
+            generating_content_type=ContentType.objects.get_for_model(generating_item),
+            related_object_pk=act.pk,
+            related_content_type=ContentType.objects.get_for_model(act),
+            priority=3,
             text=News.get_text_for_news(ctx, 'newscache/act_signed.html')
         )
-        News.objects.create(
-            generating_object=generating_item, related_object=signer, priority=1,
+        if created:
+            logger.debug("  act was signed news created")
+        else:
+            logger.debug("  act was signed news found")
+
+        created = False
+        news, created = News.objects.get_or_create(
+            generating_object_pk=generating_item.pk,
+            generating_content_type=ContentType.objects.get_for_model(generating_item),
+            related_object_pk=signer.pk,
+            related_content_type=ContentType.objects.get_for_model(signer),
+            priority=1,
             text=News.get_text_for_news(ctx, 'newscache/user_signed.html')
         )
+        if created:
+            logger.debug("  user signed act news created")
+        else:
+            logger.debug("  user signed act news found")
+
+
+@receiver(pre_delete, sender=ActSupport)
+def delete_signature(**kwargs):
+    """
+    remove all news generated by this signature, before removing the signature
+    """
+    if not kwargs.get('raw', False):
+        signature = kwargs['instance']
+        news = News.objects.filter(
+            generating_object_pk=signature.pk,
+            generating_content_type=ContentType.objects.get_for_model(signature),
+        )
+        n_news = news.count()
+        news.delete()
+        logger.debug("  %s news have been removed" % n_news)
+
 
 @receiver(post_save, sender=Transition)
 def new_transition(**kwargs):
-    if not kwargs.get('raw', False) and kwargs.get('created', False):
+    if not kwargs.get('raw', False):
         generating_item = kwargs['instance']
         act = generating_item.act.downcast()
 
         # Presentation is already handled by new_act_published handler
         if generating_item.final_status != 'PRESENTED':
-            # set act's status according to transition status
-            act.status = generating_item.final_status
-            act.save()
-            # if it's a final status, set the according flag in the act's parent
-            if act.is_final_status(act.status):
-                act.act_ptr.status_is_final = True
-                act.act_ptr.save()
+
+            # modify act's status only when transition is created
+            # avoid infinite loop
+            if kwargs.get('created', False):
+                # set act's status according to transition status
+                act.status = generating_item.final_status
+                act.save()
+                # if it's a final status, set the according flag in the act's parent
+                if act.is_final_status(act.status):
+                    act.act_ptr.status_is_final = True
+                    act.act_ptr.save()
 
             # generate news
             ctx = Context({ 'current_site': Site.objects.get(id=settings.SITE_ID),
                             'transition': generating_item, 'act': act })
-            News.objects.create(
-                generating_object=generating_item, related_object=act, priority=2,
+            created = False
+            news, created = News.objects.get_or_create(
+                generating_object_pk=generating_item.pk,
+                generating_content_type=ContentType.objects.get_for_model(generating_item),
+                related_object_pk=act.pk,
+                related_content_type=ContentType.objects.get_for_model(act),
+                priority=2,
                 text=News.get_text_for_news(ctx, 'newscache/act_changed_status.html')
             )
+            if created:
+                logger.debug("  act changed status news created")
+            else:
+                logger.debug("  act changed status news found")
+
+@receiver(pre_delete, sender=Transition)
+def pre_delete_transition(**kwargs):
+    """
+    remove all news generated by this transition, before removing it
+    """
+    if not kwargs.get('raw', False):
+        t = kwargs['instance']
+        news = News.objects.filter(
+            generating_object_pk=t.pk,
+            generating_content_type=ContentType.objects.get_for_model(t),
+            )
+        n_news = news.count()
+        news.delete()
+        logger.debug("  %s news have been removed" % n_news)
+
 
 @receiver(post_delete, sender=Transition)
-def delete_transition(**kwargs):
+def post_delete_transition(**kwargs):
     if not kwargs.get('raw', False):
         deleting_item = kwargs['instance']
-        act = deleting_item.act.downcast()
 
-        if act.get_last_transition():
-            act.status = act.get_last_transition().final_status
-            if act.is_final_status(deleting_item.final_status):
-                act.status_is_final = False
+        try:
+            act = deleting_item.act.downcast()
 
-        act.save()
+            if act.get_last_transition():
+                act.status = act.get_last_transition().final_status
+                if act.is_final_status(deleting_item.final_status):
+                    act.status_is_final = False
+
+                act.save()
+        except ObjectDoesNotExist:
+            pass
+

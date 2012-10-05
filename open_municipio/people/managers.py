@@ -43,4 +43,4 @@ class TimeFramedQuerySet(QuerySet):
             moment = datetime.strptime(moment, "%Y-%m-%d")
 
         return self.filter(Q(start_date__lte=moment) &
-                           Q(end_date__gte=moment) | Q(end_date__isnull=True))
+                           (Q(end_date__gte=moment) | Q(end_date__isnull=True)))

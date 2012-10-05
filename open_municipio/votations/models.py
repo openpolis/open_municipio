@@ -1,12 +1,14 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.db.models.aggregates import Count
+from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
 
 from model_utils import Choices
 from model_utils.models import TimeStampedModel
 from model_utils.managers import QueryManager
 
-from open_municipio.people.models import Group, InstitutionCharge, Sitting
+from open_municipio.people.models import Group, InstitutionCharge, Sitting, Institution
 from open_municipio.acts.models import Act
 
 
@@ -14,13 +16,15 @@ class Votation(models.Model):
     """
     WRITEME
     """
-    REJECTED = 0
-    PASSED = 1
     OUTCOMES = Choices(
-      (PASSED, _('Passed')),    
-      (REJECTED, _('Rejected')),
+        (0, 'No Esito'),
+        (1, 'Approvato'),
+        (2, 'Respinto'),
+        (3, 'SI Numero Legale'),
+        (4, 'NO Numero Legale'),
+        (5, 'Annullata'),
     )
-    
+
     idnum = models.CharField(blank=True, max_length=64)
     sitting = models.ForeignKey(Sitting, null=True)
     act = models.ForeignKey(Act, null=True)
@@ -33,6 +37,7 @@ class Votation(models.Model):
     charge_set = models.ManyToManyField(InstitutionCharge, through='ChargeVote')
     n_legal = models.IntegerField(default=0)
     n_presents = models.IntegerField(default=0)
+    n_partecipants = models.IntegerField(default=0)
     n_absents = models.IntegerField(default=0)
     n_yes = models.IntegerField(default=0)
     n_no = models.IntegerField(default=0)
@@ -123,16 +128,21 @@ class Votation(models.Model):
         An absence MUST be explicitly set as a vote type (ChargeVote.ABSENT)
         """
 
-        # computes and caches group votes
+        # computes and caches group votes into GroupVote
         self.compute_group_votes()
 
         # compute rebel votes and presence caches
         for vc in self.charge_votes:
             charge_vote = vc.vote
-            group_vote = vc.charge.current_groupcharge.group.groupvote_set.get(votation=self).vote
-            if charge_vote != group_vote:
-                vc.is_rebel = True
-                vc.save()
+            group = vc.group_at_vote_date
+            if group is not None:
+                try:
+                    group_vote = group.groupvote_set.get(votation=self).vote
+                    if charge_vote != group_vote:
+                        vc.is_rebel = True
+                        vc.save()
+                except ObjectDoesNotExist:
+                    pass
 
             # compute new cache for the single charge
             vc.charge.compute_rebellion_cache()
@@ -168,16 +178,30 @@ class Votation(models.Model):
 
         # the computation is done only if ChargeVote is populated,
         # for this votation
-        if ChargeVote.objects.filter(votation__id=self.id).count() > 0:
+        if self.charge_votes.count() > 0:
 
             for g in Group.objects.all():
-                # compute votation details for the group
-                # differentiate between council and committee queries
-                annotated_votes = ChargeVote.objects.filter(votation__id=self.id,
-                                                            charge__groupcharge__group=g,
-                                                            charge__groupcharge__end_date__isnull=True).\
-                values('vote').\
-                annotate(Count('vote'))
+                # compute votation details for the group, at the moment of votation
+                moment = self.sitting.date.strftime("%Y-%m-%d")
+                if self.sitting.institution.institution_type == Institution.COMMITTEE:
+                    # look for original charge in case of committees
+                    annotated_votes = ChargeVote.objects.filter(
+                        votation__id=self.id,
+                        charge__original_charge__groupcharge__group=g
+                    ).filter(
+                        Q(charge__original_charge__groupcharge__start_date__lte=moment) &
+                        (Q(charge__original_charge__groupcharge__end_date__gte=moment) |
+                         Q(charge__original_charge__groupcharge__end_date__isnull=True))
+                    ).values('vote').annotate(Count('vote'))
+                else:
+                    annotated_votes = ChargeVote.objects.filter(
+                        votation__id=self.id,
+                        charge__groupcharge__group=g
+                    ).filter(
+                        Q(charge__groupcharge__start_date__lte=moment) &
+                        (Q(charge__groupcharge__end_date__gte=moment) |
+                         Q(charge__groupcharge__end_date__isnull=True))
+                    ).values('vote').annotate(Count('vote'))
                 if not len(annotated_votes):
                     continue
 
@@ -260,6 +284,9 @@ class GroupVote(TimeStampedModel):
         verbose_name = _('group vote')
         verbose_name_plural = _('group votes')
 
+    def __unicode__(self):
+        return u"%s - %s - %s" % (self.votation, self.group.acronym, self.get_vote_display())
+
 
 class ChargeVote(TimeStampedModel):
     """
@@ -280,8 +307,15 @@ class ChargeVote(TimeStampedModel):
     vote = models.CharField(choices=VOTES, max_length=12)
     charge = models.ForeignKey(InstitutionCharge)
     is_rebel = models.BooleanField(default=False)
+
+    @property
+    def group_at_vote_date(self):
+        return self.charge.person.get_current_group(moment=self.votation.sitting.date.strftime('%Y-%m-%d'))
     
     class Meta:
         db_table = u'votations_charge_vote'    
         verbose_name = _('charge vote')
         verbose_name_plural = _('charge votes')
+
+    def __unicode__(self):
+        return u"%s - %s - %s" % (self.votation, self.charge.person, self.get_vote_display())
