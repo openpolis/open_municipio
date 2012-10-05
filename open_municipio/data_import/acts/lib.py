@@ -128,10 +128,10 @@ class Charge:
         self.description = description
         
     def __str__(self):
-        return "%s as %s from %s (%d)" % (self.person, self.name, self.start_date, self.id)
+        return "%s as %s from %s (%s)" % (self.person, self.name, self.start_date, self.id)
     
     def __unicode__(self):
-        return u"%s as %s from %s (%d)" % (self.person, self.name, self.start_date, self.id)
+        return u"%s as %s from %s (%s)" % (self.person, self.name, self.start_date, self.id)
     
 # institution section
     
