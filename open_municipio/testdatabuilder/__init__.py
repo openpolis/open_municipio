@@ -4,10 +4,12 @@ from django.core.files import File
 from django.conf import settings
 
 from open_municipio.testdatabuilder import conf
-from open_municipio.people.models import Institution, Person, GroupCharge, Sitting, InstitutionCharge, municipality
+from open_municipio.people.models import Institution, Person, GroupCharge, InstitutionCharge
+from open_municipio.sittings.models import Sitting
 from open_municipio.acts.models import  Act, ActSupport, Attachment, Deliberation, Interrogation
 from open_municipio.taxonomy.models import Category, Tag
 from open_municipio.votations.models import Votation, ChargeVote
+from open_municipio.api import municipality
 
 try:
     import json

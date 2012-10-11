@@ -6,7 +6,8 @@ from model_utils import Choices
 from model_utils.models import TimeStampedModel
 from model_utils.managers import QueryManager
 
-from open_municipio.people.models import Group, InstitutionCharge, Sitting
+from open_municipio.people.models import Group, InstitutionCharge
+from open_municipio.sittings.models import Sitting
 from open_municipio.acts.models import Act
 
 

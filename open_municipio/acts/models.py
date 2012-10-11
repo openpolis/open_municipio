@@ -14,7 +14,8 @@ from south.modelsinspector import add_ignored_fields
 from open_municipio.acts.exceptions import WorkflowError
 from open_municipio.acts.signals import act_presented, act_signed, act_status_changed
 from open_municipio.newscache.models import NewsTargetMixin
-from open_municipio.people.models import Institution, InstitutionCharge, Sitting, Person
+from open_municipio.people.models import Institution, InstitutionCharge, Person
+from open_municipio.sittings.models import Sitting
 from open_municipio.taxonomy.managers import TopicableManager
 from open_municipio.taxonomy.models import Category, TaggedAct
 from open_municipio.locations.models import Location, TaggedActByLocation

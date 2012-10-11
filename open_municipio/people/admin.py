@@ -1,7 +1,6 @@
 from django.contrib import admin 
 from django.utils.translation import ugettext_lazy as _
 from open_municipio.people.models import *
-from open_municipio.votations.admin import VotationsInline
 from sorl.thumbnail.admin import AdminImageMixin
 
 
@@ -151,10 +150,6 @@ class OfficeAdmin(BodyAdmin):
 class InstitutionAdmin(BodyAdmin):
     inlines = [InstitutionResourceInline, InstitutionChargeInline]
 
-class SittingAdmin(admin.ModelAdmin):
-    inlines = [VotationsInline]
-    
-admin.site.register(Sitting, SittingAdmin)
 admin.site.register(Person, PersonAdminWithResources)
 admin.site.register(Group, GroupAdminWithCharges)
 admin.site.register(GroupCharge, GroupChargeAdmin)

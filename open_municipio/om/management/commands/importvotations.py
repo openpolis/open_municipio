@@ -6,7 +6,8 @@ from django.core.management.base import LabelCommand, CommandError, BaseCommand
 from lxml import etree
 from os import path
 
-from open_municipio.people.models import Sitting, Institution, Person
+from open_municipio.people.models import Institution, Person
+from open_municipio.sittings.models import Sitting
 from open_municipio.votations.models import Votation, ChargeVote, InstitutionCharge
 from open_municipio import settings_import as settings
 
