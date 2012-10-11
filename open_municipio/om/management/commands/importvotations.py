@@ -205,7 +205,7 @@ class Command(LabelCommand):
                 """
 
                 # update votation caches
-                om_votation.update_caches()
+                om_votation.update_rebel_caches()
                 self.logger.debug("caches for this votation updated.\n")
 
     def handle(self, *labels, **options):
