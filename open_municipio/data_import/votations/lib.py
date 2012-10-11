@@ -133,8 +133,9 @@ class BaseVotationWriter(BaseWriter):
     This class encapsulates votation-specific serialization logic which is independent 
     from a specific output format. 
     """
-    def __init__(self, sittings):
+    def __init__(self, sittings, **options):
         self.sittings = sittings
+        self.options = options
 
     
 class JSONVotationWriter(BaseVotationWriter, JSONWriter):
@@ -314,43 +315,49 @@ class DBVotationWriter(BaseVotationWriter):
             self.logger.debug("processing %s in Mdb" % sitting)
             inst = Institution.objects.get(name=self.conf.XML_TO_OM_INST[sitting.site])
 
-            s, created = DBSitting.objects.get_or_create(
-                idnum=sitting._id,
-                defaults={
-                    'number':      sitting.seq_n,
-                    'date':        sitting.date,
-                    'call':        sitting.call,
-                    'institution': inst,
-                    }
-            )
-            if created:
-                self.logger.info("%s created in DB" % s)
-            else:
-                self.logger.debug("%s found in DB" % s)
+            if not self.dry_run:
+                s, created = DBSitting.objects.get_or_create(
+                    idnum=sitting._id,
+                    defaults={
+                        'number':      sitting.seq_n,
+                        'date':        sitting.date,
+                        'call':        sitting.call,
+                        'institution': inst,
+                        }
+                )
+                if created:
+                    self.logger.info("%s created in DB" % s)
+                else:
+                    self.logger.debug("%s found in DB" % s)
 
             for ballot in sitting.ballots:
                 self.logger.debug("processing %s in Mdb" % ballot)
 
-                # get or create the sitting in the DB
-                b, created = DBBallot.objects.get_or_create(
-                    idnum=int(ballot.seq_n),
-                    sitting=s,
-                    defaults={
-                        'act_descr': ballot.subj or ballot.short_subj or "",
-                        'n_legal': int(ballot.n_legal),
-                        'n_presents': int(ballot.n_presents),
-                        'n_partecipants': int(ballot.n_partecipants),
-                        'n_maj': int(ballot.n_majority),
-                        'n_yes': int(ballot.n_yes),
-                        'n_no': int(ballot.n_no),
-                        'n_abst': int(ballot.n_abst),
-                        'outcome': int(ballot.outcome),
-                    }
-                )
-                if created:
-                    self.logger.debug("%s created in DB" % b)
-                else:
-                    self.logger.debug("%s found in DB" % b)
+                if not self.dry_run:
+
+                    # get or create the sitting in the DB
+                    b, created = DBBallot.objects.get_or_create(
+                        idnum=int(ballot.seq_n),
+                        sitting=s,
+                        defaults={
+                            'act_descr': ballot.subj or ballot.short_subj or "",
+                            'n_legal': int(ballot.n_legal),
+                            'n_presents': int(ballot.n_presents),
+                            'n_partecipants': int(ballot.n_partecipants),
+                            'n_maj': int(ballot.n_majority),
+                            'n_yes': int(ballot.n_yes),
+                            'n_no': int(ballot.n_no),
+                            'n_abst': int(ballot.n_abst),
+                            'outcome': int(ballot.outcome),
+                        }
+                    )
+                    if created:
+                        self.logger.debug("%s created in DB" % b)
+                    else:
+                        self.logger.debug("%s found in DB" % b)
+
+                if self.dry_run:
+                    continue
 
                 for vote in ballot.votes:
                     self.logger.debug("processing %s in Mdb" % vote)
