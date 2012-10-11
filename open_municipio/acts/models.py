@@ -361,15 +361,15 @@ class ActSupport(models.Model):
     signed a given act (a.k.a. "act supporters").
     """
     SUPPORT_TYPE = Choices(
-        ('FIRSTSIGNER', 'first_signer', _('first signer')),
-        ('COSIGNER', 'co_signer', _('co-signer'))
+        ('FIRST_SIGNER', 'first_signer', _('first signer')),
+        ('CO_SIGNER', 'co_signer', _('co-signer'))
     )
     # who signed the act (a politician)
     charge = models.ForeignKey(InstitutionCharge)
     # the act being signed
     act = models.ForeignKey(Act)
     # type of support being provided by the signer to the act
-    support_type = models.CharField(choices=SUPPORT_TYPE, max_length=12)
+    support_type = models.CharField(choices=SUPPORT_TYPE, max_length=13)
     # when the act was signed
     support_date = models.DateField(_('support date'), default=None, blank=True, null=True)
 
@@ -467,13 +467,13 @@ class Interrogation(ActStatusMixin, Act):
 
     FINAL_STATUSES = (
         ('ANSWERED', _('answered')),
-        ('NOTANSWERED', _('not answered')),
+        ('NOT_ANSWERED', _('not answered')),
     )
 
     STATUS = Choices(
         ('PRESENTED', 'presented', _('presented')),
         ('ANSWERED', 'answered', _('answered')),
-        ('NOTANSWERED', 'notanswered', _('not answered')),
+        ('NOT_ANSWERED', 'not_answered', _('not answered')),
     )
     
     # how this interrogation will be answered by its recipient(s) (verbally or in writing) 
@@ -505,13 +505,13 @@ class Interpellation(ActStatusMixin, Act):
 
     FINAL_STATUSES = (
         ('ANSWERED', _('answered')),
-        ('NOTANSWERED', _('not answered')),
+        ('NOT_ANSWERED', _('not answered')),
     )
 
     STATUS = Choices(
         ('PRESENTED', 'presented', _('presented')),
         ('ANSWERED', 'answered', _('answered')),
-        ('NOTANSWERED', 'notanswered', _('not answered')),
+        ('NOT_ANSWERED', 'not_answered', _('not answered')),
     )
 
     # how this interpellation will be answered by its recipient(s) (verbally or in writing)
