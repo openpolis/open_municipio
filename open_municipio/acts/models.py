@@ -277,6 +277,17 @@ class ActStatusMixin(models.Model):
         for state in states:
             groups[state] = self.transitions.filter(target_status=state).order_by('-transition_date')
         return groups
+    
+    def _update_status(self):
+        """
+        Updates this act's status based on the corresponding set of transitions.
+        
+        Note that, by definition, an act's status is the target status 
+        of the last transition occurred to it. 
+        """
+        self._status = self.last_transition.target_status
+        self.save()
+        
 
     def is_final_status(self, status=None):
         """
@@ -286,10 +297,8 @@ class ActStatusMixin(models.Model):
         is a final one.
         """ 
         status = status or self.status
-        if status in [t[0] for t in self.FINAL_STATUSES]:     
-            return True
-        else:
-            return False
+        final_statuses = [t[0] for t in self.FINAL_STATUSES]
+        return status in final_statuses     
    
     def _update_status_is_final(self):
         """
@@ -307,7 +316,7 @@ class ActStatusMixin(models.Model):
         
         If no transitions are associated to this act, return ``None``.
         """
-        if self.transitions:
+        if self.transitions.count():
             return self.transitions.order_by('-transition_date')[0]
         else:
             return None
@@ -650,11 +659,15 @@ class Transition(models.Model):
         If this is the initial transition for a given act, return ``None``.
         """
         # TODO: add model-level caching
-        previous = Transition.objects.filter(act=self.act, transition_date__lt=self.transition_date).order_by('-transition_date')
+        # retrieve all the transitions happened before this one (*including* itself)
+        # note that we have to use the ``lte`` lookup filter since two transitions may
+        # happen the same day
+        previous = Transition.objects.filter(act=self.act, transition_date__lte=self.transition_date)\
+                                      .order_by('-transition_date')
         if previous.count() == 1: # initial transition
             return None
         else:
-            return previous[0]  
+            return previous[1]  
     
     def get_next(self):
         """
@@ -663,11 +676,15 @@ class Transition(models.Model):
         If this is the last transition for a given act, return ``None``.
         """
         # TODO: add model-level caching
-        next = Transition.objects.filter(act=self.act, transition_date__gt=self.transition_date).order_by('transition_date')
-        if next.count() == 0: # last transition
+        # retrieve the all the transitions happened after this one (*including* itself)
+        # note that we have to use the ``gte`` lookup filter since two transitions may
+        # happen the same day
+        next = Transition.objects.filter(act=self.act, transition_date__gte=self.transition_date)\
+                                  .order_by('transition_date')
+        if next.count() == 1: # last transition
             return None
         else:
-            return next[0]  
+            return next[1]  
     
     @property
     def is_initial(self):
@@ -675,10 +692,7 @@ class Transition(models.Model):
         Return ``True`` if this transition is the initial one; ``False`` otherwise.
         """
         # TODO: add model-level caching
-        if self.get_previous():
-            return False
-        else:
-            return True       
+        return not self.get_previous()       
     
     @property
     def is_final(self):
@@ -686,11 +700,7 @@ class Transition(models.Model):
         Return ``True`` if this transition is the final one; ``False`` otherwise.
         """
         # TODO: add model-level caching
-        if self.get_next():
-            return False
-        else:
-            return True       
-
+        return not self.get_next()
    
     
 ## Signal handlers
@@ -736,8 +746,7 @@ def update_act_status(sender, **kwargs):
         # update current act status
         transition = kwargs['instance']
         act = transition.act.downcast()
-        act._status = transition.target_status
-        act.save()
+        act._update_status()
         # signal the status change 
         act_status_changed.send(sender=act)
 
@@ -749,23 +758,19 @@ def revert_act_status(sender, **kwargs):
     of its associated act.
     
     .. note::
-    
-        Deleting a transition other than the last one should be considered an illegal operation, 
-        since doing so will leave the act's workflow in an inconsistent state 
-        (for example, that act will have no longer such a thing as a "current status").     
-        Therefore, deleting such a transition will raise a ``WorkflowError`` exception.
+
+        Deleting the *initial transition* -- the one which had been created
+        when the act "reached" its initial status -- should be considered an illegal operation, 
+        since doing so would leave the act in an "undefined" status, a pathological condition 
+        that must be avoided.  
         
-        For a similar reason, the *initial transition* -- the one which had been created
-        when the act "reached" its initial status -- cannot be deleted, neither, 
-        since doing that would leave the act in an "undefined" status, 
-        a pathological condition that must be avoided.
+        So, the action of deleting such a transition triggers a ``WorkflowError`` exception.
+         
     """   
     transition = kwargs['instance']
     act = transition.act.downcast()
     if transition.is_initial:
         raise WorkflowError("Cannot delete initial transition")
-    elif not transition.is_final:
-        raise WorkflowError("Only the final transition can be deleted")
     else:
         act = transition.act.downcast()
         act._status = transition.get_previous().target_status
