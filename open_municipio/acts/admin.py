@@ -3,8 +3,9 @@ from django import forms
 from django.db import models
 from django.contrib.admin.widgets import FilteredSelectMultiple
 
-from open_municipio.acts.models import (Act, ActSupport, Attachment, Calendar, Transition,
+from open_municipio.acts.models import (Act, ActSupport, Attachment, Transition,
                                         Emendation, Deliberation, Motion, Interpellation, Interrogation,)
+from open_municipio.sittings.models import Calendar
 
 
 def transition_form_factory(act):

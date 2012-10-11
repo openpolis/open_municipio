@@ -873,23 +873,3 @@ class Outcome(models.Model):
         A queryset of acts referenced by this minute.
         """
         return self.act_set.all()
-        
-        
-#
-# Calendar
-#
-class Calendar(models.Model):
-    """
-    WRITEME
-    """
-    act_set = models.ManyToManyField(Act)
-    site = models.ForeignKey(Institution)
-    date = models.DateField()
-
-    class Meta:
-        verbose_name = _('calendar')
-        verbose_name_plural = _('calendar')
-
-    @property
-    def acts(self):
-        return self.act_set.all()

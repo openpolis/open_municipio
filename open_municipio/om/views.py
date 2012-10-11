@@ -1,5 +1,8 @@
 from django.views.generic.base import TemplateView
-from open_municipio.acts.models import Calendar, Act
+
+from open_municipio.acts.models import Act
+from open_municipio.sittings.models import Calendar
+
 
 class HomeView(TemplateView):
     template_name = "om/home.html"
