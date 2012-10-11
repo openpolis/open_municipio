@@ -645,7 +645,7 @@ class GroupResponsability(ChargeResponsability):
         ('LEADER', 'leader', _('Group leader')),
         ('DEPUTY', 'deputy', _('Group deputy leader')),
     )
-    # the institutionale charge this responsability refers to
+    # the institutional charge this responsability refers to
     charge = models.ForeignKey(GroupCharge, verbose_name=_('charge'))
     # responsability type
     charge_type = models.CharField(_('charge type'), max_length=16, choices=CHARGE_TYPES)
@@ -749,7 +749,7 @@ class Institution(Body):
     @property
     def first_deputy(self):
         """
-        The current first deputy mayor of this m as InstitutionResponsability.
+        The current first deputy mayor of this municipality as an ``InstitutionResponsability``.
         None if not found.
 
         To access the charge: firstdeputy.charge

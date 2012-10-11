@@ -115,58 +115,94 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
     
     @property
     def attachments(self):
+        """
+        A queryset of attachments linked to this act.
+        """
         return self.attachment_set.all()
 
     @property
     def transitions(self):
+        """
+        A queryset of transitions that this act underwent.
+        """
         return self.transition_set.all()
 
     @property
     def presenters(self):
+        """
+        A queryset of institutional charge(s) by which this act has been presented.
+        """
         return self.presenter_set.all()
 
     @property
     def recipients(self):
+        """
+        A queryset of institutional charge(s) to which this act was addressed.
+        """
         return self.recipient_set.all()
     
     @property
     def first_signers(self):
+        """
+        A queryset of institutional charge(s) which signed this act.
+        """
         # FIXME: resolve asymmetry between this query and that for ``co_signers`` property
         return InstitutionCharge.objects.filter(actsupport__act__id = self.pk,
                                                 actsupport__support_type=ActSupport.SUPPORT_TYPE.first_signer)
     @property
     def co_signers(self):
+        """
+        A queryset of institutional charge(s) which co-signed this act.
+        """
         # FIXME: resolve asymmetry between this query and that for ``first_signers`` property
         return self.presenter_set.filter(actsupport__support_type=ActSupport.SUPPORT_TYPE.co_signer)
 
     @property
     def emendations(self):
+        """
+        A queryset of amendements presented against this act.
+        """
         return self.emendation_set.all()
-
+    
+    ##---- Taxonomy ----##
     @property
     def tags(self):
+        """
+        A queryset of tags used to classify this act. 
+        """
         # FIXME: cleanup needed, here!
         #return set([ topic.tag for topic in self.topics ])
         return self.tag_set.all()
     
     @property
     def categories(self):
+        """
+        A queryset of categories used to classify this act. 
+        """
         # FIXME: cleanup needed, here!
         return list( set([ topic.category for topic in self.topics]) )
         #return self.category_set.all()
 
     @property
     def topics(self):
+        """
+        A queryset of topics (tags + categories) used to classify this act. 
+        """
         return self.tag_set.topics()
     
     @property
     def locations(self):
+        """
+        A queryset of locations used to classify this act. 
+        """
         return self.location_set.all()
+    
+    ##---- End taxonomy ----##
     
     @property
     def act_descriptors(self):
         """
-        Return the queryset of all those users which modified this act's description.
+        A queryset of all those users which modified this act's description.
         """
         return self.actdescriptor_set.all()
     
@@ -189,7 +225,7 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
 class ActStatusMixin(models.Model):
     """
     An abstract, mixin model class encapsulating workflow-related data & logic
-    shared by every *concrete* ``Act`` subclasses.
+    shared by every *concrete* ``Act`` subclass.
     """
     # current act status
     _status = StatusField()
@@ -209,7 +245,7 @@ class ActStatusMixin(models.Model):
    
     def _signal_act_presented(self, **kwargs):
         """
-        Notify the system when a new act has been presented,
+        Notifies the system when a new act has been presented,
         by sending an ``act_presented`` signal.
         
         .. note::
@@ -226,13 +262,13 @@ class ActStatusMixin(models.Model):
     @property    
     def status(self):
         """
-        Return the current status of this act instance.
+        Returns the current status of this act instance.
         """
         return self._status
         
     def get_transitions_groups(self):
         """
-        Return a dictionary having as keys the allowed statuses 
+        Returns a dictionary having as keys the allowed statuses 
         for this act instance, and as values a queryset of transitions 
         having that target status, in reverse chronological order.
         """
@@ -244,7 +280,7 @@ class ActStatusMixin(models.Model):
 
     def is_final_status(self, status=None):
         """
-        Return ``True`` iff the ``status`` argument is a final status for this act instance. 
+        Returns ``True`` iff the ``status`` argument is a final status for this act instance. 
         
         If no ``status`` argument is provided, check if the *current status* for this act
         is a final one.
@@ -257,7 +293,7 @@ class ActStatusMixin(models.Model):
    
     def _update_status_is_final(self):
         """
-        Update the ``status_is_final`` cache field based on the current act status.
+        Updates the ``status_is_final`` cache field based on the current act status.
         """ 
         if self.is_final_status():
             self.status_is_final = True
@@ -267,7 +303,7 @@ class ActStatusMixin(models.Model):
     @property
     def last_transition(self):
         """
-        Return the last created transition for this act.
+        Returns the last created transition for this act.
         
         If no transitions are associated to this act, return ``None``.
         """
@@ -279,16 +315,21 @@ class ActStatusMixin(models.Model):
 
 class ActSection(models.Model):
     """
-    A section (or sub-section) of an act's text content.
+    A section (or sub-section) of an act's textual content.
 
     .. note::
     
-    Currently, this feature is not being used, but it likely be in future releases
+        Currently this model is unused, but this will change in future releases.
 
     """
+    # the act this section belongs to
     act = models.ForeignKey(Act, on_delete=models.PROTECT)
-    parent_section = models.ForeignKey('self', on_delete=models.PROTECT)  
+    # the parent section (if any)
+    # used to model acts' sub-section, sub-sub-section, etc.
+    parent_section = models.ForeignKey('self', on_delete=models.PROTECT)
+    # section's title  
     title = models.CharField(max_length=128, blank=True)
+    # section's content
     text = models.TextField(blank=True)
   
     def __unicode__(self):
@@ -299,6 +340,9 @@ class ActSection(models.Model):
 
     @property
     def emendations(self):
+        """
+        A queryset of amendements presented against this section.
+        """
         return self.emendation_set.all()
 
 
@@ -330,7 +374,7 @@ class ActSupport(models.Model):
     
     def _signal_act_signed(self, **kwargs):
         """
-        Notify the system when an act has been signed, 
+        Notifies the system when an act has been signed, 
         by sending an ``act_signed`` signal.
         
         .. note::
@@ -349,7 +393,9 @@ class ActDescriptor(TimeStampedModel):
     """
     A relationship mapping politicians who added or modified an act's description. 
     """
+    # who modified the act's description
     person = models.ForeignKey(Person)
+    # the act whose description has been modified 
     act = models.ForeignKey(Act)
 
     class Meta:
@@ -381,11 +427,15 @@ class Deliberation(ActStatusMixin, Act):
         ('APPROVED', 'approved', _('approved')),
         ('REJECTED', 'rejected', _('rejected')),
     )
-    
+    # when the deliberation was approved
     approval_date = models.DateField(_('approval date'), null=True, blank=True)
+    # when the deliberation was published
     publication_date = models.DateField(_('publication date'), null=True, blank=True)
+    # from when the deliberation will become executive
     execution_date = models.DateField(_('execution date'), null=True, blank=True)
+    # initiative type for this deliberation
     initiative = models.CharField(_('initiative'), max_length=12, choices=INITIATIVE_TYPES)
+    # approved deliberation text
     approved_text = models.TextField(blank=True)
     
     class Meta:
@@ -417,10 +467,13 @@ class Interrogation(ActStatusMixin, Act):
         ('NOTANSWERED', 'notanswered', _('not answered')),
     )
     
-
+    # how this interrogation will be answered by its recipient(s) (verbally or in writing) 
     answer_type = models.CharField(_('answer type'), max_length=8, choices=ANSWER_TYPES)
+    # motivation for issuing this interrogation
     question_motivation = models.TextField(blank=True)
+    # content of the recipient's answer
     answer_text = models.TextField(blank=True)
+    # content of the presenter's reply
     reply_text = models.TextField(blank=True)
 
     class Meta:
@@ -452,9 +505,11 @@ class Interpellation(ActStatusMixin, Act):
         ('NOTANSWERED', 'notanswered', _('not answered')),
     )
 
-
+    # how this interpellation will be answered by its recipient(s) (verbally or in writing)
     answer_type = models.CharField(_('answer type'), max_length=8, choices=ANSWER_TYPES)
+    # motivation for issuing this interrogation
     question_motivation = models.TextField(blank=True)
+    # content of the recipient's answer
     answer_text = models.TextField(blank=True)
 
     class Meta:
@@ -535,8 +590,9 @@ class Emendation(ActStatusMixin, Act):
         ('PRESENTED', 'presented', _('presented')), 
         ('APPROVED', 'approved', _('approved'))
     )
-    
+    # the act against which this amendement was proposed
     act = models.ForeignKey(Act, related_name='emendation_set', on_delete=models.PROTECT)
+    # the act's section (if any) against which this amendement was proposed 
     act_section = models.ForeignKey(ActSection, related_name='emendation_set', null=True, blank=True, 
                                     on_delete=models.PROTECT)
 
@@ -550,17 +606,42 @@ class Emendation(ActStatusMixin, Act):
 # Workflows
 #
 class Transition(models.Model):
+    """
+    This model tracks acts' status changes: when an act changes its status,
+    a new transition is generated.
+    
+    Transitions objects store the following pieces of information:
+    
+    * the act changing its status
+    * the final (target) act's status
+    * when the transition happened [*]_
+    * an optional symbol (encoding the transition's type)
+    * the votation which generated that transition (if any)
+    * an optional note for recording transition-specific additional details
+       
+    
+    .. [*] Since the time granularity is one day, taking into account that an act may 
+        undergo two o more transitions on the same day, it may well happen that two distinct
+        transitions (related to the same act) share an identical ``transition_date`` attribute.
+    
+    """
+    # the final status for the act
     target_status = models.CharField(_('target status'), max_length=100)
+    # the act which underwent a status change
     act = models.ForeignKey(Act, related_name='transition_set')
-    votation = models.ForeignKey('votations.Votation', null=True, blank=True)
+    # the votation which generated this transition (if any)
+    votation = models.ForeignKey('votation.Votation', null=True, blank=True)
+    # when the transition happened
     transition_date = models.DateField(default=None)
-    symbol = models.CharField(_('symbol'), max_length=128, blank=True, null=True)
-    note = models.CharField(_('note'), max_length=255, blank=True, null=True)
+    # an optional symbol encoding the transition type
+    symbol = models.CharField(_('symbol'), max_length=128, blank=True)
+    # some additional details about the transition (if any)
+    note = models.CharField(_('note'), max_length=255, blank=True)
 
     class Meta:
         db_table = u'acts_transition'
         verbose_name = _('status transition')
-        verbose_name_plural = _('status transition')
+        verbose_name_plural = _('status transitions')
 
     def get_previous(self):
         """
@@ -708,13 +789,21 @@ class Document(TimeStampedModel):
     It is possible for a single document to have more than one type of content:
     for example, a textual and a PDF local versions, or remote links...
     """
+    # when the document was authored/published
     document_date = models.DateField(null=True, blank=True)
-    document_type = models.CharField(max_length=5, null=True, blank=True)
+    # document's type
+    document_type = models.CharField(max_length=5, blank=True)
+    # size of the document
     document_size = models.IntegerField(blank=True, null=True)
+    # document's textual content
     text = models.TextField(blank=True)
+    # URL pointing to the document's textual content
     text_url = models.URLField(blank=True)
-    file_url = models.URLField(blank=True)
+    # document's file
     file = models.FileField(upload_to="attached_documents/%Y%d%m", blank=True)
+    # URL pointing to the document's file
+    file_url = models.URLField(blank=True)
+    
     
     class Meta:
         abstract = True
@@ -724,11 +813,12 @@ class Attach(Document):
     """
     An attachment to a formal act. 
 
-    Extends the ``Document`` class, by adding a title
-    and a foreign key to the act the attachment relates to.
+    It's just a document with a title, linking to an existing act.
     """
     # FIXME: shouldn't this model be called ``Attachment`` instead ?
+    # a title for the attachment
     title = models.CharField(max_length=255)
+    # the act this document is attached to
     act = models.ForeignKey(Act, related_name='attachment_set')
 
     class Meta(Document.Meta):
@@ -743,7 +833,9 @@ class Minute(Document):
     """
     WRITEME
     """
+    # the sitting this document refers to
     sitting = models.ForeignKey(Sitting)
+    # the set of acts referenced by this document
     act_set = models.ManyToManyField(Act)    
     
     class Meta(Document.Meta):
@@ -752,6 +844,9 @@ class Minute(Document):
 
     @property
     def acts(self):
+        """
+        A queryset of acts referenced by this minute.
+        """
         return self.act_set.all()
 
 
@@ -759,7 +854,9 @@ class Outcome(models.Model):
     """
     WRITEME
     """
+    # the sitting this document refers to
     sitting = models.ForeignKey(Sitting)
+    # the set of acts referenced by this document
     act_set = models.ManyToManyField(Act)    
 
     class Meta(Document.Meta):
@@ -768,6 +865,9 @@ class Outcome(models.Model):
 
     @property
     def acts(self):
+        """
+        A queryset of acts referenced by this minute.
+        """
         return self.act_set.all()
         
         

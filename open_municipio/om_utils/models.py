@@ -10,7 +10,7 @@ from open_municipio.om_utils.exceptions import MalformedLinkedList
 class SlugModel(models.Model):
     """
     An abstract base class encapsulating data & logic shared by models 
-    needing a ``SlugField``.
+    featuring a ``SlugField``.
     """
     slug = models.SlugField(verbose_name=_('Slug'), blank=True, unique=True, max_length=100)
     
@@ -37,8 +37,8 @@ class SlugModel(models.Model):
         
         If the calculated slug already exists in the DB, add a numerical suffix until is OK.
 
-        If the ``base`` argument is not provided, the source string default to the ``name`` attribute
-        of the given model instance. If no ``name`` attribute is defined, neither, raise a ``TypeError``.
+        If the ``base`` argument is not provided, the source string defaults to the ``name`` attribute
+        of the given model instance. If no ``name`` attribute is defined, neither, raises a ``TypeError``.
         """
         try:
             base = base or self.name

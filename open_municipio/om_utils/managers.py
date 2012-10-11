@@ -33,7 +33,7 @@ class TimeFramedQuerySet(QuerySet):
 
     def current(self, as_of=None):
         """
-        Return a queryset containing model instances which was *current* 
+        Return a queryset containing model instances which were *current* 
         at a given point in time (as specified by the ``as_of`` argument).
         
         The ``as_of`` argument, if provided, should be a Python datetime object, 
