@@ -1,12 +1,13 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.utils import simplejson as json
 from open_municipio.data_import.lib import DataSource, BaseReader, BaseWriter, JSONWriter, XMLWriter, valid_XML_char_ordinal
 # import OM-XML language tags
 from open_municipio.data_import.om_xml import *
 # import models used in DBVotationWriter
 from open_municipio.people.models import Institution
-from open_municipio.votations.models import Sitting as DBSitting
+from open_municipio.votations.models import Sitting as DBSitting, GroupVote
 from open_municipio.votations.models import Votation as DBBallot
-from open_municipio.votations.models import ChargeVote as DBVote
+from open_municipio.votations.models import ChargeVote
 
 from lxml import etree
 
@@ -152,6 +153,156 @@ class DBVotationWriter(BaseVotationWriter):
     def setup(self):
         self.conf = None
 
+    def compute_absences(self, votation):
+        """
+        A charge is considered absent if she is a member of
+        the Institution where the Votation took place,
+        at the moment when the Votation took place,
+        and her ChargeVote is not among the associate chargevote_set
+        """
+        votation_moment = votation.sitting.date.strftime('%Y-%m-%d')
+        charges = votation.sitting.institution.get_current_charges(moment=votation_moment)
+        for c in charges:
+            try:
+                cv = votation.chargevote_set.get(charge__pk=c.pk)
+            except ObjectDoesNotExist:
+                # get or create absence ChargeVote in OpenMunicipio DB
+                cv, created = ChargeVote.objects.get_or_create(
+                    charge=c,
+                    votation=votation,
+                    vote=ChargeVote.VOTES.absent
+                )
+
+
+
+
+    def update_rebel_caches(self, votation):
+        """
+        Computes and update caches for the passed votation.
+
+        Firstly, the group votes are computed and stored,
+        then the rebel votes, and presence data are cached,
+        both for the votation and the charge.
+
+        A ChargeVote must be marked as ``rebel`` when her vote is different
+        from that of her group.
+
+        The ``rebel`` field can be assigned only if the counselor is present and
+         if her group's vote is clearly defined (i.e., it is not *Not Avaliable*)
+
+        This is only valid for council votations.
+
+        After a rebel vote has been set, the following *caches* should be updated:
+
+        * Votation.n_rebels - counts the total number of rebels for that votation
+        """
+
+
+        # compute rebel caches for each voting charge
+        for vc in votation.charge_votes:
+            group = vc.charge_group_at_vote_date
+            if group is not None:
+                charge_vote = vc.vote
+                try:
+                    group_vote = group.groupvote_set.get(votation=votation).vote
+                    # check rebellion: if charge_vote is different from a significative group_vote
+                    if charge_vote == ChargeVote.VOTES.yes or\
+                       charge_vote == ChargeVote.VOTES.no or\
+                       charge_vote == ChargeVote.VOTES.abstained:
+                        if group_vote != GroupVote.VOTES.noncomputable and group_vote != charge_vote:
+                            # add rebel status to ChargeVote
+                            vc.is_rebel = True
+                            vc.save()
+
+                            # there's a new rebellion!
+                            # votation and charge caches must be updated
+
+                            # update charge cache
+                            vc.charge.update_rebellion_cache()
+
+                            # update votation cache
+                            votation.n_rebels = votation.charge_votes.filter(is_rebel=True).count()
+                            votation.save()
+                except ObjectDoesNotExist:
+                    pass
+
+
+    def compute_group_votes(self, votation):
+        """
+        once all charges' votes have been stored,
+        groups' votes are stored in GroupVote.vote
+
+        A GroupVote is the same as the majority of the group.
+        Whenever there is no clear majority (50%/50%), then a
+        Not Available vote can be assigned to the Group.
+
+        Other cached values are computed and stored in GroupVote, as well:
+        * n_presents
+        * n_yes
+        * n_no
+        * n_abst
+        * n_rebels
+        * n_absents
+        """
+
+        # reset: remove all GroupVotes for this votation,
+        # so that group votes are never counted more than once
+        votation.group_votes.delete()
+
+        for cv in votation.charge_votes:
+            g = cv.charge_group_at_vote_date
+            v = cv.vote
+
+            if g is None:
+                self.logger.warning(u"no group found for charge vote %s" % cv)
+                continue
+
+            # get or create group votation
+            gv, created = GroupVote.objects.get_or_create(
+                votation=votation, group=g,
+                defaults={'vote':GroupVote.VOTES.noncomputable}
+            )
+
+            if v == ChargeVote.VOTES.yes:
+                gv.n_yes += 1
+                gv.n_presents += 1
+            elif v == ChargeVote.VOTES.no:
+                gv.n_no += 1
+                gv.n_presents += 1
+            elif v == ChargeVote.VOTES.abstained:
+                gv.n_abst += 1
+                gv.n_presents += 1
+            elif v == ChargeVote.VOTES.secret:
+                gv.n_presents += 1
+            elif v == ChargeVote.VOTES.canceled:
+                gv.n_presents += 1
+            elif v == ChargeVote.VOTES.pres:
+                gv.n_presents += 1
+            elif v == ChargeVote.VOTES.absent:
+                gv.n_absents += 1
+            else:
+                pass
+
+            gv.save()
+
+        for gv in votation.group_votes:
+            # compute group vote and n of rebels
+            if gv.n_yes > gv.n_no and gv.n_yes > gv.n_abst:
+                gv.vote = GroupVote.VOTES.yes
+                gv.n_rebels = gv.n_no + gv.n_abst
+
+            if gv.n_no > gv.n_yes and gv.n_no > gv.n_abst:
+                gv.vote = GroupVote.VOTES.no
+                gv.n_rebels = gv.n_abst + gv.n_yes
+
+            if gv.n_abst > gv.n_yes and gv.n_abst > gv.n_no:
+                gv.vote = GroupVote.VOTES.abstained
+                gv.n_rebels = gv.n_no + gv.n_yes
+
+            # save updates
+            gv.save()
+
+
 
     def write_vote(self, vote, db_ballot=None):
         raise Exception("Not implemented")
@@ -205,8 +356,29 @@ class DBVotationWriter(BaseVotationWriter):
                     self.logger.debug("processing %s in Mdb" % vote)
                     self.write_vote(vote, db_ballot=b)
 
-                # update votation caches
-                b.update_caches()
+
+                # since absences are not explicitly set
+                # they must be computed
+                self.compute_absences(b)
+
+
+                # TODO:
+                # remove Votation and skip this votation if
+                # sums are not verified
+                #
+                # if not b.verify_sums():
+                #   b.delete()
+                #   continue
+
+                # compute and cache group votes into GroupVote
+                self.compute_group_votes(b)
+
+                # compute rebels caches, only if the sitting is not a Committee (no rebellions in committees)
+                if b.sitting.institution.institution_type != Institution.COMMITTEE:
+                    self.update_rebel_caches(b)
+
+                b.update_presence_caches()
+
                 self.logger.debug("caches for this votation updated.\n")
 
 

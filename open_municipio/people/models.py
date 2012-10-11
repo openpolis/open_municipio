@@ -409,7 +409,7 @@ class InstitutionCharge(Charge):
         else:
             return []
 
-    def compute_rebellion_cache(self):
+    def update_rebellion_cache(self):
         """
         Re-compute the number of votations where the charge has vote differently from her group
         and update the n_rebel_votations counter
@@ -417,7 +417,7 @@ class InstitutionCharge(Charge):
         self.n_rebel_votations = self.chargevote_set.filter(is_rebel=True).count()
         self.save()
 
-    def compute_presence_cache(self):
+    def update_presence_cache(self):
         """
         Re-compute the number of votations where the charge was present/absent
         and update the respective counters
@@ -760,7 +760,14 @@ class Institution(Body):
         The QuerySet of all *current* charges (``InstitutionCharge`` instances) 
         associated with this institution.
         """
-        return self.charge_set.current()
+        return self.get_current_charges(moment=None)
+
+    def get_current_charges(self, moment=None):
+        """
+        The WS of all charges current at the specified moment
+        """
+        return self.charge_set.current(moment)
+
 
     @property
     def firstdeputy(self):

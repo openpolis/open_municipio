@@ -9,7 +9,7 @@ class GroupVoteAdmin(admin.ModelAdmin):
     list_filter = ('group', 'votation__id')
 
 class ChargeVoteAdmin(admin.ModelAdmin):
-    list_display = ('id', 'votation', 'charge', 'group_at_vote_date', 'vote')
+    list_display = ('id', 'votation', 'charge', 'charge_group_at_vote_date', 'vote')
     list_filter = ('votation__id',)
 
 class GroupVoteInline(admin.TabularInline):
