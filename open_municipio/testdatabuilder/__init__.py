@@ -5,7 +5,7 @@ from django.conf import settings
 
 from open_municipio.testdatabuilder import conf
 from open_municipio.people.models import Institution, Person, GroupCharge, Sitting, InstitutionCharge, municipality
-from open_municipio.acts.models import  Act, ActSupport, Attach, Deliberation, Interrogation
+from open_municipio.acts.models import  Act, ActSupport, Attachment, Deliberation, Interrogation
 from open_municipio.taxonomy.models import Category, Tag
 from open_municipio.votations.models import Votation, ChargeVote
 
@@ -459,7 +459,7 @@ class RandomItemsFactory(object):
             body = g.generate_paragraphs_plain(random.randint(3, 50), start_with_lorem=True)
 
             # attach object created and saved
-            attach = Attach(act=act, title=title, text=body)
+            attach = Attachment(act=act, title=title, text=body)
             attach.save()
 
             #

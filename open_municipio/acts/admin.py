@@ -3,7 +3,8 @@ from django import forms
 from django.db import models
 from django.contrib.admin.widgets import FilteredSelectMultiple
 
-from open_municipio.acts.models import *
+from open_municipio.acts.models import (Act, ActSupport, Attachment, Calendar, Transition,
+                                        Emendation, Deliberation, Motion, Interpellation, Interrogation,)
 
 
 def transition_form_factory(act):
@@ -35,8 +36,8 @@ class ActInline(admin.TabularInline):
     model = Act
     extra = 0
 
-class AttachInline(admin.StackedInline): 
-    model = Attach
+class AttachmentInline(admin.StackedInline): 
+    model = Attachment
     extra = 0
 
 class EmendationInline(admin.StackedInline): 
@@ -73,7 +74,7 @@ class ActAdmin(admin.ModelAdmin):
     def change_view(self, request, object_id, extra_context=None):
 
         if request.user.is_superuser:
-            self.inlines = [PresenterInline, AttachInline, TransitionInline, EmendationInline]
+            self.inlines = [PresenterInline, AttachmentInline, TransitionInline, EmendationInline]
             self.readonly = ['status']
         else:
             self.inlines = [TransitionInline]
@@ -93,7 +94,7 @@ class CalendarAdmin(admin.ModelAdmin):
     }
 
 class ActAdminWithAttaches(admin.ModelAdmin):
-    inlines = [AttachInline, TransitionInline]
+    inlines = [AttachmentInline, TransitionInline]
 
 class ActAdminWithEmendations(admin.ModelAdmin):
     inlines = [EmendationInline]
@@ -151,5 +152,5 @@ admin.site.register(Interpellation)
 admin.site.register(Motion, MotionAdmin)
 admin.site.register(Calendar, CalendarAdmin)
 admin.site.register(Emendation, ActAdminWithAttaches)
-admin.site.register(Attach)
+admin.site.register(Attachment)
 admin.site.register(Transition)

@@ -814,13 +814,12 @@ class Document(TimeStampedModel):
         abstract = True
 
 
-class Attach(Document):
+class Attachment(Document):
     """
     An attachment to a formal act. 
 
     It's just a document with a title, linking to an existing act.
     """
-    # FIXME: shouldn't this model be called ``Attachment`` instead ?
     # a title for the attachment
     title = models.CharField(max_length=255)
     # the act this document is attached to

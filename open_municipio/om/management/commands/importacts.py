@@ -150,7 +150,7 @@ class Command(LabelCommand):
             attach_title = xml_attach.get("title")
             if attach_title is None:
                 self.stderr.write(
-                    "Error: Attach has no title! Skipping this sitting." % id
+                    "Error: Attachment has no title! Skipping this sitting." % id
                 )
                 continue
 
@@ -168,7 +168,7 @@ class Command(LabelCommand):
                 continue
 
             # build a new attach only if old is not found
-            om_att, created = Attach.objects.get_or_create(
+            om_att, created = Attachment.objects.get_or_create(
                 act=om_act,
                 title=attach_title
             )

@@ -136,7 +136,7 @@ def generate_random_act_attach(act, n=1):
         body = g.generate_paragraphs_plain(random.randint(3, 50), start_with_lorem=True)
         
         # attach object created and saved
-        attach = Attach(act=act, title=title, text=body)
+        attach = Attachment(act=act, title=title, text=body)
         attach.save()
         
         #
