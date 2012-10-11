@@ -865,7 +865,7 @@ class Office(Body):
         verbose_name = _('office')
         verbose_name_plural = _('offices')
 
-    def get_abolute_url(self):
+    def get_absolute_url(self):
         return reverse("om_office_detail", kwargs={'slug': self.slug})
     
     @property
