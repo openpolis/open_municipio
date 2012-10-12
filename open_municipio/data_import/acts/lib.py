@@ -3,8 +3,13 @@ from django.utils import simplejson as json
 from open_municipio.data_import.lib import DataSource, BaseReader, BaseWriter, JSONWriter, XMLWriter, OMWriter
 # import OM-XML language tags
 from open_municipio.data_import.om_xml import *
+from open_municipio.data_import import conf
+from open_municipio.data_import.acts import conf as act_conf
+from open_municipio.acts.models import Act as OMAct, Deliberation as OMDeliberation, Motion as OMMotion, Agenda as OMAgenda
 
 from lxml import etree
+from types import NoneType
+from django.db.models import get_model
 
 class ActsDataSource(DataSource):
     """
@@ -28,7 +33,7 @@ class BaseActsReader(BaseReader):
         # initialize the data source
         data_source.setup()
         
-        self.acts = []
+        self.acts = data_source.get_acts()
         
         # TODO extract the relevant information
         
@@ -43,14 +48,82 @@ class BaseActsWriter(BaseWriter):
     This class encapsulates acts-specific serialization logic which is independent 
     from a specific output format. 
     """
-    pass
+    def __init__(self, acts):
+        self.logger.info("Preparing to import %d acts into OM ..." % len(acts))
+        self.acts = acts
 
 class OMActsWriter(BaseActsWriter, OMWriter):
     """
     A writer class which outputs acts data as objects in the OpenMunicio model.
-    """                        
+    """
+#    emitting_institution = None
+    
+#    def set_emitting_institution(self, institution):
+#        self.emitting_institution = institution
+                            
     def write(self):
-        raise NotImplementedError
+        for act in self.acts.values():
+            try:
+                self.write_act(act)
+            except Exception, e:
+                self.logger.error("Error storing act into OM (%s) : %s" % (act, e))
+ 
+    @staticmethod
+    def _get_initiative(act):
+        if not act.initiative in act_conf.OM_DELIBERATION_INITIATIVE_MAP:
+            raise Exception("Initiative string (%s) is not supported" % 
+                act.initiative)
+        return act_conf.OM_DELIBERATION_INITIATIVE_MAP[act.initiative]
+
+    @staticmethod
+    def _get_emitting_institution(act):
+
+        act_type = act.__class__.__name__
+        if not act_type in act_conf.OM_EMITTING_INSTITUTION_MAP:
+            raise Exception("Act type not supported: %s" % act_type)
+
+        return act_conf.OM_EMITTING_INSTITUTION_MAP[act_type]
+
+   
+    def write_act(self, act):
+        
+        act_obj_type = act.__class__.__name__
+        self.logger.info("Writing act (id: %s, type %s)" % (act.id,act_obj_type))
+
+        # dynamic instantiation of OM type
+        om_type = NoneType
+        if act_obj_type == "CouncilDeliberation":
+            om_type = OMDeliberation
+        elif act_obj_type == "Motion":
+            om_type = OMMotion
+        elif act_obj_type == "Agenda":
+            om_type = OMAgenda
+
+        if om_type == NoneType:
+            self.logger.error("Unable to instantiate type: %s" %
+                act_obj_type)
+            return
+        
+#        self.logger.info("Type detected: %s" % om_type)
+
+        om_emitting = OMActsWriter._get_emitting_institution(act)
+        create_defaults={
+                    'text' : act.content,
+                    'emitting_institution': om_emitting,
+                }
+        if act.__class__.__name__ == "CouncilDeliberation":
+            om_initiative = OMActsWriter._get_initiative(act)
+            create_defaults['initiative'] = om_initiative
+            self.logger.info("Set the initiative: %s" % om_initiative)
+
+        self.logger.info("Piece of content: %s (type %s)" % (act.content[0:30], type(act.content)))
+        (om_act, created) = om_type.objects.get_or_create(
+                idnum = act.id, defaults = create_defaults )
+        
+        if created:
+            self.logger.info("OM Act created %s" % act.id)
+        else:
+            self.logger.info("OM Act already present %s" % act.id)
     
 # python object layer for imported data
 
@@ -59,11 +132,20 @@ class OMActsWriter(BaseActsWriter, OMWriter):
 class Act:
     id = ""
     content = ""
+    title = ""
     file = None
     subscribers = [] # list of Charges
+    emitting_institution = ""
+    
     
     def add_subscriber(self, charge):
         self.subscribers.append(charge)
+        
+    def __str__(self):
+        return "%s (%s) [%s]" % (self.title, self.id, self.content[0:20])
+      
+    def __unicode__(self):
+      return u"%s (%s) [%s]" % (self.title, self.id, self.content[0:20])
 
 class CouncilDeliberation(Act):
     final_id = ""
