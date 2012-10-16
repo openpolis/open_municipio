@@ -59,6 +59,7 @@ class TransitionInline(admin.TabularInline):
         return super(TransitionInline, self).get_formset(request, obj, **kwargs)
 
 class ActAdmin(admin.ModelAdmin):
+    search_fields = ('idnum', 'title',)
 
     # genial hack to allow users with no permissions to show
     # the list of related acts for a raw field
