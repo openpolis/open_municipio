@@ -1,3 +1,5 @@
+## DEPRECATED - use import tasks in instances
+
 from django.core.management.base import BaseCommand, CommandError
 
 from lxml import etree

@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+## DEPRECATED - use import tasks in instances
+
 from optparse import make_option
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.core.management.base import LabelCommand, CommandError, BaseCommand
