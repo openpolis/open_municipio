@@ -68,6 +68,18 @@ class ImportVotationsCommand(LabelCommand):
 
         self.dry_run = options['dry_run']
 
+        # fix logger level according to verbosity
+        verbosity = options['verbosity']
+        if verbosity == '0':
+            self.logger.setLevel(logging.ERROR)
+        elif verbosity == '1':
+            self.logger.setLevel(logging.WARNING)
+        elif verbosity == '2':
+            self.logger.setLevel(logging.INFO)
+        elif verbosity == '3':
+            self.logger.setLevel(logging.DEBUG)
+
+
         # parse passed votations
         for label in labels:
             self.handle_label(label, **options)
@@ -669,6 +681,17 @@ class ImportActsCommand(LabelCommand):
         self.people_tree = etree.parse(people_file)
 
         self.dry_run = options['dry_run']
+
+        # fix logger level according to verbosity
+        verbosity = options['verbosity']
+        if verbosity == '0':
+            self.logger.setLevel(logging.ERROR)
+        elif verbosity == '1':
+            self.logger.setLevel(logging.WARNING)
+        elif verbosity == '2':
+            self.logger.setLevel(logging.INFO)
+        elif verbosity == '3':
+            self.logger.setLevel(logging.DEBUG)
 
         # parse passed acts
         for label in labels:

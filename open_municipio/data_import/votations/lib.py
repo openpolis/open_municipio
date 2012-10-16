@@ -312,7 +312,7 @@ class DBVotationWriter(BaseVotationWriter):
         self.setup()
 
         for sitting in self.sittings:
-            self.logger.debug("processing %s in Mdb" % sitting)
+            self.logger.info("processing %s in Mdb" % sitting)
             inst = Institution.objects.get(name=self.conf.XML_TO_OM_INST[sitting.site])
 
             if not self.dry_run:
@@ -331,7 +331,7 @@ class DBVotationWriter(BaseVotationWriter):
                     self.logger.debug("%s found in DB" % s)
 
             for ballot in sitting.ballots:
-                self.logger.debug("processing %s in Mdb" % ballot)
+                self.logger.info("processing %s in Mdb" % ballot)
 
                 if not self.dry_run:
 
@@ -386,7 +386,7 @@ class DBVotationWriter(BaseVotationWriter):
 
                 b.update_presence_caches()
 
-                self.logger.debug("caches for this votation updated.\n")
+                self.logger.info("caches for this votation updated.\n")
 
 
 class XMLVotationWriter(BaseVotationWriter, XMLWriter):
