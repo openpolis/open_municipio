@@ -10,6 +10,9 @@
 
 {% block title %}Dettaglio {{ person }}{% endblock %}
 {% block content_header %}Politico{% endblock %}
+{% block content_header_city_logo %}
+    <img src="{{ STATIC_URL }}img/{{ main_city|lower }}-logo/politician.png" alt="Comune di {{ main_city }}">
+{% endblock %}
 {% block body_class %}politician{% endblock %}
 {% block people_class %}class="active"{% endblock %}
 

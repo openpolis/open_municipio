@@ -65,7 +65,7 @@
       </a>
 
       {% if user.is_authenticated %}
-        <p class="text-right pull-right">
+        <p id="user-tools" class="text-right pull-right">
           Ciao, <strong>{{ user.username }}</strong>
           <br>
           <a href="/accounts/logout/?next={% if "/accounts" in request.path %}/{% else %}{{ request.path }}{% endif %}">esci</a>
@@ -91,9 +91,14 @@
     <!-- AREA-TITLE -->
     <hgroup class="container-fluid">
       <div class="row-fluid">
-        <h1 class="span12" id="area-title">
+        <h1 class="span11" id="area-title">
           {% block content_header_container %}<a href="/" style="color: white;">{{ main_city }}</a> <small>{% block content_header %}{% endblock %}</small>{% endblock %}
         </h1>
+        <p class="span1" id="city-logo" class="text-right pull-right">
+            {% block content_header_city_logo %}
+                <img src="{{ STATIC_URL }}img/{{ main_city|lower }}-logo/all.png" alt="Comune di {{ main_city }}">
+            {% endblock %}
+        </p>
       </div>
     </hgroup>
     <!-- /AREA-TITLE -->
