@@ -481,7 +481,7 @@ class Agenda(Act):
         return ('om_agenda_detail', (), {'pk': str(self.pk)})
 
 
-class Emendation(Act):
+class Amendment(Act):
     """
     It is a modification of a particular act, that can be voted specifically and separately from the act itself.
     

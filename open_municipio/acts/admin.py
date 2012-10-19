@@ -39,9 +39,9 @@ class AttachInline(admin.StackedInline):
     model = Attach
     extra = 0
 
-class EmendationInline(admin.StackedInline): 
+class AmendmentInline(admin.StackedInline):
     fk_name = 'act'
-    model = Emendation
+    model = Amendment
     extra = 0
 
 class TransitionInline(admin.TabularInline):
@@ -97,7 +97,7 @@ class ActAdminWithAttaches(admin.ModelAdmin):
     inlines = [AttachInline, TransitionInline]
 
 class ActAdminWithEmendations(admin.ModelAdmin):
-    inlines = [EmendationInline]
+    inlines = [AmendmentInline]
 
 class MotionAdmin(ActAdmin):
     fieldsets = (
@@ -151,6 +151,6 @@ admin.site.register(Interrogation, InterrogationAdmin)
 admin.site.register(Interpellation)
 admin.site.register(Motion, MotionAdmin)
 admin.site.register(Calendar, CalendarAdmin)
-admin.site.register(Emendation, ActAdminWithAttaches)
+admin.site.register(Amendment, ActAdminWithAttaches)
 admin.site.register(Attach)
 admin.site.register(Transition)
