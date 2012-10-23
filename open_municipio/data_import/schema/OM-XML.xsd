@@ -47,6 +47,10 @@
             <xs:element ref="Content" />
         </xs:sequence>
         <xs:attribute name="id" use="required" type="xs:string"/>
+        <xs:attribute name="title" use="optional" type="xs:string" />
+        <xs:attribute name="adjoint_title" use="optional" type="xs:string" />
+        <xs:attribute name="presentation_date" use="optional" type="xs:date" />
+        <xs:attribute name="is_final" use="optional" type="xs:boolean" />
 	</xs:complexType>
 
 	<xs:complexType name="councilActType">
