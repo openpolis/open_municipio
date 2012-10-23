@@ -1,11 +1,16 @@
 from django.utils import simplejson as json
+from django.db import transaction
 
 from open_municipio.data_import.lib import DataSource, BaseReader, BaseWriter, JSONWriter, XMLWriter, OMWriter
 # import OM-XML language tags
 from open_municipio.data_import.om_xml import *
 from open_municipio.data_import import conf
 from open_municipio.data_import.acts import conf as act_conf
-from open_municipio.acts.models import Act as OMAct, Deliberation as OMDeliberation, Motion as OMMotion, Agenda as OMAgenda
+from open_municipio.data_import.models import ChargeSeekerMixin, PersonSeekerMixin
+
+from open_municipio.acts.models import Act as OMAct, \
+    Deliberation as OMDeliberation, Motion as OMMotion, Agenda as OMAgenda, \
+    ActSupport as OMActSupport
 
 from lxml import etree
 from types import NoneType
@@ -52,15 +57,12 @@ class BaseActsWriter(BaseWriter):
         self.logger.info("Preparing to import %d acts into OM ..." % len(acts))
         self.acts = acts
 
-class OMActsWriter(BaseActsWriter, OMWriter):
+class OMActsWriter(ChargeSeekerMixin, PersonSeekerMixin, BaseActsWriter, OMWriter):
     """
     A writer class which outputs acts data as objects in the OpenMunicio model.
     """
-#    emitting_institution = None
     
-#    def set_emitting_institution(self, institution):
-#        self.emitting_institution = institution
-                            
+    @transaction.commit_on_success
     def write(self):
         for act in self.acts.values():
             try:
@@ -84,11 +86,8 @@ class OMActsWriter(BaseActsWriter, OMWriter):
 
         return act_conf.OM_EMITTING_INSTITUTION_MAP[act_type]
 
-   
-    def write_act(self, act):
-        
+    def _detect_act_om_type(self, act):
         act_obj_type = act.__class__.__name__
-        self.logger.info("Writing act (id: %s, type %s)" % (act.id,act_obj_type))
 
         # dynamic instantiation of OM type
         om_type = NoneType
@@ -106,24 +105,92 @@ class OMActsWriter(BaseActsWriter, OMWriter):
         
 #        self.logger.info("Type detected: %s" % om_type)
 
+        return om_type
+  
+
+    def _init_act_create_defaults(self, act):
+        act_obj_type = act.__class__.__name__
+
         om_emitting = OMActsWriter._get_emitting_institution(act)
-        create_defaults={
+
+        create_defaults = {
                     'text' : act.content,
                     'emitting_institution': om_emitting,
                 }
-        if act.__class__.__name__ == "CouncilDeliberation":
+
+        if act_obj_type == "CouncilDeliberation":
             om_initiative = OMActsWriter._get_initiative(act)
             create_defaults['initiative'] = om_initiative
             self.logger.info("Set the initiative: %s" % om_initiative)
 
-        self.logger.info("Piece of content: %s (type %s)" % (act.content[0:30], type(act.content)))
+        return create_defaults
+   
+    def _init_subscriber_create_defaults(self, om_act, om_charge):
+        create_defaults = {
+            'charge' : om_charge,
+            'act' : om_act,
+        }
+        return create_defaults
+
+    def _add_subscribers(self, act, om_act):
+
+        if act == None or om_act == None:
+            raise Exception("Cannot add the subscribers if you don't pass both the parsed act and the partially imported OM act.")
+
+        if om_act.emitting_institution is None:
+            raise Exception("The partially imported OM act is malformed: missing emitting institution")
+
+        om_institution = om_act.emitting_institution
+
+        for curr_sub in act.subscribers:
+
+            om_p = self.lookup_person(curr_sub.person.id)
+
+            # TODO specify the date of when looking for the charge
+            om_ch = self.lookup_charge(om_p, om_institution)
+
+            if om_ch is None:
+                raise Exception("Unable to find charge for %s in institution %s" % (om_p, om_institution))
+
+            self.logger.info("Charge for subscriber: %s ..." % om_ch)
+
+            create_defaults = self._init_subscriber_create_defaults(om_act, om_ch)
+
+            (om_sub, created) = OMActSupport.objects.get_or_create(
+                act = om_act, charge = om_ch, defaults = create_defaults
+            )
+
+            if created:
+                self.logger.info("Added charge %s as subscriber ..." % c_sub.id)
+            else:
+                self.logger.info("Charge %s already known to be a subscriber ..."
+                    % c_sub.id)
+
+    def write_act(self, act):
+        
+        act_obj_type = act.__class__.__name__
+        self.logger.info("Writing act (id: %s, type %s)" % (act.id,act_obj_type))
+
+        create_defaults = self._init_act_create_defaults(act)
+
+        self.logger.info("Piece of content: %s ..." % act.content[0:30])
+
+        om_type = self._detect_act_om_type(act)
+
+        # TODO create the act and the subscribers as a transaction
+
         (om_act, created) = om_type.objects.get_or_create(
                 idnum = act.id, defaults = create_defaults )
         
         if created:
-            self.logger.info("OM Act created %s" % act.id)
+            self.logger.info("OM Act created %s. Let's add the subscribers ..." % act.id)
+            self._add_subscribers(act, om_act)
+
         else:
             self.logger.info("OM Act already present %s" % act.id)
+
+
+
     
 # python object layer for imported data
 
@@ -213,7 +280,7 @@ class Charge:
         return "%s as %s from %s (%s)" % (self.person, self.name, self.start_date, self.id)
     
     def __unicode__(self):
-        return u"%s as %s from %s (%s)" % (self.person, self.name, self.start_date, self.id)
+        return u"ciao" # u"%s as %s from %s (%s)" % (self.person, self.name, self.start_date, self.id)
     
 # institution section
     
@@ -235,6 +302,15 @@ class CityCouncil(Institution):
     pass
     
 class Subscriber:
-    charge = None
+    person = None
     type = "" # first subscriber or co-subscriber
-    
+ 
+    def __init__(self, person, type):
+        self.person = person
+        self.type = type
+
+    def __str__(self):
+        return "%s (%s)" % (self.person, self.type)
+
+    def __unicode__(self):
+        return u"%s (%s)" % (self.person, self.type)
