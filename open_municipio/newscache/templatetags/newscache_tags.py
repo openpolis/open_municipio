@@ -1,17 +1,22 @@
 from django import template
 
 from open_municipio.newscache.models import News
-from open_municipio.people.models import Person
+from open_municipio.people.models import Person, InstitutionCharge, municipality
 
 from django.db.models.query import EmptyQuerySet
+
+from logging import getLogger
 
 register = template.Library()
 
 
+
 class NewsForObjectNode(template.Node):
     """
-    The tag retrieve all news for the given object and modifies the context
+    The tag retrieves all news for the given object and modifies the context
     """
+    logger = getLogger('debugging')
+
     def __init__(self, object, context_var, news_type=None):
         self.object = object
         self.news_type = news_type
@@ -19,9 +24,11 @@ class NewsForObjectNode(template.Node):
 
     def render(self, context):
         try:
+            self.logger.debug(self.object)
             object = template.resolve_variable(self.object, context)
         except template.VariableDoesNotExist:
             return ''
+
 
         # extract all news
         # if obect is a Person, extract news related to all current and past charges
@@ -29,6 +36,19 @@ class NewsForObjectNode(template.Node):
             news = EmptyQuerySet()
             for c in object.all_institution_charges:
                 news |= c.related_news
+        elif isinstance(object, basestring):
+            if object == 'politicians_all':
+                news = EmptyQuerySet()
+                for c in InstitutionCharge.objects.all():
+                    news |= c.related_news
+            if object == 'politicians_council':
+                news = EmptyQuerySet()
+                for c in municipality.council.charges:
+                    news |= c.related_news
+            if object == 'politicians_gov':
+                news = EmptyQuerySet()
+                for c in municipality.gov.charges:
+                    news |= c.related_news
         else:
             news = object.related_news
 
@@ -41,25 +61,7 @@ class NewsForObjectNode(template.Node):
 
         return ''
 
-def do_news_for_object(parser, token):
-    """
-    Retrieves the news related to an object and
-    stores them in a context variable (news).
 
-    Example usage::
-
-        {% news_for_object act as news %}
-        {% for n in news %}
-            notizia: {{ n.created }} - {{ n.text }}
-        {% endfor %}
-    """
-    bits = token.contents.split()
-    if len(bits) != 4:
-        raise template.TemplateSyntaxError("'%s' tag takes exactly three arguments" % bits[0])
-    if bits[2] != 'as':
-        raise template.TemplateSyntaxError("second argument to '%s' tag must be 'as'" % bits[0])
-    return NewsForObjectNode(bits[1], bits[3])
-register.tag('news_for_object', do_news_for_object)
 
 def do_community_news_for_object(parser, token):
     """

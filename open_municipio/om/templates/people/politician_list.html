@@ -1,6 +1,7 @@
 {% extends "base_two_columns.html" %}
 {% load i18n %}
 {% load monitoring_tags %}
+{% load newscache_tags %}
 {% load list_partition %}
 
 {% block title %} Politici {% endblock %}
@@ -162,6 +163,7 @@
     </div>
   </div>{% endcomment %}
 
-  {% include 'commons/news_list.html' with news_list=FILLME news_title='Ultime sui politici' %}
+  {% institutional_news_for_object 'politicians_all' as i_news %}
+  {% include 'commons/news_list_politicians.html' with news_list=i_news news_object='politicians' news_title='Ultime sui politici' %}
 
 {% endblock %}
