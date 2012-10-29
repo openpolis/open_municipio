@@ -1,6 +1,7 @@
 {% extends 'base_two_columns.html' %}
 
 {% load monitoring_tags %}
+{% load tags_cloud %}
 
 {% block content_header %}Argomenti{% endblock %}
 {% block title %}Lista degli Argomenti{% endblock %}
@@ -47,7 +48,6 @@
 
   <h3>Peso degli argomenti negli atti</h3>
 
-  {% load tags_cloud %}
   {% tags_cloud tags_to_cloud %}
 
 {% endblock %}

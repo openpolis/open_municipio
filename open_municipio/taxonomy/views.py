@@ -1,3 +1,4 @@
+from django.contrib.contenttypes.models import ContentType
 from django.db.models import Count
 from django.views.generic import DetailView, ListView
 from open_municipio.locations.models import Location
@@ -34,10 +35,12 @@ class TopicListView(ListView):
         if type_id_list:
             # create rank of monitorized items
             context['top_monitorized_tags'] = [
-                m.content_object
-                for m in Monitoring.objects.filter(
-                    content_type__in=type_id_list
-                    ).annotate(n_monitoring=Count('object_pk'))
+                ContentType.objects.get_for_id(m['content_type'])
+                    .get_object_for_this_type(pk=m['object_pk'])
+                for m in Monitoring.objects
+                    .filter(content_type__in=type_id_list)
+                    .values('object_pk', 'content_type')
+                    .annotate(n_monitoring=Count('object_pk'))
                     .order_by('-n_monitoring')[:10]
             ]
         return context
