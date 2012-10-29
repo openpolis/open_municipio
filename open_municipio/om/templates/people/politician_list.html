@@ -27,7 +27,7 @@
       <ul class="people-list">
         {% for politician in last_group_changes %}
           <li>
-            {% include 'people/politician_list_section.html' with value=politician.start_date %}
+            {% include 'people/politician_list_section.html' with value=politician.current_at_moment_groupcharge.start_date|date:"d/m/Y" %}
             {% object_inline_monitoring politician.person %}
           </li>
         {% endfor %}
