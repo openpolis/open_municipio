@@ -495,13 +495,13 @@ class Amendment(Act):
     )
     
     status = StatusField()
-    act = models.ForeignKey(Act, related_name='emendation_set', on_delete=models.PROTECT)
-    act_section = models.ForeignKey(ActSection, related_name='emendation_set', null=True, blank=True, 
+    act = models.ForeignKey(Act, related_name='amendment_set', on_delete=models.PROTECT)
+    act_section = models.ForeignKey(ActSection, related_name='amendment_set', null=True, blank=True,
                                     on_delete=models.PROTECT)
 
     class Meta:
-        verbose_name = _('emendation')
-        verbose_name_plural = _('emendations')
+        verbose_name = _('amendment')
+        verbose_name_plural = _('amendment')
 
 
 
