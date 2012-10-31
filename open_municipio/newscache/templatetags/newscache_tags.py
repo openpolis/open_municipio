@@ -57,7 +57,25 @@ class NewsForObjectNode(template.Node):
 
         return ''
 
+def do_news_for_object(parser, token):
+    """
+    Retrieves the news related to an object and
+    stores them in a context variable (news).
 
+    Example usage::
+
+        {% news_for_object act as news %}
+        {% for n in news %}
+            notizia: {{ n.created }} - {{ n.text }}
+        {% endfor %}
+    """
+    bits = token.contents.split()
+    if len(bits) != 4:
+        raise template.TemplateSyntaxError("'%s' tag takes exactly three arguments" % bits[0])
+    if bits[2] != 'as':
+        raise template.TemplateSyntaxError("second argument to '%s' tag must be 'as'" % bits[0])
+    return NewsForObjectNode(bits[1], bits[3])
+register.tag('news_for_object', do_news_for_object)
 
 def do_community_news_for_object(parser, token):
     """

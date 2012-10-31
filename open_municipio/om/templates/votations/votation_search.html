@@ -58,7 +58,7 @@
               della seduta n.{{ result.votation_sitting_num }}
               del {{ result.votation_date}}
             </h4>
-              {% if not act_votations %}
+              {% if not act_votations and result.act_type %}
                   <strong>{{ result.act_type }}</strong><br/>
                   <a href="{{ result.act_url }}">{{ result.title }}</a><br/>
               {% endif %}
@@ -107,7 +107,7 @@
         <div>
             <dl>
                 {% if facets.fields.act_type and not facets.fields.act_type.is_field_selected %}
-                    <dt>Tipologia</dt>
+                    <dt>Tipologia atti relativi</dt>
                     {# Provide all act types #}
                     {% for t in facets.fields.act_type.counts %}
                         {% if t.1 %}
@@ -122,7 +122,7 @@
             </dl>
             <dl>
                 {% if facets.fields.is_key and not facets.fields.is_key.is_field_selected %}
-                    <dt>Atto chiave</dt>
+                    <dt>Voto chiave</dt>
                     {# Provide both cases (true, false) #}
                     {% for t in facets.fields.is_key.counts %}
                         {% if t.1 %}
