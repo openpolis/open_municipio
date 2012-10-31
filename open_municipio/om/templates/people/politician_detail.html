@@ -78,23 +78,30 @@
           {% if current_groupcharge.current_responsability %}
               - dal {{ current_groupcharge.current_responsability.start_date|date:'d.m.Y' }}
               &egrave; {% trans current_groupcharge.current_responsability.get_charge_type_display %}
-          {%  else %}
           {%  endif %}
           <br/>
 
-          (le altre appartenenze)
-          <ul>
-              {% for gc in historical_groupcharges %}
-                  <li>dal {{ gc.start_date|date:'d.m.Y' }} al {{ gc.end_date|date:'d.m.Y' }} - {{ gc.group.name }}</li>
-              {% endfor %}
-          </ul>
+          {% if historical_groupcharges %}
+              (le altre appartenenze)
+              <ul>
+                  {% for gc in historical_groupcharges %}
+                      <li>dal {{ gc.start_date|date:'d.m.Y' }} al {{ gc.end_date|date:'d.m.Y' }} - {{ gc.group.name }}</li>
+                  {% endfor %}
+              </ul>
+          {% endif %}
       {% endif %}
 
       {% if current_committee_charges %}
           <ul class="list-plain">
             {% for c in current_committee_charges %}
-              <li>{{ c.denomination }} {{ c.institution }}:
-                <em>{{ c.institution.description }}</em></li>
+              <li>{{ c.institution }}:
+                <em>{{ c.institution.description }}</em>
+                {% if c.current_responsability %}
+                  - dal {{ c.current_responsability.start_date|date:'d.m.Y' }}
+                  &egrave; {% trans c.current_responsability.get_charge_type_display %}
+                {%  endif %}
+
+              </li>
             {% endfor %}
           </ul>
       {% endif %}

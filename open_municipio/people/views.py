@@ -188,7 +188,7 @@ class PoliticianDetailView(DetailView):
             ),
             institutionresponsability__end_date__isnull=True
         )
-        context['get_current_committee_charges'] = self.object.get_current_committee_charges()
+        context['current_committee_charges'] = self.object.get_current_committee_charges()
 
 
         context['current_groupcharge'] = self.object.current_groupcharge
