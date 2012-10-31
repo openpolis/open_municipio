@@ -644,7 +644,14 @@ class GroupCharge(models.Model):
 
 
     def get_current_responsability(self, moment=None):
-        return self.responsabilities.current(moment=moment)[0]
+        """
+        Returns the current group responsability, if any
+        """
+        if self.responsabilities.current(moment=moment).count() == 0:
+            return None
+        if self.responsabilities.current(moment=moment).count() == 1:
+            return self.responsabilities.current(moment=moment)[0]
+        raise MultipleObjectsReturned
     current_responsability = property(get_current_responsability)
 
 
