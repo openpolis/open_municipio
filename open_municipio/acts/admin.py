@@ -74,7 +74,7 @@ class ActAdmin(admin.ModelAdmin):
     def change_view(self, request, object_id, extra_context=None):
 
         if request.user.is_superuser:
-            self.inlines = [PresenterInline, AttachInline, TransitionInline, EmendationInline]
+            self.inlines = [PresenterInline, AttachInline, TransitionInline, AmendmentInline]
             self.readonly = ['status']
         else:
             self.inlines = [TransitionInline]
@@ -96,7 +96,7 @@ class CalendarAdmin(admin.ModelAdmin):
 class ActAdminWithAttaches(admin.ModelAdmin):
     inlines = [AttachInline, TransitionInline]
 
-class ActAdminWithEmendations(admin.ModelAdmin):
+class ActAdminWithAmendments(admin.ModelAdmin):
     inlines = [AmendmentInline]
 
 class MotionAdmin(ActAdmin):
