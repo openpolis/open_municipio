@@ -128,14 +128,28 @@ class Person(models.Model, MonitorizedItem):
 
 
 
+    def get_historical_groupcharges(self, moment=None):
+        """
+        Returns all groupcharges for the person
+        """
+        i = Institution.objects.get(institution_type=Institution.COUNCIL)
+        try:
+            ic = self.get_current_charge_in_institution(i)
+            gc = GroupCharge.objects.select_related().past(moment=moment).filter(charge=ic)
+        except ObjectDoesNotExist:
+            gc = None
+        return gc
+    historical_groupcharges = property(get_historical_groupcharges)
+
+
     def get_current_groupcharge(self, moment=None):
         """
         Returns GroupCharge at given moment in time (now if moment is None)
         Charge is the IntstitutionalCharge in the council
         """
         i = Institution.objects.get(institution_type=Institution.COUNCIL)
-        ic = self.get_current_charge_in_institution(i, moment)
         try:
+            ic = self.get_current_charge_in_institution(i, moment)
             gc = GroupCharge.objects.select_related().current(moment=moment).get(charge=ic)
         except ObjectDoesNotExist:
             gc = None
@@ -311,7 +325,6 @@ class InstitutionCharge(Charge):
                 return "%s Consiglio Comunale: %s - %s" % \
                        (self.responsabilities[0].get_charge_type_display(),
                         self.responsabilities[0].start_date, self.responsabilities[0].end_date)
-                return "%s Consiglio Comunale" % self.responsabilities[0].get_charge_type_display()
             else:
                 return _('Counselor').translate(settings.LANGUAGE_CODE)
         elif self.institution.institution_type == Institution.COMMITTEE:
@@ -629,6 +642,13 @@ class GroupCharge(models.Model):
     def responsabilities(self):
         return self.groupresponsability_set.all()
 
+
+    def get_current_responsability(self, moment=None):
+        return self.responsabilities.current(moment=moment)[0]
+    current_responsability = property(get_current_responsability)
+
+
+
     @property
     def responsability(self):
         if self.responsabilities.count() == 1:
@@ -660,6 +680,9 @@ class GroupResponsability(ChargeResponsability):
     charge_type = models.CharField(_('charge type'), max_length=16, choices=CHARGE_TYPES)
     charge = models.ForeignKey(GroupCharge, verbose_name=_('charge'))
 
+
+    def __unicode__(self):
+        return "%s (%s - %s)" % (self.get_charge_type_display(), self.start_date, self.end_date)
 
 
 class GroupIsMajority(models.Model):

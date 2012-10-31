@@ -5,8 +5,6 @@ from open_municipio.people.models import Person, InstitutionCharge, municipality
 
 from django.db.models.query import EmptyQuerySet
 
-from logging import getLogger
-
 register = template.Library()
 
 
@@ -15,7 +13,6 @@ class NewsForObjectNode(template.Node):
     """
     The tag retrieves all news for the given object and modifies the context
     """
-    logger = getLogger('debugging')
 
     def __init__(self, object, context_var, news_type=None):
         self.object = object
@@ -24,7 +21,6 @@ class NewsForObjectNode(template.Node):
 
     def render(self, context):
         try:
-            self.logger.debug(self.object)
             object = template.resolve_variable(self.object, context)
         except template.VariableDoesNotExist:
             return ''

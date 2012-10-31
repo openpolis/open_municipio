@@ -11,7 +11,9 @@
 {% block title %}Dettaglio {{ person }}{% endblock %}
 {% block content_header %}Politico{% endblock %}
 {% block content_header_city_logo %}
-    <img src="{{ STATIC_URL }}img/{{ main_city|lower }}-logo/politician.png" alt="Comune di {{ main_city }}">
+    <img src="{{ STATIC_URL }}img/{{ main_city|lower }}-logo/politician.png"
+         xmlns:br="http://www.w3.org/1999/html"
+         alt="Comune di {{ main_city }}">
 {% endblock %}
 {% block body_class %}politician{% endblock %}
 {% block people_class %}class="active"{% endblock %}
@@ -33,9 +35,12 @@
     <div class="span8">
 
       <header class="clearfix">
-        {% thumbnail person.img "100x100" crop="center" as im %}
-          <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" class="thumb-left">
-        {% endthumbnail %}
+        <img src="{{ STATIC_URL }}img/placehold/100.gif" class="thumb-left">
+        {% comment %}
+            {% thumbnail person.img "100x100" crop="center" as im %}
+              <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" class="thumb-left">
+            {% endthumbnail %}
+        {% endcomment %}
         <h1>
           {% if person.is_om_user %}
             <i class="icon-ok" title="{{ person }} è iscritto a Open municipio"></i>
@@ -60,44 +65,40 @@
         </p>
       </header>
 
-      {% if current_charges and historical_groupcharges %}
-      <h4>Lista di elezione</h4>
-      <ul class="list-plain">
-        {% for c in current_charges %}
-          {% if c.current_groupcharge %}
-            <li>
-              <strong>{{ c.current_groupcharge }}</strong>
-              dal {{ c.current_groupcharge.start_date|date:"d.m.Y" }}
-            </li>
-          {% endif %}
-          {% for gc in c.historical_groupcharges %}
-            <li>
-              <strong>{{ gc }}</strong>
-              dal {{ gc.start_date|date:"d.m.Y" }}
-              al {{ gc.end_date|date:"d.m.Y" }}
-            </li>
-          {% endfor %}
-        {% endfor %}
-      </ul>
+      {% if current_charges %}
+        <ul class="list-plain">
+            {% for c in current_charges %}
+                <li><strong>{{ c.denomination }}</strong> dal {{ c.start_date|date:"d.m.Y" }}{% if c.end_date %} al {{ c.end_date|date:"d.m.Y" }}{% endif %}</li>
+            {% endfor %}
+        </ul>
+      {% endif %}
+
+      {% if current_groupcharge %}
+          Gruppo <strong>{{ current_groupcharge.group }}</strong>
+          {% if current_groupcharge.current_responsability %}
+              - dal {{ current_groupcharge.current_responsability.start_date|date:'d.m.Y' }}
+              &egrave; {% trans current_groupcharge.current_responsability.get_charge_type_display %}
+          {%  else %}
+          {%  endif %}
+          <br/>
+
+          (le altre appartenenze)
+          <ul>
+              {% for gc in historical_groupcharges %}
+                  <li>dal {{ gc.start_date|date:'d.m.Y' }} al {{ gc.end_date|date:'d.m.Y' }} - {{ gc.group.name }}</li>
+              {% endfor %}
+          </ul>
       {% endif %}
 
       {% if current_committee_charges %}
-      <ul class="list-plain">
-        {% for c in current_committee_charges %}
-          <li>{{ c.denomination }} {{ c.institution }}:
-            <em>{{ c.institution.description }}</em></li>
-        {% endfor %}
-      </ul>
+          <ul class="list-plain">
+            {% for c in current_committee_charges %}
+              <li>{{ c.denomination }} {{ c.institution }}:
+                <em>{{ c.institution.description }}</em></li>
+            {% endfor %}
+          </ul>
       {% endif %}
 
-      {% if current_charges %}
-      <h4>Incarichi istituzionali</h4>
-      <ul class="list-plain">
-        {% for c in current_charges %}
-          <li><strong>{{ c.denomination }}</strong> dal {{ c.start_date|date:"d.m.Y" }}{% if c.end_date %} al {{ c.end_date|date:"d.m.Y" }}{% endif %}</li>
-        {% endfor %}
-      </ul>
-      {% endif %}
     </div>
 
     <div class="span4">

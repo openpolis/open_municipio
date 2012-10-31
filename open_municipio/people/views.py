@@ -190,6 +190,12 @@ class PoliticianDetailView(DetailView):
         )
         context['get_current_committee_charges'] = self.object.get_current_committee_charges()
 
+
+        context['current_groupcharge'] = self.object.current_groupcharge
+
+        historical_groupcharges = self.object.historical_groupcharges
+        context['historical_groupcharges'] = historical_groupcharges.order_by('start_date') if historical_groupcharges else None
+
         # Is politician a counselor? If so, we show present/absent
         # graph
         for charge in context['current_charges']:
