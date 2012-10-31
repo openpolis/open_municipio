@@ -234,19 +234,11 @@ class PoliticianDetailView(DetailView):
 
 
         # Current politician's charge votes for key votations
-        unsorted_current_charge_votes = []
-        for charge in context['current_charges']:
-            charge_votes = ChargeVote.objects\
-                .filter(charge=charge).filter(votation__is_key=True)
-            unsorted_current_charge_votes += charge_votes
-        # Sort by date 
-        current_charge_votes = sorted(
-            unsorted_current_charge_votes,
-            key=attrgetter('votation.sitting.date'),
-            reverse=True
-            )
-        # Pass data to template
-        context['current_charge_votes'] = current_charge_votes
+        # are passed to template
+        charge = context['current_counselor_charge']
+        context['current_charge_votes'] = charge.chargevote_set \
+            .filter(votation__is_key=True) \
+            .order_by('-votation__sitting__date')
 
         # is the user monitoring the act?
         context['is_user_monitoring'] = False

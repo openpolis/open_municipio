@@ -164,7 +164,8 @@
     <table class="data">
       <thead>
       <tr>
-        <th>Data</th>
+        <th>Data della seduta</th>
+        <th>Num votazione</th>
         <th>Atto</th>
         <th class="text-center">Voto</th>
         <th class="text-center">Esito</th>
@@ -173,8 +174,15 @@
       <tbody>
       {% for charge_vote in current_charge_votes %}
         <tr>
-          <td>{{ charge_vote.votation.sitting.date }}</td>
-          <td><a href="{{ charge_vote.votation.act.downcast.get_absolute_url }}"><strong>{{ charge_vote.votation.act.title }}</strong></a></td>
+          <td class="text-center">{{ charge_vote.votation.sitting.date }}</td>
+          <td class="text-center">{{ charge_vote.votation.idnum }}</td>
+          <td {% if not charge_vote.votation.act %}class="text-center"{%  endif %}>
+              {% if charge_vote.votation.act %}
+                  <a href="{{ charge_vote.votation.act.downcast.get_absolute_url }}"><strong>{{ charge_vote.votation.act.title }}</strong></a>
+              {%  else %}
+                  -
+              {% endif %}
+          </td>
           <td class="text-center"><span class="label
                                                        {% if charge_vote.get_vote_display == "Sì" %}label-success{% else %}
                                                        {% if charge_vote.get_vote_display == "No" %}label-important{% endif %}{% endif %}
