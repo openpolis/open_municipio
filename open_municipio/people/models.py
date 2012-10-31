@@ -120,12 +120,31 @@ class Person(models.Model, MonitorizedItem):
         """
         Used for admin interface
         """
-        if self.institutioncharge_set.current(moment=moment).count() > 0:
+        if self.institutioncharge_set.current(moment).count() > 0:
             return True
         else:
             return False
     has_current_charges.short_description = _('Current')
 
+    def is_counselor(self, moment=None):
+        """
+        check if the person is a member of the council at the given moment
+        """
+        if self.current_counselor_charge(moment):
+            return True
+        else:
+            return False
+
+    def current_counselor_charge(self, moment=None):
+        """
+        fetch the current charge in Council, if any
+        """
+        i = Institution.objects.get(institution_type=Institution.COUNCIL)
+        try:
+            ic = self.get_current_charge_in_institution(i, moment)
+            return ic
+        except ObjectDoesNotExist:
+            return None
 
 
     def get_historical_groupcharges(self, moment=None):
@@ -134,8 +153,8 @@ class Person(models.Model, MonitorizedItem):
         """
         i = Institution.objects.get(institution_type=Institution.COUNCIL)
         try:
-            ic = self.get_current_charge_in_institution(i)
-            gc = GroupCharge.objects.select_related().past(moment=moment).filter(charge=ic)
+            ic = self.get_current_charge_in_institution(i, moment)
+            gc = GroupCharge.objects.select_related().past(moment).filter(charge=ic)
         except ObjectDoesNotExist:
             gc = None
         return gc
@@ -150,7 +169,7 @@ class Person(models.Model, MonitorizedItem):
         i = Institution.objects.get(institution_type=Institution.COUNCIL)
         try:
             ic = self.get_current_charge_in_institution(i, moment)
-            gc = GroupCharge.objects.select_related().current(moment=moment).get(charge=ic)
+            gc = GroupCharge.objects.select_related().current(moment).get(charge=ic)
         except ObjectDoesNotExist:
             gc = None
         return gc
@@ -292,6 +311,7 @@ class InstitutionCharge(Charge):
     n_present_votations = models.IntegerField(default=0)
     n_absent_votations = models.IntegerField(default=0)
 
+
     class Meta(Charge.Meta):
         db_table = u'people_institution_charge'
         verbose_name = _('institution charge')
@@ -326,7 +346,7 @@ class InstitutionCharge(Charge):
                        (self.responsabilities[0].get_charge_type_display(),
                         self.responsabilities[0].start_date, self.responsabilities[0].end_date)
             else:
-                return _('Counselor').translate(settings.LANGUAGE_CODE)
+                return _('Counselor')
         elif self.institution.institution_type == Institution.COMMITTEE:
             if self.responsabilities.count():
                 return "%s: %s - %s" % (self.responsabilities[0].get_charge_type_display(),

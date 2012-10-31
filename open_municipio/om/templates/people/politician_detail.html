@@ -76,8 +76,8 @@
       {% if current_groupcharge %}
           Gruppo <strong>{{ current_groupcharge.group }}</strong>
           {% if current_groupcharge.current_responsability %}
-              - dal {{ current_groupcharge.current_responsability.start_date|date:'d.m.Y' }}
-              &egrave; {% trans current_groupcharge.current_responsability.get_charge_type_display %}
+              - {% trans current_groupcharge.current_responsability.get_charge_type_display %}
+              dal {{ current_groupcharge.current_responsability.start_date|date:'d.m.Y' }}
           {%  endif %}
           <br/>
 
@@ -85,7 +85,7 @@
               (le altre appartenenze)
               <ul>
                   {% for gc in historical_groupcharges %}
-                      <li>dal {{ gc.start_date|date:'d.m.Y' }} al {{ gc.end_date|date:'d.m.Y' }} - {{ gc.group.name }}</li>
+                      <li>dal {{ gc.start_date|date:'d.m.Y' }} {%  if gc.end_date %} al {{ gc.end_date|date:'d.m.Y' }}{%  endif %} - {{ gc.group.name }}</li>
                   {% endfor %}
               </ul>
           {% endif %}
@@ -97,8 +97,9 @@
               <li>{{ c.institution }}:
                 <em>{{ c.institution.description }}</em>
                 {% if c.current_responsability %}
-                  - dal {{ c.current_responsability.start_date|date:'d.m.Y' }}
-                  &egrave; {% trans c.current_responsability.get_charge_type_display %}
+                  - {% trans c.current_responsability.get_charge_type_display %}
+                  dal {{ c.current_responsability.start_date|date:'d.m.Y' }}
+
                 {%  endif %}
 
               </li>
@@ -131,25 +132,25 @@
 
   <hr class="big">
 
-  {% if person.counselor_charge %}
+  {% if is_counselor %}
     <section>
-      <h2>Presenze ({{ person.counselor_charge.n_total_votations }} votazion{{ person.counselor_charge.n_total_votations|pluralize:"e,i" }})</h2>
+      <h2>Presenze ({{ n_total_votations }} votazion{{ n_total_votations|pluralize:"e,i" }})</h2>
 
       <div class="meter-bar float-container">
         <div class="meter-bar-container">
           <label>Presenze</label>
-          <div class="meter-label"><strong class="green">{{ person.counselor_charge.percentage_present_votations }}%</strong>&nbsp;({{ person.counselor_charge.n_present_votations }})</div>
+          <div class="meter-label"><strong class="green">{{ percentage_present_votations }}%</strong>&nbsp;({{ current_counselor_charge.n_present_votations }})</div>
           <div class="green-meter-bar">
             <div style="left: {{ percentage_present_votations_average }}%;" class="meter-average"><label>valore medio: {{ percentage_present_votations_average }}%</label>&nbsp;</div>
-            <div style="width: {{ person.counselor_charge.percentage_present_votations }}%;" class="meter-value">&nbsp;</div>
+            <div style="width: {{ percentage_present_votations }}%;" class="meter-value">&nbsp;</div>
           </div>
         </div>
         <div class="meter-bar-container">
           <label>Assenze</label>
-          <div class="meter-label"><strong class="red">{{ person.counselor_charge.percentage_absent_votations }}%</strong>&nbsp;({{ person.counselor_charge.n_absent_votations }})</div>
+          <div class="meter-label"><strong class="red">{{ percentage_absent_votations }}%</strong>&nbsp;({{ current_counselor_charge.n_absent_votations }})</div>
           <div class="red-meter-bar">
             <div style="left: {{ percentage_absent_votations_average }}%;" class="meter-average"><label>valore medio: {{ percentage_absent_votations_average }}%</label>&nbsp;</div>
-            <div style="width: {{ person.counselor_charge.percentage_absent_votations }}%;" class="meter-value">&nbsp;</div>
+            <div style="width: {{ percentage_absent_votations }}%;" class="meter-value">&nbsp;</div>
           </div>
         </div>
       </div>
