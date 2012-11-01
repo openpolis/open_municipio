@@ -43,7 +43,7 @@ em {
           <h3>{% if not query %}Trovati {% endif %} {{ n_results }} documenti</h3>
 
           {% if person %}
-              <p>per il politico:       {{ person }}  </p>
+              <p>per il politico: <a href="{{ person.get_absolute_url }}">{{ person }}</a>  </p>
           {% endif %}
 
           <table class="search-results">

@@ -15,7 +15,7 @@ class ActIndex(indexes.SearchIndex, indexes.Indexable):
     tags_with_urls = indexes.MultiValueField(indexed=False, stored=True)
     categories_with_urls = indexes.MultiValueField(indexed=False, stored=True)
     locations_with_urls = indexes.MultiValueField(indexed=False, stored=True)
-    person = indexes.MultiValueField(indexed=True, stored=True)
+    person = indexes.MultiValueField(indexed=True, stored=False)
 
     # stored fields, used not to touch DB
     # while showing results

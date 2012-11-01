@@ -41,12 +41,16 @@
         <section>
 
 
-          <h3>{% if not query %}Trovate {% endif %} {{ n_results }} votazioni</h3>
-          {% if act_votations %}
-            per la {{ act.get_type_name }} <a href="{{ act.get_absolute_url }}">{{ act }}</a>
-          {% endif %}
+            <h3>{% if not query %}Trovate {% endif %} {{ n_results }} votazioni</h3>
+            {% if act_votations %}
+                per la {{ act.get_type_name }} <a href="{{ act.get_absolute_url }}">{{ act }}</a>
+            {% endif %}
 
-          <table class="search-results">
+            {% if person %}
+                <p>per il politico: <a href="{{ person.get_absolute_url }}">{{ person }}</a>  </p>
+            {% endif %}
+
+            <table class="search-results">
             <tbody>
             {% for result in page.object_list %}
             <tr>

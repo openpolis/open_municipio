@@ -195,7 +195,7 @@
       {% endfor %}
       </tbody>
     </table>
-    <p><i class="icon-play"></i> <a href="#">Vedi tutti i voti chiave</a></p>
+    <p><i class="icon-play"></i> <a href="{% url om_votation_search %}?q=&person={{ person.slug }}&selected_facets=is_key:sì">Vedi tutti i voti chiave</a></p>
   </section>
 
   <hr class="big">
@@ -240,7 +240,7 @@
       {% endfor %}
       </tbody>
     </table>
-    <p><i class="icon-play"></i> <a href="#">Vedi tutti gli atti su cui lavora</a></p>
+    <p><i class="icon-play"></i> <a href="{% url om_act_search %}?q=&person={{ person.slug }}">Vedi tutti gli atti su cui lavora</a></p>
 
   </section>
 

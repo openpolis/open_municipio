@@ -1,8 +1,10 @@
 from django.conf import settings
+from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic import DetailView
 from django.core.urlresolvers import reverse
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from open_municipio.om_search.mixins import FacetRangeDateIntervalsMixin
+from open_municipio.people.models import Person
 
 from open_municipio.votations.models import Votation
 
@@ -74,6 +76,14 @@ class VotationSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin
             act_id = int(self.request.GET.get('act_url').split("/")[-2])
             extra['act_votations'] = True
             extra['act'] = Act.objects.get(pk=act_id).downcast()
+
+        person_slug = self.request.GET.get('person', None)
+        if person_slug:
+            try:
+                extra['person'] = Person.objects.get(slug=person_slug)
+            except ObjectDoesNotExist:
+                pass
+
 
         paginator = Paginator(self.results, settings.HAYSTACK_SEARCH_RESULTS_PER_PAGE)
         page = self.request.GET.get('page', 1)
