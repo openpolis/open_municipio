@@ -11,11 +11,10 @@ class ActIndex(indexes.SearchIndex, indexes.Indexable):
     initiative = indexes.FacetCharField()
     organ = indexes.FacetCharField(model_attr='emitting_institution__lowername')
     pub_date = indexes.FacetDateField(model_attr='presentation_date')
-    facet_categories = indexes.MultiValueField(indexed=True, stored=True, faceted=True)
-    tags_with_urls = indexes.MultiValueField(indexed=False, stored=True)
-    categories_with_urls = indexes.MultiValueField(indexed=False, stored=True)
-    locations_with_urls = indexes.MultiValueField(indexed=False, stored=True)
     person = indexes.MultiValueField(indexed=True, stored=False)
+    tags_with_urls = indexes.MultiValueField(indexed=True, stored=True)
+    categories_with_urls = indexes.MultiValueField(indexed=True, stored=True)
+    locations_with_urls = indexes.MultiValueField(indexed=True, stored=True)
 
     # stored fields, used not to touch DB
     # while showing results
@@ -37,10 +36,6 @@ class ActIndex(indexes.SearchIndex, indexes.Indexable):
         d_obj = obj.downcast()
         return ["%s|%s" % (t.name, t.get_absolute_url()) for t in list(d_obj.locations)]
     
-    def prepare_facet_categories(self, obj):
-        d_obj = obj.downcast()
-        return [c.name for c in list(d_obj.categories) + list(d_obj.tags) + list(d_obj.locations)]
-
     def prepare_act_type(self, obj):
         activate(settings.LANGUAGE_CODE)
         return obj.get_type_name()
@@ -53,8 +48,9 @@ class ActIndex(indexes.SearchIndex, indexes.Indexable):
 
     def prepare_person(self, obj):
         return set(
-            [p['person__slug'] for p in obj.first_signers.values('person__slug').distinct()] +
-            [p['person__slug'] for p in obj.co_signers.values('person__slug').distinct()]
+            [p['person__slug'] for p in
+                list(obj.first_signers.values('person__slug').distinct()) +
+                list(obj.co_signers.values('person__slug').distinct())]
         )
 
 

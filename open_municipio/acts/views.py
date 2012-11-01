@@ -12,6 +12,7 @@ from voting.views import RecordVoteOnItemView
 
 from open_municipio.acts.models import Act, Agenda, Deliberation, Interpellation, Interrogation, Motion, Transition
 from open_municipio.acts.forms import ActDescriptionForm, ActTransitionForm, ActFinalTransitionForm, ActTitleForm
+from open_municipio.locations.models import Location
 
 from open_municipio.monitoring.forms import MonitoringForm
 
@@ -83,6 +84,25 @@ class ActSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
         if person_slug:
             try:
                 extra['person'] = Person.objects.get(slug=person_slug)
+            except ObjectDoesNotExist:
+                pass
+
+        category_slug = self.request.GET.get('category', None)
+        if category_slug:
+            try:
+                extra['category'] = Category.objects.get(slug=category_slug)
+            except ObjectDoesNotExist:
+                pass
+        tag_slug = self.request.GET.get('tag', None)
+        if tag_slug:
+            try:
+                extra['tag'] = Tag.objects.get(slug=tag_slug)
+            except ObjectDoesNotExist:
+                pass
+        location_slug = self.request.GET.get('location', None)
+        if location_slug:
+            try:
+                extra['location'] = Location.objects.get(slug=location_slug)
             except ObjectDoesNotExist:
                 pass
 

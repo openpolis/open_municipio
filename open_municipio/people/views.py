@@ -234,11 +234,18 @@ class PoliticianDetailView(DetailView):
 
 
         # Current politician's charge votes for key votations
-        # are passed to template
+        # last 10 are passed to template
         charge = context['current_counselor_charge']
         context['current_charge_votes'] = charge.chargevote_set \
             .filter(votation__is_key=True) \
-            .order_by('-votation__sitting__date')
+            .order_by('-votation__sitting__date')[0:10]
+
+        # last 10 presented acts
+        presented_acts = Act.objects\
+            .filter(actsupport__charge__pk__in=self.object.current_institution_charges)\
+            .order_by('-presentation_date')
+        context['n_presented_acts'] = presented_acts.count()
+        context['presented_acts'] = presented_acts[0:10]
 
         # is the user monitoring the act?
         context['is_user_monitoring'] = False

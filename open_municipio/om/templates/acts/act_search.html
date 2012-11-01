@@ -46,6 +46,18 @@ em {
               <p>per il politico: <a href="{{ person.get_absolute_url }}">{{ person }}</a>  </p>
           {% endif %}
 
+          {% if category %}
+              <p>per la categoria: <a href="{{ category.get_absolute_url }}">{{ category }}</a>  </p>
+          {% endif %}
+
+          {% if tag %}
+              <p>per l'argomento: <a href="{{ tag.get_absolute_url }}">{{ tag }}</a>  </p>
+          {% endif %}
+
+          {% if location %}
+              <p>per la località: <a href="{{ location.get_absolute_url }}">{{ location }}</a>  </p>
+          {% endif %}
+
           <table class="search-results">
           <tbody>
           {% for result in page.object_list %}

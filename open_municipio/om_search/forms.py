@@ -4,6 +4,9 @@ import sys
 
 class RangeFacetedSearchForm(SearchForm):
     person = forms.CharField(required=False)
+    category = forms.CharField(required=False)
+    tag = forms.CharField(required=False)
+    location = forms.CharField(required=False)
 
     def __init__(self, *args, **kwargs):
         self.selected_facets = kwargs.pop("selected_facets", [])
@@ -41,5 +44,12 @@ class RangeFacetedSearchForm(SearchForm):
         if self.is_valid() and self.cleaned_data.get('person'):
             sqs = sqs.filter_and(person=self.cleaned_data['person'])
 
+        # aggiunge filtri per category, tag o location, se presenti
+        if self.is_valid() and self.cleaned_data.get('category'):
+            sqs = sqs.filter_and(categories_with_urls=self.cleaned_data['category'])
+        if self.is_valid() and self.cleaned_data.get('tag'):
+            sqs = sqs.filter_and(tags_with_urls=self.cleaned_data['tag'])
+        if self.is_valid() and self.cleaned_data.get('location'):
+            sqs = sqs.filter_and(locations_with_urls=self.cleaned_data['location'])
 
         return sqs

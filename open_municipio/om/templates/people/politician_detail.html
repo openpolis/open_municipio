@@ -200,49 +200,49 @@
 
   <hr class="big">
 
-  <section>
-    <h2>Atti su cui lavora</h2>
+  {% if n_presented_acts %}
+      <section>
+          <h2>Atti su cui lavora ({{ n_presented_acts }})</h2>
 
-    <table class="data">
-      <thead>
-      <tr>
-        <th class="text-left span5">Atto</th>
-        <th>Stato</th>
-        <th>Voti degli utenti</th>
-        <th>Commenti</th>
-      </tr>
-      </thead>
-      <tbody>
-      {% for c in current_charges %}
-        {% for act in c.presented_acts %}
-          <tr>
-            <td><a href="{{ act.get_absolute_url }}"><strong>{{ act.title }}</strong> ({{ act.idnum }})</a></td>
-            <td class="text-center">
+          <table class="data">
+              <thead>
+              <tr>
+                  <th class="text-left span5">Atto</th>
+                  <th>Stato</th>
+                  <th>Voti degli utenti</th>
+                  <th>Commenti</th>
+              </tr>
+              </thead>
+              <tbody>
+              {% for act in presented_acts %}
+                  <tr>
+                      <td><a href="{{ act.get_absolute_url }}"><strong>{{ act.title }}</strong> ({{ act.idnum }})</a></td>
+                      <td class="text-center">
 
-              {% if not act.is_final_status %}
-                <span class="label">In esame</span>
-              {% else %}
-                <span class="label
+                          {% if not act.is_final_status %}
+                              <span class="label">In esame</span>
+                          {% else %}
+                              <span class="label
                     {% if act.status == "APPROVED" or act.status == "ANSWERED" %}label-success
                     {% else %}{% if act.status == 'REJECTED' or act.status == "NOTANSWERED" %}label-important
                     {% endif %}{% endif %} ">{{ act.get_status_display }}</span>
-              {% endif %}
-            </td>
-            {% votes_for_object act as act_num_votes %}
-            <td class="text-center">
-              <span class="label label-success">{{ act_num_votes.upvotes }}</span>
-              <span class="label label-important">{{ act_num_votes.downvotes }}</span>
-            </td>
-            {% get_comment_count for act as comment_count %}
-            <td class="text-center"><a href="{{ act.get_absolute_url }}"><strong>{{ comment_count }}</strong></a></td>
-          </tr>
-        {% endfor %}
-      {% endfor %}
-      </tbody>
-    </table>
-    <p><i class="icon-play"></i> <a href="{% url om_act_search %}?q=&person={{ person.slug }}">Vedi tutti gli atti su cui lavora</a></p>
+                          {% endif %}
+                      </td>
+                      {% votes_for_object act as act_num_votes %}
+                      <td class="text-center">
+                          <span class="label label-success">{{ act_num_votes.upvotes }}</span>
+                          <span class="label label-important">{{ act_num_votes.downvotes }}</span>
+                      </td>
+                      {% get_comment_count for act as comment_count %}
+                      <td class="text-center"><a href="{{ act.get_absolute_url }}"><strong>{{ comment_count }}</strong></a></td>
+                  </tr>
+              {% endfor %}
+              </tbody>
+          </table>
+          <p><i class="icon-play"></i> <a href="{% url om_act_search %}?q=&person={{ person.slug }}">Vedi tutti gli atti su cui lavora</a></p>
 
-  </section>
+      </section>
+  {% endif %}
 
     {% load web_services_tags %}
     {% share person %}

@@ -62,6 +62,7 @@ class TopicDetailView(DetailView):
         context['subtopics'] = self.take_subtopics()
 
         topic = context['topic']
+        context['topic_type'] = self.topic_type
         ta_ids = set([ta['content_object_id'] for ta in topic.tagged_acts.values('content_object_id')])
         context['n_deliberation_proposals'] = Deliberation.objects.filter(pk__in=ta_ids, approval_date__isnull=True).count()
         context['n_deliberations'] = Deliberation.objects.filter(pk__in=ta_ids, approval_date__isnull=False).count()
@@ -76,6 +77,7 @@ class TopicDetailView(DetailView):
     
 class TagDetailView(TopicDetailView):
     model = Tag
+    topic_type = 'tag'
 
     def take_subtopics(self):
         return set([x.category for x in TaggedAct.objects.filter( tag=self.object )])
@@ -83,6 +85,7 @@ class TagDetailView(TopicDetailView):
     
 class CategoryDetailView(TopicDetailView):
     model = Category
+    topic_type = 'category'
 
     def take_subtopics(self):
         return [x.tag for x in TaggedAct.objects.filter( category=self.object ) if x.tag]
