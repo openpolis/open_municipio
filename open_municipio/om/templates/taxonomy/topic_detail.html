@@ -56,40 +56,64 @@
             </thead>
             <tbody class="text-center">
             <tr>
-                <td class="text-left">Proposta di delibera</td>
-                <td>23</td>
-                <td>34</td>
+                <td class="text-left">Proposte di delibera</td>
+                <td></td>
+                <td>
+                    {% if n_deliberation_proposals %}
+                        <a href="#">{{ n_deliberation_proposals }}</a>
+                    {% endif %}
+                </td>
                 <td></td>
             </tr>
             <tr>
-                <td class="text-left">Delibera</td>
-                <td>10</td>
-                <td>10</td>
-                <td>10</td>
+                <td class="text-left">Delibere</td>
+                <td></td>
+                <td>
+                    {% if n_deliberations %}
+                        <a href="#">{{ n_deliberations }}</a>
+                    {% endif %}
+                </td>
+                <td></td>
             </tr>
             <tr>
                 <td class="text-left">Mozioni</td>
-                <td>5</td>
-                <td>5</td>
-                <td>5</td>
+                <td></td>
+                <td>
+                    {% if n_motions %}
+                        <a href="#">{{ n_motions }}</a>
+                    {% endif %}
+                </td>
+                <td></td>
             </tr>
             <tr>
                 <td class="text-left">Ordini del giorno</td>
-                <td>12</td>
-                <td>12</td>
-                <td>12</td>
+                <td></td>
+                <td>
+                    {% if n_calendars %}
+                        <a href="#">{{ n_calendars }}</a>
+                    {% endif %}
+                </td>
+                <td></td>
             </tr>
             <tr>
-                <td class="text-left">Interrogazione</td>
-                <td>23</td>
-                <td>34</td>
-                <td>12</td>
+                <td class="text-left">Interrogazioni</td>
+                <td></td>
+                <td>
+                    {% if n_interrogations %}
+                        <a href="#">{{ n_interrogations }}</a>
+                    {% endif %}
+                </td>
+                <td></td>
             </tr>
             <tr>
-                <td class="text-left">Interpellanza</td>
-                <td>3</td>
-                <td>3</td>
-                <td>3</td>
+                <td class="text-left">Interpellanze</td>
+                <td></td>
+                <td>
+                    {% if n_interpellations %}
+                        <a href="#">{{ n_interpellations }}</a>
+                    {% endif %}
+                </td>
+                <td></td>
             </tr>
             </tbody>
         </table>
@@ -191,25 +215,20 @@
     {% include 'commons/news_list.html' with news_list=topic_news news_title="Ultime sull'Argomento" %}
   {% endcomment %}
 
-{% endblock %}
 
-{% comment %}
-{% block head_css_includes %}
-    {{ block.super }}
-    <link rel="stylesheet" href="{{ STATIC_URL }}css/ui-custom-theme/jquery-ui-1.8.16.custom.css">
-    <!--[if IE]><link rel="stylesheet" href="{{ STATIC_URL }}css/ui-custom-theme/jquery-ui-1.8.16.ie.css"><![endif]-->
+    {% comment %}
+    {% block head_css_includes %}
+        {{ block.super }}
+        <link rel="stylesheet" href="{{ STATIC_URL }}css/ui-custom-theme/jquery-ui-1.8.16.custom.css">
+        <!--[if IE]><link rel="stylesheet" href="{{ STATIC_URL }}css/ui-custom-theme/jquery-ui-1.8.16.ie.css"><![endif]-->
+    {% endblock %}
+    {% endcomment %}
+
 {% endblock %}
-{% endcomment %}
 
 {% block footer_js_includes %}
     {{ block.super }}
-  {% comment %}
-    <script src="{{ STATIC_URL }}js/jquery-ui-1.8.18.custom.min.js"></script>
-    <script src="{{ STATIC_URL }}js/jquery-ui.calendar.js"></script>
-  {% endcomment %}
-
     <script src="{{ STATIC_URL }}js/ajax_csrf.js" type="text/javascript" charset="utf-8"></script>
     <script src="{{ STATIC_URL }}js/jquery.submitlink.js" stype="text/javascript"></script>
-
 {% endblock %}
 
