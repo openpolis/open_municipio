@@ -49,7 +49,7 @@ class ActSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
         'is_proposal': _('Is deliberation proposal'),
         'initiative': _('Initiative'),
         'organ': _('Organ'),
-        'pub_date': _('Pubblication date')
+        'pub_date': _('Pubblication year')
     }
     DATE_INTERVALS_RANGES = {
         '2012':  {'qrange': '[2012-01-01T00:00:00Z TO 2013-01-01T00:00:00Z]', 'r_label': '2012'},

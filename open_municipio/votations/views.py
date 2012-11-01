@@ -32,7 +32,7 @@ class VotationSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin
         'act_type': _('Related act type'),
         'is_key': _('Is key act'),
         'organ': _('Organ'),
-        'votation_date': _('Votation date')
+        'votation_date': _('Votation year')
     }
 
     DATE_INTERVALS_RANGES = {
