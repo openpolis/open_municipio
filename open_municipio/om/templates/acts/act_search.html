@@ -2,6 +2,7 @@
 {% load highlight %}
 {% load om_utils %}
 {% load i18n %}
+{% load digg_paginator %}
 
 {% block title %}Elenco atti {% endblock title %}
 {% block content_header %}Atti{% endblock %}
@@ -38,8 +39,6 @@ em {
 
     {% if n_results %}
 
-      {% include "commons/pagination.html" with base_url=base_url %}
-
       <section>
         <h3>{% if not query %}Tutti i {% endif %} {{ n_results }} documenti</h3>
 
@@ -70,7 +69,7 @@ em {
         </table>
       </section>
 
-      {% include "commons/pagination.html" with base_url=base_url %}
+      {% digg_paginator %}
 
     {% else %}
         {# Show some example queries to run, maybe query syntax, something else? #}

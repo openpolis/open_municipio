@@ -4,8 +4,8 @@ from django.utils.decorators import method_decorator
 from django.views.generic import View, DetailView, ListView, FormView
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.utils import simplejson as json
-
 from django.contrib.auth.decorators import user_passes_test
 
 from voting.views import RecordVoteOnItemView
@@ -56,6 +56,20 @@ class ActSearchView(ExtendedFacetedSearchView):
         """
         extra = super(ActSearchView, self).extra_context()
         extra['base_url'] = reverse('om_act_search') + '?' + extra['params'].urlencode()
+
+        paginator = Paginator(self.results, 10)
+        page = self.request.GET.get('page', 1)
+        try:
+            page_obj = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            page_obj = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            page_obj = paginator.page(paginator.num_pages)
+
+        extra['paginator'] = paginator
+        extra['page_obj'] = page_obj
 
 
         return extra
