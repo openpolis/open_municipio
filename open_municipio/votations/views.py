@@ -1,5 +1,6 @@
 from django.views.generic import DetailView
 from django.core.urlresolvers import reverse
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 from open_municipio.votations.models import Votation
 
@@ -49,6 +50,22 @@ class VotationSearchView(ExtendedFacetedSearchView):
             act_id = int(self.request.GET.get('act_url').split("/")[-2])
             extra['act_votations'] = True
             extra['act'] = Act.objects.get(pk=act_id).downcast()
+
+        paginator = Paginator(self.results, 10)
+        page = self.request.GET.get('page', 1)
+        try:
+            page_obj = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            page_obj = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            page_obj = paginator.page(paginator.num_pages)
+
+        extra['paginator'] = paginator
+        extra['page_obj'] = page_obj
+
+
         return extra
 
 
