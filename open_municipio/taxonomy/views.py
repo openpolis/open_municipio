@@ -88,4 +88,4 @@ class CategoryDetailView(TopicDetailView):
     topic_type = 'category'
 
     def take_subtopics(self):
-        return [x.tag for x in TaggedAct.objects.filter( category=self.object ) if x.tag]
+        return set([x.tag for x in TaggedAct.objects.filter( category=self.object ) if x.tag])
