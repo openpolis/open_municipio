@@ -8,6 +8,8 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.utils import simplejson as json
 from django.contrib.auth.decorators import user_passes_test
 from django.conf import settings
+from django.utils.translation import ugettext_lazy as _
+
 from voting.views import RecordVoteOnItemView
 
 from open_municipio.acts.models import Act, Agenda, Deliberation, Interpellation, Interrogation, Motion, Transition
@@ -40,6 +42,15 @@ class ActSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
     """
     __name__ = 'ActSearchView'
 
+    FACETS_SORTED = ['act_type', 'is_key', 'is_proposal', 'initiative', 'organ', 'pub_date']
+    FACETS_LABELS = {
+        'act_type': _('Act type'),
+        'is_key': _('Is key act'),
+        'is_proposal': _('Is deliberation proposal'),
+        'initiative': _('Initiative'),
+        'organ': _('Organ'),
+        'pub_date': _('Pubblication date')
+    }
     DATE_INTERVALS_RANGES = {
         '2012':  {'qrange': '[2012-01-01T00:00:00Z TO 2013-01-01T00:00:00Z]', 'r_label': '2012'},
         '2011':  {'qrange': '[2011-01-01T00:00:00Z TO 2012-01-01T00:00:00Z]', 'r_label': '2011'},
@@ -69,7 +80,7 @@ class ActSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
         extended_selected_facets = super(ActSearchView, self)._get_extended_selected_facets()
 
         # this comes from the Mixins
-        extended_selected_facets = self.add_date_interval_extended_selected_facets(extended_selected_facets)
+        extended_selected_facets = self.add_date_interval_extended_selected_facets(extended_selected_facets, 'pub_date')
 
         return extended_selected_facets
 
@@ -107,7 +118,10 @@ class ActSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
                 pass
 
         # get data about custom date range facets
-        extra['facet_queries_date'] = self._get_custom_facet_queries_date()
+        extra['facet_queries_date'] = self._get_custom_facet_queries_date('pub_date')
+
+        extra['facets_sorted'] = self.FACETS_SORTED
+        extra['facets_labels'] = self.FACETS_LABELS
 
         paginator = Paginator(self.results, settings.HAYSTACK_SEARCH_RESULTS_PER_PAGE)
         page = self.request.GET.get('page', 1)

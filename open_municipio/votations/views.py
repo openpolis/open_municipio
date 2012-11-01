@@ -5,6 +5,7 @@ from django.core.urlresolvers import reverse
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from open_municipio.om_search.mixins import FacetRangeDateIntervalsMixin
 from open_municipio.people.models import Person
+from django.utils.translation import ugettext_lazy as _
 
 from open_municipio.votations.models import Votation
 
@@ -25,6 +26,14 @@ class VotationSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin
 
     """
     __name__ = 'VotationSearchView'
+
+    FACETS_SORTED = ['act_type', 'is_key', 'organ', 'votation_date']
+    FACETS_LABELS = {
+        'act_type': _('Related act type'),
+        'is_key': _('Is key act'),
+        'organ': _('Organ'),
+        'votation_date': _('Votation date')
+    }
 
     DATE_INTERVALS_RANGES = {
         '2012':  {'qrange': '[2012-01-01T00:00:00Z TO 2013-01-01T00:00:00Z]', 'r_label': '2012'},
@@ -60,7 +69,7 @@ class VotationSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin
         extended_selected_facets = super(VotationSearchView, self)._get_extended_selected_facets()
 
         # this comes from the Mixins
-        extended_selected_facets = self.add_date_interval_extended_selected_facets(extended_selected_facets)
+        extended_selected_facets = self.add_date_interval_extended_selected_facets(extended_selected_facets, 'votation_date')
 
         return extended_selected_facets
 
@@ -84,6 +93,11 @@ class VotationSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin
             except ObjectDoesNotExist:
                 pass
 
+        # get data about custom date range facets
+        extra['facet_queries_date'] = self._get_custom_facet_queries_date('votation_date')
+
+        extra['facets_sorted'] = self.FACETS_SORTED
+        extra['facets_labels'] = self.FACETS_LABELS
 
         paginator = Paginator(self.results, settings.HAYSTACK_SEARCH_RESULTS_PER_PAGE)
         page = self.request.GET.get('page', 1)
