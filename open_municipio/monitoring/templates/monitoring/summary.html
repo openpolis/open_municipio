@@ -7,7 +7,7 @@
     <td>
       {% if user.is_authenticated and not user.get_profile.person %}
         {% if is_user_monitoring %}
-          <h4>Cittadini che monitorano l'atto, incluso te</h4>
+          <h4>Cittadini che monitorano {{ object_type }}, <br/> incluso te</h4>
           <form action="{% url om_monitoring_stop %}" method="post">{% csrf_token %}
             {{ monitoring_form }}
             <button type="submit" class="btn btn-info btn-mini">Non monitorare più</button>
@@ -33,13 +33,13 @@
       <td>
         {% if user.is_authenticated and user.get_profile.person %}
           {% if is_user_monitoring %}
-            <h4>Politici monitorano {{ object_type }}, incluso te</h4>
+            <h4>Politici che monitorano {{ object_type }}, <br/> incluso te</h4>
             <form action="{% url om_monitoring_stop %}" method="post">{% csrf_token %}
               {{ monitoring_form }}
               <button type="submit" class="btn btn-info btn-mini">Non monitorare più</button>
             </form>
           {% else %}
-            <h4>Politici monitorano {{ object_type }}</h4>
+            <h4>Politici che monitorano {{ object_type }}</h4>
             <i class="icon-plus-sign"></i>
             <form action="{% url om_monitoring_start %}" method="post">{% csrf_token %}
               {{ monitoring_form }}
@@ -47,7 +47,7 @@
             </form>
           {% endif %}
         {% else %}
-          <h4>Politici monitorano {{ object_type }}</h4>
+          <h4>Politici che monitorano {{ object_type }}</h4>
         {% endif %}
       </td>
     </tr>
