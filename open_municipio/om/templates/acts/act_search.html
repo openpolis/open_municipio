@@ -144,6 +144,23 @@ em {
                     {% endfor %}
                 {% endif %}
             </dl>
+            {% if facets.fields.is_proposal.counts.0.1 and  facets.fields.is_proposal.counts.0.1 %}
+            <dl>
+                {% if facets.fields.is_proposal and not facets.fields.is_proposal.is_field_selected %}
+                    <dt>&Egrave; proposta di delibera</dt>
+                    {# Provide both cases (true, false) #}
+                    {% for t in facets.fields.is_proposal.counts %}
+                        {% if t.1 %}
+                            <dd>
+                                {% if not t.2 %}
+                                    <a href="{{ base_url }}&selected_facets=is_proposal:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
+                                {% endif %}
+                            </dd>
+                        {%  endif %}
+                    {% endfor %}
+                {% endif %}
+            </dl>
+            {% endif %}
             <dl>
                 {% if facets.fields.initiative and not facets.fields.initiative.is_field_selected %}
                     <dt>Iniziativa (delibere)</dt>

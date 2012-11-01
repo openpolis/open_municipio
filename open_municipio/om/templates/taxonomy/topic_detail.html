@@ -60,7 +60,7 @@
                 <td></td>
                 <td>
                     {% if n_deliberation_proposals %}
-                        <a href="{% url om_act_search %}?q=&{{ topic_type }}={{ topic.slug }}&selected_facets=act_type:delibera">{{ n_deliberation_proposals }}</a>
+                        <a href="{% url om_act_search %}?q=&{{ topic_type }}={{ topic.slug }}&selected_facets=act_type:delibera&selected_facets=is_proposal:sì">{{ n_deliberation_proposals }}</a>
                     {% endif %}
                 </td>
                 <td></td>
@@ -70,7 +70,7 @@
                 <td></td>
                 <td>
                     {% if n_deliberations %}
-                        <a href="{% url om_act_search %}?q=&{{ topic_type }}={{ topic.slug }}&selected_facets=act_type:delibera">{{ n_deliberations }}</a>
+                        <a href="{% url om_act_search %}?q=&{{ topic_type }}={{ topic.slug }}&selected_facets=act_type:delibera&selected_facets=is_proposal:no">{{ n_deliberations }}</a>
                     {% endif %}
                 </td>
                 <td></td>
