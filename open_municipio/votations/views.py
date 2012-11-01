@@ -1,6 +1,7 @@
 from django.views.generic import DetailView
 from django.core.urlresolvers import reverse
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from open_municipio.om_search.mixins import FacetRangeDateIntervalsMixin
 
 from open_municipio.votations.models import Votation
 
@@ -11,7 +12,7 @@ from open_municipio.om_search.views import ExtendedFacetedSearchView
 
 
 
-class VotationSearchView(ExtendedFacetedSearchView):
+class VotationSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
     """
 
     This view allows faceted search and navigation of the votations.
@@ -21,6 +22,16 @@ class VotationSearchView(ExtendedFacetedSearchView):
 
     """
     __name__ = 'VotationSearchView'
+
+    DATE_INTERVALS_RANGES = {
+        '2012':  {'qrange': '[2012-01-01T00:00:00Z TO 2013-01-01T00:00:00Z]', 'r_label': '2012'},
+        '2011':  {'qrange': '[2011-01-01T00:00:00Z TO 2012-01-01T00:00:00Z]', 'r_label': '2011'},
+        '2010':  {'qrange': '[2010-01-01T00:00:00Z TO 2011-01-01T00:00:00Z]', 'r_label': '2010'},
+        '2009':  {'qrange': '[2009-01-01T00:00:00Z TO 2010-01-01T00:00:00Z]', 'r_label': '2009'},
+        '2008':  {'qrange': '[2008-01-01T00:00:00Z TO 2009-01-01T00:00:00Z]', 'r_label': '2008'},
+        'nd'  :  {'qrange': '[* TO 1970-01-01T00:00:00Z]', 'r_label': 'non disponibile'}
+    }
+
 
     def __init__(self, *args, **kwargs):
         # Needed to switch out the default form class.
@@ -39,6 +50,18 @@ class VotationSearchView(ExtendedFacetedSearchView):
 
         return super(VotationSearchView, self).build_form(form_kwargs)
 
+    def _get_extended_selected_facets(self):
+        """
+        modifies the extended_selected_facets, adding correct labels for this view
+        works directly on the extended_selected_facets dictionary
+        """
+        extended_selected_facets = super(VotationSearchView, self)._get_extended_selected_facets()
+
+        # this comes from the Mixins
+        extended_selected_facets = self.add_date_interval_extended_selected_facets(extended_selected_facets)
+
+        return extended_selected_facets
+
     def extra_context(self):
         """
         Add extra content here, when needed
@@ -46,6 +69,7 @@ class VotationSearchView(ExtendedFacetedSearchView):
         extra = super(VotationSearchView, self).extra_context()
         extra['act_votations'] = False
         extra['base_url'] = reverse('om_votation_search') + '?' + extra['params'].urlencode()
+
         if self.request.GET.get("act_url"):
             act_id = int(self.request.GET.get('act_url').split("/")[-2])
             extra['act_votations'] = True

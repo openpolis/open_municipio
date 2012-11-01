@@ -16,6 +16,7 @@ from open_municipio.acts.forms import ActDescriptionForm, ActTransitionForm, Act
 from open_municipio.monitoring.forms import MonitoringForm
 
 from open_municipio.om_search.forms import RangeFacetedSearchForm
+from open_municipio.om_search.mixins import FacetRangeDateIntervalsMixin
 from open_municipio.om_search.views import ExtendedFacetedSearchView
 
 from open_municipio.taxonomy.models import Tag, Category
@@ -26,7 +27,7 @@ import re
 
 
 
-class ActSearchView(ExtendedFacetedSearchView):
+class ActSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
     """
 
     This view allows faceted search and navigation of the acts.
@@ -36,6 +37,15 @@ class ActSearchView(ExtendedFacetedSearchView):
 
     """
     __name__ = 'ActSearchView'
+
+    DATE_INTERVALS_RANGES = {
+        '2012':  {'qrange': '[2012-01-01T00:00:00Z TO 2013-01-01T00:00:00Z]', 'r_label': '2012'},
+        '2011':  {'qrange': '[2011-01-01T00:00:00Z TO 2012-01-01T00:00:00Z]', 'r_label': '2011'},
+        '2010':  {'qrange': '[2010-01-01T00:00:00Z TO 2011-01-01T00:00:00Z]', 'r_label': '2010'},
+        '2009':  {'qrange': '[2009-01-01T00:00:00Z TO 2010-01-01T00:00:00Z]', 'r_label': '2009'},
+        '2008':  {'qrange': '[2008-01-01T00:00:00Z TO 2009-01-01T00:00:00Z]', 'r_label': '2008'},
+        'nd'  :  {'qrange': '[* TO 1970-01-01T00:00:00Z]', 'r_label': 'non disponibile'}
+    }
 
     def __init__(self, *args, **kwargs):
         # Needed to switch out the default form class.
@@ -49,6 +59,18 @@ class ActSearchView(ExtendedFacetedSearchView):
             form_kwargs = {}
 
         return super(ActSearchView, self).build_form(form_kwargs)
+
+    def _get_extended_selected_facets(self):
+        """
+        modifies the extended_selected_facets, adding correct labels for this view
+        works directly on the extended_selected_facets dictionary
+        """
+        extended_selected_facets = super(ActSearchView, self)._get_extended_selected_facets()
+
+        # this comes from the Mixins
+        extended_selected_facets = self.add_date_interval_extended_selected_facets(extended_selected_facets)
+
+        return extended_selected_facets
 
     def extra_context(self):
         """

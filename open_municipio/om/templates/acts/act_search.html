@@ -81,8 +81,24 @@ em {
 
   <h4>Cerca negli atti</h4>
   <form method="get" action="{% url om_act_search %}" class="form-search">
-    <input type="text" class="input-medium search-query" name="{{ form.q.html_name }}" value="{% if form.q.value %}{{ form.q.value }}{% endif %}" placeholder="Testo della ricerca" />
-    <button type="submit" class="btn">Cerca</button>
+      <div class="control-group input-append">
+          {%  spaceless %}
+              <input id="query" type="text" class="input-medium search-query" name="{{ form.q.html_name }}"
+                     value="{% if form.q.value %}{{ form.q.value }}{% endif %}" placeholder="Testo della ricerca" />
+              <span id="clear-query" class="btn add-on"><i class="icon-remove"></i></span>
+          {%  endspaceless %}
+      </div><br/>
+      <div class="control-group input-append">
+          {%  spaceless %}
+              <input id="person" type="text" class="input-medium search-query"
+                     value="{% if person %}{{ person }}{% endif %}"
+                     placeholder="Inserisci il politico"/>
+              <span id="clear-location" class="btn add-on"><i class="icon-remove"></i></span>
+          {%  endspaceless %}
+      </div>
+      <input id="person-id" name="{{ form.person.html_name }}"
+             value="{% if form.person.value %}{{ form.person.value }}{% endif %}" type="hidden"/>
+      <button type="submit" class="btn">Cerca</button>
   </form>
 
     {% if n_results %}

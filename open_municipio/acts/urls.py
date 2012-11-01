@@ -16,9 +16,12 @@ sqs = SearchQuerySet().filter(django_ct='acts.act').\
     facet('act_type').facet('is_key').facet('initiative').\
     facet('organ').\
     facet('facet_categories').\
-    query_facet('pub_date', ActSearchView.THREEDAYS).\
-    query_facet('pub_date', ActSearchView.ONEMONTH).\
-    query_facet('pub_date', ActSearchView.ONEYEAR).\
+    query_facet('pub_date', ActSearchView.DATE_INTERVALS_RANGES['2012']['qrange']).\
+    query_facet('pub_date', ActSearchView.DATE_INTERVALS_RANGES['2011']['qrange']).\
+    query_facet('pub_date', ActSearchView.DATE_INTERVALS_RANGES['2010']['qrange']).\
+    query_facet('pub_date', ActSearchView.DATE_INTERVALS_RANGES['2009']['qrange']).\
+    query_facet('pub_date', ActSearchView.DATE_INTERVALS_RANGES['2008']['qrange']).\
+    query_facet('pub_date', ActSearchView.DATE_INTERVALS_RANGES['nd']['qrange']).\
     order_by('-pub_date').\
     highlight()
 
