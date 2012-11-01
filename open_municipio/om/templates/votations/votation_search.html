@@ -41,7 +41,7 @@
         <section>
 
 
-          <h3>{% if not query %}Tutte le {% endif %} {{ n_results }} votazioni</h3>
+          <h3>{% if not query %}Trovate {% endif %} {{ n_results }} votazioni</h3>
           {% if act_votations %}
             per la {{ act.get_type_name }} <a href="{{ act.get_absolute_url }}">{{ act }}</a>
           {% endif %}

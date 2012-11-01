@@ -15,6 +15,7 @@ class ActIndex(indexes.SearchIndex, indexes.Indexable):
     tags_with_urls = indexes.MultiValueField(indexed=False, stored=True)
     categories_with_urls = indexes.MultiValueField(indexed=False, stored=True)
     locations_with_urls = indexes.MultiValueField(indexed=False, stored=True)
+    person = indexes.MultiValueField(indexed=True, stored=True)
 
     # stored fields, used not to touch DB
     # while showing results
@@ -49,6 +50,12 @@ class ActIndex(indexes.SearchIndex, indexes.Indexable):
             return obj.downcast().get_initiative_display().lower()
         else:
             return ''
+
+    def prepare_person(self, obj):
+        return set(
+            [p['person__slug'] for p in obj.first_signers.values('person__slug').distinct()] +
+            [p['person__slug'] for p in obj.co_signers.values('person__slug').distinct()]
+        )
 
 
     def prepare_url(self, obj):

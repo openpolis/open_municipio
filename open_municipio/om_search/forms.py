@@ -1,7 +1,9 @@
+from django import forms
 from haystack.forms import SearchForm
 import sys
 
 class RangeFacetedSearchForm(SearchForm):
+    person = forms.CharField(required=False)
 
     def __init__(self, *args, **kwargs):
         self.selected_facets = kwargs.pop("selected_facets", [])
@@ -34,5 +36,10 @@ class RangeFacetedSearchForm(SearchForm):
                     sqs = sqs.narrow(u'%s:%s' % (field, value))
                 else:
                     sqs = sqs.narrow(u'%s:"%s"' % (field, sqs.query.clean(value)))
+
+        # aggiunge filtro person, se presente
+        if self.is_valid() and self.cleaned_data.get('person'):
+            sqs = sqs.filter_and(person=self.cleaned_data['person'])
+
 
         return sqs

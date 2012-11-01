@@ -21,7 +21,6 @@ sqs = SearchQuerySet().filter(django_ct='acts.act').\
     query_facet('pub_date', ActSearchView.DATE_INTERVALS_RANGES['2010']['qrange']).\
     query_facet('pub_date', ActSearchView.DATE_INTERVALS_RANGES['2009']['qrange']).\
     query_facet('pub_date', ActSearchView.DATE_INTERVALS_RANGES['2008']['qrange']).\
-    query_facet('pub_date', ActSearchView.DATE_INTERVALS_RANGES['nd']['qrange']).\
     order_by('-pub_date').\
     highlight()
 

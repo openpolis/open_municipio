@@ -14,7 +14,6 @@ sqs = SearchQuerySet().\
     query_facet('votation_date', VotationSearchView.DATE_INTERVALS_RANGES['2010']['qrange']).\
     query_facet('votation_date', VotationSearchView.DATE_INTERVALS_RANGES['2009']['qrange']).\
     query_facet('votation_date', VotationSearchView.DATE_INTERVALS_RANGES['2008']['qrange']).\
-    query_facet('votation_date', VotationSearchView.DATE_INTERVALS_RANGES['nd']['qrange']).\
     order_by('-votation_date').\
     highlight()
 

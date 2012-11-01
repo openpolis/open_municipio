@@ -7,7 +7,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.utils import simplejson as json
 from django.contrib.auth.decorators import user_passes_test
-
+from django.conf import settings
 from voting.views import RecordVoteOnItemView
 
 from open_municipio.acts.models import Act, Agenda, Deliberation, Interpellation, Interrogation, Motion, Transition
@@ -18,6 +18,7 @@ from open_municipio.monitoring.forms import MonitoringForm
 from open_municipio.om_search.forms import RangeFacetedSearchForm
 from open_municipio.om_search.mixins import FacetRangeDateIntervalsMixin
 from open_municipio.om_search.views import ExtendedFacetedSearchView
+from open_municipio.people.models import Person
 
 from open_municipio.taxonomy.models import Tag, Category
 
@@ -44,7 +45,6 @@ class ActSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
         '2010':  {'qrange': '[2010-01-01T00:00:00Z TO 2011-01-01T00:00:00Z]', 'r_label': '2010'},
         '2009':  {'qrange': '[2009-01-01T00:00:00Z TO 2010-01-01T00:00:00Z]', 'r_label': '2009'},
         '2008':  {'qrange': '[2008-01-01T00:00:00Z TO 2009-01-01T00:00:00Z]', 'r_label': '2008'},
-        'nd'  :  {'qrange': '[* TO 1970-01-01T00:00:00Z]', 'r_label': 'non disponibile'}
     }
 
     def __init__(self, *args, **kwargs):
@@ -79,7 +79,17 @@ class ActSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
         extra = super(ActSearchView, self).extra_context()
         extra['base_url'] = reverse('om_act_search') + '?' + extra['params'].urlencode()
 
-        paginator = Paginator(self.results, 10)
+        person_slug = self.request.GET.get('person', None)
+        if person_slug:
+            try:
+                extra['person'] = Person.objects.get(slug=person_slug)
+            except ObjectDoesNotExist:
+                pass
+
+        # get data about custom date range facets
+        extra['facet_queries_date'] = self._get_custom_facet_queries_date()
+
+        paginator = Paginator(self.results, settings.HAYSTACK_SEARCH_RESULTS_PER_PAGE)
         page = self.request.GET.get('page', 1)
         try:
             page_obj = paginator.page(page)

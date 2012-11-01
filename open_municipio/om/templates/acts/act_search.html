@@ -40,9 +40,13 @@ em {
     {% if n_results %}
 
       <section>
-        <h3>{% if not query %}Tutti i {% endif %} {{ n_results }} documenti</h3>
+          <h3>{% if not query %}Trovati {% endif %} {{ n_results }} documenti</h3>
 
-        <table class="search-results">
+          {% if person %}
+              <p>per il politico:       {{ person }}  </p>
+          {% endif %}
+
+          <table class="search-results">
           <tbody>
           {% for result in page.object_list %}
           <tr>
@@ -88,14 +92,6 @@ em {
               <span id="clear-query" class="btn add-on"><i class="icon-remove"></i></span>
           {%  endspaceless %}
       </div><br/>
-      <div class="control-group input-append">
-          {%  spaceless %}
-              <input id="person" type="text" class="input-medium search-query"
-                     value="{% if person %}{{ person }}{% endif %}"
-                     placeholder="Inserisci il politico"/>
-              <span id="clear-location" class="btn add-on"><i class="icon-remove"></i></span>
-          {%  endspaceless %}
-      </div>
       <input id="person-id" name="{{ form.person.html_name }}"
              value="{% if form.person.value %}{{ form.person.value }}{% endif %}" type="hidden"/>
       <button type="submit" class="btn">Cerca</button>
@@ -181,27 +177,13 @@ em {
             <dl>
                 {% if not facet_queries_date.is_selected %}
                     <dt>{% trans 'Publishing date' %}</dt>
-                    {% if facet_queries_date.threedays.count %}
+                    {% for range in facet_queries_date.ranges|dictsortreversed:"key"  %}
                         <dd>
-                            <a href="{{ base_url }}&selected_facets={{ facet_queries_date.threedays.key }}">
-                                {% trans 'last three days' %}
-                            </a> ({{ facet_queries_date.threedays.count }})
+                            <a href="{{ base_url }}&selected_facets={{ range.key }}">
+                                {{ range.label|safe }}
+                            </a> ({{ range.count }})
                         </dd>
-                    {% endif %}
-                    {% if facet_queries_date.onemonth.count %}
-                        <dd>
-                            <a href="{{ base_url }}&selected_facets={{ facet_queries_date.onemonth.key }}">
-                                {% trans 'last month' %}
-                            </a> ({{ facet_queries_date.onemonth.count }})
-                        </dd>
-                    {% endif %}
-                    {% if facet_queries_date.oneyear.count %}
-                        <dd>
-                            <a href="{{ base_url }}&selected_facets={{ facet_queries_date.oneyear.key }}">
-                                {% trans 'last year' %}
-                            </a> ({{ facet_queries_date.oneyear.count }})
-                        </dd>
-                    {% endif %}
+                    {% endfor %}
                 {% endif %}
             </dl>
         </div>
