@@ -63,7 +63,13 @@ class TopicDetailView(DetailView):
 
         topic = context['topic']
         context['topic_type'] = self.topic_type
-        ta_ids = set([ta['content_object_id'] for ta in topic.tagged_acts.values('content_object_id')])
+
+        if self.topic_type == 'location':
+            tagged_act_id_field = 'act_id'
+        else:
+            tagged_act_id_field = 'content_object_id'
+
+        ta_ids = set([ta[tagged_act_id_field] for ta in topic.tagged_acts.values(tagged_act_id_field)])
         context['n_deliberation_proposals'] = Deliberation.objects.filter(pk__in=ta_ids, approval_date__isnull=True).count()
         context['n_deliberations'] = Deliberation.objects.filter(pk__in=ta_ids, approval_date__isnull=False).count()
         context['n_motions'] = Motion.objects.filter(pk__in=ta_ids).count()
