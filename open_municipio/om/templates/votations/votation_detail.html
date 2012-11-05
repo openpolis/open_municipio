@@ -5,7 +5,9 @@
 {% load bookmarking_tags %}
 {% load newscache_tags %}
 
-{% block title %}Dettaglio {{ votation }}{% endblock %}
+{% block title %}Dettaglio votazione {{ votation.act.emitting_institution }} N° {{ votation.act.idnum }},
+    seduta {{ votation.sitting.number }}
+    del {{ votation.act.presentation_date|date:"d F Y" }}{% endblock %}
 {% block content_header %}Votazione{% endblock %}
 {% block votations_class %}active{% endblock %}
 
@@ -40,7 +42,7 @@
 
   <table class="pull-right" id="votation_outcome">
     <tr>
-      {% if votation.outcome == votation.PASSED %}
+      {% if votation.outcome == 1 %}
       <td>{{ '<i class="icon-thumbs-up"></i>'|safe|circled:"voteok" }}</td>
       <td><p>Approvato</p></td>
       {% else %}
@@ -52,6 +54,7 @@
 
   <hgroup>
     <h1 class="highlight">Votazione <strong>N.{{ votation.idnum }}</strong></h1>
+    <h4><b>Seduta</b> n.{{ votation.sitting.number }} del {{ votation.sitting.date|date:"d/m/Y" }}</h4>
     <h2>
       <a href="#" id="{{ votation|as_token }}" class="bookmarkable"><i class="{% is_key_class votation %}"></i></a>
       {{ votation.act.title }}
@@ -85,7 +88,7 @@
         <td>{{ group_vote.n_yes }}</td>
         <td>{{ group_vote.n_no }}</td>
         <td>{{ group_vote.n_abst }}</td>
-        <td>{{ group_vote.n_absent }}</td>
+        <td>{{ group_vote.n_absents }}</td>
       </tr>
       {% endfor %}
     </tbody>
@@ -95,7 +98,7 @@
         <td>{{ votation.n_yes }}</td>
         <td>{{ votation.n_no }}</td>
         <td>{{ votation.n_abst }}</td>
-        <td>{{ votation.n_absent }}</td>
+        <td>{{ n_absents }}</td>
       </tr>
     </tfoot>
   </table>
@@ -266,7 +269,9 @@
 
   <hr>
 
+  {% comment %}
   {% news_for_object registered_user.get_profile as i_news %}
   {% include 'commons/news_list.html' with news_list=i_news news_title='Ultime sul Voto' %}
+  {% endcomment %}
 
 {% endblock sidebar %}

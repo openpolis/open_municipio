@@ -7,7 +7,7 @@ from open_municipio.om_search.mixins import FacetRangeDateIntervalsMixin
 from open_municipio.people.models import Person
 from django.utils.translation import ugettext_lazy as _
 
-from open_municipio.votations.models import Votation
+from open_municipio.votations.models import Votation, ChargeVote
 
 from open_municipio.acts.models import Agenda, Deliberation, Interrogation, Interpellation, Motion, Act
 
@@ -132,6 +132,7 @@ class VotationDetailView(DetailView):
         # get last two calendar events
 
         votation = self.get_object()
+        context['n_absents'] = votation.chargevote_set.filter(vote=ChargeVote.VOTES.absent).count()
         context['votation_difference'] = abs(votation.n_yes - votation.n_no)
         return context
 
