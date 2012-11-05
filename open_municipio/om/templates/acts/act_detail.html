@@ -61,8 +61,12 @@
   <div class="nav-tabs-container">
     <ul class="nav nav-tabs page-tabs">
       <li {% block act_tab_status_class %}class="active"{% endblock %}> <a href="{{ act.get_absolute_url }}">Stato</a></li>
-      <li {% block act_tab_documents_class %}{% endblock %}><a href="{{ act.get_absolute_url }}documents">Documenti</a></li>
-      <li><a href="/votations/?act_url={{ act.get_absolute_url }}"><strong>Voti</strong></a></li>
+      {% if n_documents %}
+          <li {% block act_tab_documents_class %}{% endblock %}><a href="{{ act.get_absolute_url }}documents">{{ n_documents }} Document{{ n_documents|pluralize:"o,i" }}</a></li>
+      {% endif %}
+      {% if n_votes %}
+          <li><a href="/votations/?act_url={{ act.get_absolute_url }}"><strong>{{ n_votes }} Vot{{ n_documents|pluralize:"o,i" }}</strong></a></li>
+      {% endif %}
     </ul>
   </div>
 

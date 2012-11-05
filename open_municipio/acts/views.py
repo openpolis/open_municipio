@@ -267,6 +267,9 @@ class ActDetailView(DetailView):
                 'tags' : Tag.objects.all()
             }
 
+        context['n_documents'] = act.attachment_set.count()
+        context['n_votes'] = act.votation_set.count()
+
         # retrieve a dictionary with status and its transitions
         context['transition_groups'] = act.get_transitions_groups()
 
