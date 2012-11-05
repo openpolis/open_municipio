@@ -25,6 +25,7 @@ setup(
         "django-extensions",
         "poster",
         "BeautifulSoup",
+        "PIL",
         "pysolr",
         "lxml == 2.3.5",
         "sorl-thumbnail",
