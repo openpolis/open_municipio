@@ -111,6 +111,20 @@ class CityGovernmentView(TemplateView):
         return context
 
 
+class CommitteeListView(ListView):
+    model = Institution
+    template_name = 'people/institution_committees.html'
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        extra_context = super(CommitteeListView, self).get_context_data(**kwargs)
+
+
+        extra_context['committees'] = municipality.committees.as_institution()
+        extra_context['events'] = Event.future.filter(institution__in=municipality.committees.as_institution())
+
+        return extra_context
+
 class CommitteeDetailView(DetailView):
     """
     Renders the Committee page

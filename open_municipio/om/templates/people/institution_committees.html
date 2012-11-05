@@ -1,0 +1,19 @@
+{% extends 'base_two_columns.html' %}
+
+{% block title %}Organi politici | Commissioni{% endblock title %}
+{% block content_header %}Organi politici{% endblock %}
+{% block institutions_class %}active{% endblock %}
+
+{% block content %}
+    <h2>Commissioni</h2>
+    <dl class="list-plain">
+        {% for committee in committees %}
+            <dt><a href="{{ committee.get_absolute_url }}"><strong>{{ committee.name }}</strong></a></dt>
+            <dd>{{ committee.description }}</dd>
+        {% endfor %}
+    </dl>
+{% endblock %}
+
+{% block sidebar %}
+    Ultime sulle commissioni
+{% endblock %}
