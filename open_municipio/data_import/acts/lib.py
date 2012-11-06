@@ -1,4 +1,6 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.utils import simplejson as json
+from django.db.utils import IntegrityError
 from django.db import transaction
 
 from open_municipio.data_import.lib import DataSource, BaseReader, BaseWriter, JSONWriter, XMLWriter, OMWriter
@@ -6,7 +8,7 @@ from open_municipio.data_import.lib import DataSource, BaseReader, BaseWriter, J
 from open_municipio.data_import.om_xml import *
 from open_municipio.data_import import conf
 from open_municipio.data_import.acts import conf as act_conf
-from open_municipio.data_import.models import ChargeSeekerMixin, PersonSeekerMixin
+from open_municipio.data_import.models import ChargeSeekerFromMapMixin
 
 from open_municipio.acts.models import Act as OMAct, \
     Deliberation as OMDeliberation, Motion as OMMotion, Agenda as OMAgenda, \
@@ -57,7 +59,7 @@ class BaseActsWriter(BaseWriter):
         self.logger.info("Preparing to import %d acts into OM ..." % len(acts))
         self.acts = acts
 
-class OMActsWriter(ChargeSeekerMixin, PersonSeekerMixin, BaseActsWriter, OMWriter):
+class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
     """
     A writer class which outputs acts data as objects in the OpenMunicio model.
     """
@@ -114,8 +116,10 @@ class OMActsWriter(ChargeSeekerMixin, PersonSeekerMixin, BaseActsWriter, OMWrite
         om_emitting = OMActsWriter._get_emitting_institution(act)
 
         create_defaults = {
+                    'idnum' : act.id,
                     'text' : act.content,
                     'emitting_institution': om_emitting,
+                    'transitions' : None
                 }
 
         if act_obj_type == "CouncilDeliberation":
@@ -140,19 +144,13 @@ class OMActsWriter(ChargeSeekerMixin, PersonSeekerMixin, BaseActsWriter, OMWrite
         if om_act.emitting_institution is None:
             raise Exception("The partially imported OM act is malformed: missing emitting institution")
 
-        om_institution = om_act.emitting_institution
-
         for curr_sub in act.subscribers:
-
-            om_p = self.lookup_person(curr_sub.person.id)
-
-            # TODO specify the date of when looking for the charge
-            om_ch = self.lookup_charge(om_p, om_institution)
+            om_ch = self.lookup_charge(curr_sub.charge.id)
 
             if om_ch is None:
-                raise Exception("Unable to find charge for %s in institution %s" % (om_p, om_institution))
+                raise Exception("Unable to find charge for %s" % curr_sub)
 
-            self.logger.info("Charge for subscriber: %s ..." % om_ch)
+            self.logger.info("Charge for subscriber: %s (was %s) ..." % (om_ch,curr_sub.charge.id))
 
             create_defaults = self._init_subscriber_create_defaults(om_act, om_ch)
 
@@ -161,10 +159,10 @@ class OMActsWriter(ChargeSeekerMixin, PersonSeekerMixin, BaseActsWriter, OMWrite
             )
 
             if created:
-                self.logger.info("Added charge %s as subscriber ..." % c_sub.id)
+                self.logger.info("Added charge %s as subscriber ..." % om_ch)
             else:
                 self.logger.info("Charge %s already known to be a subscriber ..."
-                    % c_sub.id)
+                    % om_ch)
 
     def write_act(self, act):
         
@@ -174,20 +172,39 @@ class OMActsWriter(ChargeSeekerMixin, PersonSeekerMixin, BaseActsWriter, OMWrite
         create_defaults = self._init_act_create_defaults(act)
 
         self.logger.info("Piece of content: %s ..." % act.content[0:30])
+#        self.logger.info("Defaults: %s ..." % create_defaults)
 
         om_type = self._detect_act_om_type(act)
-
+        self.logger.info("Detected type %s" % om_type)
         # TODO create the act and the subscribers as a transaction
 
-        (om_act, created) = om_type.objects.get_or_create(
-                idnum = act.id, defaults = create_defaults )
-        
+        created = False
+        try:
+            om_act = om_type.objects.get(idnum=act.id)
+            self.logger.info("Act already present ...")
+        except ObjectDoesNotExist:
+            self.logger.info("Act needs to be created ...")
+            om_act = om_type(**create_defaults)
+            try:
+                om_act.save()
+                created = True
+            except IntegrityError as ex:
+# TODO this exception should be fixed!!! - FS
+                self.logger.warning("Act saved. Integrity error: %s" % ex)
+                created = True
+            except Exception as ex:
+                self.logger.error("Act may not be saved. Error (%s): %s" % 
+                    (type(ex),ex))
+
+#        (om_act, created) = om_type.objects.get_or_create(
+#                idnum = act.id, defaults = create_defaults )
+#        
         if created:
-            self.logger.info("OM Act created %s. Let's add the subscribers ..." % act.id)
+            self.logger.info("OM act created %s. Let's add the subscribers ..." % om_act.idnum)
             self._add_subscribers(act, om_act)
 
         else:
-            self.logger.info("OM Act already present %s" % act.id)
+            self.logger.info("OM act already present %s" % om_act.idnum)
 
 
 
@@ -265,22 +282,28 @@ class Person:
 class Charge:
     id = ""
     start_date = ""
-    person = None
+#    person = None
+    charge = None
     name = None
     description = ""
     
-    def __init__(self, id, start_date, person, name, description):
+    def __init__(self, id, start_date, charge, name, description):
         self.id = id
         self.start_date = start_date
-        self.person = person
+#        self.person = person
+        self.charge = charge
         self.name = name
         self.description = description
         
     def __str__(self):
-        return "%s as %s from %s (%s)" % (self.person, self.name, self.start_date, self.id)
+#        return "%s as %s from %s (%s)" % (self.person, self.name, self.start_date, self.id)
+        return "%s as %s from %s (%s)" % (self.charge, self.name, \
+            self.start_date, self.id)
     
     def __unicode__(self):
-        return u"ciao" # u"%s as %s from %s (%s)" % (self.person, self.name, self.start_date, self.id)
+#        return u"%s as %s from %s (%s)" % (self.person, self.name, self.start_date, self.id)
+        return u"%s as %s from %s (%s)" % (self.charge, self.name, \
+            self.start_date, self.id)
     
 # institution section
     
@@ -302,15 +325,22 @@ class CityCouncil(Institution):
     pass
     
 class Subscriber:
-    person = None
+    charge = None
+#    person = None
     type = "" # first subscriber or co-subscriber
  
-    def __init__(self, person, type):
-        self.person = person
+#    def __init__(self, person, type):
+#        self.person = person
+#        self.type = type
+#
+    def __init__(self, charge, type):
+        self.charge = charge
         self.type = type
 
     def __str__(self):
-        return "%s (%s)" % (self.person, self.type)
+#        return "%s (%s)" % (self.person, self.type)
+        return "%s (%s)" % (self.charge, self.type)
 
     def __unicode__(self):
-        return u"%s (%s)" % (self.person, self.type)
+#        return u"%s (%s)" % (self.person, self.type)
+        return u"%s (%s)" % (self.charge, self.type)
