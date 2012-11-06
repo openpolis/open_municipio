@@ -135,6 +135,8 @@ INSTALLED_APPS = (
     'open_municipio.newscache',
     'open_municipio.data_import',
     'sorl.thumbnail',
+    # TinyMCE
+    'tinymce',
 )
 
 COMMENTS_APP = 'open_municipio.om_comments'

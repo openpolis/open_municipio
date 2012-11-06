@@ -5348,3 +5348,9 @@ ul.rank {
 ul.rank li {
   padding: 4px 0;
 }
+.modal.large {
+  width: 780px;
+  margin-left: -390px;
+  /* - width/2 */
+
+}
