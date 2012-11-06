@@ -348,6 +348,21 @@ class Deliberation(Act):
         verbose_name = _('deliberation')
         verbose_name_plural = _('deliberations')
 
+    @property
+    def next_events(self):
+        """
+        returns the next Events
+        """
+        from open_municipio.events.models import Event
+        return Event.future.filter(acts__id=self.id)
+
+    @property
+    def next_event(self):
+        """
+        returns the next Event or None
+        """
+        return self.next_events[0] if self.next_events else None
+
     @models.permalink
     def get_absolute_url(self):
         return ('om_deliberation_detail', (), {'pk': str(self.pk)})

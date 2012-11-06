@@ -3,6 +3,9 @@ from django.utils.translation import ugettext_lazy as _
 from open_municipio.taxonomy.models import Category, Tag
 
 
+class TagAdmin(admin.ModelAdmin):
+    fields = ()
+
 class CategoryAdmin(admin.ModelAdmin):
     fields = ('name', 'slug')
     prepopulated_fields = {"slug": ("name",)}
