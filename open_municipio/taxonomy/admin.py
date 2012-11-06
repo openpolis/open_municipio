@@ -4,12 +4,13 @@ from open_municipio.taxonomy.models import Category, Tag
 
 
 class TagAdmin(admin.ModelAdmin):
-    fields = ()
+    list_display = ('name', 'count')
 
 class CategoryAdmin(admin.ModelAdmin):
+    list_display = ('name', 'count')
     fields = ('name', 'slug')
     prepopulated_fields = {"slug": ("name",)}
 
 admin.site.register(Category, CategoryAdmin)
-admin.site.register(Tag)
+admin.site.register(Tag, TagAdmin)
 
