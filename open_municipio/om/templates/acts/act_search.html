@@ -140,7 +140,7 @@ em {
                     {% endfor %}
                 {% endif %}
             </dl>
-            {% if facets.fields.is_proposal.counts.0.1 and  facets.fields.is_proposal.counts.0.1 %}
+            {% if show_is_proposal_facets %}
             <dl>
                 {% if facets.fields.is_proposal and not facets.fields.is_proposal.is_field_selected %}
                     <dt>{{ facets_labels.is_proposal }}</dt>
@@ -157,10 +157,10 @@ em {
                 {% endif %}
             </dl>
             {% endif %}
+            {% if show_initiative_facets %}
             <dl>
-                {% if facets.fields.initiative and not facets.fields.initiative.is_field_selected %}
+                {% if facets.fields.initiative and not facets.fields.initiative.is_field_selected  %}
                     <dt>{{ facets_labels.initiative }}</dt>
-                    {# Provide both cases (true, false) #}
                     {% for t in facets.fields.initiative.counts %}
                         <dd>
                             {% if not t.2 %}
@@ -170,6 +170,7 @@ em {
                     {% endfor %}
                 {% endif %}
             </dl>
+            {% endif %}
             <dl>
                 {% if facets.fields.organ and not facets.fields.organ.is_field_selected %}
                     <dt>{{ facets_labels.organ }}</dt>

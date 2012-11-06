@@ -123,6 +123,12 @@ class ActSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
         extra['facets_sorted'] = self.FACETS_SORTED
         extra['facets_labels'] = self.FACETS_LABELS
 
+        # check if is_proposal facets must be shown
+        extra['show_is_proposal_facets'] = sum(map(lambda x: x[1], extra['facets']['fields']['is_proposal']['counts']))
+
+        # check if initiative facets must be shown
+        extra['show_initiative_facets'] = sum(map(lambda x: x[1], extra['facets']['fields']['initiative']['counts']))
+
         paginator = Paginator(self.results, settings.HAYSTACK_SEARCH_RESULTS_PER_PAGE)
         page = self.request.GET.get('page', 1)
         try:
