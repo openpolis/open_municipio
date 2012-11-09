@@ -1,3 +1,4 @@
+import traceback
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils import simplejson as json
 from django.db.utils import IntegrityError
@@ -191,6 +192,8 @@ class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
             except IntegrityError as ex:
 # TODO this exception should be fixed!!! - FS
                 self.logger.warning("Act saved. Integrity error: %s" % ex)
+                self.logger.warning("Integrity error trace: %s" % 
+                    traceback.format_exc())
                 created = True
             except Exception as ex:
                 self.logger.error("Act may not be saved. Error (%s): %s" % 
