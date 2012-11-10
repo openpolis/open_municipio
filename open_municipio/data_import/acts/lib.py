@@ -130,11 +130,16 @@ class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
 
         return create_defaults
    
-    def _init_subscriber_create_defaults(self, om_act, om_charge):
+    def _init_subscriber_create_defaults(self, om_act, om_charge, type, date=None):
         create_defaults = {
             'charge' : om_charge,
             'act' : om_act,
+            'support_type' : type,
         }
+
+        if date != None:
+            create_defaults['support_date'] = date
+
         return create_defaults
 
     def _add_subscribers(self, act, om_act):
@@ -153,7 +158,14 @@ class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
 
             self.logger.info("Charge for subscriber: %s (was %s) ..." % (om_ch,curr_sub.charge.id))
 
-            create_defaults = self._init_subscriber_create_defaults(om_act, om_ch)
+            # detect support type
+            om_support_type = OMActSupport.SUPPORT_TYPE.co_signer
+            if curr_sub.type == "first_subscriber":
+                om_support_type = OMActSupport.SUPPORT_TYPE.first_signer
+            self.logger.info("Mapping subscriber type: %s -> %s" % (curr_sub.type,om_support_type))
+
+            create_defaults = self._init_subscriber_create_defaults(om_act, om_ch,
+                om_support_type)
 
             (om_sub, created) = OMActSupport.objects.get_or_create(
                 act = om_act, charge = om_ch, defaults = create_defaults
