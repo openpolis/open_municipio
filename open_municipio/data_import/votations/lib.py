@@ -176,8 +176,9 @@ class DBVotationWriter(BaseVotationWriter):
                     vote=ChargeVote.VOTES.absent
                 )
 
-
-
+        # update n_absents for the whole votation
+        votation.n_absents = votation.charge_votes.filter(vote=ChargeVote.VOTES.absent).count()
+        votation.save()
 
     def update_rebel_caches(self, votation):
         """
