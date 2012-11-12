@@ -1,5 +1,7 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils import simplejson as json
+import re
+from open_municipio.acts.models import Act
 from open_municipio.data_import.lib import DataSource, BaseReader, BaseWriter, JSONWriter, XMLWriter, valid_XML_char_ordinal
 # import OM-XML language tags
 from open_municipio.data_import.om_xml import *
@@ -335,7 +337,7 @@ class DBVotationWriter(BaseVotationWriter):
 
                 if not self.dry_run:
 
-                    # get or create the sitting in the DB
+                    # get or create the ballot in the DB
                     b, created = DBBallot.objects.get_or_create(
                         idnum=int(ballot.seq_n),
                         sitting=s,
@@ -353,8 +355,27 @@ class DBVotationWriter(BaseVotationWriter):
                     )
                     if created:
                         self.logger.debug("%s created in DB" % b)
+
+                        # try to link to an act
+                        self.logger.debug("act_descr: %s" % b.act_descr.strip())
+                        m = re.match(r"(.+)-(.+)", b.act_descr.strip())
+                        if m:
+                            act_idnum = str(m.group(1))
+                            self.logger.debug("act_idnum: %s" % act_idnum)
+                            linked_act = Act.objects.get(idnum=act_idnum)
+                            if isinstance(linked_act, Act):
+                                try:
+                                    b.act = linked_act.downcast()
+                                    b.save()
+                                    self.logger.info("act was linked: %s" % b.act)
+                                except ObjectDoesNotExist:
+                                    self.logger.info("act was not linked")
+
+
+
                     else:
                         self.logger.debug("%s found in DB" % b)
+
 
                 if self.dry_run:
                     continue
