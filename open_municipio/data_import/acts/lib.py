@@ -1,4 +1,7 @@
+import os
 import traceback
+
+from django.core.files import File
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils import simplejson as json
 from django.db.utils import IntegrityError
@@ -13,7 +16,7 @@ from open_municipio.data_import.models import ChargeSeekerFromMapMixin
 
 from open_municipio.acts.models import Act as OMAct, \
     Deliberation as OMDeliberation, Motion as OMMotion, Agenda as OMAgenda, \
-    ActSupport as OMActSupport
+    ActSupport as OMActSupport, Attach as OMAttach
 
 from lxml import etree
 from types import NoneType
@@ -67,11 +70,12 @@ class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
     
     @transaction.commit_on_success
     def write(self):
+        self.logger.info("Acts to write: %d" % len(self.acts.values()))
         for act in self.acts.values():
             try:
                 self.write_act(act)
             except Exception, e:
-                self.logger.error("Error storing act into OM (%s) : %s" % (act, e))
+                self.logger.error("Error storing act into OM (%s) : %s. Trace: %s" % (act, e, traceback.format_exc()))
  
     @staticmethod
     def _get_initiative(act):
@@ -141,6 +145,29 @@ class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
             create_defaults['support_date'] = date
 
         return create_defaults
+
+    def _add_attachments(self, act, om_act):
+        if act == None or om_act == None:
+            raise Exception("Cannot add an attachment if you don't pass both the parsed act and the partially imported OM act.")
+
+        self.logger.info("Attachments to add: %d" % len(act.attachments))
+        for curr_att in act.attachments:
+            self.logger.info("Processing attachment file %s" % curr_att.path)
+            f = File(open(curr_att.path))
+            defaults = {
+                'file' : f,
+                'act' : om_act,
+                'document_type' : curr_att.type,
+                'document_size' : f.size
+            }
+            om_attachment = OMAttach(**defaults)
+            try:
+                om_attachment.save()
+                self.logger.info("Attachment imported correctly: %s" % 
+                    curr_att.path)
+            except Exception as e:
+                self.logger.warning("Error importing attachment %s: %s" % 
+                    (curr_att.path, e))
 
     def _add_subscribers(self, act, om_act):
 
@@ -218,6 +245,9 @@ class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
             self.logger.info("OM act created %s. Let's add the subscribers ..." % om_act.idnum)
             self._add_subscribers(act, om_act)
 
+            self.logger.info("Now let's add the attachment...")
+            self._add_attachments(act, om_act)
+
         else:
             self.logger.info("OM act already present %s" % om_act.idnum)
 
@@ -235,6 +265,7 @@ class Act:
     file = None
     subscribers = [] # list of Charges
     emitting_institution = ""
+    attachments = [] # list of Attachment (usually one is enough ...)
     
     
     def add_subscriber(self, charge):
@@ -273,6 +304,16 @@ class Attachment:
     description = ""
     file = None
     type = "" # type of file (define an array of possible file types)
+
+    def __init__(self, path, description=None, type=None):
+        if path == "":
+            raise Exception("It is not possible to specify an empty path as attachment")
+        if not os.path.exists(path):
+            raise Exception("The specified attachment path %s does not exist" % path)
+        self.path = path
+        self.description = description
+        self.type = type
+
     
 # people section
 
@@ -338,7 +379,7 @@ class CityGovernment(Institution):
 
 class CityCouncil(Institution):
     pass
-    
+ 
 class Subscriber:
     charge = None
 #    person = None
