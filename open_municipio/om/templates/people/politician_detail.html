@@ -35,12 +35,12 @@
     <div class="span8">
 
       <header class="clearfix">
-        <img src="{{ STATIC_URL }}img/placehold/100.gif" class="thumb-left">
         {% comment %}
-            {% thumbnail person.img "100x100" crop="center" as im %}
-              <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" class="thumb-left">
-            {% endthumbnail %}
+        <img src="{{ STATIC_URL }}img/placehold/100.gif" class="thumb-left">
         {% endcomment %}
+        {% thumbnail person.img "100x100" crop="center" as im %}
+          <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" class="thumb-left">
+        {% endthumbnail %}
         <h1>
           {% if person.is_om_user %}
             <i class="icon-ok" title="{{ person }} è iscritto a Open municipio"></i>
