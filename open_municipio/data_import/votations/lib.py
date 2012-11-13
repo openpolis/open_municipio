@@ -359,7 +359,7 @@ class DBVotationWriter(BaseVotationWriter):
 
                         # try to link to an act
                         self.logger.debug("act_descr: %s" % b.act_descr.strip())
-                        m = re.match(r"(.+)-(.+)", b.act_descr.strip())
+                        m = re.match(r"(.+?)-(.+)", b.act_descr.strip())
                         if m:
                             act_idnum = str(m.group(1))
                             self.logger.debug("act_idnum: %s" % act_idnum)
