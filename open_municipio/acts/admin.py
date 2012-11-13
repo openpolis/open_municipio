@@ -39,9 +39,9 @@ class AttachInline(admin.StackedInline):
     model = Attach
     extra = 0
 
-class EmendationInline(admin.StackedInline): 
+class AmendmentInline(admin.StackedInline):
     fk_name = 'act'
-    model = Emendation
+    model = Amendment
     extra = 0
 
 class TransitionInline(admin.TabularInline):
@@ -59,6 +59,7 @@ class TransitionInline(admin.TabularInline):
         return super(TransitionInline, self).get_formset(request, obj, **kwargs)
 
 class ActAdmin(admin.ModelAdmin):
+    search_fields = ('idnum', 'title',)
 
     # genial hack to allow users with no permissions to show
     # the list of related acts for a raw field
@@ -73,7 +74,7 @@ class ActAdmin(admin.ModelAdmin):
     def change_view(self, request, object_id, extra_context=None):
 
         if request.user.is_superuser:
-            self.inlines = [PresenterInline, AttachInline, TransitionInline, EmendationInline]
+            self.inlines = [PresenterInline, AttachInline, TransitionInline, AmendmentInline]
             self.readonly = ['status']
         else:
             self.inlines = [TransitionInline]
@@ -95,8 +96,8 @@ class CalendarAdmin(admin.ModelAdmin):
 class ActAdminWithAttaches(admin.ModelAdmin):
     inlines = [AttachInline, TransitionInline]
 
-class ActAdminWithEmendations(admin.ModelAdmin):
-    inlines = [EmendationInline]
+class ActAdminWithAmendments(admin.ModelAdmin):
+    inlines = [AmendmentInline]
 
 class MotionAdmin(ActAdmin):
     fieldsets = (
@@ -150,6 +151,6 @@ admin.site.register(Interrogation, InterrogationAdmin)
 admin.site.register(Interpellation)
 admin.site.register(Motion, MotionAdmin)
 admin.site.register(Calendar, CalendarAdmin)
-admin.site.register(Emendation, ActAdminWithAttaches)
+admin.site.register(Amendment, ActAdminWithAttaches)
 admin.site.register(Attach)
 admin.site.register(Transition)

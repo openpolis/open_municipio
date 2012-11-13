@@ -111,6 +111,20 @@ class CityGovernmentView(TemplateView):
         return context
 
 
+class CommitteeListView(ListView):
+    model = Institution
+    template_name = 'people/institution_committees.html'
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        extra_context = super(CommitteeListView, self).get_context_data(**kwargs)
+
+
+        extra_context['committees'] = municipality.committees.as_institution()
+        extra_context['events'] = Event.future.filter(institution__in=municipality.committees.as_institution())
+
+        return extra_context
+
 class CommitteeDetailView(DetailView):
     """
     Renders the Committee page
@@ -133,16 +147,16 @@ class CommitteeDetailView(DetailView):
         # fetch charges and add group
         president = self.object.president
         if president:
-            president.group = InstitutionCharge.objects.select_related().\
+            president.group = InstitutionCharge.objects.current().select_related().\
                                   get(pk=president.charge.original_charge_id).council_group
         vicepresidents = self.object.vicepresidents
         for vp in vicepresidents:
             if vp:
-                vp.group = InstitutionCharge.objects.select_related().\
+                vp.group = InstitutionCharge.objects.current().select_related().\
                     get(pk=vp.charge.original_charge_id).council_group
         members = self.object.members.order_by('person__last_name')
         for m in members:
-            m.group = InstitutionCharge.objects.select_related().\
+            m.group = InstitutionCharge.objects.current().select_related().\
                 get(pk=m.original_charge_id).council_group
 
 
@@ -182,68 +196,71 @@ class PoliticianDetailView(DetailView):
             (r['resource_type'], {'value': r['value'], 'description': r['description']})
             for r in self.object.resources.values('resource_type', 'value', 'description')
         )
-        context['current_charges'] = self.object.current_institution_charges.exclude(
+        context['current_charges'] = self.object.get_current_institution_charges().exclude(
             institutionresponsability__charge_type__in=(
                 InstitutionResponsability.CHARGE_TYPES.mayor,
             ),
             institutionresponsability__end_date__isnull=True
         )
-        context['current_committee_charges'] = self.object.current_committee_charges
+        context['current_committee_charges'] = self.object.get_current_committee_charges()
+        context['is_counselor'] = self.object.is_counselor()
+        context['current_counselor_charge'] = self.object.current_counselor_charge()
+
+        context['current_groupcharge'] = self.object.current_groupcharge
+
+        historical_groupcharges = self.object.historical_groupcharges
+        context['historical_groupcharges'] = historical_groupcharges.order_by('start_date') if historical_groupcharges else None
 
         # Is politician a counselor? If so, we show present/absent
         # graph
-        for charge in context['current_charges']:
-            if charge.institution.institution_type == Institution.COUNCIL:
-                # Calculate average present/absent for counselors
-                percentage_present = 0
-                percentage_absent = 0
-                n_counselors = len(municipality.council.charges)
-                for counselor in municipality.council.charges:
-                    n_votations = counselor.n_present_votations \
-                        + counselor.n_absent_votations
-                    if n_votations > 0:
-                        percentage_present += \
-                            float(counselor.n_present_votations) / n_votations
-                        percentage_absent += \
-                            float(counselor.n_absent_votations) / n_votations
-                # Empty city council? That can't be the case!
-                # n_counselors is supposed to be > 0
-                context['percentage_present_votations_average'] = \
-                    "%.1f" % (float(percentage_present) / n_counselors * 100)
-                context['percentage_absent_votations_average'] = \
-                    "%.1f" % (float(percentage_absent) / n_counselors * 100)
+        if context['is_counselor']:
+            # Calculate average present/absent for counselors
+            percentage_present = 0
+            percentage_absent = 0
+            n_counselors = len(municipality.council.charges)
+            for counselor in municipality.council.charges:
+                n_votations = counselor.n_present_votations \
+                    + counselor.n_absent_votations
+                if n_votations > 0:
+                    percentage_present += \
+                        float(counselor.n_present_votations) / n_votations
+                    percentage_absent += \
+                        float(counselor.n_absent_votations) / n_votations
+            # Empty city council? That can't be the case!
+            # n_counselors is supposed to be > 0
+            context['percentage_present_votations_average'] = \
+                "%.1f" % (float(percentage_present) / n_counselors * 100)
+            context['percentage_absent_votations_average'] = \
+                "%.1f" % (float(percentage_absent) / n_counselors * 100)
 
-                # Calculate present/absent for current counselor
-                charge.n_total_votations = 0
-                charge.percentage_present_votations = charge.percentage_absent_votations = 0.0
+            # Calculate present/absent for current counselor
+            charge = context['current_counselor_charge']
+            charge.percentage_present_votations = charge.percentage_absent_votations = 0.0
 
-                if charge.n_total_votations > 0:
-                    charge.n_total_votations = \
-                        charge.n_present_votations + charge.n_absent_votations
-                    charge.percentage_present_votations = \
-                        "%.1f" % (float(charge.n_present_votations) / \
-                                      charge.n_total_votations * 100.00)
-                    charge.percentage_absent_votations = \
-                        "%.1f" % (float(charge.n_absent_votations) / \
-                                      charge.n_total_votations * 100.00)
+            if charge.n_present_votations + charge.n_absent_votations > 0:
+                context['n_total_votations'] = charge.n_present_votations + charge.n_absent_votations
+                context['percentage_present_votations'] = \
+                    "%.1f" % (float(charge.n_present_votations) /\
+                              context['n_total_votations'] * 100.00)
+                context['percentage_absent_votations'] = \
+                    "%.1f" % (float(charge.n_absent_votations) /\
+                              context['n_total_votations'] * 100.00)
 
-                self.object.counselor_charge = charge
-                break
 
         # Current politician's charge votes for key votations
-        unsorted_current_charge_votes = []
-        for charge in context['current_charges']:
-            charge_votes = ChargeVote.objects\
-                .filter(charge=charge).filter(votation__is_key=True)
-            unsorted_current_charge_votes += charge_votes
-        # Sort by date 
-        current_charge_votes = sorted(
-            unsorted_current_charge_votes,
-            key=attrgetter('votation.sitting.date'),
-            reverse=True
-            )
-        # Pass data to template
-        context['current_charge_votes'] = current_charge_votes
+        # last 10 are passed to template
+        charge = context['current_counselor_charge']
+        if charge:
+            context['current_charge_votes'] = charge.chargevote_set \
+                .filter(votation__is_key=True) \
+                .order_by('-votation__sitting__date')[0:10]
+
+        # last 10 presented acts
+        presented_acts = Act.objects\
+            .filter(actsupport__charge__pk__in=self.object.current_institution_charges)\
+            .order_by('-presentation_date')
+        context['n_presented_acts'] = presented_acts.count()
+        context['presented_acts'] = presented_acts[0:10]
 
         # is the user monitoring the act?
         context['is_user_monitoring'] = False
@@ -263,7 +280,7 @@ class PoliticianDetailView(DetailView):
             context['is_user_monitoring'] = False
 
         context['person_topics'] = []
-        for topics in [y.topics for x in self.object.current_institution_charges for y in x.presented_act_set.all() ]:
+        for topics in [y.topics for x in self.object.get_current_institution_charges() for y in x.presented_act_set.all() ]:
             for topic in topics:
                 context['person_topics'].append(topic)
 

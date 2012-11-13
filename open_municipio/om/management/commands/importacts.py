@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+## DEPRECATED - use import tasks in instances
+
 from optparse import make_option
 import os
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
@@ -88,7 +90,7 @@ class Command(LabelCommand):
 
                 try:
                     person = Person.objects.get(pk=int(om_id))
-                    charge =  person.current_institution_charge(institution)
+                    charge =  person.get_current_charge_in_institution(institution)
                     return charge
                 except ObjectDoesNotExist:
                     self.stderr.write("Warning: could not find person or charge for id = %s in open municipio DB. Skipping.\n" % charge_id)
@@ -231,7 +233,7 @@ class Command(LabelCommand):
                 )
                 continue
                 # transform xml value into database string
-            initiative = Deliberation.INITIATIVE_CHOICES.__dict__['_choice_dict'][initiative]
+            initiative = Deliberation.INITIATIVE_TYPES.__dict__['_choice_dict'][initiative]
 
             presentation_date = xml_act.get("presentation_date")
             if presentation_date is None:

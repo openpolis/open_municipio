@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+Soluzione temporanea per il file people.xml db atti formali.
+
+E' un elenco di persone, con nome e cognome e il codice interno del db atti 
+formali.
+La sezione Institutions si riferisce alla persona che ricopre un dato incarico
+tramite il personID.
+Gli identificatori usati in questo file (personID, chargeID), sono scelti dal
+*fornitore di dati*, che e` responsabile per il loro uso consistente (anche
+in relazione ad eventuali altri file che lo stesso fornitore spedira` ad
+OpenMunicipio).
+
+I valori possibili:
+ - mayor (sindaco)
+ - firstdeputy (vice sindaco)
+ - deputy (assessore)
+ - counselor (consigliere)
+-->
+<om:Subjects xmlns:xlink="http://www.w3.org/1999/xlink"
+     xmlns:om="http://www.openmunicipio.it"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.openmunicipio.it OM-XML.xsd">
+    <om:People>
+    
+        <om:Person id="IVLE" first_name="Ivo" last_name="Lenardon" sex="m" />
+        <om:Person id="SACO" first_name="Salvatore" last_name="Cortis" />
+        <om:Person id="GIGO" first_name="Giacomo" last_name="Gonfiotti" sex="m"/>
+    
+        <om:Person id="GIBI" first_name="Giovanna" last_name="Biancucci" sex="f"/>
+    </om:People>
+    <om:Institutions>
+        <om:Mayor>
+            <om:Charge id="themayor" personID="IVLE" />
+        </om:Mayor>
+        <om:CityGovernment>
+            <om:Charge id="deputy1" personID="GICO" />
+        </om:CityGovernment>
+        <om:Council>
+            <om:Charge id="councelor1" personID="SACO" />
+            <om:Charge id="councelor2" personID="GICO" />
+        </om:Council>
+    </om:Institutions>
+</om:Subjects>

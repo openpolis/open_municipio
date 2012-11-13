@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OpenMunicipio
+	xmlns="http://www.openmunicipio.it"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.openmunicipio.it OM-XML.xsd">
+	<Subjects>
+        <People>
+	        <Person id="PP" last_name="Poppi" first_name="Pippo"/>
+			<Person id="1112223334445556" last_name="AAAA" 
+							first_name="BBBB" 
+                            ssn="1112223334445556"/>
+			<Person id="FF" last_name="Foo" first_name="Fie" 
+                birth_date="2008-01-01" sex="m" birth_place="Senigallia (AN)"
+                ssn="AAABBBCCC4445556" />
+        </People>
+		<Institutions>
+			<Mayor name="sior Sindaco">
+				<Charge id="ilsindaco" personID="PP" />
+			</Mayor>
+			<Council >
+					<Charge id="assessoreuniverso" start_date="2011-01-01T00:00:00" personID="1112223334445556" />
+					<Charge  id="assessoresport" start_date="2011-01-01T00:00:00" end_date="2011-12-31T00:00:00" personID="FF" />
+					<Charge  id="assessoretempolibero" start_date="2011-01-01T00:00:00" end_date="2011-12-31T00:00:00" personID="FF" />
+			</Council>
+		</Institutions>
+	</Subjects>
+	<Acts>
+		<ActsCouncil>
+			<Motion id="M.123.a" >
+				<Content>
+                    <Title>This is a very important motion</Title>
+					<Section>
+                        <Title>Introduction</Title>
+                        <Content>
+                            This is the introduction of this very important
+                            motion.
+                        </Content>
+					</Section>
+					<Section>
+                        <Title>Chapter 1</Title>
+                        <Content>
+    						This is the first and most important part of 
+                            this motion
+                        </Content>
+					</Section>
+				</Content>
+				<ActSubscribers >
+					<ActSubscriber chargeID="ilsindaco" 
+                        type="first_subscriber"/>
+				</ActSubscribers>
+				<MotionTransition name="Presented" date="2012-01-01T00:00:00" />
+			</Motion>
+			<Motion id="M.123.b" >
+                <Content>
+                    <Title>Titolo della mozione</Title>
+	    			<Content>
+		    			Contenuto della mozione
+			    	</Content>
+                </Content>
+				<ActSubscribers>
+					<ActSubscriber chargeID="assessoresport" 
+                        type="first_subscriber" />
+					<ActSubscriber chargeID="assessoretempolibero" 
+                        type="co_signer"/>
+				</ActSubscribers>
+				<MotionTransition name="Presented" date="2012-01-01T00:00:00" />
+				<MotionTransition name="Voted" date="2012-01-02T00:00:00" />
+				<MotionTransition name="Accepted" date="2012-01-02T00:00:00" />
+			</Motion>
+		</ActsCouncil>
+	</Acts>
+</OpenMunicipio>

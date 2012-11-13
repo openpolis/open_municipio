@@ -108,6 +108,10 @@ class Category(SlugModel, MonitorizedItem):
     def tags(self):
         return self.tag_set.all()
 
+    @property
+    def tagged_acts(self):
+        return self.taggedact_set.all()
+
 
 @receiver(post_tagging, sender=TaggedAct)
 def new_tagging(**kwargs):

@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.db import models
 from django.db.models import permalink
 from django.utils.datetime_safe import date
@@ -15,7 +15,7 @@ from model_utils.managers import PassThroughManager
 from sorl.thumbnail import ImageField
 
 from open_municipio.monitoring.models import Monitoring, MonitorizedItem
-from open_municipio.newscache.models import News
+from open_municipio.newscache.models import NewsTargetMixin
 from open_municipio.people.managers import TimeFramedQuerySet
 from open_municipio.om_utils.models import SlugModel
 
@@ -42,7 +42,7 @@ class Person(models.Model, MonitorizedItem):
 
     img = ImageField(upload_to="person_images", blank=True, null=True)
 
-# manager to handle the list of monitoring having as content_object this instance
+    # manager to handle the list of monitoring having as content_object this instance
     #monitoring_set = generic.GenericRelation(Monitoring, object_id_field='object_pk')
     
     class Meta:
@@ -50,7 +50,7 @@ class Person(models.Model, MonitorizedItem):
         verbose_name_plural = _('people')
    
     def __unicode__(self):
-        return '%s %s' % (self.first_name, self.last_name)
+        return u'%s %s' % (self.first_name, self.last_name)
 
     def save(self, *args, **kwargs):
         if self.slug is None:
@@ -82,33 +82,111 @@ class Person(models.Model, MonitorizedItem):
         Returns the QuerySet of all institution charges held by this person during his/her career.
         """
         return self.institutioncharge_set.select_related().all()
-    
-    @property
-    def current_institution_charges(self):
+
+    def get_current_institution_charges(self, moment=None):
         """
-        Returns the current institution charges (no committees).
+        Returns the current institution charges at the given moment (no committees).
         """
-        return self.institutioncharge_set.select_related().current().exclude(
+        return self.institutioncharge_set.select_related().current(moment=moment).exclude(
             institution__institution_type__in=(Institution.COMMITTEE, Institution.JOINT_COMMITTEE)
         )
+    current_institution_charges = property(get_current_institution_charges)
 
-    @property
-    def current_committee_charges(self):
-        return self.institutioncharge_set.select_related().current().filter(
+    def get_current_committee_charges(self, moment=None):
+        """
+        Returns the current committee charges, at the given moment.
+        """
+        return self.institutioncharge_set.select_related().current(moment=moment).filter(
             institution__institution_type__in=(Institution.COMMITTEE, Institution.JOINT_COMMITTEE)
         ).order_by('-institutionresponsability__charge_type')
+    current_committee_charges = property(get_current_committee_charges)
 
-    def current_institution_charge(self, institution):
-        return self.institutioncharge_set.select_related().current().get(
+    def get_current_charge_in_institution(self, institution, moment=None):
+        """
+        Returns the current charge in the given institution at the given moment.
+        Returns empty array if no charges are found.
+        """
+        charges = self.institutioncharge_set.select_related().current(moment=moment).filter(
             institution=institution
         )
+        if charges.count() == 1:
+            return charges[0]
+        elif charges.count() == 0:
+            raise ObjectDoesNotExist
+        else:
+            raise MultipleObjectsReturned
 
-    def has_current_charges(self):
-        if self.institutioncharge_set.current().count() > 0:
+    def has_current_charges(self, moment=None):
+        """
+        Used for admin interface
+        """
+        if self.institutioncharge_set.current(moment).count() > 0:
             return True
         else:
             return False
     has_current_charges.short_description = _('Current')
+
+    def is_counselor(self, moment=None):
+        """
+        check if the person is a member of the council at the given moment
+        """
+        if self.current_counselor_charge(moment):
+            return True
+        else:
+            return False
+
+    def current_counselor_charge(self, moment=None):
+        """
+        fetch the current charge in Council, if any
+        """
+        i = Institution.objects.get(institution_type=Institution.COUNCIL)
+        try:
+            ic = self.get_current_charge_in_institution(i, moment)
+            return ic
+        except ObjectDoesNotExist:
+            return None
+
+
+    def get_historical_groupcharges(self, moment=None):
+        """
+        Returns all groupcharges for the person
+        """
+        i = Institution.objects.get(institution_type=Institution.COUNCIL)
+        try:
+            ic = self.get_current_charge_in_institution(i, moment)
+            gc = GroupCharge.objects.select_related().past(moment).filter(charge=ic)
+        except ObjectDoesNotExist:
+            gc = None
+        return gc
+    historical_groupcharges = property(get_historical_groupcharges)
+
+
+    def get_current_groupcharge(self, moment=None):
+        """
+        Returns GroupCharge at given moment in time (now if moment is None)
+        Charge is the IntstitutionalCharge in the council
+        """
+        i = Institution.objects.get(institution_type=Institution.COUNCIL)
+        try:
+            ic = self.get_current_charge_in_institution(i, moment)
+            gc = GroupCharge.objects.select_related().current(moment).get(charge=ic)
+        except ObjectDoesNotExist:
+            gc = None
+        return gc
+    current_groupcharge = property(get_current_groupcharge)
+
+    def get_current_group(self, moment=None):
+        """
+        Returns group at given moment in time (now if moment is None)
+        Group is computed from GroupCharge where Charge is the IntstitutionalCharge in the council
+        Returns None if there is no current group.
+        """
+        gc = self.get_current_groupcharge(moment)
+        if gc is None:
+            return None
+        return gc.group
+    current_group = property(get_current_group)
+
 
     @property
     def resources(self):
@@ -169,16 +247,11 @@ class GroupResource(Resource):
     group = models.ForeignKey('Group', verbose_name=_('group'), related_name='resource_set')
 
 
-class Charge(models.Model):
+class Charge(NewsTargetMixin, models.Model):
     """
     This is the base class for the different macro-types of charges (institution, organization, administration).
 
-    The ``related_news`` attribute can be used  to fetch
-    news related to it (or its subclasses) from ``newscache.News``
-
-    The class inherits from ``NewsTargetMixin``, that allows the ``related_news`` attribute, to fetch
-    news related to it (or its subclasses) from ``newscache.News``
-
+    The ``related_news`` attribute can be used  to fetch news items related to a given charge.
     """
     person = models.ForeignKey('Person', verbose_name=_('person'))
     start_date = models.DateField(_('start date'))
@@ -188,11 +261,6 @@ class Charge(models.Model):
                                    help_text=_('Insert the complete description of the charge, if it gives more information than the charge type'))
     
     objects = PassThroughManager.for_queryset_class(TimeFramedQuerySet)()
-
-    # manager to handle the list of news that have the act as related object
-    related_news = generic.GenericRelation(News,
-                                           content_type_field='related_content_type',
-                                           object_id_field='related_object_pk')
 
     class Meta:
         abstract = True
@@ -243,6 +311,7 @@ class InstitutionCharge(Charge):
     n_present_votations = models.IntegerField(default=0)
     n_absent_votations = models.IntegerField(default=0)
 
+
     class Meta(Charge.Meta):
         db_table = u'people_institution_charge'
         verbose_name = _('institution charge')
@@ -276,9 +345,8 @@ class InstitutionCharge(Charge):
                 return "%s Consiglio Comunale: %s - %s" % \
                        (self.responsabilities[0].get_charge_type_display(),
                         self.responsabilities[0].start_date, self.responsabilities[0].end_date)
-                return "%s Consiglio Comunale" % self.responsabilities[0].get_charge_type_display()
             else:
-                return _('Counselor').translate(settings.LANGUAGE_CODE)
+                return _('Counselor')
         elif self.institution.institution_type == Institution.COMMITTEE:
             if self.responsabilities.count():
                 return "%s: %s - %s" % (self.responsabilities[0].get_charge_type_display(),
@@ -296,6 +364,17 @@ class InstitutionCharge(Charge):
     @property
     def responsabilities(self):
         return self.institutionresponsability_set.all()
+
+    def get_current_responsability(self, moment=None):
+        """
+        Returns the current group responsability, if any
+        """
+        if self.responsabilities.current(moment=moment).count() == 0:
+            return None
+        if self.responsabilities.current(moment=moment).count() == 1:
+            return self.responsabilities.current(moment=moment)[0]
+        raise MultipleObjectsReturned
+    current_responsability = property(get_current_responsability)
 
 
     @property
@@ -348,11 +427,18 @@ class InstitutionCharge(Charge):
         A Council Institution charge MUST have one group.
         Other types of charge do not have a group, so None is returned.
         """
+        return self.current_at_moment_groupcharge()
+
+    def current_at_moment_groupcharge(self, moment=None):
+        """
+        Returns groupcharge at given moment in time.
+        If moment is None, then current groupcharge is returned
+        """
         if self.institution.institution_type == Institution.COUNCIL:
-            return GroupCharge.objects.select_related().get(charge__id=self.id, end_date__isnull=True)
-        elif self.institution.institution_type == Institution.COMMITTEE or \
+            return GroupCharge.objects.select_related().current(moment=moment).get(charge__id=self.id)
+        elif self.institution.institution_type == Institution.COMMITTEE or\
              self.institution.institution_type == Institution.JOINT_COMMITTEE:
-            return GroupCharge.objects.select_related().get(charge__id=self.original_charge_id, end_date__isnull=True)
+            return GroupCharge.objects.select_related().current(moment=moment).get(charge__id=self.original_charge_id)
         else:
             return None
 
@@ -363,11 +449,11 @@ class InstitutionCharge(Charge):
         A list of GroupCharge objects is returned. The group may be accessed by the `.group` attribute
         """
         if self.institution.institution_type == Institution.COUNCIL:
-            return GroupCharge.objects.select_related().filter(charge__id=self.id, end_date__isnull=False)
+            return GroupCharge.objects.select_related().past().filter(charge__id=self.id)
         else:
             return []
 
-    def compute_rebellion_cache(self):
+    def update_rebellion_cache(self):
         """
         Re-compute the number of votations where the charge has vote differently from her group
         and update the n_rebel_votations counter
@@ -375,7 +461,7 @@ class InstitutionCharge(Charge):
         self.n_rebel_votations = self.chargevote_set.filter(is_rebel=True).count()
         self.save()
 
-    def compute_presence_cache(self):
+    def update_presence_cache(self):
         """
         Re-compute the number of votations where the charge was present/absent
         and update the respective counters
@@ -398,7 +484,7 @@ class InstitutionResponsability(ChargeResponsability):
         ('FIRSTDEPUTYMAYOR', 'firstdeputymayor', _('First deputy mayor')),
         ('PRESIDENT', 'president', _('President')),
         ('VICE', 'vice', _('Vice president')),
-        ('VICEVICE', 'vicevice', _('Vice vice precident')),
+        ('VICEVICE', 'vicevice', _('Vice vice president')),
                                       )
 
     charge = models.ForeignKey(InstitutionCharge, verbose_name=_('charge'))
@@ -539,12 +625,13 @@ class Group(models.Model):
         """
         return self.members.order_by('person__last_name')
 
-    @property
-    def institution_charges(self):
+    def get_institution_charges(self, moment=None):
         """
         All current institution charges in the group, leader **included**
         """
-        return self.charge_set.filter(groupcharge__end_date__isnull=True)
+        return self.charge_set.current(moment=moment)
+    institution_charges = property(get_institution_charges)
+
 
     @property
     def is_current(self):
@@ -586,6 +673,20 @@ class GroupCharge(models.Model):
     def responsabilities(self):
         return self.groupresponsability_set.all()
 
+
+    def get_current_responsability(self, moment=None):
+        """
+        Returns the current group responsability, if any
+        """
+        if self.responsabilities.current(moment=moment).count() == 0:
+            return None
+        if self.responsabilities.current(moment=moment).count() == 1:
+            return self.responsabilities.current(moment=moment)[0]
+        raise MultipleObjectsReturned
+    current_responsability = property(get_current_responsability)
+
+
+
     @property
     def responsability(self):
         if self.responsabilities.count() == 1:
@@ -617,6 +718,9 @@ class GroupResponsability(ChargeResponsability):
     charge_type = models.CharField(_('charge type'), max_length=16, choices=CHARGE_TYPES)
     charge = models.ForeignKey(GroupCharge, verbose_name=_('charge'))
 
+
+    def __unicode__(self):
+        return "%s (%s - %s)" % (self.get_charge_type_display(), self.start_date, self.end_date)
 
 
 class GroupIsMajority(models.Model):
@@ -715,9 +819,16 @@ class Institution(Body):
     def charges(self):
         """
         The QuerySet of all *current* charges (``InstitutionCharge`` instances) 
-        associated with this institution.  
+        associated with this institution.
         """
-        return self.charge_set.current()
+        return self.get_current_charges(moment=None)
+
+    def get_current_charges(self, moment=None):
+        """
+        The WS of all charges current at the specified moment
+        """
+        return self.charge_set.current(moment)
+
 
     @property
     def firstdeputy(self):
@@ -859,6 +970,7 @@ class Sitting(models.Model):
     idnum = models.CharField(blank=True, max_length=64)
     date = models.DateField()
     number = models.IntegerField(blank=True, null=True)
+    call = models.IntegerField(blank=True, null=True)
     institution = models.ForeignKey(Institution, on_delete=models.PROTECT)
  
     class Meta:

@@ -10,6 +10,8 @@ import gdata.docs
 import gdata.docs.service
 import gdata.spreadsheet.service
 
+import logging
+
 from open_municipio.people.models import Person, Group, InstitutionCharge, Institution, GroupCharge, InstitutionResponsability, GroupResponsability
 
 
@@ -18,7 +20,7 @@ class Command(BaseCommand):
     Poiticians anagraphical data and their current and past charges are imported
     from a google spreadsheet.
 
-    The title of the spreadsheet and access credentials are stored in local settings.
+    Access credentials are stored in local settings.
 
     Data may be compared or re-written. By default they're compared,
     to overwrite use the --overwrite option.
@@ -35,6 +37,8 @@ class Command(BaseCommand):
                     default=False,
                     help='Re-write charge from scratch'),
         )
+
+    logger = logging.getLogger('import')
 
     def handle(self, **options):
         """
@@ -90,22 +94,28 @@ class Command(BaseCommand):
 
                 birth_date = datetime.datetime.strptime(row.custom['datanascita'].text, '%d/%m/%Y').strftime('%Y-%m-%d')
                 birth_location = row.custom['luogonascita'].text
-                self.stdout.write("%s %s (%s) - nascita: %s a %s\n" %
+
+
+                self.logger.info("Persona: %s %s (%s) - nascita: %s a %s" %
                                   (first_name, last_name, sex,
                                    birth_date,
                                    birth_location))
 
-
                 # fetch or create person
-                p, p_created = Person.objects.get_or_create(
+                created = False
+                p, created = Person.objects.get_or_create(
                     first_name=first_name,
                     last_name=last_name,
                     birth_date=birth_date,
-                    sex=sex
+                    sex=sex,
+                    defaults={
+                        'birth_location': birth_location
+                    }
                 )
-                if p_created or options['overwrite']:
-                    p.birth_location = birth_location
-                    p.save()
+                if created:
+                    self.logger.info("La persona è stata creata")
+                else:
+                    self.logger.info("La persona è già presente")
 
 
             # get charge start and end dates
@@ -125,11 +135,9 @@ class Command(BaseCommand):
                     responsability = 'Membro'
 
 
-                self.stdout.write("    %s - gruppo: %s - dal %s al %s\n" %
-                                  (responsability, group,
-                                   date_start,
-                                   date_end
-                                  )
+                self.logger.info(
+                    "    %s - gruppo: %s - dal %s al %s" %
+                    (responsability, group, date_start, date_end)
                 )
 
                 # get or create group
@@ -151,10 +159,10 @@ class Command(BaseCommand):
                             Q(end_date__gte=date_start) | Q(end_date__isnull=True)
                         )
                 except ObjectDoesNotExist:
-                    self.stderr.write("Error: group charge cannot be linked to counselor (none found). Skipping\n")
+                    self.logger.warning("L'incarico di gruppo non può essere collegato a nessun consigliere (non trovato). Skipping")
                     continue
                 except MultipleObjectsReturned:
-                    self.stderr.write("Error: group charge cannot be linked to counselor (multiple found). Skipping\n")
+                    self.logger.warning("L'incarico di gruppo  non può essere collegato a un solo consigliere. Skipping")
                     continue
 
                 # group charge
@@ -179,7 +187,7 @@ class Command(BaseCommand):
                         start_date=date_start,
                         end_date=date_end
                     )
-                    self.stdout.write("      Creating new group charge (%s - %s)\n" % (date_start, date_end))
+                    self.logger.info("      Creata appartenenza al gruppo (%s - %s)" % (date_start, date_end))
                 else:
                     # check if exact charge is there
                     try:
@@ -188,9 +196,9 @@ class Command(BaseCommand):
                             start_date=date_start,
                             end_date=date_end
                         )
-                        self.stdout.write("      Using existing group charge (%s - %s)\n" % (date_start, date_end))
+                        self.logger.debug("      Appartenenza al gruppo già presente (%s - %s)" % (date_start, date_end))
                     except ObjectDoesNotExist:
-                        self.stderr.write("Warning: group charge overlapped by existing charges. Skipping charge.\n")
+                        self.logger.warning("Appartenenza al gruppo sovrapposta a dati già presenti. Skipping.")
 
                 # group responsability
                 if responsability != 'Membro':
@@ -224,7 +232,7 @@ class Command(BaseCommand):
                                 start_date=date_start,
                                 end_date=date_end
                             )
-                            self.stdout.write("      Creating new group resp (%s - %s)\n" % (date_start, date_end))
+                            self.logger.info("      Creato incarico nel gruppo (%s - %s)" % (date_start, date_end))
                         else:
                             # check if exact responsability is there
                             try:
@@ -233,9 +241,9 @@ class Command(BaseCommand):
                                     start_date=date_start,
                                     end_date=date_end
                                 )
-                                self.stdout.write("      Using existing group resp (%s - %s)\n" % (date_start, date_end))
+                                self.logger.debug("      Incarico nel gruppo già presente (%s - %s)" % (date_start, date_end))
                             except ObjectDoesNotExist:
-                                self.stderr.write("Error: group resp overlapped by existing charges. Skipping\n")
+                                self.logger.warning("Incarico nel gruppo sovrapposto a ruoli già presenti. Skipping")
                                 continue
 
             else:
@@ -245,12 +253,14 @@ class Command(BaseCommand):
                 elif cg == 'Consigliere' or 'consiglio comunale' in cg.lower():
                     charge_institution = Institution.objects.get(institution_type=Institution.COUNCIL)
                 else:
-                    self.stderr.write("Warning: charge must be Consigliere or Assessore. Skipping charge %s\n" % cg)
+                    self.logger.warning("L'incarico deve essere Consigliere o Assessore. Skipping %s" % cg)
 
-                self.stdout.write("    %s - dal %s al %s\n" %
-                                  (cg,
-                                   date_start,
-                                   date_end))
+                self.logger.info(
+                    "    %s - dal %s al %s" %
+                    (cg,
+                     date_start,
+                     date_end)
+                )
 
                 # check or add charge only for counselors or assessors
                 if not 'presidente' in cg.lower() and not 'vice' in cg.lower():
@@ -276,7 +286,7 @@ class Command(BaseCommand):
                             start_date=date_start,
                             end_date=date_end
                         )
-                        self.stdout.write("      Creating new charge (%s - %s)\n" % (date_start, date_end))
+                        self.logger.info("      Creato incarico (%s - %s)" % (date_start, date_end))
                     else:
                         # check if exact charge is there
                         try:
@@ -286,9 +296,9 @@ class Command(BaseCommand):
                                 Q(start_date=date_start),
                                 Q(end_date=date_end)
                             )
-                            self.stdout.write("      Using existing charge (%s - %s)\n" % (date_start, date_end))
+                            self.logger.debug("      Incarico già presente (%s - %s)" % (date_start, date_end))
                         except ObjectDoesNotExist:
-                            self.stderr.write("Error: charge overlapped by existing charges. Skipping\n")
+                            self.logger.warning("Incarico sovrapposto a incarichi già presenti. Skipping\n")
                             continue
 
                 # institution charge responsability
@@ -322,5 +332,5 @@ class Command(BaseCommand):
                             start_date=date_start,
                             end_date=date_end
                         )
-                        self.stdout.write("      Creating new institution resp (%s - %s)\n" % (date_start, date_end))
+                        self.logger.info("      Creato nuovo ruolo istituzionale (%s - %s)\n" % (date_start, date_end))
 

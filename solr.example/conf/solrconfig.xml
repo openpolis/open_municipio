@@ -3,7 +3,7 @@
   <abortOnConfigurationError>${solr.abortOnConfigurationError:true}</abortOnConfigurationError>
   <luceneMatchVersion>LUCENE_35</luceneMatchVersion>
 
-  <dataDir>${solr.data.dir:/home/solr/data/open_municipio}</dataDir>
+  <dataDir>${solr.data.dir:}</dataDir>
   <directoryFactory name="DirectoryFactory" 
                     class="${solr.directoryFactory:solr.StandardDirectoryFactory}"/>
 

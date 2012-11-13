@@ -1,8 +1,3 @@
-.. OpenMunicipio documentation master file, created by
-   sphinx-quickstart on Mon Mar 12 12:48:21 2012.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
 Welcome to OpenMunicipio's documentation!
 =========================================
 
@@ -16,6 +11,10 @@ Contents:
    dev/GUIDELINES
    dev/code/queries
    dev/code/apps/testdatabuilder
+   dev/code/apps/newscache
+   dev/data_import-it
+   dev/import_acts.rst
+
 
 Indices and tables
 ==================

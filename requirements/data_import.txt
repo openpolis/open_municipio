@@ -1,4 +1,5 @@
 # lxml requires following packages: python-dev libxml2-dev libxslt1-dev (in ubuntu)
+gdata==2.0.16
 lxml
 # requires packages build-dep and python-mysql (in ubuntu)
 MySQL-python

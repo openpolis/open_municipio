@@ -1,6 +1,5 @@
 from haystack.views import SearchView
-from open_municipio.om_search.forms import RangeFacetedSearchForm
-from django.utils.translation import ugettext_lazy as _
+from forms import RangeFacetedSearchForm
 
 class ExtendedFacetedSearchView(SearchView):
     """
@@ -8,11 +7,6 @@ class ExtendedFacetedSearchView(SearchView):
     for faceted navigation
     """
     __name__ = 'ExtendedFacetedSearchView'
-
-    ## simplified date-ranges definitions
-    THREEDAYS = '[NOW/DAY-3DAYS TO NOW/DAY]'
-    ONEMONTH  = '[NOW/DAY-30DAYS TO NOW/DAY]'
-    ONEYEAR   = '[NOW/DAY-365DAYS TO NOW/DAY]'
 
     def __init__(self, *args, **kwargs):
         # Needed to switch out the default form class.
@@ -37,7 +31,7 @@ class ExtendedFacetedSearchView(SearchView):
         field, that allows easy filtering of the selected facets in the
         navigation filters
         """
-        selected_facets = self._get_extended_selected_facets()
+        selected_facets = self.request.GET.getlist('selected_facets')
         facet_counts_fields = self.results.facet_counts().get('fields', {})
 
         facets = {'fields': {}, 'dates': {}, 'queries': {}}
@@ -74,77 +68,12 @@ class ExtendedFacetedSearchView(SearchView):
                     url += "&amp;selected_facets=%s" % cf
             field, x, label = f.partition(":")
 
-            # TODO: use an associative array
-            if label == self.THREEDAYS:
-                r_label = _('last three days')
-            elif label == self.ONEMONTH:
-                r_label = _('last month')
-            elif label == self.ONEYEAR:
-                r_label = _('last year')
-            else:
-                r_label = label
+            r_label = label
 
             sf = {'field': field, 'label': label, 'r_label': r_label, 'url': url}
             extended_selected_facets.append(sf)
 
         return extended_selected_facets
-
-    def _get_custom_facet_queries_date(self):
-        """
-
-        """
-        selected_facets = self.request.GET.getlist('selected_facets')
-        facet_counts_queries = self.results.facet_counts().get('queries', {})
-
-        facets = {'is_selected': False}
-        if "pub_date:%s" % self.THREEDAYS in facet_counts_queries:
-            facets['threedays'] = {
-                'key': "pub_date:%s" % self.THREEDAYS,
-                'count': facet_counts_queries["pub_date:%s" % self.THREEDAYS]
-            }
-            if facets['threedays']['key'] in selected_facets:
-                facets['is_selected'] = True
-
-        if "pub_date:%s" % self.ONEMONTH in facet_counts_queries:
-            facets['onemonth'] = {
-                'key': "pub_date:%s" % self.ONEMONTH,
-                'count': facet_counts_queries["pub_date:%s" % self.ONEMONTH]
-            }
-            if facets['onemonth']['key'] in selected_facets:
-                facets['is_selected'] = True
-
-        if "pub_date:%s" % self.ONEYEAR in facet_counts_queries:
-            facets['oneyear'] = {
-                'key': "pub_date:%s" % self.ONEYEAR,
-                'count': facet_counts_queries["pub_date:%s" % self.ONEYEAR]
-            }
-            if facets['oneyear']['key'] in selected_facets:
-                facets['is_selected'] = True
-        if "votation_date:%s" % self.THREEDAYS in facet_counts_queries:
-            facets['threedays'] = {
-                'key': "votation_date:%s" % self.THREEDAYS,
-                'count': facet_counts_queries["votation_date:%s" % self.THREEDAYS]
-            }
-            if facets['threedays']['key'] in selected_facets:
-                facets['is_selected'] = True
-
-        if "votation_date:%s" % self.ONEMONTH in facet_counts_queries:
-            facets['onemonth'] = {
-                'key': "votation_date:%s" % self.ONEMONTH,
-                'count': facet_counts_queries["votation_date:%s" % self.ONEMONTH]
-            }
-            if facets['onemonth']['key'] in selected_facets:
-                facets['is_selected'] = True
-
-        if "votation_date:%s" % self.ONEYEAR in facet_counts_queries:
-            facets['oneyear'] = {
-                'key': "votation_date:%s" % self.ONEYEAR,
-                'count': facet_counts_queries["votation_date:%s" % self.ONEYEAR]
-            }
-            if facets['oneyear']['key'] in selected_facets:
-                facets['is_selected'] = True
-
-        return facets
 
 
     def extra_context(self):
@@ -158,7 +87,6 @@ class ExtendedFacetedSearchView(SearchView):
         extra['request'] = self.request
         extra['selected_facets'] = self._get_extended_selected_facets()
         extra['facets'] = self._get_extended_facets_fields()
-        extra['facet_queries_date'] = self._get_custom_facet_queries_date()
 
         # make get array as mutable QueryDict
         params = self.request.GET.copy()

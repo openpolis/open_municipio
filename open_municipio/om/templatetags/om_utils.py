@@ -4,6 +4,17 @@ from django.utils.safestring import mark_safe
 
 register = template.Library()
 
+
+def key(d, key_name):
+    try:
+        value = d[str(key_name)]
+    except KeyError:
+        from django.conf import settings
+        value = "(%s)"%key_name
+    return value
+key = register.filter('key', key)
+
+
 @register.filter
 def as_token(value, arg='-'):
     """

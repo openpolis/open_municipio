@@ -1,14 +1,19 @@
 from django import template
 
 from open_municipio.newscache.models import News
+from open_municipio.people.models import Person, InstitutionCharge, municipality
+
+from django.db.models.query import EmptyQuerySet
 
 register = template.Library()
 
 
+
 class NewsForObjectNode(template.Node):
     """
-    The tag retrieve all news for the given object and modifies the context
+    The tag retrieves all news for the given object and modifies the context
     """
+
     def __init__(self, object, context_var, news_type=None):
         self.object = object
         self.news_type = news_type
@@ -20,15 +25,37 @@ class NewsForObjectNode(template.Node):
         except template.VariableDoesNotExist:
             return ''
 
-        if self.news_type:
-            news = object.related_news_set.filter(news_type=self.news_type)
-        else:
-            news = object.related_news_set.all()
 
-        context[self.context_var] = news.order_by('-created').reverse()[0:15]
+        # extract all news
+        # if obect is a Person, extract news related to all current and past charges
+        if isinstance(object, Person):
+            news = EmptyQuerySet()
+            for c in object.all_institution_charges:
+                news |= c.related_news
+        elif isinstance(object, basestring):
+            if object == 'politicians_all':
+                news = EmptyQuerySet()
+                for c in InstitutionCharge.objects.all():
+                    news |= c.related_news
+            if object == 'politicians_council':
+                news = EmptyQuerySet()
+                for c in municipality.council.charges:
+                    news |= c.related_news
+            if object == 'politicians_gov':
+                news = EmptyQuerySet()
+                for c in municipality.gov.charges:
+                    news |= c.related_news
+        else:
+            news = object.related_news
+
+        # filter only news of a given type (INST or COMM) (if given)
+        if self.news_type:
+            news = news.filter(news_type=self.news_type)
+
+        # sort news by news_date, descending order
+        context[self.context_var] = sorted(news, key=lambda n: n.news_date, reverse=True)[0:15]
 
         return ''
-
 
 def do_news_for_object(parser, token):
     """
@@ -79,8 +106,10 @@ def do_institutional_news_for_object(parser, token):
 
         {% institutional_news_for_object act as i_news %}
         {% for n in i_news %}
-            notizia: {{ n.created }} - {{ n.text }}
+            notizia: {{ n.news_date }} - {{ n.text }}
         {% endfor %}
+        # bits[1] = act
+        # bits[3] = i_news
     """
     bits = token.contents.split()
     if len(bits) != 4:
@@ -89,3 +118,5 @@ def do_institutional_news_for_object(parser, token):
         raise template.TemplateSyntaxError("second argument to '%s' tag must be 'as'" % bits[0])
     return NewsForObjectNode(bits[1], bits[3], news_type=News.NEWS_TYPE.institutional)
 register.tag('institutional_news_for_object', do_institutional_news_for_object)
+
+

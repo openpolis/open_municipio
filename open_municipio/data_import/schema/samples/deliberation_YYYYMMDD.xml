@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    Una CouncilDeliberation è una proposta di deliberazione,
+    che quando è approvata diventa delibera (o deliberazione).
+    
+    Attributi:
+    id - identifica l'atto internamente, 
+         secondo le specifiche del sistema informativo che lo genera
+         nel caso di delibere è l'id della proposta
+    
+    final_id - identifica l'atto quando è diventato delibera
+    title - è il titolo con cui la delibera è identificata
+    initiative - è il tipo di iniziativa se di consiglio, di giunta o popolare
+    execution_date - data in cui la delibera diventa esecutiva
+-->
+<om:CouncilDeliberation 
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns:om="http://www.openmunicipio.it"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.openmunicipio.it OM-XML.xsd" 
+    initiative="council_member" id="2012/D/001" final_id="001"
+    execution_date="2012-03-04">
+
+    <!--
+        Il titolo della proposta, se possibile,
+        se non è possibile, il tag deve essere presente lo stesso, vuoto.
+    -->
+    <om:Content>
+        <om:Title>
+            <![CDATA[
+            Lorem ipsum dolor sit amet
+            ]]>
+        </om:Title>
+
+        <!--
+            Il testo della proposta, se possibile estrarlo.
+            Se non è possibile, il tag deve essere presente lo stesso, vuoto.
+            Se presente, il testo deve essere compreso in CDATA
+        -->
+        <om:Content></om:Content>
+    </om:Content>
+    <!-- 
+    Esistono due tipologie di firmatari: 
+     - i primi firmatari (presentano la proposta) 
+     - i co-firmatari (appoggiano la proposta)
+    E' possibile che l'elenco di firmatari vari nel tempo.
+    -->
+    <om:ActSubscribers>
+        <om:ActSubscriber date="2012-03-05" chargeID="MICA" 
+            type="first_subscriber"/>
+        <om:ActSubscriber date="2012-03-07" chargeID="CINI"  
+            type="first_subscriber" />
+        <om:ActSubscriber chargeID="ANRE" type="co_signer" /> 
+    </om:ActSubscribers>
+    
+    <!-- 
+    Sequenza di allegati. 
+    Ciascun allegato può far riferimento a una risorsa esterna, 
+    tramite l'attributo xlink:href.
+    La URL della risorsa esterna può essere relativa, rispetto al file presente.
+    Gli allegati possono essere di tipo differente: PDF, HTML, DOC, XLS, CSV, immagini
+    L'estensione viene specificata nell'attributo tipo.
+    
+    I tag om:AttachmentDescription e om:AttachmentContent sono 
+    la rappresentazione testuale dell'allegato, se disponibile.
+    
+    om:AttachmenteDescription è una versione breve 
+    (riassunto, abstract o descrizione di cosa contiene il documento)
+    omAttachmentContent è la versione completa (opzionale)
+    Entrambi i tag contengono testo in CDATA, per eventuali problemi di encoding.
+    
+    Rappresentaizone testuale e risorsa esterna, se presenti entrambe, 
+    devono contenere lo stesso testo.    
+    -->
+    <om:Attachment xlink:href="./allegati/atto_15434_a.pdf" xlink:type="simple"
+                   type="doc">       
+        <om:AttachmentDescription>
+            <![CDATA[
+            Il testo della proposta
+            ]]>
+        </om:AttachmentDescription>
+    </om:Attachment>
+    <om:CouncilDeliberationTransition name="Presented" date="2011-09-23" />
+    <om:CouncilDeliberationTransition name="Accepted" date="2012-03-01" />
+</om:CouncilDeliberation>

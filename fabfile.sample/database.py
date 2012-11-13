@@ -1,51 +1,59 @@
-from fabric.api import *
-from fabric.contrib import files, console
-from fabric.context_managers import cd
+from fabric.api import env, hide, require, roles, run, settings, task 
+from fabric.utils import abort, fastprint, puts
+from fabric.contrib import console
 
 from venv import run_venv
 
+
+
 ## Database management
 @task
-def create():
+@roles('db')
+def create_user():
     """
-    Create the application's database on the server machine.
+    Create a database user for accessing the application's database.
     """
-    raise NotImplementedError
+    require('db_user', provided_by=('staging', 'production'))
+    fastprint("Creating PostgreSQL user `%(db_user)s'..." % env, show_prefix=True)
+    with hide('commands', 'warnings'):
+        with settings(warn_only=True):
+            run('createuser E --no-superuser --no-createrole --createdb %(db_user)s' % env)
+    fastprint(" done." % env, end='\n')
+
 
 @task
-def drop():
+@roles('db')
+def drop_db():
     """
-    Delete the application's database on the server machine.
+    Destroy the application's database on the server machine.
     """
-    require('code_root', provided_by=('staging', 'production'))
-    with cd(env.code_root):
-        if files.exists('sqlite.db'):
-            run('rm -f sqlite.db')
-
-@task
-def sync_remote():
-    """
-    Sync the application's database on the server machine.
-    """
-    require('settings', 'virtualenv_root', provided_by=('staging', 'production'))
-    run_venv('django-admin.py syncdb --noinput --settings=%(settings)s' % env)
+    # TODO: add a confirmation prompt
+    require('db_name', provided_by=('staging', 'production'))
+    fastprint("Dropping database `%(db_name)s'...   " % env, show_prefix=True)
+    if not console.confirm("Are you sure?"):
+        abort("Deployment aborted.")
+    with hide('commands', 'warnings'):
+        with settings(warn_only=True):
+            run('dropdb %(db_name)s' % env)
+    fastprint("Dropped database %(db_name)s." % env, end='\n')
     
 @task
-@roles('web')
-def update():
+@roles('om')
+def sync_db():
     """
-    Update remote database (including South migrations, if any).
+    Syncronize the application's database on the server machine.
     """
-    require('settings','code_root', provided_by=('staging', 'production'))
-    drop()
-    run_venv('django-admin.py syncdb --all --noinput --settings=%(settings)s' % env)
-    with cd(env.code_root):
-        if files.exists('sqlite.db'):
-            sudo('chgrp www-data sqlite.db')
-            sudo('chmod g+w sqlite.db')
-    # if getattr(env, 'initial_deploy', False):
-    #     run_venv('django-admin.py syncdb --all --noinput --settings=%(settings)s' % env)
-    #     run_venv('django-admin.py migrate --fake --noinput --settings=%(settings)s' % env)
-    # else:
-    #     run_venv('django-admin.py syncdb --all --noinput --settings=%(settings)s' % env)
-    #     run_venv('django-admin.py migrate --noinput --settings=%(settings)s' % env)
+    require('settings', provided_by=('staging', 'production'))
+    fastprint("Running `syncdb'...", show_prefix=True)
+    with hide('commands'):
+        run_venv('django-admin.py syncdb --noinput --settings=%(settings)s' % env)
+    fastprint(" done." % env, end='\n')
+    
+
+@task
+@roles('om')
+def migrate():
+    """
+    Apply migrations (if any) on the application's database on the server machine.
+    """
+    pass

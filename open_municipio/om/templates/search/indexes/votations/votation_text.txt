@@ -1,0 +1,5 @@
+{% if obj.act %}
+    {{ object.act.title }}
+    {{ object.act.text }}
+    {{ object.act.description }}
+{% endif %}

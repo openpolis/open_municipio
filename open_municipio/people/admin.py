@@ -129,7 +129,7 @@ class InstitutionChargeAdmin(ChargeAdmin):
     )
     list_display = ('__unicode__', 'institution', 'start_date', 'end_date')
     list_select_related = True
-    list_filter = ['institution__name', ]
+    list_filter = ['institution__name']
     inlines = [InstitutionResponsabilityInline]
 
 class GroupChargeAdmin(admin.ModelAdmin):

@@ -119,6 +119,7 @@ INSTALLED_APPS = (
     'south',
     'taggit',
     'voting',
+    'haystack',
     'open_municipio.events',
     'open_municipio.inline_edit',
     'open_municipio.autocomplete',
@@ -135,10 +136,12 @@ INSTALLED_APPS = (
     'open_municipio.monitoring',
     'open_municipio.web_services',
     'open_municipio.newscache',
-    'haystack',
+    'open_municipio.data_import',
     'sorl.thumbnail',
     'social_auth',
     'open_municipio.om_auth',
+    # TinyMCE
+    'tinymce',
 )
 
 AUTHENTICATION_BACKENDS = (
@@ -206,3 +209,45 @@ SITE_INFO = {
 ## settings for the ``open_municipio.om_comments`` app
 # Number of second within which users can delete their own comments
 OM_COMMENTS_REMOVAL_MAX_TIME = 600
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'standard': {
+            'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
+            'datefmt' : "%d/%b/%Y %H:%M:%S"
+        },
+        },
+    'handlers': {
+        'console':{
+            'level':'DEBUG',
+            'class':'logging.StreamHandler',
+            'formatter': 'standard'
+        },
+        'logfile': {
+            'level':'INFO',
+            'class':'logging.handlers.RotatingFileHandler',
+            'filename': REPO_ROOT + "/log/logfile",
+            'maxBytes': 50000,
+            'backupCount': 2,
+            'formatter': 'standard',
+            },
+        'mail_admins': {
+            'level': 'ERROR',
+            'class': 'django.utils.log.AdminEmailHandler'
+        },
+        },
+    'loggers': {
+        'django.request': {
+            'handlers': ['mail_admins'],
+            'level': 'ERROR',
+            'propagate': True,
+            },
+        'import': {
+            'handlers': ['console', 'logfile'],
+            'level': 'DEBUG',
+            'propagate': True,
+            }
+    }
+}

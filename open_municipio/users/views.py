@@ -3,7 +3,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.db.models import Count
 from django.views.generic import DetailView
 from django.views.generic.list import ListView
-from open_municipio.acts.models import Deliberation, Motion, Interpellation, Emendation, Agenda, Interrogation
+from open_municipio.acts.models import Deliberation, Motion, Interpellation, Amendment, Agenda, Interrogation
 from open_municipio.locations.models import Location
 from open_municipio.monitoring.models import Monitoring
 from open_municipio.people.models import Person, GroupCharge
@@ -38,7 +38,7 @@ class UserProfileDetailView(DetailView):
         context = super(UserProfileDetailView, self).get_context_data(**kwargs)
 
         context['act_monitoring_list'] = calculate_top_monitorings(
-            Deliberation, Motion, Interpellation, Emendation, Agenda, Interrogation,
+            Deliberation, Motion, Interpellation, Amendment, Agenda, Interrogation,
             user= self.object.user
         )
 
@@ -61,7 +61,7 @@ class UserProfileListView(ListView):
             # TODO if a person not have a institution_charge...?
             'top_monitorized_politicians': [p.content_object.all_institution_charges[0] for p in calculate_top_monitorings(Person,qnt=3)],
             'top_monitorized_topics': [el.content_object for el in calculate_top_monitorings(Tag,Category,Location)],
-            'top_monitorized_acts': [el.content_object for el in calculate_top_monitorings(Deliberation, Motion, Interpellation, Emendation, Agenda, Interrogation)],
+            'top_monitorized_acts': [el.content_object for el in calculate_top_monitorings(Deliberation, Motion, Interpellation, Amendment, Agenda, Interrogation)],
         })
         return context
 

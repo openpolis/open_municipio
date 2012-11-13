@@ -1,21 +1,29 @@
-from fabric.api import *
+from fabric.api import env, hide, put, require, roles, run, settings, task
+from fabric.utils import fastprint
 from fabric.contrib import files
-from fabric.context_managers import cd, lcd, settings
 
 import os
 
 
 ## Virtual environment management
 @task
+@roles('om')
 def create():
-    """Create a virtualenv on remote host"""
-    require('virtualenv_root', provided_by=('staging', 'production'))
-    args = '--clear --python=%s --no-site-packages' % env.python
-    run('virtualenv %s %s' % (args, env.virtualenv_root))
+    """
+    Create a virtualenv on remote host.
+    """
+    fastprint("Creating a new virtualenv..." % env, show_prefix=True)
+    with hide('commands'):
+        require('virtualenv_root', provided_by=('staging', 'production'))
+        args = '--clear --python=%s --no-site-packages' % env.python
+        run('virtualenv %s %s' % (args, env.virtualenv_root))
+    fastprint(" done." % env, end='\n')
 
 
 def ensure_virtualenv():
-    """Check if a project-specific virtualenv already exists; if not, create it."""
+    """
+    Check if a project-specific virtualenv already exists; if not, create it.
+    """
     require('virtualenv_root', provided_by=('staging', 'production'))
     if files.exists(os.path.join(env.virtualenv_root, 'bin', 'python')):
         return
@@ -37,30 +45,36 @@ def run_venv(command, **kwargs):
     """
     Run a command (via ``fabric.api.run``) within a given virtualenv context 
     (to be specified either via ``env.virtualenv_root`` or the ``virtualenv`` 
-    context manager)
+    context manager).
     """
-    require('virtualenv_root', provided_by=('staging', 'production'))
+    require('virtualenv_root', 'domain_root', provided_by=('staging', 'production'))
     env.activation_script = os.path.join(env.virtualenv_root, 'bin/activate')
     cmd = ['source %(activation_script)s' % env]
-    cmd += ['export PYTHONPATH=%(project_root)s:$PYTHONPATH' % env ] # configure PYTHONPATH
+    cmd += ['export PYTHONPATH=%s:$PYTHONPATH' % os.path.join(env.domain_root, 'private')] # configure PYTHONPATH
     cmd += [command] # shell command to be run within this virtualenv
     run(' && '.join(cmd), **kwargs)
 
 
 @task
+@roles('om')
 def update_requirements():
     """
     Update external dependencies on remote host.
     """
-    require('project_root', provided_by=('staging', 'production'))
+    require('virtualenv_root', 'domain_root', 'local_repo_root', 
+            provided_by=('staging', 'production'))
     ensure_virtualenv()
-    requirements_dir = os.path.join(env.project_root, 'requirements')
-    # TODO: generalize to multiple requirement files
-    with cd(requirements_dir):
+    fastprint("Updating OpenMunicipio dependencies..." % env, show_prefix=True)
+    with hide('commands'):
+        # upload pip requirements file to the server
+        source = os.path.join(env.local_repo_root, 'requirements.txt')
+        requirement_file = dest = os.path.join(env.domain_root, 'private', 'requirements.txt')
+        put(source, dest, mode=0644)
         pip_executable = os.path.join(env.virtualenv_root, 'bin', 'pip')              
         cmd = [pip_executable] # use pip version provided by virtualenv              
         cmd += ['install']
         # TODO: verify that --upgrade removes files in the src directory
         cmd += ['--upgrade'] # upgrade already installed packages
-        cmd += ['--requirement %s' % os.path.join(requirements_dir, 'main.txt')] # specify a requirement file
+        cmd += ['--requirement %s' %  requirement_file] # specify a requirement file
         run(' '.join(cmd))
+    fastprint(" done." % env, end='\n')
