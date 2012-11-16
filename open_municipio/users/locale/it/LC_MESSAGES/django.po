@@ -1,0 +1,99 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-11-14 23:56+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+
+#: forms.py:26
+msgid "First Name"
+msgstr "Nome"
+
+#: forms.py:27
+msgid "Last Name"
+msgstr "Cognome"
+
+#: forms.py:29 forms.py:53
+msgid "I am a politician"
+msgstr "Sono un politico"
+
+#: forms.py:31 forms.py:55
+msgid "I want only my nickname to be publicly shown"
+msgstr "Desidero che sia pubblicato solo il mio nickname"
+
+#: forms.py:33 forms.py:57
+msgid "Wants newsletter"
+msgstr "Desidero ricevere la newsletter"
+
+#: forms.py:34 forms.py:58
+msgid "Privacy level"
+msgstr "Livello di privacy"
+
+#: forms.py:36 forms.py:60
+msgid "I have read and agree to the Terms of Service"
+msgstr "Ho letto e approvo i termini del servizio"
+
+#: forms.py:37 forms.py:61
+msgid "You must agree to the terms to register"
+msgstr "Devi approvare i termini per accedere"
+
+#: forms.py:39 forms.py:63
+msgid "I have read and agree to the Privacy conditions"
+msgstr "Ho letto e approvo le condizioni sulla Privacy"
+
+#: forms.py:40 forms.py:64
+msgid "You must agree to the conditions to register"
+msgstr "Devi approvare le condizioni per accedete"
+
+#: forms.py:50
+msgid "E-mail"
+msgstr "Email"
+
+#: forms.py:52
+msgid "City"
+msgstr "Località"
+
+#: models.py:43
+msgid "all"
+msgstr "Pieno"
+
+#: models.py:44
+msgid "some"
+msgstr "Parziale"
+
+#: models.py:45
+msgid "none"
+msgstr "Nessuno"
+
+#: models.py:53
+msgid "show my nickname, not my name"
+msgstr "mostra il mio nickname, non il mio nome e cognome"
+
+#: models.py:58
+msgid "i am a politician"
+msgstr "sono un politico"
+
+#: models.py:62
+msgid "privacy level"
+msgstr "livello di privacy"
+
+#: models.py:65
+msgid "wants newsletter"
+msgstr "desidero ricevere la newsletter"
+
+#: models.py:68
+msgid "location"
+msgstr "località"
