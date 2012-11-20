@@ -1,11 +1,13 @@
-Somebody with this e-mail address registered a user account at {{ site.domain }}.
-To activate your registration, please visit the following page:
+Qualcuno con questo indirizzo e-mail (possibilmente tu), si è registrato al sito {{ site.domain }}.
+Per attivare la tua registrazione, visita il link seguente:
 
 http://{{ site.domain }}{% url registration_activate activation_key %}
 
-Note that this page will expire in {{ expiration_days }} day{{ expiration_days|pluralize }}, so act quickly.
+Fai attenzione, perché questo link scadrà tra {{ expiration_days }} giorni.
 
-If clicking the above link does not work, please copy and paste the link into your browser. 
+Se non puoi cliccare sul link qui sopra o il click non funziona, per favore
+copia il link e incollalo nel tuo browser.
 
 -------------------------------------------------------------------------------------
-If you didn't request it, you may safely delete this message; we won't bug you again.
+Se la richiesta non proviene da te, puoi tranquillamente cancellare questo messaggio;
+non riceverai altre e-mail da noi.

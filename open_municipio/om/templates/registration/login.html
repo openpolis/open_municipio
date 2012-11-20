@@ -9,7 +9,6 @@
   <a href="{% url socialauth_begin 'twitter' %}">Entra con Twitter</a><br />
   <a href="{% url socialauth_begin 'facebook' %}">Entra con Facebook</a><br />
   <a href="{% url socialauth_begin 'google-oauth2' %}">Entra con Google</a><br />
-  <a href="{% url socialauth_begin 'github' %}">Entra con Github</a><br />
   <form action="/accounts/login/" method="post" class="login_form" style="width: 25%; margin: 1em auto; text-align: center">{% csrf_token %}
     {{ form.non_field_errors }}
     <br/><br/><br/>

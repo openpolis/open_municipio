@@ -21,14 +21,12 @@
 from django.conf.urls.defaults import patterns, url, include
 from django.views.generic import TemplateView
 from django.contrib import admin
-
 from registration.views import register
 
 from open_municipio.om.views import HomeView
 from open_municipio.inline_edit.views import InlineEditView
 from open_municipio.om_auth.views import login_done, login_error, login_form, logout
 from open_municipio.users.forms import UserRegistrationForm
-import users.regbackend
 
 admin.autodiscover()
 
