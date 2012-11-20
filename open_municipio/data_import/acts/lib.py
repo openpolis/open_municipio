@@ -218,29 +218,9 @@ class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
         self.logger.info("Detected type %s" % om_type)
         # TODO create the act and the subscribers as a transaction
 
-        created = False
-        try:
-            om_act = om_type.objects.get(idnum=act.id)
-            self.logger.info("Act already present ...")
-        except ObjectDoesNotExist:
-            self.logger.info("Act needs to be created ...")
-            om_act = om_type(**create_defaults)
-            try:
-                om_act.save()
-                created = True
-            except IntegrityError as ex:
-# TODO this exception should be fixed!!! - FS
-                self.logger.warning("Act saved. Integrity error: %s" % ex)
-                self.logger.warning("Integrity error trace: %s" % 
-                    traceback.format_exc())
-                created = True
-            except Exception as ex:
-                self.logger.error("Act may not be saved. Error (%s): %s" % 
-                    (type(ex),ex))
+        (om_act,created) = om_type.objects.get_or_create(idnum=act.id,
+            defaults = create_defaults)
 
-#        (om_act, created) = om_type.objects.get_or_create(
-#                idnum = act.id, defaults = create_defaults )
-#        
         if created:
             self.logger.info("OM act created %s. Let's add the subscribers ..." % om_act.idnum)
             self._add_subscribers(act, om_act)

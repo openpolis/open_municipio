@@ -671,18 +671,23 @@ def new_act_published(sender, **kwargs):
     if not kwargs.get('raw', False):
         generating_item = kwargs['instance']
 
-        # create transition: act is presented
-        created = False
-        trans, created = generating_item.transition_set.get_or_create(
-            act=generating_item.act_ptr,
-            final_status=generating_item.STATUS.presented,
-            transition_date=generating_item.presentation_date,
-            )
-        if created:
-            logger.debug("  presentation transition created")
+        # add presentation transition if presentation_date is present
+        if generating_item.presentation_date is not None:
+            # create transition: act is presented
+            created = False
+            trans, created = generating_item.transition_set.get_or_create(
+                act=generating_item.act_ptr,
+                final_status=generating_item.STATUS.presented,
+                transition_date=generating_item.presentation_date,
+                )
+            if created:
+                logger.debug("  presentation transition created")
+            else:
+                logger.debug("  presentation transition found")
+                trans.save()
         else:
-            logger.debug("  presentation transition found")
-            trans.save()
+           logger.debug("  presentation transition can't be added, no presentation_date")
+            
 
         # create approval transition if approval_date has value
         if (isinstance(generating_item, Deliberation) and
