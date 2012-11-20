@@ -68,9 +68,11 @@
         <p id="user-tools" class="text-right pull-right">
           Ciao, <strong>{{ user.username }}</strong>
           <br>
-          <a href="/accounts/logout/?next={% if "/accounts" in request.path %}/{% else %}{{ request.path }}{% endif %}">esci</a>
+          <a href="{% url logout %}?next={% if "/accounts" in request.path %}/{% else %}{{ request.path }}{% endif %}">esci</a>
           &middot;
-          <a href="/users/profile/edit/">impostazioni</a>
+          <a href="{% url profiles_edit_profile %}">impostazioni</a>
+          &middot;
+          <a href="{%  url profiles_profile_detail user.username %}">profilo</a>
         </p>
       {% else %}
       <ul class="nav pull-right">

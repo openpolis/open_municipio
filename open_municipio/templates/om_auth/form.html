@@ -1,12 +1,34 @@
 {% extends "base_one_column.html" %}
 
-{% block heading %}User basic form{% endblock %}
+{% block title %}Form informazioni aggiuntive per registrazione{% endblock %}
 
 {% block content %}
+<p>Per iscriverti a Open Municipio, abbiamo bisogno di integrare queste informazioni
+forniteci da {{ backend_name|capfirst }}:</p>
+<ul>
+    {% if details.first_name %}
+        <li>Nome: {{ details.first_name }}</li>
+    {% endif %}
+    {% if details.last_name %}
+        <li>Cognome: {{ details.last_name }}</li>
+    {% endif %}
+    {% if details.username %}
+        <li>Utente: {{ details.username }}</li>
+    {% endif %}
+    {% if details.email %}
+        <li>Email: {{ details.email }}</li>
+    {% endif %}
+</ul>
+<p>con altri dati, che puoi inserire in questo momento:</p>
+{% if error %}
+    <p>{{ error }}</p>
+{% endif %}
 <form action="" method="post">
-  {% csrf_token %}
-  {{ user_form.as_p }}
-  {{ profile_form.as_p }}
-  <input type="submit" value="Submit" />
+    {% csrf_token %}
+    {{ social_form.as_p }}
+    <p><input type="submit" value="Invia" /></p>
 </form>
+
 {% endblock %}
+
+

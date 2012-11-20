@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Count
@@ -45,6 +46,15 @@ class UserProfileDetailView(DetailView):
         context['politician_monitoring_list'] = [el.content_object for el in calculate_top_monitorings(Person, qnt=None, user=self.object.user)]
 
         context['topic_monitoring_list'] = [el.content_object for el in calculate_top_monitorings(Tag,Category,Location, qnt=None, user=self.object.user)]
+
+        social_accounts = []
+        user_social_accounts = [ac.provider for ac in self.object.user.social_auth.all()]
+        for account in settings.SOCIAL_AUTH_BACKENDS_LIST:
+            if account in user_social_accounts:
+                social_accounts.append({'name': account, 'is_connected': True})
+            else:
+                social_accounts.append({'name': account, 'is_connected': False})
+        context['social_accounts'] = social_accounts
 
         return context
 

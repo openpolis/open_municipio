@@ -1,12 +1,13 @@
 {% extends "base_one_column.html" %}
-{% block title %}Edit Profile{% endblock %}
+{% block title %}Modifica impostazioni utente{% endblock %}
  
 {% block content %}
-Edit profile info form {{user}}. <br/>
+Modifica quì le tue impostazioni utente. <br/>
 
 <form action="" method="post" accept-charset="utf-8">
   {% csrf_token %}
   {{ form.as_p }}  
   <p><input type="submit" value="Submit"></p>
 </form>
+
 {% endblock %}

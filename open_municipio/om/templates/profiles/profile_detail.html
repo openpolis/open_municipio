@@ -2,7 +2,9 @@
 {% block title %}Profilo utente{% endblock %}
 {% block content_header %}Profilo di {{user}}{% endblock %}
 {% block content_header_city_logo %}
-    <img src="{{ STATIC_URL }}img/{{ main_city|lower }}-logo/citizen.png" alt="Comune di {{ main_city }}">
+    <img src="{{ STATIC_URL }}img/{{ main_city|lower }}-logo/citizen.png"
+         xmlns="http://www.w3.org/1999/html"
+         alt="Comune di {{ main_city }}">
 {% endblock %}
 
 {% block users_class %}class="active"{% endblock %}
@@ -16,28 +18,39 @@
 
     <div class="row-fluid">
       <div class="span7">
-        {% thumbnail profile.person.img "100x100" crop="center" as im %}
+        {% thumbnail profile.image "100x100" crop="center" as im %}
           <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" class="thumb-left">
         {% endthumbnail %}
 
         <h2>{{ profile.public_name }}</h2>
         <ul class="unstyled">
-          <li>da Valle Aurelia</li>
-          <li>Iscritto dal <strong>5.4.12</strong></li>
-          <li>Risiede a <strong>Città</strong></li>
+          <li>Iscritto dal <strong>{{ profile.user.date_joined|date:"d/m/Y" }}</strong></li>
+          <li>Risiede in <strong>{{ profile.location }}</strong></li>
           <li>Utente <strong>registrato</strong></li>
         </ul>
 
         <p>
-          Questa è una breve descrizione inserita dall'utente di pochi caratteri.
-          Questa è una breve descrizione inserita dall'utente di pochi caratteri.
-          Questa è una breve descrizione inserita dall'utente di pochi caratteri.
+          {{ profile.description }}
         </p>
 
       </div>
       <div class="span5">
+        <p>
+            Social network associati:
+            <ul>
+                {% for account in social_accounts %}
+                    <li>
+                        {{ account.name }} -
+                        {% if account.is_connected %}
+                            associato (<a href="{%  url socialauth_disconnect account.name %}">dissociati</a>)
+                        {%  else %}
+                            non associato (<a href="{%  url socialauth_associate_begin account.name %}">associati</a>)
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        </p>
 
-        <img src="{{ STATIC_URL }}img/placehold/social.png" alt="">
 
       </div>
     </div>

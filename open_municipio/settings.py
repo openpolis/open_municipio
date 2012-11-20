@@ -163,7 +163,7 @@ LOGIN_ERROR_URL    = '/login-error/'
 
 SOCIAL_AUTH_BACKENDS_LIST = (
     'twitter',
-    'google',
+    'google-oauth2',
     'facebook',
 )
 SOCIAL_AUTH_COMPLETE_URL_NAME  = 'socialauth_complete'

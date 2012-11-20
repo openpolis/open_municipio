@@ -1,7 +1,8 @@
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 
-from users.models import UserProfile
+from open_municipio.users.models import UserProfile
+from social_auth.utils import setting
 
 
 """
@@ -27,19 +28,22 @@ def extra_data(request, *args, **kwargs):
     if kwargs.get('user'):
         username = kwargs['user'].username
         profile = kwargs['user'].get_profile()
-        privacy_level = profile.privacy_level
         wants_newsletter = profile.wants_newsletter
-        city = profile.city
+        says_is_politician = profile.says_is_politician
+        uses_nickname = profile.uses_nickname
+        location = profile.location
     else:
         username = request.session.get('saved_username')
-        privacy_level = request.session.get('saved_privacy_level')
         wants_newsletter = request.session.get('saved_wants_newsletter')
-        city = request.session.get('saved_city')
+        says_is_politician = request.session.get('saved_says_is_politician')
+        uses_nickname = request.session.get('saved_uses_nickname')
+        location = request.session.get('saved_location')
     return {
         'username': username,
-        'privacy_level': privacy_level,
         'wants_newsletter': wants_newsletter,
-        'city': city,
+        'says_is_politician': says_is_politician,
+        'uses_nickname': uses_nickname,
+        'location': location,
         }
 
 
@@ -50,12 +54,14 @@ def create_profile(request, user, response, details, is_new=False, *args, **kwar
     store additional information.)
     """
     if is_new:
-        privacy_level = request.session.get('saved_privacy_level')
         wants_newsletter = request.session.get('saved_wants_newsletter')
-        city = request.session.get('saved_city')
+        says_is_politician = request.session.get('saved_says_is_politician')
+        uses_nickname = request.session.get('saved_uses_nickname')
+        location = request.session.get('saved_location')
         profile, created = UserProfile.objects.get_or_create(user=user, defaults={
-                'privacy_level': privacy_level,
                 'wants_newsletter': wants_newsletter,
-                'city': city,
+                'location': location,
+                'says_is_politician': says_is_politician,
+                'uses_nickname': uses_nickname,
                 })
         profile.save()

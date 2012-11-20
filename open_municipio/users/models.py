@@ -8,6 +8,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User, Group
 
 from model_utils import Choices
+from open_municipio.locations.models import Location
 from open_municipio.monitoring.models import Monitoring
 from open_municipio.newscache.models import NewsTargetMixin
 from open_municipio.people.models import Person
@@ -64,8 +65,10 @@ class UserProfile(NewsTargetMixin, models.Model):
     # the user wants to receive newsletters (whatever that means)
     wants_newsletter = models.BooleanField(_('wants newsletter'), default=False)
     
-    # TODO: ``city`` must be a foreign key to a proper, dedicated table of locations
-    city = models.CharField(_(u'location'), max_length=128)
+    location = models.ForeignKey(Location, blank=True, null=True, verbose_name=_('location'))
+
+    image = models.ImageField(upload_to="user_images/%Y%m", blank=True, null=True, max_length=255)
+    description = models.TextField(blank=True)
 
     class Meta:
         db_table = u'users_user_profile'

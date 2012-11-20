@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-11-14 23:56+0100\n"
+"POT-Creation-Date: 2012-11-16 02:10+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,82 +18,96 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
-#: forms.py:26
+#: forms.py:27
 msgid "First Name"
 msgstr "Nome"
 
-#: forms.py:27
+#: forms.py:28
 msgid "Last Name"
 msgstr "Cognome"
 
-#: forms.py:29 forms.py:53
-msgid "I am a politician"
-msgstr "Sono un politico"
-
-#: forms.py:31 forms.py:55
+#: forms.py:30 forms.py:55
 msgid "I want only my nickname to be publicly shown"
 msgstr "Desidero che sia pubblicato solo il mio nickname"
 
-#: forms.py:33 forms.py:57
+#: forms.py:32 forms.py:57
+msgid "I am a politician"
+msgstr "Sono un politico"
+
+#: forms.py:33 forms.py:58
 msgid "Wants newsletter"
 msgstr "Desidero ricevere la newsletter"
 
-#: forms.py:34 forms.py:58
-msgid "Privacy level"
-msgstr "Livello di privacy"
+#: forms.py:34 forms.py:59
+msgid "Location, if applicable"
+msgstr "Località, se applicabile"
 
-#: forms.py:36 forms.py:60
+#: forms.py:36 forms.py:61
 msgid "I have read and agree to the Terms of Service"
 msgstr "Ho letto e approvo i termini del servizio"
 
-#: forms.py:37 forms.py:61
+#: forms.py:37 forms.py:62
 msgid "You must agree to the terms to register"
 msgstr "Devi approvare i termini per accedere"
 
-#: forms.py:39 forms.py:63
+#: forms.py:39 forms.py:64
 msgid "I have read and agree to the Privacy conditions"
 msgstr "Ho letto e approvo le condizioni sulla Privacy"
 
-#: forms.py:40 forms.py:64
+#: forms.py:40 forms.py:65
 msgid "You must agree to the conditions to register"
 msgstr "Devi approvare le condizioni per accedete"
 
-#: forms.py:50
+#: forms.py:52
+msgid "Username"
+msgstr ""
+
+#: forms.py:53
+msgid "This value must contain only letters, numbers and underscores."
+msgstr "Questo campo può contenere solo lettere, numeri e il carattere '_'"
+
+#: forms.py:76
+msgid "A user with that username already exists."
+msgstr "Un utente con questo username già esiste."
+
+#: forms.py:82
 msgid "E-mail"
 msgstr "Email"
 
-#: forms.py:52
-msgid "City"
-msgstr "Località"
-
-#: models.py:43
+#: models.py:44
 msgid "all"
 msgstr "Pieno"
 
-#: models.py:44
+#: models.py:45
 msgid "some"
 msgstr "Parziale"
 
-#: models.py:45
+#: models.py:46
 msgid "none"
 msgstr "Nessuno"
 
-#: models.py:53
+#: models.py:54
 msgid "show my nickname, not my name"
 msgstr "mostra il mio nickname, non il mio nome e cognome"
 
-#: models.py:58
+#: models.py:59
 msgid "i am a politician"
 msgstr "sono un politico"
 
-#: models.py:62
+#: models.py:63
 msgid "privacy level"
 msgstr "livello di privacy"
 
-#: models.py:65
+#: models.py:66
 msgid "wants newsletter"
 msgstr "desidero ricevere la newsletter"
 
 #: models.py:68
 msgid "location"
 msgstr "località"
+
+#~ msgid "Privacy level"
+#~ msgstr "Livello di privacy"
+
+#~ msgid "City"
+#~ msgstr "Località"

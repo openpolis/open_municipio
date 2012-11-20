@@ -5,9 +5,10 @@
 {% block content_header %}Registrazione account{% endblock %}
 
 {% block content %}
-  <p>Registration is free. Start by giving us your e-mail address, and we'll send you instructions on how to continue. We will not spam you or give your e-mail address to anybody.</p>
+  <p>Riempi il modulo con i tuoi dati per registrarti al sito.</p>
 
-  <form action="" method="post">{% csrf_token %}
+
+  <form enctype="multipart/form-data" action="" method="post">{% csrf_token %}
     <table>
       {{ form.as_p }}
       <tr>

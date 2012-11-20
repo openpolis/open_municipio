@@ -9,7 +9,7 @@ from django.utils.translation import ugettext_lazy as _
 from social_auth import __version__ as version
 from social_auth.utils import setting
 
-from open_municipio.users.forms import UserSocialRegistrationForm, ProfileSocialRegistrationForm
+from open_municipio.users.forms import *
 
 
 @login_required
@@ -21,8 +21,9 @@ def login_done(request):
 def login_error(request):
     """Error view"""
     messages = get_messages(request)
-    return render_to_response('om_auth/error.html', {'version': version,
-                                             'messages': messages},
+    return render_to_response('om_auth/error.html',
+                              {'version': version,
+                               'messages': messages},
                               RequestContext(request))
 
 
@@ -37,25 +38,36 @@ def login_form(request):
     When a user registers through a social network we need some
     additional information.
     """
+    session_variable = setting('SOCIAL_AUTH_PARTIAL_PIPELINE_KEY', 'partial_pipeline')
+    dsa_session = request.session[session_variable]
+    backend =  dsa_session['kwargs']['backend']
+    details = dsa_session['kwargs']['details']
+    print dsa_session
+    if backend.name == 'twitter':
+        IntegrationForm = SocialTwitterIntegrationForm
+    else:
+        IntegrationForm = SocialIntegrationForm
+
     error = None
     if request.method == 'POST':
-        profile_form = ProfileSocialRegistrationForm(request.POST)
-        user_form = UserSocialRegistrationForm(request.POST)
-        if user_form.is_valid() and profile_form.is_valid():
-            session_variable = setting('SOCIAL_AUTH_PARTIAL_PIPELINE_KEY', 'partial_pipeline')
-            request.session['saved_username'] = user_form.cleaned_data['username']
-            request.session['saved_privacy_level'] = profile_form.cleaned_data['privacy_level']
-            request.session['saved_wants_newsletter'] = profile_form.cleaned_data['wants_newsletter']
-            request.session['saved_city'] = profile_form.cleaned_data['city']
-            backend = request.session[session_variable]['backend']
+        social_form = IntegrationForm(request.POST)
+        if social_form.is_valid():
+            request.session['saved_username'] = social_form.cleaned_data['username']
+            request.session['saved_location'] = social_form.cleaned_data['location']
+            request.session['saved_says_is_politician'] = social_form.cleaned_data['says_is_politician']
+            request.session['saved_uses_nickname'] = social_form.cleaned_data['uses_nickname']
+            request.session['saved_wants_newsletter'] = social_form.cleaned_data['wants_newsletter']
+            backend = dsa_session['backend']
             return redirect('socialauth_complete', backend=backend)
         else:
             error = _('Form is invalid')
+    else:
+        social_form = IntegrationForm()
 
-    user_form = UserSocialRegistrationForm()
-    profile_form = ProfileSocialRegistrationForm()
     return render_to_response('om_auth/form.html', {
             'error': error,
-            'user_form': user_form,
-            'profile_form': profile_form,
-            }, RequestContext(request))
+            'social_form': social_form,
+            'backend_name': backend.name,
+            'details': details,
+        }, RequestContext(request)
+    )
