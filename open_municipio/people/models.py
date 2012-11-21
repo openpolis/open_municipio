@@ -561,6 +561,7 @@ class Group(models.Model):
     name = models.CharField(max_length=100)
     acronym = models.CharField(blank=True, max_length=16)
     charge_set = models.ManyToManyField('InstitutionCharge', through='GroupCharge')
+    slug = models.SlugField(unique=True, blank=True, null=True, help_text=_('Suggested value automatically generated from name, must be unique'))
 
     img = ImageField(upload_to="group_images", blank=True, null=True)
 
@@ -569,7 +570,7 @@ class Group(models.Model):
         verbose_name_plural = _('groups')
 
     def get_absolute_url(self):
-        return reverse("om_institution_group", kwargs={'pk': self.pk})
+        return reverse("om_institution_group", kwargs={'slug': self.slug})
 
     def __unicode__(self):
         return u'%s (%s)' % (self.name, self.acronym)
