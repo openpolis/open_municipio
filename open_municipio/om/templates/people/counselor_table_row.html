@@ -11,8 +11,10 @@
         </a>
     </td>
 
-    <!-- thumbnail -->
+    <!-- name -->
     <td>
+        {% if label %}<span class="label">{{ label }}</span><br/>{% endif %}
+
         <a href="{{ charge.person.get_absolute_url }}">
             <strong>{{ charge.person|title }}</strong>
         </a>
@@ -23,9 +25,11 @@
     </td>
 
     <!-- group -->
-    <td>
-        <b><a href="#">{{ charge.current_groupcharge.group.name }}</a></b>
-    </td>
+    {% if not is_in_group %}
+        <td>
+            <b><a href="#">{{ charge.current_groupcharge.group.name }}</a></b>
+        </td>
+    {% endif %}
 
     <!-- presences -->
     <td class="text-center">

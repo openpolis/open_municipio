@@ -2,7 +2,7 @@ from django.http import Http404, HttpResponseRedirect
 from django.views.generic import TemplateView, DetailView, ListView, RedirectView
 from django.core.exceptions import ObjectDoesNotExist
 
-from open_municipio.people.models import Institution, InstitutionCharge, Person, municipality, InstitutionResponsability, Resource, GroupCharge
+from open_municipio.people.models import Institution, InstitutionCharge, Person, municipality, InstitutionResponsability, Resource, GroupCharge, Group
 from open_municipio.monitoring.forms import MonitoringForm
 from open_municipio.acts.models import Act, Deliberation, Interrogation, Interpellation, Motion, Agenda
 from open_municipio.events.models import Event
@@ -23,7 +23,7 @@ class MayorDetailView(RedirectView):
         return municipality.mayor.as_charge.person.get_absolute_url()
 
 
-class CouncilDetailView(TemplateView):
+class CouncilListView(TemplateView):
     """
     Renders the Council page
     """
@@ -31,10 +31,11 @@ class CouncilDetailView(TemplateView):
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
-        context = super(CouncilDetailView, self).get_context_data(**kwargs)
+        context = super(CouncilListView, self).get_context_data(**kwargs)
 
         mayor = municipality.mayor.as_charge
-        president = municipality.council.president
+        council = municipality.council
+        president = municipality.council.president.charge
         vicepresidents = municipality.council.vicepresidents
         groups = municipality.council.groups
         committees = municipality.committees.as_institution
@@ -55,6 +56,7 @@ class CouncilDetailView(TemplateView):
 
         extra_context = {
             'mayor': mayor,
+            'council': council,
             'president': president,
             'vicepresidents': vicepresidents,
             'groups': groups,
@@ -109,6 +111,29 @@ class CityGovernmentView(TemplateView):
         # Update context with extra values we need
         context.update(extra_context)
         return context
+
+
+class GroupListView(ListView):
+    model = Group
+    template_name = 'people/institution_groups.html'
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        extra_context = super(GroupListView, self).get_context_data(**kwargs)
+        extra_context['groups'] = municipality.council.groups
+        return extra_context
+
+
+class GroupDetailView(DetailView):
+    model = Group
+    template_name = 'people/institution_group.html'
+    context_object_name = "group"
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        extra_context = super(GroupDetailView, self).get_context_data(**kwargs)
+        extra_context['groups'] = municipality.council.groups
+        return extra_context
 
 
 class CommitteeListView(ListView):

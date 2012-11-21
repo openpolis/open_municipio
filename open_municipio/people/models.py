@@ -568,6 +568,9 @@ class Group(models.Model):
         verbose_name = _('group')
         verbose_name_plural = _('groups')
 
+    def get_absolute_url(self):
+        return reverse("om_institution_group", kwargs={'pk': self.pk})
+
     def __unicode__(self):
         return u'%s (%s)' % (self.name, self.acronym)
 
