@@ -385,6 +385,14 @@ class InstitutionCharge(Charge):
         return self.presented_act_set.all()
 
     @property
+    def n_presented_acts(self):
+        """
+        The number of acts presented by this charge
+        """
+        return self.presented_acts.count()
+
+
+    @property
     def received_acts(self):
         """
         The QuerySet of acts received by this charge.
@@ -412,7 +420,7 @@ class InstitutionCharge(Charge):
     @property
     def council_group(self):
         """
-        DEPRECATED: use `self.council_current_groupcharge.group`
+        DEPRECATED: use `self.current_groupcharge.group`
 
         Returns the city council's group this charge currently belongs to (if any).
         """

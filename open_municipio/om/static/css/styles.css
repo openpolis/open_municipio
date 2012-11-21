@@ -145,7 +145,7 @@ a {
   text-decoration: none;
 }
 a:hover {
-  color: #18345b;
+  color: #4788c2;
   text-decoration: underline;
 }
 .row {
@@ -2802,8 +2802,8 @@ input[type="submit"].btn.btn-mini {
 }
 .nav-tabs .dropdown-toggle:hover .caret,
 .nav-pills .dropdown-toggle:hover .caret {
-  border-top-color: #18345b;
-  border-bottom-color: #18345b;
+  border-top-color: #4788c2;
+  border-bottom-color: #4788c2;
 }
 .nav-tabs .active .dropdown-toggle .caret,
 .nav-pills .active .dropdown-toggle .caret {
@@ -4227,31 +4227,34 @@ body #content > section.party-people {
   margin: 0;
 }
 body.politician #wrapper > header {
-  background-color: #72c056;
+  background-color: #71b644;
 }
 body.politician #wrapper .colored {
-  background-color: #72c056;
+  background-color: #71b644;
 }
-body.politician #wrapper #area-title {
-  background-image: url('../img/city-logo/city-logo-politician.png');
+body.acts #wrapper > header {
+  background-color: #3873b4;
+}
+body.acts #wrapper .colored {
+  background-color: #3873b4;
+}
+body.votations #wrapper > header {
+  background-color: #96c0e3;
+}
+body.votations #wrapper .colored {
+  background-color: #96c0e3;
 }
 body.tags #wrapper > header {
-  background-color: #f4c242;
+  background-color: #efb633;
 }
 body.tags #wrapper .colored {
-  background-color: #f4c242;
-}
-body.tags #wrapper #area-title {
-  background-image: url('../img/city-logo/city-logo-tags.png');
+  background-color: #efb633;
 }
 body.citizen #wrapper > header {
-  background-color: #dc4630;
+  background-color: #d12f24;
 }
 body.citizen #wrapper .colored {
-  background-color: #dc4630;
-}
-body.citizen #wrapper #area-title {
-  background-image: url('../img/city-logo/city-logo-citizen.png');
+  background-color: #d12f24;
 }
 body h1 span.colored {
   padding-left: 5px;
@@ -4313,14 +4316,13 @@ body h1 span.colored {
   color: #999999;
 }
 #wrapper > header {
-  background: #4788c2;
+  background: #3873b4;
 }
 #wrapper > header #area-title {
   color: #ffffff;
   padding-top: 30px;
   padding-bottom: 30px;
   font-size: 40px;
-  background: transparent url('../img/city-logo/city-logo.png') no-repeat right center;
 }
 #wrapper > header #area-title small {
   color: #ffffff;
@@ -4330,9 +4332,6 @@ body h1 span.colored {
   padding-left: 10px;
   border-left: 1px solid #ffffff;
   font-weight: 200;
-}
-#wrapper > header #sub-nav {
-  background-color: #ffffff;
 }
 #wrapper > header #sub-nav .navbar-inner {
   background-color: transparent;
@@ -4349,13 +4348,16 @@ body h1 span.colored {
   background-color: #ffffff;
   font-weight: normal;
 }
+#wrapper > header #sub-nav .container-fluid {
+  padding-left: 0px;
+}
 #wrapper > header #sub-nav ul.nav > li + li:before {
   font-size: 11px;
   font-weight: bold;
   float: left;
   content: ' | ';
   line-height: 30px;
-  color: #333333;
+  color: rgba(51, 51, 51, 0.35);
 }
 #wrapper > header #sub-nav ul.nav > li.unpipe + li:before {
   content: '';
@@ -4819,7 +4821,7 @@ table.stats th {
   float: left;
   content: ' | ';
   line-height: 30px;
-  color: #333333;
+  color: rgba(51, 51, 51, 0.35);
 }
 .pipe-separators ul.nav > li.unpipe + li:before {
   content: '';
@@ -5333,7 +5335,7 @@ body {
   display: inline-block;
   text-align: center;
   padding: 4px;
-  background-color: #dc4630;
+  background-color: #d12f24;
   font-weight: bold;
   color: #ffffff;
   min-width: 20px;
@@ -5353,4 +5355,7 @@ ul.rank li {
   margin-left: -390px;
   /* - width/2 */
 
+}
+aside hr {
+  border: 1px solid white;
 }

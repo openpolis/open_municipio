@@ -19,7 +19,7 @@
       <div class="container-fluid">
         <ul class="nav">
           {% for t in topics %}
-            <li>{% comment %}{% if t == topic %} class="unpipe"{% endif %}{% endcomment %}
+            <li {% ifequal t topic %} class="unpipe"{% endifequal %}>
               <a href="{{ t.get_absolute_url }}"{% if t == topic %} class="active"{% endif %}>{{ t }}</a>
             </li>
           {% endfor %}

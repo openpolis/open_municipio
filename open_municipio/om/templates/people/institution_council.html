@@ -9,6 +9,13 @@
 {% block content_header %}Consiglio{% endblock %}
 {% block institutions_class %}active{% endblock %}
 
+{% block people_class %}class="active"{% endblock %}
+{% block body_class %}politician{% endblock %}
+
+{% block sub_nav %}
+    {%  include 'commons/subnav.html' with active='Consiglio' %}
+{% endblock %}
+
 {% block content %}
 
   <h2>Consiglio</h2>

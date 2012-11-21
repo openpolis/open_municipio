@@ -1,6 +1,6 @@
-BOOTSTRAP = ../om/static/css/styles.css
+BOOTSTRAP = ../css/styles.css
 BOOTSTRAP_LESS = ./styles.less
-BOOTSTRAP_RESPONSIVE = ../om/static/css/styles-responsive.css
+BOOTSTRAP_RESPONSIVE = ../css/styles-responsive.css
 BOOTSTRAP_RESPONSIVE_LESS = ./styles-responsive.less
 
 

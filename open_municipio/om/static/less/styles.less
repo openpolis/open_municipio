@@ -3,9 +3,12 @@
 
 // Globals
 //@cityColor: #008AC2;
-@politicianColor: #72c056;
-@topicColor: #F4C242; //FFBF43;
-@citizenColor: #dc4630;
+@homeColor: #3873b4;
+@politicianColor: #71b644;
+@actsColor: #3873b4;
+@votationsColor: #96c0e3;
+@topicColor: #efb633;
+@citizenColor: #d12f24;
 
 body {
   // footer bar
@@ -82,27 +85,39 @@ body {
   }
 
   // Header colouring
-
   &.politician #wrapper {
     > header {
       background-color: @politicianColor;
     }
     .colored { background-color: @politicianColor;}
-    #area-title { background-image: url('../img/city-logo/city-logo-politician.png') ; }
   }
+
+  &.acts #wrapper {
+    > header {
+      background-color: @actsColor;
+    }
+    .colored { background-color: @actsColor;}
+  }
+
+  &.votations #wrapper {
+    > header {
+      background-color: @votationsColor;
+    }
+    .colored { background-color: @votationsColor;}
+  }
+
   &.tags #wrapper {
     > header {
       background-color: @topicColor;
     }
     .colored { background-color: @topicColor}
-    #area-title { background-image: url('../img/city-logo/city-logo-tags.png') ; }
   }
+
   &.citizen #wrapper {
     > header {
       background-color: @citizenColor;
     }
     .colored { background-color: @citizenColor}
-    #area-title { background-image: url('../img/city-logo/city-logo-citizen.png') ; }
   }
   h1 span.colored { padding-left: 5px; padding-right: 5px;}
 }
@@ -163,14 +178,13 @@ body {
 // Main Header
 #wrapper > header
 {
-  background: @blueDark;
+  background: @homeColor;
 
   #area-title {
     color: @white;
     padding-top: 30px;
     padding-bottom: 30px;
     font-size: 40px;
-    background: transparent url('../img/city-logo/city-logo.png') no-repeat right center;
     small {
       color: @white;
       font-size: 40px;
@@ -183,7 +197,6 @@ body {
   }
 
   #sub-nav {
-    background-color: @white;
     .navbar-inner {
       background-color: transparent; background-image: none;
       a {
@@ -192,6 +205,11 @@ body {
         &.active { background-color: @white; font-weight: normal; }
       }
     }
+
+    .container-fluid {
+      padding-left: 0px;
+    }
+
     .pipe-separators;
   }
 }
@@ -461,7 +479,7 @@ table.stats {
     float: left;
     content: ' | ';
     line-height: 30px;
-    color: @grayDark;
+    color: rgba(51, 51, 51, 0.35);
   }
   ul.nav > li.unpipe + li:before { content: ''; }
   ul.nav > li + li.unpipe:before { content: ''; }
@@ -806,3 +824,7 @@ ul.rank {
   margin-left: -390px; /* - width/2 */
 }
 
+
+aside hr {
+  border: 1px solid white;
+}

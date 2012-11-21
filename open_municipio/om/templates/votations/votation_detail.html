@@ -10,7 +10,7 @@
     del {{ votation.act.presentation_date|date:"d F Y" }}{% endblock %}
 {% block content_header %}Votazione{% endblock %}
 {% block votations_class %}active{% endblock %}
-
+{% block body_class %}votations{% endblock %}
 
 {% block head_css_includes %}
     {{ block.super }}

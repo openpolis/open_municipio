@@ -1,7 +1,9 @@
 {% extends "base_two_columns.html" %}
 {% load i18n %}
 {% load monitoring_tags %}
-{% load newscache_tags %}
+{% load om_utils %}
+{% load thumbnail %}
+
 {% load list_partition %}
 
 {% block title %} Politici {% endblock %}
@@ -19,109 +21,60 @@
     <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.submitlink.js"></script>
 {% endblock %}
 
+
+{% block sub_nav %}
+    {%  include 'commons/subnav.html' %}
+{% endblock %}
+
+
 {% block content %}
 
-  <div class="row-fluid">
 
-    <section class="span6">
-      <h2>Ultimi cambiamenti di gruppo</h2>
-      <ul class="people-list">
-        {% for politician in last_group_changes %}
-          <li>
-            {% include 'people/politician_list_section.html' with value=politician.current_at_moment_groupcharge.start_date|date:"d/m/Y" %}
-            {% object_inline_monitoring politician.person %}
-          </li>
-        {% endfor %}
-      </ul>
-    </section>
-
-    <section class="span6">
-      <h2>I più ribelli</h2>
-      <ul class="people-list">
-        {% for politician in most_rebellious %}
-          <li>
-            {% include 'people/politician_list_section.html' with value=politician.n_rebel_votations what='ribellioni' %}
-            {% object_inline_monitoring politician.person %}
-          </li>
-        {% endfor %}
-      </ul>
-    </section>
-
-  </div>
-
-  <hr class="big">
-
-  <div class="row-fluid">
-
-    <section class="span6">
-      <h2>I meno assenti</h2>
-      <ul class="people-list">
-        {% for politician in least_absent %}
-          <li>
-            {% include 'people/politician_list_section.html' with value=politician.n_absent_votations what='assenze' %}
-            {% object_inline_monitoring politician.person %}
-          </li>
-        {% endfor %}
-      </ul>
-    </section>
-
-    <section class="span6">
-      <h2>I più assenti</h2>
-      <ul class="people-list">
-        {% for politician in most_absent %}
-          <li>
-            {% include 'people/politician_list_section.html' with value=politician.n_absent_votations what='assenze' %}
-            {% object_inline_monitoring politician.person %}
-          </li>
-        {% endfor %}
-      </ul>
-    </section>
-
-  </div>
-
-  <hr class="big">
-
-  <section class="row-fluid party-people">
-    <div class="span4">
-      <h2>Sindaco</h2>
-
-      <ul class="list-plain">
-        <li><a href="{{ mayor.person.get_absolute_url }}"><strong>{{ mayor.person|title }}</strong></a></li>
-      </ul>
+  <section class="row-fluid">
 
       <h2>Giunta</h2>
-      <ul class="list-plain">
-        {% for c in gov_members %}
-          <li><a href="{{ c.person.get_absolute_url }}"><strong>{{ c.person|title }}</strong></a></li>
-        {% endfor %}
-      </ul>
 
-    </div>
+      <table class="data">
+          <thead>
+          <tr>
+              <th class="text-left span4" colspan="2">Politico</th>
+              <th class="span4">Deleghe</th>
+              <th class="span1">Atti</th>
+              <th class="span1">Utenti che monitorano</th>
+          </tr>
+          </thead>
+          <tbody>
+              {%  include 'people/gov_member_table_row.html' with charge=mayor %}
+              {% for c in gov_members %}
+                  {%  include 'people/gov_member_table_row.html' with charge=c %}
+              {% endfor %}
+          </tbody>
+      </table>
 
-    <div class="span8">
+      <br/><br/>
+      <hr class="big" style="margin-top: 2em"/>
 
       <h2>Consiglio</h2>
 
-      <div class="row-fluid">
-        <div class="span6">
-          <ul class="list-plain">
-            {% for c in counselors|split:'first' %}
-              <li><a href="{{ c.person.get_absolute_url }}"><strong>{{ c.person|title }}</strong>
-                ({{ c.council_group.acronym }})</a></li>
-            {% endfor %}
-          </ul>
-        </div>
-        <div class="span6">
-          <ul class="list-plain">
-            {% for c in counselors|split:'last' %}
-              <li><a href="{{ c.person.get_absolute_url }}"><strong>{{ c.person|title }}</strong>
-                ({{ c.council_group.acronym }})</a></li>
-            {% endfor %}
-          </ul>
-        </div>
-      </div>
+      <table class="data">
+          <thead>
+          <tr>
+              <th class="text-left span3" colspan="2">Politico</th>
+              <th class="span2">Gruppo</th>
+              <th class="span2">Presenze</th>
+              <th class="span1">Voti ribelli</th>
+              <th class="span1">Atti firmati</th>
+              <th class="span1">Utenti che monitorano</th>
 
-    </div>
+          </tr>
+          </thead>
+          <tbody>
+          {% for c in counselors %}
+              {%  include 'people/counselor_table_row.html' with charge=c %}
+          {% endfor %}
+          </tbody>
+      </table>
+
   </section>
 
 
@@ -129,8 +82,64 @@
 
 {% block sidebar %}
 
-  <section>
-    <h3>I 3 politici più monitorati</h3>
+    <section>
+        <h2>I meno assenti</h2>
+        <ul class="people-list">
+            {% for politician in least_absent %}
+                <li>
+                    {% include 'people/politician_list_section.html' with value=politician.n_absent_votations what='assenze' %}
+                    {% object_inline_monitoring politician.person %}
+                </li>
+            {% endfor %}
+        </ul>
+    </section>
+
+    <hr/>
+
+    <section>
+        <h2>I più assenti</h2>
+        <ul class="people-list">
+            {% for politician in most_absent %}
+                <li>
+                    {% include 'people/politician_list_section.html' with value=politician.n_absent_votations what='assenze' %}
+                    {% object_inline_monitoring politician.person %}
+                </li>
+            {% endfor %}
+        </ul>
+    </section>
+
+    <hr/>
+
+    <section>
+        <h2>I più ribelli</h2>
+        <ul class="people-list">
+            {% for politician in most_rebellious %}
+                <li>
+                    {% include 'people/politician_list_section.html' with value=politician.n_rebel_votations what='ribellioni' %}
+                    {% object_inline_monitoring politician.person %}
+                </li>
+            {% endfor %}
+        </ul>
+    </section>
+
+    <hr/>
+
+    <section>
+        <h2>I più fedeli</h2>
+        <ul class="people-list">
+            {% for politician in most_trustworthy %}
+                <li>
+                    {% include 'people/politician_list_section.html' with value=politician.n_rebel_votations what='ribellioni' %}
+                    {% object_inline_monitoring politician.person %}
+                </li>
+            {% endfor %}
+        </ul>
+    </section>
+
+    <hr/>
+
+    <section>
+    <h2>I più monitorati</h2>
     <ul class="people-list">
       {% for politician in most_monitorized %}
         <li>
@@ -161,9 +170,9 @@
           <p><img src="https://chart.googleapis.com/chart?cht=p3&chd=s:Uf9a&chs=400x130&chdl=con%20oltre%2020%20anni%20di%20incarichi:%203%20(7.89%)|da%2015%20a%2020%20anni%20di%20incarichi:%205%20(13.16%)|da%2010%20a%2015%20anni%20di%20incarichi:%207%20(18.42%)|da%205%20a%2010%20anni%20di%20incarichi:%2016%20(42.11%)|con+meno%20di%205%20anni%20di%20incarichi:%207%20(18.42%)&chd=t:3,5,7,16,7&chco=FF0000,FFFF10"></p>
       </div>
     </div>
-  </div>{% endcomment %}
+  </div>
 
   {% institutional_news_for_object 'politicians_all' as i_news %}
   {% include 'commons/news_list_politicians.html' with news_list=i_news news_object='politicians' news_title='Ultime sui politici' %}
-
+{% endcomment %}
 {% endblock %}

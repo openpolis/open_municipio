@@ -47,9 +47,10 @@ def object_monitoring(context, object, show_politicians=True):
 
 
 @register.inclusion_tag('monitoring/inline.html', takes_context=True)
-def object_inline_monitoring(context, object):
+def object_inline_monitoring(context, object, shows_monitoring_users=True):
     args = {
         'object': object,
+        'shows_monitoring_users': shows_monitoring_users,
         'user': context['user'],
         'is_user_monitoring': False
     }

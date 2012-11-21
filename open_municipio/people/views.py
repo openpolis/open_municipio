@@ -6,7 +6,7 @@ from open_municipio.people.models import Institution, InstitutionCharge, Person,
 from open_municipio.monitoring.forms import MonitoringForm
 from open_municipio.acts.models import Act, Deliberation, Interrogation, Interpellation, Motion, Agenda
 from open_municipio.events.models import Event
-from open_municipio.votations.models import ChargeVote
+from open_municipio.votations.models import ChargeVote, Votation
 
 from operator import attrgetter
 from os import sys
@@ -317,8 +317,11 @@ class PoliticianListView(TemplateView):
             institutionresponsability__end_date__isnull=True
         ).select_related().order_by('person__last_name')
 
+        context['n_total_votations'] = Votation.objects.count()
+
         # fetch most or least
         context['most_rebellious'] = counselors.order_by('-n_rebel_votations')[0:3]
+        context['most_trustworthy'] = counselors.order_by('n_rebel_votations')[0:3]
         context['least_absent'] = counselors.order_by('n_absent_votations')[0:3]
         context['most_absent'] = counselors.order_by('-n_absent_votations')[0:3]
 

@@ -12,6 +12,24 @@
 {% block body_class %}tags{% endblock %}
 {% block tags_class %}class="active"{% endblock %}
 
+{% block sub_nav %}
+
+<nav class="navbar" id="sub-nav">
+    <div class="navbar-inner">
+        <div class="container-fluid">
+            <ul class="nav">
+                {% for c in categories %}
+                    <li>
+                        <a href="{{ c.get_absolute_url }}">{{ c }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</nav>
+
+{% endblock %}
+
 {% block content %}
 
   <dl id="topic_summary" class="clearfix">
