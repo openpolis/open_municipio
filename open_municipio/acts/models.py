@@ -610,6 +610,7 @@ class Calendar(models.Model):
     """
     WRITEME
     """
+#    act_set = models.ManyToManyField(Act,through='CalendarActs')
     act_set = models.ManyToManyField(Act)
     site = models.ForeignKey(Institution)
     date = models.DateField()
@@ -621,6 +622,15 @@ class Calendar(models.Model):
     @property
     def acts(self):
         return self.act_set.all()
+
+class CalendarActs(models.Model):
+    """
+    WRITEME
+    """
+    act = models.ForeignKey(Act)
+    calendar = models.ForeignKey(Calendar)
+
+    order = models.IntegerField(blank=False, null=False)
 
 
 
