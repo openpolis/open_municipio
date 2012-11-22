@@ -13,4 +13,4 @@ poster
 lxml
 pil
 sorl-thumbnail
-
+django-tinymce
