@@ -1,0 +1,90 @@
+{% extends 'base_two_columns.html' %}
+{% load monitoring_tags %}
+{% load thumbnail %}
+
+{% block title %}Politici | {{ group.name }}{% endblock title %}
+{% block content_header %}Organi politici{% endblock %}
+{% block people_class %}class="active"{% endblock %}
+{% block body_class %}politician{% endblock %}
+
+{% block content_header_city_logo %}
+    <img src="{{ STATIC_URL }}img/{{ main_city|lower }}-logo/politician.png" alt="Comune di {{ main_city }}">
+{% endblock %}
+
+{% block sub_nav %}
+    {%  include 'commons/subnav.html' with active='Gruppi' %}
+{% endblock %}
+
+{% block content %}
+
+    <section>
+        <h2>
+            {% thumbnail group.img "50x50" crop="center" as im %}
+                <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+            {% endthumbnail %}
+            {{ group.name }} ({{ group.acronym }})
+        </h2>
+        {% if group.resources|length > 0 %}
+            <address>
+                {% for r in group.resources %}
+                    {% if r.resource_type == 'URL' %}
+                        {% if 'http://' not in r.value %}
+                            {{ r.description }}: <a href="http://{{ r.value }}">{{ r.value }}</a><br/>
+                        {% else %}
+                            {{ r.description }}: <a href="{{ r.value }}">{{ r.value }}</a><br/>
+                        {% endif %}
+                    {% else %}
+                        {% if r.resource_type == 'EMAIL' %}
+                            <a href="mailto:{{ r.value }}">{{ r.value }}</a><br/>
+                        {% else %}
+                            {{ r.value }}<br/>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            </address>
+        {% endif %}
+
+        <div class="row-fluid">
+            <table class="data">
+                <thead>
+                <tr>
+                    <th class="text-left span3" colspan="2">Politico</th>
+                    <th class="span2">Presenze</th>
+                    <th class="span2">Voti ribelli</th>
+                    <th class="span2">Atti firmati</th>
+                    <th class="span1">Utenti che monitorano</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% if group.leader %}
+                    {% include 'people/counselor_table_row.html' with charge=group.leader.charge.charge is_in_group=1 label="Capogruppo"%}
+                {% endif %}
+                {% if group.deputy %}
+                    {% include 'people/counselor_table_row.html' with charge=group.deputy.charge.charge is_in_group=1 label="Vice-capogruppo"%}
+                {% endif %}
+                {% for c in group.alpha_members %}
+                    {%  include 'people/counselor_table_row.html' with charge=c is_in_group=1%}
+                {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+    </section>
+
+{% endblock %}
+
+{% block sidebar %}
+    <h2>Tutti i gruppi</h2>
+    <ul class="list-plain">
+        {% for g in groups %}
+            <li><a href="{{ g.get_absolute_url }}"><strong>{{ g.name }}</strong>: ({{ g.acronym }})</a></li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}
+
+
+{% block footer_js_includes %}
+    {{ block.super }}
+    <script src="{{ STATIC_URL }}js/jquery.submitlink.js"></script>
+{% endblock %}

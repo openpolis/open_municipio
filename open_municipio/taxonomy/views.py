@@ -1,5 +1,7 @@
+from django.contrib.contenttypes.models import ContentType
 from django.db.models import Count
 from django.views.generic import DetailView, ListView
+from open_municipio.acts.models import Deliberation, Interpellation, Interrogation, Calendar, Motion
 from open_municipio.locations.models import Location
 from open_municipio.monitoring.models import Monitoring
 
@@ -34,10 +36,12 @@ class TopicListView(ListView):
         if type_id_list:
             # create rank of monitorized items
             context['top_monitorized_tags'] = [
-                m.content_object
-                for m in Monitoring.objects.filter(
-                    content_type__in=type_id_list
-                    ).annotate(n_monitoring=Count('object_pk'))
+                ContentType.objects.get_for_id(m['content_type'])
+                    .get_object_for_this_type(pk=m['object_pk'])
+                for m in Monitoring.objects
+                    .filter(content_type__in=type_id_list)
+                    .values('object_pk', 'content_type')
+                    .annotate(n_monitoring=Count('object_pk'))
                     .order_by('-n_monitoring')[:10]
             ]
         return context
@@ -56,7 +60,22 @@ class TopicDetailView(DetailView):
 
         context['topics'] = Category.objects.all()
         context['subtopics'] = self.take_subtopics()
-                
+
+        topic = context['topic']
+        context['topic_type'] = self.topic_type
+
+        if self.topic_type == 'location':
+            tagged_act_id_field = 'act_id'
+        else:
+            tagged_act_id_field = 'content_object_id'
+
+        ta_ids = set([ta[tagged_act_id_field] for ta in topic.tagged_acts.values(tagged_act_id_field)])
+        context['n_deliberation_proposals'] = Deliberation.objects.filter(pk__in=ta_ids, approval_date__isnull=True).count()
+        context['n_deliberations'] = Deliberation.objects.filter(pk__in=ta_ids, approval_date__isnull=False).count()
+        context['n_motions'] = Motion.objects.filter(pk__in=ta_ids).count()
+        context['n_calendars'] = Calendar.objects.filter(pk__in=ta_ids).count()
+        context['n_interrogations'] = Interrogation.objects.filter(pk__in=ta_ids).count()
+        context['n_interpellations'] = Interpellation.objects.filter(pk__in=ta_ids).count()
         return context
 
     def take_subtopics(self):
@@ -64,6 +83,7 @@ class TopicDetailView(DetailView):
     
 class TagDetailView(TopicDetailView):
     model = Tag
+    topic_type = 'tag'
 
     def take_subtopics(self):
         return set([x.category for x in TaggedAct.objects.filter( tag=self.object )])
@@ -71,6 +91,7 @@ class TagDetailView(TopicDetailView):
     
 class CategoryDetailView(TopicDetailView):
     model = Category
+    topic_type = 'category'
 
     def take_subtopics(self):
-        return [x.tag for x in TaggedAct.objects.filter( category=self.object ) if x.tag]
+        return set([x.tag for x in TaggedAct.objects.filter( category=self.object ) if x.tag])

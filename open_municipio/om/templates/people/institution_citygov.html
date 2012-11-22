@@ -1,28 +1,57 @@
 {% extends 'base_two_columns.html' %}
+{% load monitoring_tags %}
+{% load thumbnail %}
 
-{% block title %}Organi politici | Giunta{% endblock title %}
+{% block title %}Politici | Giunta{% endblock title %}
 {% block content_header %}Giunta{% endblock %}
 {% block institutions_class %}active{% endblock %}
 
-{% load list_partition %}
-{% load om_utils %}
-{% load monitoring_tags %}
+{% block content_header_city_logo %}
+    <img src="{{ STATIC_URL }}img/{{ main_city|lower }}-logo/politician.png" alt="Comune di {{ main_city }}">
+{% endblock %}
+
+{% block people_class %}class="active"{% endblock %}
+{% block body_class %}politician{% endblock %}
+
+{% block sub_nav %}
+    {%  include 'commons/subnav.html' with active='Giunta' %}
+{% endblock %}
+
 
 {% block content %}
 
-  <h1>Giunta</h1>
+  <section class="row-fluid">
 
-  {% include 'acts/act_table_supporters.html' with act_supporters=mayor|to_list act_cosupporters=firstdeputy|to_list %}
-  {% include 'acts/act_table_supporters.html' with act_supporters=citygov.members|split:'first' act_cosupporters=citygov.members|split:'last' %}
+    <h2>Giunta</h2>
 
-  <section>
-    <h3>Prossimi appuntamenti</h3>
-    {% include 'commons/calendar.html' with events=events %}
+    <table class="data">
+        <thead>
+        <tr>
+            <th class="text-left span4" colspan="2">Politico</th>
+            <th class="span4">Deleghe</th>
+            <th class="span1">Atti</th>
+            <th class="span1">Utenti che monitorano</th>
+        </tr>
+        </thead>
+        <tbody>
+        {%  include 'people/gov_member_table_row.html' with charge=mayor label="Sindaco"%}
+        {%  include 'people/gov_member_table_row.html' with charge=firstdeputy label="Vice sindaco"%}
+        {% for c in citygov.members %}
+            {%  include 'people/gov_member_table_row.html' with charge=c %}
+        {% endfor %}
+        </tbody>
+    </table>
+
   </section>
 
 {% endblock %}
 
 {% block sidebar %}
+
+    <section>
+        <h3>Prossimi appuntamenti</h3>
+        {% include 'commons/calendar.html' with events=events %}
+    </section>
 
   {% comment %}
   <h2>Ultimi 3 atti della Giunta</h2>

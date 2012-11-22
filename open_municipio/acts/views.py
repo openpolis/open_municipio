@@ -4,19 +4,24 @@ from django.utils.decorators import method_decorator
 from django.views.generic import View, DetailView, ListView, FormView
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.utils import simplejson as json
-
 from django.contrib.auth.decorators import user_passes_test
+from django.conf import settings
+from django.utils.translation import ugettext_lazy as _
 
 from voting.views import RecordVoteOnItemView
 
 from open_municipio.acts.models import Act, Agenda, Deliberation, Interpellation, Interrogation, Motion, Transition
 from open_municipio.acts.forms import ActDescriptionForm, ActTransitionForm, ActFinalTransitionForm, ActTitleForm
+from open_municipio.locations.models import Location
 
 from open_municipio.monitoring.forms import MonitoringForm
 
 from open_municipio.om_search.forms import RangeFacetedSearchForm
+from open_municipio.om_search.mixins import FacetRangeDateIntervalsMixin
 from open_municipio.om_search.views import ExtendedFacetedSearchView
+from open_municipio.people.models import Person
 
 from open_municipio.taxonomy.models import Tag, Category
 
@@ -26,7 +31,7 @@ import re
 
 
 
-class ActSearchView(ExtendedFacetedSearchView):
+class ActSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
     """
 
     This view allows faceted search and navigation of the acts.
@@ -36,6 +41,23 @@ class ActSearchView(ExtendedFacetedSearchView):
 
     """
     __name__ = 'ActSearchView'
+
+    FACETS_SORTED = ['act_type', 'is_key', 'is_proposal', 'initiative', 'organ', 'pub_date']
+    FACETS_LABELS = {
+        'act_type': _('Act type'),
+        'is_key': _('Is key act'),
+        'is_proposal': _('Is deliberation proposal'),
+        'initiative': _('Initiative'),
+        'organ': _('Organ'),
+        'pub_date': _('Pubblication year')
+    }
+    DATE_INTERVALS_RANGES = {
+        '2012':  {'qrange': '[2012-01-01T00:00:00Z TO 2013-01-01T00:00:00Z]', 'r_label': '2012'},
+        '2011':  {'qrange': '[2011-01-01T00:00:00Z TO 2012-01-01T00:00:00Z]', 'r_label': '2011'},
+        '2010':  {'qrange': '[2010-01-01T00:00:00Z TO 2011-01-01T00:00:00Z]', 'r_label': '2010'},
+        '2009':  {'qrange': '[2009-01-01T00:00:00Z TO 2010-01-01T00:00:00Z]', 'r_label': '2009'},
+        '2008':  {'qrange': '[2008-01-01T00:00:00Z TO 2009-01-01T00:00:00Z]', 'r_label': '2008'},
+    }
 
     def __init__(self, *args, **kwargs):
         # Needed to switch out the default form class.
@@ -50,12 +72,76 @@ class ActSearchView(ExtendedFacetedSearchView):
 
         return super(ActSearchView, self).build_form(form_kwargs)
 
+    def _get_extended_selected_facets(self):
+        """
+        modifies the extended_selected_facets, adding correct labels for this view
+        works directly on the extended_selected_facets dictionary
+        """
+        extended_selected_facets = super(ActSearchView, self)._get_extended_selected_facets()
+
+        # this comes from the Mixins
+        extended_selected_facets = self.add_date_interval_extended_selected_facets(extended_selected_facets, 'pub_date')
+
+        return extended_selected_facets
+
     def extra_context(self):
         """
         Add extra content here, when needed
         """
         extra = super(ActSearchView, self).extra_context()
         extra['base_url'] = reverse('om_act_search') + '?' + extra['params'].urlencode()
+
+        person_slug = self.request.GET.get('person', None)
+        if person_slug:
+            try:
+                extra['person'] = Person.objects.get(slug=person_slug)
+            except ObjectDoesNotExist:
+                pass
+
+        category_slug = self.request.GET.get('category', None)
+        if category_slug:
+            try:
+                extra['category'] = Category.objects.get(slug=category_slug)
+            except ObjectDoesNotExist:
+                pass
+        tag_slug = self.request.GET.get('tag', None)
+        if tag_slug:
+            try:
+                extra['tag'] = Tag.objects.get(slug=tag_slug)
+            except ObjectDoesNotExist:
+                pass
+        location_slug = self.request.GET.get('location', None)
+        if location_slug:
+            try:
+                extra['location'] = Location.objects.get(slug=location_slug)
+            except ObjectDoesNotExist:
+                pass
+
+        # get data about custom date range facets
+        extra['facet_queries_date'] = self._get_custom_facet_queries_date('pub_date')
+
+        extra['facets_sorted'] = self.FACETS_SORTED
+        extra['facets_labels'] = self.FACETS_LABELS
+
+        # check if is_proposal facets must be shown
+        extra['show_is_proposal_facets'] = sum(map(lambda x: x[1], extra['facets']['fields']['is_proposal']['counts']))
+
+        # check if initiative facets must be shown
+        extra['show_initiative_facets'] = sum(map(lambda x: x[1], extra['facets']['fields']['initiative']['counts']))
+
+        paginator = Paginator(self.results, settings.HAYSTACK_SEARCH_RESULTS_PER_PAGE)
+        page = self.request.GET.get('page', 1)
+        try:
+            page_obj = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            page_obj = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            page_obj = paginator.page(paginator.num_pages)
+
+        extra['paginator'] = paginator
+        extra['page_obj'] = page_obj
 
 
         return extra
@@ -186,6 +272,9 @@ class ActDetailView(DetailView):
                 'categories' : Category.objects.all(),
                 'tags' : Tag.objects.all()
             }
+
+        context['n_documents'] = act.attachment_set.count()
+        context['n_votes'] = act.votation_set.count()
 
         # retrieve a dictionary with status and its transitions
         context['transition_groups'] = act.get_transitions_groups()

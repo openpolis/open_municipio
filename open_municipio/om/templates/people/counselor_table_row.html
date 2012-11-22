@@ -1,0 +1,55 @@
+{% load monitoring_tags %}
+{% load thumbnail %}
+
+<tr>
+    <!-- thumbnail -->
+    <td style="width: 50px">
+        <a href="{{ charge.person.get_absolute_url }}">
+            {% thumbnail charge.person.img "50x50" crop="center" as im %}
+                <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+            {% endthumbnail %}
+        </a>
+    </td>
+
+    <!-- name -->
+    <td>
+        {% if label %}<span class="label">{{ label }}</span><br/>{% endif %}
+
+        <a href="{{ charge.person.get_absolute_url }}">
+            <strong>{{ charge.person|title }}</strong>
+        </a>
+        <br>
+        in carica dal {{ charge.start_date|date:"d.m.Y" }}
+
+        {% object_inline_monitoring charge.person shows_monitoring_users=False %}
+    </td>
+
+    <!-- group -->
+    {% if not is_in_group %}
+        <td>
+            <b><a href="#">{{ charge.current_groupcharge.group.name }}</a></b>
+        </td>
+    {% endif %}
+
+    <!-- presences -->
+    <td class="text-center">
+        <strong>{% widthratio charge.n_present_votations charge.n_present_votations|add:charge.n_absent_votations 100 %}%</strong>
+        <br/>
+        <span class="small">({{ charge.n_present_votations }} su {{ charge.n_present_votations|add:charge.n_absent_votations }})</span>
+    </td>
+
+    <!-- rebellions -->
+    <td class="text-center">
+        {{ charge.n_rebel_votations }}
+    </td>
+
+    <!-- presented acts -->
+    <td class="text-center">
+        {{ charge.n_presented_acts }}
+    </td>
+
+    <!-- monitoring users -->
+    <td class="text-center">
+        {{ charge.person.all_monitoring_count }}
+    </td>
+</tr>

@@ -68,6 +68,18 @@ class ImportVotationsCommand(LabelCommand):
 
         self.dry_run = options['dry_run']
 
+        # fix logger level according to verbosity
+        verbosity = options['verbosity']
+        if verbosity == '0':
+            self.logger.setLevel(logging.ERROR)
+        elif verbosity == '1':
+            self.logger.setLevel(logging.WARNING)
+        elif verbosity == '2':
+            self.logger.setLevel(logging.INFO)
+        elif verbosity == '3':
+            self.logger.setLevel(logging.DEBUG)
+
+
         # parse passed votations
         for label in labels:
             self.handle_label(label, **options)
@@ -414,8 +426,8 @@ class ImportActsCommand(LabelCommand):
                 presentation_date=presentation_date,
                 emitting_institution=curr_inst,
                 initiative=initiative,
-                title=title,
                 defaults = {
+                    'title':title,
                     'approval_date': approval_date,
                     'execution_date': execution_date,
                     'final_idnum': final_idnum
@@ -424,6 +436,12 @@ class ImportActsCommand(LabelCommand):
 
             if not created:
                 self.logger.info("Found deliberation %s" % om_act.idnum)
+
+                if title != om_act.title:
+                    self.logger.info("Title changed: %s" % om_act.title)
+                    om_act.title = title
+                    om_act.save()
+
                 # remove news of an existing act, if required
                 if options['refresh_news']:
                     self.remove_news(om_act)
@@ -669,6 +687,17 @@ class ImportActsCommand(LabelCommand):
         self.people_tree = etree.parse(people_file)
 
         self.dry_run = options['dry_run']
+
+        # fix logger level according to verbosity
+        verbosity = options['verbosity']
+        if verbosity == '0':
+            self.logger.setLevel(logging.ERROR)
+        elif verbosity == '1':
+            self.logger.setLevel(logging.WARNING)
+        elif verbosity == '2':
+            self.logger.setLevel(logging.INFO)
+        elif verbosity == '3':
+            self.logger.setLevel(logging.DEBUG)
 
         # parse passed acts
         for label in labels:

@@ -6,17 +6,11 @@
 {% block content_header %}Log in{% endblock %}
 
 {% block content %}
+  <a href="{% url socialauth_begin 'twitter' %}">Entra con Twitter</a><br />
+  <a href="{% url socialauth_begin 'facebook' %}">Entra con Facebook</a><br />
+  <a href="{% url socialauth_begin 'google-oauth2' %}">Entra con Google</a><br />
   <form action="/accounts/login/" method="post" class="login_form" style="width: 25%; margin: 1em auto; text-align: center">{% csrf_token %}
     {{ form.non_field_errors }}
-    <p>
-        Utilizza uno di questi tre username dimostrativi:
-        <ul style="list-style: none">
-            <li>mrossi</li>
-            <li>gbianchi</li>
-            <li>gverdi</li>
-        </ul>
-    </p>
-    <p>Inserisci sempre la password <b>demo</b></p>
     <br/><br/><br/>
     <table>
       <tr>

@@ -29,18 +29,25 @@ class Event(models.Model):
     ``Event.future.all()``.
     """
 
-    date = models.DateField(_("Event date"))
-    institution = models.ForeignKey(Institution)
-    act = models.ForeignKey(Act, blank=True, null=True)
-    description = models.TextField(_("Description"), max_length=500, blank=True, null=True)
+    date = models.DateField(_("Event date"), help_text=_("The day when the event is going to be held"))
+    event_time = models.TimeField(_("Event time"), blank=True, null=True, help_text=_("The time of the event"))
+    institution = models.ForeignKey(Institution, verbose_name=_("Institution"), help_text=_("The institution that's going to meet during the event"))
+    acts = models.ManyToManyField(Act, verbose_name=_("Acts"), blank=True, null=True, help_text=_("Acts the discussion is linked to, if any"))
+    title = models.CharField(_("Title"), max_length=128, blank=True, null=True, help_text=_("A short title for this event"))
+    description = models.TextField(_("Description"), blank=True, null=True, help_text=_("A description, containing the list of things that will be discussed during this event"))
+    address = models.CharField(_("Address"), max_length=128, blank=True, null=True, help_text=_("The physical address where the meeting is going to be held") )
 
     # The default manager
     objects = models.Manager()
     # Future events will be retrieved using ``Event.future.all()``
     future = EventManager()
 
+    class Meta:
+        verbose_name = _('event')
+        verbose_name_plural = _('events')
+
     def __unicode__(self):
-        uc = u'%s - %s' % (self.date, self.act)
+        uc = u'%s %s - %s' % (self.date, self.event_time, self.title)
         return uc
 
     @property

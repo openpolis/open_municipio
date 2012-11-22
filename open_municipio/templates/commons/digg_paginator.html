@@ -1,0 +1,26 @@
+<div class="pagination pagination-right pull-right" style="margin:0 5px 10px 0;">
+    <ul id="pagination-digg">
+    {% spaceless %}
+        {% if has_previous %}
+            <li><a href="{% if get_params %}?{{ get_params }}&{% else %}?{% endif %}page={{ previous }}">&laquo; Prec</a></li>
+        {% endif %}
+        {% if not in_leading_range %}
+            {% for p in pages_outside_trailing_range %}
+                <li><a href="{% if get_params %}?{{ get_params }}&{% else %}?{% endif %}page={{ p }}">{{ p }}</a></li>
+            {% endfor %}
+            <li><span class="ellipsis">&hellip;</span></li>
+        {% endif %}
+        {% for p in page_range %}
+            {% if p == page %}
+                <li><span class="active">{{ p }}</span></li>
+            {% else %}
+                <li><a href="{% if get_params %}?{{ get_params }}&{% else %}?{% endif %}page={{ p }}">{{ p }}</a></li>
+            {% endif %}
+        {% endfor %}
+        {% if has_next %}
+            <li><a href="{% if get_params %}?{{ get_params }}&{% else %}?{% endif %}page={{ next }}">Succ &raquo;</a></li>
+        {% endif %}
+    {% endspaceless %}
+    </ul>
+</div>
+

@@ -99,161 +99,16 @@ class Votation(models.Model):
         else:
             return True
 
-    def update_caches(self):
+
+
+    def update_presence_caches(self):
         """
-        Computes and update caches for this votation.
-
-        Firstly, the group votes are computed and stored,
-        then the rebel votes, and presence data are cached,
-        both for the votation and the charge.
-
-        A ChargeVote must be marked as ``rebel`` when her vote is different
-        from that of her group.
-
-        The ``rebel`` field can be assigned only if the counselor is present and
-         if her group's vote is clearly defined (i.e., it is not *Not Avaliable*)
-
-        This is only valid for council votations.
-
-        After a rebel vote has been set, the following *caches* should be updated:
-
-        * Votation.n_rebels - counts the total number of rebels for that votation
-        * InstitutionCharge.n_absent_votations - total number of votations
-                                                 where charge was not present
-        * InstitutionCharge.n_present_votations - total number of votations
-                                                  where charge was present
-        * InstitutionCharge.n_rebel_votations - total number of votations
-                                                where charge's vote was *rebel*
-
-        An absence MUST be explicitly set as a vote type (ChargeVote.ABSENT)
+        update presence caches for each voting charge of this votation
         """
-
-        # computes and caches group votes into GroupVote
-        self.compute_group_votes()
-
-        # compute rebel votes and presence caches
         for vc in self.charge_votes:
-            charge_vote = vc.vote
-            group = vc.group_at_vote_date
-            if group is not None:
-                try:
-                    group_vote = group.groupvote_set.get(votation=self).vote
-                    if charge_vote != group_vote:
-                        vc.is_rebel = True
-                        vc.save()
-                except ObjectDoesNotExist:
-                    pass
-
-            # compute new cache for the single charge
-            vc.charge.compute_rebellion_cache()
-            vc.charge.compute_presence_cache()
-
-        self.n_rebels = self.chargevote_set.filter(is_rebel=True).count()
-        self.save()
+            vc.charge.update_presence_cache()
 
 
-
-    def compute_group_votes(self):
-        """
-        once all charges' votes have been stored, the aggregated votations
-        of the groups are stored in GroupVote.vote
-
-        A GroupVote is the same as the majority of the group.
-        Whenever there is no clear majority (50%/50%), then a
-        Not Available vote can be assigned to the Group.
-
-        Other cached values are stored in GroupVote, as well:
-        * n_presents
-        * n_yes
-        * n_no
-        * n_abst
-        * n_rebels
-        * n_absents
-
-        the number of total group members is len(g.counselors())
-        and it should be cached somewhere,
-        then n_absents = n_group_members - n_presents
-
-        """
-
-        # the computation is done only if ChargeVote is populated,
-        # for this votation
-        if self.charge_votes.count() > 0:
-
-            for g in Group.objects.all():
-                # compute votation details for the group, at the moment of votation
-                moment = self.sitting.date.strftime("%Y-%m-%d")
-                if self.sitting.institution.institution_type == Institution.COMMITTEE:
-                    # look for original charge in case of committees
-                    annotated_votes = ChargeVote.objects.filter(
-                        votation__id=self.id,
-                        charge__original_charge__groupcharge__group=g
-                    ).filter(
-                        Q(charge__original_charge__groupcharge__start_date__lte=moment) &
-                        (Q(charge__original_charge__groupcharge__end_date__gte=moment) |
-                         Q(charge__original_charge__groupcharge__end_date__isnull=True))
-                    ).values('vote').annotate(Count('vote'))
-                else:
-                    annotated_votes = ChargeVote.objects.filter(
-                        votation__id=self.id,
-                        charge__groupcharge__group=g
-                    ).filter(
-                        Q(charge__groupcharge__start_date__lte=moment) &
-                        (Q(charge__groupcharge__end_date__gte=moment) |
-                         Q(charge__groupcharge__end_date__isnull=True))
-                    ).values('vote').annotate(Count('vote'))
-                if not len(annotated_votes):
-                    continue
-
-                # extract the 2 most voted votes for this group,
-                # in this votation
-                most_voted = annotated_votes.order_by('-vote__count')[0:2]
-
-
-                # if equal, then set to not available
-                if (len(most_voted) == 1 or
-                    most_voted[0]['vote__count'] > most_voted[1]['vote__count']):
-                    vote = most_voted[0]['vote']
-                else:
-                    vote = GroupVote.VOTES.noncomputable
-
-                # get or create group votation
-                gv, created = GroupVote.objects.get_or_create(votation=self, group=g, defaults={'vote':vote})
-
-                # update other cached values
-                votes_cnt = 0
-                n_rebels = 0
-                for v in annotated_votes:
-                    if v['vote'] == ChargeVote.VOTES.no:
-                        gv.n_no = v['vote__count']
-                    elif v['vote'] == ChargeVote.VOTES.yes:
-                        gv.n_yes = v['vote__count']
-                    elif v['vote'] == ChargeVote.VOTES.abstained:
-                        gv.n_abst = v['vote__count']
-                    else:
-                        pass
-                    votes_cnt += v['vote__count']
-
-                    # compute n_rebels
-                    if v['vote'] == ChargeVote.VOTES.yes or\
-                       v['vote'] == ChargeVote.VOTES.no or\
-                       v['vote'] == ChargeVote.VOTES.abstained:
-                        if vote != GroupVote.VOTES.noncomputable and \
-                           v['vote'] > 0 and v['vote'] != vote:
-                            n_rebels += v['vote__count']
-
-                # presences = n. of total votes
-                # presidents, mission, and ther are counted
-                gv.n_presents = votes_cnt
-
-                # count absences
-                gv.n_absents = len(g.institution_charges) - gv.n_presents
-
-                # n_rebels in group
-                gv.n_rebels = n_rebels
-
-                # save updates
-                gv.save()
 
 
 class GroupVote(TimeStampedModel):
@@ -309,8 +164,19 @@ class ChargeVote(TimeStampedModel):
     is_rebel = models.BooleanField(default=False)
 
     @property
-    def group_at_vote_date(self):
-        return self.charge.person.get_current_group(moment=self.votation.sitting.date.strftime('%Y-%m-%d'))
+    def original_charge(self):
+        """
+        Charge in committees are connected to an original Counselor charge.
+        Using original_charge assures you always refer to the counselor InstitutionCharge
+        """
+        if self.charge.original_charge is not None:
+            return self.charge.original_charge
+        else:
+            return self.charge
+
+    @property
+    def charge_group_at_vote_date(self):
+        return self.original_charge.person.get_current_group(moment=self.votation.sitting.date.strftime('%Y-%m-%d'))
     
     class Meta:
         db_table = u'votations_charge_vote'    
@@ -318,4 +184,4 @@ class ChargeVote(TimeStampedModel):
         verbose_name_plural = _('charge votes')
 
     def __unicode__(self):
-        return u"%s - %s - %s" % (self.votation, self.charge.person, self.get_vote_display())
+        return u"%s - %s - %s" % (self.votation, self.original_charge.person, self.get_vote_display())

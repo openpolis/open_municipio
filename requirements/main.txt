@@ -5,7 +5,7 @@ South>=0.7.3
 -e git://github.com/toastdriven/django-haystack.git#egg=django-haystack
 django-extensions
 -e git://github.com/informaetica/django-voting.git#egg=django-voting
--e hg+https://bitbucket.org/guglielmo/django-registration#egg=django-registration
+django-registration
 -e hg+https://bitbucket.org/ubernostrum/django-profiles#egg=django-profiles
 beautifulsoup
 pysolr
@@ -13,4 +13,5 @@ poster
 lxml
 pil
 sorl-thumbnail
+django-social-auth
 django-tinymce

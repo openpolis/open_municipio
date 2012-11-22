@@ -68,7 +68,7 @@ Il punto di partenza dello schema XSD è l'elemento OpenMunicipio, che è descri
   |  |  |- Interpellation
   |  |  |- Motion
   |  |  |- Agenda (ordine del giorno)
-  |  |  |- Emendation (emendamento)
+  |  |  |- Amendment (emendamento)
   |  |  |- CouncilDeliberation (proposta di delibera)
   |  |- ActsCityGovernment (atti giunta)
   |  |  |- Investigation (investigazione)

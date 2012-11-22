@@ -1,41 +1,46 @@
 <div class="calendar_container">
   <div class="row-fluid">
-    <div class="span4">
+    <div>
       <div class="calendar" data-events=".calendar_events"></div>
     </div>
-    <div class="span8">
-      <ul class="data-list calendar_events">
+    <div>
+      <ul class="calendar_events">
         {% for event in events %}
           {% if not event.is_past_due %}
-            <li data-day="{{ event.date|date:"m/d/Y" }}"><strong>{{ event.date|date:"d.m.Y" }}</strong> <a href="{{ event.act.downcast.get_absolute_url }}">{{ event.act.title }}</a></li>
+            <li data-day="{{ event.date|date:"m/d/Y" }}"><strong>{{ event.date|date:"d.m.Y" }}</strong> alle {{ event.event_time|time:"H:i" }}
+                <a href="#event_{{ event.id }}_description" class="event_toggle_modal">{{ event.title }}</a>
+                <div class="modal large hide" id="event_{{ event.id }}_description" >
+                    <div class="modal-header">
+                        <a class="close" data-dismiss="modal">×</a>
+                        {% ifequal event.institution.name "Consiglio comunale" %}
+                            Il
+                        {%  else  %}
+                            La
+                        {% endifequal %}
+                        <b>{{ event.institution }}</b> si riunisce
+                        in {{ event.address }} <br/>
+                        il {{ event.date|date:"d.m.Y" }}
+                        alle {{ event.event_time|time:"H:i" }}<br/>
+                        per discutere di <b>{{ event.title }}</b>
+                    </div>
+                    <div class="modal-body">
+                        <h4>Ordine del giorno:</h4>
+                        <p>
+                            {{ event.description|safe }}
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <h3>Atti in discussione</h3>
+                        {% for act in event.acts.all %}
+                            <a href="{{ act.downcast.get_absolute_url }}" title="{{ act.title }}">{{ act.idnum }} - {{ act.title|truncatewords:10 }}</a><br/>
+                        {% endfor %}
+
+                    </div>
+                </div>
+            </li>
           {% endif %}
         {% empty %}
-          {% comment %}
-          TODO: remove this mock-ups
-          {% endcomment %}
-        <li data-month="05/2012"><h3>Maggio 2012</h3></li>
-        <li data-day="05/01/2012"><strong>01.03.2012</strong> in Consiglio comunale</li>
-        <li data-day="05/01/2012"><strong>07.03.2012</strong> in Consiglio comunale</li>
-        <li data-day="05/14/2012"><strong>14.03.2012</strong> in Consiglio comunale</li>
-        <li data-day="05/15/2012"><strong>15.03.2012</strong> in Consiglio comunale</li>
-        <li data-day="05/24/2012"><strong>24.03.2012</strong> in Consiglio comunale</li>
-        <li data-day="05/25/2012"><strong>25.03.2012</strong> in Consiglio comunale</li>
-        <li data-day="05/27/2012"><strong>27.03.2012</strong> in Consiglio comunale</li>
-
-        <li data-month="06/2012"><h3>Giugno 2012</h3></li>
-        <li data-day="06/01/2012"><strong>01.04.2012</strong> in Consiglio comunale</li>
-        <li data-day="06/12/2012"><strong>12.04.2012</strong> in Consiglio comunale</li>
-        <li data-day="06/20/2012"><strong>20.04.2012</strong> in Consiglio comunale</li>
-
-        <li data-month="07/2012"><h3>Luglio 2012</h3></li>
-        <li data-day="07/01/2012"><strong>01.05.2012</strong> in Consiglio comunale</li>
-        <li data-day="07/12/2012"><strong>12.05.2012</strong> in Consiglio comunale</li>
-        <li data-day="07/20/2012"><strong>20.05.2012</strong> in Consiglio comunale</li>
-
-        <li data-month="08/2012"><h3>Agosto 2012</h3></li>
-        <li data-day="08/01/2012"><strong>01.08.2012</strong> in Consiglio comunale</li>
-        <li data-day="08/12/2012"><strong>12.08.2012</strong> in Consiglio comunale</li>
-        <li data-day="08/20/2012"><strong>20.08.2012</strong> in Consiglio comunale</li>
+            Nessun appuntamento in programma
         {% endfor %}
       </ul>
     </div>
@@ -44,5 +49,16 @@
 
 <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-ui-1.8.18.custom.min.js"></script>
 <script type="text/javascript">
-  include(["css/ui-custom-theme/jquery-ui-1.8.16.custom.css", "js/jquery-ui.calendar.js"])
+  include(["css/ui-custom-theme/jquery-ui-1.8.16.custom.css", "js/jquery-ui.calendar.js"]);
+
+  include(["js/bootstrap-modal.js"], function() {
+      $('a.event_toggle_modal').each(function() {
+          var link = $(this);
+          link.click(function(e) {
+              e.preventDefault();
+              $(link.attr('href')).modal();
+          });
+      });
+  });
+
 </script>

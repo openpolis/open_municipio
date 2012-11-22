@@ -53,6 +53,7 @@
         <xs:attribute name="is_final" use="optional" type="xs:boolean" />
 	</xs:complexType>
 
+
 	<xs:complexType name="councilActType">
 		<xs:complexContent>
 			<xs:extension base="actType">

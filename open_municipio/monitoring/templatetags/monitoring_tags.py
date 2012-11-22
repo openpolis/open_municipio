@@ -1,3 +1,5 @@
+# coding=utf8
+
 from django import template
 from django.core.exceptions import ObjectDoesNotExist
 from open_municipio.monitoring.forms import MonitoringForm
@@ -5,7 +7,7 @@ from open_municipio.monitoring.forms import MonitoringForm
 register = template.Library()
 
 @register.inclusion_tag('monitoring/summary.html', takes_context=True)
-def object_monitoring(context, object, show_politicians=False):
+def object_monitoring(context, object, show_politicians=True):
 
     object_type = object._meta.verbose_name
     if object_type.lower() == 'tag':
@@ -45,9 +47,10 @@ def object_monitoring(context, object, show_politicians=False):
 
 
 @register.inclusion_tag('monitoring/inline.html', takes_context=True)
-def object_inline_monitoring(context, object):
+def object_inline_monitoring(context, object, shows_monitoring_users=True):
     args = {
         'object': object,
+        'shows_monitoring_users': shows_monitoring_users,
         'user': context['user'],
         'is_user_monitoring': False
     }

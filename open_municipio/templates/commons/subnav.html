@@ -1,0 +1,24 @@
+<nav class="navbar" id="sub-nav">
+    <div class="navbar-inner">
+        <div class="container-fluid">
+            <ul class="nav">
+                <li {% ifequal active 'Giunta' %}class="unpipe"{% endifequal %}>
+                    <a href="{% url om_institution_citigov %}"
+                       {% ifequal active 'Giunta' %} class="active"{% endifequal %}>Giunta</a>
+                </li>
+                <li {% ifequal active 'Consiglio' %}class="unpipe"{% endifequal %}>
+                    <a href="{% url om_institution_council %}" {% ifequal active 'Consiglio' %}
+                       class="active"{% endifequal %}>Consiglio</a>
+                </li>
+                <li {% ifequal active 'Commissioni' %}class="unpipe"{% endifequal %}>
+                    <a href="{% url om_institution_committees %}" {% ifequal active 'Commissioni' %}
+                       class="active"{% endifequal %}>Commissioni</a>
+                </li>
+                <li {% ifequal active 'Gruppi' %}class="unpipe"{% endifequal %}>
+                    <a href="{% url om_institution_groups %}" {% ifequal active 'Gruppi' %}
+                       class="active"{% endifequal %}>Gruppi</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

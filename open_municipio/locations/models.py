@@ -36,7 +36,7 @@ class Location(SlugModel, MonitorizedItem):
         return u'%s' % self.name
         
     @property
-    def acts(self):
+    def tagged_acts(self):
         """
         Returns the ``QuerySet`` of all acts tagged with this location.  
         """
@@ -66,7 +66,8 @@ class TaggedActByLocation(models.Model):
     class Meta:
         verbose_name = _("tagged act by location")
         verbose_name_plural = _("tagged acts by location")
-        
+
+
     def __unicode__(self):
         params = {
                   'tagger': self.tagger, 

@@ -348,6 +348,21 @@ class Deliberation(Act):
         verbose_name = _('deliberation')
         verbose_name_plural = _('deliberations')
 
+    @property
+    def next_events(self):
+        """
+        returns the next Events
+        """
+        from open_municipio.events.models import Event
+        return Event.future.filter(acts__id=self.id)
+
+    @property
+    def next_event(self):
+        """
+        returns the next Event or None
+        """
+        return self.next_events[0] if self.next_events else None
+
     @models.permalink
     def get_absolute_url(self):
         return ('om_deliberation_detail', (), {'pk': str(self.pk)})
@@ -481,7 +496,7 @@ class Agenda(Act):
         return ('om_agenda_detail', (), {'pk': str(self.pk)})
 
 
-class Emendation(Act):
+class Amendment(Act):
     """
     It is a modification of a particular act, that can be voted specifically and separately from the act itself.
     
@@ -495,13 +510,13 @@ class Emendation(Act):
     )
     
     status = StatusField()
-    act = models.ForeignKey(Act, related_name='emendation_set', on_delete=models.PROTECT)
-    act_section = models.ForeignKey(ActSection, related_name='emendation_set', null=True, blank=True, 
+    act = models.ForeignKey(Act, related_name='amendment_set', on_delete=models.PROTECT)
+    act_section = models.ForeignKey(ActSection, related_name='amendment_set', null=True, blank=True,
                                     on_delete=models.PROTECT)
 
     class Meta:
-        verbose_name = _('emendation')
-        verbose_name_plural = _('emendations')
+        verbose_name = _('amendment')
+        verbose_name_plural = _('amendment')
 
 
 
@@ -683,6 +698,7 @@ def new_act_published(sender, **kwargs):
 
         # add presentation transition if presentation_date is present
         if generating_item.presentation_date is not None:
+
             # create transition: act is presented
             created = False
             trans, created = generating_item.transition_set.get_or_create(
@@ -696,8 +712,7 @@ def new_act_published(sender, **kwargs):
                 logger.debug("  presentation transition found")
                 trans.save()
         else:
-           logger.debug("  presentation transition can't be added, no presentation_date")
-            
+            logger.debug("  presentation transition can't be added, no presentation_date")
 
         # create approval transition if approval_date has value
         if (isinstance(generating_item, Deliberation) and

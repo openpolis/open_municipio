@@ -3,7 +3,7 @@
  
 {% block content %}
 Insert profile info form {{user}}. <br/>
-<form action="" method="post" accept-charset="utf-8">
+<form enctype="multipart/form-data" action="" method="post" accept-charset="utf-8">
   {% csrf_token %}
   {{ form.as_p }}  
   <p><input type="submit" value="Submit"></p>

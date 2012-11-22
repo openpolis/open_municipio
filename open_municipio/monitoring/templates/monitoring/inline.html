@@ -1,5 +1,7 @@
 <div>
-  <span class="monitoring">Monitorato da {{ object.all_monitoring_count }} cittadin{{ object.all_monitoring_count|pluralize:"o,i" }} - </span>
+  {% if shows_monitoring_users %}
+      <span class="monitoring">Monitorato da {{ object.all_monitoring_count }} cittadin{{ object.all_monitoring_count|pluralize:"o,i" }} - </span>
+  {% endif %}
   {% if is_user_monitoring %}
     <form action="{% url om_monitoring_stop %}" method="post" class="monitoring-formlink" data-submit="link">{% csrf_token %}
       {{ monitoring_form }}

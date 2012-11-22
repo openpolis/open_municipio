@@ -1,0 +1,30 @@
+{% extends 'base_two_columns.html' %}
+
+{% block title %}Organi politici | Commissioni{% endblock title %}
+{% block content_header %}Organi politici{% endblock %}
+{% block institutions_class %}active{% endblock %}
+
+{% block people_class %}class="active"{% endblock %}
+{% block body_class %}politician{% endblock %}
+
+{% block content_header_city_logo %}
+    <img src="{{ STATIC_URL }}img/{{ main_city|lower }}-logo/politician.png" alt="Comune di {{ main_city }}">
+{% endblock %}
+
+{% block sub_nav %}
+    {%  include 'commons/subnav.html' with active='Commissioni' %}
+{% endblock %}
+
+{% block content %}
+    <h2>Commissioni</h2>
+    <dl class="list-plain">
+        {% for committee in committees %}
+            <dt><a href="{{ committee.get_absolute_url }}"><strong>{{ committee.name }}</strong></a></dt>
+            <dd>{{ committee.description }}</dd>
+        {% endfor %}
+    </dl>
+{% endblock %}
+
+{% block sidebar %}
+    Ultime sulle commissioni
+{% endblock %}

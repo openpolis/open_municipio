@@ -1,17 +1,19 @@
 from django import template
 
 from open_municipio.newscache.models import News
-from open_municipio.people.models import Person
+from open_municipio.people.models import Person, InstitutionCharge, municipality
 
 from django.db.models.query import EmptyQuerySet
 
 register = template.Library()
 
 
+
 class NewsForObjectNode(template.Node):
     """
-    The tag retrieve all news for the given object and modifies the context
+    The tag retrieves all news for the given object and modifies the context
     """
+
     def __init__(self, object, context_var, news_type=None):
         self.object = object
         self.news_type = news_type
@@ -23,12 +25,26 @@ class NewsForObjectNode(template.Node):
         except template.VariableDoesNotExist:
             return ''
 
+
         # extract all news
         # if obect is a Person, extract news related to all current and past charges
         if isinstance(object, Person):
             news = EmptyQuerySet()
             for c in object.all_institution_charges:
                 news |= c.related_news
+        elif isinstance(object, basestring):
+            if object == 'politicians_all':
+                news = EmptyQuerySet()
+                for c in InstitutionCharge.objects.all():
+                    news |= c.related_news
+            if object == 'politicians_council':
+                news = EmptyQuerySet()
+                for c in municipality.council.charges:
+                    news |= c.related_news
+            if object == 'politicians_gov':
+                news = EmptyQuerySet()
+                for c in municipality.gov.charges:
+                    news |= c.related_news
         else:
             news = object.related_news
 

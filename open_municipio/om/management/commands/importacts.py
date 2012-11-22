@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+## DEPRECATED - use import tasks in instances
+
 from optparse import make_option
 import os
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned

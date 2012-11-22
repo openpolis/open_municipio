@@ -196,7 +196,7 @@ class RandomItemsFactory(object):
                 v.save()
 
                 # update votation caches
-                v.update_caches()
+                v.update_rebel_caches()
                 print "Cache updated.\n"
 
                 print "Totali"

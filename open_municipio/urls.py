@@ -20,11 +20,13 @@
 
 from django.conf.urls.defaults import patterns, url, include
 from django.views.generic import TemplateView
-
 from django.contrib import admin
+from registration.views import register
+
 from open_municipio.om.views import HomeView
 from open_municipio.inline_edit.views import InlineEditView
-
+from open_municipio.om_auth.views import login_done, login_error, login_form, logout
+from open_municipio.users.forms import UserRegistrationForm
 
 admin.autodiscover()
 
@@ -68,12 +70,20 @@ urlpatterns += patterns('',
     url(r'^monitoring/', include('open_municipio.monitoring.urls')),
 )
 
-# user registration and profiles
+# user registration, authentication and profiles
 urlpatterns += patterns('',
-    url(r'^accounts/', include('open_municipio.registration.backends.om.urls')),
+    url(r'^accounts/register/$', register, {
+            'backend': 'registration.backends.default.DefaultBackend',
+            'form_class': UserRegistrationForm
+            }, name='registration_register'),
+    url(r'^accounts/', include('registration.backends.default.urls')),
     url(r'^users/', include('open_municipio.users.urls')),
+    url(r'^login-done/$', login_done, name='login-done'),
+    url(r'^login-error/$', login_error, name='login-error'),
+    url(r'^logout/$', logout, name='logout'),
+    url(r'^login-form/$', login_form, name='login-form'),
+    url(r'', include('social_auth.urls')),
 )
-
 
 # search test
 urlpatterns += patterns('',

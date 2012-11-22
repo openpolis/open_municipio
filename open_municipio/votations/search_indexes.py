@@ -9,7 +9,7 @@ class VotationIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
 
     # faceting fields
-    act_type = indexes.FacetCharField( )
+    act_type = indexes.FacetCharField(default='notlinked')
     is_key = indexes.FacetCharField(model_attr='is_key_yesno')
     organ = indexes.FacetCharField(model_attr='sitting__institution__lowername')
     votation_date = indexes.FacetDateField(model_attr='sitting__date')
@@ -17,8 +17,8 @@ class VotationIndex(indexes.SearchIndex, indexes.Indexable):
     # stored fields, used not to touch DB
     # while showing results
     url = indexes.CharField(indexed=False, stored=True)
-    act_url = indexes.CharField(indexed=True, stored=True)
-    title = indexes.CharField(indexed=False, stored=True, model_attr='act__title')
+    act_url = indexes.CharField(indexed=True, stored=True, default='')
+    title = indexes.CharField(indexed=False, stored=True, model_attr='act__title', default='')
     votation_num = indexes.CharField(indexed=False, stored=True, model_attr='idnum')
     votation_sitting_num = indexes.IntegerField(indexed=False, stored=True, model_attr='sitting__number')
     votation_n_presents = indexes.IntegerField(indexed=False, stored=True, model_attr='n_presents')
@@ -29,6 +29,9 @@ class VotationIndex(indexes.SearchIndex, indexes.Indexable):
     votation_n_rebels = indexes.IntegerField(indexed=False, stored=True, model_attr='n_rebels')
     votation_outcome = indexes.CharField(indexed=False, stored=True, model_attr='outcome', default='')
 
+    # needed to filter votations by person
+    person = indexes.MultiValueField(indexed=True, stored=False)
+
     def get_model(self):
         return Votation
 
@@ -37,15 +40,16 @@ class VotationIndex(indexes.SearchIndex, indexes.Indexable):
 
     def prepare_act_type(self, obj):
         activate(settings.LANGUAGE_CODE)
-        return obj.act.get_type_name()
+        if obj.act:
+            return obj.act.get_type_name()
 
     def prepare_act_url(self, obj):
-        return obj.act.downcast().get_absolute_url()
+        if obj.act:
+            return obj.act.downcast().get_absolute_url()
 
-    def index_queryset(self):
-        """
-        Change the default QuerySet to index only linked acts
-        """
-        return self.get_model().is_linked_to_act.all()
+    def prepare_person(self, obj):
+        return set(
+            [p['person__slug'] for p in obj.charge_set.values('person__slug').distinct()]
+        )
 
 

@@ -16,6 +16,7 @@ class LocationDetailView(TopicDetailView):
     #context_object_name = 'location'
     #template_name = 'taxonomy/location_detail.html'
     model = Location
+    topic_type = 'location'
 
     def take_subtopics(self):
         return Location.objects.exclude(pk=self.object.pk)

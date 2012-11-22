@@ -1,0 +1,223 @@
+[
+    {
+        "pk": 1, 
+        "model": "acts.act", 
+        "fields": {
+            "is_key": false, 
+            "description": "", 
+            "title": "Discussione ed approvazione delle linee programmatiche del Sindaco (art. 34 dello Statuto comunale).", 
+            "adj_title": "", 
+            "created": "2012-09-27 13:25:08", 
+            "idnum": "2008/4011/00013", 
+            "modified": "2012-09-27 13:25:21", 
+            "recipient_set": [], 
+            "status_is_final": true, 
+            "emitting_institution": 3, 
+            "text": "\nIL PRESIDENTE SOTTOPONE ALL\u2019ESAME DEL CONSIGLIO LA SEGUENTE PROPOSTA, SULLA QUALE DICHIARA APERTA LA DISCUSSIONE:\n\nIL CONSIGLIO COMUNALE\n\nRichiamato l'art. 46, co. 3, del D.Lgs. 267/2000, ai sensi del quale \u201centro il termine fissato dallo Statuto, il Sindaco\u2026, sentita la Giunta, presenta al Consiglio le linee programmatiche relative alle azioni e ai progetti da realizzare nel corso del mandato\u201d;\n\nRichiamato altres\u00ec l\u2019art. 42, co. 3, del citato Decreto Legislativo, ai sensi del quale \u201cil Consiglio, nei modi disciplinati dallo Statuto, partecipa altres\u00ec alla definizione, all\u2019adeguamento e alla verifica periodica dell\u2019attuazione delle linee programmatiche da parte del Sindaco e dei singoli Assessori\u201d;\n\nVisto l\u2019art. 34 dello Statuto comunale, ai sensi del quale \u201centro trenta giorni dall\u2019elezione, il Sindaco, sentita la Giunta, presenta al Consiglio le linee programmatiche relative alle azioni e ai progetti da realizzare nel corso del mandato\u2026Il Consiglio partecipa alla definizione e all\u2019adeguamento del documento di programma mediante proposte emendative\u201d;\n\nVisto altres\u00ec l\u2019art. 35, co. 1, dello Statuto comunale, ai sensi del quale \u201calla Giunta spetta il ruolo di governo del Comune, sulla base del documento contenente gli indirizzi generali di governo approvato dal Consiglio\u201d;\n\nSentita la relazione del Sindaco;\n\nVisti i pareri favorevoli espressi ai sensi dell\u2019art. 49, comma 1, del D.Lgs. 267/2000 dal Segretario Generale del Comune, avv. Carmine Cipriano, e dal Responsabile del Servizio Finanziario dott.ssa Mariapia Zampa, pareri conservati agli atti presso l\u2019Ufficio proponente,\n\nD E L I B E R A\n\ndi approvare le linee programmatiche relative alle azioni e ai progetti da realizzare nel corso del mandato, presentate dal Sindaco ai sensi e per gli effetti di cui all\u2019art. 34 dello Statuto comunale.\n\n", 
+            "presentation_date": "2008-05-15", 
+            "category_set": []
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "acts.act", 
+        "fields": {
+            "is_key": false, 
+            "description": "", 
+            "title": "Comunicazione delle deliberazioni adottate dalla Giunta comunale ai sensi dell'art. 166, comma 2, del Decreto Legislativo n. 267/2000.", 
+            "adj_title": "", 
+            "created": "2012-09-27 15:23:51", 
+            "idnum": "2008/CM/00004", 
+            "modified": "2012-09-27 16:49:38", 
+            "recipient_set": [], 
+            "status_is_final": true, 
+            "emitting_institution": 3, 
+            "text": "\nIl Presidente d\u00e0 lettura del seguente oggetto della deliberazione adottata dalla Giunta comunale di cui viene data comunicazione ai sensi dell\u2019art. 166, comma 2, del Decreto Legislativo 267/2000, proponendone la presa d\u2019atto:\n\n\n- 237 d'ord. del 17.6.2008\n\t\nPrelevamento dal Fondo di Riserva anno 2008/2010.\n\n\nIl Consiglio ne prende atto.\n\n", 
+            "presentation_date": "2008-07-15", 
+            "category_set": []
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "acts.actsupport", 
+        "fields": {
+            "support_date": "2008-05-15", 
+            "charge": 2, 
+            "support_type": "FIRSTSIGNER", 
+            "act": 1
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "acts.actsupport", 
+        "fields": {
+            "support_date": "2008-07-15", 
+            "charge": 163, 
+            "support_type": "FIRSTSIGNER", 
+            "act": 2
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "acts.deliberation", 
+        "fields": {
+            "status": "APPROVED", 
+            "approved_text": "", 
+            "execution_date": "2008-07-10", 
+            "approval_date": "2008-06-18", 
+            "recipient_set": [], 
+            "initiative": "MAYOR", 
+            "publication_date": null, 
+            "final_idnum": "2008/00043", 
+            "category_set": []
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "acts.deliberation", 
+        "fields": {
+            "status": "APPROVED", 
+            "approved_text": "", 
+            "execution_date": "2008-08-16", 
+            "approval_date": "2008-07-28", 
+            "recipient_set": [], 
+            "initiative": "COUNSELOR", 
+            "publication_date": null, 
+            "final_idnum": "2008/00059", 
+            "category_set": []
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "acts.transition", 
+        "fields": {
+            "symbol": null, 
+            "votation": null, 
+            "note": null, 
+            "act": 1, 
+            "final_status": "PRESENTED", 
+            "transition_date": "2008-05-15"
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "acts.transition", 
+        "fields": {
+            "symbol": null, 
+            "votation": null, 
+            "note": null, 
+            "act": 1, 
+            "final_status": "APPROVED", 
+            "transition_date": "2008-06-18"
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "acts.transition", 
+        "fields": {
+            "symbol": null, 
+            "votation": null, 
+            "note": null, 
+            "act": 2, 
+            "final_status": "PRESENTED", 
+            "transition_date": "2008-07-15"
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "acts.transition", 
+        "fields": {
+            "symbol": null, 
+            "votation": null, 
+            "note": null, 
+            "act": 2, 
+            "final_status": "APPROVED", 
+            "transition_date": "2008-07-28"
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "acts.attach", 
+        "fields": {
+            "document_size": 25600, 
+            "created": "2012-09-27 13:25:09", 
+            "text": "\nIL PRESIDENTE SOTTOPONE ALL\u2019ESAME DEL CONSIGLIO LA SEGUENTE PROPOSTA, SULLA QUALE DICHIARA APERTA LA DISCUSSIONE:\n\nIL CONSIGLIO COMUNALE\n\nRichiamato l'art. 46, co. 3, del D.Lgs. 267/2000, ai sensi del quale \u201centro il termine fissato dallo Statuto, il Sindaco\u2026, sentita la Giunta, presenta al Consiglio le linee programmatiche relative alle azioni e ai progetti da realizzare nel corso del mandato\u201d;\n\nRichiamato altres\u00ec l\u2019art. 42, co. 3, del citato Decreto Legislativo, ai sensi del quale \u201cil Consiglio, nei modi disciplinati dallo Statuto, partecipa altres\u00ec alla definizione, all\u2019adeguamento e alla verifica periodica dell\u2019attuazione delle linee programmatiche da parte del Sindaco e dei singoli Assessori\u201d;\n\nVisto l\u2019art. 34 dello Statuto comunale, ai sensi del quale \u201centro trenta giorni dall\u2019elezione, il Sindaco, sentita la Giunta, presenta al Consiglio le linee programmatiche relative alle azioni e ai progetti da realizzare nel corso del mandato\u2026Il Consiglio partecipa alla definizione e all\u2019adeguamento del documento di programma mediante proposte emendative\u201d;\n\nVisto altres\u00ec l\u2019art. 35, co. 1, dello Statuto comunale, ai sensi del quale \u201calla Giunta spetta il ruolo di governo del Comune, sulla base del documento contenente gli indirizzi generali di governo approvato dal Consiglio\u201d;\n\nSentita la relazione del Sindaco;\n\nVisti i pareri favorevoli espressi ai sensi dell\u2019art. 49, comma 1, del D.Lgs. 267/2000 dal Segretario Generale del Comune, avv. Carmine Cipriano, e dal Responsabile del Servizio Finanziario dott.ssa Mariapia Zampa, pareri conservati agli atti presso l\u2019Ufficio proponente,\n\nD E L I B E R A\n\ndi approvare le linee programmatiche relative alle azioni e ai progetti da realizzare nel corso del mandato, presentate dal Sindaco ai sensi e per gli effetti di cui all\u2019art. 34 dello Statuto comunale.\n\n", 
+            "text_url": "", 
+            "file_url": "", 
+            "modified": "2012-09-27 13:25:21", 
+            "file": "attached_documents/20120927/DC_2008401100013_TestoProposta.doc", 
+            "act": 1, 
+            "title": "Testo Proposta", 
+            "document_type": "doc", 
+            "document_date": "2008-05-15"
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "acts.attach", 
+        "fields": {
+            "document_size": 24576, 
+            "created": "2012-09-27 13:25:09", 
+            "text": "\n        \n            Si rimanda al supporto digitale per la discussione, in apertura della quale il Presidente propone di stralciare dalla votazione la parte finale del documento in esame, presentato dal Sindaco nella seduta del 19 maggio 2008 e denominato \u201cLinee programmatiche relative alle azioni e ai progetti da realizzare nel corso del mandato di Sindaco della Citt\u00e0 di Udine 2008 \u2013 2012 (art. 46 D. Lgs. 267/2000)\u201d.\n\n\n\n            La proposta di stralcio si riferisce in particolare alle pagine 14 \u2013 15 \u2013 16 del documento, in cui sono elencate le deleghe che il Sindaco ha nel frattempo gi\u00e0 attribuito agli Assessori e ad alcuni Consiglieri: trattandosi di materia riservata alla competenza del Sindaco, la votazione del Consiglio non \u00e8 necessaria, fermo restando che il dibattito potr\u00e0 riguardare il documento nella sua interezza.\n\n\n\n            Non registrandosi sulla proposta del Presidente unanimit\u00e0 di consensi, la stessa viene messa in votazione ai sensi dell\u2019art. 56 del Regolamento del Consiglio Comunale.\n\n\n\n            (entrano l\u2019assessore/consigliere Barillari e i consiglieri Bertossi, Dordolo, Gallerini e Peratoner \u2013 presenti n. 39)\n\n\n\n            (entra l\u2019assessore Franzil)\n\n\nIl Presidente apre la votazione in forma palese sulla propria proposta di stralcio di cui sopra che ottiene 25 voti favorevoli e il voto contrario dei consiglieri Anzolini, Arpino, Bardini, Berti, Bertoli, Cainero, Dordolo, Gallerini, Michelini, Piva, Pravisano, Volpe Pasini Volpe, Zaccuri e Zel\u00e8 (n. 14).\n\n            Il Presidente dichiara che la proposta di stralcio \u00e8 approvata.\n\n\n            Si rimanda al supporto digitale per la discussione, durante la quale il consigliere Bardini chiede che sia verificata la sussistenza in capo al consigliere Volpe Pasini Volpe di cause di incompatibilit\u00e0 rispetto alla carica di consigliere comunale. Il Presidente dichiara che la verifica chiesta dal consigliere Bardini sar\u00e0 effettuata.\n\n\n\n            Si rimanda altres\u00ec al supporto digitale per la replica del Sindaco Honsell a chiusura degli interventi sulle linee programmatiche nonch\u00e9 per le successive dichiarazioni di voto.\n\n\n\n            (entra il consigliere Oria - presenti n. 40)\n\n\n\n            (esce l\u2019assessore Santoro)\n\n\nIl Presidente apre la votazione in forma palese sulla proposta di deliberazione e sul documento che si allega alla stessa quale parte integrante e contestuale, denominato \u201cLinee programmatiche relative alle azioni e ai progetti da realizzare nel corso del mandato di Sindaco della Citt\u00e0 di Udine 2008 \u2013 2012 (art. 46 D. Lgs. 267/2000)\u201d. A seguito dello stralcio precedentemente approvato dal Consiglio, il documento \u00e8 posto in votazione limitatamente alle pagine da 1 a 13.\n\n\n\nLa proposta di deliberazione di cui sopra e il documento allegato ottengono 25 voti favorevoli e il voto contrario dei consiglieri Anzolini, Arpino, Bardini, Berti, Bertoli, Cainero, Dordolo, Gallerini, Michelini, Piva, Pravisano, Zaccuri e Zel\u00e8 (n. 13).\n\nSi astengono i consiglieri Ortis e Rinaldi (n. 2).\n\n            Il Presidente dichiara che la deliberazione e il documento allegato sono approvati.\n\n", 
+            "text_url": "", 
+            "file_url": "", 
+            "modified": "2012-09-27 13:25:21", 
+            "file": "attached_documents/20120927/DC_2008401100013_TestoDiscussione.doc", 
+            "act": 1, 
+            "title": "Testo Discussione", 
+            "document_type": "doc", 
+            "document_date": "2008-05-15"
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "acts.attach", 
+        "fields": {
+            "document_size": 92672, 
+            "created": "2012-09-27 13:25:09", 
+            "text": "", 
+            "text_url": "", 
+            "file_url": "", 
+            "modified": "2012-09-27 13:25:21", 
+            "file": "attached_documents/20120927/DC_2008401100013_HONSELL_LINEE_PROGRAMMATICHE_def.doc", 
+            "act": 1, 
+            "title": "Linee programmatiche.", 
+            "document_type": "doc", 
+            "document_date": "2008-05-15"
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "acts.attach", 
+        "fields": {
+            "document_size": 26624, 
+            "created": "2012-09-27 15:23:53", 
+            "text": "\nIl Presidente d\u00e0 lettura del seguente oggetto della deliberazione adottata dalla Giunta comunale di cui viene data comunicazione ai sensi dell\u2019art. 166, comma 2, del Decreto Legislativo 267/2000, proponendone la presa d\u2019atto:\n\n\n- 237 d'ord. del 17.6.2008\n\t\nPrelevamento dal Fondo di Riserva anno 2008/2010.\n\n\nIl Consiglio ne prende atto.\n\n", 
+            "text_url": "", 
+            "file_url": "", 
+            "modified": "2012-09-27 16:49:38", 
+            "file": "attached_documents/20120927/CM_2008CM00004_TestoProposta.doc", 
+            "act": 2, 
+            "title": "Testo Proposta", 
+            "document_type": "doc", 
+            "document_date": "2008-07-15"
+        }
+    }, 
+    {
+        "pk": 5, 
+        "model": "acts.attach", 
+        "fields": {
+            "document_size": 22016, 
+            "created": "2012-09-27 15:23:53", 
+            "text": "\n\n", 
+            "text_url": "", 
+            "file_url": "", 
+            "modified": "2012-09-27 16:49:38", 
+            "file": "attached_documents/20120927/CM_2008CM00004_TestoDiscussione.doc", 
+            "act": 2, 
+            "title": "Testo Discussione", 
+            "document_type": "doc", 
+            "document_date": "2008-07-15"
+        }
+    }
+]

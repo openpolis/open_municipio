@@ -33,6 +33,7 @@ class GroupIsMajorityInline(admin.TabularInline):
     extra = 1
 
 class GroupAdminWithCharges(AdminImageMixin, admin.ModelAdmin):
+    prepopulated_fields = {"slug": ("name",)}
     list_display = ('name', 'acronym', 'is_majority_now')
     inlines = [GroupResourceInline, GroupIsMajorityInline, GroupChargeInline]
     

@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+## DEPRECATED - use import tasks in instances
+
 from optparse import make_option
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.core.management.base import LabelCommand, CommandError, BaseCommand
@@ -205,7 +207,7 @@ class Command(LabelCommand):
                 """
 
                 # update votation caches
-                om_votation.update_caches()
+                om_votation.update_rebel_caches()
                 self.logger.debug("caches for this votation updated.\n")
 
     def handle(self, *labels, **options):
