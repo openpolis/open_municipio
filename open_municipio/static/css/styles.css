@@ -4757,7 +4757,7 @@ table.stats th {
   color: #285698;
 }
 .calendar_events {
-  height: 220px;
+  max-height: 220px;
   overflow-y: scroll;
 }
 .bg-lighter {
