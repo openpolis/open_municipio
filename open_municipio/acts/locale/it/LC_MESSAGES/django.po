@@ -150,7 +150,7 @@ msgstr "data di pubblicazione"
 
 #: models.py:342
 msgid "Internal identification string for the deliberation, when approved"
-msgstr ""
+msgstr "Sequenza interna di identificazione della delibera, se approvata"
 
 #: models.py:343
 msgid "execution date"
