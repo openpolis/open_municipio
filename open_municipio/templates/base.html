@@ -27,11 +27,10 @@
     </style>
 
     {% block head_js_includes %}
-    <!--[if IE]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
-    <!--[if IE]><link rel="stylesheet" href="{{ STATIC_URL }}css/ui-custom-theme/jquery-ui-1.8.16.ie.css"><![endif]-->
-    <script type="text/javascript" src="{{ STATIC_URL }}js/include.js" data-url="{{ STATIC_URL }}"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-1.7.1.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap-dropdown.js"></script>
+        <!--[if IE]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+        <!--[if IE]><link rel="stylesheet" href="{{ STATIC_URL }}css/ui-custom-theme/jquery-ui-1.8.16.ie.css"><![endif]-->
+        <script type="text/javascript" src="{{ STATIC_URL }}js/include.js" data-url="{{ STATIC_URL }}"></script>
+        <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-1.7.1.js"></script>
     {% endblock head_js_includes %}
 
     <script type="text/javascript" charset="utf-8">
@@ -160,7 +159,23 @@
 
 </div><!-- #wrapper -->
 
-{% block footer_js_includes %}{% endblock %}
+{% block footer_js_includes %}
+    <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap-dropdown.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap-tooltip.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap-popover.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrapx-clickover.js"></script>
+    <script type="text/javascript">
+
+
+        $(function(){
+            $('a[rel=info-popover]').clickover({
+                title: "A standard title for info-popovers"
+            });
+        })
+
+    </script>
+
+{% endblock %}
 
 <script type="text/javascript">
 

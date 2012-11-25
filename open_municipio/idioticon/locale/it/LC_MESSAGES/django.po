@@ -1,0 +1,63 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-11-25 09:55+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+
+#: admin.py:10 models.py:18
+msgid "Definition"
+msgstr "Definizione"
+
+#: models.py:13 models.py:21
+msgid "Term"
+msgstr "Termine"
+
+#: models.py:14
+msgid "The term"
+msgstr "Il termine"
+
+#: models.py:15
+msgid "A single word or slug, to use as key in popovers' inclusion tags"
+msgstr ""
+"Una parola, o slug, da usare come chiave negli inclusion tag dei popover"
+
+#: models.py:16
+msgid "Title"
+msgstr "Titolo"
+
+#: models.py:17
+msgid "The title in the popover box"
+msgstr "Il titolo nel popover"
+
+#: models.py:18
+msgid "The definition of the term"
+msgstr "La definizione del termine"
+
+#: models.py:22
+msgid "Terms"
+msgstr "Termini"
+
+#: templatetags/popover_info.py:15
+msgid "Term not yet defined."
+msgstr "Non ancora definito."
+
+#~ msgid ""
+#~ "Term not yet defined. You can add the definition in the backend "
+#~ "interface. Use the key above as slug."
+#~ msgstr ""
+#~ "Termine non ancora definito. La definizione va aggiunta nell'interfaccia "
+#~ "di backend, dalla redazione.Usare la chiave come slug. "

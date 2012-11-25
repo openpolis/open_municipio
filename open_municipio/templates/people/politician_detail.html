@@ -6,6 +6,7 @@
 {% load thumbnail %}
 {% load monitoring_tags %}
 {% load newscache_tags %}
+{% load popover_info %}
 
 
 {% block title %}Dettaglio {{ person }}{% endblock %}
@@ -159,8 +160,7 @@
   {% endif %}
 
   <section>
-    <h2>Voti nelle votazioni chiave</h2>
-
+    <h2>Voti nelle votazioni chiave {% popover_info 'votazioni-chiave' %}</h2>
     <table class="data">
       <thead>
       <tr>
@@ -202,7 +202,7 @@
 
   {% if n_presented_acts %}
       <section>
-          <h2>Atti su cui lavora ({{ n_presented_acts }})</h2>
+          <h2>Atti su cui lavora ({{ n_presented_acts }}) {% popover_info 'atti-su-cui-lavora' %}</h2>
 
           <table class="data">
               <thead>
@@ -250,13 +250,13 @@
 
 {% block sidebar %}
 
-  <section><h3>Monitora</h3>
+  <section><h3>Monitora {% popover_info 'monitora-politico'  'left' %}</h3>
       {% object_monitoring person %}
   </section>
 
   <hr>
 
-  <section><h3>Argomenti di cui si occupa</h3>
+  <section><h3>Argomenti di cui si occupa {% popover_info 'argomenti-di-cui-si-occupa' 'left' %}</h3>
     <dl class="taxonomy-cloud">
 
       {% regroup person_topics by category as categorized_topics %}

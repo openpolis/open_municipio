@@ -5356,6 +5356,37 @@ ul.rank li {
   /* - width/2 */
 
 }
+/* Info popovers styles */
+a[rel=info-popover] i {
+  color: #999999;
+}
+a[rel=info-popover]:hover i {
+  color: #4788c2;
+}
+a[rel=info-popover]:hover {
+  text-decoration: none;
+}
+.popover.left {
+  margin-left: -1px;
+}
+.popover.left .arrow {
+  border-left: 5px solid #999999 !important;
+}
+.popover.right {
+  margin-left: 1px;
+}
+.popover.right .arrow {
+  border-right: 5px solid #999999 !important;
+}
+.popover .popover-inner {
+  border: 1px solid #999999 !important;
+  padding: 0!important;
+  background-color: #ffffff;
+}
+.popover .popover-title {
+  margin: 2px;
+  background-color: #f2f64f;
+}
 aside hr {
   border: 1px solid white;
 }
