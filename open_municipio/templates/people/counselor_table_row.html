@@ -2,26 +2,37 @@
 {% load thumbnail %}
 
 <tr>
-    <!-- thumbnail -->
-    <td style="width: 50px">
-        <a href="{{ charge.person.get_absolute_url }}">
-            {% thumbnail charge.person.img "50x50" crop="center" as im %}
-                <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
-            {% endthumbnail %}
-        </a>
-    </td>
-
-    <!-- name -->
+    <!-- ID -->
+    <td>{{ id_prefix }}-{{ charge.id }}</td>
+    <!-- politician -->
     <td>
-        {% if label %}<span class="label">{{ label }}</span><br/>{% endif %}
+        <!-- thumbnail -->
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="span2" style="min-width: 50px">
+                    <a href="{{ charge.person.get_absolute_url }}">
+                        {% if charge.person.img %}
+                            {% thumbnail charge.person.img "50x50" crop="center" as im %}
+                                <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+                            {% endthumbnail %}
+                        {% else %}
+                            <img src="{{ STATIC_URL }}img/placehold/50.gif" width="50" height="50">
+                        {% endif %}
+                    </a>
+                </div>
+                <!-- name -->
+                <div class="span8">
+                    {% if label %}<span class="label">{{ label }}</span><br/>{% endif %}
+                    <a href="{{ charge.person.get_absolute_url }}">
+                        <strong>{{ charge.person|title }}</strong>
+                    </a>
+                    <br>
+                    in carica dal {{ charge.start_date|date:"d.m.Y" }}
 
-        <a href="{{ charge.person.get_absolute_url }}">
-            <strong>{{ charge.person|title }}</strong>
-        </a>
-        <br>
-        in carica dal {{ charge.start_date|date:"d.m.Y" }}
-
-        {% object_inline_monitoring charge.person shows_monitoring_users=False %}
+                    {% object_inline_monitoring charge.person shows_monitoring_users=False %}
+                </div>
+            </div>
+        </div>
     </td>
 
     <!-- group -->

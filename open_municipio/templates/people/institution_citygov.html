@@ -18,29 +18,31 @@
 {% endblock %}
 
 
+
 {% block content %}
 
   <section class="row-fluid">
 
-    <h2>Giunta</h2>
+      <h2>Giunta</h2>
 
-    <table class="data">
-        <thead>
-        <tr>
-            <th class="text-left span4" colspan="2">Politico</th>
-            <th class="span4">Deleghe</th>
-            <th class="span1">Atti</th>
-            <th class="span1">Utenti che monitorano</th>
-        </tr>
-        </thead>
-        <tbody>
-        {%  include 'people/gov_member_table_row.html' with charge=mayor label="Sindaco"%}
-        {%  include 'people/gov_member_table_row.html' with charge=firstdeputy label="Vice sindaco"%}
-        {% for c in citygov.members %}
-            {%  include 'people/gov_member_table_row.html' with charge=c %}
-        {% endfor %}
-        </tbody>
-    </table>
+      <table id="giunta" class="data dataTable">
+          <thead>
+          <tr>
+              <th></th>
+              <th class="text-left span4">Politico</th>
+              <th class="span4">Deleghe</th>
+              <th class="span2">Atti</th>
+              <th class="span2">Monitorato da</th>
+          </tr>
+          </thead>
+          <tbody>
+          {%  include 'people/gov_member_table_row.html' with charge=mayor  label="Sindaco" id_prefix="0" %}
+          {%  include 'people/gov_member_table_row.html' with charge=firstdeputy  label="Vice sindaco" id_prefix="1" %}
+          {% for c in citygov.members %}
+              {%  include 'people/gov_member_table_row.html' with charge=c id_prefix="2" %}
+          {% endfor %}
+          </tbody>
+      </table>
 
   </section>
 
@@ -95,7 +97,38 @@
 
 
 {% block footer_js_includes %}
-  {{ block.super }}
-  <script src="{{ STATIC_URL }}js/jquery.submitlink.js"></script>
+    {{ block.super }}
+    <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap-tab.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.submitlink.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.dataTables.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function() {
+            gTable = $('#giunta').dataTable({
+                bFilter: false,
+                aoColumns: [
+                    null,
+                    null,
+                    null,
+                    {asSorting: ['desc', 'asc']},
+                    {asSorting: ['desc', 'asc']}
+                ],
+                bPaginate: false,
+                bLengthChange: false,
+                bSort: true,
+                bInfo: false,
+                bAutoWidth: false,
+                aoColumnDefs:[
+                    { bSearchable: false, bVisible: false, aTargets: [0] }
+                ],
+                oLanguage: {
+                    sSearch: "Ricerca",
+                    sZeroRecords: "Nessun risultato per questa ricerca"
+                }
+
+            });
+        });
+
+    </script>
 {% endblock %}
 

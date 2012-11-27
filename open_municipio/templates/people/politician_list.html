@@ -16,6 +16,71 @@
     {{ block.super }}
     <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap-tab.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.submitlink.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.dataTables.js"></script>
+    <script type="text/javascript">
+
+
+        percentage_extract = function(match, $1, offset, original) { return $1; }
+
+        $.fn.dataTableExt.oSort['percentage-asc']  = function(a,b) {
+            var x = parseInt(a.replace(/\D*?(\d*)%/, percentage_extract));
+            var y = parseInt(b.replace(/\D*?(\d*)%/, percentage_extract));
+            return ((x < y) ? -1 : ((x > y) ?  1 : 0));
+        };
+
+        $.fn.dataTableExt.oSort['percentage-desc'] = function(a,b) {
+            var x = parseInt(a.replace(/\D*?(\d*)%/, percentage_extract));
+            var y = parseInt(b.replace(/\D*?(\d*)%/, percentage_extract));
+            return ((x < y) ?  1 : ((x > y) ? -1 : 0));
+        };
+
+        commonDataTableParams = {
+            "bPaginate": false,
+            "bLengthChange": false,
+            "bSort": true,
+            "bInfo": false,
+            "bAutoWidth": false,
+            "aoColumnDefs":[
+                { "bSearchable": false, "bVisible": false, "aTargets": [0] }
+            ],
+            oLanguage: {
+                sSearch: "Ricerca",
+                sZeroRecords: "Nessun risultato per questa ricerca"
+            }
+        }
+
+        $(document).ready(function() {
+            gTable = $('#giunta').dataTable(
+                $.extend({}, commonDataTableParams, {
+                    bFilter: false,
+                    aoColumns: [
+                        null,
+                        null,
+                        null,
+                        {asSorting: ['desc', 'asc']},
+                        {asSorting: ['desc', 'asc']}
+                    ]
+                })
+            );
+            cTable = $('#consiglio').dataTable(
+                $.extend({}, commonDataTableParams, {
+                    aoColumns: [
+                        null,
+                        null,
+                        null,
+                        { sType: "percentage", asSorting: ['desc', 'asc']},
+                        {asSorting: ['desc', 'asc']},
+                        {asSorting: ['desc', 'asc']},
+                        {asSorting: ['desc', 'asc']}
+                    ]
+                })
+            );
+
+
+
+        });
+
+    </script>
 {% endblock %}
 
 
@@ -31,13 +96,14 @@
 
       <h2>Giunta</h2>
 
-      <table class="data">
+      <table id="giunta" class="data dataTable">
           <thead>
           <tr>
-              <th class="text-left span4" colspan="2">Politico</th>
+              <th></th>
+              <th class="text-left span4">Politico</th>
               <th class="span4">Deleghe</th>
-              <th class="span1">Atti</th>
-              <th class="span1">Utenti che monitorano</th>
+              <th class="span2">Atti</th>
+              <th class="span2">Monitorato da</th>
           </tr>
           </thead>
           <tbody>
@@ -53,15 +119,16 @@
 
       <h2>Consiglio</h2>
 
-      <table class="data">
+      <table id="consiglio" class="data dataTable">
           <thead>
           <tr>
-              <th class="text-left span3" colspan="2">Politico</th>
+              <th></th>
+              <th class="text-left span3">Politico</th>
               <th class="span2">Gruppo</th>
               <th class="span2">Presenze</th>
-              <th class="span1">Voti ribelli</th>
-              <th class="span1">Atti firmati</th>
-              <th class="span1">Utenti che monitorano</th>
+              <th class="span2">Ribellioni</th>
+              <th class="span1">Atti</th>
+              <th class="span2">Monitorato da</th>
           </tr>
           </thead>
           <tbody>

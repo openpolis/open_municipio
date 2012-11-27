@@ -19,6 +19,7 @@
 {% block body_class %}politician{% endblock %}
 {% block people_class %}class="active"{% endblock %}
 
+
 {% block head_css_includes %}
     {{ block.super }}
     <link rel="stylesheet" href="{{ STATIC_URL }}css/meter-bar.css" />
@@ -29,6 +30,11 @@
   <script src="{{ STATIC_URL }}js/ajax_csrf.js" type="text/javascript" charset="utf-8"></script>
   <script src="{{ STATIC_URL }}js/jquery.submitlink.js" stype="text/javascript"></script>
 {% endblock head_js_includes %}
+
+{% block sub_nav %}
+    {%  include 'commons/subnav.html' %}
+{% endblock %}
+
 
 {% block content %}
 
@@ -160,7 +166,7 @@
   {% endif %}
 
   <section>
-    <h2>Voti nelle votazioni chiave {% popover_info 'votazioni-chiave' %}</h2>
+    <h2>Voti nelle votazioni chiave {% popover_info 'votazioni-chiave' width="500px" %}</h2>
     <table class="data">
       <thead>
       <tr>
@@ -202,7 +208,7 @@
 
   {% if n_presented_acts %}
       <section>
-          <h2>Atti su cui lavora ({{ n_presented_acts }}) {% popover_info 'atti-su-cui-lavora' %}</h2>
+          <h2>Atti su cui lavora ({{ n_presented_acts }}) {% popover_info 'atti-su-cui-lavora'  width="500px" %}</h2>
 
           <table class="data">
               <thead>

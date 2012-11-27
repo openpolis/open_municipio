@@ -24,26 +24,25 @@
   <section class="row-fluid">
 
     <h2>Consiglio</h2>
-
-    <table class="data">
+    <table id="consiglio" class="data dataTable">
       <thead>
       <tr>
-          <th class="text-left span3" colspan="2">Politico</th>
+          <th></th>
+          <th class="text-left span3">Politico</th>
           <th class="span2">Gruppo</th>
           <th class="span2">Presenze</th>
-          <th class="span1">Voti ribelli</th>
-          <th class="span1">Atti firmati</th>
-          <th class="span1">Utenti che monitorano</th>
+          <th class="span2">Ribellioni</th>
+          <th class="span1">Atti</th>
+          <th class="span2">Monitorato da</th>
       </tr>
       </thead>
       <tbody>
-      {%  include 'people/counselor_table_row.html' with charge=president label="Presidente"%}
+      {%  include 'people/counselor_table_row.html' with charge=president label="Presidente" id_prefix="0" %}
       {% for vp in vicepresidents %}
-          {%  include 'people/counselor_table_row.html' with charge=vp.charge label="Vice presidente"%}
+          {%  include 'people/counselor_table_row.html' with charge=vp.charge label="Vice presidente" id_prefix="1" %}
       {% endfor %}
-
       {% for c in council.members %}
-          {%  include 'people/counselor_table_row.html' with charge=c %}
+          {%  include 'people/counselor_table_row.html' with charge=c id_prefix="2" %}
       {% endfor %}
       </tbody>
     </table>
@@ -117,6 +116,54 @@
 
 {% block footer_js_includes %}
     {{ block.super }}
-    <script src="{{ STATIC_URL }}js/jquery.submitlink.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap-tab.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.submitlink.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.dataTables.js"></script>
+    <script type="text/javascript">
+        percentage_extract = function(match, $1, offset, original) { return $1; }
+
+        $.fn.dataTableExt.oSort['percentage-asc']  = function(a,b) {
+            var x = parseInt(a.replace(/\D*?(\d*)%/, percentage_extract));
+            var y = parseInt(b.replace(/\D*?(\d*)%/, percentage_extract));
+            return ((x < y) ? -1 : ((x > y) ?  1 : 0));
+        };
+
+        $.fn.dataTableExt.oSort['percentage-desc'] = function(a,b) {
+            var x = parseInt(a.replace(/\D*?(\d*)%/, percentage_extract));
+            var y = parseInt(b.replace(/\D*?(\d*)%/, percentage_extract));
+            return ((x < y) ?  1 : ((x > y) ? -1 : 0));
+        };
+
+
+        $(document).ready(function() {
+            gTable = $('#consiglio').dataTable({
+                bFilter: true,
+                aoColumns: [
+                    null,
+                    null,
+                    null,
+                    { sType: "percentage", asSorting: ['desc', 'asc']},
+                    {asSorting: ['desc', 'asc']},
+                    {asSorting: ['desc', 'asc']},
+                    {asSorting: ['desc', 'asc']}
+                ],
+                bPaginate: false,
+                bLengthChange: false,
+                bSort: true,
+                bInfo: false,
+                bAutoWidth: false,
+                aoColumnDefs:[
+                    { bSearchable: false, bVisible: false, aTargets: [0] }
+                ],
+                oLanguage: {
+                    sSearch: "Ricerca",
+                    sZeroRecords: "Nessun risultato per questa ricerca"
+                }
+
+            });
+        });
+
+    </script>
 {% endblock %}
+
 
