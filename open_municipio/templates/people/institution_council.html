@@ -28,12 +28,11 @@
       <thead>
       <tr>
           <th></th>
-          <th class="text-left span3">Politico</th>
-          <th class="span2">Gruppo</th>
+          <th class="text-left span4">Politico</th>
           <th class="span2">Presenze</th>
           <th class="span2">Ribellioni</th>
-          <th class="span1">Atti</th>
-          <th class="span2">Monitorato da</th>
+          <th class="span2">Atti</th>
+          <th class="span2">Monitorato</th>
       </tr>
       </thead>
       <tbody>
@@ -116,7 +115,6 @@
 
 {% block footer_js_includes %}
     {{ block.super }}
-    <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap-tab.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.submitlink.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.dataTables.js"></script>
     <script type="text/javascript">
@@ -139,7 +137,6 @@
             gTable = $('#consiglio').dataTable({
                 bFilter: true,
                 aoColumns: [
-                    null,
                     null,
                     null,
                     { sType: "percentage", asSorting: ['desc', 'asc']},

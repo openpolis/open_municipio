@@ -15,11 +15,17 @@
 
 {% block content %}
     <h2>Gruppi</h2>
-    <dl class="list-plain">
-        {% for group in groups %}
-            <dt><a href="{{ group.get_absolute_url }}"><strong>{{ group.name }}</strong> ({{ group.acronym }})</a></dt>
-        {% endfor %}
-    </dl>
+    <div class="party-people">
+        <div class="row-fluid">
+            <div class="span12">
+                <ul class="unstyled">
+                    {% for group in groups %}
+                        <li><a href="{{ group.get_absolute_url }}"><strong>{{ group.name }}</strong> ({{ group.acronym }})</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block sidebar %}

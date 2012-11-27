@@ -1,10 +1,12 @@
 {% if user.is_authenticated %}
 <div class="share-button-bar clearfix">
-    <a href="#" class="label"><i class="icon-plus icon-white"></i> Condividi {{ sharing_count }}</a>
+    <a class="share-link" href="#"><img src="{{ STATIC_URL }}img/share-plus.png"/></a>
+    <a class="share-link" href="#">Condividi ({{ sharing_count }} condivisioni)</a>
+    <!-- <a class="share-link" href="#"><img src="{{ STATIC_URL }}img/share-social-icons.png"/></a> -->
 
-        <div class="share-facebook pull-left"></div>
-        <div class="share-twitter pull-left"></div>
-        <div class="share-google_plus pull-left"></div>
+    <div class="share-facebook pull-left"></div>
+    <div class="share-twitter pull-left"></div>
+    <div class="share-google_plus pull-left"></div>
     <div id="share-result"></div>
 </div>
 
@@ -21,14 +23,14 @@
 
     include(["{{ STATIC_URL }}js/ajax_csrf.js","{{ STATIC_URL }}js/jquery.socializer.js"], function() {
 
-        $('.share-button-bar a.label').click(function(e){
+        $('.share-button-bar a.share-link').click(function(e){
             e.preventDefault();
-            $(this).fadeOut('slow', function() {
+            $('.share-button-bar a.share-link').fadeOut('slow', function() {
                 $('.share-facebook').fbjlike({
                     appID: '{{ services.facebook.code }}',
                     buttonWidth: 150,
                     showfaces: false,
-                    layout: 'normal',
+                    layout: 'button_count',
                     action: 'recommend',
                     lang: 'it_IT',
                     onlike: function(){

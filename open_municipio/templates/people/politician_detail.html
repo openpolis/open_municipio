@@ -250,11 +250,14 @@
       </section>
   {% endif %}
 
-    {% load web_services_tags %}
-    {% share person %}
 {% endblock %}
 
 {% block sidebar %}
+
+  <section class="share-tools clearfix">
+      {% load web_services_tags %}
+      {% share person %}
+  </section>
 
   <section><h3>Monitora {% popover_info 'monitora-politico'  'left' %}</h3>
       {% object_monitoring person %}

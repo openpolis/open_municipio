@@ -45,25 +45,26 @@
         {% endif %}
 
         <div class="row-fluid">
-            <table class="data">
+            <table id="consiglieri-gruppo" class="data">
                 <thead>
                 <tr>
-                    <th class="text-left span3" colspan="2">Politico</th>
+                    <th></th>
+                    <th class="text-left span4">Politico</th>
                     <th class="span2">Presenze</th>
-                    <th class="span2">Voti ribelli</th>
-                    <th class="span2">Atti firmati</th>
-                    <th class="span1">Utenti che monitorano</th>
+                    <th class="span2">Ribellioni</th>
+                    <th class="span2">Atti</th>
+                    <th class="span2">Monitorato</th>
                 </tr>
                 </thead>
                 <tbody>
                 {% if group.leader %}
-                    {% include 'people/counselor_table_row.html' with charge=group.leader.charge.charge is_in_group=1 label="Capogruppo"%}
+                    {% include 'people/counselor_table_row.html' with charge=group.leader.charge.charge is_in_group=1 label="Capogruppo" id_prefix="0" %}
                 {% endif %}
                 {% if group.deputy %}
-                    {% include 'people/counselor_table_row.html' with charge=group.deputy.charge.charge is_in_group=1 label="Vice-capogruppo"%}
+                    {% include 'people/counselor_table_row.html' with charge=group.deputy.charge.charge is_in_group=1 label="Vice-capogruppo" id_prefix="1" %}
                 {% endif %}
                 {% for c in group.alpha_members %}
-                    {%  include 'people/counselor_table_row.html' with charge=c is_in_group=1%}
+                    {%  include 'people/counselor_table_row.html' with charge=c is_in_group=1 id_prefix="2" %}
                 {% endfor %}
                 </tbody>
             </table>
@@ -77,7 +78,11 @@
     <h2>Tutti i gruppi</h2>
     <ul class="list-plain">
         {% for g in groups %}
-            <li><a href="{{ g.get_absolute_url }}"><strong>{{ g.name }}</strong>: ({{ g.acronym }})</a></li>
+            {% if g.id == group.id %}
+                <li><strong>{{ g.name }}</strong>: ({{ g.acronym }})</li>
+            {%  else %}
+                <li><a href="{{ g.get_absolute_url }}"><strong>{{ g.name }}</strong>: ({{ g.acronym }})</a></li>
+            {% endif %}
         {% endfor %}
     </ul>
 
@@ -87,4 +92,49 @@
 {% block footer_js_includes %}
     {{ block.super }}
     <script src="{{ STATIC_URL }}js/jquery.submitlink.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.dataTables.js"></script>
+    <script type="text/javascript">
+        percentage_extract = function(match, $1, offset, original) { return $1; }
+
+        $.fn.dataTableExt.oSort['percentage-asc']  = function(a,b) {
+            var x = parseInt(a.replace(/\D*?(\d*)%/, percentage_extract));
+            var y = parseInt(b.replace(/\D*?(\d*)%/, percentage_extract));
+            return ((x < y) ? -1 : ((x > y) ?  1 : 0));
+        };
+
+        $.fn.dataTableExt.oSort['percentage-desc'] = function(a,b) {
+            var x = parseInt(a.replace(/\D*?(\d*)%/, percentage_extract));
+            var y = parseInt(b.replace(/\D*?(\d*)%/, percentage_extract));
+            return ((x < y) ?  1 : ((x > y) ? -1 : 0));
+        };
+
+
+        $(document).ready(function() {
+            gTable = $('#consiglieri-gruppo').dataTable({
+                bFilter: false,
+                aoColumns: [
+                    null,
+                    null,
+                    { sType: "percentage", asSorting: ['desc', 'asc']},
+                    {asSorting: ['desc', 'asc']},
+                    {asSorting: ['desc', 'asc']},
+                    {asSorting: ['desc', 'asc']}
+                ],
+                bPaginate: false,
+                bLengthChange: false,
+                bSort: true,
+                bInfo: false,
+                bAutoWidth: false,
+                aoColumnDefs:[
+                    { bSearchable: false, bVisible: false, aTargets: [0] }
+                ],
+                oLanguage: {
+                    sSearch: "Ricerca",
+                    sZeroRecords: "Nessun risultato per questa ricerca"
+                }
+
+            });
+        });
+
+    </script>
 {% endblock %}

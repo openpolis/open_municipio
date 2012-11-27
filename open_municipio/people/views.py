@@ -116,11 +116,14 @@ class CityGovernmentView(TemplateView):
 class GroupListView(ListView):
     model = Group
     template_name = 'people/institution_groups.html'
+    context_object_name = 'groups'
+
+    def get_queryset(self):
+        return Group.objects.filter(groupcharge__end_date__isnull=True).distinct()
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         extra_context = super(GroupListView, self).get_context_data(**kwargs)
-        extra_context['groups'] = municipality.council.groups
         return extra_context
 
 
@@ -132,7 +135,7 @@ class GroupDetailView(DetailView):
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         extra_context = super(GroupDetailView, self).get_context_data(**kwargs)
-        extra_context['groups'] = municipality.council.groups
+        extra_context['groups'] = municipality.council.groups.filter(groupcharge__end_date__isnull=True).distinct()
         return extra_context
 
 

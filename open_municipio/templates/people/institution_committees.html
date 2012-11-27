@@ -17,14 +17,23 @@
 
 {% block content %}
     <h2>Commissioni</h2>
-    <dl class="list-plain">
-        {% for committee in committees %}
-            <dt><a href="{{ committee.get_absolute_url }}"><strong>{{ committee.name }}</strong></a></dt>
-            <dd>{{ committee.description }}</dd>
-        {% endfor %}
-    </dl>
+    <div class="party-people">
+        <div class="row-fluid">
+            <div class="span12">
+                <ul class="unstyled">
+                    {% for committee in committees %}
+                        <li><a href="{{ committee.get_absolute_url }}">{{ committee.name }}:</a>
+                            <a href="{{ committee.get_absolute_url }}"><strong>{{ committee.description }}</strong></a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block sidebar %}
-    Ultime sulle commissioni
+    <section>
+        {% include 'commons/calendar.html' with events=events %}
+    </section>
 {% endblock %}

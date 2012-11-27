@@ -123,19 +123,10 @@
             <li {% block users_class %}{% endblock %}><a href="/users/">Cittadini</a></li>
           </ul>
           <ul class="nav pull-right">
-            <li class="dropdown">
-              <a href="#"
-                 class="dropdown-toggle"
-                 data-toggle="dropdown">
-                Uso del sito
-                <b class="caret"></b>
-              </a>
-              <ul class="dropdown-menu">
-                <li><a href="{% url om_rules %}">Regolamento</a></li>
-                <li><a href="{% url om_terms %}">Condizioni d'uso</a></li>
-                <li><a href="{% url om_privacy %}">Privacy</a></li>
-              </ul>
-            </li>
+            <form method="get" action="{% url om_act_search %}" name="q" id="search-form">
+              <input type="text" class="input-medium search-query" placeholder="Cerca negli atti">
+              <button type="submit" class="btn">Cerca</button>
+            </form>
           </ul>
         </nav>
       </div>
@@ -168,9 +159,7 @@
 
 
         $(function(){
-            $('a[rel=info-popover]').clickover({
-                title: "A standard title for info-popovers"
-            });
+            $('a[rel=info-popover]').clickover();
         })
 
     </script>

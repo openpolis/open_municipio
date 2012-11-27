@@ -4315,6 +4315,9 @@ body h1 span.colored {
   font-family: Verdana;
   color: #999999;
 }
+.navbar .nav > li > a {
+  padding: 10px 10px 9px!important;
+}
 #wrapper > header {
   background: #3873b4;
 }
@@ -5434,4 +5437,27 @@ table.data {
 table.data td,
 table.data th {
   border-right: 1px solid #ebe8e0;
+}
+#search-form {
+  margin: 4px;
+}
+#search-form input[type="text"] {
+  -webkit-border-radius: 0!important;
+  -moz-border-radius: 0!important;
+  border-radius: 0!important;
+}
+#search-form button {
+  vertical-align: -1px;
+}
+.share-tools {
+  margin-bottom: 2em;
+}
+.share-tools .share-button-bar {
+  float: right;
+}
+.share-button-bar a > img {
+  vertical-align: -3px;
+}
+.share-button-bar div.share-facebook {
+  margin-right: 2em;
 }
