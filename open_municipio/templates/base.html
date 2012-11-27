@@ -123,8 +123,8 @@
             <li {% block users_class %}{% endblock %}><a href="/users/">Cittadini</a></li>
           </ul>
           <ul class="nav pull-right">
-            <form method="get" action="{% url om_act_search %}" name="q" id="search-form">
-              <input type="text" class="input-medium search-query" placeholder="Cerca negli atti">
+            <form method="get" action="{% url om_act_search %}" id="search-form">
+              <input type="text" class="input-medium search-query" name="q" placeholder="Cerca negli atti">
               <button type="submit" class="btn">Cerca</button>
             </form>
           </ul>
