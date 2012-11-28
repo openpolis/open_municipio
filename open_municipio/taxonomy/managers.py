@@ -47,7 +47,7 @@ class _TopicableManager(_TaggableManager):
             super(_TopicableManager, self).remove(*tags, **extra_kwargs)
 
         # call custom Signal
-        post_untagging.send(sender=self.through, category=kwargs.get('category'), tags=tags)
+        post_untagging.send(sender=self.through, category=extra_kwargs.get('category'), tags=tags)
 
 
     @require_instance_manager

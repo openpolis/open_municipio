@@ -274,6 +274,13 @@ body.homepage {
     padding: 4px 8px;
     text-shadow: 0 0 0 transparent;
     a, a:hover { color: @textColor;  }
+
+    &.with-margin {margin: 0 5px;}
+
+    span {
+      &.tag { font-weight: normal!important; font-size: 12px; }
+    }
+
   }
   dd, li { font-weight: normal; text-transform: lowercase; }
   dt { font-size: 14px; text-transform: capitalize; font-weight: bold; }
@@ -431,6 +438,20 @@ table.stats {
 .calendar_events {
   max-height: 220px;
   overflow-y: scroll;
+
+  .modal {
+    font-size: 14px!important;
+    line-height: 22px;
+    h4 { font-size: 14px; }
+    p { font-size: 14px; line-height: 18px; }
+  }
+  .modal-footer {
+    text-align: left;
+  }
+
+  .modal-header {
+    font-size: 17px;
+  }
 }
 
 //---------------------------------------------------------

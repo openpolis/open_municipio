@@ -65,6 +65,9 @@ class TaggedAct(ItemBase):
             '%s__content_object__isnull' % cls.tag_relname(): False
         }).distinct()
 
+    def tag_cat(self):
+        return u"%s - %s" % (self.category, self.tag)
+
     def __unicode__(self):
         template = u"%(object)s tagged in %(category)s"
         if self.tag is not None:

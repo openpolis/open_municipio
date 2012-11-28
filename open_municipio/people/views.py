@@ -308,9 +308,37 @@ class PoliticianDetailView(DetailView):
             context['is_user_monitoring'] = False
 
         context['person_topics'] = []
+
+
+        #
+        # extract all the topics of the acts presented by the person in the view
+        #
+
+        # get the person from the view
+        p = self.object
+        for charge in p.current_institution_charges:
+            for act in charge.presented_acts:
+                for topic in act.topics:
+
+                    # avoid repetitions, by skipping categories and tags already appended
+                    if topic.category in [t.category for t in context['person_topics']]:
+                        if topic.tag in [t.tag for t in context['person_topics']]:
+                            continue
+
+                    # append topic
+                    context['person_topics'].append(topic)
+
+
+        """
+        # Obscurated form of the above code :-)
+
         for topics in [y.topics for x in self.object.get_current_institution_charges() for y in x.presented_act_set.all() ]:
             for topic in topics:
+                if topic.category in [t.category for t in context['person_topics']]:
+                    if topic.tag in [t.tag for t in context['person_topics']]:
+                        continue
                 context['person_topics'].append(topic)
+        """
 
         return context
 

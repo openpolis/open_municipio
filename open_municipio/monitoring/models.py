@@ -66,7 +66,11 @@ class MonitorizedItem():
         user_type can take None, "simple", "politician" and indicates whether to apply a filter
 
         """
-        type = ContentType.objects.get_for_model(self)
+        try:
+            type = ContentType.objects.get_for_model(self.downcast())
+        except AttributeError:
+            type = ContentType.objects.get_for_model(self)
+
         if user_type == "simple":
             return Monitoring.objects.filter(content_type__pk=type.id, object_pk=self.pk, user__userprofile__person__isnull=True)
             #return self.monitoring_set.filter(user__userprofile__person__isnull=True)

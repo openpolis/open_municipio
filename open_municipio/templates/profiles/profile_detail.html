@@ -1,4 +1,6 @@
 {% extends "base_two_columns.html" %}
+{% load popover_info %}
+
 {% block title %}Profilo utente{% endblock %}
 {% block content_header %}Profilo di {{user}}{% endblock %}
 {% block content_header_city_logo %}
@@ -17,7 +19,7 @@
   {% if profile %}
 
     <div class="row-fluid">
-      <div class="span7">
+      <div class="span12">
         {% if person %}
           {% thumbnail profile.person.image "100x100" crop="center" as im %}
             <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" class="thumb-left">
@@ -32,9 +34,17 @@
         <ul class="unstyled">
           <li>Iscritto dal <strong>{{ profile.user.date_joined|date:"d/m/Y" }}</strong></li>
           {% if profile.location %}
-              <li>Risiede in <strong>{{ profile.location }}</strong></li>
+              <li><strong>{{ profile.location }}</strong></li>
           {% endif %}
-          <li>Utente <strong>registrato</strong></li>
+          {% if user_social_accounts %}
+            <li>Accede con
+            {% for a in user_social_accounts %}
+                <strong>{{ a }}</strong>{% if not forloop.last %},{% endif %}
+            {% endfor %}
+            </li>
+          {%  else %}
+              <li>Utente <strong>registrato</strong></li>
+          {% endif %}
         </ul>
 
         <p>
@@ -42,36 +52,11 @@
         </p>
 
       </div>
-      <div class="span5">
-        <p>
-            Social network associati:
-            <ul>
-                {% for account in social_accounts %}
-                    <li>
-                        {{ account.name }} -
-                        {% if account.is_connected %}
-                            associato 
-                            {% if user.is_authenticated %}
-                                (<a href="{%  url socialauth_disconnect account.name %}">dissociati</a>)
-                            {% endif %}
-                        {%  else %}
-                            non associato
-                            {% if user.is_authenticated %}
-                                (<a href="{%  url socialauth_associate_begin account.name %}">associati</a>)
-                            {% endif %}
-                        {% endif %}
-                    </li>
-                {% endfor %}
-            </ul>
-        </p>
-
-
-      </div>
     </div>
 
     <hr class="big">
 
-    <h3>Atti monitorati</h3>
+    <h2>Atti monitorati {% popover_info 'atti-monitorati' %}</h2>
 
     <table class="data">
       <thead>
@@ -89,9 +74,6 @@
       {% endfor %}
       </tbody>
     </table>
-    <p class="box">
-      <a href="{% url om_act_search %}">Vedi tutti gli atti</a> <i class="icon-play-down"></i>
-    </p>
 
   {% else %}  
       Non ha un profilo pubblico
@@ -99,30 +81,34 @@
 {% endblock %}
 
 {% block sidebar %}
-  <h3>Politici monitorati</h3>
-  <table id="monitoring-table">
-    <tbody><tr>
-      <td>
-        <div class="circle">{{ politician_monitoring_list|length }}</div>
-      </td>
-      <td>
-        {% for p in politician_monitoring_list %}
-          <a href="{{ p.get_absolute_url }}">{{ p }}</a>
-          {% if not forloop.last %}, {% endif %}
-        {% endfor %}
-        </td>
-      </tr>
-    </tbody>
-  </table>
+    {% if profile %}
+        <h3>Politici monitorati {% popover_info 'politici-monitorati' 'left' %}</h3>
+        <table id="monitoring-table">
+            <tbody><tr>
+                <td>
+                    <div class="circle">{{ politician_monitoring_list|length }}</div>
+                </td>
+                <td>
+                    {% for p in politician_monitoring_list %}
+                        <a href="{{ p.object.get_absolute_url }}">{{ p.object }}</a>
+                        {% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </td>
+            </tr>
+            </tbody>
+        </table>
 
-  <hr>
+        <hr>
 
-  <h3>Argomenti di cui si occupa</h3>
-  <dl class="taxonomy-cloud">
-    {% for topic in topic_monitoring_list %}
-      <dd><a href="{{ topic.get_absolute_url }}">{{ topic }}</a></dd>
-    {% endfor %}
-  </dl>
-
+        <h3>Argomenti monitorati {% popover_info 'argomenti-monitorati' 'left' %}</h3>
+        <dl class="taxonomy-cloud">
+            {% for topic in topic_monitoring_list %}
+                <dt class="with-margin">
+                    <span class="{{ topic.content_type.name|lower }}">
+                        <a href="{{ topic.object.get_absolute_url }}">{{ topic.object }}</a></span>
+                </dt>
+            {% endfor %}
+        </dl>
+    {% endif %}
 
 {% endblock %}

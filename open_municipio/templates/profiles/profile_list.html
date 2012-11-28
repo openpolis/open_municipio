@@ -1,4 +1,5 @@
 {% extends "base_two_columns.html" %}
+{% load popover_info %}
 
 {% load monitoring_tags %}
 
@@ -23,13 +24,13 @@
   <div class="row-fluid">
     <div class="span7">
 
-      <h3>Politici più monitorati</h3>
+      <h2>Politici più monitorati {% popover_info 'politici-piu-monitorati-cittadini' %}</h2>
 
       <ul class="people-list">
-        {% for politician in top_monitorized_politicians %}
+        {% for p in top_monitored_politicians %}
         <li>
-          {% include 'people/politician_list_section.html' %}
-          {% object_inline_monitoring politician.person %}
+          {% include 'people/politician_list_section.html' with politician=p.object.current_institution_charges.0 only %}
+          {% object_inline_monitoring p.object %}
         </li>
         {% endfor %}
       </ul>
@@ -37,47 +38,54 @@
     </div>
     <div class="span5">
 
-      <h3>Argomenti più monitorati</h3>
+      <h2>Argomenti più monitorati {% popover_info 'argomenti-piu-monitorati-cittadini' %}</h2>
 
       <ul class="rank">
-        {% for topic in top_monitorized_topics %}
-        <li><span class="square">{{ forloop.counter }}</span> <a href="{{ topic.get_absolute_url }}">{{ topic|title }}</a></li>
-        {% endfor %}
+          {% for t in top_monitored_topics %}
+              <li>
+                  {% comment %}<span class="rank-value pull-right">{{ forloop.counter }}</span>{% endcomment %}
+                  <h3><a href="{{ t.object.get_absolute_url }}">{{ t.object|title }}</a></h3>
+                  {% object_inline_monitoring t.object %}
+
+              </li>
+          {% endfor %}
       </ul>
     </div>
   </div>
 
   <hr class="big">
 
-  <h3>Atti più monitorati</h3>
+  <h2>Atti più monitorati {% popover_info 'atti-piu-monitorati-cittadini' %}</h2>
 
   <table class="data">
-    {% for act in top_monitorized_acts %}
+    <tr>
+        <th>ATTO</th>
+        <th>UTENTI</th>
+    </tr>
+    {% for a in top_monitored_acts %}
       <tr>
-        <td><span class="square">{{ forloop.counter }}</span></td>
-        <td><a href="{{ act.get_absolute_url }}">{{ act }}</a></td>
+        <td>{% include 'acts/_act_inline.html' with act=a.object only %}</td>
+        <td>{{ a.n_monitoring }}</td>
       </tr>
     {% endfor %}
   </table>
-
-  <hr class="big">
 
 {% endblock %}
 
 {% block sidebar %}
 
-  <h3>Cerca un cittadino</h3>
   {% comment %}
-  TODO create a route to manage this request
+    <h3>Cerca un cittadino</h3>
+    TODO create a route and a view to manage this request
+    <form method="get" action="." class="form-search">
+        <input type="text" class="input-medium search-query" name="user_search" value="" placeholder="Testo della ricerca" />
+        <button type="submit" class="btn">Cerca</button>
+    </form>
+
+    <hr>
   {% endcomment %}
-  <form method="get" action="." class="form-search">
-    <input type="text" class="input-medium search-query" name="user_search" value="" placeholder="Testo della ricerca" />
-    <button type="submit" class="btn">Cerca</button>
-  </form>
 
-  <hr>
-
-  <h3>Ultimi iscritti</h3>
+  <h3>Ultimi iscritti {% popover_info 'ultimi-iscritti' 'left' %}</h3>
   {% for obj in object_list %}
       <a href="{{ obj.get_absolute_url }}">{{ obj.user.username }}</a>
       {% if not forloop.last %},{% endif %}

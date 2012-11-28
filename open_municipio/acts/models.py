@@ -143,14 +143,12 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
     @property
     def tags(self):
         # FIXME: cleanup needed, here!
-        #return set([ topic.tag for topic in self.topics ])
-        return self.tag_set.all()
-    
+        return list(set([ topic.tag for topic in self.topics ]))
+
     @property
     def categories(self):
         # FIXME: cleanup needed, here!
         return list( set([ topic.category for topic in self.topics]) )
-        #return self.category_set.all()
 
     @property
     def topics(self):

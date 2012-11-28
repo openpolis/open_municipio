@@ -267,8 +267,7 @@
 
   <section><h3>Argomenti di cui si occupa {% popover_info 'argomenti-di-cui-si-occupa' 'left' %}</h3>
     <dl class="taxonomy-cloud">
-
-      {% regroup person_topics by category as categorized_topics %}
+      {% regroup person_topics|dictsort:"category.name" by category as categorized_topics %}
       {% for grouped_tags in categorized_topics %}
         <dt><a href="{{ grouped_tags.grouper.get_absolute_url }}">{{ grouped_tags.grouper.name }}</a></dt>
         {% for topic in grouped_tags.list %}

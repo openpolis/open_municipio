@@ -4449,6 +4449,17 @@ body.homepage article ul.unstyled {
 .taxonomy-cloud li a:hover {
   color: #000000;
 }
+.taxonomy-cloud dd.with-margin,
+.taxonomy-cloud dt.with-margin,
+.taxonomy-cloud li.with-margin {
+  margin: 0 5px;
+}
+.taxonomy-cloud dd span.tag,
+.taxonomy-cloud dt span.tag,
+.taxonomy-cloud li span.tag {
+  font-weight: normal!important;
+  font-size: 12px;
+}
 .taxonomy-cloud dd,
 .taxonomy-cloud li {
   font-weight: normal;
@@ -4762,6 +4773,23 @@ table.stats th {
 .calendar_events {
   max-height: 220px;
   overflow-y: scroll;
+}
+.calendar_events .modal {
+  font-size: 14px!important;
+  line-height: 22px;
+}
+.calendar_events .modal h4 {
+  font-size: 14px;
+}
+.calendar_events .modal p {
+  font-size: 14px;
+  line-height: 18px;
+}
+.calendar_events .modal-footer {
+  text-align: left;
+}
+.calendar_events .modal-header {
+  font-size: 17px;
 }
 .bg-lighter {
   background-color: #f7f6f1;

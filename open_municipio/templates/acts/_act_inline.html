@@ -1,0 +1,4 @@
+<a href="{{ act.get_absolute_url }}">{{ act }}</a><br/>
+{{ act.get_type_name|title }} -
+{{ act.presenters.0.person }}
+{% if act.presenters > 1 %}e altri{% endif %}

@@ -161,11 +161,11 @@ LOGIN_REDIRECT_URL = '/'
 LOGIN_ERROR_URL    = '/login-error/'
 
 
-SOCIAL_AUTH_BACKENDS_LIST = (
-    'twitter',
-    'google-oauth2',
-    'facebook',
-)
+SOCIAL_AUTH_BACKENDS_LIST = {
+    'twitter': "Twitter",
+    'google-oauth2': "Google",
+    'facebook': "Facebook",
+}
 SOCIAL_AUTH_COMPLETE_URL_NAME  = 'socialauth_complete'
 SOCIAL_AUTH_ASSOCIATE_URL_NAME = 'socialauth_associate_complete'
 SOCIAL_AUTH_EXPIRATION = 'expires'
