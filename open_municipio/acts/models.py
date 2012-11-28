@@ -149,6 +149,7 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
     def categories(self):
         # FIXME: cleanup needed, here!
         return list( set([ topic.category for topic in self.topics]) )
+        #return self.category_set.all()
 
     @property
     def topics(self):
@@ -634,6 +635,8 @@ class Calendar(models.Model):
     @property
     def acts(self):
         return self.act_set.all()
+
+
 
 #
 # Signals handlers

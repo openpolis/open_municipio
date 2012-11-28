@@ -1,4 +1,5 @@
 from open_municipio.votations.models import ChargeVote
+from open_municipio.acts.models import Deliberation as OMDeliberation
 import os
 from django.conf import settings
 
@@ -58,4 +59,9 @@ XML_TO_OM_INITIATIVE = {
     'council_president': 'counselor',
     'council_member' : 'counselor',
     'alderman' : 'assessor',
+    }
+
+OBJ_TO_OM_ACTS = {
+    "CouncilDeliberation" : "open_municipio.acts.models.Deliberation",
+                  
     }
