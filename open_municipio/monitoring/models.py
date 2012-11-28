@@ -170,17 +170,23 @@ def remove_monitoring(**kwargs):
     monitored_object = generating_item.content_object
     monitoring_user = generating_item.user.get_profile()
 
-    # first remove news related to the monitored object
-    News.objects.filter(
-        generating_content_type=ContentType.objects.get_for_model(generating_item),
-        generating_object_pk = generating_item.pk,
-        related_content_type=ContentType.objects.get_for_model(monitored_object),
-        related_object_pk=monitored_object.pk
-    ).delete()
-    # second remove news related to the monitoring user, with priority 2
-    News.objects.filter(
-        generating_content_type=ContentType.objects.get_for_model(generating_item),
-        generating_object_pk = generating_item.pk,
-        related_content_type=ContentType.objects.get_for_model(monitoring_user),
-        related_object_pk=monitoring_user.pk
-    ).delete()
+    if not generating_item:
+        return
+
+    if monitored_object:
+        # remove news related to the monitored object
+        News.objects.filter(
+            generating_content_type=ContentType.objects.get_for_model(generating_item),
+            generating_object_pk = generating_item.pk,
+            related_content_type=ContentType.objects.get_for_model(monitored_object),
+            related_object_pk=monitored_object.pk
+        ).delete()
+
+    if monitoring_user:
+        # remove news related to the monitoring user, with priority 2
+        News.objects.filter(
+            generating_content_type=ContentType.objects.get_for_model(generating_item),
+            generating_object_pk = generating_item.pk,
+            related_content_type=ContentType.objects.get_for_model(monitoring_user),
+            related_object_pk=monitoring_user.pk
+        ).delete()
