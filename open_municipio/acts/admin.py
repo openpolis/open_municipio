@@ -5,7 +5,6 @@ from django.contrib.admin.widgets import FilteredSelectMultiple
 
 from open_municipio.acts.models import *
 
-
 def transition_form_factory(act):
     """
     allows to change the final_status field in the transition form

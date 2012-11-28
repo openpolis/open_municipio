@@ -635,8 +635,6 @@ class Calendar(models.Model):
     def acts(self):
         return self.act_set.all()
 
-
-
 #
 # Signals handlers
 #
