@@ -1,7 +1,7 @@
 {% extends "base_one_column.html" %}
 
 {% block body_class %}error{% endblock %}
-{% block title %}Pagina non trovata{% endblock %}
+{% block title %}Errore del server 500{% endblock %}
 
 {%  block access %}{% endblock %}
 {%  block main_navbar %}{% endblock %}
@@ -11,19 +11,18 @@
 
         <div class="row-fluid">
             <div class="span1">
-                <img src="{{ STATIC_URL }}img/error-bang.png" alt="Icona segnalazione errore"/>
+                <img src="/static/img/error-bang.png" alt="Icona segnalazione errore"/>
             </div>
 
             <div class="span11">
                 <p>
-                Non abbiamo trovato quello che cerchi.<br/>
-                Per tornare indietro fai clik sul tasto del browser <br/>
-                oppure <a href="/">torna alla home page</a> del sito e ricomincia la navigazione.
+                    Ci dispiace, ma si è verificato un errore imprevisto sui nostri server.<br/>
+                    Abbiamo già ricevuto una notifica con i dettagli e interverremo al più presto.
                 </p>
 
                 <p>
-                Grazie,<br/>
-                lo staff di Open municipio
+                    Grazie per la pazienza,<br/>
+                    lo staff di Open municipio
                 </p>
             </div>
         </div>

@@ -88,6 +88,7 @@ class ActSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
         """
         Add extra content here, when needed
         """
+
         extra = super(ActSearchView, self).extra_context()
         extra['base_url'] = reverse('om_act_search') + '?' + extra['params'].urlencode()
 

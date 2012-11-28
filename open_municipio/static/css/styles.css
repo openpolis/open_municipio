@@ -5489,3 +5489,18 @@ table.data th {
 .share-button-bar div.share-facebook {
   margin-right: 2em;
 }
+body.error {
+  background-color: #33658f;
+  padding: 0;
+  color: #ffffff;
+}
+body.error p {
+  font-size: 16px!important;
+}
+body.error p a {
+  color: #ffffff;
+  text-decoration: underline;
+}
+body.error p a:hover {
+  color: #ffffff;
+}

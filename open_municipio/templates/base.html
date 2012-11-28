@@ -72,23 +72,25 @@
         <small></small>-->
       </a>
 
-      {% if user.is_authenticated %}
-        <p id="user-tools" class="text-right pull-right">
-          Ciao, <strong>{{ user.username }}</strong>
-          <br>
-          <a href="{% url logout %}?next={% if "/accounts" in request.path %}/{% else %}{{ request.path }}{% endif %}">esci</a>
-          &middot;
-          <a href="{% url profiles_edit_profile %}">impostazioni</a>
-          &middot;
-          <a href="{%  url profiles_profile_detail user.username %}">profilo</a>
-        </p>
-      {% else %}
-      <ul class="nav pull-right">
-          <li>Vuoi partecipare? <a href="/accounts/register/">Registrati</a></li>
-          <li class="divider-vertical"></li>
-          <li>Sei già registrato? <a href="/accounts/login/?next={% if "/accounts" in request.path %}/{% else %}{{ request.path }}{% endif %}">Entra</a></li>
-      </ul>
-      {% endif %}
+      {% block access %}
+          {% if user.is_authenticated %}
+              <p id="user-tools" class="text-right pull-right">
+                  Ciao, <strong>{{ user.username }}</strong>
+                  <br>
+                  <a href="{% url logout %}?next={% if "/accounts" in request.path %}/{% else %}{{ request.path }}{% endif %}">esci</a>
+                  &middot;
+                  <a href="{% url profiles_edit_profile %}">impostazioni</a>
+                  &middot;
+                  <a href="{%  url profiles_profile_detail user.username %}">profilo</a>
+              </p>
+          {% else %}
+              <ul class="nav pull-right">
+                  <li>Vuoi partecipare? <a href="/accounts/register/">Registrati</a></li>
+                  <li class="divider-vertical"></li>
+                  <li>Sei già registrato? <a href="/accounts/login/?next={% if "/accounts" in request.path %}/{% else %}{{ request.path }}{% endif %}">Entra</a></li>
+              </ul>
+          {% endif %}
+      {% endblock %}
     </nav>
   </div>
   <!-- /TOPBAR -->
@@ -112,25 +114,27 @@
     <!-- /AREA-TITLE -->
 
     <!-- MAIN-NAVBAR -->
-    <div class="navbar">
-      <div class="navbar-inner">
-        <nav class="container-fluid" style="padding:0;">
-          <ul class="nav">
-            <li {% block people_class %}{% endblock %}><a href="{% url om_politician_list %}">Politici</a></li>
-            <li class="{% block acts_class %}{% endblock %}"><a href="{% url om_act_search %}">Atti</a></li>
-            <li class="{% block votations_class %}{% endblock %}"><a href="{% url om_votation_search %}">Votazioni</a></li>
-            <li {% block tags_class %}{% endblock %}><a href="{% url om_topic_list %}">Argomenti</a></li>
-            <li {% block users_class %}{% endblock %}><a href="/users/">Cittadini</a></li>
-          </ul>
-          <ul class="nav pull-right">
-            <form method="get" action="{% url om_act_search %}" id="search-form">
-              <input type="text" class="input-medium search-query" name="q" placeholder="Cerca negli atti">
-              <button type="submit" class="btn">Cerca</button>
-            </form>
-          </ul>
-        </nav>
-      </div>
-    </div>
+    {% block main_navbar %}
+        <div class="navbar">
+            <div class="navbar-inner">
+                <nav class="container-fluid" style="padding:0;">
+                    <ul class="nav">
+                        <li {% block people_class %}{% endblock %}><a href="{% url om_politician_list %}">Politici</a></li>
+                        <li class="{% block acts_class %}{% endblock %}"><a href="{% url om_act_search %}">Atti</a></li>
+                        <li class="{% block votations_class %}{% endblock %}"><a href="{% url om_votation_search %}">Votazioni</a></li>
+                        <li {% block tags_class %}{% endblock %}><a href="{% url om_topic_list %}">Argomenti</a></li>
+                        <li {% block users_class %}{% endblock %}><a href="/users/">Cittadini</a></li>
+                    </ul>
+                    <ul class="nav pull-right">
+                        <form method="get" action="{% url om_act_search %}" id="search-form">
+                            <input type="text" class="input-medium search-query" name="q" placeholder="Cerca negli atti">
+                            <button type="submit" class="btn">Cerca</button>
+                        </form>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    {% endblock %}
     <!-- /MAIN-NAVBAR -->
 
     {% block sub_nav %}{% endblock %}
