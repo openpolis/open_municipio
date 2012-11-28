@@ -6,7 +6,7 @@ from open_municipio.idioticon.models import Term
 register = template.Library()
 
 @register.inclusion_tag('idioticon/popover_enabled_icon.html')
-def popover_info(term_slug, popover_placement='right', width='200px'):
+def popover_info(term_slug, popover_placement='right', width='300px'):
     try:
         term = Term.objects.get(slug=term_slug)
     except ObjectDoesNotExist:
