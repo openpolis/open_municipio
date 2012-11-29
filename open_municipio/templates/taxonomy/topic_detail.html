@@ -35,14 +35,6 @@
     <h1><span class="colored">{{ topic|title }}</span></h1>
 
     <section>
-      <h3>Quando se ne discute e dove se ne discute</h3>
-
-      {% include 'commons/calendar.html' with events=FILLME %}
-    </section>
-
-    <hr class="big">
-
-    <section>
         <h2>Atti che trattano di {{ topic }}</h2>
 
         <table class="data">
@@ -183,6 +175,13 @@
 {% endblock %}
 
 {% block sidebar %}
+  <section>
+    <h3>Quando se ne discute e dove se ne discute</h3>
+
+    {% include 'commons/calendar.html' with events=FILLME %}
+  </section>
+
+  <hr>
 
   <section><h3>Monitora</h3>
     {% object_monitoring topic %}
