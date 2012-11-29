@@ -4373,11 +4373,11 @@ body.homepage h2 {
   padding-bottom: 5px;
   font-weight: 100;
 }
+body.homepage div.row-fluid {
+  margin-left: 10px;
+}
 body.homepage #payoff {
   color: #ffffff;
-}
-body.homepage #payoff div.row-fluid {
-  margin-left: 10px;
 }
 body.homepage #payoff div.row-fluid > div {
   min-height: 200px;
@@ -4400,32 +4400,63 @@ body.homepage #payoff p {
   padding-top: 10px;
 }
 body.homepage #agenda {
-  margin-top: 32px;
+  padding-top: 32px;
   min-height: 300px;
+  background-color: #f5f4ee;
 }
-body.homepage #agenda div.row-fluid {
-  margin-left: 10px;
+body.homepage #agenda table.events {
+  font-size: 16px;
 }
-body.homepage #agenda ul {
-  font-weight: bold;
-  list-style: none;
-  margin: 0;
-  padding-left: 70px;
+body.homepage #agenda table.events h3 {
+  font-size: 16px;
 }
-body.homepage #agenda ul li {
-  border-top: 1px solid #ebe8e0;
+body.homepage #agenda .event-acts {
+  margin: 10px 50px 10px 10px;
+  padding-top: 12px;
+  border-top: 1px solid #999999;
+  border-bottom: 1px solid #999999;
+}
+body.homepage #agenda .event-acts ul {
+  margin: 6px 20px;
+}
+body.homepage #agenda .event-acts ul li {
   padding: 10px 0;
 }
-body.homepage #agenda ul li:first-child {
-  border-top: 0;
-  padding-top: 0;
-}
-body.homepage #agenda ul.unstyled {
-  padding-left: 0;
+body.homepage #agenda .see-all {
+  margin: 10px 50px 50px 10px;
+  padding-top: 12px;
+  font-weight: bold;
+  font-size: 14px;
 }
 body.homepage article {
   margin-top: 32px;
   background-color: #ffffff;
+}
+body.homepage article > div {
+  padding: 20px 0;
+  border-bottom: 1px solid #ebe8e0;
+}
+body.homepage article ul.acts-list {
+  list-style: none;
+}
+body.homepage article ul.acts-list li {
+  padding: 10px 0;
+  border-bottom: 1px solid #ebe8e0;
+}
+body.homepage article ul.acts-list li:last-child {
+  border-bottom: 0;
+}
+body.homepage article ul.tags-cloud {
+  margin: 25px;
+}
+body.homepage article table.items-list tr {
+  border-bottom: 1px solid #ebe8e0;
+}
+body.homepage article table.items-list tr td {
+  padding: 10px 0;
+}
+body.homepage article table.items-list tr:last-child {
+  border-bottom: 0;
 }
 .taxonomy-cloud {
   line-height: 34px;
@@ -4789,21 +4820,21 @@ table.stats th {
   max-height: 220px;
   overflow-y: scroll;
 }
-.calendar_events .modal {
+.events .modal {
   font-size: 14px!important;
   line-height: 22px;
 }
-.calendar_events .modal h4 {
+.events .modal h4 {
   font-size: 14px;
 }
-.calendar_events .modal p {
+.events .modal p {
   font-size: 14px;
   line-height: 18px;
 }
-.calendar_events .modal-footer {
+.events .modal-footer {
   text-align: left;
 }
-.calendar_events .modal-header {
+.events .modal-header {
   font-size: 17px;
 }
 .bg-lighter {
@@ -4998,6 +5029,32 @@ table.stats th {
 }
 .circle-fulldate span.year {
   font-size: 10px;
+  font-weight: bold;
+}
+.square-date {
+  padding: 8px;
+  margin: 8px;
+  width: 36px;
+  height: 36px;
+  font-size: 10px;
+  text-align: center;
+  display: inline-block;
+  background-color: #ebe8e0;
+  color: #222222;
+  line-height: 12px;
+}
+.square-date span {
+  display: block;
+}
+.square-date span.day {
+  font-size: 18px;
+  line-height: 16px;
+}
+.square-date span.month {
+  font-weight: bold;
+  text-transform: uppercase;
+}
+.square-date span.year {
   font-weight: bold;
 }
 [class^="hand-"] {
@@ -5355,9 +5412,6 @@ ul.person-resources {
 #content table#votation_outcome i {
   font-size: 30px;
   line-height: 30px;
-}
-body {
-  padding-top: 35px;
 }
 #page-alert .navbar-inner {
   background-color: #fdf48f;
