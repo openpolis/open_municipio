@@ -3,7 +3,7 @@
 
 // Globals
 //@cityColor: #008AC2;
-@homeColor: #3873b4;
+@homeColor: #4788c2;
 @politicianColor: #71b644;
 @actsColor: #3873b4;
 @votationsColor: #96c0e3;
@@ -122,6 +122,12 @@ body {
   h1 span.colored { padding-left: 5px; padding-right: 5px;}
 }
 
+
+
+
+
+
+
 // Top bar (over the header)
 #navbar-top {
   height: 55px;
@@ -222,40 +228,95 @@ body {
 
 // Homepage styles
 body.homepage {
+
+
+  h2 { font-size: 30px; padding-bottom: 5px; font-weight: 100; }
+  div.row-fluid { margin-left: 10px; }
+
   #payoff {
     color : @white;
-    padding-top: 30px;
-    padding-bottom: 30px;
-    h2 { font-weight: normal; font-size: 40px; padding-bottom: 5px; font-weight: 200; }
-    img { float:left; padding-right: 10px; }
+
+    div.row-fluid > div {
+      min-height: 200px;
+      padding: 30px 8px;
+      margin-left: 0;
+    }
+
+    .informati { background-color: #85b9e0; }
+    .monitora { background-color: #4e90c8; }
+    .partecipa { background-color: #34658f; }
+    .cosa-fanno h2 { font-weight: 500; }
     p { padding-top: 10px; }
 
   }
 
-  background-color:#F5F4EE;
+  #agenda {
+    padding-top: 32px;
+    min-height: 300px;
+    background-color: #f5f4ee;
+
+    table.events {
+      h3 { font-size: 16px; }
+      font-size: 16px;
+    }
+
+    .event-acts {
+      margin: 10px 50px 10px 10px;
+      padding-top: 12px;
+
+      border-top: 1px solid @grayLight;
+      border-bottom: 1px solid @grayLight;
+
+      ul {
+        margin: 6px 20px;
+        li {
+          padding: 10px 0;
+        }
+      }
+    }
+
+    .see-all {
+      margin: 10px 50px 50px 10px;
+      padding-top: 12px;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+  }
 
   article {
-    h1 {
-      font-weight: normal;
-      font-size: 40px;
-      margin: 25px 0;
-      font-weight: 200;
+    margin-top: 32px;
+    background-color: @white;
+
+    & > div {
+      padding: 20px 0;
+      border-bottom: 1px solid @hrBorder;
     }
-    ul {
-      font-weight: bold;
+
+    ul.acts-list {
       list-style: none;
-      margin: 0;
-      padding-left: 70px;
       li {
-        border-top: 1px solid @hrBorder;
         padding: 10px 0;
+        border-bottom: 1px solid @hrBorder;
+
+        &:last-child { border-bottom: 0; }
       }
-      li:first-child {
-        border-top: 0;
-        padding-top: 0;
-      }
-      &.unstyled {padding-left: 0; }
     }
+
+    ul.tags-cloud {
+      margin: 25px;
+    }
+
+    table.items-list {
+      tr {
+        td { padding: 10px 0; }
+
+        border-bottom: 1px solid @hrBorder;
+
+        &:last-child { border-bottom: 0; }
+      }
+    }
+
   }
 
 }
@@ -435,10 +496,14 @@ table.stats {
   .ui-datepicker { width: auto; }
   .ui-datepicker-calendar tbody td.highlight > a { font-weight: bold; color: @linkColor; }
 }
+
+
 .calendar_events {
   max-height: 220px;
   overflow-y: scroll;
+}
 
+.events {
   .modal {
     font-size: 14px!important;
     line-height: 22px;
@@ -453,6 +518,7 @@ table.stats {
     font-size: 17px;
   }
 }
+
 
 //---------------------------------------------------------
 //---------------------- COMMONS --------------------------
@@ -533,6 +599,8 @@ table.stats {
   &.circle-green { background-color: @greenDark; color: @semiWhite; }
   &.circle-red { background-color: @red; color: @semiWhite; }
 }
+
+
 .circle-date {
   .circle;
   line-height: 18px;
@@ -547,6 +615,27 @@ table.stats {
   .circle-date;
   line-height: 12px;
 }
+
+.square-date {
+  padding: 8px;
+  margin: 8px;
+  width: 36px;
+  height: 36px;
+  font-size: 10px;
+  text-align: center;
+  display: inline-block;
+  background-color: @grayLighter;
+  color: @grayDarker;
+  line-height: 12px;
+  span {
+    display: block;
+    &.day { font-size: 18px; line-height: 16px;}
+    &.month { font-weight: bold; text-transform: uppercase;}
+    &.year { font-weight: bold; }
+  }
+}
+
+
 
 //-------------- Hand Icons --------------
 [class^="hand-"] {
@@ -812,7 +901,6 @@ ul.person-resources {
 }
 
 
-body { padding-top: 35px; }
 #page-alert {
   .navbar-inner { background-color: #fdf48f; padding:4px 0; color: @black; }
 }
@@ -872,7 +960,7 @@ a[rel=info-popover] {
   }
   .popover-title {
     margin: 2px;
-    background-color: #fdf48f;
+    background-color: #f4f477;
   }
 }
 

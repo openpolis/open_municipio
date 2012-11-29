@@ -4319,7 +4319,7 @@ body h1 span.colored {
   padding: 10px 10px 9px!important;
 }
 #wrapper > header {
-  background: #3873b4;
+  background: #4788c2;
 }
 #wrapper > header #area-title {
   color: #ffffff;
@@ -4368,49 +4368,64 @@ body h1 span.colored {
 #wrapper > header #sub-nav ul.nav > li + li.unpipe:before {
   content: '';
 }
-body.homepage {
-  background-color: #F5F4EE;
+body.homepage h2 {
+  font-size: 30px;
+  padding-bottom: 5px;
+  font-weight: 100;
 }
 body.homepage #payoff {
   color: #ffffff;
-  padding-top: 30px;
-  padding-bottom: 30px;
 }
-body.homepage #payoff h2 {
-  font-weight: normal;
-  font-size: 40px;
-  padding-bottom: 5px;
-  font-weight: 200;
+body.homepage #payoff div.row-fluid {
+  margin-left: 10px;
 }
-body.homepage #payoff img {
-  float: left;
-  padding-right: 10px;
+body.homepage #payoff div.row-fluid > div {
+  min-height: 200px;
+  padding: 30px 8px;
+  margin-left: 0;
+}
+body.homepage #payoff .informati {
+  background-color: #85b9e0;
+}
+body.homepage #payoff .monitora {
+  background-color: #4e90c8;
+}
+body.homepage #payoff .partecipa {
+  background-color: #34658f;
+}
+body.homepage #payoff .cosa-fanno h2 {
+  font-weight: 500;
 }
 body.homepage #payoff p {
   padding-top: 10px;
 }
-body.homepage article h1 {
-  font-weight: normal;
-  font-size: 40px;
-  margin: 25px 0;
-  font-weight: 200;
+body.homepage #agenda {
+  margin-top: 32px;
+  min-height: 300px;
 }
-body.homepage article ul {
+body.homepage #agenda div.row-fluid {
+  margin-left: 10px;
+}
+body.homepage #agenda ul {
   font-weight: bold;
   list-style: none;
   margin: 0;
   padding-left: 70px;
 }
-body.homepage article ul li {
+body.homepage #agenda ul li {
   border-top: 1px solid #ebe8e0;
   padding: 10px 0;
 }
-body.homepage article ul li:first-child {
+body.homepage #agenda ul li:first-child {
   border-top: 0;
   padding-top: 0;
 }
-body.homepage article ul.unstyled {
+body.homepage #agenda ul.unstyled {
   padding-left: 0;
+}
+body.homepage article {
+  margin-top: 32px;
+  background-color: #ffffff;
 }
 .taxonomy-cloud {
   line-height: 34px;
@@ -5416,7 +5431,7 @@ a[rel=info-popover]:hover {
 }
 .popover .popover-title {
   margin: 2px;
-  background-color: #fdf48f;
+  background-color: #f4f477;
 }
 aside hr {
   border: 1px solid white;
@@ -5503,4 +5518,10 @@ body.error p a {
 }
 body.error p a:hover {
   color: #ffffff;
+}
+.search-empty {
+  margin-left: 10px!important;
+}
+.search-empty p {
+  font-size: 16px!important;
 }

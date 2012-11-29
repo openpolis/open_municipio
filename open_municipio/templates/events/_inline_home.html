@@ -1,0 +1,33 @@
+<table class="events items-list">
+    <tbody>
+    <tr>
+        <td>
+            <div class="square-date pull-left">
+                <span class="day">{{ event.date|date:'d' }}</span>
+                <span class="month">{{ event.date|date:'M' }}</span>
+                <span class="year">{{ event.date|date:'Y' }}</span>
+            </div>
+        </td>
+        <td>
+            <h3><a href="#event_{{ event.id }}_description" class="event_toggle_modal">{{ event.title }}</a></h3>
+            {{ event.event_time|time:"H:i" }} - {{ event.address }}
+            {%  include 'events/_modal.html' %}
+        </td>
+    </tr>
+    </tbody>
+</table>
+{% if event.acts.count %}
+    <div class="event-acts">
+        Si discute di:
+        <ul>
+            {% for act in event.acts.all %}
+                <li>
+                    <a href="{{ act.downcast.get_absolute_url }}" title="{{ act.title }}">{{ act.idnum }} - {{ act.title|truncatewords:10 }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="see-all">
+        <a href="#event_{{ event.id }}_description" class="event_toggle_modal">Vedi l'ordine del giorno completo</a>
+    </div>
+{% endif %}
