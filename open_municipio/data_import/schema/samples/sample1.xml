@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<om:CityGovernmentDeliberation xmlns:xlink="http://www.w3.org/1999/xlink"
+ xmlns:om="http://www.openmunicipio.it"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://www.openmunicipio.it file:/Users/guglielmo/Workspace/open_municipio/open_municipio/data_import/schema/OM-XML.xsd" id="id0">
+    <om:Content>
+    </om:Content>
+    <om:ActSubscribers>
+        <om:ActSubscriber/>
+        <om:ActSubscriber/>
+    </om:ActSubscribers>
+    <om:ActSubscribers>
+        <om:ActSubscriber/>
+        <om:ActSubscriber/>
+    </om:ActSubscribers>
+</om:CityGovernmentDeliberation>
