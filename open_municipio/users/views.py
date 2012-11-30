@@ -77,8 +77,8 @@ class UserProfileListView(ListView):
         context.update({
             # TODO if a person not have a institution_charge...?
             'top_monitored_politicians': extract_top_monitored_objects(Person,qnt=3),
-            'top_monitored_topics': extract_top_monitored_objects(Tag,Category,Location),
-            'top_monitored_acts': extract_top_monitored_objects(Deliberation, Motion, Interpellation, Agenda, Interrogation),
+            'top_monitored_topics': extract_top_monitored_objects(Tag,Category,Location,qnt=5),
+            'top_monitored_acts': extract_top_monitored_objects(Deliberation, Motion, Interpellation, Agenda, Interrogation,qnt=5),
         })
         return context
 

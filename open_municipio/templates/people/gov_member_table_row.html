@@ -12,19 +12,18 @@
                 <div class="span2" style="min-width: 50px">
                     <a href="{{ charge.person.get_absolute_url }}">
                         {% thumbnail charge.person.img "50x50" crop="center" as im %}
-                            <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+                            <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" class="politician-picture">
                         {% endthumbnail %}
                     </a>
                 </div>
                 <!-- name -->
                 <div class="span8">
-                    {% if label %}<span class="label">{{ label }}</span><br/>{% endif %}
                     <a href="{{ charge.person.get_absolute_url }}">
                         <strong>{{ charge.person|title }}</strong>
                     </a>
-                    <br>
+                    <br/>
+                    {% if label %}<span class="label" style="line-height: 20px;">{{ label }}</span><br/>{% endif %}
                     in carica dal {{ charge.start_date|date:"d.m.Y" }}
-
                     {% object_inline_monitoring charge.person shows_monitoring_users=False %}
                 </div>
             </div>

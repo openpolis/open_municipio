@@ -89,7 +89,7 @@
           <br/>
 
           {% if historical_groupcharges %}
-              (le altre appartenenze)
+              le altre appartenenze
               <ul>
                   {% for gc in historical_groupcharges %}
                       <li>dal {{ gc.start_date|date:'d.m.Y' }} {%  if gc.end_date %} al {{ gc.end_date|date:'d.m.Y' }}{%  endif %} - {{ gc.group.name }}</li>
@@ -117,7 +117,6 @@
     </div>
 
     <div class="span4">
-      <img src="{{ STATIC_URL }}img/placehold/social.png" alt="">
       <ul class="person-resources">
         {% if resources.URL %}
           <li><a class="website" href="{{ resources.URL.value }}">Sito web</a></li>

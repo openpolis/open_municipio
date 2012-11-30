@@ -82,7 +82,7 @@
 
 {% block sidebar %}
     {% if profile %}
-        <h3>Politici monitorati {% popover_info 'politici-monitorati' 'left' %}</h3>
+        <h2>Politici monitorati {% popover_info 'politici-monitorati' 'left' %}</h2>
         <table id="monitoring-table">
             <tbody><tr>
                 <td>
@@ -100,7 +100,7 @@
 
         <hr>
 
-        <h3>Argomenti monitorati {% popover_info 'argomenti-monitorati' 'left' %}</h3>
+        <h2>Argomenti monitorati {% popover_info 'argomenti-monitorati' 'left' %}</h2>
         <dl class="taxonomy-cloud">
             {% for topic in topic_monitoring_list %}
                 <dt class="with-margin">

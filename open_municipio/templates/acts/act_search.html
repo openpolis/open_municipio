@@ -20,7 +20,7 @@ em {
     {% if n_results %}
 
       <section>
-          <h3>{% if not query %}Trovati {% endif %} {{ n_results }} documenti</h3>
+          <h2>{% if not query %}Trovati {% endif %} {{ n_results }} documenti</h2>
 
           {% if person %}
               <p>per il politico: <a href="{{ person.get_absolute_url }}">{{ person }}</a>  </p>
@@ -91,9 +91,11 @@ em {
           {%  spaceless %}
               <input id="query" type="text" class="input-medium search-query" name="{{ form.q.html_name }}"
                      value="{% if form.q.value %}{{ form.q.value }}{% endif %}" placeholder="Testo della ricerca" />
+              <!--
               <span id="clear-query" class="btn add-on"><i class="icon-remove"></i></span>
+              -->
           {%  endspaceless %}
-      </div><br/>
+      </div>
       <input id="person-id" name="{{ form.person.html_name }}"
              value="{% if form.person.value %}{{ form.person.value }}{% endif %}" type="hidden"/>
       <button type="submit" class="btn">Cerca</button>

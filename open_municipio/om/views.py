@@ -37,7 +37,7 @@ class HomeView(TemplateView):
 
         # get last two calendar events
 
-        context['events'] = Event.objects.all().order_by('date')[0:2]
+        context['events'] = Event.future.all().order_by('date')[0:2]
 
         context['last_presented_acts'] = Act.objects.\
             filter(actsupport__support_type=ActSupport.SUPPORT_TYPE.first_signer).distinct().\

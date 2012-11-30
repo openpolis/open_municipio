@@ -22,7 +22,7 @@
         <ul>
             {% for act in event.acts.all %}
                 <li>
-                    <a href="{{ act.downcast.get_absolute_url }}" title="{{ act.title }}">{{ act.idnum }} - {{ act.title|truncatewords:10 }}</a>
+                    <a href="{{ act.downcast.get_absolute_url }}" title="{{ act.title }}">{{ act.title|truncatewords:20 }}</a>
                 </li>
             {% endfor %}
         </ul>

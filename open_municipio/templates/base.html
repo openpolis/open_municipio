@@ -66,7 +66,7 @@
     <!-- TOPBAR -->
   <div class="navbar" id="navbar-top">
     <nav class="navbar-inner">
-      <a href="http://www.openmunicipio.it" class="brand">
+      <a href="{% url home %}" class="brand">
         <img src="{{ STATIC_URL }}img/logo-openmunicipio.png" alt="Openmunicipio - Informati, monitora e partecipa ai lavori del tuo municipio">
         <!--open<strong>municipio</strong>{% if site_version %}<span class="version">{{ site_version }}</span>{% endif %}
         <small></small>-->
@@ -85,9 +85,7 @@
               </p>
           {% else %}
               <ul class="nav pull-right">
-                  <li>Vuoi partecipare? <a href="/accounts/register/">Registrati</a></li>
-                  <li class="divider-vertical"></li>
-                  <li>Sei già registrato? <a href="/accounts/login/?next={% if "/accounts" in request.path %}/{% else %}{{ request.path }}{% endif %}">Entra</a></li>
+                  <li>Per partecipare o registrarti <a href="/accounts/login/?next={% if "/accounts" in request.path %}/{% else %}{{ request.path }}{% endif %}">Entra</a></li>
               </ul>
           {% endif %}
       {% endblock %}
@@ -115,7 +113,7 @@
 
     <!-- MAIN-NAVBAR -->
     {% block main_navbar %}
-        <div class="navbar">
+        <div class="navbar" id="main-nav">
             <div class="navbar-inner">
                 <nav class="container-fluid" style="padding:0;">
                     <ul class="nav">
@@ -125,12 +123,14 @@
                         <li {% block tags_class %}{% endblock %}><a href="{% url om_topic_list %}">Argomenti</a></li>
                         <li {% block users_class %}{% endblock %}><a href="/users/">Cittadini</a></li>
                     </ul>
+                    {% comment %}
                     <ul class="nav pull-right">
                         <form method="get" action="{% url om_act_search %}" id="search-form">
                             <input type="text" class="input-medium search-query" name="q" placeholder="Cerca negli atti">
                             <button type="submit" class="btn">Cerca</button>
                         </form>
                     </ul>
+                    {% endcomment %}
                 </nav>
             </div>
         </div>
@@ -193,7 +193,6 @@
                       </p>
                       <ul>
                           <li><a href="/progetto">Il codice sorgente</a></li>
-                          <li><a href="/regolamento">Regolamento</a></li>
                           <li><a href="/progetto">I software utilizzati</a></li>
                           <li><a href="/progetto">Scarica i dati</a></li>
                       </ul>

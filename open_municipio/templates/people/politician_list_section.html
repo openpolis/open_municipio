@@ -2,7 +2,7 @@
 
 <a href="{{ politician.person.get_absolute_url }}">
     {% thumbnail politician.person.img "50x50" crop="center" as im %}
-        <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+        <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" class="politician-picture">
     {% endthumbnail %}
 </a>
 <div>

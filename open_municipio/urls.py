@@ -35,7 +35,7 @@ urlpatterns = patterns('',
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),   
     # home page
-    url(r'^$', HomeView.as_view()),
+    url(r'^$', HomeView.as_view(), name="home"),
     # info page
     url(r'^progetto/$', TemplateView.as_view(template_name='om/info.html'), name='om_progetto'),
     url(r'^regolamento/$', TemplateView.as_view(template_name='om/rules.html'), name='om_regolamento'),

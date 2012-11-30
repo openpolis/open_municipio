@@ -46,7 +46,7 @@ body {
       padding: 3px 10px;
       a { font-weight: bold; }
       p { margin: 9px 0; }
-      i { font-size: 10px; }
+      i { font-size: 10px; color: @linkColor; }
     }
 
     .nav-tabs {
@@ -74,7 +74,8 @@ body {
       }
       h4 { font-weight: normal; }
     }
-    h2 { font-size: 19px; }
+    h2 { font-size: 18px; }
+    h3 { font-size: 14px; }
     h4 { font-size: 13px; }
     > section {
       margin: 20px 0;
@@ -159,6 +160,7 @@ body {
 #navbar-top {
   height: 55px;
   background-color: @white;
+  padding-bottom: 5px;
 
   .navbar-inner {
     background-color: @white;
@@ -169,6 +171,7 @@ body {
       /*strong { margin-right: 15px; }
       a { margin: 5px 15px; }*/
     }
+    ul { margin-bottom: 0}
     .nav {
       padding: 8px;
       a {
@@ -208,9 +211,6 @@ body {
 }
 
 
-.navbar .nav > li > a {
-  padding: 10px 10px 9px!important;
-}
 
 // Main Header
 #wrapper > header
@@ -249,15 +249,20 @@ body {
 
     .pipe-separators;
   }
+
+  .navbar#main-nav ul.nav a { padding: 10px 8px;}
 }
 
 
 
 // Homepage styles
+body.homepage, footer {
+  h2 { font-size: 30px; padding-bottom: 5px; font-weight: 100; }
+}
+
 body.homepage {
 
 
-  h2 { font-size: 30px; padding-bottom: 5px; font-weight: 100; }
   div.row-fluid { margin-left: 10px; }
 
   #payoff {
@@ -274,7 +279,6 @@ body.homepage {
     .partecipa { background-color: #34658f; }
     .cosa-fanno {
       padding-left: 30px!important;
-      h2 { font-weight: bold; }
       .input-large { width: 300px;}
     }
     p { padding-top: 10px; }
@@ -339,6 +343,7 @@ body.homepage {
     }
 
     table.items-list {
+      width: 96%;
       tr {
         td { padding: 10px 0; }
 
@@ -403,7 +408,6 @@ ul.comments-list, ul.people-list {
     > div {
       margin-left: 60px;
       a > strong { font-size: 16px; }
-      .monitoring { color: @grayLight; }
     }
   }
 }
@@ -483,7 +487,7 @@ table#status-table {
 
   h4 {font-size: 15px;}
 
-  td { vertical-align: middle; }
+  td { vertical-align: middle; padding-top: 12px; padding-bottom: 12px; }
 
   // override default hover highlight effect
   tbody tr:hover td,
@@ -717,7 +721,7 @@ table.stats {
 .border-bottom { border-bottom: 1px dashed @grayLight; }
 
 
-ul.feed-list {
+ul.feed-list, ul.topics-list {
   margin: 0;
   list-style: none;
   li {
@@ -728,6 +732,7 @@ ul.feed-list {
   }
 }
 #sidebar ul.feed-list h3 { margin-bottom: 0; }
+#sidebar ul.topics-list h3 { margin-bottom: 0; font-size: 14px }
 
 /* Data lists */
 ul.list-inline {
@@ -784,8 +789,10 @@ dl.data-list {
 
 
 /* Category with a list of its tags, 3 columns */
-#topic_summary a { text-decoration: underline; }
-#topic_summary > dl { float:left; width: 33%; font-size: 12px; }
+#topic_summary > dl {
+  float:left; width: 33%; font-size: 12px;
+  h3 { font-size: 18px; }
+}
 #topic_summary > dl dt { padding: 0 10px; }
 #topic_summary > dl dd { padding: 0 10px; margin: 0; }
 #topic_summary dd {
@@ -886,13 +893,14 @@ table.tablesorter {
   list-style: none;
   li {
     padding: 5px 0;
-    .monitoring {
-      color: @grayLight;
-      /*display: block;*/
-      i { color: @textColor; }
-    }
   }
 
+}
+
+
+.monitoring {
+  color: @grayLight;
+  i { color: @textColor; }
 }
 
 .monitoring i { color: @textColor; }
@@ -1073,4 +1081,32 @@ body.error {
 .search-empty {
   margin-left: 10px!important;
   p { font-size: 16px!important; }
+}
+
+img.politician-picture { border: 1px solid @grayLight; }
+
+.lightgray-label {
+  background-color: @grayLighter;
+}
+
+h2.group-name-and-logo {
+  margin-bottom: 10px;
+}
+
+ul.documents-list {
+  li {
+    margin: 5px 0;
+  }
+}
+
+.tabbable {
+  .tab-content {
+    background-color: @white;
+    .tab-pane { min-height: 154px; }
+
+    p.msg {
+      font-size: 14px;
+      padding: 20px;
+    }
+  }
 }

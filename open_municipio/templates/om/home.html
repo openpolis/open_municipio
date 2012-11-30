@@ -25,13 +25,12 @@
         <p>Intervieni nella vita politica della tua città: commenta e vota
           l'attività amministrativa nella community di Open municipio</p>
       </div>
-      <div class="cosa-fanno span6">
+      <div class="cosa-fanno span4">
         <h2>Cosa fanno i tuoi rappresentanti?</h2>
-        <p>
-          <form method="get" action="" id="search-politician">
-              <input type="text" class="input-large" name="key" placeholder="Digita il nome di un politico">
-          </form>
-        </p>
+        <br/>
+        <form method="get" action="" id="search-politician">
+            <input type="text" class="input-large" name="key" placeholder="Digita il nome di un politico">
+        </form>
       </div>
     </div>
   </section>
@@ -40,8 +39,7 @@
        <div class="container-fluid">
            <div class="row-fluid">
                <div class="span12">
-                   <h2>Cosa succede in Comune</h2>
-
+                   <h2>Cosa succede in comune</h2>
                    <div class="row-fluid">
                        {% for event in events %}
                            <div class="span6">{% include 'events/_inline_home.html' %}</div>
@@ -140,14 +138,20 @@
       <div class="row-fluid">
           <div class="span6">
               <h2>Atti in evidenza</h2>
-              <ul class="acts-list">
+              <table class="items-list">
+                  <tbody>
                   {% for a in key_acts %}
-                      <li>
+                      <tr><td>
                           {% include 'acts/_act_inline.html' with act=a only %}
                           {% object_inline_monitoring a %}
-                      </li>
+                      </td></tr>
+                  {% empty %}
+                      <tr>
+                          <td><p>Nessun voto chiave.</p></td>
+                      </tr>
                   {% endfor %}
-              </ul>
+                  </tbody>
+              </table>
           </div>
 
           <div class="span6">
@@ -158,7 +162,7 @@
                       {% include 'votations/_votation_inline.html' with votation=v only %}
                   {% empty %}
                       <tr>
-                          <td><p>Nessun risultato trovato.</p></td>
+                          <td><p>Nessun atto chiave.</p></td>
                       </tr>
                   {% endfor %}
                   </tbody>
