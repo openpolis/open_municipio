@@ -11,8 +11,6 @@
 @citizenColor: #d12f24;
 
 body {
-  // footer bar
-  padding-bottom: @navbarHeight;
   /*h1 { font-size: 20px; line-height: 24px; margin-bottom: 10px; }
   h2 { font-size: 16px; line-height: 18px; margin-bottom: 20px; }
   h3, h4 { margin-bottom: 10px; }*/
@@ -27,6 +25,7 @@ body {
   hgroup { margin-bottom: 0px; }
   #content, #sidebar {
     padding-top: 20px;
+    padding-bottom: 20px;
     position: relative;
   }
   #sidebar {
@@ -120,7 +119,35 @@ body {
     .colored { background-color: @citizenColor}
   }
   h1 span.colored { padding-left: 5px; padding-right: 5px;}
+
+
+  footer {
+    min-height: 300px;
+    margin-bottom: 50px;
+    color: @white;
+
+    h2 { margin-bottom: 10px; }
+
+    a, a:hover { color: @white; }
+
+    .texts {
+      ul {
+        list-style: none;
+        li:before { content:"-"; position:relative; left:-12px; }
+        li { text-indent:-12px; }
+      }
+      padding: 40px 20px;
+      background-color: #32668C;
+    }
+
+    .logos {
+      padding: 10px;
+      text-align: center;
+      background-color: @black;
+    }
+  }
 }
+
 
 
 
