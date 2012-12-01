@@ -12,6 +12,7 @@ from open_municipio.users.views import extract_top_monitored_objects
 from django import http
 from django.template import (Context, loader)
 from open_municipio.votations.models import Votation
+from django.contrib.sites.models import Site
 
 
 def server_error(request, template_name='500.html'):
@@ -68,7 +69,7 @@ class HomeView(TemplateView):
         locations = list(Location.objects.all())
 
         context['tags_to_cloud'] = set(categories + tags + locations)
-
+        context['current_site'] = Site.objects.get(pk=settings.SITE_ID)
 
 
         return context

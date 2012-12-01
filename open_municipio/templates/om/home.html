@@ -28,9 +28,9 @@
       <div class="cosa-fanno span4">
         <h2>Cosa fanno i tuoi rappresentanti?</h2>
         <br/>
-        <form method="get" action="" id="search-politician">
-            <input type="text" class="input-large" name="key" placeholder="Digita il nome di un politico">
-        </form>
+            <input type="text" class="input-large" id="search-politician"
+                   data-provide="typeahead" data-items="5" data-minLength="2"
+                   placeholder="Digita il nome di un politico">
       </div>
     </div>
   </section>
@@ -208,8 +208,47 @@
   {{ block.super }}
   <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.submitlink.js"></script>
   <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap-modal.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap-typeahead.2.0.0.modified.js"></script>
   <script type="text/javascript">
       $(document).ready(function(){
+          function removenull(str) {
+              var new_str = str;
+              if (str == '') {
+                  new_str = str.replace('', "N/A");
+              }
+              else if (str == null) {
+                  new_str = "N/A";
+              }
+
+              return new_str;
+          }
+          $('#search-politician').typeahead({
+              source: function(typeahead, query) {
+                  $.ajax({
+                      url: "{% url om_politician_search  %}",
+                      dataType: "json",
+                      type: "GET",
+                      data: {
+                          max_rows: 10,
+                          key: query,
+                          ajax: 1
+                      },
+                      success: function(data) {
+                          var return_list = [], i = data.length;
+                          while (i--) {
+                              return_list[i] = {
+                                  slug: data[i].fields.slug,
+                                  image: data[i].fields.img,
+                                  value: removenull(data[i].fields.first_name) + " " + removenull(data[i].fields.last_name)};
+                          }
+                          typeahead.process(return_list);
+                      }
+                  });
+              },
+              onselect: function(obj) {
+                  window.location.href = "http://{{ current_site }}/people/" + obj.slug;
+              }
+          });
           $('a.event_toggle_modal').each(function() {
               var link = $(this);
               link.click(function(e) {
