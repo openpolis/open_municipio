@@ -5650,3 +5650,6 @@ ul.documents-list li {
   font-size: 14px;
   padding: 20px;
 }
+ul.typehead {
+  width: 300px!important;
+}
