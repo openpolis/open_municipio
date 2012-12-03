@@ -100,7 +100,12 @@
 
       <div class="row-fluid">
           <div class="span4">
-              <h2>I più presenti</h2>
+              <h2>I più presenti al voto</h2>
+              <div>
+                  I dati si riferiscono alle votazioni svolte in Consiglio.<br/>
+                  Non vengono calcolate le presenze alle sedute né se l'assenza
+                  abbia motivazioni politiche.
+              </div>
               <ul class="people-list">
                   {% for politician in least_absent %}
                       <li>
@@ -112,6 +117,11 @@
           </div>
           <div class="span4">
               <h2>I più monitorati</h2>
+              <div>
+                  Sono gli amministratori più seguiti dagli utenti del sito che in
+                  questo modo ricevono aggiornamenti su tutte le attività istituzionali
+                  del politico.
+              </div>
               <ul class="people-list">
                   {% for p in top_monitored %}
                       <li>
@@ -123,6 +133,11 @@
           </div>
           <div class="span4">
               <h2>I consiglieri con più atti</h2>
+              <div>
+                  Sono i Consiglieri che hanno presentato più atti come primo
+                  firmatario.<br/>
+                  Sono esclusi gli emendamenti e gli ordini del giorno.
+              </div>
               <ul class="people-list">
                   {% for p in most_acts %}
                       <li>
