@@ -440,12 +440,22 @@ class ImportActsCommand(LabelCommand):
                 if title != om_act.title:
                     self.logger.info("Title changed: %s" % om_act.title)
                     om_act.title = title
-                    om_act.save()
 
                 # remove news of an existing act, if required
                 if options['refresh_news']:
                     self.remove_news(om_act)
-                    om_act.save()
+
+                # always override approval_date, execution_date and final_idnum
+                # if passed in the xml
+                if approval_date:
+                    om_act.approval_date = approval_date
+                if execution_date:
+                    om_act.excution_date = execution_date
+                if final_idnum:
+                    om_act.final_idnum = final_idnum
+
+                #save act and finalize db transitions
+                om_act.save()
             else:
                 self.logger.info("Created deliberation %s" % om_act.idnum)
 
