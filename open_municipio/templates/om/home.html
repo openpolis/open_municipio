@@ -126,9 +126,8 @@
               <ul class="people-list">
                   {% for p in most_acts %}
                       <li>
-                          {% include 'people/politician_list_section.html' with politician=p only %}
+                          {% include 'people/politician_list_section.html' with politician=p value=p.n_acts what='atti' %}
                           {% object_inline_monitoring p.person %}
-                          <strong>{{ p.n_acts }}</strong> atti presentati
                       </li>
                   {% endfor %}
               </ul>

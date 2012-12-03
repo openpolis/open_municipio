@@ -42,12 +42,14 @@
     <div class="span8">
 
       <header class="clearfix">
-        {% comment %}
-        <img src="{{ STATIC_URL }}img/placehold/100.gif" class="thumb-left">
-        {% endcomment %}
-        {% thumbnail person.img "100x100" crop="center" as im %}
-          <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" class="thumb-left">
-        {% endthumbnail %}
+        {% if person.img %}
+            {% thumbnail person.img "100x100" crop="center" as im %}
+                  <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" class="thumb-left politician-picture">
+            {% endthumbnail %}
+        {% else %}
+            <img src="{{ STATIC_URL }}img/placehold/face_100.png" width="100" height="100" class="thumb-left politician-picture">
+        {% endif %}
+
         <h1>
           {% if person.is_om_user %}
             <i class="icon-ok" title="{{ person }} è iscritto a Open municipio"></i>

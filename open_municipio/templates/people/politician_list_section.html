@@ -1,9 +1,13 @@
 {% load thumbnail %}
 
 <a href="{{ politician.person.get_absolute_url }}">
-    {% thumbnail politician.person.img "50x50" crop="center" as im %}
-        <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" class="politician-picture">
-    {% endthumbnail %}
+    {% if politician.person.img %}
+        {% thumbnail politician.person.img "50x50" crop="center" as im %}
+            <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" class="politician-picture">
+        {% endthumbnail %}
+    {% else %}
+        <img src="{{ STATIC_URL }}img/placehold/face_50.png" width="50" height="50" class="politician-picture">
+    {% endif %}
 </a>
 <div>
 

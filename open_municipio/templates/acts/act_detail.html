@@ -1,6 +1,7 @@
 {% extends "acts/act_section.html" %}
 {% load i18n %}
 {% load voting_tags %}
+{% load popover_info %}
 {% load newscache_tags %}
 
 {% comment %}Bookmarking tags{% endcomment %}
@@ -19,15 +20,6 @@
     {{ block.super }}
     <link href="{{ STATIC_URL }}css/voting.css" rel="stylesheet">
 {% endblock head_css_includes %}
-
-{% block head_js_includes %}
-  {{ block.super }}
-  <script src="{{ STATIC_URL }}js/ajax_csrf.js" type="text/javascript" charset="utf-8"></script>
-  <script src="{{ STATIC_URL }}js/jquery.jeditable.js" type="text/javascript"></script>
-  <script src="{{ STATIC_URL }}js/jquery.submitlink.js" type="text/javascript"></script>
-  <script src="{{ STATIC_URL }}js/jquery.autogrow.js" type="text/javascript"></script>
-  <script src="{{ STATIC_URL }}js/bootstrap-modal.js" type="text/javascript" charset="utf-8"></script>
-{% endblock head_js_includes %}
 
 
 {% block content %}
@@ -98,12 +90,22 @@
     </h4>
   </hgroup>
 
-  <div>
-    <p{% if act.description|length > 0 %} class="quoted"{% endif %} id="act_description">{{ act.description|safe }}</p>
-    {% for descriptor in act.descriptors %}
-      <i class="icon-ok"></i> <a href="{{ descriptor.get_absolute_url }}">{{ descriptor }}</a>
-    {% endfor %}
-  </div>
+  {% if act.description|length > 0 %}
+      <div class="description-container" style="margin-bottom: 20px;">
+          {% if request.user.is_authenticated and description_form %}
+              <span class="label label-info">Fai click all'interno del testo per modificarne la descrizione</span>
+              {% popover_info 'modifica-descrizione-atto' %}
+          {% endif %}
+          <p id="act_description" style="border: 1px solid lightgray; padding: 10px; border-radius: 4px;">{{ act.description|safe }}</p>
+
+          {% comment %}
+            TODO
+            {% for descriptor in act.descriptors %}
+              <i class="icon-ok"></i> <a href="{{ descriptor.get_absolute_url }}">{{ descriptor }}</a>
+            {% endfor %}
+          {% endcomment %}
+      </div>
+  {% endif %}
 
   <div class="nav-tabs-container">
     <ul class="nav nav-tabs page-tabs">
@@ -131,24 +133,27 @@
   {%  endblock act_text %}
 
 
-
-    {% share act %}
 {% endblock content %}
 
 
 {% block sidebar %}
 
-  {% if topics %}
-  {% include 'acts/act_tags_editor.html' with launcher_id="#cteditor-launcher" %}
-  {% endif %}
+    <section class="share-tools clearfix">
+        {% load web_services_tags %}
+        {% share act %}
+    </section>
 
-  <section>
-    <h3>Argomenti dell'atto
     {% if topics %}
-      <a href="#" id="cteditor-launcher" class="label label-info">
-        <i class="icon-edit icon-white"></i> Edit
-      </a>
+        {% include 'acts/act_tags_editor.html' with launcher_id="#cteditor-launcher" %}
     {% endif %}
+
+    <section>
+        <h3>Argomenti dell'atto
+        {% if topics %}
+            <a href="#" id="cteditor-launcher" class="label label-info">
+                <i class="icon-edit icon-white"></i> Edit
+            </a>
+        {% endif %}
     </h3>
 
     <dl class="taxonomy-cloud">
@@ -228,6 +233,11 @@
 
 {% block footer_js_includes %}
   {{ block.super }}
+  <script src="{{ STATIC_URL }}js/ajax_csrf.js" type="text/javascript" charset="utf-8"></script>
+  <script src="{{ STATIC_URL }}js/jquery.jeditable.js" type="text/javascript"></script>
+  <script src="{{ STATIC_URL }}js/jquery.submitlink.js" type="text/javascript"></script>
+  <script src="{{ STATIC_URL }}js/jquery.autogrow.js" type="text/javascript"></script>
+  <script src="{{ STATIC_URL }}js/bootstrap-modal.js" type="text/javascript" charset="utf-8"></script>
   <script type="text/javascript">
 
     {% if request.user.is_authenticated %}
@@ -267,7 +277,7 @@
             return { 'id': {{ act.id }}, 'act_field': 'description' };
           },
           cssclass  : 'form-inline',
-          submit    : '<button type="submit" class="btn">Salva</button>',
+          submit    : '<button type="submit" class="btn btn-info">Salva</button>',
           indicator : '<img src="{{ STATIC_URL }}img/spinner.gif">',
           tooltip   : 'Clicca per modificare...',
           style     : 'display: inline',
