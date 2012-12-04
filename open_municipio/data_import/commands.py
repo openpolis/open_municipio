@@ -418,6 +418,7 @@ class ImportActsCommand(LabelCommand):
             execution_date = xml_act.get("execution_date")
             final_idnum = xml_act.get("final_id")
 
+            logger.debug("Final idnum: %s" % final_idnum)
 
             # get or create the deliberation object
             curr_inst = municipality.council.as_institution
