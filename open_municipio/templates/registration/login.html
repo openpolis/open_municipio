@@ -6,14 +6,29 @@
 {% block content_header %}Log in{% endblock %}
 
 {% block content %}
-    <div class="container">
+    <div class="login container">
         <div class="row-fluid">
-            <div class="span4">
+            <div class="span4 social">
                 <h2>Accedi coi social network</h2>
                 <p>Usa i tuoi account dei social network per accedere comodamente a Open municipio</p>
-                <a href="{% url socialauth_begin 'twitter' %}">Entra con Twitter</a><br />
-                <a href="{% url socialauth_begin 'facebook' %}">Entra con Facebook</a><br />
-                <a href="{% url socialauth_begin 'google-oauth2' %}">Entra con Google</a><br />
+                <p>
+                    <a href="{% url socialauth_begin 'google-oauth2' %}" class="btn btn-inverse">
+                        <img src="{{ STATIC_URL }}img/login-google-icon.png"/>&nbsp;&nbsp;&nbsp;
+                        Accedi con Google
+                    </a>
+                </p>
+                <p>
+                    <a href="{% url socialauth_begin 'twitter' %}" class="btn btn-info">
+                        <img src="{{ STATIC_URL }}img/login-twitter-icon.png"/>&nbsp;&nbsp;&nbsp;
+                        Accedi con Twitter
+                    </a>
+                </p>
+                <p>
+                    <a href="{% url socialauth_begin 'facebook' %}" class="btn btn-primary">
+                        <img src="{{ STATIC_URL }}img/login-fb-icon.png"/>&nbsp;&nbsp;&nbsp;
+                        Accedi con Facebook
+                    </a>
+                </p>
             </div>
             <div class="span4">
                 <h2>Entra con username e password</h2>

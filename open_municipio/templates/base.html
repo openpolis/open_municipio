@@ -85,7 +85,13 @@
               </p>
           {% else %}
               <ul class="nav pull-right">
-                  <li>Per partecipare o registrarti <a href="/accounts/login/?next={% if "/accounts" in request.path %}/{% else %}{{ request.path }}{% endif %}">Entra</a></li>
+                  <li>Per partecipare o registrarti
+                      <a href="/accounts/login/?next={% if "/accounts" in request.path %}/{% else %}{{ request.path }}{% endif %}">
+                          Entra
+                          <img src="{{ STATIC_URL }}img/login_icons.png" alt="icone segnalatrici social login"/>
+                      </a>
+
+                  </li>
               </ul>
           {% endif %}
       {% endblock %}
