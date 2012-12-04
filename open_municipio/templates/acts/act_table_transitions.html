@@ -1,3 +1,5 @@
+{% load i18n %}
+
 <table id="status-table">
 
   <colgroup>
@@ -19,7 +21,7 @@
       <th class="span3{% if act.status == 'COUNCIL' %} current{% else %}{% if transition_groups.COUNCIL|length > 0 %} past{% endif %}{% endif %}"><div>Discussione in Consiglio<span class="arrow"></span></div></th>
       {% endif %}
 
-      <th class="span3{% if act.status_is_final %} current{% endif %}"><div>Approvazione</div></th>
+      <th class="span3{% if act.status_is_final %} current{% endif %}"><div>{% if act_type == 'interrogazione' or act_type == 'interpellanza'%}Discussione{% else %}Approvazione{% endif %}</div></th>
     </tr>
   </thead>
 
@@ -184,12 +186,15 @@
             </form>
             {% endif %}
 
-            {{ transition.transition_date|date:"j.n.Y" }} - {{ transition.note }}
+            {{ transition.transition_date|date:"j.n.Y" }} {% if transition.note %}- {{ transition.note }}{% endif %}
           </li>
           <li>
             <p class="text-center">
-              <b>{{ act.status }}</b> <br>
-              <a href="{{ transition.votation.get_absolute_url }}">{{ transition.votation }}</a>
+              <b>{% trans act.get_status_display %} </b>
+              {% if transition.votation %}
+                  <br/>
+                  <a href="{{ transition.votation.get_absolute_url }}">{{ transition.votation }}</a>
+              {% endif %}
             </p>
           </li>
         </ul>

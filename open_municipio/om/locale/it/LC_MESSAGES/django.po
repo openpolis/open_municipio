@@ -198,14 +198,13 @@ msgid "institution"
 msgstr "istituzione"
 
 #: om/templates/registration/login.html:23
-#, fuzzy
 msgid "Username"
-msgstr "nome"
+msgstr ""
 
 #: om/templates/registration/login.html:27
-#, fuzzy
+
 msgid "Password"
-msgstr "Approvata"
+msgstr ""
 
 #: om/templates/registration/login.html:34
 msgid "Log in"

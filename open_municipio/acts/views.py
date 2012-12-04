@@ -278,6 +278,7 @@ class ActDetailView(DetailView):
         context['n_votes'] = act.votation_set.count()
 
         # retrieve a dictionary with status and its transitions
+        context['act_type'] = act._meta.verbose_name
         context['transition_groups'] = act.get_transitions_groups()
 
         # some user can set transitions
