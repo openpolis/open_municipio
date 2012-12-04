@@ -32,7 +32,8 @@
             </div>
             <div class="span4">
                 <h2>Entra con username e password</h2>
-                <p>Usa il tuo username e la tua password per accedere al sito</p>
+                <p>Usa il tuo username e la tua password per accedere al sito o
+                    <a href="">registrati a Open municipio</a> per ricevere le tue credenziali di accesso.</p>
                 <form action="/accounts/login/" method="post" class="form-horizontal">{% csrf_token %}
                     {{ form.non_field_errors }}
                     <div class="control-group">
@@ -55,11 +56,10 @@
                             </label>
                             {%  endcomment %}
                             <button type="submit" class="btn">{% trans "Log in" %}</button>
+                            <br/>
+                            <a href="/accounts/password/reset/" class="alt_button">Hai dimenticato la password?</a>
                         </div>
                     </div>
-                    {% comment %}
-                        <a href="/accounts/password/reset/" class="alt_button">Forgotten your password?</a>
-                    {%  endcomment %}
                 </form>
             </div>
         </div>

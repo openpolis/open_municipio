@@ -4312,8 +4312,9 @@ body footer .logos {
       a { margin: 5px 15px; }*/
 
 }
-#navbar-top .navbar-inner ul {
+#navbar-top .navbar-inner ul.nav {
   margin-bottom: 0;
+  padding-top: 16px;
 }
 #navbar-top .navbar-inner .nav {
   padding: 8px;
@@ -5652,4 +5653,26 @@ ul.documents-list li {
 }
 ul.typehead {
   width: 300px!important;
+}
+.login {
+  line-height: 40px;
+}
+.login p {
+  padding: 18px 0;
+}
+.login form {
+  margin-top: 20px;
+}
+.login h2 {
+  margin-bottom: 10px;
+}
+.login .social {
+  border-right: 1px solid gray;
+}
+.login .social .btn {
+  width: 176px;
+  text-align: left;
+}
+.login .social .btn img {
+  vertical-align: -4px;
 }
