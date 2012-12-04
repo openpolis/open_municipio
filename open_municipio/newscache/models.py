@@ -81,7 +81,7 @@ class News(TimeStampedModel):
         elif isinstance(generator, Transition):
             return generator.transition_date
         else:
-            return None
+            return self.created
 
 
 

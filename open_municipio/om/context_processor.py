@@ -9,6 +9,5 @@ def defaults(request):
         'beta': settings.SITE_INFO['site_version'],
         'DEBUG': settings.DEBUG,
         'TEMPLATE_DEBUG': settings.TEMPLATE_DEBUG,
-        'STATIC_URL': settings.STATIC_URL,
         'IS_DEMO': settings.IS_DEMO,
     }

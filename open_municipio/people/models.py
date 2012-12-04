@@ -337,21 +337,17 @@ class InstitutionCharge(Charge):
                 s = self.responsabilities[0].get_charge_type_display()
                 if self.responsabilities[0].charge_type == InstitutionResponsability.CHARGE_TYPES.firstdeputymayor:
                     s += ", %s" % self.description
-                return "%s: %s - %s" % (s, self.responsabilities[0].start_date, self.responsabilities[0].end_date)
+                return "%s" % (s, )
             else:
                 return " %s" % self.description
         elif self.institution.institution_type == Institution.COUNCIL:
             if self.responsabilities.count():
-                return "%s Consiglio Comunale: %s - %s" % \
-                       (self.responsabilities[0].get_charge_type_display(),
-                        self.responsabilities[0].start_date, self.responsabilities[0].end_date)
+                return "%s Consiglio Comunale" % (self.responsabilities[0].get_charge_type_display(),)
             else:
                 return _('Counselor')
         elif self.institution.institution_type == Institution.COMMITTEE:
             if self.responsabilities.count():
-                return "%s: %s - %s" % (self.responsabilities[0].get_charge_type_display(),
-                                        self.responsabilities[0].start_date,
-                                        self.responsabilities[0].end_date)
+                return "%s" % (self.responsabilities[0].get_charge_type_display())
             else:
                 return _('Member').translate(settings.LANGUAGE_CODE)
         else:

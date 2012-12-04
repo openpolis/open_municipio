@@ -3,7 +3,7 @@
 
 // Globals
 //@cityColor: #008AC2;
-@homeColor: #3873b4;
+@homeColor: #4788c2;
 @politicianColor: #71b644;
 @actsColor: #3873b4;
 @votationsColor: #96c0e3;
@@ -11,8 +11,7 @@
 @citizenColor: #d12f24;
 
 body {
-  // footer bar
-  padding-bottom: @navbarHeight;
+
   /*h1 { font-size: 20px; line-height: 24px; margin-bottom: 10px; }
   h2 { font-size: 16px; line-height: 18px; margin-bottom: 20px; }
   h3, h4 { margin-bottom: 10px; }*/
@@ -27,6 +26,7 @@ body {
   hgroup { margin-bottom: 0px; }
   #content, #sidebar {
     padding-top: 20px;
+    padding-bottom: 20px;
     position: relative;
   }
   #sidebar {
@@ -47,7 +47,7 @@ body {
       padding: 3px 10px;
       a { font-weight: bold; }
       p { margin: 9px 0; }
-      i { font-size: 10px; }
+      i { font-size: 10px; color: @linkColor; }
     }
 
     .nav-tabs {
@@ -75,7 +75,8 @@ body {
       }
       h4 { font-weight: normal; }
     }
-    h2 { font-size: 19px; }
+    h2 { font-size: 18px; }
+    h3 { font-size: 14px; }
     h4 { font-size: 13px; }
     > section {
       margin: 20px 0;
@@ -120,12 +121,47 @@ body {
     .colored { background-color: @citizenColor}
   }
   h1 span.colored { padding-left: 5px; padding-right: 5px;}
+
+
+  footer {
+    min-height: 300px;
+    margin-bottom: 50px;
+    color: @white;
+
+    h2 { margin-bottom: 10px; }
+
+    a, a:hover { color: @white; }
+
+    .texts {
+      ul {
+        list-style: none;
+        li:before { content:"-"; position:relative; left:-12px; }
+        li { text-indent:-12px; }
+      }
+      padding: 40px 20px;
+      background-color: #32668C;
+    }
+
+    .logos {
+      padding: 10px;
+      text-align: center;
+      background-color: @black;
+    }
+  }
 }
+
+
+
+
+
+
+
 
 // Top bar (over the header)
 #navbar-top {
   height: 55px;
   background-color: @white;
+  padding-bottom: 5px;
 
   .navbar-inner {
     background-color: @white;
@@ -136,6 +172,7 @@ body {
       /*strong { margin-right: 15px; }
       a { margin: 5px 15px; }*/
     }
+    ul { margin-bottom: 0}
     .nav {
       padding: 8px;
       a {
@@ -175,9 +212,6 @@ body {
 }
 
 
-.navbar .nav > li > a {
-  padding: 10px 10px 9px!important;
-}
 
 // Main Header
 #wrapper > header
@@ -216,46 +250,110 @@ body {
 
     .pipe-separators;
   }
+
+  .navbar#main-nav ul.nav a { padding: 10px 8px;}
 }
 
 
 
 // Homepage styles
+body.homepage, footer {
+  h2 { font-size: 30px; padding-bottom: 5px; font-weight: 100; }
+}
+
 body.homepage {
+
+
+  div.row-fluid { margin-left: 10px; }
+
   #payoff {
     color : @white;
-    padding-top: 30px;
-    padding-bottom: 30px;
-    h2 { font-weight: normal; font-size: 40px; padding-bottom: 5px; font-weight: 200; }
-    img { float:left; padding-right: 10px; }
+
+    div.row-fluid > div {
+      min-height: 200px;
+      padding: 30px 8px;
+      margin-left: 0;
+    }
+
+    .informati { background-color: #85b9e0; }
+    .monitora { background-color: #4e90c8; }
+    .partecipa { background-color: #34658f; }
+    .cosa-fanno {
+      padding-left: 30px!important;
+      .input-large { width: 300px;}
+    }
     p { padding-top: 10px; }
 
   }
 
-  background-color:#F5F4EE;
+  #agenda {
+    padding-top: 32px;
+    min-height: 300px;
+    background-color: #f5f4ee;
+
+    table.events {
+      h3 { font-size: 16px; }
+      font-size: 16px;
+    }
+
+    .event-acts {
+      margin: 10px 50px 10px 10px;
+      padding-top: 12px;
+
+      border-top: 1px solid @grayLight;
+      border-bottom: 1px solid @grayLight;
+
+      ul {
+        margin: 6px 20px;
+        li {
+          padding: 10px 0;
+        }
+      }
+    }
+
+    .see-all {
+      margin: 10px 50px 50px 10px;
+      padding-top: 12px;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+  }
 
   article {
-    h1 {
-      font-weight: normal;
-      font-size: 40px;
-      margin: 25px 0;
-      font-weight: 200;
+    margin-top: 32px;
+    background-color: @white;
+
+    & > div {
+      padding: 20px 0;
+      border-bottom: 1px solid @hrBorder;
     }
-    ul {
-      font-weight: bold;
+
+    ul.acts-list {
       list-style: none;
-      margin: 0;
-      padding-left: 70px;
       li {
-        border-top: 1px solid @hrBorder;
         padding: 10px 0;
+        border-bottom: 1px solid @hrBorder;
+
+        &:last-child { border-bottom: 0; }
       }
-      li:first-child {
-        border-top: 0;
-        padding-top: 0;
-      }
-      &.unstyled {padding-left: 0; }
     }
+
+    ul.tags-cloud {
+      margin: 25px;
+    }
+
+    table.items-list {
+      width: 96%;
+      tr {
+        td { padding: 10px 0; }
+
+        border-bottom: 1px solid @hrBorder;
+
+        &:last-child { border-bottom: 0; }
+      }
+    }
+
   }
 
 }
@@ -311,7 +409,6 @@ ul.comments-list, ul.people-list {
     > div {
       margin-left: 60px;
       a > strong { font-size: 16px; }
-      .monitoring { color: @grayLight; }
     }
   }
 }
@@ -391,7 +488,7 @@ table#status-table {
 
   h4 {font-size: 15px;}
 
-  td { vertical-align: middle; }
+  td { vertical-align: middle; padding-top: 12px; padding-bottom: 12px; }
 
   // override default hover highlight effect
   tbody tr:hover td,
@@ -435,10 +532,14 @@ table.stats {
   .ui-datepicker { width: auto; }
   .ui-datepicker-calendar tbody td.highlight > a { font-weight: bold; color: @linkColor; }
 }
+
+
 .calendar_events {
   max-height: 220px;
   overflow-y: scroll;
+}
 
+.events {
   .modal {
     font-size: 14px!important;
     line-height: 22px;
@@ -453,6 +554,7 @@ table.stats {
     font-size: 17px;
   }
 }
+
 
 //---------------------------------------------------------
 //---------------------- COMMONS --------------------------
@@ -533,6 +635,8 @@ table.stats {
   &.circle-green { background-color: @greenDark; color: @semiWhite; }
   &.circle-red { background-color: @red; color: @semiWhite; }
 }
+
+
 .circle-date {
   .circle;
   line-height: 18px;
@@ -547,6 +651,27 @@ table.stats {
   .circle-date;
   line-height: 12px;
 }
+
+.square-date {
+  padding: 8px;
+  margin: 8px;
+  width: 36px;
+  height: 36px;
+  font-size: 10px;
+  text-align: center;
+  display: inline-block;
+  background-color: @grayLighter;
+  color: @grayDarker;
+  line-height: 12px;
+  span {
+    display: block;
+    &.day { font-size: 18px; line-height: 16px;}
+    &.month { font-weight: bold; text-transform: uppercase;}
+    &.year { font-weight: bold; }
+  }
+}
+
+
 
 //-------------- Hand Icons --------------
 [class^="hand-"] {
@@ -597,7 +722,7 @@ table.stats {
 .border-bottom { border-bottom: 1px dashed @grayLight; }
 
 
-ul.feed-list {
+ul.feed-list, ul.topics-list {
   margin: 0;
   list-style: none;
   li {
@@ -608,6 +733,7 @@ ul.feed-list {
   }
 }
 #sidebar ul.feed-list h3 { margin-bottom: 0; }
+#sidebar ul.topics-list h3 { margin-bottom: 0; font-size: 14px }
 
 /* Data lists */
 ul.list-inline {
@@ -664,8 +790,10 @@ dl.data-list {
 
 
 /* Category with a list of its tags, 3 columns */
-#topic_summary a { text-decoration: underline; }
-#topic_summary > dl { float:left; width: 33%; font-size: 12px; }
+#topic_summary > dl {
+  float:left; width: 33%; font-size: 12px;
+  h3 { font-size: 18px; }
+}
 #topic_summary > dl dt { padding: 0 10px; }
 #topic_summary > dl dd { padding: 0 10px; margin: 0; }
 #topic_summary dd {
@@ -766,13 +894,14 @@ table.tablesorter {
   list-style: none;
   li {
     padding: 5px 0;
-    .monitoring {
-      color: @grayLight;
-      /*display: block;*/
-      i { color: @textColor; }
-    }
   }
 
+}
+
+
+.monitoring {
+  color: @grayLight;
+  i { color: @textColor; }
 }
 
 .monitoring i { color: @textColor; }
@@ -812,7 +941,6 @@ ul.person-resources {
 }
 
 
-body { padding-top: 35px; }
 #page-alert {
   .navbar-inner { background-color: #fdf48f; padding:4px 0; color: @black; }
 }
@@ -872,7 +1000,7 @@ a[rel=info-popover] {
   }
   .popover-title {
     margin: 2px;
-    background-color: #fdf48f;
+    background-color: #f4f477;
   }
 }
 
@@ -938,4 +1066,52 @@ table.data {
 .share-button-bar {
   a > img { vertical-align: -3px; }
   div.share-facebook { margin-right: 2em; }
+}
+
+body.error {
+  background-color: #33658f;
+  padding: 0;
+  color: @white;
+  p {
+    font-size: 16px!important;
+    a { color: @white; text-decoration: underline; }
+    a:hover { color: @white; }
+  }
+}
+
+.search-empty {
+  margin-left: 10px!important;
+  p { font-size: 16px!important; }
+}
+
+img.politician-picture { border: 1px solid @grayLight; }
+
+.lightgray-label {
+  background-color: @grayLighter;
+}
+
+h2.group-name-and-logo {
+  margin-bottom: 10px;
+}
+
+ul.documents-list {
+  li {
+    margin: 5px 0;
+  }
+}
+
+.tabbable {
+  .tab-content {
+    background-color: @white;
+    .tab-pane { min-height: 154px; }
+
+    p.msg {
+      font-size: 14px;
+      padding: 20px;
+    }
+  }
+}
+
+ul.typehead {
+  width: 300px!important;
 }

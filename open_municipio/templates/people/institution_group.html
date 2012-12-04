@@ -18,7 +18,7 @@
 {% block content %}
 
     <section>
-        <h2>
+        <h2 class="group-name-and-logo">
             {% thumbnail group.img "50x50" crop="center" as im %}
                 <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
             {% endthumbnail %}

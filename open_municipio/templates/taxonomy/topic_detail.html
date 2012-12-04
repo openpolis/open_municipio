@@ -32,18 +32,11 @@
 
 {% block content %}
 
-    <h1><span class="colored">{{ topic|title }}</span></h1>
-
     <section>
-      <h3>Quando se ne discute e dove se ne discute</h3>
+    <h2><span class="colored">{{ topic|title }}</span></h2>
 
-      {% include 'commons/calendar.html' with events=FILLME %}
-    </section>
-
-    <hr class="big">
-
-    <section>
-        <h2>Atti che trattano di {{ topic }}</h2>
+        Atti che trattano di {{ topic }}
+        <br/><br/>
 
         <table class="data">
             <thead>
@@ -120,71 +113,21 @@
     </section>
 
 
-{% comment %}NOT ANY MORE...
-    <section>
-        <h3>Politici che si occupano dell'argomento</h3>
-
-        <div class="row-fluid">
-{% comment %}{% list_to_columns topic.monitoring_users as list 2 %}
-            {% load list_partition %}
-            {% for list in topic.monitoring_users|partition:5 %}
-                {% for people_list in list %}
-                <div class="span6">
-                    <ul class="people-list{% if forloop.first %} border-right{% endif %}">
-                        {% for person in people_list %}
-                        <li>
-                            <img src="{{ STATIC_URL }}img/placehold/50.gif">
-                            <strong>{{ person }}</strong> <br>
-                            Partito democratico
-                            <span class="monitoring">
-                                Monitorato da 2 cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a>
-                            </span>
-                        </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-                {% endfor %}
-            {% empty %}
-
-            {% endfor %}
-
-            <div class="span6">
-                <ul class="people-list border-right">
-                    <li>
-                        <img src="{{ STATIC_URL }}img/placehold/50.gif">
-                        <strong>Roberto Bianchi</strong> <br>
-                        Partito democratico
-                    <span class="monitoring">
-                        Monitorato da 2 cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a>
-                    </span>
-                    </li>
-                </ul>
-            </div>
-            <div class="span6">
-                <ul class="people-list">
-                    <li>
-                        <img src="{{ STATIC_URL }}img/placehold/50.gif">
-                        <strong>Roberto Bianchi</strong> <br>
-                        Partito democratico
-                    <span class="monitoring">
-                        Monitorato da 2 cittadini - <a href="#"><i class="socialicon-add"></i> Monitora</a>
-                    </span>
-                    </li>
-                </ul>
-            </div>
-
-        </div>
-
-    </section>
-{% endcomment %}
     {% load web_services_tags %}
     {% share topic %}
 
 {% endblock %}
 
 {% block sidebar %}
+  <section>
+    <h2>Quando se ne discute</h2>
 
-  <section><h3>Monitora</h3>
+    {% include 'commons/calendar.html' with events=FILLME %}
+  </section>
+
+  <hr>
+
+  <section><h2>Monitora</h2>
     {% object_monitoring topic %}
     {% comment %}{% include 'monitoring/summary.html' with object=topic show_politicians=0 %}{% endcomment %}
   </section>
@@ -193,7 +136,7 @@
 
   {% if subtopics %}
   <section>
-      <h3>Altri argomenti in {{ topic|title }}</h3>
+      <h2>Altri argomenti in {{ topic|title }}</h2>
 
       <dl class="taxonomy-cloud">
           {% for tag in subtopics %}

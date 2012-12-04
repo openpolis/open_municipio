@@ -82,6 +82,9 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
 )
 
+# Root URLconf module for staging servers
+ROOT_URLCONF = 'open_municipio.urls_local'
+
 
 TEMPLATE_DIRS = (
   os.path.join(PROJECT_ROOT, 'templates'),

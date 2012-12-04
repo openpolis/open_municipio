@@ -66,29 +66,29 @@
     <!-- TOPBAR -->
   <div class="navbar" id="navbar-top">
     <nav class="navbar-inner">
-      <a href="http://www.openmunicipio.it" class="brand">
+      <a href="{% url home %}" class="brand">
         <img src="{{ STATIC_URL }}img/logo-openmunicipio.png" alt="Openmunicipio - Informati, monitora e partecipa ai lavori del tuo municipio">
         <!--open<strong>municipio</strong>{% if site_version %}<span class="version">{{ site_version }}</span>{% endif %}
         <small></small>-->
       </a>
 
-      {% if user.is_authenticated %}
-        <p id="user-tools" class="text-right pull-right">
-          Ciao, <strong>{{ user.username }}</strong>
-          <br>
-          <a href="{% url logout %}?next={% if "/accounts" in request.path %}/{% else %}{{ request.path }}{% endif %}">esci</a>
-          &middot;
-          <a href="{% url profiles_edit_profile %}">impostazioni</a>
-          &middot;
-          <a href="{%  url profiles_profile_detail user.username %}">profilo</a>
-        </p>
-      {% else %}
-      <ul class="nav pull-right">
-          <li>Vuoi partecipare? <a href="/accounts/register/">Registrati</a></li>
-          <li class="divider-vertical"></li>
-          <li>Sei già registrato? <a href="/accounts/login/?next={% if "/accounts" in request.path %}/{% else %}{{ request.path }}{% endif %}">Entra</a></li>
-      </ul>
-      {% endif %}
+      {% block access %}
+          {% if user.is_authenticated %}
+              <p id="user-tools" class="text-right pull-right">
+                  Ciao, <strong>{{ user.username }}</strong>
+                  <br>
+                  <a href="{% url logout %}?next={% if "/accounts" in request.path %}/{% else %}{{ request.path }}{% endif %}">esci</a>
+                  &middot;
+                  <a href="{% url profiles_edit_profile %}">impostazioni</a>
+                  &middot;
+                  <a href="{%  url profiles_profile_detail user.username %}">profilo</a>
+              </p>
+          {% else %}
+              <ul class="nav pull-right">
+                  <li>Per partecipare o registrarti <a href="/accounts/login/?next={% if "/accounts" in request.path %}/{% else %}{{ request.path }}{% endif %}">Entra</a></li>
+              </ul>
+          {% endif %}
+      {% endblock %}
     </nav>
   </div>
   <!-- /TOPBAR -->
@@ -112,25 +112,29 @@
     <!-- /AREA-TITLE -->
 
     <!-- MAIN-NAVBAR -->
-    <div class="navbar">
-      <div class="navbar-inner">
-        <nav class="container-fluid" style="padding:0;">
-          <ul class="nav">
-            <li {% block people_class %}{% endblock %}><a href="{% url om_politician_list %}">Politici</a></li>
-            <li class="{% block acts_class %}{% endblock %}"><a href="{% url om_act_search %}">Atti</a></li>
-            <li class="{% block votations_class %}{% endblock %}"><a href="{% url om_votation_search %}">Votazioni</a></li>
-            <li {% block tags_class %}{% endblock %}><a href="{% url om_topic_list %}">Argomenti</a></li>
-            <li {% block users_class %}{% endblock %}><a href="/users/">Cittadini</a></li>
-          </ul>
-          <ul class="nav pull-right">
-            <form method="get" action="{% url om_act_search %}" id="search-form">
-              <input type="text" class="input-medium search-query" name="q" placeholder="Cerca negli atti">
-              <button type="submit" class="btn">Cerca</button>
-            </form>
-          </ul>
-        </nav>
-      </div>
-    </div>
+    {% block main_navbar %}
+        <div class="navbar" id="main-nav">
+            <div class="navbar-inner">
+                <nav class="container-fluid" style="padding:0;">
+                    <ul class="nav">
+                        <li {% block people_class %}{% endblock %}><a href="{% url om_politician_list %}">Politici</a></li>
+                        <li class="{% block acts_class %}{% endblock %}"><a href="{% url om_act_search %}">Atti</a></li>
+                        <li class="{% block votations_class %}{% endblock %}"><a href="{% url om_votation_search %}">Votazioni</a></li>
+                        <li {% block tags_class %}{% endblock %}><a href="{% url om_topic_list %}">Argomenti</a></li>
+                        <li {% block users_class %}{% endblock %}><a href="/users/">Cittadini</a></li>
+                    </ul>
+                    {% comment %}
+                    <ul class="nav pull-right">
+                        <form method="get" action="{% url om_act_search %}" id="search-form">
+                            <input type="text" class="input-medium search-query" name="q" placeholder="Cerca negli atti">
+                            <button type="submit" class="btn">Cerca</button>
+                        </form>
+                    </ul>
+                    {% endcomment %}
+                </nav>
+            </div>
+        </div>
+    {% endblock %}
     <!-- /MAIN-NAVBAR -->
 
     {% block sub_nav %}{% endblock %}
@@ -145,6 +149,69 @@
 
   <!-- FOOTER-NAV -->
   <footer>
+      <section class="texts">
+          <div class="container-fluid">
+              <div class="row-fluid">
+                  <div class="span4">
+                      <h2>Open Municipio</h2>
+                      <p>
+                          Open Municipio è un progetto dell'Associazione Openpolis e di
+                          Informaetica per i comuni d'Italia. &Egrave; una piattaforma web
+                          di informazione, monitoraggio e partecipazione attiva alla vita
+                          delle città che vi aderiscono. Ora sei sul sito Open municipio
+                          di Udine.
+                      </p>
+                      <ul>
+                          <li><a href="{%  url om_progetto %}">Il progetto</a></li>
+                          <li><a href="{% url om_regolamento %}">Regolamento</a></li>
+                          <li><a href="{% url om_condizioni %}">Condizioni d'uso</a></li>
+                          <li><a href="{%  url om_privacy %}">Informativa sui dati personali</a></li>
+                          <li><a href="/progetto">Contatti</a></li>
+                      </ul>
+                      <p>
+                          <a href="http://www.facebook.com/openmunicipio"><img src="{{ STATIC_URL }}img/footer-fb.png"/></a>
+                          &nbsp;&nbsp;&nbsp;
+                          <a href="http://www.twitter.com/openmunicipio"><img src="{{ STATIC_URL }}img/footer-tw.png"/></a>
+                      </p>
+                  </div>
+
+                  <div class="span4">
+                      <h2>Come fare per</h2>
+                      <ul>
+                          <li><a href="/progetto">Registrarsi</a></li>
+                          <li><a href="/regolamento">Monitorare un atto, un politico o un argomento</a></li>
+                          <li><a href="/progetto">Votare e commentare un atto</a></li>
+                          <li><a href="/progetto">Altre domande e risposte frequenti</a></li>
+                      </ul>
+                  </div>
+
+                  <div class="span4">
+                      <h2>Open data e open source</h2>
+                      <p>
+                          Puoi scaricare sia il codice sorgente dell'applicazione Open municipio che
+                          i dati (licenziati CC BY-NC-SA 3.0)
+                      </p>
+                      <ul>
+                          <li><a href="/progetto">Il codice sorgente</a></li>
+                          <li><a href="/progetto">I software utilizzati</a></li>
+                          <li><a href="/progetto">Scarica i dati</a></li>
+                      </ul>
+                  </div>
+
+
+
+              </div>
+          </div>
+      </section>
+      <section class="logos">
+          <div class="container-fluid">
+              <div class="row-fluid">
+                  <div class="span4"><a href="http://www.openpolis.it"><img src="{{ STATIC_URL }}img/footer-logo-openpolis.png"/></a></div>
+                  <div class="span4"><a href="http://www.comune.udine.it"><img src="{{ STATIC_URL }}img/footer-logo-udine.png"/></a></div>
+                  <div class="span4"><a href="http://www.informaetica.it"><img src="{{ STATIC_URL }}img/footer-logo-informaetica.png"/></a></div>
+              </div>
+          </div>
+      </section>
   </footer>
   <!-- /FOOTER-NAV -->
 

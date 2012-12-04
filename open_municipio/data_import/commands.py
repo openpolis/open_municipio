@@ -440,12 +440,22 @@ class ImportActsCommand(LabelCommand):
                 if title != om_act.title:
                     self.logger.info("Title changed: %s" % om_act.title)
                     om_act.title = title
-                    om_act.save()
 
                 # remove news of an existing act, if required
                 if options['refresh_news']:
                     self.remove_news(om_act)
-                    om_act.save()
+
+                # always override approval_date, execution_date and final_idnum
+                # if passed in the xml
+                if approval_date:
+                    om_act.approval_date = approval_date
+                if execution_date:
+                    om_act.excution_date = execution_date
+                if final_idnum:
+                    om_act.final_idnum = final_idnum
+
+                #save act and finalize db transitions
+                om_act.save()
             else:
                 self.logger.info("Created deliberation %s" % om_act.idnum)
 
@@ -473,6 +483,41 @@ class ImportActsCommand(LabelCommand):
                     support_type = ActSupport.SUPPORT_TYPE.co_signer
 
                 self.fetch_signers(om_act, xml_subscribers_set, support_type, curr_inst)
+
+
+            # add presentation transition
+            # after signatures, so that presentation news can be shortened
+            if om_act.presentation_date is not None:
+
+                # create transition: act is presented
+                created = False
+                trans, created = om_act.transition_set.get_or_create(
+                    act=om_act.act_ptr,
+                    final_status=om_act.STATUS.presented,
+                    transition_date=om_act.presentation_date,
+                )
+                if created:
+                    logger.debug("  presentation transition created")
+                else:
+                    logger.debug("  presentation transition found")
+                    trans.save()
+            else:
+                logger.debug("  presentation transition can't be added, no presentation_date")
+
+
+            # create approval transition for Deliberations, if approval_date is defined
+            if om_act.approval_date is not None:
+                trans, created = om_act.transition_set.get_or_create(
+                    act=om_act.act_ptr,
+                    final_status=om_act.STATUS.approved,
+                    transition_date=om_act.approval_date,
+                )
+                if created:
+                    logger.debug("  approval transition created")
+                else:
+                    logger.debug("  approval transition found")
+                    trans.save()
+
 
 
             self.fetch_attachments(filename, om_act, xml_act)
@@ -574,6 +619,26 @@ class ImportActsCommand(LabelCommand):
                 #fetch signers for the subscribers set
                 self.fetch_signers(om_act, xml_subscribers_set, support_type, curr_inst)
 
+
+            # add presentation transition
+            # after signatures, so that presentation news can be shortened
+            if om_act.presentation_date is not None:
+
+                # create transition: act is presented
+                created = False
+                trans, created = om_act.transition_set.get_or_create(
+                    act=om_act.act_ptr,
+                    final_status=om_act.STATUS.presented,
+                    transition_date=om_act.presentation_date,
+                    )
+                if created:
+                    logger.debug("  presentation transition created")
+                else:
+                    logger.debug("  presentation transition found")
+                    trans.save()
+            else:
+                logger.debug("  presentation transition can't be added, no presentation_date")
+
             self.fetch_attachments(filename, om_act, xml_act)
 
             # call parent class save to trigger
@@ -649,6 +714,26 @@ class ImportActsCommand(LabelCommand):
 
                 #fetch signers for the subscribers set
                 self.fetch_signers(om_act, xml_subscribers_set, support_type, curr_inst)
+
+
+            # add presentation transition
+            # after signatures, so that presentation news can be shortened
+            if om_act.presentation_date is not None:
+
+                # create transition: act is presented
+                created = False
+                trans, created = om_act.transition_set.get_or_create(
+                    act=om_act.act_ptr,
+                    final_status=om_act.STATUS.presented,
+                    transition_date=om_act.presentation_date,
+                    )
+                if created:
+                    logger.debug("  presentation transition created")
+                else:
+                    logger.debug("  presentation transition found")
+                    trans.save()
+            else:
+                logger.debug("  presentation transition can't be added, no presentation_date")
 
             self.fetch_attachments(filename, om_act, xml_act)
 

@@ -1,5 +1,8 @@
-from django.http import Http404, HttpResponseRedirect
-from django.views.generic import TemplateView, DetailView, ListView, RedirectView
+from django.conf import settings
+from django.contrib.sites.models import Site
+from django.db.models import Q
+from django.http import Http404, HttpResponseRedirect, HttpResponse
+from django.views.generic import TemplateView, DetailView, ListView, RedirectView, View
 from django.core.exceptions import ObjectDoesNotExist
 
 from open_municipio.people.models import Institution, InstitutionCharge, Person, municipality, InstitutionResponsability, Resource, GroupCharge, Group
@@ -8,9 +11,9 @@ from open_municipio.acts.models import Act, Deliberation, Interrogation, Interpe
 from open_municipio.events.models import Event
 from open_municipio.votations.models import ChargeVote, Votation
 
-from operator import attrgetter
-from os import sys
+from django.core import serializers
 
+from sorl.thumbnail import get_thumbnail
 
 
 class InstitutionListView(ListView):
@@ -21,6 +24,43 @@ class InstitutionListView(ListView):
 class MayorDetailView(RedirectView):
     def get_redirect_url(self, **kwargs):
         return municipality.mayor.as_charge.person.get_absolute_url()
+
+
+class PoliticianSearchView(ListView):
+    """
+    Returns a JSON response of unique politicians (Person) having
+    "key" in first_name or last_name.
+
+    Used in typeahead in Home page
+    """
+
+    def get(self, request, *args, **kwargs):
+        key = request.GET.get('key', '')
+        ajax = request.GET.get('ajax', 0)
+        max_rows = request.GET.get('max_rows', 10)
+
+        current_site = Site.objects.get(pk=settings.SITE_ID)
+
+        charges = InstitutionCharge.objects.current().\
+            filter(Q(institution__institution_type=Institution.COUNCIL) | Q(institution__institution_type=Institution.CITY_GOVERNMENT)).\
+            filter(Q(person__first_name__icontains=key) | Q(person__last_name__icontains=key))[0:max_rows]
+
+        # build persons array,substituting the img with a 50x50 thumbnail
+        # and returning the absolute url of the thumbnail
+        persons = []
+        for c in charges:
+            if c.person not in persons:
+                person = c.person
+                try:
+                    img = get_thumbnail("http://%s/media/%s" % (current_site, person.img), "50x50", crop="center", quality=99)
+                    person.img = img.url
+                except:
+                    person.img = "http://%s/static/img/placehold/face_50.png" % (current_site,)
+
+                persons.append(person)
+
+        json_data = serializers.serialize('json', persons)
+        return HttpResponse(json_data, mimetype='text/json')
 
 
 class CouncilListView(TemplateView):

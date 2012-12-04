@@ -1,0 +1,32 @@
+<div class="modal large hide" id="event_{{ event.id }}_description" >
+    <div class="modal-header">
+        <a class="close" data-dismiss="modal">×</a>
+        {% ifequal event.institution.name "Consiglio comunale" %}
+            Il
+        {%  else  %}
+            La
+        {% endifequal %}
+        <b>{{ event.institution }}</b> si riunisce
+        in {{ event.address }}<br/>
+        il <strong>{{ event.date|date:"d.m.Y" }}</strong>
+        alle <strong>{{ event.event_time|time:"H:i" }}</strong>
+        per discutere di <b>{{ event.title }}</b>
+    </div>
+    <div class="modal-body">
+        <h4>Ordine del giorno:</h4>
+        <p>
+            {{ event.description|safe }}
+        </p>
+    </div>
+    <div class="modal-footer">
+        <h4>Atti in discussione</h4>
+        <ul>
+            {% for act in event.acts.all %}
+                <li>
+                    <a href="{{ act.downcast.get_absolute_url }}" title="{{ act.title }}">{{ act.idnum }} - {{ act.title|truncatewords:10 }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+
+    </div>
+</div>

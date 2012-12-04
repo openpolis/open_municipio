@@ -1,4 +1,6 @@
 from django import template
+from django.template.defaultfilters import date as _date
+
 from django.utils.safestring import mark_safe
 
 
@@ -68,15 +70,16 @@ def circled(value, args=''):
     voteok = 'voteok' in args
     voteko = 'voteko' in args
 
-
     classes = []
     if type(value).__name__=='date':
         if full:
             classes.append('circle-fulldate')
-            value = value.strftime('<span class="day">%d</span> <span class="month">%b</span> <span class="year">%Y</span>')
+            value = "<span class=\"day\">%s</span> <span class=\"month\">%s</span> <span class=\"year\">%s</span>" %\
+                    (_date(value, "d"), _date(value, "b"), _date(value, "Y"))
         else:
             classes.append('circle-date')
-            value = value.strftime('<span class="day">%d</span> <span class="month">%b</span>')
+            value = "<span class=\"day\">%s</span> <span class=\"month\">%s</span>" %\
+                    (_date(value, "d"), _date(value, "b"))
     else:
         classes.append('circle')
 

@@ -28,20 +28,19 @@
         Il titolo della proposta, se possibile,
         se non è possibile, il tag deve essere presente lo stesso, vuoto.
     -->
-    <om:Content>
-        <om:Title>
-            <![CDATA[
-            Lorem ipsum dolor sit amet
-            ]]>
-        </om:Title>
+    <om:Title>
+        <![CDATA[
+        Lorem ipsum dolor sit amet
+        ]]>
+    </om:Title>
 
-        <!--
-            Il testo della proposta, se possibile estrarlo.
-            Se non è possibile, il tag deve essere presente lo stesso, vuoto.
-            Se presente, il testo deve essere compreso in CDATA
-        -->
-        <om:Content></om:Content>
-    </om:Content>
+    <!--
+        Il testo della proposta, se possibile estrarlo.
+        Se non è possibile, il tag deve essere presente lo stesso, vuoto.
+        Se presente, il testo deve essere compreso in CDATA
+    -->
+    <om:Content></om:Content>
+
     <!-- 
     Esistono due tipologie di firmatari: 
      - i primi firmatari (presentano la proposta) 
@@ -49,11 +48,9 @@
     E' possibile che l'elenco di firmatari vari nel tempo.
     -->
     <om:ActSubscribers>
-        <om:ActSubscriber date="2012-03-05" chargeID="MICA" 
-            type="first_subscriber"/>
-        <om:ActSubscriber date="2012-03-07" chargeID="CINI"  
-            type="first_subscriber" />
-        <om:ActSubscriber chargeID="ANRE" type="co_signer" /> 
+      <om:ActSupport>
+        <om:ChargeXRef xlink:href="people.xml#MAVI" xlink:type="simple"/>
+      </om:ActSupport>
     </om:ActSubscribers>
     
     <!-- 

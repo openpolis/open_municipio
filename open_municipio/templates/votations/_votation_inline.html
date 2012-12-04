@@ -1,0 +1,23 @@
+{% load om_utils %}
+
+<tr>
+    <td>{{ votation.sitting.date|circled:"full" }}</td>
+    <td>
+        <h4>
+            <a href="{{ votation.get_absolute_url }}">Votazione n.{{ votation.idnum }}</a>
+            della seduta n.{{ votation.sitting.number }}
+            del {{ votation.sitting.date }}
+        </h4>
+        {% if votation.act %}
+            <strong>{{ votation.act.get_type_name|title }}</strong><br/>
+            <a href="{{ votation.act.get_absolute_url }}">{{ votation.act.title }}</a><br/>
+        {% endif %}
+        Presenti: {{ votation.n_presents }},
+        Maggioranza: {{ votation.n_maj }},
+        Favorevoli: {{ votation.n_yes }},
+        Contrari: {{ votation.n_no }},
+        Astenuti: {{ votation.n_abst }},
+        Esito: {{ votation.outcome }},
+        Ribelli: {{ votation.n_rebels }}
+    </td>
+</tr>

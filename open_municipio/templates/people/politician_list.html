@@ -14,7 +14,6 @@
 
 {% block footer_js_includes %}
     {{ block.super }}
-    <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap-tab.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.submitlink.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.dataTables.js"></script>
     <script type="text/javascript">
@@ -90,56 +89,6 @@
 
 
 {% block content %}
-
-
-  <section class="row-fluid">
-
-      <h2>Giunta</h2>
-
-      <table id="giunta" class="data dataTable">
-          <thead>
-          <tr>
-              <th></th>
-              <th class="text-left span4">Politico</th>
-              <th class="span4">Deleghe</th>
-              <th class="span2">Atti</th>
-              <th class="span2">Monitorato da</th>
-          </tr>
-          </thead>
-          <tbody>
-              {%  include 'people/gov_member_table_row.html' with charge=mayor %}
-              {% for c in gov_members %}
-                  {%  include 'people/gov_member_table_row.html' with charge=c %}
-              {% endfor %}
-          </tbody>
-      </table>
-
-      <br/><br/>
-      <hr class="big" style="margin-top: 2em"/>
-
-      <h2>Consiglio</h2>
-
-      <table id="consiglio" class="data dataTable">
-          <thead>
-          <tr>
-              <th></th>
-              <th class="text-left span3">Politico</th>
-              <th class="span2">Gruppo</th>
-              <th class="span2">Presenze</th>
-              <th class="span2">Ribellioni</th>
-              <th class="span1">Atti</th>
-              <th class="span2">Monitorato da</th>
-          </tr>
-          </thead>
-          <tbody>
-          {% for c in counselors %}
-              {%  include 'people/counselor_table_row.html' with charge=c %}
-          {% endfor %}
-          </tbody>
-      </table>
-
-  </section>
-
 
 {% endblock %}
 
