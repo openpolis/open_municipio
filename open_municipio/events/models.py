@@ -66,4 +66,6 @@ class EventAct(models.Model):
 
     class Meta:
         ordering = ('order',)
-        unique_together = ('order','event')
+# the constraint below would be helpful, but it make the interface validation
+# hard to manage -FS
+#        unique_together = ('order','event'),('act','event')

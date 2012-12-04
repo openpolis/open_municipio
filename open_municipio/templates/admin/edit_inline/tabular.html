@@ -156,6 +156,13 @@
                 sortableFields.each(function() {
                     var field = $(this);
 
+                    if (row.hasClass("to-be-removed"))
+                    {
+                        field.val("0");
+                        return true; // equivalent to a continue stmt
+                    }
+                    
+
                     field.val(currOrder);
                     currOrder++;
 
@@ -163,7 +170,7 @@
                     var arrowUp = field.parent().find('.order_up');
                     if (arrowUp.length == 0)
                     {
-                        var imgUp = $('<img alt="up" class="order_up" />');
+                        var imgUp = $('<img alt="up" src="{{ STATIC_URL }}img/order_up.png" class="order_up" />');
                         imgUp.click(function() {
                             var currRow = $(this).parent().parent();
 
@@ -183,7 +190,7 @@
                     var arrowDown = field.parent().find('.order_down');
                     if (arrowDown.length == 0)
                     {
-                        var imgDown = $('<img alt="down" class="order_down" />');
+                        var imgDown = $('<img alt="down" src="{{ STATIC_URL }}/img/order_down.png" class="order_down" />');
                         imgDown.click(function() {
                             var currRow = $(this).parent().parent();
 
@@ -237,6 +244,12 @@
                 alternatingRows(row);
             })
         });
+        $("input[id$='-DELETE']").click(function() {
+            var row = $(this).parent().parent();
+            row.toggleClass("to-be-removed");
+            computeSortFields($(rows));
+        } );
+        computeSortFields($(rows));
     });
 })(django.jQuery);
 </script>
