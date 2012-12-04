@@ -664,8 +664,19 @@ def new_signature(**kwargs):
         ctx = Context({ 'current_site': Site.objects.get(id=settings.SITE_ID),
                         'signature': signature, 'act': act, 'signer': signer })
 
+        # force convertion into strings of two date
+        try:
+            signature_support_date = signature.support_date.strftime("%Y-%m-%d")
+        except:
+            signature_support_date = signature.support_date
+
+        try:
+            act.presentation_date = act.presentation_date.strftime("%Y-%m-%d")
+        except:
+            act.presentation_date = act.presentation_date
+
         # generate new signature after presentation, for the act
-        if signature.support_date > act.presentation_date.strftime("%Y-%m-%d"):
+        if signature.support_date > act.presentation_date:
             created = False
             news, created = News.objects.get_or_create(
                 generating_object_pk=signature.pk,
