@@ -579,13 +579,23 @@ class ImportActsCommand(LabelCommand):
                     presentation_date=presentation_date,
                     emitting_institution=curr_inst,
                     answer_type=answer_type,
-                    title=title
+                    defaults = {
+                        'title':title,
+                        }
                 )
                 if not created:
                     self.logger.info("Found interpellation %s" % om_act.idnum)
+
+                    if title != om_act.title:
+                        self.logger.info("Title changed: %s" % om_act.title)
+                        om_act.title = title
+
                     # remove news if required
                     if options['refresh_news']:
                         self.remove_news(om_act)
+
+                    #save act and finalize db transitions
+                    om_act.save()
                 else:
                     self.logger.info("Created interpellation %s" % om_act.idnum)
             else:
@@ -596,13 +606,23 @@ class ImportActsCommand(LabelCommand):
                     presentation_date=presentation_date,
                     emitting_institution=curr_inst,
                     answer_type=answer_type,
-                    title=title
+                    defaults = {
+                        'title':title,
+                    }
                 )
                 if not created:
                     self.logger.info("Found interrogation %s" % om_act.idnum)
+
+                    if title != om_act.title:
+                        self.logger.info("Title changed: %s" % om_act.title)
+                        om_act.title = title
+
                     # remove news if required
                     if options['refresh_news']:
                         self.remove_news(om_act)
+
+                    #save act and finalize db transitions
+                    om_act.save()
                 else:
                     self.logger.info("Created interrogation %s" % om_act.idnum)
 
@@ -690,15 +710,25 @@ class ImportActsCommand(LabelCommand):
                 idnum=id,
                 presentation_date=presentation_date,
                 emitting_institution=curr_inst,
-                title=title
+                defaults = {
+                    'title':title,
+                }
             )
 
             if not created:
                 self.logger.info("Found motion %s" % om_act.idnum)
-                # remove news of an existing act, if required
+
+                if title != om_act.title:
+                    self.logger.info("Title changed: %s" % om_act.title)
+                    om_act.title = title
+
+                # remove news if required
                 if options['refresh_news']:
-                    om_act.save()
                     self.remove_news(om_act)
+
+                #save act and finalize db transitions
+                om_act.save()
+
             else:
                 self.logger.info("Created motion %s" % om_act.idnum)
 
