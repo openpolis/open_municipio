@@ -255,7 +255,10 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
         """
         WRITEME
         """
-        return self.downcast()._meta.verbose_name
+        if self.downcast():
+            return self.downcast()._meta.verbose_name
+        else:
+            return None
 
       
 class ActSection(models.Model):
