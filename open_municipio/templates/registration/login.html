@@ -6,48 +6,50 @@
 {% block content_header %}Log in{% endblock %}
 
 {% block content %}
-  <a href="{% url socialauth_begin 'twitter' %}">Entra con Twitter</a><br />
-  <a href="{% url socialauth_begin 'facebook' %}">Entra con Facebook</a><br />
-  <a href="{% url socialauth_begin 'google-oauth2' %}">Entra con Google</a><br />
-  <form action="/accounts/login/" method="post" class="login_form" style="width: 25%; margin: 1em auto; text-align: center">{% csrf_token %}
-    {{ form.non_field_errors }}
-    <br/><br/><br/>
-    <table>
-      <tr>
-        <th><label for="id_username">{% trans "Username" %}:</label></th>
-        <td>{{ form.username.errors }} {{ form.username }}</td>
-      </tr>
-      <tr>
-        <th><label for="id_password">{% trans "Password" %}:</label></th>
-        <td>{{ form.password.errors }} {{ form.password }}</td>
-      </tr>
-      <tr>
-        <th></th>
-        <td>
-          <input type="hidden" name="next" value="{{ next }}">
-          <input type="submit" value="{% trans "Log in" %}" class="button">
-          {% comment %}
-            <a href="/accounts/password/reset/" class="alt_button">Forgotten your password?</a>
-          {%  endcomment %}
-        </td>
-      </tr>
-    </table>
-  </form>
+    <div class="container">
+        <div class="row-fluid">
+            <div class="span4">
+                <h2>Accedi coi social network</h2>
+                <p>Usa i tuoi account dei social network per accedere comodamente a Open municipio</p>
+                <a href="{% url socialauth_begin 'twitter' %}">Entra con Twitter</a><br />
+                <a href="{% url socialauth_begin 'facebook' %}">Entra con Facebook</a><br />
+                <a href="{% url socialauth_begin 'google-oauth2' %}">Entra con Google</a><br />
+            </div>
+            <div class="span4">
+                <h2>Entra con username e password</h2>
+                <p>Usa il tuo username e la tua password per accedere al sito</p>
+                <form action="/accounts/login/" method="post" class="form-horizontal">{% csrf_token %}
+                    {{ form.non_field_errors }}
+                    <div class="control-group">
+                        <label for="id_username" class="control-label">{% trans "Username" %}:</label>
+                        <div class="controls">
+                            {{ form.username.errors }} {{ form.username }}
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label for="id_password" class="control-label">{% trans "Password" %}:</label>
+                        <div class="controls">
+                            {{ form.password.errors }} {{ form.password }}
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <div class="controls">
+                            {% comment %}
+                            <label class="checkbox">
+                                <input type="checkbox">{%  trans "Remember me" %}
+                            </label>
+                            {%  endcomment %}
+                            <button type="submit" class="btn">{% trans "Log in" %}</button>
+                        </div>
+                    </div>
+                    {% comment %}
+                        <a href="/accounts/password/reset/" class="alt_button">Forgotten your password?</a>
+                    {%  endcomment %}
+                </form>
+            </div>
+        </div>
+    </div>
 
-  {% comment %}
-  <form action="/accounts/register/" method="post" class="signup_form">{% csrf_token %}
-    <h3>Sign up for a new account</h3>
-    <table>
-      <tr>
-        <th><label for="id_email">Your email:</label></th>
-        <td>
-          <input type="text" name="email" value="" id="id_email">
-          <input type="submit" value="Sign up" class="button">
-        </td>
-      </tr>
-    </table>
-  </form>
-  {% endcomment %}
 {% endblock %}
 
 
