@@ -1,13 +1,13 @@
 from django.conf import settings
 from django.contrib.sites.models import Site
-from django.db.models import Q
+from django.db.models import Q, Count
 from django.http import Http404, HttpResponseRedirect, HttpResponse
 from django.views.generic import TemplateView, DetailView, ListView, RedirectView, View
 from django.core.exceptions import ObjectDoesNotExist
 
 from open_municipio.people.models import Institution, InstitutionCharge, Person, municipality, InstitutionResponsability, Resource, GroupCharge, Group
 from open_municipio.monitoring.forms import MonitoringForm
-from open_municipio.acts.models import Act, Deliberation, Interrogation, Interpellation, Motion, Agenda
+from open_municipio.acts.models import Act, Deliberation, Interrogation, Interpellation, Motion, Agenda, ActSupport
 from open_municipio.events.models import Event
 from open_municipio.votations.models import ChargeVote, Votation
 
@@ -396,16 +396,8 @@ class PoliticianListView(TemplateView):
         # municipality access point to internal API
         context['municipality'] = municipality
 
-        # fetch mayor
-        context['mayor'] = municipality.mayor.as_charge
-        # exclude mayor from gov members
-        context['gov_members'] = municipality.gov.charges.exclude(
-            institutionresponsability__charge_type__in=(
-                InstitutionResponsability.CHARGE_TYPES.mayor,
-            ),
-            institutionresponsability__end_date__isnull=True
-        ).select_related().order_by('person__last_name')
         # exclude mayor from council members
+        # fetch most or least
         counselors = context['counselors'] = municipality.council.charges.exclude(
             institutionresponsability__charge_type__in=(
                 InstitutionResponsability.CHARGE_TYPES.mayor,
@@ -413,37 +405,81 @@ class PoliticianListView(TemplateView):
             institutionresponsability__end_date__isnull=True
         ).select_related().order_by('person__last_name')
 
-        context['n_total_votations'] = Votation.objects.count()
-
         # fetch most or least
         context['most_rebellious'] = counselors.order_by('-n_rebel_votations')[0:3]
         context['most_trustworthy'] = counselors.order_by('n_rebel_votations')[0:3]
         context['least_absent'] = counselors.order_by('n_absent_votations')[0:3]
         context['most_absent'] = counselors.order_by('-n_absent_votations')[0:3]
 
+        context['most_acts'] = municipality.council.as_institution.charge_set.\
+                               filter(actsupport__support_type=ActSupport.SUPPORT_TYPE.first_signer).\
+                               annotate(n_acts=Count('actsupport')).order_by('-n_acts')[0:3]
+
+        context['most_interrogations'] = municipality.council.as_institution.charge_set.select_related().\
+                                         filter(actsupport__act__interrogation__isnull=False,
+                                                actsupport__support_type=ActSupport.SUPPORT_TYPE.first_signer).\
+                                         annotate(n_acts=Count('actsupport')).order_by('-n_acts')[0:3]
+
+        context['most_motions'] = municipality.council.as_institution.charge_set.select_related().\
+                                         filter(actsupport__act__motion__isnull=False,
+                                                actsupport__support_type=ActSupport.SUPPORT_TYPE.first_signer).\
+                                         annotate(n_acts=Count('actsupport')).order_by('-n_acts')[0:3]
+
         # take latest group charge changes
+        """
         context['last_group_changes'] = [gc.charge for gc in GroupCharge.objects.filter(
             charge__in= [gc.charge.id for gc in GroupCharge.objects.filter(end_date__isnull=True)]
         ).filter(end_date__isnull=False).order_by('-end_date')[0:3]]
+        """
 
-        # TODO: sostituite with real data
-        context['most_monitorized'] = context['last_group_changes']
+        # statistics
+        from django.utils.datastructures import SortedDict
 
-        context['gender_stats'] = {'Uomini': 0, 'Donne': 0}
-        context['age_stats'] = context['degree_stats'] = {}
-        for charge in municipality.council.members:
+        context['gender_stats'] = SortedDict()
+        context['gender_stats']['Donne'] = 0
+        context['gender_stats']['Uomini'] = 0
+
+        context['age_stats'] = SortedDict()
+        context['age_stats']['ventenni'] = 0
+        context['age_stats']['trentenni'] = 0
+        context['age_stats']['quarantenni'] = 0
+        context['age_stats']['cinquantenni'] = 0
+        context['age_stats']['sessantenni'] = 0
+        context['age_stats']['seniores'] = 0
+
+        all_members = set(list(municipality.council.members) + list(municipality.gov.members) + [municipality.mayor.as_charge,])
+        for charge in all_members:
             if charge.person.sex == Person.MALE_SEX:
                 context['gender_stats']['Uomini'] += 1
             elif charge.person.sex == Person.FEMALE_SEX:
                 context['gender_stats']['Donne'] += 1
 
-            if not charge.person.age in context['age_stats']:
-                context['age_stats'][charge.person.age] = 0
-            context['age_stats'][charge.person.age] += 1
+            if charge.person.age <= 25:
+                context['age_stats']['ventenni'] += 1
+            if 25 < charge.person.age <= 35:
+                context['age_stats']['trentenni'] += 1
+            if 35 < charge.person.age <= 45:
+                context['age_stats']['quarantenni'] += 1
+            if 45 < charge.person.age <= 55:
+                context['age_stats']['cinquantenni'] += 1
+            if 55 < charge.person.age <= 65:
+                context['age_stats']['sessantenni'] += 1
+            if 65 < charge.person.age:
+                context['age_stats']['seniores'] += 1
 
-        context['gender_stats'] = context['gender_stats'].items()
-        context['age_stats'] = context['age_stats'].items()
-        context['degree_stats'] = [('phd',1), ('none',2)]
+        context['gender_stats'] = context['gender_stats']
+        context['age_stats'] = context['age_stats']
+
+        # number of different acts
+        num_acts = dict()
+        act_types = [
+            Deliberation, Motion, Interrogation, Interpellation, Agenda
+        ]
+        for act_type in act_types:
+            num_acts[act_type.__name__.lower()] = act_type.objects.filter(
+                emitting_institution__institution_type=Institution.COUNCIL
+            ).count()
+        context['num_acts'] = num_acts
 
         return context
 
