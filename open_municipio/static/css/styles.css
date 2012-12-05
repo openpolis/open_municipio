@@ -5676,3 +5676,31 @@ ul.typehead {
 .login .social .btn img {
   vertical-align: -4px;
 }
+.registration input[type='text'],
+.registration input[type='password'],
+.registration textarea,
+.registration select {
+  width: 270px;
+}
+.registration input#id_email {
+  width: 243px;
+}
+.registration select#id_location {
+  width: 280px;
+}
+.registration textarea {
+  background-color: #F5F5F5;
+}
+.form-horizontal .input-prepend .add-on {
+  margin-top: 1px;
+}
+.form-horizontal .help-block {
+  color: #999999;
+  margin-top: 2px;
+}
+.form-horizontal .alert {
+  padding: 18px 0 0 0;
+}
+.form-horizontal .form-actions {
+  background-color: #f7f6f1;
+}

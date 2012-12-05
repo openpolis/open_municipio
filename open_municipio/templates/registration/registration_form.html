@@ -1,20 +1,55 @@
 {% extends "registration/base_user.html" %}
+{%  load i18n %}
 
-{% block title %}Registrazione account{% endblock %}
+{% block title %}Registrazione al sito{% endblock %}
 
-{% block content_header %}Registrazione account{% endblock %}
+{% block content_header %}Registrazione al sito{% endblock %}
 
 {% block content %}
-  <p>Riempi il modulo con i tuoi dati per registrarti al sito.</p>
+    <div class="registration container">
+        <div class="row-fluid">
+            <div class="span8">
+                <p>Per partecipare a Open municipio e commentare e votare gli atti,
+                    o monitorare atti, politici e argomenti, bisogna essere registrati al sito.</p>
+                <p>
+                    C'è un <a href="{% url om_regolamento %}">
+                    </a>
+                </p>
+
+                <form enctype="multipart/form-data" action="" method="post" class="form-horizontal">{% csrf_token %}
+                    <div class="alert-error">
+                        {{ form.non_field_errors }}
+                    </div>
+
+                    <legend>Dati per accedere al sito</legend>
+                    {% include "registration/form_element.html" with element=form.username %}
+                    {% include "registration/form_element.html" with element=form.password1 %}
+                    {% include "registration/form_element.html" with element=form.password2 %}
+
+                    <legend>Dati personali</legend>
+                    {% include "registration/form_element.html" with element=form.email prepend="@" %}
+                    {% include "registration/form_element.html" with element=form.location %}
+                    {% include "registration/form_element.html" with element=form.first_name %}
+                    {% include "registration/form_element.html" with element=form.last_name %}
+                    {% include "registration/form_element.html" with element=form.uses_nickname checkbox=1 %}
+                    {% include "registration/form_element.html" with element=form.says_is_politician checkbox=1 %}
+                    {% include "registration/form_element.html" with element=form.description %}
+                    {% include "registration/form_element.html" with element=form.image %}
+                    {% include "registration/form_element.html" with element=form.wants_newsletter checkbox=1 %}
+
+                    <div class="alert">
+                        {% include "registration/form_element.html" with element=form.tos checkbox=1 %}
+                        {% include "registration/form_element.html" with element=form.pri checkbox=1 %}
+                    </div>
+
+                    <div class="form-actions">
+                         <button type="submit" class="btn btn-info">{% trans "Send" %}</button>
+                        <button type="button" class="btn">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
 
-  <form enctype="multipart/form-data" action="" method="post">{% csrf_token %}
-    <table>
-      {{ form.as_p }}
-      <tr>
-        <th></th>
-        <td><input type="submit" name="submit" value="Sign up" class="button"></td>
-      </tr>
-    </table>
-  </form>
 {% endblock %}

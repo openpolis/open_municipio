@@ -1131,3 +1131,23 @@ ul.typehead {
     }
   }
 }
+
+.registration {
+  input[type='text'], input[type='password'], textarea, select {
+    .input-xlarge;
+  }
+  input#id_email { width: 243px; }
+  select#id_location { width: 280px; }
+
+  textarea { background-color: #F5F5F5; }
+}
+
+.form-horizontal {
+  .input-prepend .add-on { margin-top: 1px; }
+  .help-block {
+    color: @grayLight;
+    margin-top: 2px;
+  }
+  .alert { padding: 18px 0 0 0; }
+  .form-actions { background-color: @semiWhite; }
+}

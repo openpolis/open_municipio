@@ -227,39 +227,6 @@ msgid "Comment mood"
 msgstr "Posizione"
 
 
-#: registration/forms.py:34
-msgid "I have read and agree to the Terms of Service"
-msgstr "Ho letto e approvo il regolamento del sito"
-
-#: registration/forms.py:35
-msgid "You must agree to the terms to register"
-msgstr "Accetta termini e condizioni per completare la registrazione"
-
-#: registration/forms.py:37
-msgid "I have read and agree to the Privacy conditions"
-msgstr "Ho letto e approvo l'informativa sui dati personali"
-
-#: registration/forms.py:38
-msgid "You must agree to the conditions to register"
-msgstr "Accetta le condizioni per la registrazione"
-
-#: registration/forms.py:40
-msgid "First name"
-msgstr "Nome"
-
-#: registration/forms.py:41
-msgid "Last name"
-msgstr "Cognome"
-
-#: registration/forms.py:44
-msgid "User wants only his nickname to be publicly shown"
-msgstr "Preferisco usare il mio nickname al posto del mio nome"
-
-#: registration/forms.py:70
-msgid ""
-"This email address is already in use. Please supply a different email "
-"address."
-msgstr "Questo indirizzo email è stato già utilizzato. Scegliene un altro."
 
 #: taxonomy/models.py:23
 msgid "Tag"

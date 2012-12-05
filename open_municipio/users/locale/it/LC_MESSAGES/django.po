@@ -44,7 +44,7 @@ msgstr "Località, se applicabile"
 
 #: forms.py:36 forms.py:61
 msgid "I have read and agree to the Terms of Service"
-msgstr "Ho letto e approvo i termini del servizio"
+msgstr "Ho letto e condivido il <a href=\"/regolamento\">regolamento</a> e le <a href=\"/condizioni\">condizioni d'uso</a> del sito"
 
 #: forms.py:37 forms.py:62
 msgid "You must agree to the terms to register"
@@ -52,7 +52,7 @@ msgstr "Devi approvare i termini per accedere"
 
 #: forms.py:39 forms.py:64
 msgid "I have read and agree to the Privacy conditions"
-msgstr "Ho letto e approvo le condizioni sulla Privacy"
+msgstr "Ho letto e condivido il testo sul <a href=\"/privacy\">trattamento dei dati personali</a>"
 
 #: forms.py:40 forms.py:65
 msgid "You must agree to the conditions to register"
@@ -106,8 +106,3 @@ msgstr "desidero ricevere la newsletter"
 msgid "location"
 msgstr "località"
 
-#~ msgid "Privacy level"
-#~ msgstr "Livello di privacy"
-
-#~ msgid "City"
-#~ msgstr "Località"

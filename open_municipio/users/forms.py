@@ -1,4 +1,8 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 from django import forms
+from django.conf import settings
 from django.forms.models import ModelForm
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
@@ -30,12 +34,17 @@ class UserRegistrationForm(RegistrationFormUniqueEmail):
     last_name = forms.CharField(max_length=30, label=_('Last Name'))
     uses_nickname = forms.BooleanField(widget=forms.CheckboxInput(attrs=attrs_dict),
                                        label=_(u'I want only my nickname to be publicly shown'),
+                                       help_text=u"Indica se preferisci che nel sito venga mostrato esclusivamente il tuo nome utente",
                                        required=False)
-    says_is_politician = forms.BooleanField(required=False, label=_('I am a politician'))
-    wants_newsletter = forms.BooleanField(required=False, label=_('Wants newsletter'))
-    location = forms.ModelChoiceField(required=False, queryset=Location.objects.all(), label=_('Location, if applicable'))
-    description = forms.CharField(required=False, label=_('Description'), widget=forms.Textarea())
-    image = forms.ImageField(required=False, label=_('Your image'))
+    says_is_politician = forms.BooleanField(required=False, label=_('I am a politician'),
+                                            help_text=u"Segnala alla redazione che sei un politico del municipio, per avere accesso avanzato.")
+    wants_newsletter = forms.BooleanField(required=False, label=_('Wants newsletter'),)
+    location = forms.ModelChoiceField(required=False, queryset=Location.objects.all(), label=_('Location, if applicable'),
+                                      help_text=u"Se sei cittadino di %s, scegli la zona della città in cui risiedi" % settings.SITE_INFO['main_city'])
+    description = forms.CharField(required=False, label=_('Description'), widget=forms.Textarea(),
+                                  help_text=u"Una breve descrizione di te, che apparirà nel tuo profilo")
+    image = forms.ImageField(required=False, label=_('Your image'),
+                             help_text="L'immagine che scegli verrà ridimensionata nelle dimensioni di 100x100 pixel")
     tos = forms.BooleanField(widget=forms.CheckboxInput(attrs=attrs_dict),
                              label=_(u'I have read and agree to the Terms of Service'),
                              error_messages={'required': _("You must agree to the terms to register")})
