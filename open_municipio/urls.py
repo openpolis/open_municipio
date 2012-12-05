@@ -37,10 +37,13 @@ urlpatterns = patterns('',
     # home page
     url(r'^$', HomeView.as_view(), name="home"),
     # info page
+    url(r'^contatti/$', TemplateView.as_view(template_name='om/contatti.html'), name='om_contatti'),
     url(r'^progetto/$', TemplateView.as_view(template_name='om/info.html'), name='om_progetto'),
     url(r'^regolamento/$', TemplateView.as_view(template_name='om/rules.html'), name='om_regolamento'),
     url(r'^condizioni/$', TemplateView.as_view(template_name='om/terms-and-conditions.html'), name='om_condizioni'),
     url(r'^privacy/$', TemplateView.as_view(template_name='om/privacy.html'), name='om_privacy'),
+    url(r'^opendata/$', TemplateView.as_view(template_name='om/opendata.html'), name='om_opendata'),
+    url(r'^software/$', TemplateView.as_view(template_name='om/software.html'), name='om_software'),
     url(r'^comments/', include('open_municipio.om_comments.urls')),
     url(r'^people/', include('open_municipio.people.urls.people')),
     url(r'^institutions/', include('open_municipio.people.urls.institutions')),

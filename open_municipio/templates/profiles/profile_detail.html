@@ -1,5 +1,6 @@
 {% extends "base_two_columns.html" %}
 {% load popover_info %}
+{% load newscache_tags %}
 
 {% block title %}Profilo utente{% endblock %}
 {% block content_header %}Profilo di {{user}}{% endblock %}
@@ -110,5 +111,8 @@
             {% endfor %}
         </dl>
     {% endif %}
+
+    {% news_for_object profile as i_news %}
+    {% include 'commons/news_list.html' with news_list=i_news news_title='Ultime su '|add:profile.public_name %}
 
 {% endblock %}

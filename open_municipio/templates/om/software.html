@@ -1,0 +1,36 @@
+{% extends "base_one_column.html" %}
+
+{% block title %}Software utilizzati{% endblock %}
+{% block content_header %}Software utilizzati{% endblock %}
+
+{% block content %}
+
+    <p>
+    Questo &egrave; lo stack software utilizzato nel backend:
+    <ul>
+        <li><a href="http://www.apache.org/" target="_blank">apache</a> - web server, con mod_wsgi, per gestire processi Python</li>
+        <li><a href="http://www.djangoproject.com/" target="_blank">django</a> - web framework, con numerosi moduli e componenti sviluppati da terze parti</li>
+        <li><a href="http://www.postgresql.org/" target="_blank">postgres</a> - database management system</li>
+        <li><a href="http://lucene.apache.org/solr/" target="_blank">solr</a> - indicizzazione testi e servizi di ricerca</li>
+        <li><a href="http://tomcat.apache.org/" target="_blank">tomcat</a> - servlet container per solr</li>
+    </ul>
+
+
+
+    La distribuzione GNU-Linux &egrave; la <a href="http://www.debian.org/">Debian</a> Squeeze. <br/> <br/>
+    </p>
+
+    <p>
+    Per lo sviluppo lato client, questi i software usati:
+    <ul>
+        <li><a href="http://jquery.com/" target="_blank">jQuery</a></li>
+        <li><a href="http://jqueryui.com/" target="_blank">jQueryUI</a></li>
+        <li><a href="http://twitter.github.com/bootstrap/" target="_blank">bootstrap</a></li>
+        <li><a href="http://fortawesome.github.com/Font-Awesome/" target="_blank">fontawesome</a></li>
+    </ul>
+    </p>
+
+    <p>
+        Se vuoi scaricare il codice sorgente di Open municipio <a href="https://github.com/openpolis/open_municipio">vai qui</a>.
+    </p>
+{% endblock %}
