@@ -24,6 +24,10 @@
             {% endthumbnail %}
             {{ group.name }} ({{ group.acronym }})
         </h2>
+        <p>
+            I dati si riferiscono alle votazioni svolte in Consiglio.<br/>
+            Non vengono calcolate le presenze alle sedute né se l'assenza abbia motivazioni politiche.
+        </p>
         {% if group.resources|length > 0 %}
             <address>
                 {% for r in group.resources %}
