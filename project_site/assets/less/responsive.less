@@ -46,3 +46,21 @@
 
 // From 979px and below, show a button to toggle navbar contents
 @import "responsive-navbar.less";
+
+@media (max-width: 767px) {
+  #citycard {
+    margin-top: 10px;
+  }
+
+  #wrapper > div.container-fluid, #wrapper > footer  {
+    margin-left: -20px; margin-right: -20px;
+    padding-left: 20px; padding-right: 20px;
+  }
+  #wrapper > header, #wrapper > .navbar, #wrapper > article aside {
+    margin-left: -20px; margin-right: -20px;
+  }
+
+  #wrapper > article aside {
+    margin-top: 10px;
+  }
+}

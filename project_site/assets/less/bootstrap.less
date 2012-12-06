@@ -63,27 +63,54 @@
 @import "utilities.less"; // Has to be last to override when necessary
 
 #openpolis-tool {
-  .pull-right;
-  padding-top: 30px;
+  padding-top: 50px;
+}
+
+a { font-weight: bold; }
+
+#wrapper .navbar .nav > li > a {
+  line-height: 24px;
 }
 
 #payoff {
   background-color: @blueDark;
   padding-top: 10px; padding-bottom: 10px;
 }
+
+#wrapper > header {
+  background-color: @white;
+}
+
+#wrapper blockquote p {
+  line-height: 22px;
+}
+
 #wrapper > article {
   padding-top: 20px; padding-bottom:20px;
-  h1 { font-weight: 400; font-size: 24px; }
+  h1 { font-weight: 400; font-size: 30px; line-height: 32px; margin-bottom: 6px; margin-top: 20px; }
+  h2 { font-weight: 400; font-size: 25px; line-height: 28px; margin-bottom: 6px; margin-top: 20px; }
   .label { font-size: 20px; display: block; padding:8px 12px; margin: 8px 0; }
   #toc li { color: @blue; }
+
+  aside {
+    background-color: @white;
+    margin-top: -20px;
+    padding-top: 20px;
+    & > * { padding-left: 15px; padding-right: 15px; }
+  }
 }
+
 #wrapper > footer {
   background: transparent url('../img/background_sito_openmunicipio.gif') repeat-x center top;
-  padding-top: 300px;
+  padding-top: 250px;
   padding-bottom: 30px;
   color: @white;
   text-shadow: 0 -1px 0 rgba(0,0,0,.25);
   a { color: @white }
+  .span3 > a:first-child {
+    margin-bottom: 15px;
+    display: block;
+  }
 }
 
 #demo {
@@ -91,3 +118,31 @@
   iframe {margin: 20px auto;}
 }
 
+#citycard {
+  padding: 20px;
+  background-color: white;
+  margin-top: -100px;
+}
+
+.document {
+  a.pull-left { margin-right: 10px;  }
+  p {
+    margin-left: 40px;
+    a:first-child { display: block; }
+  }
+  padding-top: 10px; margin-top: 10px;
+  border-top: 1px dashed @grayLight;
+}
+
+table#price-table.table {
+  small { font-size: 0.9em; }
+  thead {
+    tr td { text-align: center; border:0; }
+  }
+  tbody {
+    tr { background-color: @white; }
+    td { text-align: center; vertical-align: middle; }
+    tr td:first-child { text-align: left; }
+  }
+
+}

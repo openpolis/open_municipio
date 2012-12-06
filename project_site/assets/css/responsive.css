@@ -82,7 +82,7 @@
   }
   .page-header h1 small {
     display: block;
-    line-height: 18px;
+    line-height: 22px;
   }
   input[type="checkbox"],
   input[type="radio"] {
@@ -622,7 +622,7 @@
   }
   .navbar-fixed-top {
     position: static;
-    margin-bottom: 18px;
+    margin-bottom: 22px;
   }
   .navbar-fixed-top .navbar-inner {
     padding: 5px;
@@ -641,7 +641,7 @@
   }
   .nav-collapse .nav {
     float: none;
-    margin: 0 0 9px;
+    margin: 0 0 11px;
   }
   .nav-collapse .nav > li {
     float: none;
@@ -711,8 +711,8 @@
   .nav-collapse .navbar-form,
   .nav-collapse .navbar-search {
     float: none;
-    padding: 9px 15px;
-    margin: 9px 0;
+    padding: 11px 15px;
+    margin: 11px 0;
     border-top: 1px solid #000000;
     border-bottom: 1px solid #000000;
     -webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 1px 0 rgba(255,255,255,.1);
@@ -740,5 +740,26 @@
   .nav-collapse.collapse {
     height: auto !important;
     overflow: visible !important;
+  }
+}
+@media (max-width: 767px) {
+  #citycard {
+    margin-top: 10px;
+  }
+  #wrapper > div.container-fluid,
+  #wrapper > footer {
+    margin-left: -20px;
+    margin-right: -20px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  #wrapper > header,
+  #wrapper > .navbar,
+  #wrapper > article aside {
+    margin-left: -20px;
+    margin-right: -20px;
+  }
+  #wrapper > article aside {
+    margin-top: 10px;
   }
 }

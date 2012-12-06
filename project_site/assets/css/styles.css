@@ -133,16 +133,16 @@ body {
   margin: 0;
   font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 14px;
-  line-height: 20px;
+  line-height: 22px;
   color: #000000;
-  background-color: #ffffff;
+  background-color: #f7f5f2;
 }
 a {
-  color: #0088cc;
+  color: #1862a9;
   text-decoration: none;
 }
 a:hover {
-  color: #005580;
+  color: #0e3b66;
   text-decoration: underline;
 }
 .row {
@@ -340,20 +340,20 @@ a:hover {
   clear: both;
 }
 p {
-  margin: 0 0 10px;
+  margin: 0 0 11px;
   font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 14px;
-  line-height: 20px;
+  line-height: 22px;
 }
 p small {
   font-size: 12px;
   color: #999999;
 }
 .lead {
-  margin-bottom: 20px;
+  margin-bottom: 22px;
   font-size: 20px;
   font-weight: 200;
-  line-height: 30px;
+  line-height: 33px;
 }
 h1,
 h2,
@@ -378,21 +378,21 @@ h6 small {
 }
 h1 {
   font-size: 30px;
-  line-height: 40px;
+  line-height: 44px;
 }
 h1 small {
   font-size: 18px;
 }
 h2 {
   font-size: 24px;
-  line-height: 40px;
+  line-height: 44px;
 }
 h2 small {
   font-size: 18px;
 }
 h3 {
   font-size: 18px;
-  line-height: 30px;
+  line-height: 33px;
 }
 h3 small {
   font-size: 14px;
@@ -400,7 +400,7 @@ h3 small {
 h4,
 h5,
 h6 {
-  line-height: 20px;
+  line-height: 22px;
 }
 h4 {
   font-size: 14px;
@@ -417,8 +417,8 @@ h6 {
   text-transform: uppercase;
 }
 .page-header {
-  padding-bottom: 19px;
-  margin: 20px 0;
+  padding-bottom: 21px;
+  margin: 22px 0;
   border-bottom: 1px solid #eeeeee;
 }
 .page-header h1 {
@@ -427,7 +427,7 @@ h6 {
 ul,
 ol {
   padding: 0;
-  margin: 0 0 10px 25px;
+  margin: 0 0 11px 25px;
 }
 ul ul,
 ul ol,
@@ -442,7 +442,7 @@ ol {
   list-style: decimal;
 }
 li {
-  line-height: 20px;
+  line-height: 22px;
 }
 ul.unstyled,
 ol.unstyled {
@@ -450,18 +450,18 @@ ol.unstyled {
   list-style: none;
 }
 dl {
-  margin-bottom: 20px;
+  margin-bottom: 22px;
 }
 dt,
 dd {
-  line-height: 20px;
+  line-height: 22px;
 }
 dt {
   font-weight: bold;
-  line-height: 19px;
+  line-height: 21px;
 }
 dd {
-  margin-left: 10px;
+  margin-left: 11px;
 }
 .dl-horizontal dt {
   float: left;
@@ -476,7 +476,7 @@ dd {
   margin-left: 130px;
 }
 hr {
-  margin: 20px 0;
+  margin: 22px 0;
   border: 0;
   border-top: 1px solid #eeeeee;
   border-bottom: 1px solid #ffffff;
@@ -500,18 +500,18 @@ abbr.initialism {
 }
 blockquote {
   padding: 0 0 0 15px;
-  margin: 0 0 20px;
+  margin: 0 0 22px;
   border-left: 5px solid #eeeeee;
 }
 blockquote p {
   margin-bottom: 0;
   font-size: 16px;
   font-weight: 300;
-  line-height: 25px;
+  line-height: 27.5px;
 }
 blockquote small {
   display: block;
-  line-height: 20px;
+  line-height: 22px;
   color: #999999;
 }
 blockquote small:before {
@@ -536,9 +536,9 @@ blockquote:after {
 }
 address {
   display: block;
-  margin-bottom: 20px;
+  margin-bottom: 22px;
   font-style: normal;
-  line-height: 20px;
+  line-height: 22px;
 }
 small {
   font-size: 100%;
@@ -564,10 +564,10 @@ code {
 }
 pre {
   display: block;
-  padding: 9.5px;
-  margin: 0 0 10px;
+  padding: 10.5px;
+  margin: 0 0 11px;
   font-size: 12.950000000000001px;
-  line-height: 20px;
+  line-height: 22px;
   word-break: break-all;
   word-wrap: break-word;
   white-space: pre;
@@ -580,7 +580,7 @@ pre {
   border-radius: 4px;
 }
 pre.prettyprint {
-  margin-bottom: 20px;
+  margin-bottom: 22px;
 }
 pre code {
   padding: 0;
@@ -593,7 +593,7 @@ pre code {
   overflow-y: scroll;
 }
 form {
-  margin: 0 0 20px;
+  margin: 0 0 22px;
 }
 fieldset {
   padding: 0;
@@ -604,15 +604,15 @@ legend {
   display: block;
   width: 100%;
   padding: 0;
-  margin-bottom: 30px;
+  margin-bottom: 33px;
   font-size: 21px;
-  line-height: 40px;
+  line-height: 44px;
   color: #333333;
   border: 0;
   border-bottom: 1px solid #eee;
 }
 legend small {
-  font-size: 15px;
+  font-size: 16.5px;
   color: #999999;
 }
 label,
@@ -622,7 +622,7 @@ select,
 textarea {
   font-size: 14px;
   font-weight: normal;
-  line-height: 20px;
+  line-height: 22px;
 }
 input,
 button,
@@ -641,11 +641,11 @@ select,
 .uneditable-input {
   display: inline-block;
   width: 210px;
-  height: 20px;
+  height: 22px;
   padding: 4px;
   margin-bottom: 9px;
   font-size: 14px;
-  line-height: 20px;
+  line-height: 22px;
   color: #555555;
   background-color: #ffffff;
   border: 1px solid #cccccc;
@@ -968,9 +968,9 @@ select:focus:required:invalid:focus {
   box-shadow: 0 0 6px #f8b9b7;
 }
 .form-actions {
-  padding: 19px 20px 20px;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  padding: 21px 20px 22px;
+  margin-top: 22px;
+  margin-bottom: 22px;
   background-color: #f5f5f5;
   border-top: 1px solid #ddd;
   *zoom: 1;
@@ -1005,7 +1005,7 @@ select:focus:required:invalid:focus {
 }
 .help-block {
   display: block;
-  margin-bottom: 10px;
+  margin-bottom: 11px;
 }
 .help-inline {
   display: inline-block;
@@ -1050,11 +1050,11 @@ select:focus:required:invalid:focus {
 .input-append .add-on {
   display: inline-block;
   width: auto;
-  height: 20px;
+  height: 22px;
   min-width: 16px;
   padding: 4px 5px;
   font-weight: normal;
-  line-height: 20px;
+  line-height: 22px;
   text-align: center;
   text-shadow: 0 1px 0 #ffffff;
   vertical-align: middle;
@@ -1195,14 +1195,14 @@ select:focus:required:invalid:focus {
   margin-left: 0;
 }
 .control-group {
-  margin-bottom: 10px;
+  margin-bottom: 11px;
 }
 legend + .control-group {
-  margin-top: 20px;
+  margin-top: 22px;
   -webkit-margin-top-collapse: separate;
 }
 .form-horizontal .control-group {
-  margin-bottom: 20px;
+  margin-bottom: 22px;
   *zoom: 1;
 }
 .form-horizontal .control-group:before,
@@ -1229,7 +1229,7 @@ legend + .control-group {
   *padding-left: 160px;
 }
 .form-horizontal .help-block {
-  margin-top: 10px;
+  margin-top: 11px;
   margin-bottom: 0;
 }
 .form-horizontal .form-actions {
@@ -1243,12 +1243,12 @@ table {
 }
 .table {
   width: 100%;
-  margin-bottom: 20px;
+  margin-bottom: 22px;
 }
 .table th,
 .table td {
   padding: 8px;
-  line-height: 20px;
+  line-height: 22px;
   text-align: left;
   vertical-align: top;
   border-top: 1px solid #dddddd;
@@ -2039,7 +2039,7 @@ li[class*=" icon-"].icon-large:before {
 .dropdown-menu .divider {
   *width: 100%;
   height: 1px;
-  margin: 9px 1px;
+  margin: 10px 1px;
   *margin: -5px 0 5px;
   overflow: hidden;
   background-color: #e5e5e5;
@@ -2050,7 +2050,7 @@ li[class*=" icon-"].icon-large:before {
   padding: 3px 15px;
   clear: both;
   font-weight: normal;
-  line-height: 20px;
+  line-height: 22px;
   color: #333333;
   white-space: nowrap;
 }
@@ -2059,7 +2059,7 @@ li[class*=" icon-"].icon-large:before {
 .dropdown-menu .active > a:hover {
   color: #ffffff;
   text-decoration: none;
-  background-color: #0088cc;
+  background-color: #1862a9;
 }
 .open {
   *z-index: 1000;
@@ -2149,7 +2149,7 @@ li[class*=" icon-"].icon-large:before {
   float: right;
   font-size: 20px;
   font-weight: bold;
-  line-height: 20px;
+  line-height: 22px;
   color: #000000;
   text-shadow: 0 1px 0 #ffffff;
   opacity: 0.2;
@@ -2178,7 +2178,7 @@ button.close {
   padding: 4px 10px 4px;
   margin-bottom: 0;
   font-size: 14px;
-  line-height: 20px;
+  line-height: 22px;
   *line-height: 20px;
   color: #333333;
   text-align: center;
@@ -2280,7 +2280,7 @@ button.close {
 .btn-small {
   padding: 5px 9px;
   font-size: 12px;
-  line-height: 18px;
+  line-height: 20px;
 }
 .btn-small [class^="icon-"] {
   margin-top: -1px;
@@ -2288,7 +2288,7 @@ button.close {
 .btn-mini {
   padding: 2px 6px;
   font-size: 12px;
-  line-height: 16px;
+  line-height: 18px;
 }
 .btn-primary,
 .btn-primary:hover,
@@ -2318,18 +2318,18 @@ button.close {
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
 }
 .btn-primary {
-  background-color: #0074cc;
-  background-image: -moz-linear-gradient(top, #0088cc, #0055cc);
-  background-image: -ms-linear-gradient(top, #0088cc, #0055cc);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#0088cc), to(#0055cc));
-  background-image: -webkit-linear-gradient(top, #0088cc, #0055cc);
-  background-image: -o-linear-gradient(top, #0088cc, #0055cc);
-  background-image: linear-gradient(top, #0088cc, #0055cc);
+  background-color: #1853a9;
+  background-image: -moz-linear-gradient(top, #1862a9, #183ea9);
+  background-image: -ms-linear-gradient(top, #1862a9, #183ea9);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#1862a9), to(#183ea9));
+  background-image: -webkit-linear-gradient(top, #1862a9, #183ea9);
+  background-image: -o-linear-gradient(top, #1862a9, #183ea9);
+  background-image: linear-gradient(top, #1862a9, #183ea9);
   background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#0088cc', endColorstr='#0055cc', GradientType=0);
-  border-color: #0055cc #0055cc #003580;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#1862a9', endColorstr='#183ea9', GradientType=0);
+  border-color: #183ea9 #183ea9 #0e2566;
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-  *background-color: #0055cc;
+  *background-color: #183ea9;
   /* Darken IE7 buttons by default so they stand out more given they won't have borders */
 
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
@@ -2339,12 +2339,12 @@ button.close {
 .btn-primary.active,
 .btn-primary.disabled,
 .btn-primary[disabled] {
-  background-color: #0055cc;
-  *background-color: #004ab3;
+  background-color: #183ea9;
+  *background-color: #153693;
 }
 .btn-primary:active,
 .btn-primary.active {
-  background-color: #004099 \9;
+  background-color: #122d7c \9;
 }
 .btn-warning {
   background-color: #faa732;
@@ -2536,8 +2536,8 @@ input[type="submit"].btn.btn-mini {
   margin-left: 5px;
 }
 .btn-toolbar {
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin-top: 11px;
+  margin-bottom: 11px;
 }
 .btn-toolbar .btn-group {
   display: inline-block;
@@ -2631,7 +2631,7 @@ input[type="submit"].btn.btn-mini {
   background-color: #e6e6e6;
 }
 .btn-group.open .btn-primary.dropdown-toggle {
-  background-color: #0055cc;
+  background-color: #183ea9;
 }
 .btn-group.open .btn-warning.dropdown-toggle {
   background-color: #f89406;
@@ -2686,7 +2686,7 @@ input[type="submit"].btn.btn-mini {
 }
 .alert {
   padding: 8px 35px 8px 14px;
-  margin-bottom: 20px;
+  margin-bottom: 22px;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
   background-color: #fcf8e3;
   border: 1px solid #fbeed5;
@@ -2733,7 +2733,7 @@ input[type="submit"].btn.btn-mini {
 }
 .nav {
   margin-left: 0;
-  margin-bottom: 20px;
+  margin-bottom: 22px;
   list-style: none;
 }
 .nav > li > a {
@@ -2751,7 +2751,7 @@ input[type="submit"].btn.btn-mini {
   padding: 3px 15px;
   font-size: 11px;
   font-weight: bold;
-  line-height: 20px;
+  line-height: 22px;
   color: #999999;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
   text-transform: uppercase;
@@ -2777,7 +2777,7 @@ input[type="submit"].btn.btn-mini {
 .nav-list > .active > a:hover {
   color: #ffffff;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
-  background-color: #0088cc;
+  background-color: #1862a9;
 }
 .nav-list [class^="icon-"] {
   margin-right: 2px;
@@ -2785,7 +2785,7 @@ input[type="submit"].btn.btn-mini {
 .nav-list .divider {
   *width: 100%;
   height: 1px;
-  margin: 9px 1px;
+  margin: 10px 1px;
   *margin: -5px 0 5px;
   overflow: hidden;
   background-color: #e5e5e5;
@@ -2826,7 +2826,7 @@ input[type="submit"].btn.btn-mini {
 .nav-tabs > li > a {
   padding-top: 8px;
   padding-bottom: 8px;
-  line-height: 20px;
+  line-height: 22px;
   border: 1px solid transparent;
   -webkit-border-radius: 4px 4px 0 0;
   -moz-border-radius: 4px 4px 0 0;
@@ -2855,7 +2855,7 @@ input[type="submit"].btn.btn-mini {
 .nav-pills > .active > a,
 .nav-pills > .active > a:hover {
   color: #ffffff;
-  background-color: #0088cc;
+  background-color: #1862a9;
 }
 .nav-stacked > li {
   float: none;
@@ -2904,14 +2904,14 @@ input[type="submit"].btn.btn-mini {
 }
 .nav-tabs .dropdown-toggle .caret,
 .nav-pills .dropdown-toggle .caret {
-  border-top-color: #0088cc;
-  border-bottom-color: #0088cc;
+  border-top-color: #1862a9;
+  border-bottom-color: #1862a9;
   margin-top: 6px;
 }
 .nav-tabs .dropdown-toggle:hover .caret,
 .nav-pills .dropdown-toggle:hover .caret {
-  border-top-color: #005580;
-  border-bottom-color: #005580;
+  border-top-color: #0e3b66;
+  border-bottom-color: #0e3b66;
 }
 .nav-tabs .active .dropdown-toggle .caret,
 .nav-pills .active .dropdown-toggle .caret {
@@ -3265,9 +3265,9 @@ input[type="submit"].btn.btn-mini {
 }
 .navbar .nav .active > a,
 .navbar .nav .active > a:hover {
-  color: #ffffff;
+  color: #000000;
   text-decoration: none;
-  background-color: #000000;
+  background-color: #f7f5f2;
 }
 .navbar .divider-vertical {
   height: 40px;
@@ -3349,7 +3349,7 @@ input[type="submit"].btn.btn-mini {
 }
 .breadcrumb {
   padding: 7px 14px;
-  margin: 0 0 20px;
+  margin: 0 0 22px;
   list-style: none;
   background-color: #fbfbfb;
   background-image: -moz-linear-gradient(top, #ffffff, #f5f5f5);
@@ -3384,8 +3384,8 @@ input[type="submit"].btn.btn-mini {
   color: #333333;
 }
 .pagination {
-  height: 40px;
-  margin: 20px 0;
+  height: 44px;
+  margin: 22px 0;
 }
 .pagination ul {
   display: inline-block;
@@ -3408,7 +3408,7 @@ input[type="submit"].btn.btn-mini {
 .pagination a {
   float: left;
   padding: 0 14px;
-  line-height: 38px;
+  line-height: 42px;
   text-decoration: none;
   border: 1px solid #ddd;
   border-left-width: 0;
@@ -3447,7 +3447,7 @@ input[type="submit"].btn.btn-mini {
 }
 .pager {
   margin-left: 0;
-  margin-bottom: 20px;
+  margin-bottom: 22px;
   list-style: none;
   text-align: center;
   *zoom: 1;
@@ -3782,7 +3782,7 @@ input[type="submit"].btn.btn-mini {
 }
 .thumbnails > li {
   float: left;
-  margin-bottom: 20px;
+  margin-bottom: 22px;
   margin-left: 20px;
 }
 .thumbnail {
@@ -3798,7 +3798,7 @@ input[type="submit"].btn.btn-mini {
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075);
 }
 a.thumbnail:hover {
-  border-color: #0088cc;
+  border-color: #1862a9;
   -webkit-box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
   -moz-box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
   box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
@@ -4071,7 +4071,7 @@ a.badge:hover {
   background-image: linear-gradient(-45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
 }
 .accordion {
-  margin-bottom: 20px;
+  margin-bottom: 22px;
 }
 .accordion-group {
   margin-bottom: 2px;
@@ -4096,7 +4096,7 @@ a.badge:hover {
 }
 .carousel {
   position: relative;
-  margin-bottom: 20px;
+  margin-bottom: 22px;
   line-height: 1;
 }
 .carousel-inner {
@@ -4208,7 +4208,7 @@ a.badge:hover {
 .hero-unit p {
   font-size: 18px;
   font-weight: 200;
-  line-height: 30px;
+  line-height: 33px;
   color: inherit;
 }
 .pull-right {
@@ -4227,13 +4227,24 @@ a.badge:hover {
   visibility: hidden;
 }
 #openpolis-tool {
-  float: right;
-  padding-top: 30px;
+  padding-top: 50px;
+}
+a {
+  font-weight: bold;
+}
+#wrapper .navbar .nav > li > a {
+  line-height: 24px;
 }
 #payoff {
   background-color: #4788c2;
   padding-top: 10px;
   padding-bottom: 10px;
+}
+#wrapper > header {
+  background-color: #ffffff;
+}
+#wrapper blockquote p {
+  line-height: 22px;
 }
 #wrapper > article {
   padding-top: 20px;
@@ -4241,7 +4252,17 @@ a.badge:hover {
 }
 #wrapper > article h1 {
   font-weight: 400;
-  font-size: 24px;
+  font-size: 30px;
+  line-height: 32px;
+  margin-bottom: 6px;
+  margin-top: 20px;
+}
+#wrapper > article h2 {
+  font-weight: 400;
+  font-size: 25px;
+  line-height: 28px;
+  margin-bottom: 6px;
+  margin-top: 20px;
 }
 #wrapper > article .label {
   font-size: 20px;
@@ -4252,9 +4273,18 @@ a.badge:hover {
 #wrapper > article #toc li {
   color: #049cdb;
 }
+#wrapper > article aside {
+  background-color: #ffffff;
+  margin-top: -20px;
+  padding-top: 20px;
+}
+#wrapper > article aside  > * {
+  padding-left: 15px;
+  padding-right: 15px;
+}
 #wrapper > footer {
   background: transparent url('../img/background_sito_openmunicipio.gif') repeat-x center top;
-  padding-top: 300px;
+  padding-top: 250px;
   padding-bottom: 30px;
   color: #ffffff;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
@@ -4262,9 +4292,49 @@ a.badge:hover {
 #wrapper > footer a {
   color: #ffffff;
 }
+#wrapper > footer .span3 > a:first-child {
+  margin-bottom: 15px;
+  display: block;
+}
 #demo {
   text-align: center;
 }
 #demo iframe {
   margin: 20px auto;
+}
+#citycard {
+  padding: 20px;
+  background-color: white;
+  margin-top: -100px;
+}
+.document {
+  padding-top: 10px;
+  margin-top: 10px;
+  border-top: 1px dashed #999999;
+}
+.document a.pull-left {
+  margin-right: 10px;
+}
+.document p {
+  margin-left: 40px;
+}
+.document p a:first-child {
+  display: block;
+}
+table#price-table.table small {
+  font-size: 0.9em;
+}
+table#price-table.table thead tr td {
+  text-align: center;
+  border: 0;
+}
+table#price-table.table tbody tr {
+  background-color: #ffffff;
+}
+table#price-table.table tbody td {
+  text-align: center;
+  vertical-align: middle;
+}
+table#price-table.table tbody tr td:first-child {
+  text-align: left;
 }
