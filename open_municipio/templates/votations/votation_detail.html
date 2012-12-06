@@ -8,9 +8,15 @@
 {% block title %}Dettaglio votazione {{ votation.act.emitting_institution }} N° {{ votation.act.idnum }},
     seduta {{ votation.sitting.number }}
     del {{ votation.act.presentation_date|date:"d F Y" }}{% endblock %}
+
 {% block content_header %}Votazione{% endblock %}
 {% block votations_class %}active{% endblock %}
 {% block body_class %}votations{% endblock %}
+
+{% block content_header_city_logo %}
+    <img src="{{ STATIC_URL }}img/{{ main_city|lower }}-logo/votation.png" alt="Comune di {{ main_city }}">
+{% endblock %}
+
 
 {% block head_css_includes %}
     {{ block.super }}

@@ -4231,34 +4231,34 @@ body #content > section.party-people {
   margin: 0;
 }
 body.politician #wrapper > header {
-  background-color: #71b644;
+  background-color: #72c056;
 }
 body.politician #wrapper .colored {
-  background-color: #71b644;
+  background-color: #72c056;
 }
 body.acts #wrapper > header {
-  background-color: #3873b4;
+  background-color: #4788c2;
 }
 body.acts #wrapper .colored {
-  background-color: #3873b4;
+  background-color: #4788c2;
 }
 body.votations #wrapper > header {
-  background-color: #96c0e3;
+  background-color: #a6cce9;
 }
 body.votations #wrapper .colored {
-  background-color: #96c0e3;
+  background-color: #a6cce9;
 }
 body.tags #wrapper > header {
-  background-color: #efb633;
+  background-color: #f4c242;
 }
 body.tags #wrapper .colored {
-  background-color: #efb633;
+  background-color: #f4c242;
 }
 body.citizen #wrapper > header {
-  background-color: #d12f24;
+  background-color: #dc4630;
 }
 body.citizen #wrapper .colored {
-  background-color: #d12f24;
+  background-color: #dc4630;
 }
 body h1 span.colored {
   padding-left: 5px;
@@ -5485,7 +5485,7 @@ ul.person-resources {
   display: inline-block;
   text-align: center;
   padding: 4px;
-  background-color: #d12f24;
+  background-color: #dc4630;
   font-weight: bold;
   color: #ffffff;
   min-width: 20px;
