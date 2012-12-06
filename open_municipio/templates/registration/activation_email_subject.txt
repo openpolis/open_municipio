@@ -1,1 +1,1 @@
-{{ site.name }} - attiva il tuo nuovo account
+Attiva la tua registrazione ad Open municipio

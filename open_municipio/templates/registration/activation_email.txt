@@ -1,13 +1,17 @@
-Qualcuno con questo indirizzo e-mail (possibilmente tu), si è registrato al sito {{ site.domain }}.
-Per attivare la tua registrazione, visita il link seguente:
+Salve :-)
+abbiamo ricevuto la tua richiesta di registrazione al sito Open municipio.
+Per attivarla basta fare click su questo link:
 
 http://{{ site.domain }}{% url registration_activate activation_key %}
 
-Fai attenzione, perché questo link scadrà tra {{ expiration_days }} giorni.
+Se non riesci a cliccare sul link qui sopra, per favore, copialo e incollalo nel tuo browser.
 
-Se non puoi cliccare sul link qui sopra o il click non funziona, per favore
-copia il link e incollalo nel tuo browser.
+Il link sarà disponibile solo per un periodo di tempo limitato. Cliccalo durante i prossimi
+7 giorni per accedere alla piattaforma, prima che venga rimosso.
 
--------------------------------------------------------------------------------------
-Se la richiesta non proviene da te, puoi tranquillamente cancellare questo messaggio;
-non riceverai altre e-mail da noi.
+Buon proseguimento,
+lo staff di Open municipio
+
+___
+Se la richiesta non proviene da te, ce ne scusiamo e ti rassicuriamo che non riceverai altre email da noi.
+

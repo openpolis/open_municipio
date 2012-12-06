@@ -43,8 +43,10 @@
                     </div>
 
                     <div class="form-actions">
-                         <button type="submit" class="btn btn-info">{% trans "Send" %}</button>
-                        <button type="button" class="btn">Cancel</button>
+                         <button type="submit" class="btn btn-info">Invia</button>
+                         {% comment %}
+                         <a href="/accounts/login/?next=/" class="btn">Annulla</a>
+                         {% endcomment %}
                     </div>
                 </form>
             </div>

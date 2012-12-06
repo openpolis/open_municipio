@@ -46,7 +46,7 @@ class UserRegistrationForm(RegistrationFormUniqueEmail):
     image = forms.ImageField(required=False, label=_('Your image'),
                              help_text="L'immagine che scegli verrà ridimensionata nelle dimensioni di 100x100 pixel")
     tos = forms.BooleanField(widget=forms.CheckboxInput(attrs=attrs_dict),
-                             label=_(u'I have read and agree to the Terms of Service'),
+                             label=_(u'I have read and approve the Terms of Service'),
                              error_messages={'required': _("You must agree to the terms to register")})
     pri = forms.BooleanField(widget=forms.CheckboxInput(attrs=attrs_dict),
                              label=_(u'I have read and agree to the Privacy conditions'),
@@ -71,7 +71,7 @@ class SocialIntegrationForm(forms.Form):
     wants_newsletter = forms.BooleanField(required=False, label=_('Wants newsletter'))
     location = forms.ModelChoiceField(required=False, queryset=Location.objects.all(), label=_('Location, if applicable'))
     tos = forms.BooleanField(widget=forms.CheckboxInput(attrs=attrs_dict),
-                             label=_(u'I have read and agree to the Terms of Service'),
+                             label=_(u'I have read and approve the Terms of Service'),
                              error_messages={'required': _("You must agree to the terms to register")})
     pri = forms.BooleanField(widget=forms.CheckboxInput(attrs=attrs_dict),
                              label=_(u'I have read and agree to the Privacy conditions'),

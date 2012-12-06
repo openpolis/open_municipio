@@ -3,7 +3,7 @@
 {% load newscache_tags %}
 
 {% block title %}Profilo utente{% endblock %}
-{% block content_header %}Profilo di {{user}}{% endblock %}
+{% block content_header %}Profilo di {{ profile }}{% endblock %}
 {% block content_header_city_logo %}
     <img src="{{ STATIC_URL }}img/{{ main_city|lower }}-logo/citizen.png"
          xmlns="http://www.w3.org/1999/html"
