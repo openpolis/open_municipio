@@ -65,8 +65,8 @@
                       <tr>
                           <td>{{ a.presentation_date|circled:"full" }}</td>
                           <td>
-                              {% include 'acts/_act_inline.html' with act=a only %}
-                              {% object_inline_monitoring a %}
+                              {% include 'acts/_act_inline.html' with act=a.downcast only %}
+                              {% object_inline_monitoring a.downcast %}
                           </td>
                       </tr>
                   {% endfor %}
@@ -156,8 +156,8 @@
                   <tbody>
                   {% for a in key_acts %}
                       <tr><td>
-                          {% include 'acts/_act_inline.html' with act=a only %}
-                          {% object_inline_monitoring a %}
+                          {% include 'acts/_act_inline.html' with act=a.downcast only %}
+                          {% object_inline_monitoring a.downcast %}
                       </td></tr>
                   {% empty %}
                       <tr>
