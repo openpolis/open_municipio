@@ -1,8 +1,7 @@
 {% extends "registration/base_user.html" %}
-{%  load i18n %}
+{% load i18n %}
 
 {% block title %}Registrazione al sito{% endblock %}
-
 {% block content_header %}Registrazione al sito{% endblock %}
 
 {% block content %}
@@ -16,7 +15,8 @@
                     </a>
                 </p>
 
-                <form enctype="multipart/form-data" action="" method="post" class="form-horizontal">{% csrf_token %}
+                <form enctype="multipart/form-data" action="" method="post" class="form-horizontal" accept-charset="utf-8">
+                    {% csrf_token %}
                     <div class="alert-error">
                         {{ form.non_field_errors }}
                     </div>
@@ -37,14 +37,16 @@
                     {% include "registration/form_element.html" with element=form.image %}
                     {% include "registration/form_element.html" with element=form.wants_newsletter checkbox=1 %}
 
-                    <div class="alert">
+                    <div id="legal" class="alert">
                         {% include "registration/form_element.html" with element=form.tos checkbox=1 %}
                         {% include "registration/form_element.html" with element=form.pri checkbox=1 %}
                     </div>
 
                     <div class="form-actions">
-                         <button type="submit" class="btn btn-info">{% trans "Send" %}</button>
-                        <button type="button" class="btn">Cancel</button>
+                         <button type="submit" class="btn btn-info">Invia</button>
+                         {% comment %}
+                         <a href="/accounts/login/?next=/" class="btn">Annulla</a>
+                         {% endcomment %}
                     </div>
                 </form>
             </div>

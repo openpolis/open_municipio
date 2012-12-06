@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-12-04 14:49+0100\n"
+"POT-Creation-Date: 2012-12-06 13:43+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,6 +18,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
+
+#: templates/base.html:6
+msgid "OpenMunicipio"
+msgstr ""
+
 #: templates/admin/base_site.html:4
 msgid "openmunicipio site admin"
 msgstr "Amministrazione di Open municipio"
@@ -26,27 +31,6 @@ msgstr "Amministrazione di Open municipio"
 msgid "openmunicipio administration"
 msgstr "Amministrazione di Open municipio"
 
-#: templates/admin/flatpages/flatpage/change_form.html:27
-msgid "Home"
-msgstr ""
-
-#: templates/admin/flatpages/flatpage/change_form.html:30
-msgid "Add"
-msgstr ""
-
-#: templates/admin/flatpages/flatpage/change_form.html:39
-msgid "History"
-msgstr ""
-
-#: templates/admin/flatpages/flatpage/change_form.html:40
-msgid "View on site"
-msgstr ""
-
-#: templates/admin/flatpages/flatpage/change_form.html:51
-msgid "Please correct the error below."
-msgid_plural "Please correct the errors below."
-msgstr[0] "Per favore, correggi il seguente errore"
-msgstr[1] "Per favore correggi i seguenti errori"
 
 #: templates/commons/comments.html:21
 #, python-format
@@ -61,10 +45,6 @@ msgstr "Rimuovi"
 msgid "Post"
 msgstr "Invia"
 
-#: templates/people/institution_detail.html:21
-msgid "charge type"
-msgstr "tipo carica"
-
 #: templates/people/institution_detail.html:22
 msgid "from"
 msgstr "dal"
@@ -73,16 +53,23 @@ msgstr "dal"
 msgid "to"
 msgstr "al"
 
-#: templates/registration/login.html:24 users/forms.py:56
+#: templates/registration/login.html:40 users/forms.py:65
 msgid "Username"
 msgstr ""
 
-#: templates/registration/login.html:30
+#: templates/registration/login.html:46
 msgid "Password"
 msgstr ""
 
-#: templates/registration/login.html:43
+#: templates/registration/login.html:59
 msgid "Log in"
 msgstr ""
 
+#: templates/registration/registration_form.html:46
+msgid "Send"
+msgstr "Invia"
+
+#: templates/registration/registration_form.html:47
+msgid "Cancel"
+msgstr "Annulla"
 

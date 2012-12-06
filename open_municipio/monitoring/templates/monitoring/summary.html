@@ -5,7 +5,7 @@
       {{ object.monitoring_users_count|default:'0'|circled }}
     </td>
     <td>
-      {% if user.is_authenticated and not user.get_profile.person %}
+      {% if not user.get_profile.person %}
         {% if is_user_monitoring %}
           <h4>Cittadini che monitorano {{ object_type }}, <br/> incluso te</h4>
           <form action="{% url om_monitoring_stop %}" method="post">{% csrf_token %}
@@ -31,7 +31,7 @@
         {{ object.monitoring_politicians|length|circled }}
       </td>
       <td>
-        {% if user.is_authenticated and user.get_profile.person %}
+        {% if user.get_profile.person %}
           {% if is_user_monitoring %}
             <h4>Politici che monitorano {{ object_type }}, <br/> incluso te</h4>
             <form action="{% url om_monitoring_stop %}" method="post">{% csrf_token %}
@@ -54,11 +54,9 @@
   {% endif %}
 </table>
 
-{% if user.is_authenticated %}
   {% comment %}Send Monitoring form with anchor link{% endcomment %}
   <script type="text/javascript">
     $(document).ready(function () {
       $('#monitoring-table form').submitLink();
     });
   </script>
-{% endif %}

@@ -1,11 +1,19 @@
 {% extends "registration/base_user.html" %}
 
-{% block title %}Account creato{% endblock %}
+{% block title %}Registrazione effettuata{% endblock %}
 
-{% block content_header %}Il tuo account è stato creato{% endblock %}
+{% block content_header %}Hai effettuato la registrazione{% endblock %}
 
 {% block content %}
-  <h3>Ora devi attivarlo!</h3>
-  <p>You must activate your account by clicking the URL that we just sent to the e-mail address you provided us.</p>
-  <p>Check your e-mail and we’ll see you shortly.</p>
+    <h2>Ora devi attivare il tuo account</h2>
+
+    <p>
+        Controlla la tua casella di posta, dovresti trovarci un'email con un indirizzo web da cliccare per attivare il tuo account.<br/>
+        Controlla tra le email indesiderate se non riesci a trovarla subito.
+    </p>
+    <p>Per qualsiasi problema, <a href="{% url om_contatti %}">contattaci</a>.</p>
+    <p>
+        Grazie,
+        lo staff di Open municipio.</p>
+    </p>
 {% endblock %}

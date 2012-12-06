@@ -46,7 +46,7 @@ class UserRegistrationForm(RegistrationFormUniqueEmail):
     image = forms.ImageField(required=False, label=_('Your image'),
                              help_text="L'immagine che scegli verrà ridimensionata nelle dimensioni di 100x100 pixel")
     tos = forms.BooleanField(widget=forms.CheckboxInput(attrs=attrs_dict),
-                             label=_(u'I have read and agree to the Terms of Service'),
+                             label=_(u'I have read and approve the Terms of Service'),
                              error_messages={'required': _("You must agree to the terms to register")})
     pri = forms.BooleanField(widget=forms.CheckboxInput(attrs=attrs_dict),
                              label=_(u'I have read and agree to the Privacy conditions'),
@@ -66,12 +66,15 @@ class SocialIntegrationForm(forms.Form):
                                 error_messages={'invalid': _("This value must contain only letters, numbers and underscores.")})
     uses_nickname = forms.BooleanField(widget=forms.CheckboxInput(attrs=attrs_dict),
                                        label=_(u'I want only my nickname to be publicly shown'),
+                                       help_text=u"Indica se preferisci che nel sito venga mostrato esclusivamente il tuo nome utente",
                                        required=False)
-    says_is_politician = forms.BooleanField(required=False, label=_('I am a politician'))
+    says_is_politician = forms.BooleanField(required=False, label=_('I am a politician'),
+                                            help_text=u"Segnala alla redazione che sei un politico del municipio, per avere accesso avanzato.")
     wants_newsletter = forms.BooleanField(required=False, label=_('Wants newsletter'))
-    location = forms.ModelChoiceField(required=False, queryset=Location.objects.all(), label=_('Location, if applicable'))
+    location = forms.ModelChoiceField(required=False, queryset=Location.objects.all(), label=_('Location, if applicable'),
+                                      help_text=u"Se sei cittadino di %s, scegli la zona della città in cui risiedi" % settings.SITE_INFO['main_city'])
     tos = forms.BooleanField(widget=forms.CheckboxInput(attrs=attrs_dict),
-                             label=_(u'I have read and agree to the Terms of Service'),
+                             label=_(u'I have read and approve the Terms of Service'),
                              error_messages={'required': _("You must agree to the terms to register")})
     pri = forms.BooleanField(widget=forms.CheckboxInput(attrs=attrs_dict),
                              label=_(u'I have read and agree to the Privacy conditions'),
@@ -92,7 +95,8 @@ class SocialIntegrationForm(forms.Form):
 
 class SocialTwitterIntegrationForm(SocialIntegrationForm):
     email = forms.EmailField(widget=forms.TextInput(attrs=dict(attrs_dict,maxlength=75)),
-                             label=_("E-mail"))
+                             label=_("E-mail"),
+                             help_text="Twitter non fornisce l'email della tua utenza, che ci è necessaria per comunicare con te. La tua email non verrà divulgata o pubblicata sul sito.")
 
 
 class ProfileSocialRegistrationForm(ModelForm):
@@ -110,7 +114,7 @@ class UserProfileForm(ModelForm):
     ``UserProfile`` model form: used by users to edit their own
     profiles.
     """
-    image = forms.ImageField(required=False, label=_('Your square image.'), widget=AdminImageWidget)
+    image = forms.ImageField(required=False, label=u"La tua immagine", widget=AdminImageWidget)
 
     class Meta:
         model = UserProfile

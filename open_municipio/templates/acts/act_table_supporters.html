@@ -8,10 +8,14 @@
         <ul class="people-list">
           {% for supporter in act_supporters %}
           <li>
-            <a href="{{ supporter.person.get_absolute_url }}">
-                {% thumbnail supporter.person.img "50x50" crop="center" as im %}
-                    <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
-                {% endthumbnail %}
+              <a href="{{ supporter.person.get_absolute_url }}">
+              {% if supporter.person.img %}
+                  {% thumbnail supporter.person.img "50x50" crop="center" as im %}
+                      <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" class="thumb-left politician-picture">
+                  {% endthumbnail %}
+              {% else %}
+                  <img src="{{ STATIC_URL }}img/placehold/face_50.png" width="50" height="50" class="thumb-left politician-picture">
+              {% endif %}
             </a>
 
             <div>

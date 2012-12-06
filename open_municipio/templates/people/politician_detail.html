@@ -166,10 +166,11 @@
         </div>
       </div>
     </section>
+
     <hr class="big">
 
       <section>
-        <h2>Voti nelle votazioni chiave {% popover_info 'votazioni-chiave' width="500px" %}</h2>
+        <h2>Ultimi voti chiave {% popover_info 'votazioni-chiave' width="500px" %}</h2>
         <table class="data">
           <thead>
           <tr>
@@ -204,7 +205,18 @@
           {% endfor %}
           </tbody>
         </table>
+        {% comment %}
         <p><i class="icon-play"></i> <a href="{% url om_votation_search %}?q=&person={{ person.slug }}&selected_facets=is_key:sì">Vedi tutti i voti chiave</a></p>
+        {% endcomment %}
+      </section>
+
+      <hr class="big">
+
+      <section>
+          <h2>Voti ribelli ({{ percentage_rebel_votations }}%)</h2>
+          <p>
+              Ha votato {{ current_counselor_charge.n_rebel_votations }} volte ({{ percentage_rebel_votations }}% sul totale dei voti cui era presente) <strong>diversamente dal proprio gruppo</strong> di appartenenza.
+          </p>
       </section>
 
       <hr class="big">

@@ -1,33 +1,63 @@
-{% extends "base_one_column.html" %}
+{% extends "registration/base_user.html" %}
 
-{% block title %}Form informazioni aggiuntive per registrazione{% endblock %}
+{% block title %}Completa la registrazione da social network{% endblock %}
+{% block content_header %}Completa la registrazione da social network{% endblock %}
 
 {% block content %}
-<p>Per iscriverti a Open Municipio, abbiamo bisogno di integrare queste informazioni
-forniteci da {{ backend_name|capfirst }}:</p>
-<ul>
-    {% if details.first_name %}
-        <li>Nome: {{ details.first_name }}</li>
-    {% endif %}
-    {% if details.last_name %}
-        <li>Cognome: {{ details.last_name }}</li>
-    {% endif %}
-    {% if details.username %}
-        <li>Utente: {{ details.username }}</li>
-    {% endif %}
-    {% if details.email %}
-        <li>Email: {{ details.email }}</li>
-    {% endif %}
-</ul>
-<p>con altri dati, che puoi inserire in questo momento:</p>
-{% if error %}
-    <p>{{ error }}</p>
-{% endif %}
-<form action="" method="post">
-    {% csrf_token %}
-    {{ social_form.as_p }}
-    <p><input type="submit" value="Invia" /></p>
-</form>
+    <div class="registration container">
+        <div class="row-fluid">
+            <div class="span6">
+                <p>Abbiamo ricevuto queste informazioni da {{ backend_name|capfirst }}:</p>
+                <ul class="unstyled">
+                    {% if details.first_name %}
+                        <li><b>Nome</b>: {{ details.first_name }}</li>
+                    {% endif %}
+                    {% if details.last_name %}
+                        <li><b>Cognome</b>: {{ details.last_name }}</li>
+                    {% endif %}
+                    {% if details.username %}
+                        <li><b>Utente</b>: {{ details.username }}</li>
+                    {% endif %}
+                    {% if details.email %}
+                        <li><b>Email</b>: {{ details.email }}</li>
+                    {% endif %}
+                </ul>
+                <br/><br/>
+                <p>Per poter completare la registrazione e permetterti l'accesso al sito,
+                abbiamo bisogno di alcuni altri dati, che puoi inviarci con il modulo qui sotto.</p>
+
+                <form action="" method="post" class="form" accept-charset="utf-8">
+                    {% csrf_token %}
+
+                    <div class="alert-error">
+                        {{ social_form.non_field_errors }}
+                    </div>
+
+                    <legend>Dati da integrare</legend>
+                    {% if social_form.email %}
+                        {% include "registration/form_element.html" with element=social_form.email %}
+                    {% endif %}
+                    {% include "registration/form_element.html" with element=social_form.location %}
+                    {% include "registration/form_element.html" with element=social_form.uses_nickname checkbox=1 %}
+                    {% include "registration/form_element.html" with element=social_form.says_is_politician checkbox=1 %}
+                    {% include "registration/form_element.html" with element=social_form.wants_newsletter checkbox=1 %}
+
+                    <div id="legal" class="alert">
+                        {% include "registration/form_element.html" with element=social_form.tos checkbox=1 %}
+                        {% include "registration/form_element.html" with element=social_form.pri checkbox=1 %}
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-info">Invia</button>
+                        {% comment %}
+                         <a href="/accounts/login/?next=/" class="btn">Annulla</a>
+                         {% endcomment %}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 
 {% endblock %}
 

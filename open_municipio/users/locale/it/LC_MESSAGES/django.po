@@ -43,7 +43,7 @@ msgid "Location, if applicable"
 msgstr "Località, se applicabile"
 
 #: forms.py:36 forms.py:61
-msgid "I have read and agree to the Terms of Service"
+msgid "I have read and approve the Terms of Service"
 msgstr "Ho letto e condivido il <a href=\"/regolamento\">regolamento</a> e le <a href=\"/condizioni\">condizioni d'uso</a> del sito"
 
 #: forms.py:37 forms.py:62
@@ -57,6 +57,10 @@ msgstr "Ho letto e condivido il testo sul <a href=\"/privacy\">trattamento dei d
 #: forms.py:40 forms.py:65
 msgid "You must agree to the conditions to register"
 msgstr "Devi approvare le condizioni per accedete"
+
+#: forms.py:46
+msgid "Your image"
+msgstr "La tua immagine"
 
 #: forms.py:52
 msgid "Username"

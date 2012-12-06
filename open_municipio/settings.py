@@ -216,6 +216,8 @@ SITE_INFO = {
     'site_version': u'Beta',
     'main_city_logo': 'img/city-logo/city-logo.png'
 }
+DEFAULT_FROM_EMAIL = "info@openmunicipio.it"
+
 
 ## settings for the ``open_municipio.om_comments`` app
 # Number of second within which users can delete their own comments
