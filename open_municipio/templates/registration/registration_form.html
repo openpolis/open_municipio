@@ -1,8 +1,7 @@
 {% extends "registration/base_user.html" %}
-{%  load i18n %}
+{% load i18n %}
 
 {% block title %}Registrazione al sito{% endblock %}
-
 {% block content_header %}Registrazione al sito{% endblock %}
 
 {% block content %}
@@ -16,7 +15,8 @@
                     </a>
                 </p>
 
-                <form enctype="multipart/form-data" action="" method="post" class="form-horizontal">{% csrf_token %}
+                <form enctype="multipart/form-data" action="" method="post" class="form-horizontal" accept-charset="utf-8">
+                    {% csrf_token %}
                     <div class="alert-error">
                         {{ form.non_field_errors }}
                     </div>

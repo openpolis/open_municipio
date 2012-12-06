@@ -110,7 +110,7 @@ class UserProfileForm(ModelForm):
     ``UserProfile`` model form: used by users to edit their own
     profiles.
     """
-    image = forms.ImageField(required=False, label=_('Your square image.'), widget=AdminImageWidget)
+    image = forms.ImageField(required=False, label=u"La tua immagine", widget=AdminImageWidget)
 
     class Meta:
         model = UserProfile

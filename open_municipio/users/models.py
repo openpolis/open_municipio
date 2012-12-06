@@ -1,3 +1,7 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.db.models import permalink
@@ -51,24 +55,30 @@ class UserProfile(NewsTargetMixin, models.Model):
     
     # the user wants to be identified through his nickname,
     # his name will never be shown publicly in the web site
-    uses_nickname = models.BooleanField(_('show my nickname, not my name'), default=False)
+    uses_nickname = models.BooleanField(_('show my nickname, not my name'), default=False,
+                                        help_text=u"Indica se preferisci che nel sito venga mostrato esclusivamente il tuo nome utente")
     
     # the user has declared to be a politician in the registration phase
     # this needs to be verified, before assigning the user to the *Politicians* group
     # and linking the user's profile to a Person instance
-    says_is_politician = models.BooleanField(_('i am a politician'), default=False)
+    says_is_politician = models.BooleanField(_('i am a politician'), default=False,
+                                             help_text=u"Segnala alla redazione che sei un politico del municipio, per avere accesso avanzato.")
+
     person = models.OneToOneField(Person, blank=True, null=True)
 
     # user's privacy options
     privacy_level = models.IntegerField(_('privacy level'), choices=PRIVACY_LEVELS, default=PRIVACY_LEVELS.none)
     
     # the user wants to receive newsletters (whatever that means)
-    wants_newsletter = models.BooleanField(_('wants newsletter'), default=False)
+    wants_newsletter = models.BooleanField(_('wants newsletter'), default=False,
+                                           help_text=u"Se sei cittadino di %s, scegli la zona della città in cui risiedi" % settings.SITE_INFO['main_city'])
     
-    location = models.ForeignKey(Location, blank=True, null=True, verbose_name=_('location'))
+    location = models.ForeignKey(Location, blank=True, null=True, verbose_name=_('location'),
+                                 help_text=u"Se sei cittadino di %s, scegli la zona della città in cui risiedi" % settings.SITE_INFO['main_city'])
 
     image = models.ImageField(upload_to="user_images/%Y%m", blank=True, null=True, max_length=255)
-    description = models.TextField(blank=True)
+    description = models.TextField(_('Description'), blank=True,
+                                   help_text=u"Una breve descrizione di te, che apparirà nel tuo profilo pubblico")
 
     class Meta:
         db_table = u'users_user_profile'
