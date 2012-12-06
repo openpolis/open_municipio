@@ -5691,16 +5691,16 @@ ul.typehead {
 .registration textarea {
   background-color: #F5F5F5;
 }
+.form .input-prepend .add-on,
 .form-horizontal .input-prepend .add-on {
   margin-top: 1px;
 }
+.form .help-block,
 .form-horizontal .help-block {
   color: #999999;
   margin-top: 2px;
 }
-.form-horizontal .alert {
-  padding: 18px 0 0 0;
-}
+.form .form-actions,
 .form-horizontal .form-actions {
   background-color: #f7f6f1;
 }

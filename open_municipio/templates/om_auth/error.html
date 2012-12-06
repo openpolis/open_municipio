@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 
-{% block heading %}Error!{% endblock %}
+{% block heading %}Errore{% endblock %}
 
 {% block content %}
 <div>
-  <p>Sorry but some error made you impossible to login.</p>
+  <p>Ci dispiace, ma un errore ha impedito il tuo accesso.</p>
 
   {% if messages %}
     {% for msg in messages %}
@@ -12,10 +12,10 @@
     {% endfor %}
   {% endif %}
   {% if error_msg %}
-    <p>Details:</p>
+    <p>Dettagli:</p>
     <p class="error">{{ error_msg }}</p>
   {% endif %}
 
-  <p>Please try again <a href="/">Home</a></p>
+  <p>Per favore, ritenta <a href="/">Home</a></p>
 </div>
 {% endblock %}
