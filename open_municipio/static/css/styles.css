@@ -135,7 +135,7 @@ textarea {
 body {
   margin: 0;
   font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 13px;
+  font-size: 14px;
   line-height: 17px;
   color: #000000;
   background-color: #ffffff;
@@ -325,11 +325,11 @@ a:hover {
 p {
   margin: 0 0 8.5px;
   font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 13px;
+  font-size: 14px;
   line-height: 17px;
 }
 p small {
-  font-size: 11px;
+  font-size: 12px;
   color: #999999;
 }
 .lead {
@@ -530,7 +530,7 @@ code,
 pre {
   padding: 0 3px 2px;
   font-family: Menlo, Monaco, "Courier New", monospace;
-  font-size: 12px;
+  font-size: 13px;
   color: #333333;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
@@ -546,7 +546,7 @@ pre {
   display: block;
   padding: 8px;
   margin: 0 0 8.5px;
-  font-size: 12.025px;
+  font-size: 12.950000000000001px;
   line-height: 17px;
   background-color: #f5f5f5;
   border: 1px solid #ccc;
@@ -585,7 +585,7 @@ legend {
   width: 100%;
   padding: 0;
   margin-bottom: 25.5px;
-  font-size: 19.5px;
+  font-size: 21px;
   line-height: 34px;
   color: #333333;
   border: 0;
@@ -600,7 +600,7 @@ input,
 button,
 select,
 textarea {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: normal;
   line-height: 17px;
 }
@@ -624,7 +624,7 @@ select,
   height: 17px;
   padding: 4px;
   margin-bottom: 9px;
-  font-size: 13px;
+  font-size: 14px;
   line-height: 17px;
   color: #555555;
   border: 1px solid #cccccc;
@@ -2122,7 +2122,7 @@ li[class*=" icon-"].icon-large:before {
   *zoom: 1;
   padding: 4px 10px 4px;
   margin-bottom: 0;
-  font-size: 13px;
+  font-size: 14px;
   line-height: 17px;
   color: #333333;
   text-align: center;
@@ -2204,7 +2204,7 @@ li[class*=" icon-"].icon-large:before {
 }
 .btn-large {
   padding: 9px 14px;
-  font-size: 15px;
+  font-size: 16px;
   line-height: normal;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
@@ -2215,7 +2215,7 @@ li[class*=" icon-"].icon-large:before {
 }
 .btn-small {
   padding: 5px 9px;
-  font-size: 11px;
+  font-size: 12px;
   line-height: 15px;
 }
 .btn-small [class^="icon-"] {
@@ -2223,7 +2223,7 @@ li[class*=" icon-"].icon-large:before {
 }
 .btn-mini {
   padding: 2px 6px;
-  font-size: 11px;
+  font-size: 12px;
   line-height: 13px;
 }
 .btn-primary,
@@ -3701,7 +3701,7 @@ a.thumbnail:hover {
 }
 .label {
   padding: 1px 4px 2px;
-  font-size: 10.998px;
+  font-size: 11.844px;
   font-weight: bold;
   line-height: 13px;
   color: #ffffff;
@@ -3759,7 +3759,7 @@ a.thumbnail:hover {
 }
 .badge {
   padding: 1px 9px 2px;
-  font-size: 12.025px;
+  font-size: 12.950000000000001px;
   font-weight: bold;
   white-space: nowrap;
   color: #ffffff;
@@ -4320,14 +4320,15 @@ body footer .logos {
   padding: 8px;
 }
 #navbar-top .navbar-inner .nav a {
-  color: #000000;
+  color: #285698;
   padding: 0;
   text-transform: uppercase;
   font-weight: bold;
 }
 #navbar-top .navbar-inner .nav a:hover {
-  color: #000000;
+  color: #4788c2;
   background-color: transparent;
+  text-decoration: underline;
 }
 #navbar-top .navbar-inner .nav .active > a {
   color: #000000;
@@ -4513,7 +4514,7 @@ body.homepage article table.items-list tr:last-child {
 .taxonomy-cloud dt,
 .taxonomy-cloud li {
   padding: 1px 4px 2px;
-  font-size: 10.998px;
+  font-size: 11.844px;
   font-weight: bold;
   line-height: 13px;
   color: #ffffff;

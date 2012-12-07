@@ -12,7 +12,7 @@
   <ul class="comments-list">
     {% for comment in comment_list %}
       <li{% if user.is_authenticated and user.get_profile.person %} class="bg-highlight"{% endif %}>
-        <a href="{% url users_user_detail comment.user.username %}">
+        <a href="{% url profiles_profile_detail comment.user.username %}">
           <img src="{{ STATIC_URL }}img/placehold/50.gif" />
         </a>
 
@@ -25,7 +25,7 @@
           {% endif %}
 
           <p>
-            <a href="{% url users_user_detail comment.user.username %}">{{ comment.user.username|capfirst }}</a>
+            <a href="{% url profiles_profile_detail comment.user.username %}">{{ comment.user.username|capfirst }}</a>
             {{ comment.comment }}
           </p>
 

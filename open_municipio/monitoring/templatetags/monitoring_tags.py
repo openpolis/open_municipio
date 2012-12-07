@@ -25,7 +25,8 @@ def object_monitoring(context, object, show_politicians=True):
         'object_type': object_type,
         'user': context['user'],
         'is_user_monitoring': False,
-        'show_politicians': show_politicians
+        'show_politicians': show_politicians,
+        'login_url_with_redirect': context['login_url'],
     }
     # is the user monitoring the act?
     try:
@@ -52,7 +53,8 @@ def object_inline_monitoring(context, object, shows_monitoring_users=True):
         'object': object,
         'shows_monitoring_users': shows_monitoring_users,
         'user': context['user'],
-        'is_user_monitoring': False
+        'is_user_monitoring': False,
+        'login_url_with_redirect': context['login_url'],
     }
     # is the user monitoring the act?
     try:

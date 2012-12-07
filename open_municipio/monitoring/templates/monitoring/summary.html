@@ -15,10 +15,14 @@
         {% else %}
           <h4>Cittadini che monitorano {{ object_type }}</h4>
           <i class="icon-plus-sign"></i>
-          <form action="{% url om_monitoring_start %}" method="post">{% csrf_token %}
-            {{ monitoring_form }}
-            <button type="submit" class="btn btn-info btn-mini">Monitora</button>
-          </form>
+            {% if user.is_authenticated %}
+                <form action="{% url om_monitoring_start %}" method="post">{% csrf_token %}
+                    {{ monitoring_form }}
+                    <button type="submit" class="btn btn-info btn-mini">Monitora</button>
+                </form>
+            {% else %}
+                <a href="{{ login_url_with_redirect }}">accedi</a> per monitorare
+            {% endif %}
         {% endif %}
       {% else %}
         <h4>Cittadini che monitorano {{ object_type }}</h4>
@@ -41,10 +45,14 @@
           {% else %}
             <h4>Politici che monitorano {{ object_type }}</h4>
             <i class="icon-plus-sign"></i>
-            <form action="{% url om_monitoring_start %}" method="post">{% csrf_token %}
-              {{ monitoring_form }}
-              <button type="submit" class="btn btn-info btn-mini">Monitora</button>
-            </form>
+            {% if user.is_authenticated %}
+                <form action="{% url om_monitoring_start %}" method="post">{% csrf_token %}
+                    {{ monitoring_form }}
+                    <button type="submit" class="btn btn-info btn-mini">Monitora</button>
+                </form>
+            {% else %}
+                <a href="{{ login_url_with_redirect }}">accedi</a> per monitorare
+            {% endif %}
           {% endif %}
         {% else %}
           <h4>Politici che monitorano {{ object_type }}</h4>

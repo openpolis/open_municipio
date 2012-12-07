@@ -147,16 +147,18 @@ def new_monitoring(**kwargs):
 
         # two news are generated
 
-        # first news related to the monitored object, with priority 3
+        # first news related to the monitored object, with priority 1 (home)
+        # User X has started to monitor item Y
         News.objects.create(
             generating_object=generating_item, related_object=monitored_object,
-            priority=3, news_type=News.NEWS_TYPE.community,
+            priority=1, news_type=News.NEWS_TYPE.community,
             text=News.get_text_for_news(ctx, 'newscache/object_monitored.html')
         )
-        # second news related to the monitoring user, with priority 2
+        # second news related to the monitoring user, with priority 3 (user's page)
+        # This user has started to monitor item Y
         News.objects.create(
             generating_object=generating_item, related_object=monitoring_user,
-            priority=2, news_type=News.NEWS_TYPE.community,
+            priority=3, news_type=News.NEWS_TYPE.community,
             text=News.get_text_for_news(ctx, 'newscache/user_monitoring.html')
         )
 
@@ -183,7 +185,7 @@ def remove_monitoring(**kwargs):
         ).delete()
 
     if monitoring_user:
-        # remove news related to the monitoring user, with priority 2
+        # remove news related to the monitoring user
         News.objects.filter(
             generating_content_type=ContentType.objects.get_for_model(generating_item),
             generating_object_pk = generating_item.pk,
