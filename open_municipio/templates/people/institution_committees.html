@@ -1,5 +1,7 @@
 {% extends 'base_two_columns.html' %}
 
+{% load popover_info %}
+
 {% block title %}Organi politici | Commissioni{% endblock title %}
 {% block content_header %}Organi politici{% endblock %}
 {% block institutions_class %}active{% endblock %}
@@ -16,7 +18,7 @@
 {% endblock %}
 
 {% block content %}
-    <h2>Commissioni</h2>
+    <h2>Commissioni {% popover_info 'commissioni-del-consiglio' %}</h2>
     <div class="party-people">
         <div class="row-fluid">
             <div class="span12">

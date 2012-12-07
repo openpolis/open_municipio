@@ -1,6 +1,7 @@
 {% extends 'base_two_columns.html' %}
 {% load monitoring_tags %}
 {% load thumbnail %}
+{% load popover_info %}
 
 {% block title %}Politici | Giunta{% endblock title %}
 {% block content_header %}Giunta{% endblock %}
@@ -23,7 +24,7 @@
 
   <section class="row-fluid">
 
-      <h2>Giunta</h2>
+      <h2>Giunta {% popover_info 'giunta-comunale' %}</h2>
 
       <table id="giunta" class="data dataTable">
           <thead>

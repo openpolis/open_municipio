@@ -2,6 +2,7 @@
 
 {% load newscache_tags %}
 {% load monitoring_tags %}
+{% load popover_info %}
 
 {% block title %}Argomento {{ topic }}{% endblock title %}
 {% block content_header %}Argomento{% endblock %}
@@ -127,7 +128,7 @@
 
   <hr>
 
-  <section><h2>Monitora</h2>
+  <section><h2>Monitora {% popover_info 'monitoraggio' 'left' %}</h2>
     {% object_monitoring topic %}
     {% comment %}{% include 'monitoring/summary.html' with object=topic show_politicians=0 %}{% endcomment %}
   </section>
@@ -136,7 +137,7 @@
 
   {% if subtopics %}
   <section>
-      <h2>Altri argomenti in {{ topic|title }}</h2>
+      <h2>Altri argomenti in {{ topic|title }} {% popover_info 'altri-argomenti' 'left' %}</h2>
 
       <dl class="taxonomy-cloud">
           {% for tag in subtopics %}

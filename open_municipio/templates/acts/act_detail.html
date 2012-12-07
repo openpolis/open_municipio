@@ -148,13 +148,13 @@
     {% endif %}
 
     <section>
-        <h3>Argomenti dell'atto
+        <h2>Argomenti dell'atto {% popover_info 'argomenti' 'left' %}
         {% if topics %}
             <a href="#" id="cteditor-launcher" class="label label-info">
                 <i class="icon-edit icon-white"></i> Edit
             </a>
         {% endif %}
-    </h3>
+        </h3>
 
     <dl class="taxonomy-cloud">
       {% regroup act.topics by category as categorized_topics %}
@@ -207,7 +207,7 @@
   <hr>
 
   <section>
-    <h3>Monitora</h3>
+    <h2>Monitora {% popover_info 'monitora' 'left' %}</h2>
     {% load monitoring_tags %}
     {% object_monitoring act 1 %}
   </section>
@@ -215,7 +215,7 @@
   <hr>
 
   <section>
-    <h3>Vota</h3>
+    <h2>Vota</h2>
     {% include "acts/act_vote_block.html" %}
   </section>
 

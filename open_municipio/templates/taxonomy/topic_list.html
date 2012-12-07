@@ -1,5 +1,5 @@
 {% extends 'base_two_columns.html' %}
-
+{% load popover_info %}
 {% load monitoring_tags %}
 {% load tags_cloud %}
 
@@ -64,7 +64,7 @@
 
   <hr>
 
-  <h2>Peso degli argomenti negli atti</h2>
+  <h2>Peso degli argomenti negli atti {% popover_info 'peso-degli-argomenti' %}</h2>
 
   {% tags_cloud tags_to_cloud %}
 
@@ -72,7 +72,7 @@
 
 {% block sidebar %}
 
-  <h2>Argomenti più monitorati</h2>
+  <h2>Argomenti più monitorati {% popover_info 'argomenti-piu-monitorati' 'left' %}</h2>
 
   <ul class="topics-list">
     {% for tag in top_monitorized_tags %}

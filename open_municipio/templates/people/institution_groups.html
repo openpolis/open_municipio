@@ -1,5 +1,5 @@
 {% extends 'base_two_columns.html' %}
-
+{% load popover_info %}
 {% block title %}Politici | Gruppi{% endblock title %}
 {% block content_header %}Politici{% endblock %}
 {% block people_class %}class="active"{% endblock %}
@@ -14,7 +14,7 @@
 {% endblock %}
 
 {% block content %}
-    <h2>Gruppi</h2>
+    <h2>Gruppi {% popover_info 'gruppi-del-consiglio' %}</h2>
     <div class="party-people">
         <div class="row-fluid">
             <div class="span12">

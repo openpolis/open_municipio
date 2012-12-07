@@ -2,6 +2,8 @@
 {% load monitoring_tags %}
 {% load tags_cloud %}
 {% load om_utils %}
+{% load popover_info %}
+
 
 {% block title %}Home page{% endblock %}
 {% block body_class %}homepage{% endblock %}
@@ -39,7 +41,7 @@
        <div class="container-fluid">
            <div class="row-fluid">
                <div class="span12">
-                   <h2>Cosa succede in comune</h2>
+                   <h2>Cosa succede in comune {% popover_info 'agenda' %}</h2>
                    <div class="row-fluid">
                        {% for event in events %}
                            <div class="span6">{% include 'events/_inline_home.html' %}</div>
@@ -151,7 +153,7 @@
 
       <div class="row-fluid">
           <div class="span6">
-              <h2>Atti in evidenza</h2>
+              <h2>Atti in evidenza {% popover_info 'atti-chiave' %}</h2>
               <table class="items-list">
                   <tbody>
                   {% for a in key_acts %}
@@ -169,7 +171,7 @@
           </div>
 
           <div class="span6">
-              <h2>Ultimi voti chiave</h2>
+              <h2>Ultimi voti chiave {% popover_info 'voti-chiave' %}</h2>
               <table class="items-list">
                   <tbody>
                   {% for v in key_votations %}
@@ -186,7 +188,7 @@
 
       <div class="row-fluid">
           <div class="span12">
-              <h2>Argomenti più discussi</h2>
+              <h2>Argomenti più discussi {% popover_info 'argomenti-piu-discussi' %}</h2>
               {% tags_cloud tags_to_cloud %}
           </div>
       </div>

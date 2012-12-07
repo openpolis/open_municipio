@@ -170,7 +170,7 @@
     <hr class="big">
 
       <section>
-        <h2>Ultimi voti chiave {% popover_info 'votazioni-chiave' width="500px" %}</h2>
+        <h2>Ultimi voti chiave {% popover_info 'voti-chiave' %}</h2>
         <table class="data">
           <thead>
           <tr>
@@ -213,7 +213,7 @@
       <hr class="big">
 
       <section>
-          <h2>Voti ribelli ({{ percentage_rebel_votations }}%)</h2>
+          <h2>Voti ribelli ({{ percentage_rebel_votations }}%) {% popover_info 'voti-ribelli' %}</h2>
           <p>
               Ha votato {{ current_counselor_charge.n_rebel_votations }} volte ({{ percentage_rebel_votations }}% sul totale dei voti cui era presente) <strong>diversamente dal proprio gruppo</strong> di appartenenza.
           </p>
@@ -225,7 +225,7 @@
 
   {% if n_presented_acts %}
       <section>
-          <h2>Atti su cui lavora ({{ n_presented_acts }}) {% popover_info 'atti-su-cui-lavora'  width="500px" %}</h2>
+          <h2>Atti su cui lavora ({{ n_presented_acts }}) {% popover_info 'atti-su-cui-lavora' %}</h2>
 
           <table class="data">
               <thead>
@@ -276,7 +276,7 @@
       {% share person %}
   </section>
 
-  <section><h3>Monitora {% popover_info 'monitora-politico'  'left' %}</h3>
+  <section><h3>Monitora {% popover_info 'monitora' 'left' %}</h3>
       {% object_monitoring person %}
   </section>
 

@@ -3,6 +3,7 @@
 {% load om_utils %}
 {% load monitoring_tags %}
 {% load thumbnail %}
+{% load popover_info %}
 
 
 {% block title %}Organi politici | Consiglio{% endblock title %}
@@ -23,7 +24,7 @@
 
   <section class="row-fluid">
 
-    <h2>Consiglio</h2>
+    <h2>Consiglio {% popover_info 'consiglio-comunale' %}</h2>
     <p>
         I dati si riferiscono alle votazioni svolte in Consiglio.<br/>
         Non vengono calcolate le presenze alle sedute né se l'assenza abbia motivazioni politiche.
