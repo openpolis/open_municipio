@@ -44,7 +44,7 @@ class HomeView(TemplateView):
             filter(actsupport__support_type=ActSupport.SUPPORT_TYPE.first_signer).distinct().\
             order_by('-actsupport__support_date')[0:3]
 
-        news = News.objects.filter(news_type=News.NEWS_TYPE.community)
+        news = News.objects.filter(news_type=News.NEWS_TYPE.community, priority=1)
         context['last_community_news'] = sorted(news, key=lambda n: n.news_date, reverse=True)[0:3]
 
         context['key_acts'] = Act.objects.filter(is_key=True).order_by('-presentation_date')[0:3]
