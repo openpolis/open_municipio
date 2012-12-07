@@ -2,14 +2,13 @@ from django.conf import settings
 from django.contrib.sites.models import Site
 from django.db.models import Q, Count
 from django.http import Http404, HttpResponseRedirect, HttpResponse
-from django.views.generic import TemplateView, DetailView, ListView, RedirectView, View
+from django.views.generic import TemplateView, DetailView, ListView, RedirectView
 from django.core.exceptions import ObjectDoesNotExist
 
-from open_municipio.people.models import Institution, InstitutionCharge, Person, municipality, InstitutionResponsability, Resource, GroupCharge, Group
+from open_municipio.people.models import Institution, InstitutionCharge, Person, municipality, InstitutionResponsability, Group
 from open_municipio.monitoring.forms import MonitoringForm
 from open_municipio.acts.models import Act, Deliberation, Interrogation, Interpellation, Motion, Agenda, ActSupport
 from open_municipio.events.models import Event
-from open_municipio.votations.models import ChargeVote, Votation
 
 from django.core import serializers
 
@@ -54,8 +53,8 @@ class PoliticianSearchView(ListView):
                 try:
                     img = get_thumbnail("http://%s/media/%s" % (current_site, person.img), "50x50", crop="center", quality=99)
                     person.img = img.url
-                except:
-                    person.img = "http://%s/static/img/placehold/face_50.png" % (current_site,)
+                except BaseException as e:
+                    person.img = "http://%s/static/img/placehold/face_50.png#%s" % (current_site, e)
 
                 persons.append(person)
 
