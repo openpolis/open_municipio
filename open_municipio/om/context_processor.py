@@ -10,4 +10,5 @@ def defaults(request):
         'DEBUG': settings.DEBUG,
         'TEMPLATE_DEBUG': settings.TEMPLATE_DEBUG,
         'IS_DEMO': settings.IS_DEMO,
+        'GOOGLE_ANALYTICS': settings.WEB_SERVICES['google_analytics'],
     }
