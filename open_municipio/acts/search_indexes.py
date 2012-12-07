@@ -28,23 +28,23 @@ class ActIndex(indexes.SearchIndex, indexes.Indexable):
 
     def prepare_tags_with_urls(self, obj):
         d_obj = obj.downcast()
-        return ["%s|%s" % (t.name, t.get_absolute_url()) for t in list(d_obj.tags)]
+        return ["%s|%s" % (t.name, t.get_absolute_url()) for t in list(d_obj.tags)] if d_obj else None
 
     def prepare_categories_with_urls(self, obj):
         d_obj = obj.downcast()
-        return ["%s|%s" % (t.name, t.get_absolute_url()) for t in list(d_obj.categories)]
+        return ["%s|%s" % (t.name, t.get_absolute_url()) for t in list(d_obj.categories)] if d_obj else None
 
     def prepare_locations_with_urls(self, obj):
         d_obj = obj.downcast()
-        return ["%s|%s" % (t.name, t.get_absolute_url()) for t in list(d_obj.locations)]
+        return ["%s|%s" % (t.name, t.get_absolute_url()) for t in list(d_obj.locations)] if d_obj else None
     
     def prepare_act_type(self, obj):
         activate(settings.LANGUAGE_CODE)
-        return obj.get_type_name()
+        return obj.get_type_name() if obj else None
 
     def prepare_initiative(self, obj):
         if obj.get_type_name() == 'delibera':
-            return obj.downcast().get_initiative_display().lower()
+            return obj.downcast().get_initiative_display().lower() if obj.downcast() else None
         else:
             return ''
 
@@ -67,5 +67,5 @@ class ActIndex(indexes.SearchIndex, indexes.Indexable):
 
 
     def prepare_url(self, obj):
-        return obj.downcast().get_absolute_url()
+        return obj.downcast().get_absolute_url() if obj.downcast() else None
 

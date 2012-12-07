@@ -4161,8 +4161,11 @@ body #sidebar {
   padding-bottom: 20px;
   position: relative;
 }
-body #sidebar h3 {
+body #sidebar h2 {
   font-size: 19px;
+}
+body #sidebar h3 {
+  font-size: 16px;
   margin-bottom: 10px;
 }
 body #sidebar ul.list-simple {
@@ -4216,13 +4219,13 @@ body #content hgroup h4 {
   font-weight: normal;
 }
 body #content h2 {
-  font-size: 18px;
+  font-size: 19px;
 }
 body #content h3 {
-  font-size: 14px;
+  font-size: 16px;
 }
 body #content h4 {
-  font-size: 13px;
+  font-size: 14px;
 }
 body #content > section {
   margin: 20px 0;
@@ -4412,7 +4415,7 @@ body footer .logos {
 }
 body.homepage h2,
 footer h2 {
-  font-size: 30px;
+  font-size: 28px;
   padding-bottom: 5px;
   font-weight: 100;
 }

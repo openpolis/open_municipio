@@ -85,7 +85,7 @@
     <hr>
   {% endcomment %}
 
-  <h3>Ultimi iscritti {% popover_info 'ultimi-iscritti' 'left' %}</h3>
+  <h2>Ultimi iscritti {% popover_info 'ultimi-iscritti' 'left' %}</h2>
   {% for obj in object_list %}
       <a href="{{ obj.get_absolute_url }}">{{ obj.user.username }}</a>
       {% if not forloop.last %},{% endif %}

@@ -27,7 +27,7 @@ class VotationIndex(indexes.SearchIndex, indexes.Indexable):
     votation_n_abst = indexes.IntegerField(indexed=False, stored=True, model_attr='n_abst')
     votation_n_maj = indexes.IntegerField(indexed=False, stored=True, model_attr='n_maj')
     votation_n_rebels = indexes.IntegerField(indexed=False, stored=True, model_attr='n_rebels')
-    votation_outcome = indexes.CharField(indexed=False, stored=True, model_attr='outcome', default='')
+    votation_outcome = indexes.CharField(indexed=False, stored=True, default='')
 
     # needed to filter votations by person
     person = indexes.MultiValueField(indexed=True, stored=False)
@@ -46,6 +46,9 @@ class VotationIndex(indexes.SearchIndex, indexes.Indexable):
     def prepare_act_url(self, obj):
         if obj.act:
             return obj.act.downcast().get_absolute_url()
+
+    def prepare_votation_outcome(self, obj):
+        return obj.get_outcome_display()
 
     def prepare_person(self, obj):
         return set(

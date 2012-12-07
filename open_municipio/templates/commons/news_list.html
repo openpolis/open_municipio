@@ -1,8 +1,8 @@
 <section>
-  <h3>
+  <h2>
     {{ news_title|default:'Ultime novità' }}
     {% comment %}<img src="{{ STATIC_URL }}img/feed-icon-14x14.png" alt="" />{% endcomment %}
-  </h3>
+  </h2>
 
   <ul class="feed-list">
     {% for n in news_list %}
