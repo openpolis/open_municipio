@@ -4278,7 +4278,7 @@ a {
   margin-top: -20px;
   padding-top: 20px;
 }
-#wrapper > article aside  > * {
+#wrapper > article aside > * {
   padding-left: 15px;
   padding-right: 15px;
 }
@@ -4337,4 +4337,21 @@ table#price-table.table tbody td {
 }
 table#price-table.table tbody tr td:first-child {
   text-align: left;
+}
+#sub-footer {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  background-color: #E4E3DE;
+}
+#sub-footer ul {
+  text-align: center;
+  margin: 0;
+}
+#sub-footer ul li {
+  display: inline-block;
+  border-left: 1px solid #ccc;
+}
+#sub-footer ul li:first-child {
+  display: inline-block;
+  border-left: 0;
 }
