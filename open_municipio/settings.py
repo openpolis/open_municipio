@@ -22,7 +22,7 @@ PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 REPO_ROOT = os.path.abspath(os.path.dirname(PROJECT_ROOT))
 VERSION = __version__ = file(os.path.join(PROJECT_ROOT, 'VERSION')).read().strip()
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -159,7 +159,7 @@ AUTHENTICATION_BACKENDS = (
 # ``django-social-auth`` settings
 FACEBOOK_EXTENDED_PERMISSIONS = ['email']
 
-LOGIN_URL          = '/login/'
+LOGIN_URL          = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/'
 LOGIN_ERROR_URL    = '/login-error/'
 
@@ -186,6 +186,8 @@ SOCIAL_AUTH_PIPELINE = (
     'social_auth.backends.pipeline.user.update_user_details',
 )
 
+
+
 # ``django-registration`` settings
 ACCOUNT_ACTIVATION_DAYS = 7 # Activation window
 REGISTRATION_AUTO_LOGIN = True
@@ -195,14 +197,6 @@ AUTH_PROFILE_MODULE = 'users.UserProfile'
 
 # comments settings
 COMMENTS_APP = 'open_municipio.om_comments'
-
-# external web services configuration
-WEB_SERVICES = {
-    'google_analytics': { 'code' : 'UA-XXXXXX-YY' },
-    'facebook' :        { 'code' : '1234567890' },
-    'twitter' : {},
-    'google_plus': {},
-}
 
 ## settings for the ``open_municipio.bookmarking`` app
 # CSS class used to mark DOM elements associated with bookmarked (key) objects 
@@ -217,6 +211,9 @@ SITE_INFO = {
     'main_city_logo': 'img/city-logo/city-logo.png'
 }
 DEFAULT_FROM_EMAIL = "info@openmunicipio.it"
+
+# Make this unique, and don't share it with anybody.
+SECRET_KEY = 'unique-secret-key-has-been-changed-in-instance-settings'
 
 
 ## settings for the ``open_municipio.om_comments`` app
