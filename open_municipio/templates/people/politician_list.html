@@ -102,21 +102,6 @@
     <div class="row-fluid">
 
         <div class="span6">
-            <h2>I consiglieri più disciplinati</h2>
-            <p>
-                Sono i Consiglieri che votano più spesso come la maggioranza del Gruppo di appartenenza.
-            </p>
-            <ul class="people-list">
-                {% for politician in most_trustworthy %}
-                    <li>
-                        {% include 'people/politician_list_section.html' with value=politician.n_rebel_votations what='ribellioni' %}
-                        {% object_inline_monitoring politician.person %}
-                    </li>
-                {% endfor %}
-            </ul>
-        </div>
-
-        <div class="span6">
             <h2>I consiglieri più ribelli</h2>
             <p>
                 Sono i Consiglieri che votano più spesso diversamente dalla maggioranza del Gruppo di appartenenza.
