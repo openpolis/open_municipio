@@ -64,10 +64,10 @@ class ChargeSeekerMixin:
                                       (ds_charge_id, institution, person, charge))
                     return charge
                 except ObjectDoesNotExist:
-                    self.logger.warning("could not find person or charge for id = %s (%s) in OM DB. Skipping." % (ds_charge_id, institution))
+                    self.logger.warning("could not find person or charge for id = %s (om_id=%s) (%s) in OM DB. Skipping." % (ds_charge_id, om_id, institution))
                     return None
                 except MultipleObjectsReturned:
-                    self.logger.error("found more than one person or charge for id %s (%s) in OM DB. Skipping." % (ds_charge_id, institution))
+                    self.logger.error("found more than one person or charge for id %s (om_id=%s) (%s) in OM DB. Skipping." % (ds_charge_id, om_id, institution))
                     return None
             else:
                 self.logger.warning("could not find person for id %s in people XML file. Skipping." % ds_charge_id)
