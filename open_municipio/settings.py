@@ -83,7 +83,7 @@ MIDDLEWARE_CLASSES = (
 )
 
 # Root URLconf module for staging servers
-ROOT_URLCONF = 'open_municipio.urls_local'
+ROOT_URLCONF = 'open_municipio.urls'
 
 
 TEMPLATE_DIRS = (
