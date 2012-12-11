@@ -762,4 +762,7 @@
   #wrapper > article aside {
     margin-top: 10px;
   }
+  #wrapper #sub-footer ul li {
+    border: 0;
+  }
 }
