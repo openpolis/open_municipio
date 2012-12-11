@@ -52,7 +52,8 @@ def login_form(request):
     if request.method == 'POST':
         social_form = IntegrationForm(request.POST)
         if social_form.is_valid():
-            request.session['saved_username'] = social_form.cleaned_data['username']
+            if 'email' in social_form.cleaned_data:
+                request.session['saved_email'] = social_form.cleaned_data['email']
             request.session['saved_location'] = social_form.cleaned_data['location']
             request.session['saved_says_is_politician'] = social_form.cleaned_data['says_is_politician']
             request.session['saved_uses_nickname'] = social_form.cleaned_data['uses_nickname']

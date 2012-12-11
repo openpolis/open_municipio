@@ -59,11 +59,6 @@ class SocialIntegrationForm(forms.Form):
     ``User`` model form for social registration: collecting
     some extra data not provided by social networks.
     """
-    username = forms.RegexField(regex=r'^[\w.@+-]+$',
-                                max_length=30,
-                                widget=forms.TextInput(attrs=attrs_dict),
-                                label=_("Username"),
-                                error_messages={'invalid': _("This value must contain only letters, numbers and underscores.")})
     uses_nickname = forms.BooleanField(widget=forms.CheckboxInput(attrs=attrs_dict),
                                        label=_(u'I want only my nickname to be publicly shown'),
                                        help_text=u"Indica se preferisci che nel sito venga mostrato esclusivamente il tuo nome utente",

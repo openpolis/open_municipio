@@ -11,35 +11,35 @@ pipeline. Pipeline is the series of steps users walk through to log in
 on OpenMunicipio with their social accounts.
 """
 
-def redirect_to_form(*args, **kwargs):
+def redirect_to_form(request, details, *args, **kwargs):
     """
     Non-registered users will be prompted a few questions so that
-    their OpenMunicipio account is created.
+    their OpenMunicipio profile may be created.
     """
-    if not kwargs['request'].session.get('saved_username') and \
+    if 'saved_location' not in request.session and \
        kwargs.get('user') is None:
         return HttpResponseRedirect(reverse('login-form'))
 
 
-def extra_data(request, *args, **kwargs):
+def extra_data(request, details, *args, **kwargs):
     """
     Extra data we need to collect to populate user's profile.
     """
     if kwargs.get('user'):
-        username = kwargs['user'].username
+        email = kwargs['user'].email
         profile = kwargs['user'].get_profile()
         wants_newsletter = profile.wants_newsletter
         says_is_politician = profile.says_is_politician
         uses_nickname = profile.uses_nickname
         location = profile.location
     else:
-        username = request.session.get('saved_username')
+        email = request.session.get('saved_email', details['email'])
         wants_newsletter = request.session.get('saved_wants_newsletter')
         says_is_politician = request.session.get('saved_says_is_politician')
         uses_nickname = request.session.get('saved_uses_nickname')
         location = request.session.get('saved_location')
     return {
-        'username': username,
+        'email': email,
         'wants_newsletter': wants_newsletter,
         'says_is_politician': says_is_politician,
         'uses_nickname': uses_nickname,
@@ -47,7 +47,7 @@ def extra_data(request, *args, **kwargs):
         }
 
 
-def create_profile(request, user, response, details, is_new=False, *args, **kwargs):
+def create_profile(request, user, is_new=False, *args, **kwargs):
     """
     Once the user account is created, a profile must be created
     too. (User accounts are Django built-in. Profile is the place we
@@ -65,3 +65,12 @@ def create_profile(request, user, response, details, is_new=False, *args, **kwar
                 'uses_nickname': uses_nickname,
                 })
         profile.save()
+
+def update_email(backend, request, user, *args, **kwargs):
+    """
+    Save email address specified in the integration form (twitter)
+    """
+    if request.session.get('saved_email', '') and \
+       user.email != request.session.get('saved_email'):
+        user.email = request.session.get('saved_email')
+        user.save()

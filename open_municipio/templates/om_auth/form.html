@@ -23,8 +23,15 @@
                     {% endif %}
                 </ul>
                 <br/><br/>
+
+                {% if social_form.errors %}
+                    <div id="form-error" class="alert alert-error">
+                        <p>Ci sono degli errori. Controlla il modulo e ritenta l'invio.</p>
+                    </div>
+                {% endif %}
+
                 <p>Per poter completare la registrazione e permetterti l'accesso al sito,
-                abbiamo bisogno di alcuni altri dati, che puoi inviarci con il modulo qui sotto.</p>
+                    abbiamo bisogno di alcuni altri dati, che puoi inviarci con il modulo qui sotto.</p>
 
                 <form action="" method="post" class="form" accept-charset="utf-8">
                     {% csrf_token %}
@@ -48,10 +55,7 @@
                     </div>
 
                     <div class="form-actions">
-                        <button type="submit" class="btn btn-info">Invia</button>
-                        {% comment %}
-                         <a href="/accounts/login/?next=/" class="btn">Annulla</a>
-                         {% endcomment %}
+                        <button id="submit-btn" type="submit" class="btn btn-info">Invia</button>
                     </div>
                 </form>
             </div>
