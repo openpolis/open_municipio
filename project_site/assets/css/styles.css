@@ -4278,7 +4278,7 @@ a {
   margin-top: -20px;
   padding-top: 20px;
 }
-#wrapper > article aside > * {
+#wrapper > article aside  > * {
   padding-left: 15px;
   padding-right: 15px;
 }
@@ -4342,6 +4342,8 @@ table#price-table.table tbody tr td:first-child {
   padding-top: 20px;
   padding-bottom: 20px;
   background-color: #E4E3DE;
+  margin-left: -20px;
+  margin-right: -20px;
 }
 #sub-footer ul {
   text-align: center;
