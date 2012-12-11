@@ -221,10 +221,17 @@ class CommitteeDetailView(DetailView):
             if vp:
                 vp.group = InstitutionCharge.objects.current().select_related().\
                     get(pk=vp.charge.original_charge_id).council_group
+
         members = self.object.members.order_by('person__last_name')
+        current_i_charges = InstitutionCharge.objects.current().select_related()
         for m in members:
-            m.group = InstitutionCharge.objects.current().select_related().\
-                get(pk=m.original_charge_id).council_group
+            m_as_counselor = current_i_charges.filter(pk=m.original_charge_id)
+            if len(m_as_counselor) == 1:
+                m_as_counselor = m_as_counselor[0]
+                m.group = m_as_counselor.council_group
+            else:
+                m.group = None
+
 
 
         resources = dict(
