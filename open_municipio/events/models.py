@@ -69,3 +69,6 @@ class EventAct(models.Model):
 # the constraint below would be helpful, but it make the interface validation
 # hard to manage -FS
 #        unique_together = ('order','event'),('act','event')
+
+    def __unicode__(self):
+        return "%s (%s)" % (self.act.title, self.event.date)
