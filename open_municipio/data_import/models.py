@@ -10,85 +10,95 @@ from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 
 import logging
 
-# TODO add a field to select the provider
+class Provider(models.Model):
+    desc = models.CharField(max_length=255)
+
+    def __unicode__(self):
+        return u"%s" % self.desc
+
 class LookupObject(models.Model):
     local = None
+    external = None
     provider = None
 
     class Meta:
         abstract = True
 
     @staticmethod
-    def lookup(objects, provider):
-        return objects.get(provider=provider).local
+    def lookup(objects, external):
+        return objects.get(external=external).local
 
     def __str__(self):
-        return "%s [%s]" % (self.local,self.provider)
+        return "%s [%s > %s]" % (self.local, self.provider, self.external)
     def __unicode__(self):
-        return u"%s [%s]" % (self.local, self.provider)
+        return u"%s [%s > %s]" % (self.local, self.provider, self.external)
 
 class LookupPerson(LookupObject):
     local = models.ForeignKey(Person)
-    provider = models.CharField(unique=True, max_length=256)
+    external = models.CharField(unique=True, max_length=256)
+    provider = models.ForeignKey(Provider)
 
     @staticmethod
-    def lookup(provider):
-        return LookupObject.lookup(LookupPerson.objects, provider)
+    def lookup(external):
+        return LookupObject.lookup(LookupPerson.objects, external)
 
 class LookupInstitutionCharge(LookupObject):
     local = models.ForeignKey(InstitutionCharge)
-    provider = models.CharField(unique=True, max_length=256)
+    external = models.CharField(unique=True, max_length=256)
+    provider = models.ForeignKey(Provider)
 
     @staticmethod
-    def lookup(provider):
+    def lookup(external):
         return LookupObject.lookup(LookupInstitutionCharge.objects, 
-            provider)
+            external)
 
 
 class LookupCompanyCharge(LookupObject):
     local = models.ForeignKey(CompanyCharge)
-    provider = models.CharField(unique=True, max_length=256)
+    external = models.CharField(unique=True, max_length=256)
+    provider = models.ForeignKey(Provider)
 
     @staticmethod
-    def lookup(provider):
-        return LookupObject.lookup(LookupCompanyCharge.objects, provider)
+    def lookup(external):
+        return LookupObject.lookup(LookupCompanyCharge.objects, external)
 
 class LookupAdministrationCharge(LookupObject):
     local = models.ForeignKey(AdministrationCharge)
-    provider = models.CharField(unique=True, max_length=256)
+    external = models.CharField(unique=True, max_length=256)
+    provider = models.ForeignKey(Provider)
 
     @staticmethod
-    def lookup(provider):
-        return LookupAdministrationCharge.lookup(LookupAdministrationCharge.objects, provider)
+    def lookup(external):
+        return LookupAdministrationCharge.lookup(LookupAdministrationCharge.objects, external)
 
 class PersonSeekerMixin:
     logger = logging.getLogger("import")
     
-    def lookup_person(self, provider):
-        return LookupPerson.lookup(provider)
+    def lookup_person(self, external):
+        return LookupPerson.lookup(external)
 
 
 class ChargeSeekerFromMapMixin:
     logger = logging.getLogger("import")
 
-    def lookup_charge(self, provider):
-        self.logger.info("Try to detect institution (%s)..." % provider)
+    def lookup_charge(self, external):
+        self.logger.info("Try to detect institution (%s)..." % external)
         try:
-            institutionLookup = LookupInstitutionCharge.lookup(provider)
+            institutionLookup = LookupInstitutionCharge.lookup(external)
             return institutionLookup
         except Exception:
             pass
 
         self.logger.info("Try to detect company...")
         try:
-            companyLookup = LookupCompanyCharge.lookup(provider)
+            companyLookup = LookupCompanyCharge.lookup(external)
             return companyLookup
         except Exception:
             pass
 
         self.logger.info("Try to detect administration ...")
         try:
-            administratorLookup = LookupAdministratorCharge.lookup(provider)
+            administratorLookup = LookupAdministratorCharge.lookup(external)
             return administratorLookup
         except Exception:
             pass

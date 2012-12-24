@@ -120,8 +120,12 @@ class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
 
         om_emitting = OMActsWriter._get_emitting_institution(act)
 
+        self.logger.info("Presentation date: %s" % act.presentation_date)
+
         create_defaults = {
                     'idnum' : act.id,
+                    'title' : act.title,
+                    'presentation_date' : act.presentation_date,
                     'text' : act.content,
                     'emitting_institution': om_emitting,
                     'transitions' : None
