@@ -70,8 +70,8 @@ class UserProfile(NewsTargetMixin, models.Model):
     privacy_level = models.IntegerField(_('privacy level'), choices=PRIVACY_LEVELS, default=PRIVACY_LEVELS.none)
     
     # the user wants to receive newsletters (whatever that means)
-    wants_newsletter = models.BooleanField(_('wants newsletter'), default=False,
-                                           help_text=u"Se sei cittadino di %s, scegli la zona della città in cui risiedi" % settings.SITE_INFO['main_city'])
+    wants_newsletter = models.BooleanField(_('i want the newsletter'), default=False,
+                                           help_text="")
     
     location = models.ForeignKey(Location, blank=True, null=True, verbose_name=_('location'),
                                  help_text=u"Se sei cittadino di %s, scegli la zona della città in cui risiedi" % settings.SITE_INFO['main_city'])

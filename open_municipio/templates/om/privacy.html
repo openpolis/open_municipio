@@ -74,10 +74,30 @@
 
   <h2>Diritti degli interessati</h2>
   <p>
-      Secondo quanto previsto <a href="http://www.garanteprivacy.it/web/guest/home/docweb/-/docweb-display/docweb/1311248">dall'art.7 del Codice in materia di dati personali</a> i soggetti cui si riferiscono i dati personali (gli interessati) hanno il diritto in qualunque momento di ottenere la conferma dell'esistenza o meno dei medesimi dati e di conoscerne il contenuto, l'origine, le finalit&agrave;, le modalit&agrave; di trattamento e i soggetti a quali i dati possono essere comunicati. Gli interessati possono verificare l'esattezza dei dati o chiederne l'integrazione, l'aggiornamento, la rettifica, la cancellazione, la trasformazione in forma anonima oppure il blocco dei dati trattati in violazione di legge, nonch&eacute; di opporsi in ogni caso, per motivi legittimi, al loro trattamento. Le richieste vanno rivolte Depp srl, via degli Equi 42 - 00185 Roma, info@depp.it
+      Secondo quanto previsto
+      <a href="http://www.garanteprivacy.it/web/guest/home/docweb/-/docweb-display/docweb/1311248">dall'art.7 del
+          Codice in materia di dati personali</a> i soggetti cui si riferiscono i dati personali
+      (gli interessati) hanno il diritto in qualunque momento di ottenere la conferma dell'esistenza o
+      meno dei medesimi dati e di conoscerne il contenuto, l'origine, le finalit&agrave;,
+      le modalit&agrave; di trattamento e i soggetti a quali i dati possono essere comunicati.
+      Gli interessati possono verificare l'esattezza dei dati o chiederne l'integrazione, l'aggiornamento,
+      la rettifica, la cancellazione, la trasformazione in forma anonima oppure il blocco dei dati trattati
+      in violazione di legge, nonch&eacute; di opporsi in ogni caso, per motivi legittimi, al loro trattamento.
+      Le richieste vanno rivolte Depp srl, via degli Equi 42 - 00185 Roma,
+      <a href="mailto:info[chioccia]depp[punto]it" class="email-nascosta">info[chioccia]depp[punto]it</a>
   </p>
     </div>
   </div>
 
 
+{% endblock %}
+
+{% block footer_js_includes %}
+    {{ block.super }}
+    <script type="text/javascript">
+        jQuery('.email-nascosta').each(function(){
+            jQuery(this).text(jQuery(this).text().replace('[chioccia]', '@').replace('[punto]','.'));
+            jQuery(this).attr('href', jQuery(this).attr('href').replace('[chioccia]', '@').replace('[punto]','.'));
+        });
+    </script>
 {% endblock %}

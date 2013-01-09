@@ -4269,7 +4269,7 @@ body h1 span.colored {
 }
 body footer {
   min-height: 300px;
-  margin-bottom: 50px;
+  margin-bottom: 0px;
   color: #ffffff;
 }
 body footer h2 {

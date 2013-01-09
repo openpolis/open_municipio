@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-11-16 02:10+0100\n"
+"POT-Creation-Date: 2013-01-09 17:27+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,95 +18,97 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
-#: forms.py:27
+#: forms.py:33
 msgid "First Name"
 msgstr "Nome"
 
-#: forms.py:28
+#: forms.py:34
 msgid "Last Name"
 msgstr "Cognome"
 
-#: forms.py:30 forms.py:55
+#: forms.py:36 forms.py:63
 msgid "I want only my nickname to be publicly shown"
 msgstr "Desidero che sia pubblicato solo il mio nickname"
 
-#: forms.py:32 forms.py:57
+#: forms.py:39 forms.py:66
 msgid "I am a politician"
 msgstr "Sono un politico"
 
-#: forms.py:33 forms.py:58
+#: forms.py:41 forms.py:68
 msgid "Wants newsletter"
 msgstr "Desidero ricevere la newsletter"
 
-#: forms.py:34 forms.py:59
+#: forms.py:42 forms.py:69
 msgid "Location, if applicable"
 msgstr "Località, se applicabile"
 
-#: forms.py:36 forms.py:61
-msgid "I have read and approve the Terms of Service"
-msgstr "Ho letto e condivido il <a href=\"/regolamento\">regolamento</a> e le <a href=\"/condizioni\">condizioni d'uso</a> del sito"
-
-#: forms.py:37 forms.py:62
-msgid "You must agree to the terms to register"
-msgstr "Devi approvare i termini per accedere"
-
-#: forms.py:39 forms.py:64
-msgid "I have read and agree to the Privacy conditions"
-msgstr "Ho letto e condivido il testo sul <a href=\"/privacy\">trattamento dei dati personali</a>"
-
-#: forms.py:40 forms.py:65
-msgid "You must agree to the conditions to register"
-msgstr "Devi approvare le condizioni per accedete"
+#: forms.py:44 models.py:80
+msgid "Description"
+msgstr ""
 
 #: forms.py:46
 msgid "Your image"
 msgstr "La tua immagine"
 
-#: forms.py:52
-msgid "Username"
+#: forms.py:49 forms.py:72
+msgid "I have read and approve the Terms of Service"
 msgstr ""
+"Ho letto e condivido il <a href=\"/regolamento\">regolamento</a> e le <a "
+"href=\"/condizioni\">condizioni d'uso</a> del sito"
 
-#: forms.py:53
-msgid "This value must contain only letters, numbers and underscores."
-msgstr "Questo campo può contenere solo lettere, numeri e il carattere '_'"
+#: forms.py:50 forms.py:73
+msgid "You must agree to the terms to register"
+msgstr "Devi approvare i termini per accedere"
 
-#: forms.py:76
+#: forms.py:52 forms.py:75
+msgid "I have read and agree to the Privacy conditions"
+msgstr ""
+"Ho letto e condivido il testo sul <a href=\"/privacy\">trattamento dei dati "
+"personali</a>"
+
+#: forms.py:53 forms.py:76
+msgid "You must agree to the conditions to register"
+msgstr "Devi approvare le condizioni per accedete"
+
+#: forms.py:87
 msgid "A user with that username already exists."
 msgstr "Un utente con questo username già esiste."
 
-#: forms.py:82
+#: forms.py:93
 msgid "E-mail"
 msgstr "Email"
 
-#: models.py:44
+#: models.py:48
 msgid "all"
 msgstr "Pieno"
 
-#: models.py:45
+#: models.py:49
 msgid "some"
 msgstr "Parziale"
 
-#: models.py:46
+#: models.py:50
 msgid "none"
 msgstr "Nessuno"
 
-#: models.py:54
+#: models.py:58
 msgid "show my nickname, not my name"
 msgstr "mostra il mio nickname, non il mio nome e cognome"
 
-#: models.py:59
+#: models.py:64
 msgid "i am a politician"
 msgstr "sono un politico"
 
-#: models.py:63
+#: models.py:70
 msgid "privacy level"
 msgstr "livello di privacy"
 
-#: models.py:66
-msgid "wants newsletter"
+#: models.py:73
+msgid "i want the newsletter"
 msgstr "desidero ricevere la newsletter"
 
-#: models.py:68
+#: models.py:76
 msgid "location"
 msgstr "località"
 
+#~ msgid "This value must contain only letters, numbers and underscores."
+#~ msgstr "Questo campo può contenere solo lettere, numeri e il carattere '_'"

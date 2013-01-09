@@ -1,14 +1,24 @@
 {% extends "base_one_column.html" %}
 
-{% block title %}Termini e condizioni{% endblock %}
-
+{% block title %}Contatti{% endblock %}
+{% block content_header %}Contatti{% endblock %}
 {% block content %}
 <p>
     Per segnalazioni, suggerimenti, richieste di collaborazione, lamentele ma anche incoraggiamenti puoi scrivere a
-    udine@openmunicipio.it
+    <a href="mailto:udine[chioccia]openmunicipio[punto]it" class="email-nascosta">udine[chioccia]openmunicipio[punto]it</a>
 </p>
 
 <p>
     Usa la stessa e-mail per segnalarci abusi nell'uso del sito.
 </p>
+{% endblock %}
+
+{% block footer_js_includes %}
+    {{ block.super }}
+    <script type="text/javascript">
+        jQuery('.email-nascosta').each(function(){
+            jQuery(this).text(jQuery(this).text().replace('[chioccia]', '@').replace('[punto]','.'));
+            jQuery(this).attr('href', jQuery(this).attr('href').replace('[chioccia]', '@').replace('[punto]','.'));
+        });
+    </script>
 {% endblock %}
