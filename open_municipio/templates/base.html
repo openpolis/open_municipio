@@ -71,18 +71,22 @@
         <!--open<strong>municipio</strong>{% if site_version %}<span class="version">{{ site_version }}</span>{% endif %}
         <small></small>-->
       </a>
-
       {% block access %}
           {% if user.is_authenticated %}
-              <p id="user-tools" class="text-right pull-right">
-                  Ciao, <strong>{{ user.username }}</strong>
-                  <br>
-                  <a href="{% url logout %}?next={% if "/accounts" in request.path %}/{% else %}{{ request.path }}{% endif %}">esci</a>
-                  &middot;
-                  <a href="{% url profiles_edit_profile %}">impostazioni</a>
-                  &middot;
-                  <a href="{%  url profiles_profile_detail user.username %}">profilo</a>
-              </p>
+              <div id="user-tools" class="text-right pull-right dropdown">
+                  <a href="#" id="dropsignin"
+                     role="button" class="dropdown-toggle" data-toggle="dropdown"
+                  >Ciao, <strong>{{ user.username }}</strong><b class="caret" style="margin-top:6px"></b></a>
+                  <ul class="dropdown-menu" role="menu" aria-labelledby="dropsignin">
+                      <li>
+                          <a tabindex="-1"
+                             href="{% url logout %}?next={% if "/accounts" in request.path %}/{% else %}{{ request.path }}{% endif %}"
+                           >esci</a>
+                      </li>
+                      <li><a tabindex="-1" href="{% url profiles_edit_profile %}">impostazioni</a></li>
+                      <li><a tabindex="-1" href="{%  url profiles_profile_detail user.username %}">profilo</a></li>
+                  </ul>
+              </div>
           {% else %}
               <ul class="nav pull-right">
                   <li>Per partecipare o registrarti

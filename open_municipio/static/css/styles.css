@@ -4304,13 +4304,18 @@ body footer .logos {
   background-color: #ffffff;
   padding-bottom: 5px;
 }
+#navbar-top .dropdown.open .dropdown-toggle {
+  color: #285698;
+  background: #ffffff;
+}
 #navbar-top .navbar-inner {
   background-color: #ffffff;
   color: #000000;
 }
-#navbar-top .navbar-inner > p {
+#navbar-top .navbar-inner > div#user-tools {
   margin-right: 20px;
   margin-top: 1em;
+  text-align: left;
   /*strong { margin-right: 15px; }
       a { margin: 5px 15px; }*/
 
@@ -4335,9 +4340,6 @@ body footer .logos {
 }
 #navbar-top .navbar-inner .nav .active > a {
   color: #000000;
-}
-#navbar-top .navbar-inner .nav .active > a:hover {
-  color: #333333;
 }
 #navbar-top .navbar-inner .nav .divider-vertical {
   background-color: #000000;

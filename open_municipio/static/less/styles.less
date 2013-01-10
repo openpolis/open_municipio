@@ -164,12 +164,18 @@ body {
   background-color: @white;
   padding-bottom: 5px;
 
+  .dropdown.open .dropdown-toggle {
+    color: @linkColor;
+    background: @white;
+  }
+
   .navbar-inner {
     background-color: @white;
     color: @black;
-    > p {
+    > div#user-tools {
       margin-right: 20px;
       margin-top: 1em;
+      text-align: left;
       /*strong { margin-right: 15px; }
       a { margin: 5px 15px; }*/
     }
@@ -185,7 +191,6 @@ body {
       }
       .active > a {
         color: @black;
-        &:hover { color: @grayDark; }
       }
       .divider-vertical {
         background-color: @black;
