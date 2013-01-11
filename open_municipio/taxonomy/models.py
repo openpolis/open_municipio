@@ -112,7 +112,7 @@ class Category(SlugModel, NewsTargetMixin, MonitorizedItem):
         # finally fetch the news for each tagget act
         for a in tagged_acts:
             news |= a.downcast().related_news
-        return set(news)
+        return news
 
 
 class TaggedAct(ItemBase):
