@@ -33,5 +33,5 @@ class Command(BaseCommand):
             # filter: fetch institutional news of highest priority
             n_news = news.filter(news_type=News.NEWS_TYPE.institutional).filter(priority=1).count()
 
-            print '{u.first_name} {u.last_name} ({u.username}) - n_news: {0}'.format(n_news, u=profile.user)
+            print u'{u.first_name} {u.last_name} ({u.username}) - n_news: {0}'.format(n_news, u=profile.user)
 
