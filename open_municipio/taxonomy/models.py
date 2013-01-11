@@ -1,5 +1,6 @@
 from django.db import models
 from django.db.models import permalink
+from django.db.models.query import EmptyQuerySet
 from django.db.models.signals import post_save, post_delete, pre_delete
 from django.dispatch.dispatcher import receiver
 from django.utils.translation import ugettext_lazy as _, ugettext
@@ -8,14 +9,18 @@ from django.contrib.auth.models import User
 from django.contrib.contenttypes import generic
 
 from taggit.models import TagBase, ItemBase
+from open_municipio.acts.models import Act
 
-from open_municipio.monitoring.models import Monitoring, MonitorizedItem
+from open_municipio.monitoring.models import MonitorizedItem
+from open_municipio.newscache.models import NewsTargetMixin
 from open_municipio.om_utils.models import SlugModel
 from open_municipio.taxonomy.managers import post_tagging, post_untagging
 
 
 class Tag(TagBase, MonitorizedItem):
-
+    """
+        The ``related_news`` attribute can be used  to fetch news related to a given tag.
+    """
     # cached value of how many act uses it
     count = models.IntegerField(default=0)
 
@@ -29,6 +34,85 @@ class Tag(TagBase, MonitorizedItem):
     @permalink
     def get_absolute_url(self):
         return 'om_tag_detail', (), { 'slug': self.slug }
+
+    @property
+    def related_news(self):
+        """
+        News related to a tag are the union of the news related to all the acts
+        tagged with this tag
+        """
+        news = EmptyQuerySet()
+
+        tagged_acts = Act.objects.filter(
+            id__in=set([ta['content_object_id'] for ta in self.tagged_acts.values('content_object_id')])
+        )
+
+        for a in tagged_acts:
+            news |= a.downcast().related_news
+        return news
+
+
+class Category(SlugModel, NewsTargetMixin, MonitorizedItem):
+    """
+    A label that can be used to categorize content objects.
+
+    Categories differ from tags in that the former are pre-defined at the application level,
+    while tags are assigned (and created, if not already existing) on a per-instance basis.
+
+    The ``related_news`` attribute can be used  to fetch news related to a given category.
+
+    """
+    name = models.CharField(verbose_name=_('Name'), max_length=100)
+    slug = models.SlugField(verbose_name=_('Slug'), blank=True, unique=True, max_length=100)
+    tag_set = models.ManyToManyField(Tag, related_name='category_set', null=True, blank=True)
+    # cached value of how many act uses it
+    count = models.IntegerField(default=0)
+
+    # manager to handle the list of monitoring having as content_object this instance
+    #    monitoring_set = generic.GenericRelation(Monitoring, object_id_field='object_pk')
+
+    class Meta:
+        verbose_name = _('category')
+        verbose_name_plural = _('categories')
+
+    def __unicode__(self):
+        return u'%s' % self.name
+
+    @permalink
+    def get_absolute_url(self):
+        return 'om_category_detail', (), { 'slug': self.slug }
+
+    @property
+    def tags(self):
+        return self.tag_set.all()
+
+    @property
+    def tagged_acts(self):
+        return self.taggedact_set.all()
+
+
+    @property
+    def related_news(self):
+        """
+        News related to a category are the union of the news related to all the acts
+        tagged with ther category and all the tags contained in the category
+        """
+        news = EmptyQuerySet()
+
+        # fetch all acts tagget with the category
+        tagged_acts = Act.objects.filter(
+            id__in=set([ta['content_object_id'] for ta in self.tagged_acts.values('content_object_id')])
+        )
+        # add all acts extracted with each tag of the category
+        for t in self.tags:
+            tagged_acts |= Act.objects.filter(
+                id__in=set([ta['content_object_id'] for ta in t.tagged_acts.values('content_object_id')])
+            )
+
+        # finally fetch the news for each tagget act
+        for a in tagged_acts:
+            news |= a.downcast().related_news
+        return set(news)
 
 
 class TaggedAct(ItemBase):
@@ -79,41 +163,6 @@ class TaggedAct(ItemBase):
             "category": self.category
         }
 
-
-class Category(SlugModel, MonitorizedItem):
-    """
-    A label that can be used to categorize content objects.
-    
-    Categories differ from tags in that the former are pre-defined at the application level,
-    while tags are assigned (and created, if not already existing) on a per-instance basis. 
-    """
-    name = models.CharField(verbose_name=_('Name'), max_length=100)
-    slug = models.SlugField(verbose_name=_('Slug'), blank=True, unique=True, max_length=100)
-    tag_set = models.ManyToManyField(Tag, related_name='category_set', null=True, blank=True)
-    # cached value of how many act uses it
-    count = models.IntegerField(default=0)
-  
-    # manager to handle the list of monitoring having as content_object this instance
-#    monitoring_set = generic.GenericRelation(Monitoring, object_id_field='object_pk')
-  
-    class Meta:
-        verbose_name = _('category')
-        verbose_name_plural = _('categories')
-        
-    def __unicode__(self):
-        return u'%s' % self.name
-    
-    @permalink
-    def get_absolute_url(self):
-        return 'om_category_detail', (), { 'slug': self.slug }
-
-    @property
-    def tags(self):
-        return self.tag_set.all()
-
-    @property
-    def tagged_acts(self):
-        return self.taggedact_set.all()
 
 
 @receiver(post_tagging, sender=TaggedAct)

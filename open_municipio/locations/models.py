@@ -1,9 +1,11 @@
 from django.db import models
+from django.db.models.query import EmptyQuerySet
 from django.db.models.signals import post_save, pre_delete
 from django.dispatch.dispatcher import receiver
 from django.utils.translation import ugettext_lazy as _
 
 from django.contrib.auth.models import User
+from open_municipio.acts.models import Act
 from open_municipio.monitoring.models import MonitorizedItem
 
 from open_municipio.om_utils.models import SlugModel
@@ -41,6 +43,23 @@ class Location(SlugModel, MonitorizedItem):
         Returns the ``QuerySet`` of all acts tagged with this location.  
         """
         return self.tagged_act_set.all()
+
+    @property
+    def related_news(self):
+        """
+        News related to a location are the union of the news related to all the acts
+        tagged with this location
+        """
+        news = EmptyQuerySet()
+
+        tagged_acts = Act.objects.filter(
+            id__in=set([ta['act_id'] for ta in self.tagged_acts.values('act_id')])
+        )
+
+        for a in tagged_acts:
+            news |= a.downcast().related_news
+        return news
+
 
     @models.permalink
     def get_absolute_url(self):

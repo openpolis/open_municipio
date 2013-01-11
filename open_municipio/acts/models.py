@@ -23,8 +23,6 @@ from open_municipio.newscache.models import News, NewsTargetMixin
 
 from open_municipio.people.models import Institution, InstitutionCharge, Sitting, Person
 from open_municipio.taxonomy.managers import TopicableManager
-from open_municipio.taxonomy.models import Category, TaggedAct
-from open_municipio.locations.models import Location, TaggedActByLocation
 from open_municipio.monitoring.models import MonitorizedItem, Monitoring
 
 
@@ -62,8 +60,8 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
     presenter_set = models.ManyToManyField(InstitutionCharge, blank=True, null=True, through='ActSupport', related_name='presented_act_set', verbose_name=_('presenters'))
     recipient_set = models.ManyToManyField(InstitutionCharge, blank=True, null=True, related_name='received_act_set', verbose_name=_('recipients'))
     emitting_institution = models.ForeignKey(Institution, related_name='emitted_act_set', verbose_name=_('emitting institution'))
-    category_set = models.ManyToManyField(Category, verbose_name=_('categories'), blank=True, null=True)
-    location_set = models.ManyToManyField(Location, through=TaggedActByLocation, verbose_name=_('locations'), blank=True, null=True)
+    category_set = models.ManyToManyField('taxonomy.Category', verbose_name=_('categories'), blank=True, null=True)
+    location_set = models.ManyToManyField('locations.Location', through='locations.TaggedActByLocation', verbose_name=_('locations'), blank=True, null=True)
     status_is_final = models.BooleanField(default=False)
     is_key = models.BooleanField(default=False, help_text=_("Specify whether this act should be featured"))
 
@@ -71,7 +69,7 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
     # use this manager to retrieve only key acts
     featured = QueryManager(is_key=True).order_by('-presentation_date') 
     
-    tag_set = TopicableManager(through=TaggedAct, blank=True)
+    tag_set = TopicableManager(through='taxonomy.TaggedAct', blank=True)
 
     # use this manager to retrieve the QuerySet of ``Monitoring`` instances 
     # having as their ``content_object`` this act
@@ -260,7 +258,7 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
         else:
             return None
 
-      
+
 class ActSection(models.Model):
     """
     A section (or sub-section) of an act's text content.

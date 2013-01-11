@@ -98,7 +98,9 @@ class News(TimeStampedModel):
         template = get_template(template_file)
         return re.sub("\s+", " ", template.render(context).strip())
 
-    
+
+
+
 class NewsTargetMixin(models.Model):
     """
     A mix-in class for models which are valid targets for news generation. 

@@ -78,13 +78,14 @@
                      role="button" class="dropdown-toggle" data-toggle="dropdown"
                   >Ciao, <strong>{{ user.username }}</strong><b class="caret" style="margin-top:6px"></b></a>
                   <ul class="dropdown-menu" role="menu" aria-labelledby="dropsignin">
+                      <li><a tabindex="-1" href="{% url profiles_edit_profile %}">impostazioni</a></li>
+                      <li><a tabindex="-1" href="{%  url profiles_profile_detail user.username %}">profilo</a></li>
+                      <li class="divider"></li>
                       <li>
                           <a tabindex="-1"
                              href="{% url logout %}?next={% if "/accounts" in request.path %}/{% else %}{{ request.path }}{% endif %}"
-                           >esci</a>
+                                  >esci</a>
                       </li>
-                      <li><a tabindex="-1" href="{% url profiles_edit_profile %}">impostazioni</a></li>
-                      <li><a tabindex="-1" href="{%  url profiles_profile_detail user.username %}">profilo</a></li>
                   </ul>
               </div>
           {% else %}

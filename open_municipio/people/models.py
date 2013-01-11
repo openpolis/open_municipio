@@ -2,6 +2,7 @@ from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.db import models
 from django.db.models import permalink
+from django.db.models.query import EmptyQuerySet
 from django.utils.datetime_safe import date
 from django.utils.translation import ugettext_lazy as _
 from django.template.defaultfilters import slugify
@@ -14,7 +15,7 @@ from model_utils.managers import PassThroughManager
 
 from sorl.thumbnail import ImageField
 
-from open_municipio.monitoring.models import Monitoring, MonitorizedItem
+from open_municipio.monitoring.models import MonitorizedItem
 from open_municipio.newscache.models import NewsTargetMixin
 from open_municipio.people.managers import TimeFramedQuerySet
 from open_municipio.om_utils.models import SlugModel
@@ -26,6 +27,9 @@ from open_municipio.om_utils.models import SlugModel
 #
 
 class Person(models.Model, MonitorizedItem):
+    """
+        The ``related_news`` attribute can be used  to fetch news related to a given person.
+    """
     FEMALE_SEX = 0
     MALE_SEX = 1
     SEX = Choices(
@@ -209,6 +213,18 @@ class Person(models.Model, MonitorizedItem):
         """
         #end_date = in_date if in_date else date.today()
         return (date.today() - self.birth_date).days / 365
+
+    @property
+    def related_news(self):
+        """
+        News related to a politician are the union of the news related to allthe politician's
+        current and past institution charges
+        """
+        news = EmptyQuerySet()
+        for c in self.all_institution_charges:
+            news |= c.related_news
+        return news
+
 
 class Resource(models.Model):
     """
