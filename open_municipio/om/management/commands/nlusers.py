@@ -31,9 +31,7 @@ class Command(BaseCommand):
                 news |= mo.content_object.related_news
 
             # filter: fetch institutional news of highest priority
-            news = news.filter(news_type=News.NEWS_TYPE.institutional).filter(priority=1)
+            n_news = news.filter(news_type=News.NEWS_TYPE.institutional).filter(priority=1).count()
 
-            print '{u.first_name} {u.last_name} ({u.username}) - n_news: {0}'.format(len(news), u=profile.user)
-            for notizia in news:
-                print u'  - {n.news_date}: {n.text}'.format(n=notizia)
+            print '{u.first_name} {u.last_name} ({u.username}) - n_news: {0}'.format(n_news, u=profile.user)
 
