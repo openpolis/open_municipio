@@ -103,13 +103,6 @@ class Category(SlugModel, NewsTargetMixin, MonitorizedItem):
         tagged_acts = Act.objects.filter(
             id__in=set([ta['content_object_id'] for ta in self.tagged_acts.values('content_object_id')])
         )
-        # add all acts extracted with each tag of the category
-        for t in self.tags:
-            tagged_acts |= Act.objects.filter(
-                id__in=set([ta['content_object_id'] for ta in t.tagged_acts.values('content_object_id')])
-            )
-
-        # finally fetch the news for each tagget act
         for a in tagged_acts:
             news |= a.downcast().related_news
         return news
