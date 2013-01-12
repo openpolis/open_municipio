@@ -114,7 +114,7 @@ class Command(LabelCommand):
             for mo in mos:
                 related_news = mo.related_news.\
                     filter(news_type=News.NEWS_TYPE.institutional).\
-                    filter(priority_lte=2)
+                    filter(priority__lte=2)
 
                 # add date filter if required
                 if options['fromdate']:
