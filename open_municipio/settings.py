@@ -142,6 +142,7 @@ INSTALLED_APPS = (
     'open_municipio.newscache',
     'open_municipio.data_import',
     'open_municipio.idioticon',
+    'open_municipio.newsletter',
     'sorl.thumbnail',
     'social_auth',
     'open_municipio.om_auth',

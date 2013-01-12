@@ -1,0 +1,7 @@
+Ciao {{ user.first_name }},
+
+stai monitorando {{ objects|length }} oggetti, e hai {{ news|length}} nuove notizie.
+
+Oggetti monitorati:
+  {% for mo in objects %}- {{ mo.content_object|truncatewords:10 }}
+  {% endfor %}
