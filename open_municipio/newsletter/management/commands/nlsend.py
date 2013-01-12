@@ -33,7 +33,10 @@ class Command(LabelCommand):
                     dest='preview',
                     default=False,
                     help='Preview emails and news, without sending them'),
-        )
+        make_option('--from-date',
+                    dest='fromdate',
+                    help='Fetches news from this date, overrides ordinary last newsletter date filtering'),
+    )
 
     args = '<user_email>'
     label = 'user email'
@@ -72,6 +75,18 @@ class Command(LabelCommand):
         else:
             nlprofiles = UserProfile.objects.filter(wants_newsletter=True, user__email__in=labels)
 
+
+        # fetch last sent newsletter's timestamp
+        nls = Newsletter.objects.filter(finished__isnull=False).order_by('-finished')
+        if nls:
+            from_date = nls[0].started
+            # highjack fromdate options, if not already defined
+            if not options['fromdate']:
+                options['fromdate'] = from_date
+
+        if options['fromdate']:
+            self.logger.info('fetching news from: {0}'.format(options['fromdate']))
+
         for profile in nlprofiles:
             n_sent_mails += self.handle_label(profile, **options)
 
@@ -100,7 +115,15 @@ class Command(LabelCommand):
                 related_news = mo.related_news.\
                     filter(news_type=News.NEWS_TYPE.institutional).\
                     filter(priority=1)
+
+                # add date filter if required
+                if options['fromdate']:
+                    related_news = related_news.filter(created__gt=options['fromdate'])
+
+                # add objects related news to user news
                 user_news |= related_news
+
+                # log at debug level, for previewing
                 self.logger.debug(u' -{0}, with {1} news'.format(mo.__unicode__()[:60], related_news.count()))
                 for news in related_news:
                     self.logger.debug(u'   *{0}'.format(news))

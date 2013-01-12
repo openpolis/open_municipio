@@ -14,7 +14,7 @@ class Newsletter(models.Model):
 
     def save(self, **kwargs):
         if not self.id:
-            self.started_computing = datetime.now()
+            self.started = datetime.now()
         super(Newsletter,self).save()
 
     def __unicode__(self):

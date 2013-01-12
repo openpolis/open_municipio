@@ -53,6 +53,7 @@ class News(TimeStampedModel):
 
     text                      = models.TextField(verbose_name=_('text'), max_length=512)
 
+
     class Meta:
         verbose_name = _('cached news')
         verbose_name_plural = _('cached news')
