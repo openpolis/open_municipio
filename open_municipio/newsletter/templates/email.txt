@@ -1,7 +1,11 @@
-Ciao {{ user.first_name }},
+{% regroup user_news|dictsortreversed:"date" by date as news_list %}
+Ciao {{ profile.user.first_name }},
 
-stai monitorando {{ objects|length }} oggetti, e hai {{ news|length}} nuove notizie.
-
-Oggetti monitorati:
-  {% for mo in objects %}- {{ mo.content_object|truncatewords:10 }}
+stai monitorando {{ profile.monitored_objects|length }} oggetti, e hai {{ user_news|length}} nuove notizie.
+{% autoescape off %}
+{% for day_news in news_list %}
+{{ day_news.grouper }}
+  {% for news in day_news.list %}- {{ news.text }}
   {% endfor %}
+{% endfor %}
+{% endautoescape %}

@@ -59,11 +59,11 @@ class News(TimeStampedModel):
 
     def __unicode__(self):
         if self.news_date:
-            return u'%s - %s - %s %s' % \
-                   (self.id, self.created.strftime('%d/%m/%Y - %H:%I'), self.news_date.strftime("%d/%m/%Y"), self.text)
+            return u'%s %s' % \
+                   (self.news_date.strftime("%d/%m/%Y"), self.text)
         else:
-            return u'%s - %s - no date - %s' % \
-                   (self.id, self.created.strftime('%d/%m/%Y - %H:%I'), self.text)
+            return u'nessuna data - %s' % \
+                   (self.text)
 
     @property
     def news_date(self):

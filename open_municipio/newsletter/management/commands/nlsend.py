@@ -27,7 +27,12 @@ class Command(LabelCommand):
                     action='store_true',
                     dest='dryrun',
                     default=False,
-                    help='Preview emails and news'),
+                    help='Do not send emails'),
+        make_option('--preview',
+                    action='store_true',
+                    dest='preview',
+                    default=False,
+                    help='Preview emails and news, without sending them'),
         )
 
     args = '<user_email>'
@@ -40,6 +45,7 @@ class Command(LabelCommand):
 
     def handle(self, *labels, **options):
 
+
         # fix logger level according to verbosity
         verbosity = options['verbosity']
         if verbosity == '0':
@@ -47,6 +53,12 @@ class Command(LabelCommand):
         elif verbosity == '1':
             self.logger.setLevel(logging.INFO)
         elif verbosity >= '2':
+            self.logger.setLevel(logging.DEBUG)
+
+
+        # preview is a predefined settings
+        if options['preview']:
+            options['dryrun'] = True
             self.logger.setLevel(logging.DEBUG)
 
         n_sent_mails = 0
@@ -73,9 +85,9 @@ class Command(LabelCommand):
         fetch newsletter and send email to a single user
         return the number of mail sent
         """
-        self.logger.warning('-------------')
-        self.logger.warning(u'user: {0}'.format(profile.user))
-        mos = Monitoring.objects.filter(user=profile.user)
+        self.logger.info('-------------')
+        self.logger.info(u'user: {0}'.format(profile.user))
+        mos = profile.monitored_objects
         if not mos:
             self.logger.debug(u' not monitoring')
             return 0
@@ -83,27 +95,32 @@ class Command(LabelCommand):
             self.logger.debug(u' monitoring these objects:')
             # extract the news related to all objects that the user is monitoring
             # filter: institutional news of highest priority, only
-            news = EmptyQuerySet()
+            user_news = EmptyQuerySet()
             for mo in mos:
-                object_news = mo.content_object.related_news.\
+                related_news = mo.related_news.\
                     filter(news_type=News.NEWS_TYPE.institutional).\
                     filter(priority=1)
-                self.logger.debug(u' -{0}, with {1} news'.format(mo.content_object.__unicode__()[:60], object_news.count()))
-                news |= object_news
+                user_news |= related_news
+                self.logger.debug(u' -{0}, with {1} news'.format(mo.__unicode__()[:60], related_news.count()))
+                for news in related_news:
+                    self.logger.debug(u'   *{0}'.format(news))
 
-            n_news = news.count()
+            n_news = len(user_news)
             if n_news:
-                d = Context({ 'user': profile.user,
-                              'objects': mos,
-                              'news': news})
+                if not options['dryrun']:
+                    d = Context({ 'profile': profile,
+                                  'user_news': [{'date': rn.news_date, 'text': rn.text} for rn in user_news]})
 
-                subject, from_email, to = 'hello', 'noreply@openmunicipio.it', 'guglielmo@celata.com'
-                text_content = self.plaintext_tpl.render(d)
-                html_content = self.htmly_tpl.render(d)
-                msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
-                msg.attach_alternative(html_content, "text/html")
-                msg.send()
-                self.logger.warning(u'mail with {0} news sent'.format(n_news))
+                    subject, from_email, to = 'hello', 'noreply@openmunicipio.it', 'guglielmo@celata.com'
+                    text_content = self.plaintext_tpl.render(d)
+                    html_content = self.htmly_tpl.render(d)
+                    msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
+                    msg.attach_alternative(html_content, "text/html")
+                    msg.send()
+                    self.logger.info(u'mail with {0} news sent'.format(n_news))
+                else:
+                    self.logger.info(u'mail with {0} news would be sent (dryrun)'.format(n_news))
+
             else:
-                self.logger.warning(u'no news to send')
-            return news.count() > 0
+                self.logger.info(u'no news to send')
+            return n_news > 0
