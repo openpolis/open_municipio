@@ -15,4 +15,3 @@ pil
 sorl-thumbnail
 django-social-auth
 django-tinymce
-django-ajax-selects

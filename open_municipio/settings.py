@@ -145,7 +145,6 @@ INSTALLED_APPS = (
     'open_municipio.om_auth',
     # TinyMCE
     'tinymce',
-    'ajax_select',
 #    'inline_ordering',
 )
 

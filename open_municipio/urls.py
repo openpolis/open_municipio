@@ -28,14 +28,10 @@ from open_municipio.inline_edit.views import InlineEditView
 from open_municipio.om_auth.views import login_done, login_error, login_form, logout
 from open_municipio.users.forms import UserRegistrationForm
 
-from ajax_select import urls as ajax_select_urls
-
-
 admin.autodiscover()
 
 
 urlpatterns = patterns('',
-    url(r'^admin/lookups/', include(ajax_select_urls)),
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),   
     # home page
