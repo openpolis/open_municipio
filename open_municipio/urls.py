@@ -21,7 +21,7 @@
 from django.conf.urls.defaults import patterns, url, include
 from django.views.generic import TemplateView
 from django.contrib import admin
-from registration.views import register
+#from registration.views import register
 
 from open_municipio.om.views import HomeView
 from open_municipio.inline_edit.views import InlineEditView
@@ -79,10 +79,10 @@ urlpatterns += patterns('',
 
 # user registration, authentication and profiles
 urlpatterns += patterns('',
-    url(r'^accounts/register/$', register, {
-            'backend': 'registration.backends.default.DefaultBackend',
-            'form_class': UserRegistrationForm
-            }, name='registration_register'),
+#    url(r'^accounts/register/$', register, {
+#            'backend': 'registration.backends.default.DefaultBackend',
+#            'form_class': UserRegistrationForm
+#            }, name='registration_register'),
     url(r'^accounts/', include('registration.backends.default.urls')),
     url(r'^users/', include('open_municipio.users.urls')),
     url(r'^login-done/$', login_done, name='login-done'),

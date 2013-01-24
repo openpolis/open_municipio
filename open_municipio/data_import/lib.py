@@ -1,6 +1,8 @@
 from django.utils import simplejson as json
 from django.core.exceptions import ImproperlyConfigured
 
+import logging
+
 def valid_XML_char_ordinal(i):
     """
     Return when a character is a valid XML char,
@@ -23,6 +25,9 @@ class DataSource(object):
     A concrete data source should expose an API providing easy access to the data
     it contains.  
     """
+    
+    logger = logging.getLogger('import')
+    
     def setup(self):
         """
         Initializes the data source; what this means in practice is strictly
@@ -40,6 +45,9 @@ class BaseReader(object):
     It's intended to be subclassed (and its methods overriden) in order to adapt to 
     concrete scenarios.    
     """
+    
+    logger = logging.getLogger('import')
+    
     def __init__(self, data_source=None):
         self.data_source = data_source
     
@@ -77,15 +85,12 @@ class BaseWriter(object):
     It's intended to be subclassed (and its methods overriden) in order to 
     provide support for a given serialization format.
     """
+    
+    logger = logging.getLogger('import')
+    
     def __init__(self, data):
         self.data = data
-
-    def setup(self):
-        """
-        Writer's initialization code goes here.
-        """
-        pass
-
+        
     def write(self):
         raise NotImplementedError
 
@@ -115,5 +120,12 @@ class XMLWriter(BaseWriter):
         for attname in attrs: 
             el.set(str(attname), str(attrs[attname]))
 
+    def write(self):
+        raise NotImplementedError
+    
+class OMWriter(BaseWriter):
+    """
+    A writer class which outputs provided data as an OM objects. 
+    """
     def write(self):
         raise NotImplementedError

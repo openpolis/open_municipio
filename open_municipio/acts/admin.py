@@ -5,7 +5,6 @@ from django.contrib.admin.widgets import FilteredSelectMultiple
 
 from open_municipio.acts.models import *
 
-
 def transition_form_factory(act):
     """
     allows to change the final_status field in the transition form
@@ -90,8 +89,11 @@ class ActAdmin(admin.ModelAdmin):
 
 class CalendarAdmin(admin.ModelAdmin):
     formfield_overrides = {
-        models.ManyToManyField: {'widget': FilteredSelectMultiple("verbose name", is_stacked=False)},
+        models.ManyToManyField: {'widget': FilteredSelectMultiple("Acts", is_stacked=False) },
     }
+# TODO if set filter_horizontal, "Acts" label in FilteredSelectMultiple disapper
+    filter_horizontal = ( 'act_set' , )
+
 
 class ActAdminWithAttaches(admin.ModelAdmin):
     inlines = [AttachInline, TransitionInline]
@@ -154,3 +156,4 @@ admin.site.register(Calendar, CalendarAdmin)
 admin.site.register(Amendment, ActAdminWithAttaches)
 admin.site.register(Attach)
 admin.site.register(Transition)
+admin.site.register(Agenda)

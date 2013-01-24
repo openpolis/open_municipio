@@ -14,3 +14,4 @@ lxml
 pil
 sorl-thumbnail
 django-social-auth
+django-tinymce
