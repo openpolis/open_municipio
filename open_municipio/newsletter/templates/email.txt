@@ -1,7 +1,6 @@
 {% regroup user_news|dictsortreversed:"date" by date as news_list %}
-Ciao {{ profile.user.first_name }},
+{{ city }} - Notizie dal tuo monitoraggio
 
-stai monitorando {{ profile.monitored_objects|length }} oggetti, e hai {{ user_news|length}} nuove notizie.
 {% autoescape off %}
 {% for day_news in news_list %}
 {{ day_news.grouper }}
@@ -9,3 +8,14 @@ stai monitorando {{ profile.monitored_objects|length }} oggetti, e hai {{ user_n
   {% endfor %}
 {% endfor %}
 {% endautoescape %}
+
+
+Ricevi questa email  perché stai monitorando {{ profile.monitored_objects|length }} tra politici, atti e argomenti
+nel sito Open Municipio (http://{{ city|lower }}.openmunicipio.it) di {{ city }}.
+
+Per modificare le impostazioni di monitoraggio accedi al tuo profilo Open Municipio;
+per aggiungere o eliminare atti, politici  o argomenti dal tuo monitoraggio, vai alla pagina
+del singolo atto, politico o argomento e clicca su "Non monitorare più".
+
+Open municipio è un progetto Openpolis, distribuito da Depp srl, via degli Equi, 42, 00185 Roma - T. 06.83608392, info@depp.it
+

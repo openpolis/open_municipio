@@ -1,1 +1,61 @@
-<p>Email formato HTML</p>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8">
+</head>
+{% regroup user_news|dictsortreversed:"date" by date as news_list %}
+<body style="font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 17px;">
+
+<div id="wrapper"><!-- #wrapper -->
+
+    <div id="header">
+        <p style="text-align:right;">
+            <a href="http://{{ city }}.openmunicipio.it"><img src="http://www.openmunicipio.it/assets/img/testata_openmunicipio.png" alt="Comune di {{ city }}"></a>
+        </p>
+
+        <h1 style="font-size: 24px; background-color: #E8E8DF; margin: 8px 0; padding: 16px;">
+            {{ city }}  <span style="font-weight: normal; border-left: 1px solid gray; padding-left: 0.6em; margin-left: 0.6em">Notizie dal tuo monitoraggio</span>
+        </h1>
+    </div>
+
+
+    <table cellspacing="0" cellpadding="0" style="width: 100%; font-size: 14px;">
+        <tbody>
+
+        {% for day_news in news_list %}
+        <tr>
+            <td style="vertical-align: top; padding-top: 12px; padding-bottom: 12px; border-bottom: 5px solid #e8e8df; text-align: center;" width="5%">
+                <div style="width: 60px; font-weight: bold; background-color: #E8E8DF; padding: 8px; margin: 8px 0; ">
+                    <span style="font-size: 20px;">{{ day_news.grouper|date:'d' }}</span><br/>
+                    <span style="text-transform: uppercase;">{{ day_news.grouper|date:'b' }}</span><br/>
+                    <span>{{ day_news.grouper|date:'Y' }}</span>
+                </div>
+            </td>
+            <td style="border-bottom: 5px solid #e8e8df; padding: 1em;">
+                {% for news in day_news.list %}
+                    <p style="margin-bottom: 1em;">{{ news.text }}</p>
+
+                {% endfor %}
+            </td>
+        </tr>
+        {% endfor %}
+
+
+        </tbody>
+    </table>
+
+    <div style="margin-top: 2em;">
+        <p>Ricevi questa email  perché stai monitorando {{ profile.monitored_objects|length }} tra politici,
+            atti e argomenti nel sito <a href="http://{{ city|lower }}.openmunicipio.it">Open Municipio di {{ city }}</a>.</p>
+
+        <p>Per modificare le impostazioni di monitoraggio accedi al tuo profilo Open Municipio;
+        per aggiungere o eliminare atti, politici  o argomenti dal tuo monitoraggio, vai alla pagina
+        del singolo atto, politico o argomento e clicca su "Non monitorare più".</p>
+
+        <p>Open municipio è un progetto <a href="http://www.openpolis.it">Openpolis</a>,
+            distribuito da <a href="http://www.depp.it">Depp</a> srl, via degli Equi, 42, 00185 Roma - T. 06.83608392, info@depp.it</p>
+    </div>
+
+</div>
+
+</body>
+</html>
