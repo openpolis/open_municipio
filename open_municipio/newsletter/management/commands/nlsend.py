@@ -1,6 +1,7 @@
 import logging
 from optparse import make_option
 from datetime import datetime
+from django.contrib.sites.models import Site
 from django.core.management.base import LabelCommand, BaseCommand, CommandError
 from django.db.models.query import EmptyQuerySet
 
@@ -134,12 +135,15 @@ class Command(LabelCommand):
                 for news in related_news:
                     self.logger.debug(u'   *{0}'.format(news))
 
+            import re
+            site_domain = Site.objects.get(pk=settings.SITE_ID)
+
             n_news = len(user_news)
             if n_news:
                 if not options['dryrun']:
                     d = Context({ 'profile': profile,
                                   'city': settings.SITE_INFO['main_city'],
-                                  'user_news': [{'date': rn.news_date, 'text': rn.text} for rn in user_news]})
+                                  'user_news': [{'date': rn.news_date, 'text': re.sub('href=\"\/', 'href="http://{0}/'.format(site_domain), rn.text)} for rn in user_news]})
 
                     subject, from_email, to = 'Monitoraggio Open Municipio', 'noreply@openmunicipio.it', 'guglielmo@celata.com'
                     text_content = self.plaintext_tpl.render(d)

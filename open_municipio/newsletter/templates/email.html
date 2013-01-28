@@ -32,7 +32,7 @@
             </td>
             <td style="border-bottom: 5px solid #e8e8df; padding: 1em;">
                 {% for news in day_news.list %}
-                    <p style="margin-bottom: 1em;">{{ news.text }}</p>
+                    <p style="margin-bottom: 1em;">{{ news.text|safe }}</p>
 
                 {% endfor %}
             </td>
