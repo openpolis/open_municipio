@@ -1,1 +1,3 @@
-Ha {% if signature.support_type == "FIRSTSIGNER"  %}presentato{% else %}co-firmato{% endif %} <a href="{{ act.get_absolute_url }}">{{ act|truncatewords_html:30 }}</a>
+<a href="{{ signer.person.get_absolute_url }}">{{ signer }}</a> ha
+{% if signature.support_type == "FIRSTSIGNER"  %}presentato{% else %}co-firmato{% endif %}
+<a href="{{ act.get_absolute_url }}">{{ act|truncatewords_html:30 }}</a>

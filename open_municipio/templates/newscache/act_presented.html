@@ -1,6 +1,6 @@
 L'atto <a href="{{ act.downcast.get_absolute_url }}">{{ act.downcast.title|truncatewords_html:30 }}</a>
 è stato presentato da
-{{ act.first_presenters.0.person }}
+<a href="{{ act.first_presenters.0.person.get_absolute_url }}">{{ act.first_presenters.0.person }}</a>
 
 {% if act.first_presenters|length == 2 %}
   e  un altro
