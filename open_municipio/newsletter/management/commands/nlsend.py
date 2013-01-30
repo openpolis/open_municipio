@@ -145,7 +145,7 @@ class Command(LabelCommand):
                                   'city': settings.SITE_INFO['main_city'],
                                   'user_news': [{'date': rn.news_date, 'text': re.sub('href=\"\/', 'href="http://{0}/'.format(site_domain), rn.text)} for rn in user_news]})
 
-                    subject, from_email, to = 'Monitoraggio Open Municipio', 'noreply@openmunicipio.it', 'guglielmo@celata.com'
+                    subject, from_email, to = 'Monitoraggio Open Municipio', 'noreply@openmunicipio.it', 'guglielmo.celata@gmail.com'
                     text_content = self.plaintext_tpl.render(d)
                     html_content = self.htmly_tpl.render(d)
                     msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
