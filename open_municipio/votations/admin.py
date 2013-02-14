@@ -25,7 +25,7 @@ class VotationAdmin(admin.ModelAdmin):
     list_display = ('idnum', 'act_descr', 'sitting', 'is_linked', 'outcome')
     list_filter = ('sitting',)
     raw_id_fields = ['act']
-    readonly_fields = ('act_descr', 'sitting', 'idnum' )
+    readonly_fields = ('sitting', 'idnum' )
     ordering = ['-sitting__date']
 
 
