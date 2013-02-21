@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from open_municipio.speech.models import Speech, SpeechAttachment
+from open_municipio.speeches.models import Speech, SpeechAttachment
 
 class SpeechAttachmentInline(admin.StackedInline):
     model = SpeechAttachment
