@@ -332,6 +332,7 @@ class InstitutionCharge(Charge):
         db_table = u'people_institution_charge'
         verbose_name = _('institution charge')
         verbose_name_plural = _('institution charges')
+        ordering = ['person__first_name', 'person__last_name']
 
 
     def __unicode__(self):

@@ -12,7 +12,7 @@ from open_municipio.data_import.lib import DataSource, BaseReader, BaseWriter, J
 from open_municipio.data_import.om_xml import *
 from open_municipio.data_import import conf
 from open_municipio.data_import.acts import conf as act_conf
-from open_municipio.data_import.models import ChargeSeekerFromMapMixin
+from open_municipio.data_import.utils import ChargeSeekerFromMapMixin
 
 from open_municipio.acts.models import Act as OMAct, \
     Deliberation as OMDeliberation, Motion as OMMotion, Agenda as OMAgenda, \
@@ -67,7 +67,10 @@ class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
     """
     A writer class which outputs acts data as objects in the OpenMunicio model.
     """
-    
+
+    def setup(self):
+        self.conf = conf
+
     @transaction.commit_on_success
     def write(self):
         self.logger.info("Acts to write: %d" % len(self.acts.values()))
@@ -128,13 +131,16 @@ class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
                     'presentation_date' : act.presentation_date,
                     'text' : act.content,
                     'emitting_institution': om_emitting,
-                    'transitions' : None
+                    'transitions' : None,
                 }
 
         if act_obj_type == "CouncilDeliberation":
             om_initiative = OMActsWriter._get_initiative(act)
             create_defaults['initiative'] = om_initiative
             self.logger.info("Set the initiative: %s" % om_initiative)
+
+            create_defaults['final_idnum'] = act.final_id
+            self.logger.info("Set the final_idnum: %s" % act.final_id)
 
         return create_defaults
    
@@ -162,7 +168,9 @@ class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
                 'file' : f,
                 'act' : om_act,
                 'document_type' : curr_att.type,
-                'document_size' : f.size
+                'document_size' : f.size,
+                'title' : curr_att.title,
+                'document_date' : curr_att.document_date,
             }
             om_attachment = OMAttach(**defaults)
             try:
@@ -180,9 +188,14 @@ class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
 
         if om_act.emitting_institution is None:
             raise Exception("The partially imported OM act is malformed: missing emitting institution")
+            return
+
+        if self.conf.ACTS_PROVIDER == None:
+            self.logger.warning("In order to continue, you must set a data provider for charges in act importation")
+            return
 
         for curr_sub in act.subscribers:
-            om_ch = self.lookup_charge(curr_sub.charge.id)
+            om_ch = self.lookup_charge(curr_sub.charge.id, self.conf.ACTS_PROVIDER)
 
             if om_ch is None:
                 raise Exception("Unable to find charge for %s" % curr_sub)
@@ -247,6 +260,7 @@ class Act:
     content = ""
     title = ""
     file = None
+    presentation_date = None
     subscribers = [] # list of Charges
     emitting_institution = ""
     attachments = [] # list of Attachment (usually one is enough ...)
@@ -262,8 +276,8 @@ class Act:
       return u"%s (%s) [%s]" % (self.title, self.id, self.content[0:20])
 
 class CouncilDeliberation(Act):
-    final_id = ""
-    execution_date = ""
+    final_id = None
+    execution_date = None
     initiative = "" # (council_member, ...)
 
 class CityGovernmentDeliberation(Act):
@@ -288,6 +302,8 @@ class Attachment:
     description = ""
     file = None
     type = "" # type of file (define an array of possible file types)
+    title = ""
+    document_date = None
 
     def __init__(self, path, description=None, type=None):
         if path == "":

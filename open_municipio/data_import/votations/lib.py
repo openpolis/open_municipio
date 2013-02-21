@@ -1,4 +1,4 @@
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.utils import simplejson as json
 import re
 from open_municipio.acts.models import Act
@@ -10,6 +10,7 @@ from open_municipio.people.models import Institution
 from open_municipio.votations.models import Sitting as DBSitting, GroupVote
 from open_municipio.votations.models import Votation as DBBallot
 from open_municipio.votations.models import ChargeVote
+
 
 from lxml import etree
 
@@ -114,7 +115,9 @@ class BaseVotationReader(BaseReader):
         data_source.setup()
         self.sittings = []
         # construct the DOM tree
-        for sitting in data_source.get_sittings():
+        all_sittings = data_source.get_sittings()
+        self.logger.info("All sittings: %s" % all_sittings)
+        for sitting in all_sittings:
             sitting.ballots = data_source.get_ballots(sitting)
             self.sittings.append(sitting)
         # as now, ``self.sittings`` should be a object tree 
@@ -154,6 +157,7 @@ class DBVotationWriter(BaseVotationWriter):
     logger = logging.getLogger('import')
 
     def setup(self):
+        self.logger.info("Base setup...")
         self.conf = None
 
     def compute_absences(self, votation):
@@ -175,6 +179,8 @@ class DBVotationWriter(BaseVotationWriter):
                     votation=votation,
                     vote=ChargeVote.VOTES.absent
                 )
+            except MultipleObjectsReturned, e:
+                self.logger.warning("Multiple vote from single charge. Votation: %s, charge: %s, charge pk: %s, error: %s. Continue ..." % (votation, c, c.pk, e))
 
         # update n_absents for the whole votation
         votation.n_absents = votation.charge_votes.filter(vote=ChargeVote.VOTES.absent).count()
@@ -316,6 +322,7 @@ class DBVotationWriter(BaseVotationWriter):
 
         for sitting in self.sittings:
             self.logger.info("processing %s in Mdb" % sitting)
+            self.logger.info("Sitting site code: %s" % sitting.site)
             inst = Institution.objects.get(name=self.conf.XML_TO_OM_INST[sitting.site])
 
             if not self.dry_run:
@@ -363,14 +370,21 @@ class DBVotationWriter(BaseVotationWriter):
                         if m:
                             act_idnum = str(m.group(1))
                             self.logger.debug("act_idnum: %s" % act_idnum)
-                            linked_act = Act.objects.get(idnum=act_idnum)
-                            if isinstance(linked_act, Act):
-                                try:
-                                    b.act = linked_act.downcast()
-                                    b.save()
-                                    self.logger.info("act was linked: %s" % b.act)
-                                except ObjectDoesNotExist:
-                                    self.logger.info("act was not linked")
+                            try:
+                                linked_act = Act.objects.get(idnum=act_idnum)
+                                if isinstance(linked_act, Act):
+                                    try:
+                                        b.act = linked_act.downcast()
+                                        b.save()
+                                        self.logger.info("act was linked: %s" % b.act)
+                                    except ObjectDoesNotExist:
+                                        self.logger.info("act was not linked")
+
+                                else:
+                                    self.logger.warning("act of type %s not expected. expected type Act" % linked_act.__class__.__name__)
+
+                            except ObjectDoesNotExist:
+                                self.logger.warning("act %s not present in OM" % act_idnum)
 
 
 
@@ -400,6 +414,7 @@ class DBVotationWriter(BaseVotationWriter):
                 #   continue
 
                 # compute and cache group votes into GroupVote
+                self.logger.info("Compute group vote of %s" % b)
                 self.compute_group_votes(b)
 
                 # compute rebels caches, only if the sitting is not a Committee (no rebellions in committees)

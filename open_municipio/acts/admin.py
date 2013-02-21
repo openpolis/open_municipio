@@ -34,6 +34,7 @@ class ActInline(admin.TabularInline):
     model = Act
     extra = 0
 
+
 class AttachInline(admin.StackedInline): 
     model = Attach
     extra = 0
@@ -58,6 +59,7 @@ class TransitionInline(admin.TabularInline):
         return super(TransitionInline, self).get_formset(request, obj, **kwargs)
 
 class ActAdmin(admin.ModelAdmin):
+    list_display = ('idnum', 'title', 'presentation_date', 'emitting_institution', 'status')
     search_fields = ('idnum', 'title',)
 
     # genial hack to allow users with no permissions to show
@@ -139,6 +141,9 @@ class DeliberationAdmin(ActAdmin):
         }),
     )
 
+class AttachAdmin(admin.ModelAdmin):
+    list_display = ('title','document_date','document_type')
+
 
 admin.site.register(Act, ActAdmin)
 
@@ -154,6 +159,6 @@ admin.site.register(Interpellation)
 admin.site.register(Motion, MotionAdmin)
 admin.site.register(Calendar, CalendarAdmin)
 admin.site.register(Amendment, ActAdminWithAttaches)
-admin.site.register(Attach)
+admin.site.register(Attach, AttachAdmin)
 admin.site.register(Transition)
 admin.site.register(Agenda)

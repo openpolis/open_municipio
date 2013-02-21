@@ -4,7 +4,7 @@ import os
 from django.conf import settings
 
 
-MUNICIPALITY_NAME = 'Eutropia'
+MUNICIPALITY_NAME = 'Senigallia'
 # starting year (as a 'YYYY' string) of the municipality's current legislature
 MUNICIPALITY_CURRENT_LEGISLATURE = '2008'
 # where MDB files are located on the filesystem
@@ -65,3 +65,6 @@ OBJ_TO_OM_ACTS = {
     "CouncilDeliberation" : "open_municipio.acts.models.Deliberation",
                   
     }
+
+VOTE_PROVIDER = None # to be specified in your municipality configuration
+ACTS_PROVIDER = None

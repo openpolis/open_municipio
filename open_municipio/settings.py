@@ -22,9 +22,9 @@ PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 REPO_ROOT = os.path.abspath(os.path.dirname(PROJECT_ROOT))
 VERSION = __version__ = file(os.path.join(PROJECT_ROOT, 'VERSION')).read().strip()
 
-DEBUG = False
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
-DJANGO_TOOLBAR = False
+DJANGO_TOOLBAR = True
 
 
 ADMINS = (
@@ -146,6 +146,7 @@ INSTALLED_APPS = (
     'sorl.thumbnail',
     'social_auth',
     'open_municipio.om_auth',
+    'open_municipio.speech',
     # TinyMCE
     'tinymce',
 #    'inline_ordering',

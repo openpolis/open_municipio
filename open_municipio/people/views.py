@@ -74,7 +74,11 @@ class CouncilListView(TemplateView):
 
         mayor = municipality.mayor.as_charge
         council = municipality.council
-        president = municipality.council.president.charge
+
+        president = None
+        if municipality.council.president != None:
+            president = municipality.council.president.charge
+
         vicepresidents = municipality.council.vicepresidents
         groups = municipality.council.groups
         committees = municipality.committees.as_institution
@@ -121,7 +125,12 @@ class CityGovernmentView(TemplateView):
         context = super(CityGovernmentView, self).get_context_data(**kwargs)
 
         mayor = municipality.mayor.as_charge
-        firstdeputy = municipality.gov.firstdeputy.charge
+
+        firstdeputy = None
+
+        if municipality.gove.firstdeputy != None:
+            firstdeputy = municipality.gov.firstdeputy.charge
+
         citygov = municipality.gov
         latest_acts = Act.objects.filter(
             emitting_institution__institution_type=Institution.CITY_GOVERNMENT
