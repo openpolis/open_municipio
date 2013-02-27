@@ -18,4 +18,4 @@ django-social-auth
 django-tinymce
 # speech report generation
 reportlab
-#http://sourceforge.net/projects/pyrtf/files/latest/download
+http://sourceforge.net/projects/pyrtf/files/latest/download

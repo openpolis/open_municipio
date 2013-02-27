@@ -33,9 +33,6 @@ class Speech(TimeStampedModel):
         """
         return self.speechattachment_set.all()
 
-    def get_absolute_url(self):
-        return ('om_speech_event_pdf_url', (), {'event_pk': str(self.event_act.event.pk)})
-
     class Meta:
         verbose_name = _('speech')
         verbose_name_plural = _('speeches')
