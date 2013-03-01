@@ -264,7 +264,7 @@ class DBVotationWriter(BaseVotationWriter):
             v = cv.vote
 
             if g is None:
-                self.logger.warning(u"no group found for charge vote %s" % cv)
+                self.logger.warning(u"no group found for charge vote %s (vote date: %s)" % (cv,votation.sitting.date))
                 continue
 
             # get or create group votation
@@ -368,9 +368,9 @@ class DBVotationWriter(BaseVotationWriter):
                         self.logger.debug("act_descr: %s" % b.act_descr.strip())
                         m = re.match(r"(.+?)-(.+)", b.act_descr.strip())
                         if m:
-                            act_idnum = str(m.group(1))
-                            self.logger.debug("act_idnum: %s" % act_idnum)
                             try:
+                                act_idnum = str(m.group(1))
+                                self.logger.debug("act_idnum: %s" % act_idnum)
                                 linked_act = Act.objects.get(idnum=act_idnum)
                                 if isinstance(linked_act, Act):
                                     try:
@@ -385,8 +385,8 @@ class DBVotationWriter(BaseVotationWriter):
 
                             except ObjectDoesNotExist:
                                 self.logger.warning("act %s not present in OM" % act_idnum)
-
-
+                            except Exception as e:
+                                self.logger.warning("unexpected error looking for act %s in OM: %s" % (act_idnum, e))
 
                     else:
                         self.logger.debug("%s found in DB" % b)
@@ -414,7 +414,7 @@ class DBVotationWriter(BaseVotationWriter):
                 #   continue
 
                 # compute and cache group votes into GroupVote
-                self.logger.info("Compute group vote of %s" % b)
+                self.logger.info("Compute group vote of %s (date:%s)" % (b,b.sitting.date))
                 self.compute_group_votes(b)
 
                 # compute rebels caches, only if the sitting is not a Committee (no rebellions in committees)
