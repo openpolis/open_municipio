@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.core.exceptions ObjectDoesNotExist
 from django.db.models import Count
 from django.views.generic.base import TemplateView
 from open_municipio.acts.models import Calendar, Act, ActSupport
