@@ -53,16 +53,26 @@ class HomeView(TemplateView):
 
         context['top_monitored'] = extract_top_monitored_objects(Person, qnt=3)
 
-
-        context['most_acts'] = municipality.council.as_institution.charge_set.\
-            filter(actsupport__support_type=ActSupport.SUPPORT_TYPE.first_signer).\
-            annotate(n_acts=Count('actsupport')).order_by('-n_acts')[0:3]
+        try:
+            context['most_acts'] = municipality.council.as_institution.charge_set.\
+                filter(actsupport__support_type=ActSupport.SUPPORT_TYPE.first_signer).\
+                annotate(n_acts=Count('actsupport')).order_by('-n_acts')[0:3]
+        except ObjectDoesNotExist:
+            # city council not exists
+            context['most_acts'] = []
 
         # fetch most or least
-        counselors = municipality.council.charges.select_related().order_by('person__last_name')
-        context['most_rebellious'] = counselors.order_by('-n_rebel_votations')[0:3]
-        context['most_trustworthy'] = counselors.order_by('n_rebel_votations')[0:3]
-        context['least_absent'] = counselors.order_by('n_absent_votations')[0:3]
+        try:
+            counselors = municipality.council.charges.select_related().order_by('person__last_name')
+            context['most_rebellious'] = counselors.order_by('-n_rebel_votations')[0:3]
+            context['most_trustworthy'] = counselors.order_by('n_rebel_votations')[0:3]
+            context['least_absent'] = counselors.order_by('n_absent_votations')[0:3]
+        except ObjectDoesNotExist:
+            # city council not present
+            counselors = ()
+            context['most_rebellious'] = ()
+            context['most_trustworthy'] = ()
+            context['least_absent'] = ()
 
         categories = list(Category.objects.all())
         tags = list(Tag.objects.all())
