@@ -4,22 +4,27 @@ from django.utils.translation import ugettext_lazy as _
 
 from open_municipio.votations.models import ChargeVote, GroupVote, Votation  
 
+
 class GroupVoteAdmin(admin.ModelAdmin):
     list_display = ('id', 'votation', 'group', 'vote')
     list_filter = ('group', 'votation__id')
+
 
 class ChargeVoteAdmin(admin.ModelAdmin):
     list_display = ('id', 'votation', 'charge', 'charge_group_at_vote_date', 'vote')
     list_filter = ('votation__id',)
 
+
 class GroupVoteInline(admin.TabularInline):
     model = GroupVote
     extra = 1
+
 
 class ChargeVoteInline(admin.TabularInline):
     model = ChargeVote
     raw_id_fields = ('charge', )
     extra = 1
+
 
 class VotationAdmin(admin.ModelAdmin):
     list_display = ('idnum', 'act_descr', 'sitting', 'is_linked', 'outcome')
@@ -27,8 +32,6 @@ class VotationAdmin(admin.ModelAdmin):
     raw_id_fields = ['act']
     readonly_fields = ('sitting', 'idnum' )
     ordering = ['-sitting__date']
-
-
 
     # add inlines only for superuser users
     def change_view(self, request, object_id, extra_context=None):
