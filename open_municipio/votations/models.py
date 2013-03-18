@@ -1,7 +1,4 @@
-from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
-from django.db.models.aggregates import Count
-from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
 
 from model_utils import Choices
@@ -99,16 +96,12 @@ class Votation(models.Model):
         else:
             return True
 
-
-
     def update_presence_caches(self):
         """
         update presence caches for each voting charge of this votation
         """
         for vc in self.charge_votes:
             vc.charge.update_presence_cache()
-
-
 
 
 class GroupVote(TimeStampedModel):
