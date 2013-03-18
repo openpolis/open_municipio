@@ -81,9 +81,7 @@ class CouncilListView(TemplateView):
         latest_acts = Act.objects.filter(
             emitting_institution__institution_type=Institution.COUNCIL
             ).order_by('-presentation_date')[:3]
-        events = Event.future.filter(
-            institution__institution_type=Institution.COUNCIL
-            )
+        events = Event.objects.filter(institution__institution_type=Institution.COUNCIL)
         num_acts = dict()
         act_types = [
             Deliberation, Motion, Interrogation, Interpellation, Agenda
@@ -126,9 +124,7 @@ class CityGovernmentView(TemplateView):
         latest_acts = Act.objects.filter(
             emitting_institution__institution_type=Institution.CITY_GOVERNMENT
             ).order_by('-presentation_date')[:3]
-        events = Event.future.filter(
-            institution__institution_type=Institution.CITY_GOVERNMENT
-            )
+        events = Event.objects.filter(institution__institution_type=Institution.CITY_GOVERNMENT)
         num_acts = dict()
         act_types = [
             Deliberation, Motion, Interrogation, Interpellation, Agenda
@@ -188,7 +184,7 @@ class CommitteeListView(ListView):
 
 
         extra_context['committees'] = municipality.committees.as_institution()
-        extra_context['events'] = Event.future.filter(institution__in=municipality.committees.as_institution())
+        extra_context['events'] = Event.objects.filter(institution__in=municipality.committees.as_institution())
 
         return extra_context
 
@@ -239,7 +235,7 @@ class CommitteeDetailView(DetailView):
                 for r in self.object.resources.values('resource_type', 'value', 'description')
         )
 
-        events = Event.future.filter(institution=self.object)
+        events = Event.objects.filter(institution=self.object)
 
         extra_context = {
             'committees': committee_list,

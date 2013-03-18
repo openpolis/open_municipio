@@ -6,12 +6,10 @@
     <div>
       <ul class="calendar_events events">
         {% for event in events %}
-          {% if not event.is_past_due %}
             <li data-day="{{ event.date|date:"m/d/Y" }}"><strong>{{ event.date|date:"d.m.Y" }}</strong> alle {{ event.event_time|time:"H:i" }}
                 <a href="#event_{{ event.id }}_description" class="event_toggle_modal">{{ event.title }}</a>
                 {%  include 'events/_modal.html' %}
             </li>
-          {% endif %}
         {% empty %}
             Nessun appuntamento in programma
         {% endfor %}
