@@ -96,6 +96,11 @@ class Votation(models.Model):
         else:
             return True
 
+    @property
+    def is_secret(self):
+        for vote in self.charge_votes:
+            return vote.vote == ChargeVote.VOTES.secret
+
     def update_presence_caches(self):
         """
         update presence caches for each voting charge of this votation

@@ -60,7 +60,8 @@
 
   <hgroup>
     <h1 class="highlight">Votazione <strong>N.{{ votation.idnum }}</strong></h1>
-    <h4><b>Seduta</b> n.{{ votation.sitting.number }} del {{ votation.sitting.date|date:"d/m/Y" }}</h4>
+    <h4>{% if votation.is_secret %}<strong>Votazione segreta</strong><br>{% endif %}
+        Seduta <strong>n.{{ votation.sitting.number }}</strong> del {{ votation.sitting.date|date:"d/m/Y" }}</h4>
     <h2>
       <a href="#" id="{{ votation|as_token }}" class="bookmarkable"><i class="{% is_key_class votation %}"></i></a>
       {{ votation.act.title }}
