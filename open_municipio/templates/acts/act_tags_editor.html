@@ -47,11 +47,9 @@
                     <div class="control-group">
                         <select id="category_list">
                             <option value=""></option>
-                            {% for category in topics.categories %}
-                                {% if category not in act.categories %}                         
-                                     <option value="{{ category.id }}">{{ category.name }}</option>
-                                {% endif %}
-                            {% endfor %}
+                            {% for category in topics.categories %}{% if category not in act.categories %}
+                            <option value="{{ category.id }}">{{ category.name }}</option>
+                            {% endif %}{% endfor %}
                         </select>
                         <a href="#" class="btn btn-mini btn-success" id="category_add"><i class="icon-plus icon-white"></i> Aggiungi</a>
                     </div>
@@ -68,6 +66,7 @@
 
     <script type="text/javascript">
 
+	        var initial_form = $('#cteditor').find('form').clone();
 
         var buildTextList = function(select) {
 
@@ -80,7 +79,7 @@
                 name: select.attr('name'),
                 value: '',
                 'class': 'cteditor-input'
-            })
+            });
 
             // fill input after multiple-select
             select.attr('name', '_'+ select.attr('name') ).hide().after( el );
@@ -94,14 +93,83 @@
             // retrieve available tags
             var tags = [];
             select.children('option').each(function(){
-                tags.push([ $(this).val(), $(this).text() ]);
-                if ( $(this).attr('selected') )
-                    t.add( $(this).text(), $(this).val() );
+                var $this = $(this), value = $this.val(), text = $this.text();
+                tags.push([ value, text ]);
+                if ( $this.attr('selected') )
+                    t.add( text, value );
             });
 
             // adds to autocompleter
             t.plugins['autocomplete'].setValues(tags);
-        }
+        };
+
+        var initialize_editor = function() {
+						// build initial textlistboxes
+            $('#category_skeleton').prevAll('fieldset').each(function() {
+                var fieldset = $(this),
+                        select = $('select',fieldset),
+                        option = $('<option />')
+                                .val( select.prop('id').replace('category_','') )
+                                .text( $('label.control-label', fieldset).text());
+
+                fieldset.data('option', option );
+
+                buildTextList( select );
+
+                // activate close button
+                $('.control-label a', fieldset).click(function(e) {
+                    e.preventDefault();
+                    // add category to re-add
+                    $('#category_list').append( fieldset.data('option') );
+                    fieldset.remove();
+                });
+            });
+
+            $('#category_add').click(function(e){
+                e.preventDefault();
+
+                var new_cat = $('#category_list').children('option:selected');
+
+                if ( !new_cat.val() )
+                    return;
+
+                var fieldset = $('#category_skeleton').clone();
+
+                fieldset.removeClass('hide').attr({'id' : '' });
+
+                // setting label with category name
+                $('label span', fieldset).text(new_cat.text());
+
+                // setting select field with category id
+                $('select', fieldset).attr({
+                    'id' : 'category_' + new_cat.val(),
+                    'name' : 'categories['+ new_cat.val() +']'
+                });
+
+                // activate close button
+                $('a', fieldset).click(function(e) {
+                    e.preventDefault();
+                    // add category to re-add
+                    $('#category_list').append( fieldset.data('option') );
+                    fieldset.remove();
+                });
+
+                // inject it
+                fieldset.insertBefore( $('#category_skeleton') );
+
+                // build textlistbox
+                buildTextList( $('select',fieldset) );
+
+                // remove from selectable
+                fieldset.data('option', new_cat.remove());
+            });
+
+            // reset
+            $('#cteditor').find('input[type=reset]').click(function(){
+                $('#cteditor').find('form').replaceWith(initial_form.clone());
+                initialize_editor();
+            });
+        };
 
         include([
             'js/jquery.growinginput.js',
@@ -110,7 +178,7 @@
             'css/textboxlist.css',
             'css/ui-custom-theme/jquery-ui-1.8.16.custom.css'], function() {
 
-            var cteditor_launcher = $('{{ launcher_id|default:"#cteditor_launcher" }}')
+            var cteditor_launcher = $('{{ launcher_id|default:"#cteditor_launcher" }}');
 
             $(cteditor_launcher).click(function(event){
                 event.preventDefault();
@@ -126,70 +194,8 @@
                     return;
                 $t.data('cteditor', true );
 
-                // build initial textlistboxes
-                $('#category_skeleton').prevAll('fieldset').each(function() {
-                    var fieldset = $(this),
-                        select = $('select',fieldset),
-                        option = $('<option />')
-                            .val( select.prop('id').replace('category_','') )
-                            .text( $('label.control-label', fieldset).text() )
+                initialize_editor();
 
-                    // build input select option
-
-                    fieldset.data('option', option )
-
-                    buildTextList( select );
-
-                    // activate close button
-                    $('.control-label a', fieldset).click(function(e) {
-                      e.preventDefault();
-                      // add category to re-add
-                      $('#category_list').append( fieldset.data('option') );
-                      fieldset.remove();
-                    });
-                });
-
-                $('#category_add').click(function(e){
-                    e.preventDefault();
-
-                    var new_cat = $('#category_list').children('option:selected');
-
-                    if ( !new_cat.val() )
-                        return;
-
-                    var fieldset = $('#category_skeleton').clone();
-
-                    fieldset.removeClass('hide').attr({'id' : '' });
-
-                    // setting label with category name
-                    $('label span', fieldset).text(new_cat.text());
-
-                    // setting select field with category id
-                    $('select', fieldset).attr({
-                        'id' : 'category_' + new_cat.val(),
-                        'name' : 'categories['+ new_cat.val() +']'
-                    });
-
-                    // activate close button
-                    $('a', fieldset).click(function(e) {
-                        e.preventDefault();
-                        // add category to re-add
-                        $('#category_list').append( fieldset.data('option') );
-                        fieldset.remove();
-                    });
-
-                    // inject it
-                    fieldset.insertBefore( $('#category_skeleton') );
-
-                    // build textlistbox
-                    buildTextList( $('select',fieldset) );
-
-                    // remove from selectable
-                    fieldset.data('option', new_cat.remove());
-                });
-            })/*.parent().hover(
-                function() { $('#cteditor-launcher', this).fadeIn(); },     // in
-                function() { $('#cteditor-launcher', this).fadeOut(); }     // out
-            );*/
+            });
         });
     </script>
