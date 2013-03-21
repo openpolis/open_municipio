@@ -314,6 +314,62 @@ class ActDescriptor(TimeStampedModel):
         db_table = u'acts_act_descriptor'
 
 
+class CGDeliberation(Act):
+    """
+    City Government Deliberation (Delibera di Giunta)
+    """
+    INITIATIVE_TYPES = Choices(
+        ('PRESIDENT', 'president', _('President')),
+        ('ASSESSOR', 'assessor', _('City Government Member')),
+        ('GOVERNMENT', 'government', _('City Government')),
+        ('MAYOR', 'mayor', _('Mayor')),
+    )
+
+    FINAL_STATUSES = (
+        ('APPROVED', _('approved')),
+        ('REJECTED', _('rejected')),
+    )
+
+    STATUS = Choices(
+        ('PRESENTED', 'presented', _('presented')),
+        ('COMMITTEE', 'committee', _('committee')),
+        ('COUNCIL', 'council', _('council')),
+        ('APPROVED', 'approved', _('approved')),
+        ('REJECTED', 'rejected', _('rejected')),
+    )
+
+    status = StatusField()
+    approval_date = models.DateField(_('approval date'), null=True, blank=True)
+    publication_date = models.DateField(_('publication date'), null=True, blank=True)
+    final_idnum = models.CharField(max_length=64, blank=True, null=True, help_text=_("Internal identification string for the deliberation, when approved"))
+    execution_date = models.DateField(_('execution date'), null=True, blank=True)
+    initiative = models.CharField(_('initiative'), max_length=12, choices=INITIATIVE_TYPES)
+    approved_text = models.TextField(blank=True)
+
+    class Meta:
+        verbose_name = _('deliberation')
+        verbose_name_plural = _('deliberations')
+
+    @property
+    def next_events(self):
+        """
+        returns the next Events
+        """
+        from open_municipio.events.models import Event
+        return Event.future.filter(acts__id=self.id)
+
+    @property
+    def next_event(self):
+        """
+        returns the next Event or None
+        """
+        return self.next_events[0] if self.next_events else None
+
+    @models.permalink
+    def get_absolute_url(self):
+        return ('om_cgdeliberation_detail', (), {'pk': str(self.pk)})
+
+
 
 class Deliberation(Act):
     """

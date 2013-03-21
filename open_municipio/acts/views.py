@@ -12,7 +12,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from voting.views import RecordVoteOnItemView
 
-from open_municipio.acts.models import Act, Agenda, Deliberation, Interpellation, Interrogation, Motion, Transition
+from open_municipio.acts.models import Act, Agenda, CGDeliberation, Deliberation, Interpellation, Interrogation, Motion, Transition
 from open_municipio.acts.forms import ActDescriptionForm, ActTransitionForm, ActFinalTransitionForm, ActTitleForm
 from open_municipio.locations.models import Location
 
@@ -320,7 +320,10 @@ class ActDetailView(DetailView):
 
 class AgendaDetailView(ActDetailView):
     model = Agenda
-    
+
+
+class CGDeliberationDetailView(ActDetailView):
+    model = CGDeliberation
 
 class DeliberationDetailView(ActDetailView):
     model = Deliberation
