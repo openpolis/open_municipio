@@ -114,7 +114,7 @@
           <li {% block act_tab_documents_class %}{% endblock %}><a href="{{ act.get_absolute_url }}documents">{{ n_documents }} Document{{ n_documents|pluralize:"o,i" }}</a></li>
       {% endif %}
       {% if n_votes %}
-          <li><a href="/votations/?act_url={{ act.get_absolute_url }}"><strong>{{ n_votes }} Vot{{ n_documents|pluralize:"o,i" }}</strong></a></li>
+          <li><a href="/votations/?act_url={{ act.get_absolute_url }}"><strong>{{ n_votes }} Vot{{ n_votes|pluralize:"o,i" }}</strong></a></li>
       {% endif %}
     </ul>
   </div>

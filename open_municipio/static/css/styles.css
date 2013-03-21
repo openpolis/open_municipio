@@ -4483,7 +4483,7 @@ body.homepage article {
   margin-top: 32px;
   background-color: #ffffff;
 }
-body.homepage article > div {
+body.homepage article  > div {
   padding: 20px 0;
   border-bottom: 1px solid #ebe8e0;
 }
@@ -5335,6 +5335,9 @@ dl.data-list dt + dd {
 }
 .tags-cloud a {
   padding: 0 5px 0 0;
+}
+table.tablesorter th {
+  padding: 8px 20px 8px 8px;
 }
 table.tablesorter th.tablesorter-header {
   /* black double arrow */
