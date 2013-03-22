@@ -6,7 +6,7 @@ from open_municipio.acts.views import (ActSearchView, AgendaDetailView,
                                        DeliberationDetailView, InterpellationDetailView,
                                        InterrogationDetailView, MotionDetailView,
                                        ActTransitionAddView, ActTransitionRemoveView, ActTagEditorView, 
-                                       ActLiveEditView, RecordVoteOnActView)
+                                       ActLiveEditView, RecordVoteOnActView, CGDeliberationDetailView)
 
 from open_municipio.locations.views import ActTagByLocationView
 
@@ -32,9 +32,9 @@ urlpatterns = patterns('',
     url(r'^agendas/(?P<pk>\d+)/(?P<tab>documents)/$', AgendaDetailView.as_view(),  name='om_agenda_detail_documents'),
     url(r'^agendas/(?P<pk>\d+)/(?P<tab>emendations)/$', AgendaDetailView.as_view(),  name='om_agenda_detail_emendations'),
     # cg-deliberations
-    url(r'^cgdeliberations/(?P<pk>\d+)/$', DeliberationDetailView.as_view(),  name='om_cgdeliberation_detail'),
-    url(r'^cgdeliberations/(?P<pk>\d+)/(?P<tab>documents)/$', DeliberationDetailView.as_view(),  name='om_cgdeliberation_detail_documents'),
-    url(r'^cgdeliberations/(?P<pk>\d+)/(?P<tab>emendations)/$', DeliberationDetailView.as_view(),  name='om_cgdeliberation_detail_emendations'),
+    url(r'^cgdeliberations/(?P<pk>\d+)/$', CGDeliberationDetailView.as_view(),  name='om_cgdeliberation_detail'),
+    url(r'^cgdeliberations/(?P<pk>\d+)/(?P<tab>documents)/$', CGDeliberationDetailView.as_view(),  name='om_cgdeliberation_detail_documents'),
+    url(r'^cgdeliberations/(?P<pk>\d+)/(?P<tab>emendations)/$', CGDeliberationDetailView.as_view(),  name='om_cgdeliberation_detail_emendations'),
     # deliberations
     url(r'^deliberations/(?P<pk>\d+)/$', DeliberationDetailView.as_view(),  name='om_deliberation_detail'),
     url(r'^deliberations/(?P<pk>\d+)/(?P<tab>documents)/$', DeliberationDetailView.as_view(),  name='om_deliberation_detail_documents'),
