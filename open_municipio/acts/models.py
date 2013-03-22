@@ -646,38 +646,6 @@ class Attach(Document):
         return u'%s' % self.title
   
 
-class Minute(Document):
-    """
-    WRITEME
-    """
-    sitting = models.ForeignKey(Sitting)
-    act_set = models.ManyToManyField(Act)    
-    
-    class Meta(Document.Meta):
-        verbose_name = _('minute')
-        verbose_name_plural = _('minutes')
-
-    @property
-    def acts(self):
-        return self.act_set.all()
-
-
-class Outcome(models.Model):
-    """
-    WRITEME
-    """
-    sitting = models.ForeignKey(Sitting)
-    act_set = models.ManyToManyField(Act)    
-
-    class Meta(Document.Meta):
-        verbose_name = _('outcome')
-        verbose_name_plural = _('outcomes')
-
-    @property
-    def acts(self):
-        return self.act_set.all()
-        
-        
 #
 # Calendar
 #
