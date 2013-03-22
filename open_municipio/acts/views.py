@@ -324,6 +324,7 @@ class AgendaDetailView(ActDetailView):
 
 class CGDeliberationDetailView(ActDetailView):
     model = CGDeliberation
+    template_name = "acts/deliberation_detail.html"
 
 class DeliberationDetailView(ActDetailView):
     model = Deliberation
