@@ -52,9 +52,10 @@ class Person(models.Model, MonitorizedItem):
     class Meta:
         verbose_name = _('person')
         verbose_name_plural = _('people')
+        ordering = [ 'last_name','first_name','birth_date', ]
    
     def __unicode__(self):
-        return u'%s %s' % (self.first_name, self.last_name)
+        return u'%s, %s' % (self.last_name, self.first_name)
 
     def save(self, *args, **kwargs):
         if self.slug is None:
