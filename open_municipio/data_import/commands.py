@@ -164,7 +164,7 @@ class ImportActsCommand(LabelCommand):
 
                 try:
                     person = Person.objects.get(pk=int(om_id))
-                    charge =  person.get_current_charge_in_institution(institution, moment=moment)
+                    charge = person.get_current_charge_in_institution(institution, moment=moment)
                     self.logger.debug("id %s (%s) mapped to %s (%s)" %
                                       (charge_id, charge_type, person, charge))
                     return charge
