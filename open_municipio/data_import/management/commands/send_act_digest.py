@@ -16,7 +16,7 @@ class Command(BaseCommand):
                     help='Digest receiver/s email list (comma separated values without spaces)'),
     )
 
-    help = 'Send a digest with latest imported act to some receivers'
+    help = 'Send a digest with latest imported acts to some receivers'
 
     def handle(self, *args, **options):
 
