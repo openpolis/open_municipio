@@ -6,6 +6,9 @@ from tinymce.widgets import TinyMCE
 from django.forms.models import inlineformset_factory, BaseInlineFormSet
 from django.forms import Textarea, ModelForm, TextInput
 
+# TODO place these widget and field in a more reusable location
+from open_municipio.speech.widgets import SplitTimeField, SplitTimeWidget
+
 class EventForm(ModelForm):
     description = CharField(widget=TinyMCE(
         attrs={'cols': 80, 'rows': 25},
@@ -22,6 +25,7 @@ class EventForm(ModelForm):
         },
     ),
     required=False)
+    event_time = SplitTimeField(widget=SplitTimeWidget)
 
     class Meta:
         model = Event
@@ -43,6 +47,9 @@ class EventAdmin(admin.ModelAdmin):
     filter_horizontal = ('acts',)
     form = EventForm
     inlines = [ EventActInline, ]
+    list_display = [ "title", "date", "institution", ]
+    search_fields = [ "title", "institution__name", ]
+    list_filter = ("institution", )
  
 admin.site.register(Event, EventAdmin)
 

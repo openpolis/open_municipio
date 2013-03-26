@@ -38,7 +38,7 @@ class SplitTimeWidget(forms.MultiWidget):
     def __init__(self, attrs=None):
         widgets = (
                     forms.Select(attrs=attrs, choices=([(hour,hour) for hour in range(0,24)])), \
-                    forms.Select(attrs=attrs, choices=([(minute, str(minute).zfill(2)) for minute in [0,15,30,45]]))
+                    forms.Select(attrs=attrs, choices=([(minute, str(minute).zfill(2)) for minute in range(60)]))
                   )
         super(SplitTimeWidget, self).__init__(widgets, attrs)
 
