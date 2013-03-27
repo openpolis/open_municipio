@@ -846,7 +846,23 @@ class Institution(Body):
             return reverse("om_institution_council")
         elif self.institution_type == self.COMMITTEE:
             return reverse("om_institution_committee", kwargs={'slug': self.slug})
-    
+
+    @property
+    def name_with_preposition(self):
+        """
+        returns name with preposition
+        """
+        if self.institution_type == self.MAYOR:
+            return "del %s" % self.name
+        elif self.institution_type == self.CITY_GOVERNMENT:
+            return "della %s" % self.name
+        elif self.institution_type == self.COUNCIL:
+            return "del %s" % self.name
+        elif self.institution_type == self.COMMITTEE:
+            return "della %s" % self.name
+
+        return self.name
+
     @property
     def charges(self):
         """
