@@ -81,7 +81,8 @@
 
   <hgroup>
     <h2 id="act_title">
-      <a href="#" id="{{ act|as_token }}" class="bookmarkable"><i class="{% is_key_class act %}"></i></a>
+      <a href="#" id="{{ act|as_token }}" class="bookmarkable" {% if act.is_key %} data-toggle="tooltip" data-placement="right" title="Voto chiave"{% endif %}>
+          <i class="{% is_key_class act %}"></i></a>
       <strong class="input-append">{{ act.title }}</strong>
       <small>(N. {{ act.idnum }})</small></h2>
     <h4>
@@ -292,6 +293,8 @@
         {% endif %}
 
         // ----------------------------
+
+        $('#act_title').find('a.bookmarkable').tooltip();
 
 
       });
