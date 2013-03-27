@@ -119,21 +119,21 @@
     </div>
 
     <div class="span4">
-      <ul class="person-resources">
-        {% if resources.URL %}
-          <li><a class="website" href="{{ resources.URL.value }}">Sito web</a></li>
-        {% endif %}
-        {% if resources.FACEBOOK %}
-          <li><a class="facebook" href="{{ resources.FACEBOOK.value }}">Pagina Facebook</a></li>
-        {% endif %}
-        {% if resources.TWITTER %}
-          <li><a class="twitter" href="{{ resources.TWITTER.value }}">Profilo Twitter</a></li>
-        {% endif %}
-        {% if resources.OPENPOLIS %}
-          <li><a class="openpolis" href="{{ resources.OPENPOLIS.value }}">Pagina su Openpolis</a></li>
-        {% endif %}
+      <table>
+	      {% if resources.URL %}
+            <tr><td><i class="res res-feed"></i></td><td><a class="website" href="{{ resources.URL.value }}">Sito web</a></td></tr>
+	      {% endif %}
+	      {% if resources.FACEBOOK %}
+            <tr><td><i class="res res-facebook"></i></td><td><a class="facebook" href="{{ resources.FACEBOOK.value }}">Pagina Facebook</a></td></tr>
+	      {% endif %}
+	      {% if resources.TWITTER %}
+            <tr><td><i class="res res-twitter"></i></td><td><a class="twitter" href="{{ resources.TWITTER.value }}">Profilo Twitter</a></td></tr>
+	      {% endif %}
+	      {% if resources.OPENPOLIS %}
+            <tr><td><i class="res res-openpolis"></i></td><td><a class="openpolis" href="{{ resources.OPENPOLIS.value }}">Pagina su Openpolis</a></td></tr>
+	      {% endif %}
+      </table>
 
-      </ul>
     </div>
 
   </div>

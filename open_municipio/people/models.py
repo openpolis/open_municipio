@@ -244,6 +244,8 @@ class Resource(models.Model):
         ('FAX', 'fax', _('fax')),
         ('SNAIL', 'snail', _('snail mail')),
         ('PERSON', 'person', _('person')),
+        ('TWITTER', 'twitter', _('twitter')),
+        ('FACEBOOK', 'facebook', _('facebook')),
     )
     resource_type = models.CharField(verbose_name=_('type'), max_length=10, choices=RES_TYPE)
     value = models.CharField(verbose_name=_('value'), max_length=64)
