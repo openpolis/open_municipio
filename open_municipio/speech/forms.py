@@ -1,7 +1,8 @@
 from django import forms
 from django.contrib import admin
 
-from open_municipio.speech.widgets import SplitTimeField, SplitTimeWidget
+from open_municipio.fields import SplitTimeField
+from open_municipio.widgets import SplitTimeWidget
 
 class SpeechAdminForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):

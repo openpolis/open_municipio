@@ -16,18 +16,15 @@ from open_municipio.taxonomy.models import Category
 
 class Speech(TimeStampedModel):
     text = models.TextField(blank=True)
-    speaker = models.ForeignKey(Person) # do we need a Speaker class?
-#    event_act = models.ForeignKey(EventAct)
-    act = models.ForeignKey(Act)
-    # whether this speech is a "key" one
-    is_key = models.BooleanField(default=False)
+    speaker = models.ForeignKey(Person, verbose_name=_('speaker')) # do we need a Speaker class?
+    act = models.ForeignKey(Act, verbose_name=_('act'))
+    is_key = models.BooleanField(default=False, help_text=_("Specify whether this speech should be featured"))
     category_set = models.ManyToManyField(Category, verbose_name=_('categories'),
         blank=True, null=True)
-    title = models.CharField(max_length=255)
-    begin_time = models.TimeField(_("Begin time"), blank=True, null=True, help_text=_("The time when the speech begin"))
+    title = models.CharField(max_length=255,verbose_name=_('title'))
+    begin_time = models.TimeField(verbose_name=_("Begin time"), blank=True, null=True, help_text=_("The time when the speech begin"))
 
     def __unicode__(self):
-#        return "%s - %s on '%s' (%s)" % (self.event_act.event.date, self.title, self.event_act.act.title, self.speaker)
         return "%s on '%s' (%s)" % (self.title, self.act.title, self.speaker)
 
 
@@ -43,8 +40,12 @@ class Speech(TimeStampedModel):
         verbose_name_plural = _('speeches')
 
 class SpeechAttachment(Document):
-    title = models.CharField(max_length=255)
-    speech = models.ForeignKey(Speech, related_name='speechattachment_set')
+    title = models.CharField(max_length=255, verbose_name=_('title'))
+    speech = models.ForeignKey(Speech, related_name='speechattachment_set',verbose_name=_('speech'))
 
     def __unicode__(self):
         return "%s [%s]" % (self.title, self.speech)
+
+    class Meta:
+        verbose_name = _('speech attachment')
+        verbose_name_plural = _('speech attachments')

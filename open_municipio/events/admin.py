@@ -7,7 +7,8 @@ from django.forms.models import inlineformset_factory, BaseInlineFormSet
 from django.forms import Textarea, ModelForm, TextInput
 
 # TODO place these widget and field in a more reusable location
-from open_municipio.speech.widgets import SplitTimeField, SplitTimeWidget
+from open_municipio.widgets import SplitTimeWidget
+from open_municipio.fields import SplitTimeField
 
 class EventForm(ModelForm):
     description = CharField(widget=TinyMCE(

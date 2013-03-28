@@ -11,10 +11,14 @@ from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 import logging
 
 class Provider(models.Model):
-    desc = models.CharField(max_length=255)
+    desc = models.CharField(max_length=255, verbose_name=_('description'))
 
     def __unicode__(self):
         return u"%s" % self.desc
+    
+    class Meta:
+        verbose_name=_('provider')
+        verbose_name_plural=_('providers')
 
 class LookupObject(models.Model):
     local = None
@@ -34,18 +38,18 @@ class LookupObject(models.Model):
         return u"%s [%s > %s]" % (self.local, self.provider, self.external)
 
 class LookupPerson(LookupObject):
-    local = models.ForeignKey(Person)
-    external = models.CharField(max_length=256)
-    provider = models.ForeignKey(Provider)
+    local = models.ForeignKey(Person,verbose_name=_('OM id'))
+    external = models.CharField(max_length=256,verbose_name=_('provider id'))
+    provider = models.ForeignKey(Provider,verbose_name=_('provider'))
 
     @staticmethod
     def lookup(external, provider):
         return LookupObject.lookup(LookupPerson.objects, external)
 
 class LookupInstitutionCharge(LookupObject):
-    local = models.ForeignKey(InstitutionCharge)
-    external = models.CharField(max_length=256)
-    provider = models.ForeignKey(Provider)
+    local = models.ForeignKey(InstitutionCharge,verbose_name=_('OM id'))
+    external = models.CharField(max_length=256,verbose_name=_('provider id'))
+    provider = models.ForeignKey(Provider,verbose_name=_('provider'))
 
     @staticmethod
     def lookup(external, provider):
@@ -57,9 +61,9 @@ class LookupInstitutionCharge(LookupObject):
     
 
 class LookupCompanyCharge(LookupObject):
-    local = models.ForeignKey(CompanyCharge)
-    external = models.CharField(max_length=256)
-    provider = models.ForeignKey(Provider)
+    local = models.ForeignKey(CompanyCharge,verbose_name=_('OM id'))
+    external = models.CharField(max_length=256,verbose_name=_('provider id'))
+    provider = models.ForeignKey(Provider,verbose_name=_('provider'))
 
     @staticmethod
     def lookup(external, provider):
@@ -67,9 +71,9 @@ class LookupCompanyCharge(LookupObject):
             provider)
 
 class LookupAdministrationCharge(LookupObject):
-    local = models.ForeignKey(AdministrationCharge)
-    external = models.CharField(max_length=256)
-    provider = models.ForeignKey(Provider)
+    local = models.ForeignKey(AdministrationCharge,verbose_name=_('OM id'))
+    external = models.CharField(max_length=256,verbose_name=_('provider id'))
+    provider = models.ForeignKey(Provider,verbose_name=_('provider'))
 
     @staticmethod
     def lookup(external, provider):

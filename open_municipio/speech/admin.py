@@ -9,7 +9,7 @@ class SpeechAttachmentInline(admin.StackedInline):
 
 class SpeechAdmin(admin.ModelAdmin):
     form = SpeechAdminForm
-    raw_id_fields = ( "act", )
+    raw_id_fields = ( "act", "speaker", )
 
     def change_view(self, request, object_id, extra_content=None):
         if request.user.is_superuser:

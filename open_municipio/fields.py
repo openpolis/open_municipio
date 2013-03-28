@@ -1,5 +1,4 @@
 import datetime
-
 from django.utils.translation import ugettext_lazy as _
 from django import forms
 
@@ -31,18 +30,4 @@ class SplitTimeField(forms.MultiValueField):
             return datetime.time(int(data_list[0]),int(data_list[1]))
         return None
 
-class SplitTimeWidget(forms.MultiWidget):
-    """
-    Widget written to split widget into hours and minutes.
-    """
-    def __init__(self, attrs=None):
-        widgets = (
-                    forms.Select(attrs=attrs, choices=([(hour,hour) for hour in range(0,24)])), \
-                    forms.Select(attrs=attrs, choices=([(minute, str(minute).zfill(2)) for minute in range(60)]))
-                  )
-        super(SplitTimeWidget, self).__init__(widgets, attrs)
 
-    def decompress(self, value):
-        if value:
-            return [value.hour, value.minute]
-        return [None, None]
