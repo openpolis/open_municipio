@@ -266,7 +266,30 @@
 
       </section>
   {% endif %}
+  
+  {% if n_speeches %}
+      <section>
+          <h2>Ultimi interventi in Consiglio comunale {% popover_info 'interventi-politico' %}</h2>
 
+          <table class="data">
+              <thead>
+              <tr>
+                  <th class="text-left span5">Seduta</th>
+                  <th>Argomento</th>
+                  <th>Intervento</th>
+              </tr>
+              </thead>
+              <tbody>
+              {% for speech in speeches %}
+                  <tr>
+                      <td>Seduta</td>
+                      <td>{{ speech.title }}</td>
+                      <td>Link</td>
+                  </tr>
+              {% endfor %}
+
+      </section>
+  {% endif %}
 {% endblock %}
 
 {% block sidebar %}
