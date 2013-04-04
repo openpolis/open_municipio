@@ -218,6 +218,7 @@ SITE_INFO = {
     'main_city_logo': 'img/city-logo/city-logo.png'
 }
 DEFAULT_FROM_EMAIL = "info@openmunicipio.it"
+DIGEST_DEFAULT_GROUP = "redazione"
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'unique-secret-key-has-been-changed-in-instance-settings'

@@ -81,12 +81,13 @@
 
   <hgroup>
     <h2 id="act_title">
-      <a href="#" id="{{ act|as_token }}" class="bookmarkable"><i class="{% is_key_class act %}"></i></a>
+      <a href="#" id="{{ act|as_token }}" class="bookmarkable" {% if act.is_key %} data-toggle="tooltip" data-placement="right" title="Voto chiave"{% endif %}>
+          <i class="{% is_key_class act %}"></i></a>
       <strong class="input-append">{{ act.title }}</strong>
       <small>(N. {{ act.idnum }})</small></h2>
     <h4>
       <strong>{{ act.get_type_name|capfirst }}</strong>
-      del Consiglio comunale N° <strong>{{ act.idnum }}</strong> del <strong><span class="date">{{ act.presentation_date }}</span></strong>
+      {{ act.emitting_institution.name_with_preposition }} N° <strong>{{ act.idnum }}</strong> del <strong><span class="date">{{ act.presentation_date }}</span></strong>
     </h4>
   </hgroup>
 
@@ -114,7 +115,7 @@
           <li {% block act_tab_documents_class %}{% endblock %}><a href="{{ act.get_absolute_url }}documents">{{ n_documents }} Document{{ n_documents|pluralize:"o,i" }}</a></li>
       {% endif %}
       {% if n_votes %}
-          <li><a href="/votations/?act_url={{ act.get_absolute_url }}"><strong>{{ n_votes }} Vot{{ n_documents|pluralize:"o,i" }}</strong></a></li>
+          <li><a href="/votations/?act_url={{ act.get_absolute_url }}"><strong>{{ n_votes }} Vot{{ n_votes|pluralize:"o,i" }}</strong></a></li>
       {% endif %}
     </ul>
   </div>
@@ -292,6 +293,8 @@
         {% endif %}
 
         // ----------------------------
+
+        $('#act_title').find('a.bookmarkable').tooltip();
 
 
       });

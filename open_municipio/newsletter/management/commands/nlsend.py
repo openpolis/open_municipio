@@ -1,14 +1,16 @@
 import logging
 from optparse import make_option
 from datetime import datetime
+from django.contrib.sites.models import Site
 from django.core.management.base import LabelCommand, BaseCommand, CommandError
 from django.db.models.query import EmptyQuerySet
 
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import get_template
 from django.template import Context
+from django.conf import settings
+from django.utils import translation
 
-from open_municipio.monitoring.models import Monitoring
 from open_municipio.newscache.models import News
 from open_municipio.newsletter.models import Newsletter
 from open_municipio.users.models import UserProfile
@@ -48,6 +50,8 @@ class Command(LabelCommand):
 
     def handle(self, *labels, **options):
 
+
+        translation.activate('it')
 
         # fix logger level according to verbosity
         verbosity = options['verbosity']
@@ -95,6 +99,9 @@ class Command(LabelCommand):
         if not options['dryrun']:
             nl.save()
 
+        translation.deactivate()
+
+
     def handle_label(self, profile, **options):
         """
         fetch newsletter and send email to a single user
@@ -128,13 +135,17 @@ class Command(LabelCommand):
                 for news in related_news:
                     self.logger.debug(u'   *{0}'.format(news))
 
+            import re
+            site_domain = Site.objects.get(pk=settings.SITE_ID)
+
             n_news = len(user_news)
             if n_news:
                 if not options['dryrun']:
                     d = Context({ 'profile': profile,
-                                  'user_news': [{'date': rn.news_date, 'text': rn.text} for rn in user_news]})
+                                  'city': settings.SITE_INFO['main_city'],
+                                  'user_news': [{'date': rn.news_date, 'text': re.sub('href=\"\/', 'href="http://{0}/'.format(site_domain), rn.text)} for rn in user_news]})
 
-                    subject, from_email, to = 'hello', 'noreply@openmunicipio.it', 'guglielmo@celata.com'
+                    subject, from_email, to = 'Monitoraggio Open Municipio', 'noreply@openmunicipio.it', profile.user.email
                     text_content = self.plaintext_tpl.render(d)
                     html_content = self.htmly_tpl.render(d)
                     msg = EmailMultiAlternatives(subject, text_content, from_email, [to])

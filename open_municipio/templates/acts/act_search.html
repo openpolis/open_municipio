@@ -46,6 +46,9 @@ em {
             <td>
               <h4><a href="{{ result.url }}">{{ result.title }}</a></h4>
               <strong>{{ result.act_type }}</strong>
+              {% if result.act_type == 'delibera' %}
+                  di {{ result.organ }}
+              {% endif %}
               {% if result.highlighted.text %}
                 {{ result.highlighted.text.0|safe }}<br/>
               {% endif %}

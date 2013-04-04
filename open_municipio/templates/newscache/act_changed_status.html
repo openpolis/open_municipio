@@ -1,13 +1,15 @@
 {%  load switch %}
+
+L'atto <a href="{{ act.downcast.get_absolute_url }}">{{ act.downcast.title|truncatewords_html:30 }}</a>
 {% switch act.status %}
     {% case act.STATUS.committee %}
-        L'atto è in discussione in commissione{% if transition.note %} {{ transition.note }}{% endif %}
+        è in discussione in commissione{% if transition.note %} {{ transition.note }}{% endif %}
     {% case act.STATUS.council %}
-       L'atto è in discussione al consiglio
+       è in discussione al consiglio
     {% case act.STATUS.approved %}
-        L'atto è stato approvato
+        è stato approvato
     {% case act.STATUS.rejected %}
-        L'atto è stato respinto
+        è stato respinto
     {%  else %}
-        Lo stato dell'atto è sconosciuto
+        è in uno stato non determinabile
 {% endswitch %}

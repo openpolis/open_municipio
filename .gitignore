@@ -4,7 +4,6 @@
 *.sqlite
 .idea
 open_municipio/settings_*.py
-open_municipio/urls_*.py
 sitestatic
 open_municipio/media
 open_municipio/*/migrations

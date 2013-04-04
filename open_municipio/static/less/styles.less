@@ -816,6 +816,9 @@ dl.data-list {
 
 
 table.tablesorter {
+  th {
+    padding: 8px 20px 8px 8px;
+  }
   th.tablesorter-header {
     /* black double arrow */
     background-image: url(data:image/gif;base64,R0lGODlhFQAJAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAkAAAIXjI+AywnaYnhUMoqt3gZXPmVg94yJVQAAOw==);
@@ -928,12 +931,6 @@ hr.big {
 .bookmarkable {
   color: inherit;
   &:hover { text-decoration: none; }
-}
-
-ul.person-resources {
-  margin:0;
-  list-style: none;
-
 }
 
 #content table#votation_outcome {
@@ -1157,3 +1154,14 @@ ul.typehead {
   .form-actions { background-color: @semiWhite; }
 }
 
+.res {
+  height:26px;
+  width:32px;
+  display: inline-block;
+  background-image: url('../img/politician-resources.png');
+  background-repeat: no-repeat;
+  &.res-feed { background-position:-0px -0px; }
+  &.res-facebook { background-position:-32px -0px; }
+  &.res-twitter { background-position:-64px -0px; }
+  &.res-openpolis { background-position:-96px -0px; }
+}

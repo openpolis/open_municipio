@@ -12,7 +12,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from voting.views import RecordVoteOnItemView
 
-from open_municipio.acts.models import Act, Agenda, Deliberation, Interpellation, Interrogation, Motion, Transition
+from open_municipio.acts.models import Act, Agenda, CGDeliberation, Deliberation, Interpellation, Interrogation, Motion, Transition
 from open_municipio.acts.forms import ActDescriptionForm, ActTransitionForm, ActFinalTransitionForm, ActTitleForm
 from open_municipio.locations.models import Location
 
@@ -312,15 +312,24 @@ class ActDetailView(DetailView):
         pass
     
     def get_template_names(self):
+        model_name = self.model.__name__.lower()
+
+        # deliberations and cgdeliberations use the same template
+        if model_name == 'cgdeliberation':
+            model_name = 'deliberation'
         if self.tab == 'default': # default tab selected
-            return 'acts/%(model)s_detail.html' % {'model': self.model.__name__.lower()}
+            return 'acts/%(model)s_detail.html' % {'model': model_name}
         else:
-            return 'acts/%(model)s_detail_%(tab)s.html' % {'model': self.model.__name__.lower(), 'tab': self.tab}
+            return 'acts/%(model)s_detail_%(tab)s.html' % {'model': model_name, 'tab': self.tab}
 
 
 class AgendaDetailView(ActDetailView):
     model = Agenda
-    
+
+
+class CGDeliberationDetailView(ActDetailView):
+    model = CGDeliberation
+    template_name = "acts/deliberation_detail.html"
 
 class DeliberationDetailView(ActDetailView):
     model = Deliberation

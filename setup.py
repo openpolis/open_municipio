@@ -20,7 +20,7 @@ setup(
     url = 'http://openpolis.github.com/open_municipio/',
     packages = ['open_municipio'],
     install_requires = [
-        "Django >= 1.4.1",
+        "Django == 1.4",
         "South >= 0.7.3",
         "django-extensions",
         "poster",

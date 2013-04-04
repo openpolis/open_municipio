@@ -244,6 +244,8 @@ class Resource(models.Model):
         ('FAX', 'fax', _('fax')),
         ('SNAIL', 'snail', _('snail mail')),
         ('PERSON', 'person', _('person')),
+        ('TWITTER', 'twitter', _('twitter')),
+        ('FACEBOOK', 'facebook', _('facebook')),
     )
     resource_type = models.CharField(verbose_name=_('type'), max_length=10, choices=RES_TYPE)
     value = models.CharField(verbose_name=_('value'), max_length=64)
@@ -818,15 +820,23 @@ class Institution(Body):
     
     parent = models.ForeignKey('Institution', related_name='sub_body_set', blank=True, null=True)
     institution_type = models.IntegerField(choices=INSTITUTION_TYPES)
+    position = models.PositiveIntegerField(editable=False, default=0)
     
     class Meta(Body.Meta):
         verbose_name = _('institution')
         verbose_name_plural = _('institutions')
+        ordering = ('position',)
     
     def save(self, *args, **kwargs):
         """slugify name on first save"""
         if not self.id:
             self.slug = slugify(self.name)
+            # set position
+            qs = self.__class__.objects.order_by('-position')
+            try:
+                self.position = qs[0].position + 1
+            except IndexError:
+                self.position = 0
         super(Institution, self).save(*args, **kwargs)
         
     def get_absolute_url(self):
@@ -838,7 +848,23 @@ class Institution(Body):
             return reverse("om_institution_council")
         elif self.institution_type == self.COMMITTEE:
             return reverse("om_institution_committee", kwargs={'slug': self.slug})
-    
+
+    @property
+    def name_with_preposition(self):
+        """
+        returns name with preposition
+        """
+        if self.institution_type == self.MAYOR:
+            return "del %s" % self.name
+        elif self.institution_type == self.CITY_GOVERNMENT:
+            return "della %s" % self.name
+        elif self.institution_type == self.COUNCIL:
+            return "del %s" % self.name
+        elif self.institution_type == self.COMMITTEE:
+            return "della %s" % self.name
+
+        return self.name
+
     @property
     def charges(self):
         """
@@ -942,6 +968,39 @@ class Institution(Body):
     def resources(self):
         return self.resource_set.all()
 
+    def _move(self, up):
+        qs = self.__class__._default_manager
+        if up:
+            qs = qs.order_by('-position').filter(position__lt=self.position)
+        else:
+            qs = qs.filter(position__gt=self.position)
+        try:
+            replacement = qs[0]
+        except IndexError:
+            all_institutions = self.__class__._default_manager.filter(position=0)
+            if len(all_institutions) > 1:
+                # initialize positions
+                for i, institution in enumerate(all_institutions):
+                    institution.position = i
+                    institution.save()
+
+            # already first/last
+            return
+        self.position, replacement.position = replacement.position, self.position
+        self.save()
+        replacement.save()
+
+    def move_down(self):
+        """
+        Move this object down one position.
+        """
+        return self._move(up=False)
+
+    def move_up(self):
+        """
+        Move this object up one position.
+        """
+        return self._move(up=True)
     
 
 class Company(Body):

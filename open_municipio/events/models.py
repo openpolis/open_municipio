@@ -44,6 +44,7 @@ class Event(models.Model):
     class Meta:
         verbose_name = _('event')
         verbose_name_plural = _('events')
+        ordering = ['-date', ]
 
     def __unicode__(self):
         uc = u'%s %s - %s' % (self.date, self.event_time, self.title)
