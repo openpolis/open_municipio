@@ -9,6 +9,7 @@ from open_municipio.people.models import Institution, InstitutionCharge, Person,
 from open_municipio.monitoring.forms import MonitoringForm
 from open_municipio.acts.models import Act, Deliberation, Interrogation, Interpellation, Motion, Agenda, ActSupport
 from open_municipio.events.models import Event
+from open_municipio.speech.models import Speech
 
 from django.core import serializers
 
@@ -329,7 +330,8 @@ class PoliticianDetailView(DetailView):
                     "%.1f" % (float(charge.n_absent_votations) /\
                               context['n_total_votations'] * 100.00)
 
-            context['percentage_rebel_votations'] = "%.1f" % (float(100 * charge.n_rebel_votations / charge.n_present_votations))
+            if charge.n_present_votations > 0:
+                context['percentage_rebel_votations'] = "%.1f" % (float(100 * charge.n_rebel_votations / charge.n_present_votations))
 
         # Current politician's charge votes for key votations
         # last 10 are passed to template
@@ -345,6 +347,12 @@ class PoliticianDetailView(DetailView):
             .order_by('-presentation_date')
         context['n_presented_acts'] = presented_acts.count()
         context['presented_acts'] = presented_acts[0:10]
+
+        # last 5 speeches
+        speeches = Speech.objects\
+            .filter(speaker=self.object)
+        context['n_speeches'] = speeches.count()
+        context['speeches'] = speeches[0:5]
 
         # is the user monitoring the act?
         context['is_user_monitoring'] = False

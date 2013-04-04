@@ -404,7 +404,6 @@ class InstitutionCharge(Charge):
         """
         return self.presented_acts.count()
 
-
     @property
     def received_acts(self):
         """
