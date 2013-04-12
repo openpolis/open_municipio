@@ -15,6 +15,7 @@ class PersonResourceInline(admin.TabularInline):
     model = PersonResource
     extra = 0
 
+
 class PersonAdminWithResources(AdminImageMixin, admin.ModelAdmin):
     list_display = ('id', '__unicode__', 'has_current_charges', 'birth_date', 'birth_location' )
     list_display_links = ('__unicode__',)
@@ -22,21 +23,26 @@ class PersonAdminWithResources(AdminImageMixin, admin.ModelAdmin):
     prepopulated_fields = {"slug": ("first_name","last_name","birth_date", "birth_location",)}
     inlines = [PersonResourceInline, ]
 
+
 class ChargeAdmin(admin.ModelAdmin):
     raw_id_fields = ('person', )
+
 
 class GroupResourceInline(admin.TabularInline):
     model = GroupResource
     extra = 0
+
 
 class GroupChargeInline(admin.TabularInline):
     model = GroupCharge
     raw_id_fields = ('charge', )
     extra = 1
   
+
 class GroupIsMajorityInline(admin.TabularInline):
     model = GroupIsMajority
     extra = 1
+
 
 class GroupAdminWithCharges(AdminImageMixin, admin.ModelAdmin):
     prepopulated_fields = {"slug": ("name",)}
@@ -56,16 +62,20 @@ class ChargeInline(admin.StackedInline):
         })
     )
     extra = 1
-  
+
+
 class CompanyChargeInline(ChargeInline):
     model = CompanyCharge
+
 
 class AdministrationChargeInline(ChargeInline):
     model = AdministrationCharge
 
+
 class InstitutionResourceInline(admin.TabularInline):
     model = InstitutionResource
     extra = 0
+
 
 class InstitutionChargeInline(ChargeInline):
     model = InstitutionCharge
@@ -85,9 +95,11 @@ class ResponsabilityInline(admin.TabularInline):
     raw_id_fields = ('charge',)
     extra = 0
 
+
 class InstitutionResponsabilityInline(ResponsabilityInline):
     model = InstitutionResponsability
     fields = ('charge', 'charge_type', 'start_date', 'end_date', 'description')
+
 
 class GroupResponsabilityInline(admin.TabularInline):
     model = GroupResponsability
@@ -98,7 +110,8 @@ class GroupResponsabilityInline(admin.TabularInline):
 
 class ChargeAdmin(admin.ModelAdmin):
     pass
-  
+
+
 class CompanyChargeAdmin(ChargeAdmin):
     model = CompanyCharge
     raw_id_fields = ('person', 'company')
@@ -110,6 +123,7 @@ class CompanyChargeAdmin(ChargeAdmin):
         }),
     )
 
+
 class AdministrationChargeAdmin(ChargeAdmin):
     model = AdministrationCharge
     raw_id_fields = ('person', 'office')
@@ -120,6 +134,7 @@ class AdministrationChargeAdmin(ChargeAdmin):
                  'description')
         }),
     )
+
 
 class InstitutionChargeAdmin(ChargeAdmin):
     model = InstitutionCharge
@@ -139,6 +154,7 @@ class InstitutionChargeAdmin(ChargeAdmin):
     list_filter = ['institution__name']
     inlines = [InstitutionResponsabilityInline]
 
+
 class GroupChargeAdmin(admin.ModelAdmin):
     raw_id_fields = ('charge', )
     list_display = ('__unicode__', 'start_date', 'end_date')
@@ -147,12 +163,14 @@ class GroupChargeAdmin(admin.ModelAdmin):
     inlines = [GroupResponsabilityInline]
 
 
-
 class BodyAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("name",)}
 
+
 class CompanyAdmin(BodyAdmin):
     inlines = [CompanyChargeInline]
+
+
 class OfficeAdmin(BodyAdmin):
     inlines = [AdministrationChargeInline]
 
@@ -201,9 +219,21 @@ class InstitutionAdmin(BodyAdmin):
     list_display = ('name', 'institution_type', 'move_up_down_links')
 
 
+class SittingItemInline(admin.TabularInline):
+    model = SittingItem
+    fields = ('title', 'related_act_set', 'item_type', 'seq_order')
+    raw_id_fields = ['related_act_set',]
+    extra = 0
+
+
+class SittingItemAdmin(admin.ModelAdmin):
+    raw_id_fields = ['related_act_set',]
+
 class SittingAdmin(admin.ModelAdmin):
-    inlines = [VotationsInline]
-    
+    inlines = [SittingItemInline, VotationsInline]
+
+
+admin.site.register(SittingItem, SittingItemAdmin)
 admin.site.register(Sitting, SittingAdmin)
 admin.site.register(Person, PersonAdminWithResources)
 admin.site.register(Group, GroupAdminWithCharges)

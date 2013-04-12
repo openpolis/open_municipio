@@ -7,7 +7,6 @@ from django.utils.datetime_safe import date
 from django.utils.translation import ugettext_lazy as _
 from django.template.defaultfilters import slugify
 from django.core.urlresolvers import reverse
-from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
 
 from model_utils import Choices
@@ -1042,20 +1041,27 @@ class Office(Body):
         associated with this office.  
         """
         return self.charge_set.current()
-    
+
+
 #
 # Sittings
 #
 class Sitting(models.Model):
     """
-    WRITEME
+    A sitting models a gathering of people in a give institution.
+
+    Usually votations and speeches occur, during a sitting.
+
+    A sitting is broken down into SittingItems, and each item may be related to one or more acts.
+    Each item contains Speeches, which are a very special extension of Document
+    (audio attachments, with complex relations with votations, charges and acts).
     """
     idnum = models.CharField(blank=True, max_length=64)
     date = models.DateField()
     number = models.IntegerField(blank=True, null=True)
     call = models.IntegerField(blank=True, null=True)
     institution = models.ForeignKey(Institution, on_delete=models.PROTECT)
- 
+
     class Meta:
         verbose_name = _('sitting')
         verbose_name_plural = _('sittings')
@@ -1063,6 +1069,45 @@ class Sitting(models.Model):
     def __unicode__(self):
         return u'seduta num. %s del %s (%s)' % (self.number, self.date.strftime('%d/%m/%Y'), self.institution.name)
      
+
+class SittingItem(models.Model):
+    """
+    A SittingItem maps a single point of discussion in a Sitting.
+
+    It can be of type:
+    - odg - a true items of discussion
+    - procedural - a procedural issue, discussed, mostly less relevant
+    - intt - interrogations and interpellances (questions and answers), usually discussed at the beginning of the sitting
+
+    SittingItems are ordered through the seq_order field.
+    """
+
+    ITEM_TYPE = Choices(
+        ('ODG', 'odg', _('ordine del giorno')),
+        ('PROC', 'procedural', _('questione procedurale')),
+        ('INTT', 'intt', _('interrogation')),
+    )
+
+    sitting = models.ForeignKey(Sitting)
+    title = models.CharField(max_length=512)
+    item_type = models.CharField(choices=ITEM_TYPE, max_length=4)
+    seq_order = models.IntegerField(default=0)
+    related_act_set = models.ManyToManyField('acts.Act', blank=True, null=True)
+
+    class Meta:
+        verbose_name = _('sitting item')
+        verbose_name_plural = _('sitting items')
+
+    def __unicode__(self):
+        return unicode(self.title)
+
+    @property
+    def long_repr(self):
+        """
+        long unicode representation, contains the sitting details
+        """
+        return u'%s - %s' % (self.sitting, self)
+
 
 ## Private DB access API
 
