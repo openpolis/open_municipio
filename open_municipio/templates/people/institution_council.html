@@ -4,7 +4,7 @@
 {% load monitoring_tags %}
 {% load thumbnail %}
 {% load popover_info %}
-
+{% load events_council_by_year %}
 
 {% block title %}Organi politici | Consiglio{% endblock title %}
 {% block content_header %}Consiglio{% endblock %}
@@ -23,6 +23,13 @@
 
 
   <section class="row-fluid">
+
+    {% get_event_years 5 as years %}
+    <div class="sitting-archive">Archivio sedute di Consiglio: 
+    {% for y in years %}
+        <a href="{% url om_events_year year=y %}">{{ y }}</a> | 
+    {% endfor %}
+    </div>
 
     <h2>Consiglio {% popover_info 'consiglio-comunale' %}</h2>
     <p>

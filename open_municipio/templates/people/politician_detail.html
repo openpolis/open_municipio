@@ -269,7 +269,7 @@
   
   {% if n_speeches %}
       <section>
-          <h2>Ultimi interventi in Consiglio comunale {% popover_info 'interventi-politico' %}</h2>
+          <h2>Ultimi interventi in Consiglio Comunale {% popover_info 'interventi-politico' %}</h2>
 
           <table class="data">
               <thead>
@@ -282,11 +282,17 @@
               <tbody>
               {% for speech in speeches %}
                   <tr>
-                      <td>Seduta</td>
+                      <td><a href="">{{ speech.date }}</a></td>
                       <td>{{ speech.title }}</td>
-                      <td>Link</td>
+                      <td><a href="{{ speech.get_absolute_url }}">Leggi il singolo intervento</a><br/>
+                        <a href="">Leggi nel contesto</a>
+                    </td>
                   </tr>
               {% endfor %}
+
+        </table>
+        <p><i class="icon-play"></i> <a href="{% url om_speech_search %}?q=&person={{ person.slug }}">Vedi tutti gli interventi</a></p>
+
 
       </section>
   {% endif %}

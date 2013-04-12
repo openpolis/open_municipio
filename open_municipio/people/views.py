@@ -346,7 +346,7 @@ class PoliticianDetailView(DetailView):
 
         # last 5 speeches
         speeches = Speech.objects\
-            .filter(speaker=self.object)
+            .filter(speaker=self.object).filter(act__status_is_final=True)
         context['n_speeches'] = speeches.count()
         context['speeches'] = speeches[0:5]
 
@@ -506,3 +506,5 @@ class PoliticianListView(TemplateView):
 
 def show_mayor(request):
     return HttpResponseRedirect( municipality.mayor.as_charge.person.get_absolute_url() )
+
+

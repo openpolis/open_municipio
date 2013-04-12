@@ -1,0 +1,96 @@
+{% extends "base_two_columns.html" %}
+
+{% load om_utils %}
+{% load thumbnail %}
+{% load popover_info %}
+{% load events_council_by_year %}
+
+{% block title %}Consiglio{% endblock %}
+{% block content_header %}Consiglio {% endblock %}
+{% block people_class %}class="active"{% endblock %}
+{% block body_class %}politician{% endblock %}
+
+{% block content_header_city_logo %}
+    <img src="{{ STATIC_URL }}img/{{ main_city|lower }}-logo/politician.png" alt="Comune di {{ main_city }}">
+{% endblock %}
+
+{% block sub_nav %}
+    {% include 'commons/subnav.html' with active='Consiglio' %}
+{% endblock %}
+
+{% block head_css_includes %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/event.css" />
+{% endblock %}
+
+{% block content %}
+<section class="row-fluid" >
+    <!-- #content -->
+    {% get_event_years 5 as years %}
+    <div class="event-archive">Archivio sedute di Consiglio:
+    {% for y in years %}
+        {% if y != params.year %}
+            <a href="{% url om_events_year year=y %}">
+        {% endif %}
+            {{ y }}
+        {% if y != params.year %}
+            </a>
+        {% endif %}
+        |
+    {% endfor %}
+    
+    <h2 style="background:#72C056; padding: 10px; margin-top: 10px; margin-bottom: 10px; text-align:center; width: 60px; font-weight: bolder; color: white" >{{ params.year }}</h2>
+
+    <table class="event-year" >
+        <tr>
+            <td><div class="event-year-month">Gennaio</div>
+                {% print_events_council_list params.year 1 %}
+            </td>
+            <td><div class="event-year-month">Febbraio</div>
+                {% print_events_council_list params.year 2 %}
+            </td>
+            <td><div class="event-year-month">Marzo</div>
+                {% print_events_council_list params.year 3 %}
+            </td>
+        </tr>
+        <tr>
+            <td><div class="event-year-month">Aprile</div>
+                {% print_events_council_list params.year 4 %}
+            </td>
+            <td><div class="event-year-month">Maggio</div>
+                {% print_events_council_list params.year 5 %}
+            </td>
+            <td><div class="event-year-month">Giugno</div>
+                {% print_events_council_list params.year 6 %}
+            </td>
+        </tr>
+        <tr>
+            <td><div class="event-year-month">Luglio</div>
+                {% print_events_council_list params.year 7 %}
+            </td>
+            <td><div class="event-year-month">Agosto</div>
+                {% print_events_council_list params.year 8 %}
+            </td>
+            <td><div class="event-year-month">Settembre</div>
+                {% print_events_council_list params.year 9 %}
+            </td>
+        </tr>
+        <tr>
+            <td><div class="event-year-month">Ottobre</div>
+                {% print_events_council_list params.year 10 %}
+            </td>
+            <td><div class="event-year-month">Novembre</div>
+                {% print_events_council_list params.year 11 %}
+            </td>
+            <td><div class="event-year-month">Dicembre</div>
+                {% print_events_council_list params.year 12 %}
+            </td>
+        </tr>
+    </table>
+</section>
+{% endblock %}
+
+{% block sidebar %}
+    <h2>I prossimi appuntamenti</h2>
+    {% include "commons/calendar.html" with events=events %}
+{% endblock %}

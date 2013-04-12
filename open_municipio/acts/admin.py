@@ -72,7 +72,7 @@ class ActAdmin(admin.ModelAdmin):
                super(ActAdmin, self).has_change_permission(request, obj)
 
     # add some inlines  for superuser users only
-    def change_view(self, request, object_id, extra_context=None):
+    def change_view(self, request, object_id, form_url='', extra_context=None):
 
         if request.user.is_superuser:
             self.inlines = [PresenterInline, AttachInline, TransitionInline, AmendmentInline]
@@ -86,7 +86,7 @@ class ActAdmin(admin.ModelAdmin):
             inline_instance = inline_class(self.model, self.admin_site)
             self.inline_instances.append(inline_instance)
 
-        return super(ActAdmin, self).change_view(request, object_id, extra_context)
+        return super(ActAdmin, self).change_view(request, object_id, form_url, extra_context)
 
 
 class CalendarAdmin(admin.ModelAdmin):
