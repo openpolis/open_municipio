@@ -50,3 +50,45 @@ div.event-dates {
     font-weight: bold;
     font-size: 14px;
 }
+
+.event-act {
+    margin-top: 10px;
+}
+
+.event-speeches-list {
+    border-bottom: 1px solid gray;
+}
+
+.event-even-row .span8,
+.event-even-row .span4 {
+    background-color: #F7F6F1;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.event-odd-row .span8,
+.event-odd-row .span4 {
+    background-color: white;
+    padding-top: 10px;
+    padding-bottom: 10px; 
+}
+
+
+.speech-speaker > a {
+    float: left;
+    clear: both;
+    width: 50px;
+    text-align: center;
+}
+
+.speech-speaker > div {
+    margin-left: 60px;  
+}
+
+.speech-content {
+    margin-top: 10px;
+}
+
+.read-more {
+    text-align: right;
+}

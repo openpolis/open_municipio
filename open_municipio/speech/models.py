@@ -4,10 +4,11 @@ from django.conf import settings
 from django.db import models
 from model_utils.models import TimeStampedModel
 from django.utils.translation import ugettext_lazy as _
+from django.core.exceptions import ObjectDoesNotExist
 
 from open_municipio.acts.models import Document
-from open_municipio.people.models import Charge, InstitutionCharge, CompanyCharge,\
-    AdministrationCharge, GroupCharge, Person
+from open_municipio.people.models import Charge, InstitutionCharge,CompanyCharge,\
+    AdministrationCharge, GroupCharge, Person, Institution
 from open_municipio.acts.models import Act
 
 
@@ -32,6 +33,18 @@ class Speech(TimeStampedModel):
         return ('om_speech_detail', (), {'pk' : str(self.pk)})
 
     @property
+    def speaker_counselor(self):
+        politician = None
+        try:
+            politician = InstitutionCharge.objects.get(person=self.speaker,institution__institution_type=Institution.COUNCIL)
+        except ObjectDoesNotExist:
+            pass
+    
+        print "counselor found: %s" % politician
+
+        return politician
+
+    @property
     def attachments(self):
         """
         A queryset of speech-attachments linked to this speech.
@@ -48,7 +61,6 @@ class Speech(TimeStampedModel):
         title_cut = self.act.title
         length = len(title_cut)
         if length > (max_len * 2):
-            print length
             title_cut = "%s...%s" % (title_cut[0:max_len], \
                 title_cut[length-max_len:length])
             
