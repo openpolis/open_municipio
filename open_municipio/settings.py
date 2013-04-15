@@ -146,7 +146,7 @@ INSTALLED_APPS = (
     'sorl.thumbnail',
     'social_auth',
     'open_municipio.om_auth',
-    'open_municipio.speech',
+#    'open_municipio.speech',
     # TinyMCE
     'tinymce',
 #    'inline_ordering',
