@@ -1,4 +1,5 @@
-Django==1.3.1
+#Django==1.3.1
+Django==1.4
 South>=0.7.3
 -e git://github.com/carljm/django-model-utils.git#egg=django-model-utils
 -e git://github.com/seldon/django-taggit.git#egg=django-taggit
@@ -14,3 +15,7 @@ lxml
 pil
 sorl-thumbnail
 django-social-auth
+django-tinymce
+# speech report generation
+reportlab
+http://sourceforge.net/projects/pyrtf/files/latest/download

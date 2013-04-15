@@ -4,6 +4,7 @@ A misc set of utilities useful in the data-import domain.
 import logging
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from open_municipio.people.models import Person, municipality
+from open_municipio.data_import.models import LookupInstitutionCharge, LookupCompanyCharge, LookupAdministrationCharge
 
 import socket
 
@@ -16,8 +17,12 @@ NS = {
 XLINK_NAMESPACE = NS['xlink']
 XLINK = "{%s}" % XLINK_NAMESPACE
 
-
 class ChargeSeekerMixin:
+    """
+    Codice di Guglielmo. Per recuperare la carica si basa su un file XML che
+    riporta la corrispondenza delle persone (People) e dalle date si 
+    risale all'incarico desiderato
+    """
     logger = logging.getLogger('import')
 
     def lookupCharge(self, people_tree, ds_charge_id, institution=None, moment=None):
@@ -129,3 +134,65 @@ def create_table_schema(table_name, table_schema):
     sql = sql[:-2] + '\n'
     sql += ");\n"
     return  sql     
+
+class PersonSeekerMixin:
+    logger = logging.getLogger("import")
+    
+    def lookup_person(self, external, provider):
+        return LookupPerson.lookup(external, provider)
+
+
+class ChargeSeekerFromMapMixin:
+    logger = logging.getLogger("import")
+
+    def lookup_charge(self, external, provider):
+        self.logger.info("Try to detect institution (%s)..." % external)
+        try:
+            institutionLookup = LookupInstitutionCharge.lookup(external,provider)
+            return institutionLookup
+        except ObjectDoesNotExist:
+            pass
+
+        self.logger.info("Try to detect company...")
+        try:
+            companyLookup = LookupCompanyCharge.lookup(external,provider)
+            return companyLookup
+        except ObjectDoesNotExist:
+            pass
+
+        self.logger.info("Try to detect administration ...")
+        try:
+            administrationLookup = LookupAdministrationCharge.lookup(external, provider)
+            return administrationLookup
+        except ObjectDoesNotExist:
+            pass
+
+        return None
+
+
+class OMChargeSeekerMixin:
+    logger = logging.getLogger("import")
+
+    def lookup_charge(self, person, institution, as_of=None):
+        """
+        lookup for the charge of the person at a specific moment in time. the
+        person is an instance of class Person. institution is an instance of
+        class Institution. as_of is a string of format "YYYY-MM-DD"
+        """
+
+        if person == None:
+            raise Exception("Can't search a charge for no person")
+
+        if institution is None:
+            raise Exception("Can't search a charge without an institution")
+
+        try:
+            charge = person.get_current_charge_in_institution(institution, 
+                moment=as_of)
+            return charge
+        except ObjectDoesNotExist:
+            self.logger.warning("Can't find charge for person %s" % person)
+            return None
+        except MultipleObjectsReturned:
+            self.logger.warning("Found more than one person or charge for id %s (institution %s) in OM. Skipping." % (person, institution))
+            return None

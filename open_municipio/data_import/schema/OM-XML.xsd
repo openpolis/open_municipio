@@ -955,6 +955,7 @@
 				<xs:element ref="Subject"/>
 				<xs:element ref="Votes"/>
 			</xs:sequence>
+            <xs:attribute name="idact" type="xs:string" use="optional" />
 			<xs:attribute name="seq_n" type="xs:nonNegativeInteger"/>
 			<xs:attribute name="date_time" type="xs:dateTime"/>
 			<xs:attribute name="presents" type="xs:nonNegativeInteger"/>

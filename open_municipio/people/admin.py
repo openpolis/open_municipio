@@ -48,7 +48,8 @@ class GroupAdminWithCharges(AdminImageMixin, admin.ModelAdmin):
     prepopulated_fields = {"slug": ("name",)}
     list_display = ('name', 'acronym', 'is_majority_now')
     inlines = [GroupResourceInline, GroupIsMajorityInline, GroupChargeInline]
-    
+ 
+    ordering = [ 'name', 'acronym' ]   
 
 class ChargeInline(admin.StackedInline):
     raw_id_fields = ('person', )

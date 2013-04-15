@@ -22,9 +22,9 @@ PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 REPO_ROOT = os.path.abspath(os.path.dirname(PROJECT_ROOT))
 VERSION = __version__ = file(os.path.join(PROJECT_ROOT, 'VERSION')).read().strip()
 
-DEBUG = False
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
-DJANGO_TOOLBAR = False
+DJANGO_TOOLBAR = True
 
 
 ADMINS = (
@@ -146,8 +146,10 @@ INSTALLED_APPS = (
     'sorl.thumbnail',
     'social_auth',
     'open_municipio.om_auth',
+    'open_municipio.speech',
     # TinyMCE
     'tinymce',
+#    'inline_ordering',
 )
 
 AUTHENTICATION_BACKENDS = (
@@ -267,3 +269,37 @@ LOGGING = {
             }
     }
 }
+
+# configuration for auto-complete of Acts in Calendar
+AJAX_LOOKUP_CHANNELS = {
+    'calendar_act' : { 'model' : 'acts.Act', 'search_field':'title' }
+}
+
+AJAX_SELECT_BOOTSTRAP = True
+AJAX_SELECT_INLINES = 'inline'
+
+# Absolute filesystem path to the directory that will hold user-uploaded files.
+# Example: "/home/media/media.lawrence.com/"
+MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'media')
+
+# URL that handles the media served from MEDIA_ROOT. Make sure to use a
+# trailing slash if there is a path component (optional in other cases).
+# Examples: "http://media.lawrence.com", "http://example.com/media/"
+MEDIA_URL = '/media/'
+
+# Absolute path to the directory static files should be collected to.
+# Don't put anything in this directory yourself; store your static files
+# in apps' "static/" subdirectories and in STATICFILES_DIRS.
+# Example: "/home/media/media.lawrence.com/static/"
+STATIC_ROOT = os.path.join(PROJECT_ROOT, 'sitestatic')
+
+# URL prefix for static files.
+# Example: "http://media.lawrence.com/static/"
+STATIC_URL = '/static/'
+
+# URL prefix for admin static files -- CSS, JavaScript and images.
+# Make sure to use a trailing slash.
+# Examples: "http://foo.com/static/admin/", "/static/admin/".
+ADMIN_MEDIA_PREFIX = '/static/admin/'
+
+

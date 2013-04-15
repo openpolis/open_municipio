@@ -27,8 +27,10 @@
                     </a>
                     <br/>
                     {% if label %}<span class="label" style="line-height: 20px;">{{ label }}</span><br/>{% endif %}
+{% if charge != None %}
                     in carica dal {{ charge.start_date|date:"d.m.Y" }}
                     {% object_inline_monitoring charge.person shows_monitoring_users=False %}
+{% endif %}
                 </div>
             </div>
         </div>

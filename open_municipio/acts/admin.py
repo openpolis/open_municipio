@@ -5,7 +5,6 @@ from django.contrib.admin.widgets import FilteredSelectMultiple
 
 from open_municipio.acts.models import *
 
-
 def transition_form_factory(act):
     """
     allows to change the final_status field in the transition form
@@ -64,6 +63,7 @@ class TransitionInline(admin.TabularInline):
 
 
 class ActAdmin(admin.ModelAdmin):
+    list_display = ('idnum', 'title', 'presentation_date', 'emitting_institution', 'status')
     search_fields = ('idnum', 'title',)
 
     # genial hack to allow users with no permissions to show
@@ -95,8 +95,11 @@ class ActAdmin(admin.ModelAdmin):
 
 class CalendarAdmin(admin.ModelAdmin):
     formfield_overrides = {
-        models.ManyToManyField: {'widget': FilteredSelectMultiple("verbose name", is_stacked=False)},
+        models.ManyToManyField: {'widget': FilteredSelectMultiple("Acts", is_stacked=False) },
     }
+# TODO if set filter_horizontal, "Acts" label in FilteredSelectMultiple disapper
+    filter_horizontal = ( 'act_set' , )
+
 
 
 class ActAdminWithAttaches(admin.ModelAdmin):
@@ -146,6 +149,7 @@ class DeliberationAdmin(ActAdmin):
         }),
     )
 
+
 class ActInSpeechInline(admin.TabularInline):
     model = ActHasSpeech
     extra = 0
@@ -156,6 +160,8 @@ class SpeechAdmin(admin.ModelAdmin):
     inlines = [ActInSpeechInline,]
     raw_id_fields = ('charge', 'sitting_item', 'votation', )
 
+class AttachAdmin(admin.ModelAdmin):
+    list_display = ('title','document_date','document_type')
 
 
 admin.site.register(Act, ActAdmin)
@@ -172,6 +178,7 @@ admin.site.register(Interpellation)
 admin.site.register(Motion, MotionAdmin)
 admin.site.register(Calendar, CalendarAdmin)
 admin.site.register(Amendment, ActAdminWithAttaches)
-admin.site.register(Attach)
+admin.site.register(Attach, AttachAdmin)
 admin.site.register(Transition)
 admin.site.register(Speech, SpeechAdmin)
+admin.site.register(Agenda)

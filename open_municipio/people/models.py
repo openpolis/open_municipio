@@ -53,7 +53,7 @@ class Person(models.Model, MonitorizedItem):
         verbose_name_plural = _('people')
    
     def __unicode__(self):
-        return u'%s %s' % (self.first_name, self.last_name)
+        return u'%s, %s' % (self.last_name, self.first_name)
 
     def save(self, *args, **kwargs):
         if self.slug is None:
@@ -333,6 +333,7 @@ class InstitutionCharge(Charge):
         db_table = u'people_institution_charge'
         verbose_name = _('institution charge')
         verbose_name_plural = _('institution charges')
+        ordering = ['person__first_name', 'person__last_name']
 
 
     def __unicode__(self):
@@ -403,7 +404,6 @@ class InstitutionCharge(Charge):
         The number of acts presented by this charge
         """
         return self.presented_acts.count()
-
 
     @property
     def received_acts(self):

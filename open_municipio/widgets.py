@@ -18,3 +18,18 @@ class AdminImageWidget(forms.FileInput):
         output.append(super(AdminImageWidget, self).render(name, value, attrs))
         return mark_safe(u''.join(output))
 
+class SplitTimeWidget(forms.MultiWidget):
+    """
+    Widget written to split widget into hours and minutes.
+    """
+    def __init__(self, attrs=None):
+        widgets = (
+                    forms.Select(attrs=attrs, choices=([(hour,hour) for hour in range(0,24)])), \
+                    forms.Select(attrs=attrs, choices=([(minute, str(minute).zfill(2)) for minute in range(60)]))
+                  )
+        super(SplitTimeWidget, self).__init__(widgets, attrs)
+
+    def decompress(self, value):
+        if value:
+            return [value.hour, value.minute]
+        return [None, None]
