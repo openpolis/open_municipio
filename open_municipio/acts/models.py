@@ -243,12 +243,6 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
     def get_absolute_url(self):
         return self.downcast().get_absolute_url()
 
-    def get_status_display(self):
-        """
-        WRITEME
-        """
-        return self.downcast().get_status_display()
-
     def get_type_name(self):
         """
         WRITEME
