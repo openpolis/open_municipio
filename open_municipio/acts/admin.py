@@ -24,6 +24,7 @@ def transition_form_factory(act):
 
     return RuntimeTransitionForm
 
+
 class PresenterInline(admin.TabularInline):
     fields = ['charge', 'support_type', 'support_date']
     model = ActSupport
@@ -39,10 +40,12 @@ class AttachInline(admin.StackedInline):
     model = Attach
     extra = 0
 
+
 class AmendmentInline(admin.StackedInline):
     fk_name = 'act'
     model = Amendment
     extra = 0
+
 
 class TransitionInline(admin.TabularInline):
     model = Transition
@@ -57,6 +60,7 @@ class TransitionInline(admin.TabularInline):
         if obj is not None:
             self.form = transition_form_factory(obj)
         return super(TransitionInline, self).get_formset(request, obj, **kwargs)
+
 
 class ActAdmin(admin.ModelAdmin):
     list_display = ('idnum', 'title', 'presentation_date', 'emitting_institution', 'status')
@@ -97,11 +101,14 @@ class CalendarAdmin(admin.ModelAdmin):
     filter_horizontal = ( 'act_set' , )
 
 
+
 class ActAdminWithAttaches(admin.ModelAdmin):
     inlines = [AttachInline, TransitionInline]
 
+
 class ActAdminWithAmendments(admin.ModelAdmin):
     inlines = [AmendmentInline]
+
 
 class MotionAdmin(ActAdmin):
     fieldsets = (
@@ -126,6 +133,7 @@ class InterrogationAdmin(ActAdmin):
             }),
         )
 
+
 class DeliberationAdmin(ActAdmin):
     fieldsets = (
         (None, {
@@ -141,8 +149,15 @@ class DeliberationAdmin(ActAdmin):
         }),
     )
 
-class AttachAdmin(admin.ModelAdmin):
-    list_display = ('title','document_date','document_type')
+class ActInSpeechInline(admin.TabularInline):
+    model = ActHasSpeech
+    extra = 0
+
+
+class SpeechAdmin(admin.ModelAdmin):
+    search_fields = ('title',)
+    inlines = [ActInSpeechInline,]
+    raw_id_fields = ('charge', 'sitting_item', 'votation', )
 
 
 admin.site.register(Act, ActAdmin)
@@ -159,6 +174,5 @@ admin.site.register(Interpellation)
 admin.site.register(Motion, MotionAdmin)
 admin.site.register(Calendar, CalendarAdmin)
 admin.site.register(Amendment, ActAdminWithAttaches)
-admin.site.register(Attach, AttachAdmin)
 admin.site.register(Transition)
-admin.site.register(Agenda)
+admin.site.register(Speech, SpeechAdmin)

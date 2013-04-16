@@ -21,7 +21,7 @@ from model_utils.fields import StatusField
 
 from open_municipio.newscache.models import News, NewsTargetMixin
 
-from open_municipio.people.models import Institution, InstitutionCharge, Sitting, Person
+from open_municipio.people.models import Institution, InstitutionCharge, Person
 from open_municipio.taxonomy.managers import TopicableManager
 from open_municipio.monitoring.models import MonitorizedItem, Monitoring
 
@@ -258,6 +258,10 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
         else:
             return None
 
+    class Meta:
+        verbose_name = _('act')
+        verbose_name_plural = _('acts')
+
 
 class ActSection(models.Model):
     """
@@ -347,8 +351,8 @@ class CGDeliberation(Act):
     approved_text = models.TextField(blank=True)
 
     class Meta:
-        verbose_name = _('deliberation')
-        verbose_name_plural = _('deliberations')
+        verbose_name = _('city government deliberation')
+        verbose_name_plural = _('city government deliberations')
 
     @property
     def next_events(self):
@@ -407,6 +411,7 @@ class Deliberation(Act):
     class Meta:
         verbose_name = _('deliberation')
         verbose_name_plural = _('deliberations')
+        pass
 
     @property
     def next_events(self):
@@ -576,8 +581,7 @@ class Amendment(Act):
 
     class Meta:
         verbose_name = _('amendment')
-        verbose_name_plural = _('amendment')
-
+        verbose_name_plural = _('amendments')
 
 
 #
@@ -644,7 +648,52 @@ class Attach(Document):
     
     def __unicode__(self):
         return u'%s' % self.title
-  
+
+
+#
+# Speech
+#
+class Speech(Document):
+    """
+    A Speech is a special case of Attachment (it extends Document, too), that is connected
+    to Acts, Votations and Charges and has field to map the audio content
+    """
+    title = models.CharField(max_length=255, blank=True, null=True)
+    sitting_item = models.ForeignKey('people.SittingItem')
+    charge = models.ForeignKey('people.InstitutionCharge')
+    votation = models.ForeignKey('votations.Votation', blank=True, null=True)
+    related_act_set = models.ManyToManyField('Act', through='ActHasSpeech')
+    seq_order = models.IntegerField(default=0)
+    audio_url = models.URLField(blank=True)
+    audio_file = models.FileField(upload_to="attached_audio/%Y%m%d", blank=True, max_length=255)
+
+    class Meta(Document.Meta):
+        verbose_name = _('speech')
+        verbose_name_plural = _('speeches')
+
+    def __unicode__(self):
+        return u'%s' % self.title
+
+
+class ActHasSpeech(models.Model):
+    """
+    Relation between a speech and an act.
+    A speech can be related to one or more acts.
+    """
+    RELATION_TYPE = Choices(
+        ('REQ', 'request', _('request')),
+        ('RESP', 'response', _('response')),
+        ('REF', 'reference', _('reference')),
+    )
+
+    speech = models.ForeignKey('acts.Speech')
+    act = models.ForeignKey('acts.Act')
+    relation_type = models.CharField(choices=RELATION_TYPE, max_length=4)
+
+    class Meta(Document.Meta):
+        verbose_name = _('act mentioned in speech')
+        verbose_name_plural = _('acts mentioned in speech')
+
 
 #
 # Calendar

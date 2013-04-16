@@ -46,6 +46,10 @@ class LookupPerson(LookupObject):
     def lookup(external, provider):
         return LookupObject.lookup(LookupPerson.objects, external)
 
+    class Meta:
+        verbose_name = _("lookup person")
+        verbose_name = _("lookup persons")
+
 class LookupInstitutionCharge(LookupObject):
     local = models.ForeignKey(InstitutionCharge,verbose_name=_('OM id'))
     external = models.CharField(max_length=256,verbose_name=_('provider id'))
@@ -58,7 +62,9 @@ class LookupInstitutionCharge(LookupObject):
 
     class Meta:
         unique_together = (('local','external','provider'),)
-    
+        verbose_name = _("lookup institution charge")
+        verbose_name_plural = _("lookup institution charges")
+   
 
 class LookupCompanyCharge(LookupObject):
     local = models.ForeignKey(CompanyCharge,verbose_name=_('OM id'))
@@ -70,6 +76,10 @@ class LookupCompanyCharge(LookupObject):
         return LookupObject.lookup(LookupCompanyCharge.objects, external, 
             provider)
 
+    class Meta:
+        verbose_name = _("lookup company charge")
+        verbose_name_plural = _("lookup company charges")
+ 
 class LookupAdministrationCharge(LookupObject):
     local = models.ForeignKey(AdministrationCharge,verbose_name=_('OM id'))
     external = models.CharField(max_length=256,verbose_name=_('provider id'))
@@ -79,6 +89,11 @@ class LookupAdministrationCharge(LookupObject):
     def lookup(external, provider):
         return LookupObject.lookup(LookupAdministrationCharge.objects, external, 
             provider)
+
+    class Meta:
+        verbose_name = _("lookup administration charge")
+        verbose_name_plural = _("lookup administration charges")
+
 
 class FileImport(models.Model):
     """
@@ -107,6 +122,6 @@ class FileImport(models.Model):
     class Meta:
         db_table = u'data_import_file'
         unique_together = (('file_path', 'n_import'),)
-        verbose_name = _('File import')
-        verbose_name_plural = _('Files import')
+        verbose_name = _('file import')
+        verbose_name_plural = _('files import')
 
