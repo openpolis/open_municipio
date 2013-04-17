@@ -659,7 +659,7 @@ class Speech(Document):
     votation = models.ForeignKey('votations.Votation', blank=True, null=True)
     related_act_set = models.ManyToManyField('Act', through='ActHasSpeech')
     seq_order = models.IntegerField(default=0)
-    initial_time = models.TimeField()
+    initial_time = models.TimeField(blank=True, null=True)
     duration = models.IntegerField(blank=True, null=True)
     audio_url = models.URLField(blank=True)
     audio_file = models.FileField(upload_to="attached_audio/%Y%m%d", blank=True, max_length=255)
