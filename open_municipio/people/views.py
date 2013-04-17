@@ -346,7 +346,7 @@ class PoliticianDetailView(DetailView):
 
         # last 5 speeches
         speeches = Speech.objects\
-            .filter(charge=charge)
+            .filter(author=self.object)
         context['n_speeches'] = speeches.count()
         context['speeches'] = speeches[0:5]
 

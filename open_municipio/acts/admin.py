@@ -158,7 +158,7 @@ class ActInSpeechInline(admin.TabularInline):
 class SpeechAdmin(admin.ModelAdmin):
     search_fields = ('title',)
     inlines = [ActInSpeechInline,]
-    raw_id_fields = ('charge', 'sitting_item', 'votation', )
+    raw_id_fields = ('author', 'sitting_item', 'votation', )
 
 class AttachAdmin(admin.ModelAdmin):
     list_display = ('title','document_date','document_type')
