@@ -159,6 +159,9 @@ class SpeechAdmin(admin.ModelAdmin):
     inlines = [ActInSpeechInline,]
     raw_id_fields = ('charge', 'sitting_item', 'votation', )
 
+class AttachAdmin(admin.ModelAdmin):
+    list_display = ('title','document_date','document_type')
+
 
 admin.site.register(Act, ActAdmin)
 
@@ -174,5 +177,7 @@ admin.site.register(Interpellation)
 admin.site.register(Motion, MotionAdmin)
 admin.site.register(Calendar, CalendarAdmin)
 admin.site.register(Amendment, ActAdminWithAttaches)
+admin.site.register(Attach, AttachAdmin)
 admin.site.register(Transition)
 admin.site.register(Speech, SpeechAdmin)
+admin.site.register(Agenda)

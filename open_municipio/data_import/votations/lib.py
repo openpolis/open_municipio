@@ -362,8 +362,6 @@ class DBVotationWriter(BaseVotationWriter):
                         }
                     )
 
-#<<<<<<< HEAD
-# keep this version, discuss with Guglielmo -FS
                     # try to link to an act
                     self.logger.debug("act_descr: %s" % b.act_descr.strip())
                     m = re.match(r"(.+?)-(.+)", b.act_descr.strip())
@@ -387,27 +385,9 @@ class DBVotationWriter(BaseVotationWriter):
                             self.logger.warning("act %s not present in OM" % act_idnum)
                         except Exception as e:
                             self.logger.warning("unexpected error looking for act %s in OM: %s" % (act_idnum, e))
-#=======
-#                    # try to link to an act
-#                    self.logger.debug("act_descr: %s" % b.act_descr.strip())
-#                    m = re.match(r"(.+?)-(.+)", b.act_descr.strip())
-#                    if m:
-#                        act_idnum = str(m.group(1))
-#                        self.logger.debug("act_idnum: %s" % act_idnum)
-#                        linked_act = Act.objects.get(idnum=act_idnum)
-#                        if isinstance(linked_act, Act):
-#                            try:
-#                                b.act = linked_act.downcast()
-#                                b.save()
-#                                self.logger.info("act was linked: %s" % b.act)
-#                            except ObjectDoesNotExist:
-#                                self.logger.info("act was not linked")
-#
-#
-#                    if created:
-#                        self.logger.debug("%s created in DB" % b)
-#>>>>>>> 3cfd93247317e652235e8ab114de2f70cee3672d
 
+                    if created:
+                        self.logger.debug("%s created in DB" % b)
                     else:
                         self.logger.debug("%s found in DB" % b)
 

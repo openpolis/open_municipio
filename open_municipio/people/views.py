@@ -8,6 +8,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from open_municipio.people.models import Institution, InstitutionCharge, Person, municipality, InstitutionResponsability, Group
 from open_municipio.monitoring.forms import MonitoringForm
 from open_municipio.acts.models import Act, Deliberation, Interrogation, Interpellation, Motion, Agenda, ActSupport
+from open_municipio.acts.models import Speech
 from open_municipio.events.models import Event
 from open_municipio.acts.models import Speech
 
@@ -127,7 +128,7 @@ class CityGovernmentView(TemplateView):
 
         firstdeputy = None
 
-        if municipality.gove.firstdeputy != None:
+        if municipality.gov.firstdeputy is None:
             firstdeputy = municipality.gov.firstdeputy.charge
 
         citygov = municipality.gov
@@ -346,7 +347,7 @@ class PoliticianDetailView(DetailView):
 
         # last 5 speeches
         speeches = Speech.objects\
-            .filter(speaker=self.object)
+            .filter(charge=charge)
         context['n_speeches'] = speeches.count()
         context['speeches'] = speeches[0:5]
 

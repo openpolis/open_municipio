@@ -282,8 +282,8 @@
               <tbody>
               {% for speech in speeches %}
                   <tr>
-                      <td>Seduta</td>
-                      <td>{{ speech.title }}</td>
+                      <td>{{ speech.sitting_item.sitting }}</td>
+                      <td>{{ speech.sitting_item.title }}</td>
                       <td>Link</td>
                   </tr>
               {% endfor %}

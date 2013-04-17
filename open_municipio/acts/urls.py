@@ -79,3 +79,4 @@ urlpatterns += patterns('',
 urlpatterns += patterns('',
     url(r'^(?P<pk>\d+)/vote/(?P<direction>up|down|clear)/$', RecordVoteOnActView.as_view(), name='om_act_record_user_vote'),
 )                        
+
