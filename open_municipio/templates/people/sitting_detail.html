@@ -1,0 +1,57 @@
+{% extends "base_two_columns.html" %}
+
+{% load om_utils %}
+{% load thumbnail %}
+{% load popover_info %}
+{% load events_council_by_year %}
+
+{% block title %}Consiglio{% endblock %}
+{% block content_header %}Consiglio {% endblock %}
+{% block people_class %}class="active"{% endblock %}
+{% block body_class %}politician{% endblock %}
+
+{% block content_header_city_logo %}
+    <img src="{{ STATIC_URL }}img/{{ main_city|lower }}-logo/politician.png" alt="Comune di {{ main_city }}">
+{% endblock %}
+
+{% block sub_nav %}
+    {% include 'commons/subnav.html' with active='Consiglio' %}
+{% endblock %}
+
+{% block head_css_includes %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/event.css" />
+{% endblock %}
+
+{% block content %}
+<section class="row-fluid">
+    <!-- #content -->
+    {% get_sittings_years 5 as years %}
+    <div class="event-archive">Archivio sedute di Consiglio:
+    {% for y in years %}
+        {% if y != params.year %}
+            <a href="{% url om_events_year year=y %}">
+        {% endif %}
+            {{ y }}
+        {% if y != params.year %}
+            </a>
+        {% endif %}
+        |
+    {% endfor %}
+    </div>
+
+    <h2>{{ event.title }} del {{ event.date }}</h2>
+    <h3>{{ event.event_time }}</h3>
+
+    {% for a in event.acts.all %}
+        <div class="event-act">
+        <a href="{% url om_event_speeches_list pk=event.pk act_pk=a.pk %}"><h3>{{ a.title }}</h3></a>
+        </div>
+    {% endfor %}
+</section>
+{% endblock %}
+
+{% block sidebar %}
+    <h2>I prossimi appuntamenti</h2>
+    {% include "commons/calendar.html" with events=events %}
+{% endblock %}

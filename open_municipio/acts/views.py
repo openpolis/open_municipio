@@ -22,6 +22,7 @@ from open_municipio.om_search.forms import RangeFacetedSearchForm
 from open_municipio.om_search.mixins import FacetRangeDateIntervalsMixin
 from open_municipio.om_search.views import ExtendedFacetedSearchView
 from open_municipio.people.models import Person
+from open_municipio.acts.models import Speech
 
 from open_municipio.taxonomy.models import Tag, Category
 
@@ -96,7 +97,7 @@ class ActSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
         person_slug = self.request.GET.get('person', None)
         if person_slug:
             try:
-                extra['person'] = Person.objects.get(slug=person_slug)
+                extra['author'] = Person.objects.get(slug=person_slug)
             except ObjectDoesNotExist:
                 pass
 
@@ -448,3 +449,69 @@ class ActTransitionRemoveView(ActTransitionToggleBaseView):
     
 class RecordVoteOnActView(RecordVoteOnItemView):
     model = Act   
+
+class SpeechSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
+    """
+    """
+    __name__ = 'SpeechSearchView'
+
+    FACETS_SORTED = []
+    FACETS_LABELS = {}
+
+    DATE_INTERVALS_RANGES = {
+        '2013':  {'qrange': '[2013-01-01T00:00:00Z TO 2014-01-01T00:00:00Z]', 'r_label': '2013'},
+        '2012':  {'qrange': '[2012-01-01T00:00:00Z TO 2013-01-01T00:00:00Z]', 'r_label': '2012'},
+        '2011':  {'qrange': '[2011-01-01T00:00:00Z TO 2012-01-01T00:00:00Z]', 'r_label': '2011'},
+        '2010':  {'qrange': '[2010-01-01T00:00:00Z TO 2011-01-01T00:00:00Z]', 'r_label': '2010'},
+        '2009':  {'qrange': '[2009-01-01T00:00:00Z TO 2010-01-01T00:00:00Z]', 'r_label': '2009'},
+        '2008':  {'qrange': '[2008-01-01T00:00:00Z TO 2009-01-01T00:00:00Z]', 'r_label': '2008'},
+    }
+
+    def __init__(self, *args, **kwargs):
+        # Needed to switch out the default form class.
+        if kwargs.get('form_class') is None:
+            kwargs['form_class'] = RangeFacetedSearchForm
+
+        super(SpeechSearchView, self).__init__(*args, **kwargs)
+
+    def build_form(self, form_kwargs=None):
+        if form_kwargs is None:
+            form_kwargs = {}
+
+        return super(SpeechSearchView, self).build_form(form_kwargs)
+
+    def extra_context(self):
+        extra = super(SpeechSearchView, self).extra_context()
+        
+        extra['base_url'] = reverse('om_speech_search') + '?' + extra['params'].urlencode()
+
+        person_slug = self.request.GET.get('person', None)
+        if person_slug:
+            try:
+                extra['person'] = Person.objects.get(slug=person_slug)
+#                print "found %s" % extra["person"]
+            except ObjectDoesNotExist:
+#                print "person %s not exists" % (person_slug, )
+                pass
+
+        paginator = Paginator(self.results, settings.HAYSTACK_SEARCH_RESULTS_PER_PAGE)
+        page = self.request.GET.get('page', 1)
+        try:
+            page_obj = paginator.page(page)
+        except PageNotAnInteger:
+            page_obj = paginator.page(1)
+        except EmptyPage:
+            page_obj = paginator.page(paginator.num_pages)
+    
+        extra['paginator'] = paginator
+        extra['page_obj'] = page_obj
+    
+        return extra
+
+class SpeechDetailView(DetailView):
+    model = Speech
+    context_object_name = 'speech'
+    template_name = "acts/speech_detail.html"
+
+
+

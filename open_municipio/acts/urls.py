@@ -6,7 +6,8 @@ from open_municipio.acts.views import (ActSearchView, AgendaDetailView,
                                        DeliberationDetailView, InterpellationDetailView,
                                        InterrogationDetailView, MotionDetailView,
                                        ActTransitionAddView, ActTransitionRemoveView, ActTagEditorView, 
-                                       ActLiveEditView, RecordVoteOnActView, CGDeliberationDetailView)
+                                       ActLiveEditView, RecordVoteOnActView, CGDeliberationDetailView,
+                                       SpeechSearchView, SpeechDetailView, )
 
 from open_municipio.locations.views import ActTagByLocationView
 
@@ -22,6 +23,9 @@ sqs = SearchQuerySet().filter(django_ct='acts.act').\
     query_facet('pub_date', ActSearchView.DATE_INTERVALS_RANGES['2009']['qrange']).\
     query_facet('pub_date', ActSearchView.DATE_INTERVALS_RANGES['2008']['qrange']).\
     order_by('-pub_date').\
+    highlight()
+
+sqs_speech = SearchQuerySet().filter(django_ct='acts.speech').\
     highlight()
 
 urlpatterns = patterns('',
@@ -80,3 +84,12 @@ urlpatterns += patterns('',
     url(r'^(?P<pk>\d+)/vote/(?P<direction>up|down|clear)/$', RecordVoteOnActView.as_view(), name='om_act_record_user_vote'),
 )                        
 
+
+urlpatterns += patterns('',
+    # faceted navigation
+    url(r'^speech/$', SpeechSearchView(template='acts/speech_search.html', searchqueryset=sqs_speech),name='om_speech_search'),
+    url(r'^speech/(?P<pk>\d+)/$', SpeechDetailView.as_view(),name='om_speech_detail'),
+#    url(r'^(?P<pk>\d+)/pdf/$', generate_speech_report_pdf, name='om_speech_pdf_url'),
+#    url(r'^event/(?P<event_pk>\d+)/pdf/$', generate_speech_event_report_pdf, name='om_speech_event_pdf_url'),
+#    url(r'^event/(?P<event_pk>\d+)/rtf/$', generate_speech_event_report_rtf, name='om_speech_event_rtf_url'),
+)

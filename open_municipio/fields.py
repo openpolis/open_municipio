@@ -27,6 +27,7 @@ class SplitTimeField(forms.MultiValueField):
             # (possible if SplitDateTimeField has required=False).
             if data_list[0] in (None, '') or data_list[1] in (None, ''):
                 raise forms.ValidationError(self.error_messages['invalid_time'])
+
             return datetime.time(int(data_list[0]),int(data_list[1]))
         return None
 

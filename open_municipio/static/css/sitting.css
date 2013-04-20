@@ -1,0 +1,94 @@
+table.sittings-year {
+    width: 100%;
+}
+
+table.sittings-year td {
+    height: 80px;
+    padding: 14px;
+    border-right: solid 1px lightgray;
+    border-bottom: solid 1px lightgray;
+    vertical-align : top;
+}
+
+table.sittings-year td:last-child {
+    border-right: 0px;
+}
+
+table.sitting-year tr:last-child td {
+    border-bottom: 0px;
+}
+
+.sittings-year-month {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+div.sitting-dates {
+    display: block;
+    padding-top: 10px;
+}
+
+.sitting-past {
+    background-color: #32668C;
+}
+
+.sitting-future {
+    background-color: lightgray;
+}
+
+.sitting-date {
+    float: left;
+    width: 30px;
+    line-height: 30px;
+    height: 30px;
+    text-align: center;
+    vertical-align: center;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-right: 5px;
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.sitting-act {
+    margin-top: 10px;
+}
+
+.sitting-speeches-list {
+    border-bottom: 1px solid gray;
+}
+
+.sitting-even-row .span8,
+.sitting-even-row .span4 {
+    background-color: #F7F6F1;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.sitting-odd-row .span8,
+.sitting-odd-row .span4 {
+    background-color: white;
+    padding-top: 10px;
+    padding-bottom: 10px; 
+}
+
+
+.speech-speaker > a {
+    float: left;
+    clear: both;
+    width: 50px;
+    text-align: center;
+}
+
+.speech-speaker > div {
+    margin-left: 60px;  
+}
+
+.speech-content {
+    margin-top: 10px;
+}
+
+.read-more {
+    text-align: right;
+}

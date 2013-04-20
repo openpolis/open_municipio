@@ -1,0 +1,24 @@
+{% extends "admin/change_form.html" %}
+{% load i18n %}
+{% load speeches_report %}
+
+{% block object-tools %}
+{% if change %}{% if not is_popup %}
+  <ul class="object-tools">
+    {% block object-tools-items %}
+    <li><a href="history/" class="historylink">{% trans "History" %}</a></li>
+    {% if has_absolute_url %}<li><a href="../../../r/{{ content_type_id }}/{{ object_id }}/" class="viewsitelink">{% trans "View on site" %}</a></li>{% endif%}
+    {% endblock %}
+    {% if get_pdf_link != "" %}
+    <li>
+        <a href="{% get_pdf_link %}" class="viewsitelink">{% trans "PDF Report" %}</a>
+    </li>
+    {% endif %}
+    {% if get_rtf_link != "" %}
+    <li>
+        <a href="{% get_rtf_link %}" class="viewsitelink">{% trans "RTF Report" %}</a>
+    </li>
+    {% endif %}
+  </ul>
+{% endif %}{% endif %}
+{% endblock %}

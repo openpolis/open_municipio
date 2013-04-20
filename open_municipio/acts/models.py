@@ -654,9 +654,12 @@ class Speech(Document):
     """
     title = models.CharField(max_length=255, blank=True, null=True)
     sitting_item = models.ForeignKey('people.SittingItem')
-    charge = models.ForeignKey('people.InstitutionCharge')
+    author = models.ForeignKey('people.Person', blank=True, null=True)
+    author_name_when_external = models.CharField(max_length=255, blank=True, null=True)   
     votation = models.ForeignKey('votations.Votation', blank=True, null=True)
     related_act_set = models.ManyToManyField('Act', through='ActHasSpeech')
+    initial_time = models.TimeField()
+    duration = models.IntegerField(blank=True, null=True)
     seq_order = models.IntegerField(default=0)
     audio_url = models.URLField(blank=True)
     audio_file = models.FileField(upload_to="attached_audio/%Y%m%d", blank=True, max_length=255)
@@ -668,6 +671,31 @@ class Speech(Document):
     def __unicode__(self):
         return u'%s' % self.title
 
+    @models.permalink
+    def get_absolute_url(self):
+        return('om_speech_detail', (), {'pk': str(self.pk)})
+
+    @property
+    def date(self):
+        return self.sitting_item.sitting.date
+
+    @property
+    def sitting(self):    
+        return self.sitting_item.sitting
+
+    @property
+    def author_counselor(self):
+        politician = None
+        try:
+            politician = InstitutionCharge.objects.get(person=self.author,institution__institution_type=Institution.COUNCIL)
+        except ObjectDoesNotExist:
+            pass
+
+        return politician
+
+    @property
+    def is_public(self):
+        return self.act == None or self.act.status_is_final
 
 class ActHasSpeech(models.Model):
     """

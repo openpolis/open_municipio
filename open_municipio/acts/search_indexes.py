@@ -1,8 +1,9 @@
 from haystack import indexes
-from open_municipio.acts.models import Act
+from open_municipio.acts.models import Act, Speech
 from django.utils.translation import activate
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
+
 
 class ActIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
@@ -69,3 +70,33 @@ class ActIndex(indexes.SearchIndex, indexes.Indexable):
     def prepare_url(self, obj):
         return obj.downcast().get_absolute_url() if obj.downcast() else None
 
+
+class SpeechIndex(indexes.SearchIndex, indexes.Indexable):
+    text = indexes.CharField(document=True, use_template=True)   
+    title = indexes.CharField(model_attr='title')
+
+    url = indexes.CharField(indexed=False, stored=True)
+    date = indexes.DateField(indexed=True, stored=False)
+    person = indexes.CharField(indexed=True, stored=False)
+
+    def get_model(self):
+        return Speech
+
+    def index_queryset(self, using=None):
+        return self.get_model().objects.all()
+
+    def prepare_url(self, obj):
+        return obj.get_absolute_url()
+
+    def prepare_person(self, obj):
+        author = obj.author_name_when_external
+
+        if obj.author != None:
+            author = obj.author.slug
+        
+        print "author = %s" % (author, )
+
+        return author
+
+    def prepare_date(self, obj):
+        return obj.date
