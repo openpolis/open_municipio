@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import logging
 from optparse import make_option
 from django.conf import settings
 from django.contrib.sites.models import Site
@@ -19,6 +20,7 @@ class Command(BaseCommand):
     )
 
     help = 'Send a digest with latest imported acts to some receivers'
+    logger = logging.getLogger('import')
 
     def handle(self, *args, **options):
 
@@ -27,13 +29,25 @@ class Command(BaseCommand):
         except (IndexError, ValueError):
             days = 1
 
+        # fix logger level according to verbosity
+        verbosity = options['verbosity']
+        if verbosity == '0':
+            self.logger.setLevel(logging.ERROR)
+        elif verbosity == '1':
+            self.logger.setLevel(logging.INFO)
+        elif verbosity >= '2':
+            self.logger.setLevel(logging.DEBUG)
+
         site_domain = Site.objects.get_current().domain
 
         time_period = datetime.now() - timedelta(days=days)
         acts = Act.objects.filter(created__gt=time_period)
         sittings = Sitting.objects.filter(created__gt=time_period)
 
+        self.logger.info('Period: {0}'.format(time_period))
+
         if not acts and not sittings:
+            self.logger.info('no new acts or sittings have been imported')
             return
 
         # initialize email dynamic fields
@@ -44,10 +58,11 @@ class Command(BaseCommand):
             receivers = User.objects.filter(groups__name=settings.DIGEST_DEFAULT_GROUP).values_list('email', flat=True)
 
         if not receivers:
-            self.stdout.write('No receivers found\n')
+            self.logger.error('No receivers found!')
             return
 
-        self.stdout.write('Send a digest with latest {0} Acts and {1} Sittings imported to {2} receivers\n'.format(
+
+        self.logger.info('Sending a digest with latest {0} Acts and {1} Sittings imported to {2} receivers\n'.format(
             len(acts), len(sittings), len(receivers)
         ))
 
@@ -57,23 +72,29 @@ class Command(BaseCommand):
         )
 
         # compose text and html message
-        message_html = "<ul>"
-        text_content = ""
+        message_html = "<h3>Atti</h3>"
+        text_content = "Atti\n----\n"
+        self.logger.info("{0} new acts have been created".format(len(acts)))
+        message_html += "<ul>"
         for act in acts:
-            url = "{0}/{1}".format(site_domain.rstrip('/'), act.get_absolute_url().lstrip('/'))
+            url = "http://{0}/{1}".format(site_domain.rstrip('/'), act.get_absolute_url().lstrip('/'))
             message_html += '\n<li><a href="{0}">{1}</a>'.format(url, act)
             text_content += '\n{0}: {1}'.format(act.get_absolute_url(), act)
+            self.logger.debug('  {0}: {1}'.format(act.get_absolute_url(), act))
         message_html += '\n</ul>'
 
-        text_content += '\n'
-        message_html += '\n<ul>'
+        self.logger.info("{0} new sittings have been created".format(len(sittings)))
+        message_html += "<br/><h3>Votazioni</h3><br/><ul>"
+        text_content += "Votazioni\n---------\n"
         for sitting in sittings:
             message_html += '\n<li><dl><dt>{0}</dt>'.format(sitting)
             text_content += '\n{0}'.format(sitting)
+            self.logger.debug('  {0}'.format(sitting))
             for votation in sitting.votation_set.all():
-                url = "{0}/{1}".format(site_domain.rstrip('/'), votation.get_absolute_url().lstrip('/'))
+                url = "http://{0}/{1}".format(site_domain.rstrip('/'), votation.get_absolute_url().lstrip('/'))
                 message_html += '\n<dd><a href="{0}">{1}</a></dd>'.format(url, votation)
                 text_content += '\n\t{0}: {1}'.format(url, votation)
+                self.logger.debug('    {0}: {1}'.format(url, votation))
         message_html += '\n</dl></li></ul>'
 
         # send email to managers
@@ -85,7 +106,7 @@ class Command(BaseCommand):
 
         msg.send()
 
-        self.stdout.write('Email sent\n')
+        self.logger.info('Emails sent')
 
 
 
