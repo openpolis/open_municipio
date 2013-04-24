@@ -651,6 +651,10 @@ class Speech(Document):
     """
     A Speech is a special case of Attachment (it extends Document, too), that is connected
     to Acts, Votations and Charges and has field to map the audio content
+
+    A Speech may be held by an external person, not mapped in our DB,
+    in that case the ``author`` field may be left blank and the ``author_name_when_external``
+    gets the name of the person
     """
     title = models.CharField(max_length=255, blank=True, null=True)
     sitting_item = models.ForeignKey('people.SittingItem')
@@ -661,6 +665,8 @@ class Speech(Document):
     initial_time = models.TimeField()
     duration = models.IntegerField(blank=True, null=True)
     seq_order = models.IntegerField(default=0)
+    initial_time = models.TimeField(blank=True, null=True)
+    duration = models.IntegerField(blank=True, null=True)
     audio_url = models.URLField(blank=True)
     audio_file = models.FileField(upload_to="attached_audio/%Y%m%d", blank=True, max_length=255)
 

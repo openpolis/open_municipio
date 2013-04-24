@@ -11,6 +11,7 @@ from django.contrib.contenttypes.models import ContentType
 
 from model_utils import Choices
 from model_utils.managers import PassThroughManager
+from model_utils.models import TimeStampedModel
 
 from sorl.thumbnail import ImageField
 
@@ -1044,7 +1045,7 @@ class Office(Body):
 #
 # Sittings
 #
-class Sitting(models.Model):
+class Sitting(TimeStampedModel):
     """
     A sitting models a gathering of people in a give institution.
 

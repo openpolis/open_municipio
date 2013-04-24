@@ -75,7 +75,7 @@ class Command(LabelCommand):
             nl.save()
 
         if not labels:
-            nlprofiles = UserProfile.objects.filter(wants_newsletter=True)
+            nlprofiles = UserProfile.objects.filter(wants_newsletter=True, user__email__isnull=False).exclude(user__email='')
         else:
             nlprofiles = UserProfile.objects.filter(wants_newsletter=True, user__email__in=labels)
 
@@ -108,7 +108,7 @@ class Command(LabelCommand):
         return the number of mail sent
         """
         self.logger.info('-------------')
-        self.logger.info(u'user: {0}'.format(profile.user))
+        self.logger.info(u'user: {0} - {1}'.format(profile.user, profile.user.email))
         mos = profile.monitored_objects
         if not mos:
             self.logger.debug(u' not monitoring')
@@ -133,7 +133,7 @@ class Command(LabelCommand):
                 # log at debug level, for previewing
                 self.logger.debug(u' -{0}, with {1} news'.format(mo.__unicode__()[:60], related_news.count()))
                 for news in related_news:
-                    self.logger.debug(u'   *{0}'.format(news))
+                    self.logger.debug(u'   * ({0}) {1}'.format(news.created, news))
 
             import re
             site_domain = Site.objects.get(pk=settings.SITE_ID)
