@@ -243,6 +243,11 @@ LOGGING = {
             'class':'logging.StreamHandler',
             'formatter': 'standard'
         },
+        'console_import':{
+            'level':'WARNING',
+            'class':'logging.StreamHandler',
+            'formatter': 'standard'
+        },
         'logfile': {
             'level':'INFO',
             'class':'logging.handlers.RotatingFileHandler',
@@ -263,7 +268,7 @@ LOGGING = {
             'propagate': True,
             },
         'import': {
-            'handlers': ['console', 'logfile'],
+            'handlers': ['console_import', 'logfile'],
             'level': 'DEBUG',
             'propagate': True,
             }
