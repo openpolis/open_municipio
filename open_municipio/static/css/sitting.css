@@ -55,40 +55,38 @@ div.sitting-dates {
     margin-top: 10px;
 }
 
-.sitting-speeches-list {
-    border-bottom: 1px solid gray;
+.sittingitem-speeches-list {
+    /* border-bottom: 1px solid lightgray; *//* TODO non appare nella posizione giusta */
+    padding-bottom: 10px;
 }
 
-.sitting-even-row .span8,
-.sitting-even-row .span4 {
+.sittingitem-speech-preview {
+    padding-left: 10px;
+}
+
+.speech-even-row .span8,
+.speech-even-row .span4 {
     background-color: #F7F6F1;
     padding-top: 10px;
     padding-bottom: 10px;
 }
 
-.sitting-odd-row .span8,
-.sitting-odd-row .span4 {
+.speech-odd-row .span8,
+.speech-odd-row .span4 {
     background-color: white;
     padding-top: 10px;
     padding-bottom: 10px; 
 }
 
-
-.speech-speaker > a {
-    float: left;
-    clear: both;
-    width: 50px;
-    text-align: center;
+.sitting-nav {
+    float: right;
 }
 
-.speech-speaker > div {
-    margin-left: 60px;  
+.speech-read-more {
+    float: right;
 }
 
-.speech-content {
-    margin-top: 10px;
-}
-
-.read-more {
-    text-align: right;
+.sittingitem-speeches-list .span8 {
+    border-right: 1px solid lightgray;
+    padding-right: 10px;
 }

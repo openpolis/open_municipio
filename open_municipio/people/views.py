@@ -11,7 +11,7 @@ from open_municipio.acts.models import Act, Deliberation, Interrogation, Interpe
 from open_municipio.acts.models import Speech
 from open_municipio.events.models import Event
 from open_municipio.acts.models import Speech
-from open_municipio.people.models import Sitting
+from open_municipio.people.models import Sitting, SittingItem
 
 from django.core import serializers
 
@@ -528,18 +528,64 @@ class SittingCalendarView(TemplateView):
 class SittingDetailView(DetailView):
     model = Sitting
     context_object_name = 'sitting'
+    template_name = 'people/sitting_detail.html'
 
     def get_context_data(self, **kwargs):
         context = super(SittingDetailView, self).get_context_data(**kwargs)
 
-        sittings = Sitting.objects.filter(institution__institution_type=Institution.COUNCIL)
+        curr = context['sitting']
 
-        extra_context = {
-            'sittings' : sittings,
+        next_sittings = Sitting.objects.filter(date__gt=curr.date).order_by("date")[:1]
+        pk_next = None
+        if len(next_sittings):
+            pk_next = next_sittings[0].pk
+
+        prev_sittings = Sitting.objects.filter(date__lt=curr.date).order_by("-date")[:1]
+        pk_prev = None
+        if len(prev_sittings):
+            pk_prev = prev_sittings[0].pk
+
+        extra = {
+            "pk_prev":pk_prev, 
+            "pk_next":pk_next,
         }
 
-        context.update(extra_context)
+        context.update(extra)
         return context
+
+class SittingItemDetailView(DetailView):
+    model = SittingItem
+    context_object_name = 'sitem'
+    template_name = 'people/sittingitem_detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(SittingItemDetailView, self).get_context_data(**kwargs)
+
+        sitem = context['sitem']
+        curr = sitem.sitting
+
+        next_sittings = Sitting.objects.filter(date__gt=curr.date).order_by("date")[:1]
+        pk_next = None
+        if len(next_sittings):
+            pk_next = next_sittings[0].pk
+
+        prev_sittings = Sitting.objects.filter(date__lt=curr.date).order_by("-date")[:1]
+        pk_prev = None
+        if len(prev_sittings):
+            pk_prev = prev_sittings[0].pk
+
+        # get the speeches related to the sitting item
+        speeches = Speech.objects.filter(sitting_item=sitem).order_by("initial_time")
+
+        extra = {
+            "pk_prev":pk_prev, 
+            "pk_next":pk_next,
+            "speeches":speeches,
+        }
+
+        context.update(extra)
+        return context
+
 
 def show_mayor(request):
     return HttpResponseRedirect( municipality.mayor.as_charge.person.get_absolute_url() )

@@ -19,8 +19,6 @@ from open_municipio.newscache.models import NewsTargetMixin
 from open_municipio.people.managers import TimeFramedQuerySet
 from open_municipio.om_utils.models import SlugModel
 
-
-
 #
 # Persons, charges and groups
 #
@@ -1067,8 +1065,19 @@ class Sitting(models.Model):
         verbose_name_plural = _('sittings')
     
     def __unicode__(self):
-        return u'seduta num. %s del %s (%s)' % (self.number, self.date.strftime('%d/%m/%Y'), self.institution.name)
+        return u'Seduta num. %s del %s (%s)' % (self.number, self.date.strftime('%d/%m/%Y'), self.institution.name)
      
+    @property
+    def sitting_items(self):
+        return SittingItem.objects.filter(sitting=self)
+
+    @property
+    def num_items(self):
+        return self.sitting_items.count()
+
+    @permalink
+    def get_absolute_url(self):
+        return 'om_sitting_detail', (), { 'pk': self.pk }
 
 class SittingItem(models.Model):
     """
@@ -1101,13 +1110,17 @@ class SittingItem(models.Model):
     def __unicode__(self):
         return unicode(self.title)
 
+    @permalink
+    def get_absolute_url(self):
+        return 'om_sittingitem_detail', (), { 'pk': self.pk }
+
+
     @property
     def long_repr(self):
         """
         long unicode representation, contains the sitting details
         """
         return u'%s - %s' % (self.sitting, self)
-
 
 ## Private DB access API
 

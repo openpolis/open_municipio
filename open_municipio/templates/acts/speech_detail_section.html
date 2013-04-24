@@ -1,0 +1,42 @@
+{% load monitoring_tags %}
+
+<div class="sittingitem-speeches-list">
+    <div class="span8">
+    <ul class="people-list">
+    <li>
+    {% if speech.author_counselor %}
+        {% include 'people/politician_list_section.html' with politician=speech.author_counselor%}
+        {% object_inline_monitoring speech.author %}
+    {% elif speech.author_name_when_external %}
+        {{ speech.author_name_when_external }}
+    {% else %}
+        Autore non specificato
+    {% endif %}
+    </li>
+    </ul>
+    <div class="sittingitem-speech-preview">
+    {{ speech.text }}
+    </div>
+    {% if readmore %}
+    <a class="speech-read-more"  href="">Leggi tutto</a>
+    {% endif %}
+    </div>
+    <div class="span4">
+    <a href="{{ speech.get_absolute_url }}">Leggi il singolo intervento</a> - <a href="">Leggi nel contesto</a> <br/>
+    <br/>
+    {% if speech.related_act_set.all|length > 0 %}
+    Atti a supporto:<br/>
+    <ul>
+        {% for act in speech.related_act_set.all %}
+        <li><a href="{{ act.get_absolute_url }}">{{ act.title }}</a></li>
+        {% endfor %}
+    </ul>
+    <br/>
+    {% endif %}
+    {% if speech.file %}
+    <a href="{{ speech.file}}">Ascolta l'intervento</a>
+    {% elif speech.file_url %}
+    <a href="{{ speech.file_url }}">Ascolta l'intervento</a>
+   {% endif %}
+    </div>
+</div>

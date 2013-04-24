@@ -1,4 +1,4 @@
-{% extends "base_two_columns.html" %}
+{% extends "base_one_column.html" %}
 
 {% load om_utils %}
 {% load thumbnail %}
@@ -40,32 +40,11 @@
     {% endfor %}
     </div>
 
-    <h2>{{ sitting }}</h2>
+    {% include 'people/sittingitem_detail_section.html' with sitem=sitem %}
 
-    {% if pk_prev != None or pk_next != None %}
-
-    <div class="sitting-nav">
-        {% if pk_prev != None %}
-            <a href="{% url om_sitting_detail pk=pk_prev %}">
-        {% endif %}&lt;&lt; Precedente
-        {% if pk_prev != None %}</a>{% endif %} |
-        {% if pk_next != None %}
-            <a href="{% url om_sitting_detail pk=pk_next %}">
-        {% endif %}Successivo &gt;&gt;
-        {% if pk_next != None %}</a>{% endif %}
-    </div>
-
-    {% endif %}
-
-    <ul>
-    {% for si in sitting.sitting_items %}
-        <li><a href="{% url om_sittingitem_detail pk=si.pk %}">{{ si.title }}</a></li>
+    {% for speech in speeches %}
+        {% include 'acts/speech_detail_section.html' with readmore=1 speech=speech %}
     {% endfor %}
-    </ul>
 </section>
 {% endblock %}
 
-{% block sidebar %}
-    <h2>I prossimi appuntamenti</h2>
-    {% include "commons/calendar.html" with events=events %}
-{% endblock %}

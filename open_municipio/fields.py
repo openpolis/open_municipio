@@ -28,7 +28,8 @@ class SplitTimeField(forms.MultiValueField):
             if data_list[0] in (None, '') or data_list[1] in (None, ''):
                 raise forms.ValidationError(self.error_messages['invalid_time'])
 
-            return datetime.time(int(data_list[0]),int(data_list[1]))
+            if data_list[0] != "-" and data_list[1] != "-":
+                return datetime.time(int(data_list[0]),int(data_list[1]))
         return None
 
 

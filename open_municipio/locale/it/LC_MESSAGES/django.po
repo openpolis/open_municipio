@@ -19,7 +19,7 @@ msgstr ""
 
 #: fields.py:11
 msgid "Enter a valid time."
-msgstr ""
+msgstr "Specifica un orario valido"
 
 #: acts/models.py:54
 msgid ""
@@ -399,47 +399,47 @@ msgstr "File importati"
 
 #: events/models.py:31
 msgid "Event date"
-msgstr ""
+msgstr "Data"
 
 #: events/models.py:31
 msgid "The day when the event is going to be held"
-msgstr ""
+msgstr "Il giorno in cui si terrà l'evento"
 
 #: events/models.py:32
 msgid "Event time"
-msgstr ""
+msgstr "Ora"
 
 #: events/models.py:32
 msgid "The time of the event"
-msgstr ""
+msgstr "L'ora di inizio dell'evento"
 
 #: events/models.py:33
 msgid "Institution"
-msgstr ""
+msgstr "Istituzione"
 
 #: events/models.py:33
 msgid "The institution that's going to meet during the event"
-msgstr ""
+msgstr "L'istituzione che parteciperà all'evento"
 
 #: events/models.py:34
 msgid "Acts"
-msgstr ""
+msgstr "Atti"
 
 #: events/models.py:34
 msgid "Acts the discussion is linked to, if any"
-msgstr ""
+msgstr "Atti a cui la discussione si riferisce, se specificati"
 
 #: events/models.py:35 idioticon/models.py:16
 msgid "Title"
-msgstr ""
+msgstr "Titolo"
 
 #: events/models.py:35
 msgid "A short title for this event"
-msgstr ""
+msgstr "Un titolo breve per l'evento"
 
 #: events/models.py:36 users/forms.py:44 users/models.py:80
 msgid "Description"
-msgstr ""
+msgstr "Descrizione"
 
 #: events/models.py:36
 msgid ""
@@ -449,23 +449,23 @@ msgstr ""
 
 #: events/models.py:37 locations/models.py:24
 msgid "Address"
-msgstr ""
+msgstr "Indirizzo"
 
 #: events/models.py:37
 msgid "The physical address where the meeting is going to be held"
-msgstr ""
+msgstr "L'indirizzo del luogo in cui l'evento si terrà"
 
 #: events/models.py:45
 msgid "event"
-msgstr ""
+msgstr "evento"
 
 #: events/models.py:46
 msgid "events"
-msgstr ""
+msgstr "eventi"
 
 #: idioticon/admin.py:10 idioticon/models.py:18
 msgid "Definition"
-msgstr ""
+msgstr "Definizione"
 
 #: idioticon/models.py:13 idioticon/models.py:21
 msgid "Term"
