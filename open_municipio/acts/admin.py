@@ -153,6 +153,8 @@ class ActInSpeechInline(admin.TabularInline):
     model = ActHasSpeech
     extra = 0
 
+    raw_id_fields = ('act', )
+
 
 class SpeechAdmin(admin.ModelAdmin):
     search_fields = ('title',)

@@ -37,8 +37,8 @@ em {
             <tr>
                 <td>{{result.object.date|circled:"full" }}</td>
                 <td>
-                    <h4><a href="{{ result.object.url }}">{{ result.object.title }}</a></h4>
-                    <strong><a href="{{ result.object.sitting.url }}">{{ result.object.sitting }}</a></strong><br/>
+                    <h4><a href="{{ result.object.get_absolute_url }}">{{ result.object.title }}</a></h4>
+                    <strong><a href="{{ result.object.sitting.get_absolute_url }}">{{ result.object.sitting }}</a></strong><br/>
                     {{ result.object.author }}
                 </td>
             </tr>

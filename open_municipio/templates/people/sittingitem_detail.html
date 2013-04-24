@@ -40,8 +40,19 @@
     {% endfor %}
     </div>
 
+    <div>
+    <div class="span8">
     {% include 'people/sittingitem_detail_section.html' with sitem=sitem %}
-
+    </div>
+    <div class="span4">
+    <h4>Atti a supporto della discussione:</h4>
+    <ul>
+    {% for act in acts %}
+        <li><a href="{{ act.get_absolute_url }}">{{ act }}</a>
+    {% endfor %}
+    </ul>
+    </div>
+    </div>
     {% for speech in speeches %}
         {% include 'acts/speech_detail_section.html' with readmore=1 speech=speech %}
     {% endfor %}
