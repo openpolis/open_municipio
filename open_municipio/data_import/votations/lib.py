@@ -368,29 +368,29 @@ class DBVotationWriter(BaseVotationWriter):
                     )
 
                     # try to link to an act
-                    self.logger.debug("act_descr: %s" % b.act_descr.strip())
-                    m = re.match(r"(.+?)-(.+)", b.act_descr.strip())
-                    if m:
-                        try:
-                            act_idnum = str(m.group(1))
-                            self.logger.debug("act_idnum: %s" % act_idnum)
-                            linked_act = Act.objects.get(idnum=act_idnum)
-                            if isinstance(linked_act, Act):
-                                try:
-                                    b.act = linked_act.downcast()
-                                    b.save()
-                                    self.logger.info("act was linked: %s" % b.act)
-                                except ObjectDoesNotExist:
-                                    self.logger.info("act was not linked")
-
-                            else:
-                                self.logger.warning("act of type %s not expected. expected type Act" % linked_act.__class__.__name__)
-
-                        except ObjectDoesNotExist:
-                            self.logger.warning("act %s not present in OM" % act_idnum)
-                        except Exception as e:
-                            self.logger.warning("unexpected error looking for act %s in OM: %s" % (act_idnum, e))
-
+#                    self.logger.debug("act_descr: %s" % b.act_descr.strip())
+#                    m = re.match(r"(.+?)-(.+)", b.act_descr.strip())
+#                    if m:
+#                        try:
+#                            act_idnum = str(m.group(1))
+#                            self.logger.debug("act_idnum: %s" % act_idnum)
+#                            linked_act = Act.objects.get(idnum=act_idnum)
+#                            if isinstance(linked_act, Act):
+#                                try:
+#                                    b.act = linked_act.downcast()
+#                                    b.save()
+#                                    self.logger.info("act was linked: %s" % b.act)
+#                                except ObjectDoesNotExist:
+#                                    self.logger.info("act was not linked")
+#
+#                            else:
+#                                self.logger.warning("act of type %s not expected. expected type Act" % linked_act.__class__.__name__)
+#
+#                        except ObjectDoesNotExist:
+#                            self.logger.warning("act %s not present in OM" % act_idnum)
+#                        except Exception as e:
+#                            self.logger.warning("unexpected error looking for act %s in OM: %s" % (act_idnum, e))
+#
                     if created:
                         self.logger.debug("%s created in DB" % b)
                     else:
