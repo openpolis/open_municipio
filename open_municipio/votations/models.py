@@ -66,6 +66,10 @@ class Votation(models.Model):
         else:
             return _('no')
 
+    @property
+    def date(self):
+        return self.sitting.date
+
     class Meta:
         verbose_name = _('votation')
         verbose_name_plural = _('votations')
