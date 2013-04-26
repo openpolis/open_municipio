@@ -347,7 +347,8 @@ class DBVotationWriter(BaseVotationWriter):
                     self.logger.debug("%s found in DB" % s)
 
             for ballot in sitting.ballots:
-                ballot_date = date.fromtimestamp(ballot.time)
+                self.logger.info("read ballot timestamp: %s" % (ballot.time,))
+                ballot_date = ballot.time.date()
 
                 self.logger.info("processing %s in Mdb" % ballot)
             
