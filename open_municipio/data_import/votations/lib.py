@@ -59,9 +59,10 @@ class Sitting(object):
         return "Sitting #%(sitting_n)s of %(sitting_date)s" % {'sitting_n': self.seq_n, 'sitting_date': self.date}
 
 class Ballot(object):
-    def __init__(self, sitting, seq_n=None, timestamp=None, ballot_type=None, short_subj=None, subj=None,
-                 n_presents=None, n_partecipants=None, n_majority=None, n_yes=None, n_no=None, n_abst=None,
-                 n_legal=None, outcome=None):
+    def __init__(self, sitting, seq_n=None, timestamp=None, ballot_type=None, 
+                short_subj=None, subj=None, n_presents=None, n_partecipants=None,
+                n_majority=None, n_yes=None, n_no=None, n_abst=None,
+                n_legal=None, outcome=None):
         # parent sitting
         self.sitting = sitting
         # ballot instance attributes
@@ -122,7 +123,7 @@ class BaseVotationReader(BaseReader):
             try:
                 sitting.ballots = data_source.get_ballots(sitting)
                 self.sittings.append(sitting)
-            catch Exception, e:
+            except Exception, e:
                 self.logger.warning("Sitting %s has been skipped because of the following error: %s" % (sitting, e))
 
         # as now, ``self.sittings`` should be a object tree 
@@ -331,7 +332,7 @@ class DBVotationWriter(BaseVotationWriter):
             inst = Institution.objects.get(name=self.conf.XML_TO_OM_INST[sitting.site])
 
             if not self.dry_run:
-                s, created = DBSitting.objects.get_or_create(
+                s, sitting_created = DBSitting.objects.get_or_create(
                     idnum=sitting._id,
                     defaults={
                         'number':      sitting.seq_n,
@@ -340,13 +341,18 @@ class DBVotationWriter(BaseVotationWriter):
                         'institution': inst,
                         }
                 )
-                if created:
+                if sitting_created:
                     self.logger.info("%s created in DB" % s)
                 else:
                     self.logger.debug("%s found in DB" % s)
 
             for ballot in sitting.ballots:
+                ballot_date = date.fromtimestamp(ballot.time)
+
                 self.logger.info("processing %s in Mdb" % ballot)
+            
+                if not sitting_created and sitting.date != ballot_date:
+                    raise Exception("Existing sitting number %s, date %s but ballot date is %s" % (sitting.seq_n, sitting.date, ballot_date))
 
                 if not self.dry_run:
 
