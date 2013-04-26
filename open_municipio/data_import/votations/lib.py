@@ -117,9 +117,14 @@ class BaseVotationReader(BaseReader):
         # construct the DOM tree
         all_sittings = data_source.get_sittings()
         self.logger.info("All sittings: %s" % all_sittings)
+
         for sitting in all_sittings:
-            sitting.ballots = data_source.get_ballots(sitting)
-            self.sittings.append(sitting)
+            try:
+                sitting.ballots = data_source.get_ballots(sitting)
+                self.sittings.append(sitting)
+            catch Exception, e:
+                self.logger.warning("Sitting %s has been skipped because of the following error: %s" % (sitting, e))
+
         # as now, ``self.sittings`` should be a object tree 
         # providing a comprehensive representation of all relevant data
         # that can be extracted from the data source
