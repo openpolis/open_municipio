@@ -327,115 +327,95 @@ class DBVotationWriter(BaseVotationWriter):
         self.setup()
 
         for sitting in self.sittings:
-            self.logger.info("processing %s in Mdb" % sitting)
-            self.logger.info("Sitting site code: %s" % sitting.site)
-            inst = Institution.objects.get(name=self.conf.XML_TO_OM_INST[sitting.site])
+            try:
+                self._write_sitting(sitting)
+            except Exception, e:
+                self.logger.warning("Error saving sitting. Skip. Detail: %s" % e)
+
+    def _write_sitting(self, sitting):
+        self.logger.info("processing %s in Mdb" % sitting)
+        self.logger.info("Sitting site code: %s" % sitting.site)
+        inst = Institution.objects.get(name=self.conf.XML_TO_OM_INST[sitting.site])
+
+        if not self.dry_run:
+            s, sitting_created = DBSitting.objects.get_or_create(
+                idnum=sitting._id,
+                defaults={
+                    'number':      sitting.seq_n,
+                    'date':        sitting.date,
+                    'call':        sitting.call,
+                    'institution': inst,
+                    }
+            )
+            if sitting_created:
+                self.logger.info("%s created in DB" % s)
+            else:
+                self.logger.debug("%s found in DB" % s)
+
+        for ballot in sitting.ballots:
+            self.logger.info("read ballot timestamp: %s" % (ballot.time,))
+            ballot_date = ballot.time.date()
+
+            self.logger.info("processing %s in Mdb" % ballot)
+        
+            if not sitting_created and sitting.date != ballot_date:
+                raise Exception("Existing sitting number %s, date %s but ballot date is %s" % (sitting.seq_n, sitting.date, ballot_date))
 
             if not self.dry_run:
-                s, sitting_created = DBSitting.objects.get_or_create(
-                    idnum=sitting._id,
+
+                # get or create the ballot in the DB
+                b, created = DBBallot.objects.get_or_create(
+                    idnum=int(ballot.seq_n),
+                    sitting=s,
                     defaults={
-                        'number':      sitting.seq_n,
-                        'date':        sitting.date,
-                        'call':        sitting.call,
-                        'institution': inst,
-                        }
+                        'act_descr': ballot.subj or ballot.short_subj or "",
+                        'n_legal': int(ballot.n_legal),
+                        'n_presents': int(ballot.n_presents),
+                        'n_partecipants': int(ballot.n_partecipants),
+                        'n_maj': int(ballot.n_majority),
+                        'n_yes': int(ballot.n_yes),
+                        'n_no': int(ballot.n_no),
+                        'n_abst': int(ballot.n_abst),
+                        'outcome': int(ballot.outcome),
+                    }
                 )
-                if sitting_created:
-                    self.logger.info("%s created in DB" % s)
+
+                if created:
+                    self.logger.debug("%s created in DB" % b)
                 else:
-                    self.logger.debug("%s found in DB" % s)
-
-            for ballot in sitting.ballots:
-                self.logger.info("read ballot timestamp: %s" % (ballot.time,))
-                ballot_date = ballot.time.date()
-
-                self.logger.info("processing %s in Mdb" % ballot)
-            
-                if not sitting_created and sitting.date != ballot_date:
-                    raise Exception("Existing sitting number %s, date %s but ballot date is %s" % (sitting.seq_n, sitting.date, ballot_date))
-
-                if not self.dry_run:
-
-                    # get or create the ballot in the DB
-                    b, created = DBBallot.objects.get_or_create(
-                        idnum=int(ballot.seq_n),
-                        sitting=s,
-                        defaults={
-                            'act_descr': ballot.subj or ballot.short_subj or "",
-                            'n_legal': int(ballot.n_legal),
-                            'n_presents': int(ballot.n_presents),
-                            'n_partecipants': int(ballot.n_partecipants),
-                            'n_maj': int(ballot.n_majority),
-                            'n_yes': int(ballot.n_yes),
-                            'n_no': int(ballot.n_no),
-                            'n_abst': int(ballot.n_abst),
-                            'outcome': int(ballot.outcome),
-                        }
-                    )
-
-                    # try to link to an act
-#                    self.logger.debug("act_descr: %s" % b.act_descr.strip())
-#                    m = re.match(r"(.+?)-(.+)", b.act_descr.strip())
-#                    if m:
-#                        try:
-#                            act_idnum = str(m.group(1))
-#                            self.logger.debug("act_idnum: %s" % act_idnum)
-#                            linked_act = Act.objects.get(idnum=act_idnum)
-#                            if isinstance(linked_act, Act):
-#                                try:
-#                                    b.act = linked_act.downcast()
-#                                    b.save()
-#                                    self.logger.info("act was linked: %s" % b.act)
-#                                except ObjectDoesNotExist:
-#                                    self.logger.info("act was not linked")
-#
-#                            else:
-#                                self.logger.warning("act of type %s not expected. expected type Act" % linked_act.__class__.__name__)
-#
-#                        except ObjectDoesNotExist:
-#                            self.logger.warning("act %s not present in OM" % act_idnum)
-#                        except Exception as e:
-#                            self.logger.warning("unexpected error looking for act %s in OM: %s" % (act_idnum, e))
-#
-                    if created:
-                        self.logger.debug("%s created in DB" % b)
-                    else:
-                        self.logger.debug("%s found in DB" % b)
+                    self.logger.debug("%s found in DB" % b)
 
 
-                if self.dry_run:
-                    continue
+            if self.dry_run:
+                return
 
-                for vote in ballot.votes:
-                    self.logger.debug("processing %s in Mdb" % vote)
-                    self.write_vote(vote, db_ballot=b)
+            for vote in ballot.votes:
+                self.logger.debug("processing %s in Mdb" % vote)
+                self.write_vote(vote, db_ballot=b)
 
+            # since absences are not explicitly set
+            # they must be computed
+            self.compute_absences(b)
 
-                # since absences are not explicitly set
-                # they must be computed
-                self.compute_absences(b)
+            # TODO:
+            # remove Votation and skip this votation if
+            # sums are not verified
+            #
+            # if not b.verify_sums():
+            #   b.delete()
+            #   continue
 
+            # compute and cache group votes into GroupVote
+            self.logger.info("Compute group vote of %s (date:%s)" % (b,b.sitting.date))
+            self.compute_group_votes(b)
 
-                # TODO:
-                # remove Votation and skip this votation if
-                # sums are not verified
-                #
-                # if not b.verify_sums():
-                #   b.delete()
-                #   continue
+            # compute rebels caches, only if the sitting is not a Committee (no rebellions in committees)
+            if b.sitting.institution.institution_type != Institution.COMMITTEE:
+                self.update_rebel_caches(b)
 
-                # compute and cache group votes into GroupVote
-                self.logger.info("Compute group vote of %s (date:%s)" % (b,b.sitting.date))
-                self.compute_group_votes(b)
+            b.update_presence_caches()
 
-                # compute rebels caches, only if the sitting is not a Committee (no rebellions in committees)
-                if b.sitting.institution.institution_type != Institution.COMMITTEE:
-                    self.update_rebel_caches(b)
-
-                b.update_presence_caches()
-
-                self.logger.info("caches for this votation updated.\n")
+            self.logger.info("caches for this votation updated.\n")
 
 
 class XMLVotationWriter(BaseVotationWriter, XMLWriter):
