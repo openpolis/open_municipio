@@ -270,7 +270,12 @@ class DBVotationWriter(BaseVotationWriter):
             v = cv.vote
 
             if g is None:
-                self.logger.warning(u"no group found for charge vote %s (vote date: %s)" % (cv,votation.sitting.date))
+                if v != ChargeVote.VOTES.abstained:
+                    # something is wrong: a person without a charge should
+                    # correspond to an abstained vote
+                    self.logger.warning(u"no group found for charge vote %s (vote date: %s)" % (cv,votation.sitting.date))
+
+                # continue in any case
                 continue
 
             # get or create group votation
