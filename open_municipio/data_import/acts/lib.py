@@ -16,7 +16,7 @@ from open_municipio.data_import.utils import ChargeSeekerFromMapMixin
 
 from open_municipio.acts.models import Act as OMAct, \
     Deliberation as OMDeliberation, Motion as OMMotion, Agenda as OMAgenda, \
-    ActSupport as OMActSupport, Attach as OMAttach
+    ActSupport as OMActSupport, Attach as OMAttach, Transition as OMTransition
 
 from lxml import etree
 from types import NoneType
@@ -117,18 +117,35 @@ class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
 
         return om_type
   
+    def _add_act_transitions(self, act, om_act):
+
+        self.logger.info("Transition dates: %s" % (act.transitions, ))
+        if act.transitions != None:
+            for symb in act.transitions:
+                for date in act.transitions[symb]:
+                    if not (symb in conf.XML_TO_OM_STATUS):
+                        self.logger.warning("Status '%s' is not handled at the moment. Skip the transition" % symb)
+                        continue
+
+                    status = conf.XML_TO_OM_STATUS[symb]
+                    (om_t, created) = OMTransition.objects.get_or_create(
+                        act=om_act, symbol=symb, transition_date=date, final_status=status
+                    )
+                    
+                    if created:
+                        self.logger.debug("New transition found. Act=%s,Symbol=%s,Date=%s" % (act.title,symb,date))
+                        om_t.save()
+
 
     def _init_act_create_defaults(self, act):
         act_obj_type = act.__class__.__name__
 
         om_emitting = OMActsWriter._get_emitting_institution(act)
 
-        self.logger.info("Presentation date: %s" % act.presentation_date)
-
         create_defaults = {
                     'idnum' : act.id,
                     'title' : act.title,
-                    'presentation_date' : act.presentation_date,
+#                    'presentation_date' : act.presentation_date,
                     'text' : act.content,
                     'emitting_institution': om_emitting,
                     'transitions' : None,
@@ -248,9 +265,10 @@ class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
         else:
             self.logger.info("OM act already present %s" % om_act.idnum)
 
+        # append transitions to acts on OM
+        self._add_act_transitions(act, om_act)
+        
 
-
-    
 # python object layer for imported data
 
 # document section
@@ -260,10 +278,13 @@ class Act:
     content = ""
     title = ""
     file = None
-    presentation_date = None
+#    presentation_date = None
     subscribers = [] # list of Charges
     emitting_institution = ""
     attachments = [] # list of Attachment (usually one is enough ...)
+
+    transitions = {} # transitions are stored by their symbol. every symbol can
+                     # contain one or more transition dats
     
     
     def add_subscriber(self, charge):
@@ -277,7 +298,7 @@ class Act:
 
 class CouncilDeliberation(Act):
     final_id = None
-    execution_date = None
+#    execution_date = None
     initiative = "" # (council_member, ...)
 
 class CityGovernmentDeliberation(Act):

@@ -23,6 +23,12 @@ ACTS_PEOPLE_FILE = os.path.join(settings.REPO_ROOT, 'test_data/acts/people.xml')
 
 # Django settings specific for the data import features
 
+XML_TO_OM_STATUS = {
+    'Accepted' : "APPROVED",
+    'Rejected' : "REJECTED",
+    'Presented' : "PRESENTED",
+}
+
 XML_TO_OM_INST = {
     'SCN' : 'Consiglio comunale',
     'C02' : '1^ commissione',
