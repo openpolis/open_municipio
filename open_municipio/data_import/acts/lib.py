@@ -1,5 +1,6 @@
 import os
 import traceback
+from sets import Set
 
 from django.core.files import File
 from django.core.exceptions import ObjectDoesNotExist
@@ -16,7 +17,8 @@ from open_municipio.data_import.utils import ChargeSeekerFromMapMixin
 
 from open_municipio.acts.models import Act as OMAct, \
     Deliberation as OMDeliberation, Motion as OMMotion, Agenda as OMAgenda, \
-    ActSupport as OMActSupport, Attach as OMAttach, Transition as OMTransition
+    ActSupport as OMActSupport, Attach as OMAttach, Transition as OMTransition, \
+    CGDeliberation as OMCGDeliberation
 
 from lxml import etree
 from types import NoneType
@@ -107,6 +109,8 @@ class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
             om_type = OMMotion
         elif act_obj_type == "Agenda":
             om_type = OMAgenda
+        elif act_obj_type == "CityGovernmentDeliberation":
+            om_type = OMCGDeliberation
 
         if om_type == NoneType:
             self.logger.error("Unable to instantiate type: %s" %
@@ -117,24 +121,55 @@ class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
 
         return om_type
   
+    def _add_act_transition(self, act, om_act, symb):
+        for date in act.transitions[symb]:
+            if not (symb in conf.XML_TO_OM_STATUS):
+                self.logger.warning("Status '%s' is not handled at the moment. Skip the transition" % symb)
+                continue
+    
+            status = conf.XML_TO_OM_STATUS[symb]
+            (om_t, created) = OMTransition.objects.get_or_create(
+                act=om_act, symbol=symb, transition_date=date, final_status=status
+            )
+            
+            if created:
+                self.logger.debug("New transition found. Act=%s,Symbol=%s,Date=%s" % (act.title,symb,date))
+                self._set_act_status(om_t)
+                om_t.save()
+    
+
     def _add_act_transitions(self, act, om_act):
 
-        self.logger.info("Transition dates: %s" % (act.transitions, ))
-        if act.transitions != None:
-            for symb in act.transitions:
-                for date in act.transitions[symb]:
-                    if not (symb in conf.XML_TO_OM_STATUS):
-                        self.logger.warning("Status '%s' is not handled at the moment. Skip the transition" % symb)
-                        continue
+        order_symb = ( "Presented", "Accepted", "Rejected", )
 
-                    status = conf.XML_TO_OM_STATUS[symb]
-                    (om_t, created) = OMTransition.objects.get_or_create(
-                        act=om_act, symbol=symb, transition_date=date, final_status=status
-                    )
-                    
-                    if created:
-                        self.logger.debug("New transition found. Act=%s,Symbol=%s,Date=%s" % (act.title,symb,date))
-                        om_t.save()
+        self.logger.info("Transition dates: %s" % (act.transitions, ))
+        if act.transitions == None:
+            return
+
+        for symb in order_symb:
+            if symb in act.transitions:
+                self._add_act_transition(act, om_act, symb)
+
+        # check whether transitions with other symbols are present
+        keyset_actual = Set(act.transitions.keys())
+        keyset_handled = Set(order_symb)
+
+        keyset_nothandled = keyset_actual.difference(keyset_handled)
+        if keyset_nothandled != Set():
+            self.logger.warning("Some transitions are not handled: %s" %
+                keyset_nothandled)
+
+    def _set_act_status(self, om_trans):
+
+        om_act = om_trans.act
+
+        if om_act.is_final_status():
+            # cannot recover from a final status
+            self.logger.debug("Ignore transition status (%s). Act status is already final (%s)" % (om_trans.final_status, om_act.status))
+            return
+
+        self.logger.debug("Set act status: %s" % om_trans.final_status)
+        om_act.status = om_trans.final_status
 
 
     def _init_act_create_defaults(self, act):
@@ -145,11 +180,20 @@ class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
         create_defaults = {
                     'idnum' : act.id,
                     'title' : act.title,
-#                    'presentation_date' : act.presentation_date,
                     'text' : act.content,
                     'emitting_institution': om_emitting,
+                    'presentation_date' : None,
                     'transitions' : None,
                 }
+
+        if "Presented" in act.transitions:
+            # the presentation date is unique, take the first item
+            self.logger.debug("Presentation dates: %s" % act.transitions["Presented"])
+            pdate = act.transitions["Presented"][0]
+            self.logger.debug("presentation date found: %s" % pdate) 
+            create_defaults["presentation_date"] = pdate
+        else:
+            self.logger.debug("Presentation date not found: %s" % act.transitions)
 
         if act_obj_type == "CouncilDeliberation":
             om_initiative = OMActsWriter._get_initiative(act)
@@ -158,6 +202,8 @@ class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
 
             create_defaults['final_idnum'] = act.final_id
             self.logger.info("Set the final_idnum: %s" % act.final_id)
+
+        self.logger.debug("Act presentation date: %s" % create_defaults["presentation_date"])
 
         return create_defaults
    

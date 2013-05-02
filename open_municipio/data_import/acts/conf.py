@@ -1,4 +1,5 @@
-from open_municipio.people.models import CityCouncil as OMCityCouncil #, CityGovernment as OMCityGovernment, Mayor as OMMayor
+from open_municipio.people.models import CityCouncil as OMCityCouncil, \
+    CityGovernment as OMCityGovernment, Mayor as OMMayor
 
 
 # see the INITIATIVE_TYPES field in open_municipio.acts.models.Deliberation
@@ -9,6 +10,7 @@ OM_DELIBERATION_INITIATIVE_MAP = {
 }
 
 OM_EMITTING_INSTITUTION_MAP = { 
+    "CityGovernmentDeliberation" : OMCityGovernment().as_institution,
     "CouncilDeliberation" : OMCityCouncil().as_institution,
     "Motion" : OMCityCouncil().as_institution,
     "Agenda" : OMCityCouncil().as_institution,
