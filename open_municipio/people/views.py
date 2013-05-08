@@ -518,8 +518,11 @@ class SittingCalendarView(TemplateView):
 
         sittings = Sitting.objects.filter(institution__institution_type=Institution.COUNCIL)
 
+        events = Event.objects.filter(institution__institution_type=Institution.COUNCIL)
+
         extra_context = {
-            'sittings' : sittings,
+            'sittings'  : sittings,
+            'events'    : events,
         }
 
         context.update(extra_context)
@@ -545,9 +548,12 @@ class SittingDetailView(DetailView):
         if len(prev_sittings):
             pk_prev = prev_sittings[0].pk
 
+        events = Event.objects.filter(institution__institution_type=Institution.COUNCIL)
+
         extra = {
-            "pk_prev":pk_prev, 
-            "pk_next":pk_next,
+            "pk_prev"   : pk_prev, 
+            "pk_next"   : pk_next,
+            "events"    : events,
         }
 
         context.update(extra)

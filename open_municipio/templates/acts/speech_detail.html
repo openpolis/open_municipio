@@ -41,8 +41,11 @@
     </div>
 
     {% include 'people/sittingitem_detail_section.html' with sitem=speech.sitting_item sitem_link=1 %}
-
+    <div class="sittingitem-speeches-list">
     {% include 'acts/speech_detail_section.html' with speech=speech %}
+    </div>
+
 </section>
+
 {% endblock %}
 

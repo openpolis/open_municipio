@@ -54,7 +54,10 @@
     </div>
     </div>
     {% for speech in speeches %}
+        <div class="sittingitem-speeches-list {% if forloop.counter|divisibleby:2 %}speech-even-row{% else %}speech-odd-row{% endif %}">
+
         {% include 'acts/speech_detail_section.html' with readmore=1 speech=speech %}
+        </div>
     {% endfor %}
 </section>
 {% endblock %}

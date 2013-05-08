@@ -66,16 +66,12 @@ div.sitting-dates {
 
 .speech-even-row .span8,
 .speech-even-row .span4 {
-    background-color: #F7F6F1;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    background-color: white;
 }
 
 .speech-odd-row .span8,
 .speech-odd-row .span4 {
-    background-color: white;
-    padding-top: 10px;
-    padding-bottom: 10px; 
+    background-color: #F7F6F1;
 }
 
 .sitting-nav {
