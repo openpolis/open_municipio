@@ -185,7 +185,11 @@
           {% for charge_vote in current_charge_votes %}
             <tr>
               <td class="text-center">{{ charge_vote.votation.sitting.date }}</td>
-              <td class="text-center">{{ charge_vote.votation.idnum }}</td>
+              <td class="text-center">
+                  <a href="{% url om_votation_detail charge_vote.votation.pk %}">
+                    {{ charge_vote.votation.idnum }}
+                  </a>
+              </td>
               <td {% if not charge_vote.votation.act %}class="text-center"{%  endif %}>
                   {% if charge_vote.votation.act %}
                       <a href="{{ charge_vote.votation.act.downcast.get_absolute_url }}"><strong>{{ charge_vote.votation.act.title }}</strong></a>
