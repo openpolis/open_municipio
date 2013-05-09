@@ -146,7 +146,6 @@ class ChargeSeekerFromMapMixin:
     logger = logging.getLogger("import")
 
     def lookup_charge(self, external, provider):
-        self.logger.info("Try to detect institution (%s)..." % external)
         try:
             institutionLookup = LookupInstitutionCharge.lookup(external,provider)
             return institutionLookup
@@ -166,6 +165,8 @@ class ChargeSeekerFromMapMixin:
             return administrationLookup
         except ObjectDoesNotExist:
             pass
+
+        self.logger.info("Unable to detect institution (component: %s)..." % external)
 
         return None
 
