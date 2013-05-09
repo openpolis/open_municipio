@@ -10,7 +10,7 @@
         </td>
         <td>
             <h3>
-                {% if event.acts.all %}
+                {% if event.acts.count or event.description %}
                     <a href="#event_{{ event.id }}_description" class="event_toggle_modal">{{ event.title }}</a>
                 {% else %}
                     {{ event.title }}

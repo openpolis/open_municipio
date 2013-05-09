@@ -20,6 +20,7 @@
             </p>
         </div>
     {% endif %}
+    {% if event.acts.count %}
     <div class="modal-footer">
         <h4>Atti in discussione</h4>
         <ul>
@@ -31,4 +32,5 @@
         </ul>
 
     </div>
+    {% endif %}
 </div>

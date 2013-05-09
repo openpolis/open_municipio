@@ -76,7 +76,7 @@ class ActAdmin(admin.ModelAdmin):
                super(ActAdmin, self).has_change_permission(request, obj)
 
     # add some inlines  for superuser users only
-    def change_view(self, request, object_id, extra_context=None):
+    def change_view(self, request, object_id, form_url='', extra_context=None):
 
         if request.user.is_superuser:
             self.inlines = [PresenterInline, AttachInline, TransitionInline, AmendmentInline]
