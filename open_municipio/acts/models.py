@@ -628,8 +628,7 @@ class Attach(Document):
     Extends the ``Document`` class, by adding a title
     and a foreign key to the act the attachment relates to.
     """
-    # FIXME: shouldn't this model be called ``Attachment`` instead ?
-    title = models.CharField(max_length=255)
+    title = models.CharField(max_length=512)
     act = models.ForeignKey(Act, related_name='attachment_set')
 
     class Meta(Document.Meta):
