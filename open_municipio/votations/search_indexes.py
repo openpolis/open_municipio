@@ -18,6 +18,7 @@ class VotationIndex(indexes.SearchIndex, indexes.Indexable):
     # while showing results
     url = indexes.CharField(indexed=False, stored=True)
     act_url = indexes.CharField(indexed=True, stored=True, default='')
+    act_descr = indexes.CharField(indexed=False, stored=True, default='', model_attr='act_descr')
     title = indexes.CharField(indexed=False, stored=True, model_attr='act__title', default='')
     votation_num = indexes.CharField(indexed=False, stored=True, model_attr='idnum')
     votation_sitting_num = indexes.IntegerField(indexed=False, stored=True, model_attr='sitting__number')
