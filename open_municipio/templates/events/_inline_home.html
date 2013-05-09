@@ -9,7 +9,14 @@
             </div>
         </td>
         <td>
-            <h3><a href="#event_{{ event.id }}_description" class="event_toggle_modal">{{ event.title }}</a></h3>
+            <h3>
+                {% if event.acts.all %}
+                    <a href="#event_{{ event.id }}_description" class="event_toggle_modal">{{ event.title }}</a>
+                {% else %}
+                    {{ event.title }}
+                {% endif %}
+            </h3>
+
             {{ event.event_time|time:"H:i" }} - {{ event.address }}
             {%  include 'events/_modal.html' %}
         </td>
@@ -28,6 +35,6 @@
         </ul>
     </div>
     <div class="see-all">
-        <a href="#event_{{ event.id }}_description" class="event_toggle_modal">Vedi l'ordine del giorno completo</a>
+        <a href="#event_{{ event.id }}_description" class="event_toggle_modal">Mostra l'ordine del giorno completo</a>
     </div>
 {% endif %}
