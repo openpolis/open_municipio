@@ -252,7 +252,7 @@
                               <span class="label
                     {% if act.status == "APPROVED" or act.status == "ANSWERED" %}label-success
                     {% else %}{% if act.status == 'REJECTED' or act.status == "NOTANSWERED" %}label-important
-                    {% endif %}{% endif %} ">{{ act.status }}</span>
+                    {% endif %}{% endif %} ">{{ act.get_status_display }}</span>
                           {% endif %}
                       </td>
                       {% votes_for_object act as act_num_votes %}
