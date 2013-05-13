@@ -1,0 +1,8 @@
+{% if object.act %}
+<p>
+<strong>{{ object.act.get_type_name|capfirst }}</strong>
+del {{ object.act.emitting_institution }} N° <strong>{{ object.act.idnum }}</strong>
+del <strong>{{ object.act.presentation_date|date:"d F Y" }}</strong>
+ (<a href="{{ object.act.get_absolute_url }}">vai all'atto</a>)
+</p>
+{% endif %}

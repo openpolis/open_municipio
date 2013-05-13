@@ -42,20 +42,16 @@
               <td>{{ result.votation_date|circled:"full" }}</td>
               <td>
                 <h4>
-                    <a href="{{ result.url }}">
-                        {% if result.act_descr %}
-                            {{ result.act_descr }}
-                        {% else %}
-                            Votazione N. {{ result.votation_num }}
-                        {% endif %}
-                    </a><br/>
                     Seduta n.{{ result.votation_sitting_num }}
-                    del {{ result.votation_date}}
+                    del {{ result.votation_date}},
+                    <a href="{{ result.url }}">Votazione N. {{ result.votation_num }}</a>
                 </h4>
-                  {% if not act_votations and result.act_type %}
-                      <strong>{{ result.act_type }}</strong><br/>
-                      <a href="{{ result.act_url }}">{{ result.title }}</a><br/>
-                  {% endif %}
+                {% if result.act_descr %}
+                    <p>{{ result.act_descr }}</p>
+                {% endif %}
+
+                {{ result.act_rendered|safe }}
+
                 {% if result.highlighted.text %}
                   {{ result.highlighted.text.0|safe }}<br/>
                 {% endif %}

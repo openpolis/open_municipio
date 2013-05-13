@@ -69,26 +69,26 @@
     </tr>
   </table>
 
-  <hgroup>
-    <h1 class="highlight">Votazione <strong>N.{{ votation.idnum }}</strong></h1>
-    <h4>{{ votation.act_descr }}</h4>
-    <h4>{% if votation.is_secret %}<strong>Votazione segreta</strong><br>{% endif %}
-        Seduta <strong>n.{{ votation.sitting.number }}</strong> del {{ votation.sitting.date|date:"d/m/Y" }}</h4>
-    <h2>
+  <div class="votation-metadata">
+    <p class="big">
       <a href="#" id="{{ votation|as_token }}" class="bookmarkable"><i class="{% is_key_class votation %}"></i></a>
-      {{ votation.act.title }}
-    </h2>
-    <h4>
+      Seduta <strong>n.{{ votation.sitting.number }}</strong> del
+        <strong>{{ votation.sitting.date|date:"d/m/Y" }}</strong>,
+      Votazione n.{{ votation.idnum }}<br/>
+      <strong>{{ votation.act_descr }}</strong>
+    </p>
+    <p class="strong">
+        {% if votation.is_secret %}<strong>Votazione segreta</strong><br>{% endif %}
+    </p>
+    <p>
       {% if votation.act %}
         <strong>{{ votation.act.get_type_name|capfirst }}</strong>
         del {{ votation.act.emitting_institution }} N° <strong>{{ votation.act.idnum }}</strong>
         del <strong>{{ votation.act.presentation_date|date:"d F Y" }}</strong>
          (<a href="{{ votation.act.get_absolute_url }}">vai all'atto</a>)
-      {% else %}
-        {{ votation.act_descr }}
       {% endif %}
-    </h4>
-  </hgroup>
+    </p>
+  </div>
 
   <table class="data text-right table-condensed tablesorter" id="votation_results">
     <thead>

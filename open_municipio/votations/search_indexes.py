@@ -14,9 +14,13 @@ class VotationIndex(indexes.SearchIndex, indexes.Indexable):
     organ = indexes.FacetCharField(model_attr='sitting__institution__lowername')
     votation_date = indexes.FacetDateField(model_attr='sitting__date')
 
+
+
     # stored fields, used not to touch DB
     # while showing results
     url = indexes.CharField(indexed=False, stored=True)
+    act_rendered = indexes.CharField(use_template=True, indexed=False)
+
     act_url = indexes.CharField(indexed=True, stored=True, default='')
     act_descr = indexes.CharField(indexed=False, stored=True, default='', model_attr='act_descr')
     title = indexes.CharField(indexed=False, stored=True, model_attr='act__title', default='')
