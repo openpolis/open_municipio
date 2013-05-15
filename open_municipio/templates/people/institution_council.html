@@ -21,15 +21,16 @@
 
 {% block content %}
 
-
   <section class="row-fluid">
-
     {% get_sittings_years 5 as years %}
     <div class="sitting-archive">Archivio sedute di Consiglio: 
     {% for y in years %}
-        <a href="{% url om_sitting_calendar year=y %}">{{ y }}</a> | 
+        <a href="{% url om_sitting_calendar year=y %}">{{ y }}</a>{% if not forloop.last %}|{% endif %} 
     {% endfor %}
-    </div>
+    </div>      
+  </section>
+
+  <section class="row-fluid">
 
     <h2>Consiglio {% popover_info 'consiglio-comunale' %}</h2>
     <p>
