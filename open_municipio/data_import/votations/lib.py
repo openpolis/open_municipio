@@ -270,9 +270,9 @@ class DBVotationWriter(BaseVotationWriter):
             v = cv.vote
 
             if g is None:
-                if v != ChargeVote.VOTES.abstained:
+                if v != ChargeVote.VOTES.absent and v != ChargeVote.VOTES.abstained:
                     # something is wrong: a person without a charge should
-                    # correspond to an abstained vote
+                    # correspond to an absent or an abstained vote
                     self.logger.warning(u"no group found for charge vote %s (vote date: %s)" % (cv,votation.sitting.date))
 
                 # continue in any case
@@ -339,7 +339,7 @@ class DBVotationWriter(BaseVotationWriter):
 
     def _write_sitting(self, sitting):
         self.logger.info("processing %s in Mdb" % sitting)
-        self.logger.info("Sitting site code: %s" % sitting.site)
+#        self.logger.info("Sitting site code: %s" % sitting.site)
         inst = Institution.objects.get(name=self.conf.XML_TO_OM_INST[sitting.site])
 
         if not self.dry_run:
@@ -358,7 +358,7 @@ class DBVotationWriter(BaseVotationWriter):
                 self.logger.debug("%s found in DB" % s)
 
         for ballot in sitting.ballots:
-            self.logger.info("read ballot timestamp: %s" % (ballot.time,))
+#            self.logger.info("read ballot timestamp: %s" % (ballot.time,))
             ballot_date = ballot.time.date()
 
             self.logger.info("processing %s in Mdb" % ballot)
@@ -419,8 +419,6 @@ class DBVotationWriter(BaseVotationWriter):
                 self.update_rebel_caches(b)
 
             b.update_presence_caches()
-
-            self.logger.info("caches for this votation updated.\n")
 
 
 class XMLVotationWriter(BaseVotationWriter, XMLWriter):

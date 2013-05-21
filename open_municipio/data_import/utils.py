@@ -143,32 +143,57 @@ class PersonSeekerMixin:
 
 
 class ChargeSeekerFromMapMixin:
+    """
+    Associates external identifiers with internal ones. Use a dictionary as
+    cache in order to reduce the number of executed queries. This assume that the
+    Lookup* objects are **ALL** created before invoking the lookup_charge
+    method
+    """
+
     logger = logging.getLogger("import")
+    charge_map_cache = {}
 
     def lookup_charge(self, external, provider):
+
+        # if already mapped, return the result from the cache
+        if provider in self.charge_map_cache:
+            if external in self.charge_map_cache[provider]:
+                return self.charge_map_cache[provider][external]
+        else:
+            self.charge_map_cache[provider] = {}
+
+        found_internal = None
         try:
-            institutionLookup = LookupInstitutionCharge.lookup(external,provider)
-            return institutionLookup
+#            institutionLookup = LookupInstitutionCharge.lookup(external,provider)
+            found_internal = LookupInstitutionCharge.lookup(external,provider)
+#            return institutionLookup
         except ObjectDoesNotExist:
             pass
 
-        self.logger.info("Try to detect company...")
-        try:
-            companyLookup = LookupCompanyCharge.lookup(external,provider)
-            return companyLookup
-        except ObjectDoesNotExist:
-            pass
+        if found_internal == None:
+            self.logger.info("Try to detect company...")
+            try:
+#                companyLookup = LookupCompanyCharge.lookup(external,provider)
+                found_internal = LookupCompanyCharge.lookup(external,provider)
+#                return companyLookup
+            except ObjectDoesNotExist:
+                pass
 
-        self.logger.info("Try to detect administration ...")
-        try:
-            administrationLookup = LookupAdministrationCharge.lookup(external, provider)
-            return administrationLookup
-        except ObjectDoesNotExist:
-            pass
+        if found_internal == None:
+            self.logger.info("Try to detect administration ...")
+            try:
+#                administrationLookup = LookupAdministrationCharge.lookup(external, provider)
+                found_internal = LookupAdministrationCharge.lookup(external, provider)
+#                return administrationLookup
+            except ObjectDoesNotExist:
+                pass
 
-        self.logger.info("Unable to detect institution (component: %s)..." % external)
+        if found_internal == None:
+            self.logger.info("Unable to detect institution (component: %s)..." % external)
 
-        return None
+        self.charge_map_cache[provider][external] = found_internal
+
+        return found_internal
 
 
 class OMChargeSeekerMixin:

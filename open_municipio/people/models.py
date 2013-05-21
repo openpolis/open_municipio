@@ -1115,6 +1115,10 @@ class SittingItem(models.Model):
     def get_absolute_url(self):
         return 'om_sittingitem_detail', (), { 'pk': self.pk }
 
+    @property
+    def num_related_acts(self):
+        return self.related_act_set.count()
+
 
     @property
     def long_repr(self):

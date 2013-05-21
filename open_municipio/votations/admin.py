@@ -27,6 +27,7 @@ class ChargeVoteInline(admin.TabularInline):
 
 
 class VotationAdmin(admin.ModelAdmin):
+    search_fields = ('act_descr','idnum', )
     list_display = ('idnum', 'act_descr', 'sitting', 'is_linked', 'outcome')
     list_filter = ('sitting',)
     raw_id_fields = ['act']

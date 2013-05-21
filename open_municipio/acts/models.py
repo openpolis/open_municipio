@@ -682,6 +682,13 @@ class Speech(Document):
         return('om_speech_detail', (), {'pk': str(self.pk)})
 
     @property
+    def author_name(self):
+        if self.author != None:
+            return self.author
+
+        return self.author_name_when_external
+
+    @property
     def date(self):
         return self.sitting_item.sitting.date
 
@@ -702,6 +709,9 @@ class Speech(Document):
     @property
     def is_public(self):
         return self.act == None or self.act.status_is_final
+
+    def __unicode__(self):
+        return "%s - %s" % (self.author_name, self.sitting)
 
 class ActHasSpeech(models.Model):
     """

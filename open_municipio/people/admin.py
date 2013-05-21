@@ -229,6 +229,12 @@ class SittingItemInline(admin.TabularInline):
 
 class SittingItemAdmin(admin.ModelAdmin):
     raw_id_fields = ['related_act_set',]
+    list_display = ( 'title','sitting', 'seq_order','item_type','num_related_acts')
+    ordering = ('-sitting__date','seq_order')
+    search_fields = ['^title', ]
+    list_filter = ['sitting__institution','item_type',]
+
+
 
 class SittingAdmin(admin.ModelAdmin):
     inlines = [SittingItemInline, VotationsInline]

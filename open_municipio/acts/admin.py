@@ -4,6 +4,8 @@ from django.db import models
 from django.contrib.admin.widgets import FilteredSelectMultiple
 
 from open_municipio.acts.models import *
+from open_municipio.acts.forms import SpeechAdminForm, SpeechInActInlineFormSet
+from open_municipio.acts.filters import ActByYearFilterSpec, ActByMonthFilterSpec, SpeechByYearFilterSpec,SpeechByMonthFilterSpec
 
 def transition_form_factory(act):
     """
@@ -48,6 +50,7 @@ class AmendmentInline(admin.StackedInline):
 
 
 class TransitionInline(admin.TabularInline):
+    raw_id_fields = ( 'votation', )
     model = Transition
     extra = 0
 
@@ -65,6 +68,7 @@ class TransitionInline(admin.TabularInline):
 class ActAdmin(admin.ModelAdmin):
     list_display = ('idnum', 'title', 'presentation_date', 'emitting_institution', 'status')
     search_fields = ('idnum', 'title',)
+    list_filter = ( ActByYearFilterSpec, ActByMonthFilterSpec,)
 
     # genial hack to allow users with no permissions to show
     # the list of related acts for a raw field
@@ -121,6 +125,12 @@ class MotionAdmin(ActAdmin):
             }),
         )
 
+class SpeechInActInline(admin.TabularInline):
+    model = ActHasSpeech
+    formset = SpeechInActInlineFormSet
+    extra = 2
+    
+    raw_id_fields = ( 'speech', )
 
 class InterrogationAdmin(ActAdmin):
     fieldsets = (
@@ -128,10 +138,31 @@ class InterrogationAdmin(ActAdmin):
             'fields': ('idnum', 'title', 'adj_title', 'status')
         }),
         ('Presentazione', {
-            'classes': ('collapse',),
             'fields': ('presentation_date', 'text', 'emitting_institution', 'answer_type'),
             }),
         )
+
+    inlines = [PresenterInline, SpeechInActInline ]
+
+    def __init__(self, *args, **kwargs):
+        super(InterrogationAdmin, self).__init__(*args, **kwargs)
+        self.list_filter += ( "status", "answer_type", )
+
+class InterpellationAdmin(ActAdmin):
+    fieldsets = (
+        (None, {
+            'fields': ('idnum', 'title', 'adj_title', 'status')
+        }),
+        ('Presentazione', {
+            'fields': ('presentation_date', 'text', 'emitting_institution', 'answer_type'),
+            }),
+        )
+
+    inlines = [PresenterInline, SpeechInActInline, ]
+
+    def __init__(self, *args, **kwargs):
+        super(InterpellationAdmin, self).__init__(*args, **kwargs)
+        self.list_filter += ( "status", )
 
 
 class DeliberationAdmin(ActAdmin):
@@ -151,19 +182,27 @@ class DeliberationAdmin(ActAdmin):
 
 class ActInSpeechInline(admin.TabularInline):
     model = ActHasSpeech
-    extra = 0
+    extra = 2
 
     raw_id_fields = ('act', )
 
 
+
 class SpeechAdmin(admin.ModelAdmin):
-    search_fields = ('title',)
+    form = SpeechAdminForm
+    search_fields = ('title', 'author__last_name','author__first_name','author_name_when_external',)
     inlines = [ActInSpeechInline,]
     raw_id_fields = ('author', 'sitting_item', 'votation', )
+    list_display = ( 'author_name', 'seq_order', 'sitting','date','sitting_item')
+    ordering = ('-sitting_item__sitting__date','seq_order',)
+
+    list_filter = ( SpeechByYearFilterSpec, SpeechByMonthFilterSpec, )
 
 class AttachAdmin(admin.ModelAdmin):
     list_display = ('title','document_date','document_type')
 
+class AgendaAdmin(ActAdmin):
+    pass
 
 admin.site.register(Act, ActAdmin)
 
@@ -175,11 +214,11 @@ admin.site.register(Act, ActAdmin)
 
 admin.site.register(Deliberation, DeliberationAdmin)
 admin.site.register(Interrogation, InterrogationAdmin)
-admin.site.register(Interpellation)
+admin.site.register(Interpellation, InterpellationAdmin)
 admin.site.register(Motion, MotionAdmin)
 admin.site.register(Calendar, CalendarAdmin)
 admin.site.register(Amendment, ActAdminWithAttaches)
 admin.site.register(Attach, AttachAdmin)
 admin.site.register(Transition)
 admin.site.register(Speech, SpeechAdmin)
-admin.site.register(Agenda)
+admin.site.register(Agenda, AgendaAdmin)
