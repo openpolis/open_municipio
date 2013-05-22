@@ -2,6 +2,7 @@ from django import forms
 from django.utils.translation import ugettext_lazy as _
 
 from open_municipio.acts.models import Act, Transition, ActHasSpeech
+from open_municipio.people.models import Institution, InstitutionCharge
 
 class ActTitleForm(forms.ModelForm):
     class Meta:
@@ -81,8 +82,6 @@ class SpeechInActInlineFormSet(forms.models.BaseInlineFormSet):
 
         for form in self.forms:
             try:
-                print form.cleaned_data
-
                 curr_speech = form.cleaned_data["speech"]
                 if curr_speech in found_speeches:
                     raise forms.ValidationError(_("The same speech cannot be referred twice by an act"))
@@ -101,3 +100,17 @@ class SpeechInActInlineFormSet(forms.models.BaseInlineFormSet):
                 pass
             
         raise forms.ValidationError("fake error")
+
+class InterpellationAdminForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(InterpellationAdminForm, self).__init__(*args, **kwargs)
+    
+        # interpellation targets can be the mayor or members of city government
+        self.fields["target_set"].queryset = InstitutionCharge.objects.filter(institution__institution_type__in=( Institution.MAYOR, Institution.CITY_GOVERNMENT )).order_by("institution__institution_type","person__last_name","person__first_name")
+
+class InterrogationAdminForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(InterrogationAdminForm, self).__init__(*args, **kwargs)
+    
+        # interrogation targets can be the mayor or members of city government
+        self.fields["target_set"].queryset = InstitutionCharge.objects.filter(institution__institution_type__in=( Institution.MAYOR, Institution.CITY_GOVERNMENT )).order_by("institution__institution_type","person__last_name","person__first_name")

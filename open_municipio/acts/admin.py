@@ -4,7 +4,8 @@ from django.db import models
 from django.contrib.admin.widgets import FilteredSelectMultiple
 
 from open_municipio.acts.models import *
-from open_municipio.acts.forms import SpeechAdminForm, SpeechInActInlineFormSet
+from open_municipio.acts.forms import SpeechAdminForm, SpeechInActInlineFormSet, \
+    InterpellationAdminForm, InterrogationAdminForm
 from open_municipio.acts.filters import ActByYearFilterSpec, ActByMonthFilterSpec, SpeechByYearFilterSpec,SpeechByMonthFilterSpec
 
 def transition_form_factory(act):
@@ -32,6 +33,7 @@ class PresenterInline(admin.TabularInline):
     model = ActSupport
     extra = 0
 
+    raw_id_fields = ( 'charge', )
 
 class ActInline(admin.TabularInline):
     model = Act
@@ -135,13 +137,14 @@ class SpeechInActInline(admin.TabularInline):
 class InterrogationAdmin(ActAdmin):
     fieldsets = (
         (None, {
-            'fields': ('idnum', 'title', 'adj_title', 'status')
+            'fields': ('idnum', 'title', 'adj_title', 'status', 'target_set')
         }),
         ('Presentazione', {
             'fields': ('presentation_date', 'text', 'emitting_institution', 'answer_type'),
             }),
         )
 
+    form = InterrogationAdminForm
     inlines = [PresenterInline, SpeechInActInline ]
 
     def __init__(self, *args, **kwargs):
@@ -151,7 +154,7 @@ class InterrogationAdmin(ActAdmin):
 class InterpellationAdmin(ActAdmin):
     fieldsets = (
         (None, {
-            'fields': ('idnum', 'title', 'adj_title', 'status')
+            'fields': ('idnum', 'title', 'adj_title', 'status', 'target_set')
         }),
         ('Presentazione', {
             'fields': ('presentation_date', 'text', 'emitting_institution', 'answer_type'),
@@ -159,6 +162,10 @@ class InterpellationAdmin(ActAdmin):
         )
 
     inlines = [PresenterInline, SpeechInActInline, ]
+    # beware: the custom form provides a queryset and ordering for selecting only
+    # the mayor and members of city gov; if you use raw_id_fields, you waste the
+    # custom admin form
+    form = InterpellationAdminForm
 
     def __init__(self, *args, **kwargs):
         super(InterpellationAdmin, self).__init__(*args, **kwargs)

@@ -452,6 +452,7 @@ class Interrogation(Act):
     question_motivation = models.TextField(blank=True)
     answer_text = models.TextField(blank=True)
     reply_text = models.TextField(blank=True)
+    target_set = models.ManyToManyField(InstitutionCharge,null=False,blank=False)
 
     class Meta:
         verbose_name = _('interrogation')
@@ -486,6 +487,8 @@ class Interpellation(Act):
     answer_type = models.CharField(_('answer type'), max_length=8, choices=ANSWER_TYPES)
     question_motivation = models.TextField(blank=True)
     answer_text = models.TextField(blank=True)
+    target_set = models.ManyToManyField(InstitutionCharge,null=False,blank=False)
+
 
     class Meta:
         verbose_name = _('interpellation')
