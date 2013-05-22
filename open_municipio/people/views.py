@@ -581,7 +581,7 @@ class SittingItemDetailView(DetailView):
             pk_prev = prev_sittings[0].pk
 
         # get the speeches related to the sitting item
-        speeches = Speech.objects.filter(sitting_item=sitem).order_by("initial_time")
+        speeches = Speech.objects.filter(sitting_item=sitem).order_by("seq_order","initial_time")
 
         # get the related acts
         acts_pk = SittingItem.objects.filter(sitting=curr).values("related_act_set").distinct()
