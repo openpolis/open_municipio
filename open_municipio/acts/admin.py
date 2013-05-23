@@ -130,9 +130,10 @@ class MotionAdmin(ActAdmin):
 class SpeechInActInline(admin.TabularInline):
     model = ActHasSpeech
     formset = SpeechInActInlineFormSet
-    extra = 2
+    max_num = 2
     
     raw_id_fields = ( 'speech', )
+
 
 class InterrogationAdmin(ActAdmin):
     fieldsets = (
@@ -144,13 +145,26 @@ class InterrogationAdmin(ActAdmin):
             }),
         )
     form = InterrogationAdminForm
-    inlines = [PresenterInline, SpeechInActInline ]
+    inlines = [PresenterInline, SpeechInActInline,  ]
     list_display = ( "presentation_date", "author", "title", "status", )
 
     def __init__(self, *args, **kwargs):
+        self.inlines = [PresenterInline, SpeechInActInline, ]
         super(InterrogationAdmin, self).__init__(*args, **kwargs)
         self.list_filter += ( "status", "answer_type", )
 
+    def change_view(self, request, object_id, form_url='', extra_context=None):
+        # overcome ActAdmin.change_view (which modifies the self.inlines)
+
+        self.inlines = [PresenterInline,SpeechInActInline, ]
+
+        self.inline_instances = []
+        for inline_class in self.inlines:
+            inline_instance = inline_class(self.model, self.admin_site)
+            self.inline_instances.append(inline_instance)
+
+        return super(ActAdmin, self).change_view(request, object_id, form_url, 
+            extra_context)
 
 class InterpellationAdmin(ActAdmin):
     fieldsets = (

@@ -337,9 +337,9 @@ class InstitutionCharge(Charge):
 
     def __unicode__(self):
         if self.denomination:
-            return "%s %s - %s" % (self.person.first_name, self.person.last_name, self.denomination)
+            return u"%s %s - %s" % (self.person.first_name, self.person.last_name, self.denomination)
         else:
-            return "%s %s" % (self.person.first_name, self.person.last_name)
+            return u"%s %s" % (self.person.first_name, self.person.last_name)
 
 
     # TODO: model validation: check that ``substitutes`` and ``substituted_by`` fields
@@ -727,9 +727,9 @@ class GroupCharge(models.Model):
 
     def __unicode__(self):
         if self.responsability:
-            return "%s - %s - %s" % (self.group.acronym, self.charge.person.last_name, self.responsability)
+            return u"%s - %s - %s" % (self.group.acronym, self.charge.person.last_name, self.responsability)
         else:
-            return "%s - %s" % (self.group.acronym, self.charge.person.last_name)
+            return u"%s - %s" % (self.group.acronym, self.charge.person.last_name)
 
 class GroupResponsability(ChargeResponsability):
     """
@@ -744,7 +744,7 @@ class GroupResponsability(ChargeResponsability):
 
 
     def __unicode__(self):
-        return "%s (%s - %s)" % (self.get_charge_type_display(), self.start_date, self.end_date)
+        return u"%s (%s - %s)" % (self.get_charge_type_display(), self.start_date, self.end_date)
 
 
 class GroupIsMajority(models.Model):

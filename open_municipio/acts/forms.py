@@ -95,15 +95,13 @@ class SpeechInActInlineFormSet(forms.models.BaseInlineFormSet):
                 curr_type = form.cleaned_data["relation_type"]
                 if curr_type in speech_types:
                     raise forms.ValidationError(_("Speeches must be of different types"))
-                if curr_type == u"REQ":
-                    raise forms.ValidationError(_("Speeches of type REQ not allowed in this context"))
+                if curr_type == u"REF":
+                    raise forms.ValidationError(_("Speeches of type REF not allowed in this context"))
                 speech_types += (curr_type, )
 
             except AttributeError:
                 # invalid data
                 pass
-            
-        raise forms.ValidationError("fake error")
 
 class InterpellationAdminForm(forms.ModelForm):
 

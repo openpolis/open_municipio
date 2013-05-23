@@ -94,8 +94,6 @@ class SpeechIndex(indexes.SearchIndex, indexes.Indexable):
         if obj.author != None:
             author = obj.author.slug
         
-        print "author = %s" % (author, )
-
         return author
 
     def prepare_date(self, obj):

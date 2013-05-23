@@ -1,6 +1,5 @@
 import os
 import traceback
-from sets import Set
 
 from django.core.files import File
 from django.core.exceptions import ObjectDoesNotExist
@@ -151,11 +150,11 @@ class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
                 self._add_act_transition(act, om_act, symb)
 
         # check whether transitions with other symbols are present
-        keyset_actual = Set(act.transitions.keys())
-        keyset_handled = Set(order_symb)
+        keyset_actual = set(act.transitions.keys())
+        keyset_handled = set(order_symb)
 
         keyset_nothandled = keyset_actual.difference(keyset_handled)
-        if keyset_nothandled != Set():
+        if keyset_nothandled != set():
             self.logger.warning("Some transitions are not handled: %s" %
                 keyset_nothandled)
 
