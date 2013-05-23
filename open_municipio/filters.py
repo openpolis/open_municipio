@@ -120,8 +120,6 @@ class OMBySubTypeFilterSpec(SimpleListFilter):
                 where = [ '"%s"."id" = "%s"."act_ptr_id"' % \
                     (model_table_name, table_name) ])
 
-            print "query = %s" % (qs.query)
-
             return qs
 
         return queryset
