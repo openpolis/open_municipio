@@ -16,6 +16,3 @@ pil
 sorl-thumbnail
 django-social-auth
 django-tinymce
-# speech report generation
-reportlab
-http://sourceforge.net/projects/pyrtf/files/latest/download
