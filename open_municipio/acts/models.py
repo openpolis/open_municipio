@@ -452,7 +452,6 @@ class Interrogation(Act):
     question_motivation = models.TextField(blank=True)
     answer_text = models.TextField(blank=True)
     reply_text = models.TextField(blank=True)
-    target_set = models.ManyToManyField(InstitutionCharge,null=False,blank=False)
 
     class Meta:
         verbose_name = _('interrogation')
@@ -462,6 +461,12 @@ class Interrogation(Act):
     def get_absolute_url(self):
         return 'om_interrogation_detail', (), {'pk': str(self.pk)}
     
+    @property
+    def author(self):
+        if len(self.presenters) == 0:
+            return None
+
+        return self.presenters[0]
 
 class Interpellation(Act):
     """
@@ -487,8 +492,6 @@ class Interpellation(Act):
     answer_type = models.CharField(_('answer type'), max_length=8, choices=ANSWER_TYPES)
     question_motivation = models.TextField(blank=True)
     answer_text = models.TextField(blank=True)
-    target_set = models.ManyToManyField(InstitutionCharge,null=False,blank=False)
-
 
     class Meta:
         verbose_name = _('interpellation')
@@ -498,6 +501,14 @@ class Interpellation(Act):
     def get_absolute_url(self):
         return 'om_interpellation_detail', (), {'pk': str(self.pk)}
     
+    @property
+    def author(self):
+        if len(self.presenters) == 0:
+            return None
+
+        return self.presenters[0]
+
+
 
 class Motion(Act):
     """
@@ -714,7 +725,7 @@ class Speech(Document):
         return self.act == None or self.act.status_is_final
 
     def __unicode__(self):
-        return "%s - %s" % (self.author_name, self.sitting)
+        return u"%s - %s" % (self.author_name, self.sitting)
 
 class ActHasSpeech(models.Model):
     """

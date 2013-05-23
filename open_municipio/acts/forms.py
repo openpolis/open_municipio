@@ -1,7 +1,7 @@
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 
-from open_municipio.acts.models import Act, Transition, ActHasSpeech
+from open_municipio.acts.models import Act, Transition, ActHasSpeech, Interrogation
 from open_municipio.people.models import Institution, InstitutionCharge
 
 class ActTitleForm(forms.ModelForm):
@@ -106,15 +106,21 @@ class SpeechInActInlineFormSet(forms.models.BaseInlineFormSet):
         raise forms.ValidationError("fake error")
 
 class InterpellationAdminForm(forms.ModelForm):
+
     def __init__(self, *args, **kwargs):
         super(InterpellationAdminForm, self).__init__(*args, **kwargs)
     
         # interpellation targets can be the mayor or members of city government
-        self.fields["target_set"].queryset = InstitutionCharge.objects.filter(institution__institution_type__in=( Institution.MAYOR, Institution.CITY_GOVERNMENT )).order_by("institution__institution_type","person__last_name","person__first_name")
+        self.fields["recipient_set"].queryset = InstitutionCharge.objects.filter(institution__institution_type__in=( Institution.MAYOR, Institution.CITY_GOVERNMENT )).order_by("institution__institution_type","person__last_name","person__first_name")
 
 class InterrogationAdminForm(forms.ModelForm):
+
     def __init__(self, *args, **kwargs):
         super(InterrogationAdminForm, self).__init__(*args, **kwargs)
-    
+   
         # interrogation targets can be the mayor or members of city government
-        self.fields["target_set"].queryset = InstitutionCharge.objects.filter(institution__institution_type__in=( Institution.MAYOR, Institution.CITY_GOVERNMENT )).order_by("institution__institution_type","person__last_name","person__first_name")
+        self.fields["recipient_set"].queryset = InstitutionCharge.objects.filter(institution__institution_type__in=( Institution.MAYOR, Institution.CITY_GOVERNMENT )).order_by("institution__institution_type","person__last_name","person__first_name")
+
+    class Meta:
+        model = Interrogation
+

@@ -137,24 +137,25 @@ class SpeechInActInline(admin.TabularInline):
 class InterrogationAdmin(ActAdmin):
     fieldsets = (
         (None, {
-            'fields': ('idnum', 'title', 'adj_title', 'status', 'target_set')
+            'fields': ('title', 'adj_title', 'status', 'recipient_set')
         }),
         ('Presentazione', {
             'fields': ('presentation_date', 'text', 'emitting_institution', 'answer_type'),
             }),
         )
-
     form = InterrogationAdminForm
     inlines = [PresenterInline, SpeechInActInline ]
+    list_display = ( "presentation_date", "author", "title", "status", )
 
     def __init__(self, *args, **kwargs):
         super(InterrogationAdmin, self).__init__(*args, **kwargs)
         self.list_filter += ( "status", "answer_type", )
 
+
 class InterpellationAdmin(ActAdmin):
     fieldsets = (
         (None, {
-            'fields': ('idnum', 'title', 'adj_title', 'status', 'target_set')
+            'fields': ('title', 'adj_title', 'status', 'recipient_set')
         }),
         ('Presentazione', {
             'fields': ('presentation_date', 'text', 'emitting_institution', 'answer_type'),
@@ -166,6 +167,8 @@ class InterpellationAdmin(ActAdmin):
     # the mayor and members of city gov; if you use raw_id_fields, you waste the
     # custom admin form
     form = InterpellationAdminForm
+
+    list_display = ( "presentation_date", "author", "title", "status", )
 
     def __init__(self, *args, **kwargs):
         super(InterpellationAdmin, self).__init__(*args, **kwargs)
