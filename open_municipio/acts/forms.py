@@ -82,6 +82,10 @@ class SpeechInActInlineFormSet(forms.models.BaseInlineFormSet):
 
         for form in self.forms:
             try:
+                if "speech" not in form.cleaned_data:
+                    continue
+
+
                 curr_speech = form.cleaned_data["speech"]
                 if curr_speech in found_speeches:
                     raise forms.ValidationError(_("The same speech cannot be referred twice by an act"))
