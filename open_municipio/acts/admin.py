@@ -144,7 +144,7 @@ class InterrogationAdmin(ActAdmin):
             'fields': ('presentation_date', 'text', 'emitting_institution'),
             }),
         ('Risposta', {
-            'fields': { 'answer_type', 'answer_text', }
+            'fields': ( 'answer_type', 'answer_text', )
             }),
         )
     form = InterrogationAdminForm
