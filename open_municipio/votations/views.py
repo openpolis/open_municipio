@@ -114,6 +114,7 @@ class VotationSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin
         extra['paginator'] = paginator
         extra['page_obj'] = page_obj
 
+        print "votation: %s" % (page_obj.object_list[0].object.sitting.get_absolute_url() , )
 
         return extra
 

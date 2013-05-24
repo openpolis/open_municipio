@@ -1078,7 +1078,8 @@ class Sitting(TimeStampedModel):
 
     @permalink
     def get_absolute_url(self):
-        return 'om_sitting_detail', (), { 'pk': self.pk }
+        sitting_url = 'om_sitting_detail', (), { 'pk': self.pk }
+        return sitting_url
 
 class SittingItem(models.Model):
     """
