@@ -1,7 +1,10 @@
 from django import forms
 from django.utils.translation import ugettext_lazy as _
+from django.forms import CharField
+from tinymce.widgets import TinyMCE
 
-from open_municipio.acts.models import Act, Transition, ActHasSpeech, Interrogation
+from open_municipio.acts.models import Act, Transition, ActHasSpeech, \
+        Interrogation, Interpellation
 from open_municipio.people.models import Institution, InstitutionCharge
 
 class ActTitleForm(forms.ModelForm):
@@ -51,6 +54,24 @@ class ActFinalTransitionForm(ActTransitionForm):
         }
 
 class SpeechAdminForm(forms.ModelForm):
+
+    text = CharField(widget=TinyMCE(
+        attrs={'cols':80,'rows':25},
+        mce_attrs={
+            'theme': "advanced",
+            'theme_advanced_buttons1': "formatselect,bold,italic,underline|,bullist,numlist,|,undo,redo,|,link,unlink,|,code,help",
+            'theme_advanced_buttons2': "",
+            'theme_advanced_buttons3': "",
+            'theme_advanced_blockformats': "p,blockquote",
+            'theme_advanced_resizing': True,
+            'theme_advanced_statusbar_location': "bottom",
+            'theme_advanced_toolbar_location': "top",
+            'theme_advanced_path': False
+        },
+    ),
+    required=False)
+
+
 
     def is_valid(self):
         if not super(SpeechAdminForm,self).is_valid():
@@ -105,13 +126,81 @@ class SpeechInActInlineFormSet(forms.models.BaseInlineFormSet):
 
 class InterpellationAdminForm(forms.ModelForm):
 
+    text = CharField(widget=TinyMCE(
+        attrs={'cols':80,'rows':25},
+        mce_attrs={
+            'theme': "advanced",
+            'theme_advanced_buttons1': "formatselect,bold,italic,underline|,bullist,numlist,|,undo,redo,|,link,unlink,|,code,help",
+            'theme_advanced_buttons2': "",
+            'theme_advanced_buttons3': "",
+            'theme_advanced_blockformats': "p,blockquote",
+            'theme_advanced_resizing': True,
+            'theme_advanced_statusbar_location': "bottom",
+            'theme_advanced_toolbar_location': "top",
+            'theme_advanced_path': False
+        },
+    ),
+    required=False)
+
+    answer_text = CharField(widget=TinyMCE(
+        attrs={'cols':80,'rows':25},
+        mce_attrs={
+            'theme': "advanced",
+            'theme_advanced_buttons1': "formatselect,bold,italic,underline|,bullist,numlist,|,undo,redo,|,link,unlink,|,code,help",
+            'theme_advanced_buttons2': "",
+            'theme_advanced_buttons3': "",
+            'theme_advanced_blockformats': "p,blockquote",
+            'theme_advanced_resizing': True,
+            'theme_advanced_statusbar_location': "bottom",
+            'theme_advanced_toolbar_location': "top",
+            'theme_advanced_path': False
+        },
+    ),
+    required=False)
+
+
     def __init__(self, *args, **kwargs):
         super(InterpellationAdminForm, self).__init__(*args, **kwargs)
     
         # interpellation targets can be the mayor or members of city government
         self.fields["recipient_set"].queryset = InstitutionCharge.objects.filter(institution__institution_type__in=( Institution.MAYOR, Institution.CITY_GOVERNMENT )).order_by("institution__institution_type","person__last_name","person__first_name")
 
+    class Meta:
+        model = Interpellation
+
 class InterrogationAdminForm(forms.ModelForm):
+
+    text = CharField(widget=TinyMCE(
+        attrs={'cols':80,'rows':25},
+        mce_attrs={
+            'theme': "advanced",
+            'theme_advanced_buttons1': "formatselect,bold,italic,underline|,bullist,numlist,|,undo,redo,|,link,unlink,|,code,help",
+            'theme_advanced_buttons2': "",
+            'theme_advanced_buttons3': "",
+            'theme_advanced_blockformats': "p,blockquote",
+            'theme_advanced_resizing': True,
+            'theme_advanced_statusbar_location': "bottom",
+            'theme_advanced_toolbar_location': "top",
+            'theme_advanced_path': False
+        },
+    ),
+    required=False)
+
+    answer_text = CharField(widget=TinyMCE(
+        attrs={'cols':80,'rows':25},
+        mce_attrs={
+            'theme': "advanced",
+            'theme_advanced_buttons1': "formatselect,bold,italic,underline|,bullist,numlist,|,undo,redo,|,link,unlink,|,code,help",
+            'theme_advanced_buttons2': "",
+            'theme_advanced_buttons3': "",
+            'theme_advanced_blockformats': "p,blockquote",
+            'theme_advanced_resizing': True,
+            'theme_advanced_statusbar_location': "bottom",
+            'theme_advanced_toolbar_location': "top",
+            'theme_advanced_path': False
+        },
+    ),
+    required=False)
 
     def __init__(self, *args, **kwargs):
         super(InterrogationAdminForm, self).__init__(*args, **kwargs)
