@@ -550,10 +550,13 @@ class SittingDetailView(DetailView):
 
         events = Event.objects.filter(institution__institution_type=Institution.COUNCIL)
 
+        sitting_items = curr.sitting_items.order_by("seq_order")
+
         extra = {
             "pk_prev"   : pk_prev, 
             "pk_next"   : pk_next,
             "events"    : events,
+            "sitting_items" : sitting_items,
         }
 
         context.update(extra)
