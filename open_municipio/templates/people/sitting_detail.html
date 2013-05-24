@@ -58,7 +58,7 @@
     {% endif %}
 
     <ul>
-    {% for si in sitting.sitting_items %}
+    {% for si in sitting_items %}
         <li><a href="{% url om_sittingitem_detail pk=si.pk %}">{{ si.title }}</a></li>
     {% endfor %}
     </ul>
