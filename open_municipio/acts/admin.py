@@ -141,7 +141,10 @@ class InterrogationAdmin(ActAdmin):
             'fields': ('title', 'adj_title', 'status', 'recipient_set')
         }),
         ('Presentazione', {
-            'fields': ('presentation_date', 'text', 'emitting_institution', 'answer_type'),
+            'fields': ('presentation_date', 'text', 'emitting_institution'),
+            }),
+        ('Risposta', {
+            'fields': { 'answer_type', 'answer_text', }
             }),
         )
     form = InterrogationAdminForm
@@ -154,7 +157,8 @@ class InterrogationAdmin(ActAdmin):
         self.list_filter += ( "status", "answer_type", )
 
     def change_view(self, request, object_id, form_url='', extra_context=None):
-        # overcome ActAdmin.change_view (which modifies the self.inlines)
+        # override modifications by ActAdmin.change_view 
+        # (which modifies the self.inlines)
 
         self.inlines = [PresenterInline,SpeechInActInline, ]
 
@@ -172,8 +176,11 @@ class InterpellationAdmin(ActAdmin):
             'fields': ('title', 'adj_title', 'status', 'recipient_set')
         }),
         ('Presentazione', {
-            'fields': ('presentation_date', 'text', 'emitting_institution', 'answer_type'),
+            'fields': ('presentation_date', 'text', 'emitting_institution'),
             }),
+        ('Risposta', {
+            'fields': ( 'answer_type', 'answer_text', ),
+        }),
         )
 
     inlines = [PresenterInline, SpeechInActInline, ]
@@ -187,6 +194,21 @@ class InterpellationAdmin(ActAdmin):
     def __init__(self, *args, **kwargs):
         super(InterpellationAdmin, self).__init__(*args, **kwargs)
         self.list_filter += ( "status", )
+
+    def change_view(self, request, object_id, form_url='', extra_context=None):
+        # override modifications by ActAdmin.change_view 
+        # (which modifies the self.inlines)
+
+        self.inlines = [PresenterInline,SpeechInActInline, ]
+
+        self.inline_instances = []
+        for inline_class in self.inlines:
+            inline_instance = inline_class(self.model, self.admin_site)
+            self.inline_instances.append(inline_instance)
+
+        return super(ActAdmin, self).change_view(request, object_id, form_url, 
+            extra_context)
+
 
 
 class DeliberationAdmin(ActAdmin):

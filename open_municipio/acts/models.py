@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import logging
-from datetime import date
+from datetime import datetime
 from django.core.exceptions import ObjectDoesNotExist
 from south.modelsinspector import add_ignored_fields
 from django.conf import settings
@@ -797,12 +797,17 @@ def new_signature(**kwargs):
             signature_support_date = signature.support_date
 
         try:
-            act.presentation_date = act.presentation_date.strftime("%Y-%m-%d")
+#            act.presentation_date = act.presentation_date.strftime("%Y-%m-%d") 
+            act_presentation_date =  act.presentation_date.strftime("%Y-%m-%d") 
+
         except:
-            act.presentation_date = act.presentation_date
+#            act.presentation_date = act.presentation_date
+            act_presentation_date = act.presentation_date
+
 
         # generate new signature after presentation, for the act
-        if signature.support_date > act.presentation_date:
+#        if signature.support_date > act.presentation_date:
+        if signature_support_date > act_presentation_date:
             created = False
             news, created = News.objects.get_or_create(
                 generating_object_pk=signature.pk,
