@@ -336,7 +336,7 @@ class CGDeliberation(Act):
         ('REJECTED', 'rejected', _('rejected')),
     )
 
-    status = StatusField()
+    status = models.CharField(_('status'), choices=STATUS, max_length=12)
     approval_date = models.DateField(_('approval date'), null=True, blank=True)
     publication_date = models.DateField(_('publication date'), null=True, blank=True)
     final_idnum = models.CharField(max_length=64, blank=True, null=True, help_text=_("Internal identification string for the deliberation, when approved"))
@@ -394,7 +394,7 @@ class Deliberation(Act):
         ('REJECTED', 'rejected', _('rejected')),
     )
     
-    status = StatusField()
+    status = models.CharField(_('status'), choices=STATUS, max_length=12)
     approval_date = models.DateField(_('approval date'), null=True, blank=True)
     publication_date = models.DateField(_('publication date'), null=True, blank=True)
     final_idnum = models.CharField(max_length=64, blank=True, null=True, help_text=_("Internal identification string for the deliberation, when approved"))
@@ -447,7 +447,7 @@ class Interrogation(Act):
         ('NOTANSWERED', 'notanswered', _('not answered')),
     )
     
-    status = StatusField()
+    status = models.CharField(_('status'), choices=STATUS, max_length=12)
     answer_type = models.CharField(_('answer type'), max_length=8, choices=ANSWER_TYPES)
     question_motivation = models.TextField(blank=True)
     answer_text = models.TextField(blank=True)
@@ -488,7 +488,7 @@ class Interpellation(Act):
         ('NOTANSWERED', 'notanswered', _('not answered')),
     )
 
-    status = StatusField()
+    status = models.CharField(_('status'), choices=STATUS, max_length=12)
     answer_type = models.CharField(_('answer type'), max_length=8, choices=ANSWER_TYPES)
     question_motivation = models.TextField(blank=True)
     answer_text = models.TextField(blank=True)
@@ -528,7 +528,7 @@ class Motion(Act):
         ('REJECTED', 'rejected', _('rejected')),
     )
 
-    status = StatusField()
+    status = models.CharField(_('status'), choices=STATUS, max_length=12)
     
     class Meta:
         verbose_name = _('motion')
@@ -558,7 +558,7 @@ class Agenda(Act):
         ('REJECTED', 'rejected', _('rejected')),
     )
 
-    status = StatusField()
+    status = models.CharField(_('status'), choices=STATUS, max_length=12)
 
     class Meta:
         verbose_name = _('agenda')
@@ -582,7 +582,7 @@ class Amendment(Act):
         ('APPROVED', 'approved', _('approved'))
     )
     
-    status = StatusField()
+    status = models.CharField(_('status'), choices=STATUS, max_length=12)
     act = models.ForeignKey(Act, related_name='amendment_set', on_delete=models.PROTECT)
     act_section = models.ForeignKey(ActSection, related_name='amendment_set', null=True, blank=True,
                                     on_delete=models.PROTECT)
@@ -646,8 +646,7 @@ class Attach(Document):
     Extends the ``Document`` class, by adding a title
     and a foreign key to the act the attachment relates to.
     """
-    # FIXME: shouldn't this model be called ``Attachment`` instead ?
-    title = models.CharField(max_length=255)
+    title = models.CharField(max_length=512)
     act = models.ForeignKey(Act, related_name='attachment_set')
 
     class Meta(Document.Meta):

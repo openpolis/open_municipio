@@ -10,14 +10,17 @@
         in {{ event.address }}<br/>
         il <strong>{{ event.date|date:"d.m.Y" }}</strong>
         alle <strong>{{ event.event_time|time:"H:i" }}</strong>
-        per discutere di <b>{{ event.title }}</b>
+        in <b>{{ event.title }}</b>
     </div>
-    <div class="modal-body">
-        <h4>Ordine del giorno:</h4>
-        <p>
-            {{ event.description|safe }}
-        </p>
-    </div>
+    {% if event.description %}
+        <div class="modal-body">
+            <h4>Ordine del giorno:</h4>
+            <p>
+                {{ event.description|safe }}
+            </p>
+        </div>
+    {% endif %}
+    {% if event.acts.count %}
     <div class="modal-footer">
         <h4>Atti in discussione</h4>
         <ul>
@@ -29,4 +32,5 @@
         </ul>
 
     </div>
+    {% endif %}
 </div>

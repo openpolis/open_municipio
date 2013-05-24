@@ -33,19 +33,19 @@ msgstr "titolo"
 
 #: acts/models.py:56
 msgid "adjoint title"
-msgstr ""
+msgstr "titolo aggiuntivo"
 
 #: acts/models.py:56
 msgid "An adjoint title, added to further explain an otherwise cryptic title"
-msgstr ""
+msgstr "Un titolo aggiunto, per spiegare meglio un titolo altrimenti criptico"
 
 #: acts/models.py:57
 msgid "presentation date"
-msgstr ""
+msgstr "data di presentazione"
 
 #: acts/models.py:57
 msgid "Date of presentation, as stated in the act"
-msgstr ""
+msgstr "Data di presentazione, come risulta sull'atto"
 
 #: acts/models.py:58 data_import/models.py:14 people/models.py:251
 #: people/models.py:277 people/models.py:301 people/models.py:787
@@ -54,19 +54,19 @@ msgstr "descrizione"
 
 #: acts/models.py:59 newscache/models.py:54
 msgid "text"
-msgstr ""
+msgstr "testo"
 
 #: acts/models.py:60
 msgid "presenters"
-msgstr ""
+msgstr "presentatori"
 
 #: acts/models.py:61
 msgid "recipients"
-msgstr ""
+msgstr "destinatari"
 
 #: acts/models.py:62
 msgid "emitting institution"
-msgstr ""
+msgstr "istituzione emittente"
 
 #: acts/models.py:63 buttare/speech/models.py:22 taxonomy/models.py:76
 msgid "categories"
