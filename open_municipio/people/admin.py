@@ -10,6 +10,8 @@ from django.shortcuts import get_object_or_404
 from django.utils.functional import update_wrapper
 from django.utils.html import strip_spaces_between_tags as short
 
+from open_municipio.people.forms import SittingItemFormSet
+
 
 class PersonResourceInline(admin.TabularInline):
     model = PersonResource
@@ -225,6 +227,8 @@ class SittingItemInline(admin.TabularInline):
     fields = ('title', 'related_act_set', 'item_type', 'seq_order')
     raw_id_fields = ['related_act_set',]
     extra = 0
+
+    form = SittingItemFormSet
 
 
 class SittingItemAdmin(admin.ModelAdmin):
