@@ -15,7 +15,7 @@
     </li>
     </ul>
     <div class="sittingitem-speech-preview">
-    {{ speech.text }}
+    {{ speech.text|truncatewords:30 }}
     </div>
     {% if readmore %}
     <a class="speech-read-more"  href="">Leggi tutto</a>
@@ -28,7 +28,7 @@
     Atti a supporto:<br/>
     <ul>
         {% for act in speech.related_act_set.all %}
-        <li><a href="{{ act.get_absolute_url }}">{{ act.title }}</a></li>
+        <li><a href="{{ act.get_absolute_url }}">{{ act.title|truncatewords:10 }}</a></li>
         {% endfor %}
     </ul>
     <br/>
