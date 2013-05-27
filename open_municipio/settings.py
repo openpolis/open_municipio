@@ -260,7 +260,7 @@ LOGGING = {
             'level': 'ERROR',
             'class': 'django.utils.log.AdminEmailHandler'
         },
-        'webapp' {
+        'webapp': {
             'level':'DEBUG',
             'class':'logging.handlers.RotatingFileHandler',
             'filename': REPO_ROOT + "/log/webapp.log",
