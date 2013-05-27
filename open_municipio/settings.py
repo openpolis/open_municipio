@@ -255,12 +255,20 @@ LOGGING = {
             'maxBytes': 50000,
             'backupCount': 2,
             'formatter': 'standard',
-            },
+        },
         'mail_admins': {
             'level': 'ERROR',
             'class': 'django.utils.log.AdminEmailHandler'
         },
+        'webapp' {
+            'level':'DEBUG',
+            'class':'logging.handlers.RotatingFileHandler',
+            'filename': REPO_ROOT + "/log/webapp.log",
+            'maxBytes': 50000,
+            'backupCount': 5,
+            'formatter': 'standard',
         },
+    },
     'loggers': {
         'django.request': {
             'handlers': ['mail_admins'],
@@ -271,7 +279,12 @@ LOGGING = {
             'handlers': ['console_import', 'logfile'],
             'level': 'DEBUG',
             'propagate': True,
-            }
+            },
+        'webapp': {
+            'handlers': [ 'webapp', ],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
     }
 }
 
@@ -301,3 +314,12 @@ STATIC_ROOT = os.path.join(PROJECT_ROOT, 'sitestatic')
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
 STATIC_URL = '/static/'
+
+# override this in your local open_municipio installation
+WEB_SERVICES = {
+    'google_analytics': '',
+    'facebook' : {},
+    'twitter' : {},
+    'google_plus': {},
+}
+

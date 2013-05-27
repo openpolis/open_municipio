@@ -18,7 +18,7 @@ class Command(BaseCommand):
                     help='Fetch only users wanting newsletter'),
         )
 
-    logger = logging.getLogger('import')
+    logger = logging.getLogger('webapp')
 
     def handle(self, **options):
         """

@@ -771,7 +771,7 @@ class Calendar(models.Model):
 # Signals handlers
 #
 
-logger = logging.getLogger('import')
+logger = logging.getLogger('webapp')
 
 
 @receiver(post_save, sender=ActSupport)

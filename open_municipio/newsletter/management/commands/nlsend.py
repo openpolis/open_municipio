@@ -42,7 +42,7 @@ class Command(LabelCommand):
 
     args = '<user_email>'
     label = 'user email'
-    logger = logging.getLogger('import')
+    logger = logging.getLogger('webapp')
 
     plaintext_tpl = get_template('email.txt')
     htmly_tpl     = get_template('email.html')

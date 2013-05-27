@@ -38,7 +38,7 @@ class Command(BaseCommand):
                     help='Re-write charge from scratch'),
         )
 
-    logger = logging.getLogger('import')
+    logger = logging.getLogger('webapp')
 
     def handle(self, **options):
         """
