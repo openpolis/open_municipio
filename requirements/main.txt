@@ -12,6 +12,7 @@ beautifulsoup
 pysolr
 poster
 lxml
+cssselect #required by lxml
 pil
 sorl-thumbnail
 django-social-auth
