@@ -80,6 +80,7 @@ class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
                 self.write_act(act)
             except Exception, e:
                 self.logger.error("Error storing act into OM (%s) : %s. Trace: %s" % (act, e, traceback.format_exc()))
+                transaction.rollback()
  
     @staticmethod
     def _get_initiative(act):
@@ -218,6 +219,7 @@ class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
 
         return create_defaults
 
+    @transaction.commit_on_success
     def _add_attachments(self, act, om_act):
         if act == None or om_act == None:
             raise Exception("Cannot add an attachment if you don't pass both the parsed act and the partially imported OM act.")
@@ -242,6 +244,7 @@ class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
             except Exception as e:
                 self.logger.warning("Error importing attachment %s: %s" % 
                     (curr_att.path, e))
+                transaction.rollback()
 
     def _add_subscribers(self, act, om_act):
 
