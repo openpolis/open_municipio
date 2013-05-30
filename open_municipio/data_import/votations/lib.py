@@ -1,5 +1,6 @@
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.utils import simplejson as json
+from django.db import transaction
 import re
 from open_municipio.acts.models import Act
 from open_municipio.data_import.lib import DataSource, BaseReader, BaseWriter, JSONWriter, XMLWriter, valid_XML_char_ordinal
@@ -337,6 +338,7 @@ class DBVotationWriter(BaseVotationWriter):
             except Exception, e:
                 self.logger.warning("Error saving sitting. Skip. Detail: %s" % e)
 
+    @transaction.commit_on_success
     def _write_sitting(self, sitting):
         self.logger.info("processing %s in Mdb" % sitting)
 #        self.logger.info("Sitting site code: %s" % sitting.site)
