@@ -79,7 +79,7 @@ class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
             try:
                 self.write_act(act)
             except Exception, e:
-                self.logger.error("Error storing act into OM (%s) : %s. Trace: %s" % (act, e, traceback.format_exc()))
+                self.logger.error(u"Error storing act into OM (%s) : %s. Trace: %s" % (act, e, traceback.format_exc()))
                 transaction.rollback()
  
     @staticmethod
@@ -237,7 +237,7 @@ class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
                 'act' : om_act,
                 'document_type' : curr_att.type,
                 'document_size' : f.size,
-                'title' : curr_att.title,
+                'title' : curr_att.title[:512], # TODO parameterize this length
                 'document_date' : curr_att.document_date,
             }
             om_attachment = OMAttach(**defaults)
