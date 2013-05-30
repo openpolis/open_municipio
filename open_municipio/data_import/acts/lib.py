@@ -122,6 +122,9 @@ class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
         return om_type
   
     def _add_act_transition(self, act, om_act, symb):
+        if om_act is None:
+            raise ValueError("Cannot add act transition without act")
+
         for date in act.transitions[symb]:
             if not (symb in conf.XML_TO_OM_STATUS):
                 self.logger.warning("Status '%s' is not handled at the moment. Skip the transition" % symb)
@@ -139,7 +142,8 @@ class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
     
 
     def _add_act_transitions(self, act, om_act):
-
+        if om_act is None:
+            raise ValueError("Cannot add act transitions without act")
         order_symb = ( "Presented", "Accepted", "Rejected", )
 
         self.logger.info("Transition dates: %s" % (act.transitions, ))

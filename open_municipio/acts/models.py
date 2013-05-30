@@ -859,6 +859,9 @@ def new_transition(**kwargs):
         transition = kwargs['instance']
         act = transition.act.downcast()
 
+        if act is None:
+            raise ValueError("You cannot create a new transition without an act")
+
         # modify act's status only when transition is created
         # avoid infinite loop
         if kwargs.get('created', False):
