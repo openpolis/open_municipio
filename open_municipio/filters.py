@@ -67,7 +67,9 @@ class OMByMonthFilterSpec(SimpleListFilter):
         options = ()
 
         for m in range(1,13):
-            label = date.today().replace(month=m).strftime("%B")
+            # you must set the 1st day of time, o/w may generate invalid dates
+            # (e.g. 30 February, 31 April, etc...
+            label = date.today().replace(day=1,month=m).strftime("%B")
             options += ( ( m, label ), )
 
         return options
