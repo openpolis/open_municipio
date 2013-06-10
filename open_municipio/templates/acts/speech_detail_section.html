@@ -1,7 +1,6 @@
 {% load monitoring_tags %}
 
-<!-- <div class="sittingitem-speeches-list"> -->
-    <div class="span8">
+    <div class="span8 sittingitem">
     <ul class="people-list">
     <li>
     {% if speech.author_counselor %}
@@ -15,14 +14,22 @@
     </li>
     </ul>
     <div class="sittingitem-speech-preview">
-    {{ speech.text|truncatewords:30 }}
+    {% if request.get_full_path != speech.get_absolute_url %}
+    {{ speech.text|safe|truncatewords:30 }}
+    {% else %}
+    {{ speech.text|safe }}
+    {% endif %}
     </div>
     {% if readmore %}
-    <a class="speech-read-more"  href="">Leggi tutto</a>
+    <a class="speech-read-more" href="{{ speech.get_absolute_url }}">Leggi tutto</a>
     {% endif %}
     </div>
     <div class="span4">
-    <a href="{{ speech.get_absolute_url }}">Leggi il singolo intervento</a> - <a href="">Leggi nel contesto</a> <br/>
+    {% if request.get_full_path != speech.get_absolute_url %}
+    <a href="{{ speech.get_absolute_url }}">Leggi il singolo intervento</a>
+    {% else %}
+    <a href="{{ speech.sitting_item.get_absolute_url }}">Leggi nel contesto</a>
+    {% endif %}
     <br/>
     {% if speech.related_act_set.all|length > 0 %}
     Atti a supporto:<br/>
@@ -39,4 +46,3 @@
     <a href="{{ speech.file_url }}">Ascolta l'intervento</a>
    {% endif %}
    </div> 
-<!-- </div> -->

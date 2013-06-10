@@ -86,3 +86,7 @@ div.sitting-dates {
     border-right: 1px solid lightgray;
     padding-right: 10px;
 }
+
+.sittingitem {
+    margin-left: 0px;
+}

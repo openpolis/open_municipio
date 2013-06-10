@@ -60,6 +60,14 @@ class LookupInstitutionCharge(LookupObject):
         return LookupObject.lookup(LookupInstitutionCharge.objects, 
             external, provider)
 
+    @property
+    def person(self):
+        return self.local.person
+
+    @property
+    def institution(self):
+        return self.local.institution
+
     class Meta:
         unique_together = (('local','external','provider'),)
         verbose_name = _("lookup institution charge")

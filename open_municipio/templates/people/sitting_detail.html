@@ -3,7 +3,6 @@
 {% load om_utils %}
 {% load thumbnail %}
 {% load popover_info %}
-{% load sittings_council_by_year %}
 
 {% block title %}Consiglio{% endblock %}
 {% block content_header %}Consiglio {% endblock %}
@@ -24,22 +23,11 @@
 {% endblock %}
 
 {% block content %}
-<section class="row-fluid">
-    <!-- #content -->
-    {% get_sittings_years 5 as years %}
-    <div class="sitting-archive">Archivio sedute di Consiglio:
-    {% for y in years %}
-        {% if y != params.year %}
-            <a href="{% url om_sitting_calendar year=y %}">
-        {% endif %}
-            {{ y }}
-        {% if y != params.year %}
-            </a>
-        {% endif %}
-        |
-    {% endfor %}
-    </div>
 
+    {% include 'people/sitting_calendar_top.html' %}
+
+    {% include 'people/sitting_detail_section.html' with sitting=sitting %}
+<!--
     <h2>{{ sitting }}</h2>
 
     {% if pk_prev != None or pk_next != None %}
@@ -55,14 +43,14 @@
         {% if pk_next != None %}</a>{% endif %}
     </div>
 
-    {% endif %}
+    {% endif %} -->
 
     <ul>
     {% for si in sitting_items %}
-        <li><a href="{% url om_sittingitem_detail pk=si.pk %}">{{ si.title }}</a></li>
+        <li><a href="{% url om_sittingitem_detail pk=si.pk %}">{{ si.title }} ( {{ si.num_speeches }})</a></li>
     {% endfor %}
     </ul>
-</section>
+
 {% endblock %}
 
 {% block sidebar %}

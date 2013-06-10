@@ -4,7 +4,6 @@
 {% load monitoring_tags %}
 {% load thumbnail %}
 {% load popover_info %}
-{% load sittings_council_by_year %}
 
 {% block title %}Organi politici | Consiglio{% endblock title %}
 {% block content_header %}Consiglio{% endblock %}
@@ -21,13 +20,7 @@
 
 {% block content %}
 
-  {% get_sittings_years 5 as years %}
-  <div class="sitting-archive row-fluid">Archivio sedute di Consiglio: 
-  {% for y in years %}
-      <a href="{% url om_sitting_calendar year=y %}">{{ y }}</a> {% if not forloop.last %}|{% endif %} 
-  {% endfor %}
-  </div>      
-
+{% include 'people/sitting_calendar_top.html' %}
 
   <section class="row-fluid">
 

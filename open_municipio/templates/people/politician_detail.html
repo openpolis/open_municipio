@@ -56,8 +56,8 @@
           {% endif %}
           {{ person }}
         </h1>
-        {% for c in current_charges %}
-          <p>{{ c.institution }}</p>
+        {% for inst in current_institutions %}
+          <p>{{ inst.institution__name }}</p>
         {% endfor %}
 
         <p>

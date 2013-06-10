@@ -278,12 +278,14 @@ class PoliticianDetailView(DetailView):
             (r['resource_type'], {'value': r['value'], 'description': r['description']})
             for r in self.object.resources.values('resource_type', 'value', 'description')
         )
-        context['current_charges'] = self.object.get_current_institution_charges().exclude(
+        current_charges = self.object.get_current_institution_charges().exclude(
             institutionresponsability__charge_type__in=(
                 InstitutionResponsability.CHARGE_TYPES.mayor,
             ),
             institutionresponsability__end_date__isnull=True
         )
+        context['current_charges'] = current_charges
+        context['current_institutions'] = current_charges.values("institution__name").distinct()
         context['current_committee_charges'] = self.object.get_current_committee_charges()
         context['is_counselor'] = self.object.is_counselor()
         context['current_counselor_charge'] = self.object.current_counselor_charge()

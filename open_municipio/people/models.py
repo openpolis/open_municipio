@@ -20,6 +20,8 @@ from open_municipio.newscache.models import NewsTargetMixin
 from open_municipio.people.managers import TimeFramedQuerySet
 from open_municipio.om_utils.models import SlugModel
 
+import open_municipio
+
 #
 # Persons, charges and groups
 #
@@ -92,6 +94,7 @@ class Person(models.Model, MonitorizedItem):
         return self.institutioncharge_set.select_related().current(moment=moment).exclude(
             institution__institution_type__in=(Institution.COMMITTEE, Institution.JOINT_COMMITTEE)
         )
+
     current_institution_charges = property(get_current_institution_charges)
 
     def get_current_committee_charges(self, moment=None):
@@ -492,8 +495,6 @@ class InstitutionCharge(Charge):
         self.n_present_votations = self.chargevote_set.exclude(vote=absent).count()
         self.n_absent_votations = self.chargevote_set.filter(vote=absent).count()
         self.save()
-
-
 
 class InstitutionResponsability(ChargeResponsability):
     """
@@ -1081,6 +1082,24 @@ class Sitting(TimeStampedModel):
         sitting_url = 'om_sitting_detail', (), { 'pk': self.pk }
         return sitting_url
 
+    @property
+    def sitting_next(self):
+        next = Sitting.objects.filter(date__gt=self.date).order_by("date")[:1]
+
+        if len(next) == 0:
+            return None
+        else:
+            return next[0]
+
+    @property
+    def sitting_prev(self):
+        prev = Sitting.objects.filter(date__lt=self.date).order_by("date")[:1]
+        
+        if len(prev) == 0:
+            return None
+        else:
+            return prev[0]
+
 class SittingItem(models.Model):
     """
     A SittingItem maps a single point of discussion in a Sitting.
@@ -1127,6 +1146,13 @@ class SittingItem(models.Model):
         long unicode representation, contains the sitting details
         """
         return u'%s - %s' % (self.sitting, self)
+
+    @property
+    def num_speeches(self): 
+        """
+        the amount of speeches that refer to this sitting item
+        """
+        return open_municipio.acts.models.Speech.objects.filter(sitting_item=self)
 
 ## Private DB access API
 

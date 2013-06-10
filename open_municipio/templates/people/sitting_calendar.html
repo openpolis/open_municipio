@@ -3,7 +3,6 @@
 {% load om_utils %}
 {% load thumbnail %}
 {% load popover_info %}
-{% load sittings_council_by_year %}
 
 {% block title %}Consiglio{% endblock %}
 {% block content_header %}Consiglio {% endblock %}
@@ -24,20 +23,8 @@
 {% endblock %}
 
 {% block content %}
-<section class="row-fluid" >
-    <!-- #content -->
-    {% get_sittings_years 5 as years %}
-    <div class="sittings-archive">Archivio sedute di Consiglio:
-    {% for y in years %}
-        {% if y != params.year %}
-            <a href="{% url om_sitting_calendar year=y %}">
-        {% endif %}
-            {{ y }}
-        {% if y != params.year %}
-            </a>
-        {% endif %}
-        |
-    {% endfor %}
+
+    {% include 'people/sitting_calendar_top.html' %}
     
     <h2 style="background:#72C056; padding: 10px; margin-top: 10px; margin-bottom: 10px; text-align:center; width: 60px; font-weight: bolder; color: white" >{{ params.year }}</h2>
 
@@ -87,7 +74,7 @@
             </td>
         </tr>
     </table>
-</section>
+
 {% endblock %}
 
 {% block sidebar %}
