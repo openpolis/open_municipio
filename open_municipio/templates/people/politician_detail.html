@@ -289,7 +289,7 @@
                       <td>{{ speech.sitting_item.sitting }}</td>
                       <td>{{ speech.sitting_item.title }}</td>
                       <td><a href="{{ speech.get_absolute_url }}">Leggi il singolo intervento</a><br/>
-                        <a href="">Leggi nel contesto</a>
+                        <a href="{{ speech.sitting_item.get_absolute_url }}">Leggi nel contesto</a>
                     </td>
                   </tr>
               {% endfor %}
