@@ -243,7 +243,7 @@
               <tbody>
               {% for act in presented_acts %}
                   <tr>
-                      <td><a href="{{ act.downcast.get_absolute_url }}"><strong>{{ act.title }}</strong> ({{ act.idnum }})</a></td>
+                      <td><a href="{{ act.downcast.get_absolute_url }}"><strong>{{ act.title }}</strong> {% if act.idnum %}({{ act.idnum }}){% endif %}</a></td>
                       <td class="text-center">
 
                           {% if not act.is_final_status %}
