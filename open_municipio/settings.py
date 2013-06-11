@@ -215,7 +215,8 @@ OM_BOOKMARKING_EMPTY_STAR_CLASS = 'icon-star-empty'
 SITE_INFO = {
     'main_city': u'City',
     'site_version': u'Beta',
-    'main_city_logo': 'img/city-logo/city-logo.png'
+    'main_city_logo': 'img/city-logo/city-logo.png',
+    'main_city_website': 'http://www.maincity.it', 
 }
 DEFAULT_FROM_EMAIL = "info@openmunicipio.it"
 DIGEST_DEFAULT_GROUP = "redazione"

@@ -25,8 +25,10 @@ def server_error(request, template_name='500.html'):
     """
     c = Context({
         'STATIC_URL':settings.STATIC_URL,
-        'main_city': settings.SITE_INFO['main_city']
+        'main_city': settings.SITE_INFO['main_city'],
+        'main_city_website': settings.SITE_INFO['main_city_website'],
     })
+
     t = loader.get_template(template_name) # You need to create a 500.html template.
     return http.HttpResponseServerError(t.render(c))
 

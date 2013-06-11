@@ -12,6 +12,7 @@ def defaults(request):
 
     return {
         'main_city': settings.SITE_INFO['main_city'],
+        'main_city_website': settings.SITE_INFO['main_city_website'],
         'beta': settings.SITE_INFO['site_version'],
         'DEBUG': settings.DEBUG,
         'TEMPLATE_DEBUG': settings.TEMPLATE_DEBUG,
