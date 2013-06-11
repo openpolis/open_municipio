@@ -1152,7 +1152,7 @@ class SittingItem(models.Model):
         """
         the amount of speeches that refer to this sitting item
         """
-        return open_municipio.acts.models.Speech.objects.filter(sitting_item=self)
+        return open_municipio.acts.models.Speech.objects.filter(sitting_item=self).count()
 
 ## Private DB access API
 

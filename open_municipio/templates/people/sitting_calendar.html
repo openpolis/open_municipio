@@ -3,6 +3,7 @@
 {% load om_utils %}
 {% load thumbnail %}
 {% load popover_info %}
+{% load sittings_council_by_year %}
 
 {% block title %}Consiglio{% endblock %}
 {% block content_header %}Consiglio {% endblock %}
@@ -80,4 +81,6 @@
 {% block sidebar %}
     <h2>I prossimi appuntamenti</h2>
     {% include "commons/calendar.html" with events=events %}
+
+    {% include "acts/speech_search_box.html" %}
 {% endblock %}

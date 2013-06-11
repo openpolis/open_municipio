@@ -1,0 +1,15 @@
+{% load sittings_council_by_year %}
+
+{% get_sittings_years 5 as years %}
+<div class="sitting-archive">Archivio sedute di Consiglio:
+{% for y in years %}
+    {% if y != params.year %}
+        <a href="{% url om_sitting_calendar year=y %}">
+    {% endif %}
+        {{ y }}
+    {% if y != params.year %}
+        </a>
+    {% endif %}
+    |
+{% endfor %}
+</div>
