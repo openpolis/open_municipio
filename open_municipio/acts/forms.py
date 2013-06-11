@@ -55,6 +55,7 @@ class ActFinalTransitionForm(ActTransitionForm):
 
 class SpeechAdminForm(forms.ModelForm):
 
+
     text = CharField(widget=TinyMCE(
         attrs={'cols':80,'rows':25},
         mce_attrs={
@@ -72,23 +73,32 @@ class SpeechAdminForm(forms.ModelForm):
     required=False)
 
 
-
-    def is_valid(self):
-        if not super(SpeechAdminForm,self).is_valid():
-            return False
-
+    def is_valid_at_least_one_author(self):
         author = self.cleaned_data["author"]
         author_external = self.cleaned_data["author_name_when_external"]
 
-        if author == None and (author_external == None or len(author_external) == 0):
+        if author == None and (author_external == None or 
+            len(author_external) == 0):
+
             self._errors['author'] = self.error_class([ _("If the author is present in Open Municipio, search it") ])
             self._errors['author_name_when_external'] = self.error_class([ _("Populate the full author name when not present in Open Municipio") ])
             return False
 
         return True
 
+    def is_valid(self):
+        if not super(SpeechAdminForm,self).is_valid():
+            return False
+
+        if not self.is_valid_at_least_one_author():
+            return False
+
+        return True
+
     class Meta:
-        fields = ( 'author', 'author_name_when_external', 'sitting_item','seq_order','title','text','text_url','file','file_url','audio_url','audio_file','votation','initial_time','duration',)
+        fields = ( 'author', 'author_name_when_external', 'sitting_item',
+            'seq_order', 'title', 'text', 'text_url', 'file', 'file_url',
+            'audio_url','audio_file','votation','initial_time','duration',)
 
 
 class SpeechInActInlineFormSet(forms.models.BaseInlineFormSet):

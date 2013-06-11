@@ -39,7 +39,7 @@ em {
                 <td>
                     <h4><a href="{{ result.object.get_absolute_url }}">{{ result.object.title }}</a></h4>
                     <strong><a href="{{ result.object.sitting.get_absolute_url }}">{{ result.object.sitting }}</a></strong><br/>
-                    {{ result.object.author }}
+                    {{ result.object.author_name }}
                 </td>
             </tr>
         {% empty %}

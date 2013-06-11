@@ -1121,7 +1121,7 @@ class SittingItem(models.Model):
     sitting = models.ForeignKey(Sitting)
     title = models.CharField(max_length=512)
     item_type = models.CharField(choices=ITEM_TYPE, max_length=4)
-    seq_order = models.IntegerField(default=0)
+    seq_order = models.IntegerField(default=0,verbose_name=_('seq_order'))
     related_act_set = models.ManyToManyField('acts.Act', blank=True, null=True)
 
     class Meta:
