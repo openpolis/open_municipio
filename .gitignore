@@ -2,6 +2,7 @@
 *~
 *.pyc
 *.sqlite
+.*.swp
 .idea
 open_municipio/settings_*.py
 sitestatic
