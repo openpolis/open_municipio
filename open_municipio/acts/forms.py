@@ -72,6 +72,20 @@ class SpeechAdminForm(forms.ModelForm):
     ),
     required=False)
 
+    class Media:
+        js = ( 
+            'js/jquery-1.7.1.js',
+            'dajax/jquery.dajax.core.js', 
+            'dajaxice/dajaxice.core.js',
+            )
+
+    def __init__(self, *args, **kwargs):
+        super(SpeechAdminForm, self).__init__(*args, **kwargs)
+
+        self.fields["sitting_item"].widget.attrs["onchange"] = "Dajaxice.open_municipio.acts.load_speeches(Dajax.process, { 'sitem_pk':this.value })"
+        self.fields["seq_order"].widget = forms.Select(choices=[])
+        self.fields["seq_order"].widget.attrs["id"] = "seqorder"
+
 
     def is_valid_at_least_one_author(self):
         author = self.cleaned_data["author"]

@@ -23,6 +23,10 @@ from django.views.generic import TemplateView
 from django.contrib import admin
 from registration.views import register
 
+from dajaxice.core import dajaxice_autodiscover, dajaxice_config
+
+from django.conf import settings
+
 from open_municipio.om.views import HomeView
 from open_municipio.inline_edit.views import InlineEditView
 from open_municipio.om_auth.views import login_done, login_error, login_form, logout
@@ -30,6 +34,7 @@ from open_municipio.users.forms import UserRegistrationForm
 
 admin.autodiscover()
 
+dajaxice_autodiscover()
 
 urlpatterns = patterns('',
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
@@ -101,4 +106,9 @@ urlpatterns += patterns('',
 # bookmarking
 urlpatterns += patterns('',
     url(r'^bookmark/', include('open_municipio.bookmarking.urls')),
+)
+
+# dajaxice
+urlpatterns += patterns('',
+    url(dajaxice_config.dajaxice_url, include('dajaxice.urls')),
 )

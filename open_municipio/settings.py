@@ -62,6 +62,7 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+    'dajaxice.finders.DajaxiceFinder', 
 )
 
 STATICFILES_DIRS = (
@@ -73,7 +74,7 @@ STATICFILES_DIRS = (
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
+    'django.template.loaders.eggs.Loader',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -95,6 +96,7 @@ TEMPLATE_DIRS = (
 TEMPLATE_CONTEXT_PROCESSORS = (
     "open_municipio.om.context_processor.defaults",
     "django.contrib.auth.context_processors.auth",
+    "django.core.context_processors.request",
     "django.core.context_processors.debug",
     "django.core.context_processors.i18n",
     "django.core.context_processors.media",
@@ -146,10 +148,11 @@ INSTALLED_APPS = (
     'sorl.thumbnail',
     'social_auth',
     'open_municipio.om_auth',
-#    'open_municipio.speech',
     # TinyMCE
     'tinymce',
 #    'inline_ordering',
+    'dajaxice',
+    'dajax',
 )
 
 AUTHENTICATION_BACKENDS = (
@@ -323,4 +326,3 @@ WEB_SERVICES = {
     'twitter' : {},
     'google_plus': {},
 }
-

@@ -17,3 +17,5 @@ pil
 sorl-thumbnail
 django-social-auth
 django-tinymce
+django-dajax
+django-dajaxice
