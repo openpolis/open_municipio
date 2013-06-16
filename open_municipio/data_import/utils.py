@@ -158,7 +158,9 @@ class ChargeSeekerFromMapMixin:
         # if already mapped, return the result from the cache
         if provider in self.charge_map_cache:
             if external in self.charge_map_cache[provider]:
-                return self.charge_map_cache[provider][external]
+                cached_charge = self.charge_map_cache[provider][external]
+                self.logger.debug("Returned cached charge: %s ..." % (cached_charge,))
+                return cached_charge
         else:
             self.charge_map_cache[provider] = {}
 
