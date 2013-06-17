@@ -97,7 +97,7 @@ class ActSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
         person_slug = self.request.GET.get('person', None)
         if person_slug:
             try:
-                extra['author'] = Person.objects.get(slug=person_slug)
+                extra['person'] = Person.objects.get(slug=person_slug)
             except ObjectDoesNotExist:
                 pass
 
@@ -491,9 +491,7 @@ class SpeechSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
         if person_slug:
             try:
                 extra['person'] = Person.objects.get(slug=person_slug)
-#                print "found %s" % extra["person"]
             except ObjectDoesNotExist:
-#                print "person %s not exists" % (person_slug, )
                 pass
 
         paginator = Paginator(self.results, settings.HAYSTACK_SEARCH_RESULTS_PER_PAGE)
