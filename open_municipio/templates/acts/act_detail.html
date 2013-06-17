@@ -84,7 +84,9 @@
       <a href="#" id="{{ act|as_token }}" class="bookmarkable" {% if act.is_key %} data-toggle="tooltip" data-placement="right" title="Voto chiave"{% endif %}>
           <i class="{% is_key_class act %}"></i></a>
       <strong class="input-append">{{ act.title }}</strong>
+      {% if act.idnum %}
       <small>(N. {{ act.idnum }})</small></h2>
+      {% endif %}
     <h4>
       <strong>{{ act.get_type_name|capfirst }}</strong>
       {{ act.emitting_institution.name_with_preposition }} N° <strong>{{ act.idnum }}</strong> del <strong><span class="date">{{ act.presentation_date }}</span></strong>
