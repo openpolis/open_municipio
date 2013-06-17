@@ -302,8 +302,8 @@ class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
 
         om_type = self._detect_act_om_type(act)
         self.logger.info("Detected type %s" % om_type)
-        # TODO create the act and the subscribers as a transaction
 
+        # TODO create the act and the subscribers as a transaction
         (om_act,created) = om_type.objects.get_or_create(idnum=act.id,
             defaults = create_defaults)
 
@@ -318,8 +318,6 @@ class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
 
         self.logger.info("Now let's add the attachment ...")
         self._add_attachments(act, om_act)
-
-
 
         # append transitions to acts on OM
         self._add_act_transitions(act, om_act)

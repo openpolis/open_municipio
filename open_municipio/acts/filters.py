@@ -17,7 +17,6 @@ class SpeechByMonthFilterSpec(OMByMonthFilterSpec):
     def queryset_by_month(self, queryset, month):
         return queryset.filter(sitting_item__sitting__date__month=month)
 
-
 class ActByYearFilterSpec(OMByYearFilterSpec):
     model = Act
     field = "presentation_date"
