@@ -308,14 +308,18 @@ class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
             defaults = create_defaults)
 
         if created:
-            self.logger.info("OM act created %s. Let's add the subscribers ..." % om_act.idnum)
-            self._add_subscribers(act, om_act)
-
-            self.logger.info("Now let's add the attachment...")
-            self._add_attachments(act, om_act)
-
+            self.logger.info("OM act created %s ..." % om_act.idnum)
         else:
-            self.logger.info("OM act already present %s" % om_act.idnum)
+            self.logger.info("OM act already present %s ..." % om_act.idnum)
+
+
+        self.logger.info("Set the act supporters ...")
+        self._add_subscribers(act, om_act)
+
+        self.logger.info("Now let's add the attachment ...")
+        self._add_attachments(act, om_act)
+
+
 
         # append transitions to acts on OM
         self._add_act_transitions(act, om_act)
