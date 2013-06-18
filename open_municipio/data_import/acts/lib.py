@@ -232,23 +232,30 @@ class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
         for curr_att in act.attachments:
             self.logger.info("Processing attachment file %s" % curr_att.path)
             f = File(open(curr_att.path))
-            defaults = {
-                'file' : f,
-                'act' : om_act,
-                'document_type' : curr_att.type,
-                'document_size' : f.size,
-                'title' : curr_att.title[:512], # TODO parameterize this length
-                'document_date' : curr_att.document_date,
-            }
-            om_attachment = OMAttach(**defaults)
-            try:
-                om_attachment.save()
-                self.logger.info("Attachment imported correctly: %s" % 
-                    curr_att.path)
-            except Exception as e:
-                self.logger.warning("Error importing attachment %s: %s" % 
-                    (curr_att.path, e))
-                transaction.rollback()
+
+            found_att = OMAttach.objects.filter(act=om_act, \
+                document_type=curr_att.type, document_date=curr_att.document_date)
+
+            if found_att.count() > 0:
+                self.logger.info("Attachment already present: %s" % curr_att.path)
+            else:
+                defaults = {
+                    'file' : f,
+                    'act' : om_act,
+                    'document_type' : curr_att.type,
+                    'document_size' : f.size,
+                    'title' : curr_att.title[:512], # TODO parameterize this length
+                    'document_date' : curr_att.document_date,
+                }
+                om_attachment = OMAttach(**defaults)
+                try:
+                    om_attachment.save()
+                    self.logger.info("Attachment imported correctly: %s" % 
+                        curr_att.path)
+                except Exception as e:
+                    self.logger.warning("Error importing attachment %s: %s" % 
+                        (curr_att.path, e))
+                    transaction.rollback()
 
     def _add_subscribers(self, act, om_act):
 
