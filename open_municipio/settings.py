@@ -324,3 +324,6 @@ WEB_SERVICES = {
     'google_plus': {},
 }
 
+# the UI_* configurations are passed by the default context processor
+UI_SITTINGS_CALENDAR = True
+UI_LOCATIONS = True

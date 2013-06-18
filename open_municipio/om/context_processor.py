@@ -19,4 +19,6 @@ def defaults(request):
         'IS_DEMO': settings.IS_DEMO,
 #        'GOOGLE_ANALYTICS': settings.WEB_SERVICES['google_analytics'],
         'login_url': url,
+        'UI_LOCATIONS': settings.UI_LOCATIONS,
+        'UI_SITTINGS_CALENDAR': settings.UI_SITTINGS_CALENDAR,
     }

@@ -180,7 +180,7 @@
         {% endif %}
         <dd><a href="{{ location.get_absolute_url }}">{{ location }}</a></dd>
       {% empty %}
-        {% if location_form %}
+        {% if UI_LOCATIONS and location_form %}
           <dt><a href="#" id="location_form_link"><i class="icon-edit"></i></a> Territorio</dt>
         {% endif %}
       {% endfor %}
