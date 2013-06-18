@@ -23,8 +23,9 @@
 {% endblock %}
 
 {% block content %}
-
-    {% include 'people/sitting_calendar_top.html' %}
+    {% if UI_SITTINGS_CALENDAR %}
+       {% include 'people/sitting_calendar_top.html' %}
+    {% endif %}
 
     {% include 'people/sitting_detail_section.html' with sitting=sitting %}
 <!--

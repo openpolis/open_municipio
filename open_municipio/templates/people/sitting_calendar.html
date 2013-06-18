@@ -25,7 +25,9 @@
 
 {% block content %}
 
-    {% include 'people/sitting_calendar_top.html' %}
+    {% if UI_SITTINGS_CALENDAR %}
+      {% include 'people/sitting_calendar_top.html' %}
+    {% endif %}
     
     <h2 style="background:#72C056; padding: 10px; margin-top: 10px; margin-bottom: 10px; text-align:center; width: 60px; font-weight: bolder; color: white" >{{ params.year }}</h2>
 

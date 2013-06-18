@@ -24,7 +24,9 @@
 
 {% block content %}
 
-    {% include 'people/sitting_calendar_top.html' %}
+    {% if UI_SITTINGS_CALENDAR %}
+       {% include 'people/sitting_calendar_top.html' %}
+    {% endif %}
 
     <div>
     <div class="span8 sittingitem">
