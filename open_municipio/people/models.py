@@ -1079,12 +1079,13 @@ class Sitting(TimeStampedModel):
 
     @permalink
     def get_absolute_url(self):
-        sitting_url = 'om_sitting_detail', (), { 'pk': self.pk }
+        prefix = "%s-%s-%s" % (self.institution.slug, self.idnum, self.date, )
+        sitting_url = 'om_sitting_detail', (), { 'prefix':prefix, 'pk':self.pk, }
         return sitting_url
 
     @property
     def sitting_next(self):
-        next = Sitting.objects.filter(date__gt=self.date).order_by("date")[:1]
+        next = Sitting.objects.filter(date__gt=self.date,institution=self.institution).order_by("date")[:1]
 
         if len(next) == 0:
             return None
@@ -1093,7 +1094,7 @@ class Sitting(TimeStampedModel):
 
     @property
     def sitting_prev(self):
-        prev = Sitting.objects.filter(date__lt=self.date).order_by("date")[:1]
+        prev = Sitting.objects.filter(date__lt=self.date,institution=self.institution).order_by("-date")[:1]
         
         if len(prev) == 0:
             return None

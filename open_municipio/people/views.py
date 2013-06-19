@@ -536,27 +536,17 @@ class SittingDetailView(DetailView):
     template_name = 'people/sitting_detail.html'
 
     def get_context_data(self, **kwargs):
+#        print "kwargs: %s " % (args, kwargs, )
+
         context = super(SittingDetailView, self).get_context_data(**kwargs)
 
         curr = context['sitting']
-
-        next_sittings = Sitting.objects.filter(date__gt=curr.date).order_by("date")[:1]
-        pk_next = None
-        if len(next_sittings):
-            pk_next = next_sittings[0].pk
-
-        prev_sittings = Sitting.objects.filter(date__lt=curr.date).order_by("-date")[:1]
-        pk_prev = None
-        if len(prev_sittings):
-            pk_prev = prev_sittings[0].pk
 
         events = Event.objects.filter(institution__institution_type=Institution.COUNCIL)
 
         sitting_items = curr.sitting_items.order_by("seq_order")
 
         extra = {
-            "pk_prev"   : pk_prev, 
-            "pk_next"   : pk_next,
             "events"    : events,
             "sitting_items" : sitting_items,
         }
@@ -575,16 +565,6 @@ class SittingItemDetailView(DetailView):
         sitem = context['sitem']
         curr = sitem.sitting
 
-        next_sittings = Sitting.objects.filter(date__gt=curr.date).order_by("date")[:1]
-        pk_next = None
-        if len(next_sittings):
-            pk_next = next_sittings[0].pk
-
-        prev_sittings = Sitting.objects.filter(date__lt=curr.date).order_by("-date")[:1]
-        pk_prev = None
-        if len(prev_sittings):
-            pk_prev = prev_sittings[0].pk
-
         # get the speeches related to the sitting item
         speeches = Speech.objects.filter(sitting_item=sitem).order_by("seq_order","initial_time")
 
@@ -594,8 +574,6 @@ class SittingItemDetailView(DetailView):
         acts = sitem.related_act_set.all()
 
         extra = {
-            "pk_prev":pk_prev, 
-            "pk_next":pk_next,
             "speeches":speeches,
             "acts":acts,
         }

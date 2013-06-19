@@ -31,6 +31,6 @@ def print_sittings_council_list(year, month):
         if e.date > today:
             sitting_class = "sitting-future"
         text += "<a href='%s'><div class='sitting-date %s'>%s</div></a>" % \
-            (reverse("om_sitting_detail", kwargs={ "pk":e.pk } ),sitting_class,e.date.day)
+            (e.get_absolute_url(), sitting_class, e.date.day, )
     text += "<div>"
     return text
