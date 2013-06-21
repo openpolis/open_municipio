@@ -32,7 +32,7 @@ def user_created(sender, user, request, **kwargs):
     extra_data.uses_nickname = form.data['uses_nickname'] if 'uses_nickname' in form.data else False
     extra_data.wants_newsletter = False
     extra_data.wants_newsletter = form.data['wants_newsletter'] if 'wants_newsletter' in form.data else False
-    extra_data.location = Location.objects.get(pk=form.data['location']) if form.data['location'] != '' else None
+    extra_data.location = Location.objects.get(pk=form.data['location']) if ("location" in form.data) and (form.data['location'] != '') else None
     extra_data.description = form.data['description']
     extra_data.image = request.FILES['image'] if 'image' in request.FILES else None
     extra_data.save()
