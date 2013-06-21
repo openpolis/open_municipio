@@ -53,6 +53,11 @@ class UserRegistrationForm(RegistrationFormUniqueEmail):
                              error_messages={'required': _("You must agree to the conditions to register")})
 
 
+    def __init__(self, *args, **kwargs):
+        super(UserRegistrationForm, self).__init__(*args, **kwargs)
+        
+        if not settings.UI_LOCATIONS:
+            del self.fields["location"]
 
 class SocialIntegrationForm(forms.Form):
     """
