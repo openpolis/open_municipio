@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 from open_municipio.people.models import *
 from open_municipio.votations.admin import VotationsInline
+from open_municipio.acts.models import Speech
 from sorl.thumbnail.admin import AdminImageMixin
 
 from django.contrib.admin.util import unquote
@@ -10,8 +11,8 @@ from django.shortcuts import get_object_or_404
 from django.utils.functional import update_wrapper
 from django.utils.html import strip_spaces_between_tags as short
 
-from open_municipio.people.forms import SittingItemFormSet
-
+from open_municipio.people.forms import SittingItemFormSet, SpeechInlineForm
+from open_municipio.om.admin import LinkedTabularInline
 
 class PersonResourceInline(admin.TabularInline):
     model = PersonResource
@@ -221,10 +222,17 @@ class InstitutionAdmin(BodyAdmin):
     inlines = [InstitutionResourceInline, InstitutionChargeInline]
     list_display = ('name', 'institution_type', 'move_up_down_links')
 
+class SpeechInline(LinkedTabularInline):
+    model = Speech
+    fields = ("author", "author_name_when_external", "title", \
+              "seq_order", "admin_link", )
+    raw_id_fields = ["author", ]
+    extra = 0
+    form = SpeechInlineForm
 
 class SittingItemInline(admin.TabularInline):
     model = SittingItem
-    fields = ('title', 'related_act_set', 'item_type', 'seq_order')
+    fields = ('title', 'related_act_set', 'item_type', 'seq_order',)
     raw_id_fields = ['related_act_set',]
     extra = 0
 
@@ -238,6 +246,7 @@ class SittingItemAdmin(admin.ModelAdmin):
     search_fields = ['^title', ]
     list_filter = ['sitting__institution','item_type',]
 
+    inlines = [SpeechInline, ]
 
 
 class SittingAdmin(admin.ModelAdmin):

@@ -1,0 +1,6 @@
+@CHARSET "UTF-8";
+
+
+img.order_up, img.order_down {
+	cursor: pointer;
+} 

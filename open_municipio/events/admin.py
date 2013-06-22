@@ -7,7 +7,7 @@ from django.forms.models import inlineformset_factory, BaseInlineFormSet
 from django.forms import Textarea, ModelForm, TextInput
 
 # TODO place these widget and field in a more reusable location
-from open_municipio.widgets import SplitTimeWidget
+from open_municipio.widgets import SplitTimeWidget, SortWidget
 from open_municipio.fields import SplitTimeField
 
 class EventForm(ModelForm):
@@ -34,7 +34,7 @@ class EventForm(ModelForm):
 class EventActInlineForm(ModelForm):
     class Meta:
         widgets = {
-            'order' : TextInput(attrs={'readonly':'readonly', 'class':'sortable'})
+            'order' : SortWidget()
 
         }
 

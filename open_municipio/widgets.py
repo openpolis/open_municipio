@@ -41,3 +41,16 @@ class SplitTimeWidget(forms.MultiWidget):
         if value:
             return [value.hour, value.minute]
         return ["-","-"]
+
+
+class SortWidget(forms.TextInput):
+    
+    def __init__(self, *args, **kwargs):
+        super(SortWidget, self).__init__(*args, **kwargs)
+        self.attrs['readonly'] = 'readonly'
+        self.attrs['class'] = 'sortable'
+        
+    class Media:
+        css = {
+            'all': [ "css/sort.css", ]
+        }
