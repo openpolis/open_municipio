@@ -230,9 +230,9 @@ class SpeechInline(LinkedTabularInline):
     extra = 0
     form = SpeechInlineForm
 
-class SittingItemInline(admin.TabularInline):
+class SittingItemInline(LinkedTabularInline):
     model = SittingItem
-    fields = ('title', 'related_act_set', 'item_type', 'seq_order',)
+    fields = ('title', 'related_act_set', 'item_type', 'seq_order','admin_link',)
     raw_id_fields = ['related_act_set',]
     extra = 0
 
