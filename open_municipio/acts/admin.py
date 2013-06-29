@@ -8,7 +8,7 @@ from open_municipio.acts.forms import SpeechAdminForm, SpeechInActInlineFormSet,
     InterpellationAdminForm, InterrogationAdminForm
 from open_municipio.acts.filters import ActByYearFilterSpec, ActByMonthFilterSpec, SpeechByYearFilterSpec,SpeechByMonthFilterSpec
 
-def transition_form_factory(act):
+def transition_form_factory(act_model):
     """
     allows to change the final_status field in the transition form
     see: http://www.artfulcode.net/articles/runtime-choicefield-filtering-in-djangos-admin/
@@ -20,7 +20,7 @@ def transition_form_factory(act):
     passed inside the get_formset method
     """
     class RuntimeTransitionForm(forms.ModelForm):
-        final_status = forms.ChoiceField(label='Status', choices=act.downcast().STATUS)
+        final_status = forms.ChoiceField(label='Status', choices=act_model.STATUS)
 
         class Meta:
             model = Transition
@@ -58,12 +58,14 @@ class TransitionInline(admin.TabularInline):
 
     def get_formset(self, request, obj=None, **kwargs):
         """
-        the form used to change the model depends on the obj parameter
-        obj is the act being edited in the main form
+        the form used to change the model depends on the 
+        parent model. the parent model is the model of the
+        being edited in the main form
         so it's a deliberation, a motion, an interrogation, ...
         """
-        if obj is not None:
-            self.form = transition_form_factory(obj)
+        if self.parent_model is not None:
+            self.form = transition_form_factory(self.parent_model)
+
         return super(TransitionInline, self).get_formset(request, obj, **kwargs)
 
 
