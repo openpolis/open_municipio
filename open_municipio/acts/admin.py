@@ -107,10 +107,11 @@ class CalendarAdmin(admin.ModelAdmin):
     filter_horizontal = ( 'act_set' , )
 
 
-
 class ActAdminWithAttaches(admin.ModelAdmin):
     inlines = [AttachInline, TransitionInline]
 
+class AmendmentAdmin(ActAdminWithAttaches):
+    raw_id_fields = ("act", )
 
 class ActAdminWithAmendments(admin.ModelAdmin):
     inlines = [AmendmentInline]
@@ -263,7 +264,7 @@ admin.site.register(Interrogation, InterrogationAdmin)
 admin.site.register(Interpellation, InterpellationAdmin)
 admin.site.register(Motion, MotionAdmin)
 admin.site.register(Calendar, CalendarAdmin)
-admin.site.register(Amendment, ActAdminWithAttaches)
+admin.site.register(Amendment, AmendmentAdmin)
 admin.site.register(Attach, AttachAdmin)
 admin.site.register(Transition)
 admin.site.register(Speech, SpeechAdmin)
