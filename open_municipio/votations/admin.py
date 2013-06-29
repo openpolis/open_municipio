@@ -14,12 +14,15 @@ class ChargeVoteAdmin(admin.ModelAdmin):
     list_display = ('id', 'votation', 'charge', 'charge_group_at_vote_date', 'vote')
     list_filter = ('votation__id',)
 
-
 class GroupVoteInline(admin.TabularInline):
     model = GroupVote
     extra = 1
 
-
+    def get_readonly_fields(self, request, obj=None):
+        ro_fields = self.model._meta.get_all_field_names()
+        return ro_fields
+    
+        
 class ChargeVoteInline(admin.TabularInline):
     model = ChargeVote
     raw_id_fields = ('charge', )
