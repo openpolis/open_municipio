@@ -27,9 +27,6 @@ def user_created(sender, user, request, **kwargs):
     user.last_name = form.data['last_name']
     user.save()
 
-
-    print "ciao sono qua"
-
     extra_data = UserProfile(user=user)
     extra_data.says_is_politician = form.data['says_is_politician'] if 'says_in_politician' in form.data else False
     extra_data.uses_nickname = form.data['uses_nickname'] if 'uses_nickname' in form.data else False
