@@ -127,7 +127,7 @@ class CityGovernmentView(TemplateView):
 
         firstdeputy = None
 
-        if municipality.gov.firstdeputy is None:
+        if municipality.gov.firstdeputy is not None:
             firstdeputy = municipality.gov.firstdeputy.charge
 
         citygov = municipality.gov
