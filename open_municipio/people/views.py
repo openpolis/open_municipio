@@ -77,7 +77,7 @@ class CouncilListView(TemplateView):
         council = municipality.council
 
         president = None
-        if municipality.council.president != None:
+        if municipality.council.president is not None:
             president = municipality.council.president.charge
 
         vicepresidents = municipality.council.vicepresidents
