@@ -116,6 +116,16 @@ class ImportActsCommand(LabelCommand):
                     default=False,
                     help="Remove act's presenters before importing."
         ),
+        make_option('--from-date',
+                    dest='from_date',
+                    default=None,
+                    help="Date interval start (beginning of consiliatura)"
+        ),
+        make_option('--to-date',
+                    dest='to_date',
+                    default=None,
+                    help="Date interval end (end of consiliatura)"
+        ),
     )
 
     args = "<filename filename ...>"
@@ -396,7 +406,6 @@ class ImportActsCommand(LabelCommand):
         self.logger.info("%d Deliberation to import" % len(acts))
         for xml_act in acts:
 
-            # get important attributes
             id = xml_act.get("id")
             if id is None:
                 self.logger.error(
@@ -404,6 +413,22 @@ class ImportActsCommand(LabelCommand):
                 )
                 continue
 
+            presentation_date = xml_act.get("presentation_date")
+            if presentation_date is None:
+                self.logger.error(
+                    "Error: Act %s has no presentation_date attribute! Skipping." % id
+                )
+                continue
+
+            # check if presentation date is in range
+            if not self._check_presentation_date(presentation_date):
+                self.logger.error(
+                    "Error: Act %s has presentation_date (%s) out of required range %s - %s! Skipping." %
+                    (id, presentation_date, self.date_start, self.date_end)
+                )
+                continue
+
+            # get important attributes
             initiative = conf.XML_TO_OM_INITIATIVE[xml_act.get("initiative")]
             if initiative is None:
                 self.logger.error(
@@ -413,12 +438,6 @@ class ImportActsCommand(LabelCommand):
                 # transform xml value into database string
             initiative = initiative_types.__dict__['_choice_dict'][initiative]
 
-            presentation_date = xml_act.get("presentation_date")
-            if presentation_date is None:
-                self.logger.error(
-                    "Error: Act %s has no presentation_date attribute! Skippingg." % id
-                )
-                continue
 
             title = xml_act.xpath("./om:Title", namespaces=NS)
             if title is None:
@@ -570,6 +589,14 @@ class ImportActsCommand(LabelCommand):
                 )
                 continue
 
+            # check if presentation date is in range
+            if not self._check_presentation_date(presentation_date):
+                self.logger.error(
+                    "Error: Act %s has presentation_date (%s) out of required range %s - %s! Skipping." %
+                    (id, presentation_date, self.date_start, self.date_end)
+                )
+                continue
+
             answer_type = xml_act.get("answer_type")
             if answer_type is None:
                 self.stderr.write(
@@ -709,6 +736,14 @@ class ImportActsCommand(LabelCommand):
                 )
                 continue
 
+            # check if presentation date is in range
+            if not self._check_presentation_date(presentation_date):
+                self.logger.error(
+                    "Error: Act %s has presentation_date (%s) out of required range %s - %s! Skipping." %
+                    (id, presentation_date, self.date_start, self.date_end)
+                )
+                continue
+
             title = xml_act.xpath("./om:Title", namespaces=NS)
             if title is None:
                 self.stderr.write(
@@ -819,6 +854,9 @@ class ImportActsCommand(LabelCommand):
 
         self.dry_run = options['dry_run']
 
+        self.date_start = options['from_date']
+        self.date_end = options['to_date']
+
         # fix logger level according to verbosity
         verbosity = options['verbosity']
         if verbosity == '0':
@@ -835,3 +873,14 @@ class ImportActsCommand(LabelCommand):
             self.handle_label(label, **options)
         return 'done\n'
 
+
+    def _check_presentation_date(self, presentation_date):
+        """
+        If date_start or date_end have been specified,
+        check if the presentation date is within the range.
+        """
+        if self.date_start and presentation_date < self.date_start:
+            return False
+        if self.date_end and presentation_date > self.date_end:
+            return False
+        return True
