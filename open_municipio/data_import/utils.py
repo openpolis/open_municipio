@@ -4,7 +4,7 @@ A misc set of utilities useful in the data-import domain.
 import logging
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from open_municipio.people.models import Person, municipality
-from open_municipio.data_import.models import LookupInstitutionCharge, LookupCompanyCharge, LookupAdministrationCharge
+from open_municipio.data_import.models import LookupInstitutionCharge, LookupCompanyCharge, LookupAdministrationCharge, LookupPerson
 
 import socket
 
