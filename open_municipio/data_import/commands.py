@@ -616,6 +616,8 @@ class ImportActsCommand(LabelCommand):
             # real-time search index update
             # since signals do not handle hierarchy well
             if not self.dry_run:
+                if om_act.text:
+                    om_act.act_ptr.text = om_act.text
                 om_act.act_ptr.save()
 
     def handle_interrogation(self, filename, **options):
@@ -771,6 +773,8 @@ class ImportActsCommand(LabelCommand):
             # real-time search index update
             # since signals do not handle hierarchy well
             if not self.dry_run:
+                if om_act.text:
+                    om_act.act_ptr.text = om_act.text
                 om_act.act_ptr.save()
 
     def handle_motion(self, filename, **options):
@@ -892,6 +896,8 @@ class ImportActsCommand(LabelCommand):
             # real-time search index update
             # since signals do not handle hierarchy well
             if not self.dry_run:
+                if om_act.text:
+                    om_act.act_ptr.text = om_act.text
                 om_act.act_ptr.save()
 
     def handle_label(self, filename, **options):
