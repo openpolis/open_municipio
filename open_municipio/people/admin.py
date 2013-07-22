@@ -246,6 +246,8 @@ class SittingItemAdmin(admin.ModelAdmin):
     search_fields = ['^title', ]
     list_filter = ['sitting__institution','item_type',]
 
+    raw_id_fields = ( 'sitting', )
+
     inlines = [SpeechInline, ]
 
 

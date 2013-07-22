@@ -2,6 +2,7 @@ from django.contrib import admin
 from django import forms
 from django.db import models
 from django.contrib.admin.widgets import FilteredSelectMultiple
+from django.utils.translation import ugettext_lazy as _
 
 from open_municipio.acts.models import *
 from open_municipio.acts.forms import SpeechAdminForm, SpeechInActInlineFormSet, \
@@ -134,7 +135,9 @@ class SpeechInActInline(admin.TabularInline):
     model = ActHasSpeech
     formset = SpeechInActInlineFormSet
     max_num = 2
-    
+
+    verbose_name = _("Speech in act")
+    verbose_name_plural = _("Speeches in act")
     raw_id_fields = ( 'speech', )
 
 
