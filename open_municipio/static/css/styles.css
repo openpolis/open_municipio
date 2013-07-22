@@ -527,7 +527,8 @@ cite {
   font-style: normal;
 }
 code,
-pre {
+pre,
+div.pre {
   padding: 0 3px 2px;
   font-family: Menlo, Monaco, "Courier New", monospace;
   font-size: 13px;
@@ -542,7 +543,8 @@ code {
   background-color: #f7f7f9;
   border: 1px solid #e1e1e8;
 }
-pre {
+pre, 
+div.pre {
   display: block;
   padding: 8px;
   margin: 0 0 8.5px;
@@ -554,10 +556,12 @@ pre {
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   border-radius: 4px;
-  white-space: pre;
-  white-space: pre-wrap;
   word-break: break-all;
   word-wrap: break-word;
+}
+pre {
+  white-space: pre;
+  white-space: pre-wrap;
 }
 pre.prettyprint {
   margin-bottom: 17px;

@@ -1,1 +1,72 @@
 {% extends "acts/act_detail.html" %}
+
+{% load monitoring_tags %}
+{% load thumbnail %}
+
+
+{% block act_tab_body %}
+    {{ block.super }}
+    {% include 'acts/act_table_supporters.html' with act_supporters=act.first_signers supporter_title='Proponenti' %}
+    
+    <section class="span9">
+        <h2>Destinatari</h2>
+        <ul class="people-list">
+            {% for rec in act.recipients %}
+            <li>
+                <a href="{{ rec.person.get_absolute_url }}">
+                {% if a.person.img %}
+                    {% thumbnail rec.person.img "50x50" crop="center" as im %}
+                        <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" class="thumb-left politician-picture">
+                    {% endthumbnail %}
+                {% else %}
+                    <img src="{{ STATIC_URL }}img/placehold/face_50.png" width="50" height="50" class="thumb-left politician-picture">
+                {% endif %}
+                </a>
+
+                <div>
+                    <a href="{{ rec.get_absolute_url }}"><strong>{{ rec.person.full_name }}</strong></a>
+
+                    <br/>
+                    {{ rec.denomination }}
+                    <br/>
+
+                    {% object_inline_monitoring rec.person %}
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </section>
+
+{% endblock %}
+
+{% block act_text %}
+    <!-- contenuto della richiesta -->
+    <div>
+        {% if act.request_verbal != None %}
+        <h2>Richiesta orale</h2>
+        <div class="pre">
+        {{ act.request_verbal.text|safe }}
+        </div>
+        <a href="{{ act.request_verbal.get_absolute_url }}">Vedi i dettagli dell'intervento</a>
+        {% elif act.request_written != None %}
+        <h2>Richiesta scritta</h2>
+        <pre>{{ act.request_written|safe }}</pre>
+        {% endif %}
+    </div>
+
+    <!-- contenuto della risposta -->
+    <div>
+        {% if act.answer_verbal != None %}
+        <h2>Risposta orale</h2>
+        <div class="pre">
+        {{ act.answer_verbal.text|safe }}
+        </div>
+        <a href="{{ act.answer_verbal.get_absolute_url }}">Vedi i dettagli dell'intervento</a>
+        {% elif act.answer_written != None %}
+        <h2>Risposta scritta</h2>
+        <pre>{{ act.answer_written|safe }}</pre>
+        {% endif %}
+
+
+    </div>
+{% endblock %}

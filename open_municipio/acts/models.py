@@ -509,6 +509,43 @@ class Interpellation(Act):
         return self.presenters[0]
 
 
+    @property
+    def answer_verbal(self):
+        ans_verbal = None
+        try:
+            answer = ActHasSpeech.objects.get(act=self,relation_type='RESP')
+            ans_verbal = answer.speech
+        except ObjectDoesNotExist:
+            pass
+
+        return ans_verbal
+
+
+    @property
+    def answer_written(self):
+        if self.answer_text == None or len(self.answer_text) == 0:
+            return None
+
+        return self.answer_text
+
+    @property
+    def request_verbal(self):
+        req_verbal = None
+        try:
+            request = ActHasSpeech.objects.get(act=self,relation_type='REQ')
+            req_verbal = request.speech
+        except ObjectDoesNotExist:
+            pass
+
+        return req_verbal
+
+    @property
+    def request_written(self):
+        if self.text == None or len(self.text) == 0:
+            return None
+
+        return self.text
+
 
 class Motion(Act):
     """
