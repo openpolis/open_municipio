@@ -766,6 +766,28 @@ class Speech(Document):
     def __unicode__(self):
         return u"%s - %s" % (self.author_name, self.sitting)
 
+# wrappers for admin list_display and ordering
+    def date_admin(self):
+        return self.date
+
+    date_admin.short_description = _('date')
+    date_admin.allow_tags = True
+    date_admin.admin_order_field = 'sitting_item__sitting__date'
+
+    def author_name_admin(self):
+        return self.author_name
+
+    author_name_admin.short_description = _('author')
+    author_name_admin.allow_tags = True
+    author_name_admin.admin_order_field = 'author'
+
+    def sitting_admin(self):
+        return self.sitting
+
+    sitting_admin.short_description = _('sitting')
+    sitting_admin.allow_tags = True
+    sitting_admin.admin_order_field = 'sitting_item__sitting__number'
+
 class ActHasSpeech(models.Model):
     """
     Relation between a speech and an act.
