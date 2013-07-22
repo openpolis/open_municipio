@@ -351,7 +351,10 @@ class InstitutionCharge(Charge):
     @property
     def denomination(self):
         if self.institution.institution_type == Institution.MAYOR:
-            return _('Mayor').translate(settings.LANGUAGE_CODE)
+            denomination = _('Mayor').translate(settings.LANGUAGE_CODE)
+            if self.description != "":
+                denomination += ", %s" % self.description
+            return denomination
         elif self.institution.institution_type == Institution.CITY_GOVERNMENT:
             if self.responsabilities.count():
                 s = self.responsabilities[0].get_charge_type_display()
