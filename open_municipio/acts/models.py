@@ -710,12 +710,15 @@ class Speech(Document):
         return self.sitting_item.sitting
 
     @property
-    def author_counselor(self):
+    def author_charge(self):
         politician = None
         try:
             politician = InstitutionCharge.objects.get(person=self.author,institution__institution_type=Institution.COUNCIL)
         except ObjectDoesNotExist:
-            pass
+            try:
+                politician = InstitutionCharge.objects.get(person=self.author, institution__institution_type=Institution.CITY_GOVERNMENT)
+            except ObjectDoesNotExist:
+                pass    
 
         return politician
 

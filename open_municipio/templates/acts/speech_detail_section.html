@@ -3,8 +3,8 @@
     <div class="span8 sittingitem">
     <ul class="people-list">
     <li>
-    {% if speech.author_counselor %}
-        {% include 'people/politician_list_section.html' with politician=speech.author_counselor%}
+    {% if speech.author_charge %}
+        {% include 'people/politician_list_section.html' with politician=speech.author_charge %}
         {% object_inline_monitoring speech.author %}
     {% elif speech.author_name_when_external %}
         {{ speech.author_name_when_external }}
