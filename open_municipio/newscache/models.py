@@ -120,3 +120,4 @@ class NewsTargetMixin(models.Model):
 
     class Meta:
         abstract = True
+
