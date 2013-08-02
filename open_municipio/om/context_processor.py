@@ -21,4 +21,7 @@ def defaults(request):
         'login_url': url,
         'UI_LOCATIONS': settings.UI_LOCATIONS,
         'UI_SITTINGS_CALENDAR': settings.UI_SITTINGS_CALENDAR,
+        'SEARCH_URLS': settings.SEARCH_URLS,
+
+
     }
