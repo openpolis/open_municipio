@@ -134,7 +134,6 @@ class MotionAdmin(ActAdmin):
 class SpeechInActInline(admin.TabularInline):
     model = ActHasSpeech
     formset = SpeechInActInlineFormSet
-    max_num = 2
 
     verbose_name = _("Speech in act")
     verbose_name_plural = _("Speeches in act")
