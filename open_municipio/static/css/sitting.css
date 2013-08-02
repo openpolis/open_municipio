@@ -61,7 +61,7 @@ div.sitting-dates {
     display: table;
 }
 
-.sittingitem-speeches-list speech-odd-row {
+.sittingitem-speeches-list.speech-odd-row {
     background-color: #F7F6F1;
 }
 
