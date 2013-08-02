@@ -324,6 +324,12 @@ WEB_SERVICES = {
     'google_plus': {},
 }
 
+# custom TinyMCE stylesheet
+TINYMCE_DEFAULT_CONFIG = {
+    'content_css': '/static/css/tinymce-content.css',
+}
+
+
 # the UI_* configurations are passed by the default context processor
 UI_SITTINGS_CALENDAR = True
 UI_LOCATIONS = True
