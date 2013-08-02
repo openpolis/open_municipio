@@ -337,7 +337,7 @@ UI_LOCATIONS = True
 # act search by type urls
 SEARCH_URLS = {
     "deliberation": "/acts/?q=&selected_facets=act_type:delibera di giunta",
-    "interrogation": "",
+    "interrogation": "/acts/?q=&selected_facets=act_type:interrogazione",
     "motion": "/acts/?q=&selected_facets=act_type:mozione",
     "agenda": "/acts/?q=&selected_facets=act_type:agenda",
     "interpellation": "/acts/?q=&selected_facets=act_type:interpellanza",
