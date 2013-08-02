@@ -58,6 +58,11 @@ div.sitting-dates {
 .sittingitem-speeches-list {
     /* border-top: 1px solid lightgray; *//* TODO non appare nella posizione giusta */
     padding-bottom: 10px;
+    display: table;
+}
+
+.sittingitem-speeches-list speech-odd-row {
+    background-color: #F7F6F1;
 }
 
 .sittingitem-speech-preview {

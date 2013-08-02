@@ -123,12 +123,12 @@ class SpeechInActInlineFormSet(forms.models.BaseInlineFormSet):
                 
                 found_speeches += (curr_speech, )
 
-                curr_type = form.cleaned_data["relation_type"]
+#                curr_type = form.cleaned_data["relation_type"]
 #                if curr_type in speech_types:
 #                    raise forms.ValidationError(_("Speeches must be of different types"))
-                if curr_type == u"REF":
-                    raise forms.ValidationError(_("Speeches of type REF not allowed in this context"))
-                speech_types += (curr_type, )
+#                if curr_type == u"REF":
+#                    raise forms.ValidationError(_("Speeches of type REF not allowed in this context"))
+#                speech_types += (curr_type, )
 
             except AttributeError:
                 # invalid data
