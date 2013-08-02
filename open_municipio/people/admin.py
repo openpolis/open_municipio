@@ -233,20 +233,19 @@ class SpeechInline(LinkedTabularInline):
 class SittingItemInline(LinkedTabularInline):
     model = SittingItem
     fields = ('title', 'related_act_set', 'item_type', 'seq_order','admin_link',)
-    raw_id_fields = ['related_act_set',]
+    raw_id_fields = ('related_act_set',)
     extra = 0
 
     form = SittingItemFormSet
 
 
 class SittingItemAdmin(admin.ModelAdmin):
-    raw_id_fields = ['related_act_set',]
     list_display = ( 'title','sitting', 'seq_order','item_type','num_related_acts')
     ordering = ('-sitting__date','seq_order')
     search_fields = ['^title', ]
     list_filter = ['sitting__institution','item_type',]
 
-    raw_id_fields = ( 'sitting', )
+    raw_id_fields = ( 'sitting', 'related_act_set', )
 
     inlines = [SpeechInline, ]
 
