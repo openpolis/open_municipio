@@ -27,9 +27,15 @@ class _TopicableManager(_TaggableManager):
 
     @require_instance_manager
     def add(self, *tags, **extra_kwargs):
+
         if not tags:
             kwargs = self._lookup_kwargs()
             kwargs.update(extra_kwargs)
+
+            # continuing without a category, will cause an exception
+            if "category" not in kwargs:
+                return
+
             self.through.objects.get_or_create(**kwargs)
         else:
             super(_TopicableManager, self).add(*tags, **extra_kwargs)
