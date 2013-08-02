@@ -37,6 +37,8 @@
     </div>
   </section>
 
+    {% if events|length > 0 %}
+
     <section id="agenda">
        <div class="container-fluid">
            <div class="row-fluid">
@@ -52,6 +54,7 @@
        </div>
 
     </section>
+    {% endif %}
 
 {% endblock %}
 
