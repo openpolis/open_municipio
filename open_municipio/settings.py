@@ -332,7 +332,7 @@ UI_LOCATIONS = True
 SEARCH_URLS = {
     "deliberation": "/acts/?q=&selected_facets=act_type:delibera di giunta",
     "interrogation": "",
-    "motion": "acts/?q=&selected_facets=act_type:mozione",
-    "agenda": "acts/?q=&selected_facets=act_type:agenda",
-    "interpellation": "acts/?q=&selected_facets=act_type:interpellanza",
+    "motion": "/acts/?q=&selected_facets=act_type:mozione",
+    "agenda": "/acts/?q=&selected_facets=act_type:agenda",
+    "interpellation": "/acts/?q=&selected_facets=act_type:interpellanza",
 }
