@@ -297,6 +297,14 @@ class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
                 self.logger.info("Charge %s already known to be a subscriber ..."
                     % om_ch)
 
+    def update_act(om_act, dict_values):
+
+        if om_act is None:
+            raise ValueError("Instance you want to update should not be None")
+
+        for (k, v) in dict_values:
+            setattr(om_act, k, v)
+
     def write_act(self, act):
         
         act_obj_type = act.__class__.__name__
@@ -311,15 +319,14 @@ class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
         self.logger.info("Detected type %s" % om_type)
 
         # TODO create the act and the subscribers as a transaction
-        (om_act,created) = om_type.objects.update_or_create(idnum=act.id,
+        (om_act,created) = om_type.objects.get_or_create(idnum=act.id,
             defaults = create_defaults)
 
         if created:
             self.logger.info("OM act  %s created ..." % om_act.idnum)
         else:
+            self.update_act(om_act, create_defaults)
             self.logger.info("OM act  %s updated ..." % om_act.idnum)
-            
-
 
         self.logger.info("Set the act supporters ...")
         self._add_subscribers(act, om_act)
