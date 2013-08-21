@@ -297,12 +297,12 @@ class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
                 self.logger.info("Charge %s already known to be a subscriber ..."
                     % om_ch)
 
-    def update_act(om_act, dict_values):
+    def update_act(self, om_act, dict_values):
 
         if om_act is None:
             raise ValueError("Instance you want to update should not be None")
 
-        for (k, v) in dict_values:
+        for (k, v) in dict_values.items():
             setattr(om_act, k, v)
 
     def write_act(self, act):
