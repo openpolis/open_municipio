@@ -303,7 +303,11 @@ class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
             raise ValueError("Instance you want to update should not be None")
 
         for (k, v) in dict_values.items():
-            setattr(om_act, k, v)
+            # don't update if the field is None (or you risk to delete data)
+            if v is not None:
+                setattr(om_act, k, v)
+
+        om_act.save()
 
     def write_act(self, act):
         
