@@ -311,13 +311,14 @@ class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
         self.logger.info("Detected type %s" % om_type)
 
         # TODO create the act and the subscribers as a transaction
-        (om_act,created) = om_type.objects.get_or_create(idnum=act.id,
+        (om_act,created) = om_type.objects.update_or_create(idnum=act.id,
             defaults = create_defaults)
 
         if created:
-            self.logger.info("OM act created %s ..." % om_act.idnum)
+            self.logger.info("OM act  %s created ..." % om_act.idnum)
         else:
-            self.logger.info("OM act already present %s ..." % om_act.idnum)
+            self.logger.info("OM act  %s updated ..." % om_act.idnum)
+            
 
 
         self.logger.info("Set the act supporters ...")
