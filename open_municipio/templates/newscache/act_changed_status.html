@@ -8,6 +8,10 @@ L'atto <a href="{{ act.downcast.get_absolute_url }}">{{ act.downcast.title|trunc
        è in discussione al consiglio
     {% case act.STATUS.approved %}
         è stato approvato
+    {% case act.STATUS.answered %}
+        ha ricevuto risposta
+    {% case act.STATUS.notanswered %}
+        non ha ricevuto risposta
     {% case act.STATUS.rejected %}
         è stato respinto
     {%  else %}

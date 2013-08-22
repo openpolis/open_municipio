@@ -116,6 +116,16 @@ class ImportActsCommand(LabelCommand):
                     default=False,
                     help="Remove act's presenters before importing."
         ),
+        make_option('--from-date',
+                    dest='from_date',
+                    default=None,
+                    help="Date interval start (beginning of consiliatura)"
+        ),
+        make_option('--to-date',
+                    dest='to_date',
+                    default=None,
+                    help="Date interval end (end of consiliatura)"
+        ),
     )
 
     args = "<filename filename ...>"
@@ -347,6 +357,54 @@ class ImportActsCommand(LabelCommand):
 
                 attach_f.close()
 
+    def fetch_transitions(self, transitions_map, om_act, xml_act):
+        """
+        Fetch transitions from XML and map them to possible act statuses,
+        creating and connecting them to the act when non-existent.
+        Existing transitions are over-writtem.
+        """
+        # get transitions from xml tree
+        transitions = xml_act.xpath("./om:CouncilDeliberationTransition", namespaces=NS)
+        self.logger.info("%d Transisions to import" % len(transitions))
+
+        for xml_transition in transitions:
+            # read name attribute
+            transition_name = xml_transition.get("name").lower()
+            if transition_name is None:
+                self.logger.error(
+                    "Transition has no name attribute! Skipping it."
+                )
+                continue
+            # map name into status
+            if not transition_name in transitions_map:
+                self.logger.debug(
+                    "Transition {0} not found! Skipping it.".format(transition_name)
+                )
+                continue
+            transition_status = transitions_map[transition_name]
+            # read date attribute
+            transition_date = xml_transition.get("date")
+            if transition_date is None:
+                self.logger.error(
+                    "Transition has no date attribute! Skipping it."
+                )
+                continue
+
+            # add or read transition status for this act
+            trans, created = om_act.transition_set.get_or_create(
+                act=om_act.act_ptr,
+                final_status=transition_status,
+                defaults={
+                    'transition_date': transition_date,
+                }
+            )
+
+            # overwrite date of an existing transition
+            if not created and trans.transition_date != transition_date:
+                trans.transition_date = transition_date
+                trans.save()
+
+
     def remove_news(self, act):
         """
         if required by the --refresh-news options, related news are removed
@@ -396,7 +454,6 @@ class ImportActsCommand(LabelCommand):
         self.logger.info("%d Deliberation to import" % len(acts))
         for xml_act in acts:
 
-            # get important attributes
             id = xml_act.get("id")
             if id is None:
                 self.logger.error(
@@ -404,6 +461,22 @@ class ImportActsCommand(LabelCommand):
                 )
                 continue
 
+            presentation_date = xml_act.get("presentation_date")
+            if presentation_date is None:
+                self.logger.error(
+                    "Error: Act %s has no presentation_date attribute! Skipping." % id
+                )
+                continue
+
+            # check if presentation date is in range
+            if not self._check_presentation_date(presentation_date):
+                self.logger.error(
+                    "Error: Act %s has presentation_date (%s) out of required range %s - %s! Skipping." %
+                    (id, presentation_date, self.date_start, self.date_end)
+                )
+                continue
+
+            # get important attributes
             initiative = conf.XML_TO_OM_INITIATIVE[xml_act.get("initiative")]
             if initiative is None:
                 self.logger.error(
@@ -413,12 +486,6 @@ class ImportActsCommand(LabelCommand):
                 # transform xml value into database string
             initiative = initiative_types.__dict__['_choice_dict'][initiative]
 
-            presentation_date = xml_act.get("presentation_date")
-            if presentation_date is None:
-                self.logger.error(
-                    "Error: Act %s has no presentation_date attribute! Skippingg." % id
-                )
-                continue
 
             title = xml_act.xpath("./om:Title", namespaces=NS)
             if title is None:
@@ -509,28 +576,36 @@ class ImportActsCommand(LabelCommand):
                 trans, created = om_act.transition_set.get_or_create(
                     act=om_act.act_ptr,
                     final_status=om_act.STATUS.presented,
-                    transition_date=om_act.presentation_date,
+                    defaults={
+                        'transition_date': om_act.presentation_date,
+                    }
                 )
                 if created:
                     logger.debug("  presentation transition created")
                 else:
                     logger.debug("  presentation transition found")
+                    trans.transition_date = om_act.presentation_date
                     trans.save()
             else:
                 logger.debug("  presentation transition can't be added, no presentation_date")
 
+            # fetch transitions statuses
+            self.fetch_transitions(self.TRANSITION_STATUS_MAP_DEL, om_act, xml_act)
 
             # create approval transition for Deliberations, if approval_date is defined
             if om_act.approval_date is not None:
                 trans, created = om_act.transition_set.get_or_create(
                     act=om_act.act_ptr,
                     final_status=om_act.STATUS.approved,
-                    transition_date=om_act.approval_date,
+                    defaults={
+                        'transition_date': om_act.approval_date,
+                    }
                 )
                 if created:
                     logger.debug("  approval transition created")
                 else:
                     logger.debug("  approval transition found")
+                    trans.transition_date = om_act.approval_date
                     trans.save()
 
 
@@ -541,6 +616,8 @@ class ImportActsCommand(LabelCommand):
             # real-time search index update
             # since signals do not handle hierarchy well
             if not self.dry_run:
+                if om_act.text:
+                    om_act.act_ptr.text = om_act.text
                 om_act.act_ptr.save()
 
     def handle_interrogation(self, filename, **options):
@@ -567,6 +644,14 @@ class ImportActsCommand(LabelCommand):
             if presentation_date is None:
                 self.stderr.write(
                     "Error: Act %s has no presentation_date attribute! Skipping this sitting." % id
+                )
+                continue
+
+            # check if presentation date is in range
+            if not self._check_presentation_date(presentation_date):
+                self.logger.error(
+                    "Error: Act %s has presentation_date (%s) out of required range %s - %s! Skipping." %
+                    (id, presentation_date, self.date_start, self.date_end)
                 )
                 continue
 
@@ -664,15 +749,23 @@ class ImportActsCommand(LabelCommand):
                 trans, created = om_act.transition_set.get_or_create(
                     act=om_act.act_ptr,
                     final_status=om_act.STATUS.presented,
-                    transition_date=om_act.presentation_date,
-                    )
+                    defaults = {
+                        'transition_date': om_act.presentation_date,
+                    }
+                )
                 if created:
                     logger.debug("  presentation transition created")
                 else:
                     logger.debug("  presentation transition found")
+                    trans.transition_date = om_act.presentation_date
                     trans.save()
             else:
                 logger.debug("  presentation transition can't be added, no presentation_date")
+
+            # fetch transitions statuses
+            self.fetch_transitions(self.TRANSITION_STATUS_MAP_INT, om_act, xml_act)
+
+
 
             self.fetch_attachments(filename, om_act, xml_act)
 
@@ -680,6 +773,8 @@ class ImportActsCommand(LabelCommand):
             # real-time search index update
             # since signals do not handle hierarchy well
             if not self.dry_run:
+                if om_act.text:
+                    om_act.act_ptr.text = om_act.text
                 om_act.act_ptr.save()
 
     def handle_motion(self, filename, **options):
@@ -706,6 +801,14 @@ class ImportActsCommand(LabelCommand):
             if presentation_date is None:
                 self.stderr.write(
                     "Error: Act %s has no presentation_date attribute! Skipping this sitting." % id
+                )
+                continue
+
+            # check if presentation date is in range
+            if not self._check_presentation_date(presentation_date):
+                self.logger.error(
+                    "Error: Act %s has presentation_date (%s) out of required range %s - %s! Skipping." %
+                    (id, presentation_date, self.date_start, self.date_end)
                 )
                 continue
 
@@ -770,22 +873,31 @@ class ImportActsCommand(LabelCommand):
                 trans, created = om_act.transition_set.get_or_create(
                     act=om_act.act_ptr,
                     final_status=om_act.STATUS.presented,
-                    transition_date=om_act.presentation_date,
-                    )
+                    defaults={
+                        'transition_date': om_act.presentation_date,
+                    }
+                )
                 if created:
                     logger.debug("  presentation transition created")
                 else:
                     logger.debug("  presentation transition found")
+                    trans.transition_date = om_act.presentation_date
                     trans.save()
             else:
                 logger.debug("  presentation transition can't be added, no presentation_date")
 
+            # fetch transitions statuses
+            self.fetch_transitions(self.TRANSITION_STATUS_MAP_MOT, om_act, xml_act)
+
             self.fetch_attachments(filename, om_act, xml_act)
+
 
             # call parent class save to trigger
             # real-time search index update
             # since signals do not handle hierarchy well
             if not self.dry_run:
+                if om_act.text:
+                    om_act.act_ptr.text = om_act.text
                 om_act.act_ptr.save()
 
     def handle_label(self, filename, **options):
@@ -819,6 +931,9 @@ class ImportActsCommand(LabelCommand):
 
         self.dry_run = options['dry_run']
 
+        self.date_start = options['from_date']
+        self.date_end = options['to_date']
+
         # fix logger level according to verbosity
         verbosity = options['verbosity']
         if verbosity == '0':
@@ -835,3 +950,14 @@ class ImportActsCommand(LabelCommand):
             self.handle_label(label, **options)
         return 'done\n'
 
+
+    def _check_presentation_date(self, presentation_date):
+        """
+        If date_start or date_end have been specified,
+        check if the presentation date is within the range.
+        """
+        if self.date_start and presentation_date < self.date_start:
+            return False
+        if self.date_end and presentation_date > self.date_end:
+            return False
+        return True

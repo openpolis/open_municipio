@@ -639,12 +639,17 @@ class Group(models.Model):
                 GroupResponsability.CHARGE_TYPES.deputy
                 ),
             groupcharge__groupresponsability__end_date__isnull=True
-        ).exclude(
+        )
+
+        """
+        President and vice-president may be excluded
+           .exclude(
             groupcharge__charge__institutionresponsability__charge_type__in=(
                 InstitutionResponsability.CHARGE_TYPES.president,
                 InstitutionResponsability.CHARGE_TYPES.vice
             )
         )
+        """
 
     @property
     def alpha_members(self):
