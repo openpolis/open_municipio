@@ -14,7 +14,7 @@
             {% for rec in act.recipients %}
             <li>
                 <a href="{{ rec.person.get_absolute_url }}">
-                {% if a.person.img %}
+                {% if rec.person.img %}
                     {% thumbnail rec.person.img "50x50" crop="center" as im %}
                         <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" class="thumb-left politician-picture">
                     {% endthumbnail %}
