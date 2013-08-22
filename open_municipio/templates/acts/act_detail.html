@@ -83,7 +83,7 @@
     <h2 id="act_title">
       <a href="#" id="{{ act|as_token }}" class="bookmarkable" {% if act.is_key %} data-toggle="tooltip" data-placement="right" title="Voto chiave"{% endif %}>
           <i class="{% is_key_class act %}"></i></a>
-      <strong class="input-append">{{ act.title }}</strong>
+      <strong class="input-append">{% if act.adj_title %}{{ act.adj_title }}{% else %}{{ act.title }}{% endif %}</strong>
       {% if act.idnum %}
       <small>(N. {{ act.idnum }})</small></h2>
       {% endif %}
