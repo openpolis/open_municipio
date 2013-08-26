@@ -143,9 +143,9 @@
     <table class="stats">
         <tr>
             <td>{{ num_acts.deliberation|circled:"colored" }}</td>
-            <th class="span6"><a href="{{ SEARCH_URLS.deliberation }}">Delibere</a></th>
-            <td>{{ num_acts.interrogation|circled:"colored" }}</td>
-            <th class="span6">Interrogazioni</th>
+            <th class="span6"><a href="{{ SEARCH_URLS.council_deliberation }}">Delibere di Consiglio</a></th>
+            <td>{{ num_acts.cgdeliberation|circled:"colored" }}</td>
+            <th class="span6"><a href="{{ SEARCH_URLS.cg_deliberation }}">Delibere di Giunta</a></th>
         </tr>
         <tr>
             <td>{{ num_acts.motion|circled:"colored" }}</td>
@@ -155,7 +155,10 @@
         </tr>
         <tr>
             <td>{{ num_acts.interpellation|circled:"colored" }}</td>
-            <th colspan="3"><a href="{{ SEARCH_URLS.interpellation }}">Interpellanze</a></th>
+            <th class="span6"><a href="{{ SEARCH_URLS.interpellation }}">Interpellanze</a></th>
+            <td>{{ num_acts.interrogation|circled:"colored" }}</td>
+            <th class="span6"><a href="{{ SEARCH_URLS.interrogation }}">Interrogazioni</a></th>
+
         </tr>
     </table>
 

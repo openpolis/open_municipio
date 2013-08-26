@@ -97,19 +97,19 @@
   <table class="stats">
     <tr>
       <td>{{ num_acts.deliberation|circled:"colored" }}</td>
-      <th class="span6">Delibere</th>
+      <th class="span6"><a href="{{ SEARCH_URLS.council_deliberation }}">Delibere</a></th>
       <td>{{ num_acts.interrogation|circled:"colored" }}</td>
-      <th class="span6">Interrogazioni</th>
+      <th class="span6"><a href="{{ SEARCH_URLS.interrogation }}">Interrogazioni</a></th>
     </tr>
     <tr>
       <td>{{ num_acts.motion|circled:"colored" }}</td>
-      <th class="span6">Mozioni</th>
+      <th class="span6"><a href="{{ SEARCH_URLS.motion }}">Mozioni</a></th>
       <td>{{ num_acts.agenda|circled:"colored" }}</td>
-      <th class="span6">Ordini del giorno</th>
+      <th class="span6"><a href="{{ SEARCH_URLS.agenda }}">Ordini del giorno</a></th>
     </tr>
     <tr>
       <td>{{ num_acts.interpellation|circled:"colored" }}</td>
-      <th colspan="3">Interpellanze</th>
+      <th colspan="3"><a href="{{ SEARCH_URLS.interpellation }}">Interpellanze</a></th>
     </tr>
   </table>
 
