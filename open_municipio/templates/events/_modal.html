@@ -26,7 +26,7 @@
         <ul>
             {% for act in event.acts.all %}
                 <li>
-                    <a href="{{ act.downcast.get_absolute_url }}" title="{{ act.title }}">{{ act.idnum }} - {{ act.title|truncatewords:10 }}</a>
+                    <a href="{{ act.downcast.get_absolute_url }}" title="{% if act.adj_title %}{{ act.adj_title }}{% else %}{{ act.title }}{% endif %}">{{ act.idnum }} - {% if act.adj_title %}{{ act.adj_title|truncatewords:10 }}{% else %}{{ act.title|truncatewords:10 }}{% endif %}</a>
                 </li>
             {% endfor %}
         </ul>

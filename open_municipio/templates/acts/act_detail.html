@@ -11,7 +11,7 @@
 {% comment %}WebServices tags: share{% endcomment %}
 {% load web_services_tags %}
 
-{% block title %}Dettaglio {{ act }}{% endblock title %}
+{% block title %}Dettaglio {% if act.adj_title %}{{ act.adj_title }}{% else %}{{ act }}{% endif %}{% endblock title %}
 {% block content_header %}Atto{% endblock %}
 {% block acts_class %}active{% endblock %}
 {% block body_class %}acts{% endblock %}

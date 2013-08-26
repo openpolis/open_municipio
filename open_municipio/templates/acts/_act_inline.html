@@ -1,4 +1,4 @@
-<a href="{{ act.get_absolute_url }}">{{ act.title }}</a><br/>
+<a href="{{ act.get_absolute_url }}">{% if act.adj_title %}{{ act.adj_title }}{% else %}{{ act.title }}{% endif %}</a><br/>
 {{ act.get_type_name|title }} -
 <a href="{{ act.presenters.0.person.get_absolute_url }}">{{ act.presenters.0.person }}</a>
 {% if act.presenters > 1 %}e altri{% endif %}

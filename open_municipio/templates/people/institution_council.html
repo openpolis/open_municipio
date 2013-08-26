@@ -83,7 +83,7 @@
     <h2>Ultimi 3 atti del Consiglio</h2>
   <ul class="list-plain">
     {% for act in latest_acts %}
-    <li><strong><a href="{{ act.get_absolute_url }}">{{ act.title }}</a></strong>
+    <li><strong><a href="{{ act.get_absolute_url }}">{% if act.adj_title %}{{ act.adj_title }}{% else %}{{ act.title }}{% endif %}</a></strong>
 
       {% object_inline_monitoring act.downcast %}
 
