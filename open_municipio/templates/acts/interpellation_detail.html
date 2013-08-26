@@ -7,8 +7,9 @@
 {% block act_tab_body %}
     {{ block.super }}
     {% include 'acts/act_table_supporters.html' with act_supporters=act.first_signers supporter_title='Proponenti' %}
-    
-    <section class="span9">
+ 
+    <div class="row-fluid">   
+    <section class="span6">
         <h2>Destinatari</h2>
         <ul class="people-list">
             {% for rec in act.recipients %}
@@ -36,7 +37,8 @@
             {% endfor %}
         </ul>
     </section>
-
+    <section class="span6"></section>
+    </div>
 {% endblock %}
 
 {% block act_text %}
