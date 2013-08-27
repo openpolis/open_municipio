@@ -505,7 +505,16 @@ class Interrogation(Act):
 
         return self.text
 
+    @property
+    def related_speeches(self):
+        speeches = []
+        try:
+            act_speeches = ActHasSpeech.objects.filter(act=self,relation_type='REF').order_by('pk')
+            speeches = map(lambda x: x.speech, act_speeches)
+        except ObjectDoesNotExist:
+            pass
 
+        return speeches
 
 
 class Interpellation(Act):
@@ -586,6 +595,17 @@ class Interpellation(Act):
 
         return self.text
 
+
+    @property
+    def related_speeches(self):
+        speeches = []
+        try:
+            act_speeches = ActHasSpeech.objects.filter(act=self,relation_type='REF').order_by('pk')
+            speeches = map(lambda x: x.speech, act_speeches)
+        except ObjectDoesNotExist:
+            pass
+
+        return speeches
 
 class Motion(Act):
     """
