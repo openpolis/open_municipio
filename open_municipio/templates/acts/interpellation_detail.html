@@ -23,74 +23,82 @@
         {% endif %}
     </div>
 
-    {% for speech in act.related_speeches %}
-        <div class="row-fluid">
-        <section class="span6">
-
-        <h2>Replica</h2>
-
-            <ul class="people-list">
-            <li>
-            {% if speech.author_charge %}
-                {% include 'people/politician_list_section.html' with politician=speech.author_charge %}
-                {% object_inline_monitoring speech.author %}
-            {% elif speech.author_name_when_external %}
-                {{ speech.author_name_when_external }}
-            {% else %}
-                Autore non specificato
+    {% if act.related_speeches %}
+        {% for act_speech in act.related_speeches %}
+        <!-- risposte e repliche -->
+            <div class="row-fluid">
+            <section class="span6">
+    
+            {% if act_speech.is_response %}
+            <h2>Risposta</h2>
+            {% elif act_speech.is_reference %}
+            <h2>Replica</h2>
             {% endif %}
-            </li>
-            </ul>
-        </section>
-        <section class="span6"/>
-        </div>
-        <div class="pre">
-        {{ speech.text|safe }}
-        </div>
-        <a href="{{ speech.get_absolute_url }}">Vedi i dettagli dell'intervento</a>
-    {% endfor %}
-
-    <!-- contenuto della risposta -->
-        <div class="row-fluid">
-        <section class="span6">
-        <h2>Risposta</h2>
-
-        <ul class="people-list">
-            {% for rec in act.recipients %}
-            <li>
-                <a href="{{ rec.person.get_absolute_url }}">
-                {% if rec.person.img %}
-                    {% thumbnail rec.person.img "50x50" crop="center" as im %}
-                        <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" class="thumb-left politician-picture">
-                    {% endthumbnail %}
+    
+                <ul class="people-list">
+                <li>
+                {% if act_speech.speech.author_charge %}
+                    {% include 'people/politician_list_section.html' with politician=act_speech.speech.author_charge %}
+                    {% object_inline_monitoring act_speech.speech.author %}
+                {% elif act_speech.speech.author_name_when_external %}
+                    {{ speech.author_name_when_external }}
                 {% else %}
-                    <img src="{{ STATIC_URL }}img/placehold/face_50.png" width="50" height="50" class="thumb-left politician-picture">
+                    Autore non specificato
                 {% endif %}
-                </a>
-
-                <div>
-                    <a href="{{ rec.get_absolute_url }}"><strong>{{ rec.person.full_name }}</strong></a>
-
-                    <br/>
-                    {{ rec.denomination }}
-                    <br/>
-
-                    {% object_inline_monitoring rec.person %}
-                </div>
-            </li>
-            {% endfor %}
-        </ul>
-        </section>
-        <section class="span6"/>
+                </li>
+                </ul>
+            </section>
+            <section class="span6"/>
+            </div>
+            <div class="pre">
+            {{ act_speech.speech.text|safe }}
+            </div>
+            <a href="{{ act_speech.speech.get_absolute_url }}">Vedi i dettagli dell'intervento</a>
+        {% endfor %}
+    {% else %}
+        <!-- contenuto della risposta -->
+        <div class="row-fluid">
+            <section class="span6">
+            <h2>Risposta</h2>
+    
+            <ul class="people-list">
+                {% for rec in act.recipients %}
+                <li>
+                    <a href="{{ rec.person.get_absolute_url }}">
+                    {% if rec.person.img %}
+                        {% thumbnail rec.person.img "50x50" crop="center" as im %}
+                            <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" class="thumb-left politician-picture">
+                        {% endthumbnail %}
+                    {% else %}
+                        <img src="{{ STATIC_URL }}img/placehold/face_50.png" width="50" height="50" class="thumb-left politician-picture">
+                    {% endif %}
+                    </a>
+    
+                    <div>
+                        <a href="{{ rec.get_absolute_url }}"><strong>{{ rec.person.full_name }}</strong></a>
+    
+                        <br/>
+                        {{ rec.denomination }}
+                        <br/>
+    
+                        {% object_inline_monitoring rec.person %}
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+            </section>
+            <section class="span6"/>
         </div>
-
-        {% if act.answer_verbal != None %}
-        <div class="pre">
-        {{ act.answer_verbal.text|safe }}
-        </div>
-        <a href="{{ act.answer_verbal.get_absolute_url }}">Vedi i dettagli dell'intervento</a>
-        {% elif act.answer_written != None %}
-        <pre>{{ act.answer_written|safe }}</pre>
+    
+        {% if act.answer_verbal %}
+            <div class="pre">
+            {{ act.answer_verbal.text|safe }}
+            </div>
+            <a href="{{ act.answer_verbal.get_absolute_url }}">Vedi i dettagli dell'intervento</a>
+        {% elif act.answer_written %}
+            <pre>{{ act.answer_written|safe }}</pre>
         {% endif %}
+    {% endif %}
+
 
 {% endblock %}

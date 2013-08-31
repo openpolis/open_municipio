@@ -509,12 +509,11 @@ class Interrogation(Act):
     def related_speeches(self):
         speeches = []
         try:
-            act_speeches = ActHasSpeech.objects.filter(act=self,relation_type='REF').order_by('pk')
-            speeches = map(lambda x: x.speech, act_speeches)
+            act_speeches = ActHasSpeech.objects.filter(act=self).filter(~ models.Q(relation_type = 'REQ')).order_by('pk')
         except ObjectDoesNotExist:
             pass
 
-        return speeches
+        return act_speeches
 
 
 class Interpellation(Act):
@@ -600,12 +599,12 @@ class Interpellation(Act):
     def related_speeches(self):
         speeches = []
         try:
-            act_speeches = ActHasSpeech.objects.filter(act=self,relation_type='REF').order_by('pk')
-            speeches = map(lambda x: x.speech, act_speeches)
+            act_speeches = ActHasSpeech.objects.filter(act=self).filter(~ models.Q(relation_type = 'REQ')).order_by('pk')
+
         except ObjectDoesNotExist:
             pass
 
-        return speeches
+        return act_speeches
 
 class Motion(Act):
     """
@@ -867,6 +866,17 @@ class ActHasSpeech(models.Model):
         verbose_name = _('act mentioned in speech')
         verbose_name_plural = _('acts mentioned in speech')
 
+    @property
+    def is_request(self):
+        return self.relation_type == 'REQ'
+
+    @property
+    def is_response(self):
+        return self.relation_type == 'RESP'
+    
+    @property
+    def is_reference(self):
+        return self.relation_type == 'REF'
 
 #
 # Calendar
