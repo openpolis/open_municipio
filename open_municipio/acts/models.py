@@ -51,6 +51,12 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
     # added to avoid problems with South migrations
     add_ignored_fields(["^open_municipio\.taxonomy\.managers"])
 
+    STATUS = Choices(
+        ('PRESENTED', 'presented', _('presented')),
+        ('APPROVED', 'approved', _('approved')),
+        ('REJECTED', 'rejected', _('rejected')),
+    )
+
     idnum = models.CharField(max_length=64, blank=True, help_text=_("A string representing the identification or sequence number for this act, used internally by the municipality's administration."))
     title = models.CharField(_('title'), max_length=1024, blank=True)
     adj_title = models.CharField(_('adjoint title'), max_length=1024, blank=True, help_text=_("An adjoint title, added to further explain an otherwise cryptic title"))
