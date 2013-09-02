@@ -19,7 +19,7 @@ def get_sittings_years(max_len=5):
 
 @register.simple_tag
 def print_sittings_council_list(year, month):
-    sittings = Sitting.objects.filter(institution__institution_type=Institution.COUNCIL).filter(date__year=year).filter(date__month=month).order_by("date")
+    sittings = Sitting.objects.filter(institution__institution_type=Institution.COUNCIL).filter(date__year=year).filter(date__month=month,idnum__gt=0).order_by("date")
 
     if len(sittings) == 0:
         return ""
