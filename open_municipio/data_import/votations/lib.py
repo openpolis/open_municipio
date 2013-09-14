@@ -16,6 +16,7 @@ from open_municipio.votations.models import ChargeVote
 from lxml import etree
 
 import logging
+import traceback
 
  
 class VotationDataSource(DataSource):
@@ -46,18 +47,21 @@ class VotationDataSource(DataSource):
 
 ## classes of "DOM" elements
 
-class Sitting(object):
-    def __init__(self, call=None, date=None, seq_n=None, site=None):
+class SittingItem(object):
+    def __init__(self, sitting_n=None, call=None, date=None, seq_n=None, site=None, n_votes=0):
         # sitting instance attributes
+        self.sitting_n = sitting_n
         self.call = call         
         self.date =  date
         self.seq_n = seq_n
         self.site = site
         # ballots comprising this sitting
         self.ballots = []
+        self.n_votes = n_votes
     
     def __repr__(self):
-        return "Sitting #%(sitting_n)s of %(sitting_date)s" % {'sitting_n': self.seq_n, 'sitting_date': self.date}
+        return "SittingItem %s of Sitting %s, on date %s" % \
+            ( self.seq_n, self.sitting_n, self.date )
 
 class Ballot(object):
     def __init__(self, sitting, seq_n=None, timestamp=None, ballot_type=None, 
@@ -85,6 +89,7 @@ class Ballot(object):
 
     def __repr__(self):
         return "Ballot #%(ballot_n)s of %(sitting)s" % {'ballot_n': self.seq_n, 'sitting': self.sitting}
+    
 
 class Vote(object):
     def __init__(self, ballot, cardID=None, componentID=None, groupID=None, component_name=None, choice=None):
@@ -118,18 +123,24 @@ class BaseVotationReader(BaseReader):
         self.sittings = []
         # construct the DOM tree
         all_sittings = data_source.get_sittings()
-        self.logger.info("All sittings: %s" % (all_sittings,))
-
-        for sitting in all_sittings:
+        
+        
+        
+        for sitting_item in all_sittings:
+            assert isinstance(sitting_item, SittingItem)
+            
+            self.logger.debug("Sitting Item: %s, n_votes = %s" % (sitting_item, sitting_item.n_votes, ))
+            if sitting_item.n_votes == 0:
+                continue
+            
             try:
-                sitting.ballots = data_source.get_ballots(sitting)
-                self.sittings.append(sitting)
+                sitting_item.ballots = data_source.get_ballots(sitting_item)
+                self.sittings.append(sitting_item)
             except Exception, e:
-                self.logger.warning("Sitting %s has been skipped because of the following error: %s" % (sitting, e))
+                self.logger.warning("Sitting %s has been skipped because of the following error: %s" % (sitting_item, e))
 
-        # as now, ``self.sittings`` should be a object tree 
-        # providing a comprehensive representation of all relevant data
-        # that can be extracted from the data source
+        #self.logger.info("Sittings with ballots: %s" % (self.sittings,))
+
         return self.sittings      
 
     
@@ -342,7 +353,9 @@ class DBVotationWriter(BaseVotationWriter):
 
     @transaction.commit_on_success
     def _write_sitting(self, sitting):
-        self.logger.info("processing %s in Mdb" % sitting)
+        assert isinstance(sitting, SittingItem)
+        
+        self.logger.info("Processing %s in Mdb" % sitting)
 #        self.logger.info("Sitting site code: %s" % sitting.site)
         inst = Institution.objects.get(name=self.conf.XML_TO_OM_INST[sitting.site])
 
@@ -362,20 +375,21 @@ class DBVotationWriter(BaseVotationWriter):
                 self.logger.debug("%s found in DB" % s)
 
         for ballot in sitting.ballots:
+            assert isinstance(ballot, Ballot)
+            
 #            self.logger.info("read ballot timestamp: %s" % (ballot.time,))
             ballot_date = ballot.time.date()
 
-            self.logger.info("processing %s in Mdb" % ballot)
+            self.logger.info("Processing %s in Mdb" % ballot)
         
             if not sitting_created and sitting.date != ballot_date:
                 #raise Exception("Existing sitting number %s, date %s but ballot date is %s" % (sitting.seq_n, sitting.date, ballot_date))
                 self.logger.warning("Existing sitting number %s, date %s but ballot date is %s. Proceed with caution ..." % (sitting.seq_n, sitting.date, ballot_date))
 
             if not self.dry_run:
-
                 # get or create the ballot in the DB
                 b, created = DBBallot.objects.get_or_create(
-                    idnum=int(ballot.seq_n),
+                    idnum=ballot.seq_n,
                     sitting=s,
                     defaults={
                         'act_descr': ballot.subj or ballot.short_subj or "",
@@ -400,20 +414,19 @@ class DBVotationWriter(BaseVotationWriter):
                 return
 
             for vote in ballot.votes:
-                self.logger.debug("processing %s in Mdb" % vote)
+                assert isinstance(vote, Vote)
+                #self.logger.debug("Processing %s in Mdb" % vote)
                 self.write_vote(vote, db_ballot=b)
 
             # since absences are not explicitly set
             # they must be computed
             self.compute_absences(b)
 
-            # TODO:
-            # remove Votation and skip this votation if
-            # sums are not verified
-            #
-            # if not b.verify_sums():
-            #   b.delete()
-            #   continue
+            try:
+                assert isinstance(b, DBBallot)
+                b.verify_integrity()
+            except Exception, e:
+                self.logger.warning("Imported ballot %s does not pass integrity check: %s" % (b, e, ))
 
             # compute and cache group votes into GroupVote
             self.logger.info("Compute group vote of %s (date:%s)" % (b,b.sitting.date))

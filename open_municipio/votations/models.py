@@ -111,6 +111,32 @@ class Votation(models.Model):
         """
         for vc in self.charge_votes:
             vc.charge.update_presence_cache()
+            
+    def verify_integrity(self):
+        """
+        Verify the integrity of the ballot structure. In particular checks that 
+        related self.votes are consistent with the votes counted in the self.n_*
+        fields. If an error is detected, raise an exception explaining the problem
+        """
+        errors = []
+        
+        n_sum = self.n_yes + self.n_no + self.n_abst
+        if n_sum != self.n_presents:
+            errors.append("The number of presents (%s) is different from the sum of yes, no and abstained (%s)" % 
+                            (n_sum, self.n_presents, ))
+        
+        num_charge_votes = self.charge_votes.count()
+        if num_charge_votes < self.n_presents:
+            errors.append("The related votes (%s) are less that the reported number of presents (%s)" %
+                            (num_charge_votes, self.n_presents, ))
+        
+        if num_charge_votes < n_sum:
+            errors.append("The number of related votes (%s) is less than the yes, no and abst votes (%s)" %
+                            (num_charge_votes, n_sum, ))
+        
+        if len(errors) > 0:
+            raise Exception(",".join(errors))
+
 
 
 class GroupVote(TimeStampedModel):

@@ -117,12 +117,35 @@ class Command(BaseCommand):
         if delete_all:
             self._delete_all()
         
+    def _prompt(self, prompt_string, allowed_values=None):
+        
+        if not hasattr(allowed_values, "__iter__"):
+            raise ValueError("The passed allowed values should be an iterable of string")
+        
+        if allowed_values:
+            prompt = u"%s (%s)" % (prompt_string, ",".join(allowed_values))
+        
+        user_input = raw_input("%s: " % prompt)
+        
+        if allowed_values:
+            if not user_input in allowed_values:
+                print "The passed value is not allowed. Choose between: %s" % (",".join(allowed_values))
+                return self._prompt(prompt_string, allowed_values)
+                
+                
+        return user_input
         
     def _delete(self, qs):
         num_votes = qs.count()
         
         if not self.fake:
             # TODO prompt command for confirmation
+            try:
+                prompt = self._prompt("You are going to delete %s ballots. Are you sure?" % (num_votes,), ("y","n"))
+                if prompt != "y":
+                    raise CommandError("Command interrupted by the user")
+            except KeyboardInterrupt:
+                raise CommandError("Command interrupted by the user")
             qs.delete()
             
         print "Ballots deleted: %s" % (num_votes,)
