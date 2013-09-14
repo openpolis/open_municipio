@@ -118,7 +118,7 @@ class BaseVotationReader(BaseReader):
         self.sittings = []
         # construct the DOM tree
         all_sittings = data_source.get_sittings()
-        self.logger.info("All sittings: %s" % all_sittings)
+        self.logger.info("All sittings: %s" % (all_sittings,))
 
         for sitting in all_sittings:
             try:
@@ -336,7 +336,9 @@ class DBVotationWriter(BaseVotationWriter):
             try:
                 self._write_sitting(sitting)
             except Exception, e:
-                self.logger.warning("Error saving sitting. Skip. Detail: %s" % e)
+                import traceback
+                self.logger.warning("Error saving sitting. Skip. Detail: %s" % (e, ))
+                self.logger.debug("Stacktrace for previous exception: %s" % (traceback.format_exc(), ))
 
     @transaction.commit_on_success
     def _write_sitting(self, sitting):
@@ -366,7 +368,8 @@ class DBVotationWriter(BaseVotationWriter):
             self.logger.info("processing %s in Mdb" % ballot)
         
             if not sitting_created and sitting.date != ballot_date:
-                raise Exception("Existing sitting number %s, date %s but ballot date is %s" % (sitting.seq_n, sitting.date, ballot_date))
+                #raise Exception("Existing sitting number %s, date %s but ballot date is %s" % (sitting.seq_n, sitting.date, ballot_date))
+                self.logger.warning("Existing sitting number %s, date %s but ballot date is %s. Proceed with caution ..." % (sitting.seq_n, sitting.date, ballot_date))
 
             if not self.dry_run:
 

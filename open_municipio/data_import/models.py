@@ -8,6 +8,9 @@ from django.utils.translation import ugettext_lazy as _
 
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 
+from open_municipio.people.models import Charge
+
+
 import logging
 
 class Provider(models.Model):
@@ -29,8 +32,44 @@ class LookupObject(models.Model):
         abstract = True
 
     @staticmethod
-    def lookup(objects, external, provider):
-        return objects.get(external=external, provider=provider).local
+    def extract_active(lookup_objs, as_of):
+        
+        found = None
+        
+        for curr_obj in lookup_objs:
+            if isinstance(curr_obj, Charge):
+                
+                if not curr_obj.is_in_charge(as_of):
+                    continue                
+                
+                if found:
+                    raise ValueError("More than one active object correspond: date=%s, 1st found=%s, 2nd found=%s" % (as_of, found, curr_obj))
+                
+                found = curr_obj
+            else:
+                raise ValueError("Current object is not of supported type: (Charge, ). Passed: %s" % (curr_obj, ))
+        
+        return found
+
+    @staticmethod
+    def lookup(objects, external, provider, as_of=None):
+        #return objects.get(external=external, provider=provider).local
+        lookup_objs = objects.filter(external=external, provider=provider)
+        
+        local_objs = map(lambda x: x.local, lookup_objs)
+        
+        if as_of:
+            found = LookupObject.extract_active(local_objs, as_of)
+        elif len(local_objs) == 1:
+            found = local_objs[0]
+        elif len(local_objs) > 1:
+            raise ValueError("Too many occurrence of external id %s (no date passed). Found: %s" % 
+                             (external, local_objs, ))
+        else:
+            # no object found
+            raise ValueError("No correspondence found for external id %s" % (external, ))
+        
+        return found
 
     def __str__(self):
         return "%s [%s > %s]" % (self.local, self.provider, self.external)
@@ -56,9 +95,9 @@ class LookupInstitutionCharge(LookupObject):
     provider = models.ForeignKey(Provider,verbose_name=_('provider'))
 
     @staticmethod
-    def lookup(external, provider):
+    def lookup(external, provider, as_of):
         return LookupObject.lookup(LookupInstitutionCharge.objects, 
-            external, provider)
+            external, provider, as_of)
 
     @property
     def person(self):
@@ -80,9 +119,9 @@ class LookupCompanyCharge(LookupObject):
     provider = models.ForeignKey(Provider,verbose_name=_('provider'))
 
     @staticmethod
-    def lookup(external, provider):
+    def lookup(external, provider, as_of):
         return LookupObject.lookup(LookupCompanyCharge.objects, external, 
-            provider)
+            provider, as_of)
 
     class Meta:
         verbose_name = _("lookup company charge")
@@ -94,9 +133,9 @@ class LookupAdministrationCharge(LookupObject):
     provider = models.ForeignKey(Provider,verbose_name=_('provider'))
 
     @staticmethod
-    def lookup(external, provider):
+    def lookup(external, provider, as_of):
         return LookupObject.lookup(LookupAdministrationCharge.objects, external, 
-            provider)
+            provider, as_of)
 
     class Meta:
         verbose_name = _("lookup administration charge")

@@ -141,6 +141,29 @@ class PersonSeekerMixin:
     def lookup_person(self, external, provider):
         return LookupPerson.lookup(external, provider)
 
+class ChargeMapCache:
+    
+    cache = {}
+    
+    @staticmethod
+    def lookup(external, provider, as_of):
+        if provider in ChargeMapCache.cache:
+            if external in ChargeMapCache.cache[provider]:
+                if as_of in ChargeMapCache.cache[provider][external]:
+                    return ChargeMapCache.cache[provider][external][as_of]
+                
+        return None
+    
+    @staticmethod
+    def update(external, provider, as_of, value):
+        if not provider in ChargeMapCache.cache:
+            ChargeMapCache.cache[provider] = {}
+            
+        if not external in ChargeMapCache.cache[provider]:
+            ChargeMapCache.cache[provider][external] = {}
+            
+        ChargeMapCache.cache[provider][external][as_of] = value
+
 
 class ChargeSeekerFromMapMixin:
     """
@@ -151,49 +174,54 @@ class ChargeSeekerFromMapMixin:
     """
 
     logger = logging.getLogger("import")
-    charge_map_cache = {}
+#    charge_map_cache = {}
 
-    def lookup_charge(self, external, provider):
+    def lookup_charge(self, external, provider, as_of):
 
         # if already mapped, return the result from the cache
-        if provider in self.charge_map_cache:
-            if external in self.charge_map_cache[provider]:
-                cached_charge = self.charge_map_cache[provider][external]
-                self.logger.debug("Returned cached charge: %s ..." % (cached_charge,))
-                return cached_charge
-        else:
-            self.charge_map_cache[provider] = {}
+#        if provider in self.charge_map_cache: 
+#            if external in self.charge_map_cache[provider]: 
+#                if as_of in self.charge_map_cache[provider][external]:
+#                    cached_charge = self.charge_map_cache[provider][external][as_of]
+##                    self.logger.debug("Returned cached charge: %s ..." % (cached_charge,))
+#                    return cached_charge
+#            else:
+#                self.charge_map_cache[provider][external] = {}
+#        else:
+#            self.charge_map_cache[provider] = {}
+        
+        found_internal = ChargeMapCache.lookup(external, provider, as_of)
+        
+        if not found_internal:
+#            self.logger.info("Try to detect institution...")        
+            try:
+    #            institutionLookup = LookupInstitutionCharge.lookup(external,provider)
+                found_internal = LookupInstitutionCharge.lookup(external,provider,as_of)
+    #            return institutionLookup
+            except ObjectDoesNotExist:
+                pass
 
-        found_internal = None
-        try:
-#            institutionLookup = LookupInstitutionCharge.lookup(external,provider)
-            found_internal = LookupInstitutionCharge.lookup(external,provider)
-#            return institutionLookup
-        except ObjectDoesNotExist:
-            pass
-
-        if found_internal == None:
-            self.logger.info("Try to detect company...")
+        if not found_internal:
+#            self.logger.info("Try to detect company...")
             try:
 #                companyLookup = LookupCompanyCharge.lookup(external,provider)
-                found_internal = LookupCompanyCharge.lookup(external,provider)
+                found_internal = LookupCompanyCharge.lookup(external,provider, as_of)
 #                return companyLookup
             except ObjectDoesNotExist:
                 pass
 
-        if found_internal == None:
-            self.logger.info("Try to detect administration ...")
+        if not found_internal:
+#            self.logger.info("Try to detect administration ...")
             try:
 #                administrationLookup = LookupAdministrationCharge.lookup(external, provider)
-                found_internal = LookupAdministrationCharge.lookup(external, provider)
+                found_internal = LookupAdministrationCharge.lookup(external, provider, as_of)
 #                return administrationLookup
             except ObjectDoesNotExist:
                 pass
 
-        if found_internal == None:
-            self.logger.info("Unable to detect institution (component: %s)..." % external)
-
-        self.charge_map_cache[provider][external] = found_internal
+        # store in the cache for future use
+        #self.charge_map_cache[provider][external][as_of] = found_internal
+        ChargeMapCache.update(external, provider, as_of, found_internal)
 
         return found_internal
 

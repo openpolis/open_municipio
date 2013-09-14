@@ -1,3 +1,5 @@
+import datetime
+
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.db import models
@@ -287,6 +289,12 @@ class Charge(NewsTargetMixin, models.Model):
     def get_absolute_url(self):
         return self.person.get_absolute_url()
 
+    def is_in_charge(self, as_of):
+        
+        if not isinstance(as_of, datetime.date):
+            raise ValueError("The passed parameter is not a date")
+        
+        return as_of >= self.start_date and (not self.end_date or as_of <= self.end_date)
 
 class ChargeResponsability(models.Model):
     """
