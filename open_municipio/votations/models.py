@@ -1,3 +1,6 @@
+import locale
+import datetime
+
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
@@ -75,7 +78,11 @@ class Votation(models.Model):
         verbose_name_plural = _('votations')
     
     def __unicode__(self):
-        return u'votation %s' % self.idnum
+        
+        local_format = locale.nl_langinfo(locale.D_FMT)
+        local_date = self.date.strftime(local_format)
+        return _('Votation %(idnum)s of %(date)s') % { "idnum":self.idnum, 
+                                                      "date":local_date, }
 
     @models.permalink
     def get_absolute_url(self):
