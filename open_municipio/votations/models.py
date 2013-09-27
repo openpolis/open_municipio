@@ -79,10 +79,7 @@ class Votation(models.Model):
     
     def __unicode__(self):
         
-        local_format = locale.nl_langinfo(locale.D_FMT)
-        local_date = self.date.strftime(local_format)
-        return _('Votation %(idnum)s of %(date)s') % { "idnum":self.idnum, 
-                                                      "date":local_date, }
+        return _('Votation %(idnum)s') % { "idnum":self.idnum, }
 
     @models.permalink
     def get_absolute_url(self):
