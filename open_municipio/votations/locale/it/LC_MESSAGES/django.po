@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-27 16:21+0200\n"
+"POT-Creation-Date: 2013-09-27 16:37+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,80 +22,79 @@ msgstr ""
 msgid "Any"
 msgstr "Qualsiasi"
 
-#: filters.py:36 models.py:147 models.py:179
+#: filters.py:36 models.py:151 models.py:183
 msgid "Yes"
 msgstr "Sì"
 
-#: filters.py:40 models.py:148 models.py:180
+#: filters.py:40 models.py:152 models.py:184
 msgid "No"
 msgstr "No"
 
-#: models.py:44
+#: models.py:47
 msgid "Specify whether this is a key votation"
 msgstr "Specifica se è una votazione chiave"
 
-#: models.py:65
+#: models.py:68
 msgid "yes"
 msgstr "sì"
 
-#: models.py:67
+#: models.py:70
 msgid "no"
 msgstr ""
 
-#: models.py:74
+#: models.py:77
 msgid "votation"
 msgstr "votazione"
 
-#: models.py:75
+#: models.py:78
 msgid "votations"
 msgstr "votazioni"
 
-#: models.py:78
-#, python-format
-msgid "Votation %(idnum)s of %(date)s"
-msgstr "Votazione %(idnum)s del %(date)s"
+#: models.py:82
+msgid "Votation %(idnum)s"
+msgstr "Votazione %(idnum)s"
 
-#: models.py:149 models.py:181
+#: models.py:153 models.py:185
 msgid "Abstained"
 msgstr "Astenuto"
 
-#: models.py:150
+#: models.py:154
 msgid "Non computable"
 msgstr "Non calcolabile"
 
-#: models.py:167
+#: models.py:171
 msgid "group vote"
 msgstr "voto del gruppo"
 
-#: models.py:168
+#: models.py:172
 msgid "group votes"
 msgstr "voti dei gruppi"
 
-#: models.py:182
+#: models.py:186
 msgid "Vote was canceled"
 msgstr "Voto cancellato"
 
-#: models.py:183
+#: models.py:187
 msgid "Present but not voting"
 msgstr "Presente ma non votante"
 
-#: models.py:184
+#: models.py:188
 msgid "Secret votation"
 msgstr "Votazione segreta"
 
-#: models.py:185
+#: models.py:189
 msgid "Is absent"
 msgstr "Assente"
 
-#: models.py:186
+#: models.py:190
 msgid "Vote was not tracked"
 msgstr "Voto non pervenuto"
 
-#: models.py:211
+#: models.py:215
 msgid "charge vote"
 msgstr "voto incarico"
 
-#: models.py:212
+#: models.py:216
 msgid "charge votes"
 msgstr "voti incarico"
 
