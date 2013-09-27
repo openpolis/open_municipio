@@ -8,6 +8,7 @@ from open_municipio.acts.models import *
 from open_municipio.acts.forms import SpeechAdminForm, SpeechInActInlineFormSet, \
     InterpellationAdminForm, InterrogationAdminForm
 from open_municipio.acts.filters import ActByYearFilterSpec, ActByMonthFilterSpec, SpeechByYearFilterSpec,SpeechByMonthFilterSpec
+from open_municipio.taxonomy.models import TaggedAct
 
 def transition_form_factory(act_model):
     """
@@ -70,10 +71,19 @@ class TransitionInline(admin.TabularInline):
         return super(TransitionInline, self).get_formset(request, obj, **kwargs)
 
 
+class TaggedActInline(admin.TabularInline):
+    model = TaggedAct
+    
+    fields = ("tag", "category", )    
+    raw_id_fields = ("category","tag",)
+    extra = 0
+
+
 class ActAdmin(admin.ModelAdmin):
     list_display = ('idnum', 'title', 'presentation_date', 'emitting_institution', 'status')
     search_fields = ('idnum', 'title',)
     list_filter = ( ActByYearFilterSpec, ActByMonthFilterSpec,)
+    
 
     # genial hack to allow users with no permissions to show
     # the list of related acts for a raw field
@@ -88,10 +98,10 @@ class ActAdmin(admin.ModelAdmin):
     def change_view(self, request, object_id, form_url='', extra_context=None):
 
         if request.user.is_superuser:
-            self.inlines = [PresenterInline, AttachInline, TransitionInline, AmendmentInline]
+            self.inlines = [TaggedActInline, PresenterInline, AttachInline, TransitionInline, AmendmentInline]
             self.readonly = ['status']
         else:
-            self.inlines = [TransitionInline]
+            self.inlines = [TaggedActInline, TransitionInline]
             self.readonly_fields = ['idnum', 'title', 'status', 'presentation_date', 'text', 'emitting_institution']
 
         self.inline_instances = []
