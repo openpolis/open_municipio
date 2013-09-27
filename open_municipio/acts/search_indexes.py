@@ -77,7 +77,7 @@ class SpeechIndex(indexes.SearchIndex, indexes.Indexable):
 
     url = indexes.CharField(indexed=False, stored=True)
     date = indexes.DateField(indexed=True, stored=False)
-    person = indexes.CharField(indexed=True, stored=False)
+    person = indexes.MultiValueField(indexed=True, stored=False)
 
     def get_model(self):
         return Speech
@@ -94,7 +94,7 @@ class SpeechIndex(indexes.SearchIndex, indexes.Indexable):
         if obj.author != None:
             author = obj.author.slug
         
-        return author
+        return set( author )
 
     def prepare_date(self, obj):
         return obj.date
