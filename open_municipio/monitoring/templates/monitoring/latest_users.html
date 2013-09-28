@@ -1,0 +1,10 @@
+{% for u in users %}
+    <a href="{{ u.get_absolute_url }}">
+    {% if u.userprofile.uses_nickname and UI_ALLOW_NICKNAMES %}
+    	{{ u.user.username }}
+    {% else %}
+    	{{ u.user.first_name }} {{ u.user.last_name }}
+    {% endif %}
+    </a>
+    {% if not forloop.last %},{% endif %}
+{% endfor %}
