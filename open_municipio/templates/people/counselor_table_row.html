@@ -23,10 +23,10 @@
                 <!-- name -->
                 <div class="span8">
                     <a href="{{ charge.person.get_absolute_url }}">
-                        <strong>{{ charge.person|title }}</strong>
+                        <strong class="person_name">{{ charge.person|title }}</strong>
                     </a>
                     <br/>
-                    {% if label %}<span class="label" style="line-height: 20px;">{{ label }}</span><br/>{% endif %}
+                    {% if label %}<span class="label person_label" style="line-height: 20px;">{{ label }}</span><br/>{% endif %}
                     {{ charge.current_groupcharge.group.acronym }}
                     <br/>
                     in carica dal {{ charge.start_date|date:"d.m.Y" }}

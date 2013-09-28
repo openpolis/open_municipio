@@ -47,8 +47,8 @@
       {% for vp in vicepresidents %}
           {%  include 'people/counselor_table_row.html' with charge=vp.charge label="Vice presidente" id_prefix="1" %}
       {% endfor %}
-      {% for c in council.members %}
-          {%  include 'people/counselor_table_row.html' with charge=c id_prefix="2" %}
+      {% for charge in council.members %}
+          {%  include 'people/counselor_table_row.html' with charge=charge id_prefix="2" %}
       {% endfor %}
       </tbody>
     </table>
@@ -125,27 +125,93 @@
     <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.submitlink.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.dataTables.js"></script>
     <script type="text/javascript">
+    	fullname_extract = function(node) {
+    		name = $(".person_name", node).text();
+    		return name
+    	}
+    	
+    	function hasRole(node, role_check) {
+    		role_node = $(".person_label", node);
+    		
+    		if (role_node)
+    		{
+    			return role_node.text() == role_check;
+    		}
+    		else
+    		{
+    			return false;
+    		}
+    	}
+    	
+    	sort_fullname_asc = function(a,b) {
+    		
+    		a = $.parseHTML(a);
+    		b = $.parseHTML(b);
+    		
+    		var a_isPresident = hasRole(a, "Presidente");
+    		var a_isVicePresident = hasRole(a, "Vice presidente");
+    		var b_isPresident = (! a_isPresident) && hasRole(b, "Presidente");
+    		var b_isVicePresident = (! a_isVicePresident) && hasRole(b, "Vice presidente");
+    		
+    		var a_name = fullname_extract(a);
+    		var b_name = fullname_extract(b);
+    		
+            if (a_isPresident)
+            {
+            	return -1
+            }
+            else if (b_isPresident)
+           	{
+           		return 1;
+           	}
+           	else if (a_isVicePresident)
+         	{
+         		return -1;		
+         	}
+           	else if (b_isVicePresident)
+           	{
+           		return 1;
+           	}
+           	else if (a_name < b_name)
+           	{
+           		return -1;
+           	}
+           	else if (a_name > b_name)
+           	{
+           		return 1;
+           	}
+           	else
+           	{
+           		return 0	
+           	}
+        };
+    	
+    	$.fn.dataTableExt.oSort['fullname-asc']  = sort_fullname_asc;
+    	$.fn.dataTableExt.oSort['fullname-desc'] = function(a,b) {
+    		return sort_fullname_asc(b, a);
+    	};
+    
         percentage_extract = function(match, $1, offset, original) { return $1; }
 
-        $.fn.dataTableExt.oSort['percentage-asc']  = function(a,b) {
-            var x = parseInt(a.replace(/\D*?(\d*)%/, percentage_extract));
-            var y = parseInt(b.replace(/\D*?(\d*)%/, percentage_extract));
+       	sort_percentage_asc = function(a,b) {
+            var x = a.replace(/\D*?(\d*)%/, percentage_extract);
+            var y = b.replace(/\D*?(\d*)%/, percentage_extract);
             return ((x < y) ? -1 : ((x > y) ?  1 : 0));
         };
+        
+        $.fn.dataTableExt.oSort['percentage-asc']  = sort_percentage_asc; 
 
         $.fn.dataTableExt.oSort['percentage-desc'] = function(a,b) {
-            var x = parseInt(a.replace(/\D*?(\d*)%/, percentage_extract));
-            var y = parseInt(b.replace(/\D*?(\d*)%/, percentage_extract));
-            return ((x < y) ?  1 : ((x > y) ? -1 : 0));
+        	return sort_percentage_asc(b, a);
         };
-
 
         $(document).ready(function() {
             gTable = $('#consiglio').dataTable({
                 bFilter: false,
                 aoColumns: [
                     null,
-                    null,
+                    //null,
+                    { sType: "fullname", asSorting: ['desc', 'asc']},
                     { sType: "percentage", asSorting: ['desc', 'asc']},
                     {asSorting: ['desc', 'asc']},
                     {asSorting: ['desc', 'asc']},
@@ -162,7 +228,8 @@
                 oLanguage: {
                     sSearch: "Ricerca",
                     sZeroRecords: "Nessun risultato per questa ricerca"
-                }
+                },
+                aaSorting: [[ 1, "asc" ]]
 
             });
         });

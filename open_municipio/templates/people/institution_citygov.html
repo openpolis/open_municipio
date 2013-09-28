@@ -103,13 +103,78 @@
     <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.submitlink.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.dataTables.js"></script>
     <script type="text/javascript">
+		fullname_extract = function(node) {
+			name = $(".person_name", node).text();
+			return name
+		}
+		
+		function hasRole(node, role_check) {
+			role_node = $(".person_label", node);
+			
+			if (role_node)
+			{
+				return role_node.text() == role_check;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		
+		sort_fullname_asc = function(a,b) {
+			
+			a = $.parseHTML(a);
+			b = $.parseHTML(b);
+			
+			var a_isPresident = hasRole(a, "Sindaco");
+			var a_isVicePresident = hasRole(a, "Vice sindaco");
+			var b_isPresident = (! a_isPresident) && hasRole(b, "Sindaco");
+			var b_isVicePresident = (! a_isVicePresident) && hasRole(b, "Vice sindaco");
+			
+			var a_name = fullname_extract(a);
+			var b_name = fullname_extract(b);
+			
+	        if (a_isPresident)
+	        {
+	        	return -1
+	        }
+	        else if (b_isPresident)
+	       	{
+	       		return 1;
+	       	}
+	       	else if (a_isVicePresident)
+	     	{
+	     		return -1;		
+	     	}
+	       	else if (b_isVicePresident)
+	       	{
+	       		return 1;
+	       	}
+	       	else if (a_name < b_name)
+	       	{
+	       		return -1;
+	       	}
+	       	else if (a_name > b_name)
+	       	{
+	       		return 1;
+	       	}
+	       	else
+	       	{
+	       		return 0	
+	       	}
+	    };
+		
+		$.fn.dataTableExt.oSort['fullname-asc']  = sort_fullname_asc;
+		$.fn.dataTableExt.oSort['fullname-desc'] = function(a,b) {
+			return sort_fullname_asc(b, a);
+		};
 
         $(document).ready(function() {
             gTable = $('#giunta').dataTable({
                 bFilter: false,
                 aoColumns: [
                     null,
-                    null,
+                    { sType: "fullname", asSorting: ['desc', 'asc']},                    
                     null,
                     {asSorting: ['desc', 'asc']},
                     {asSorting: ['desc', 'asc']}
@@ -125,8 +190,8 @@
                 oLanguage: {
                     sSearch: "Ricerca",
                     sZeroRecords: "Nessun risultato per questa ricerca"
-                }
-
+                },
+                aaSorting: [[ 1, "asc" ]]
             });
         });
 

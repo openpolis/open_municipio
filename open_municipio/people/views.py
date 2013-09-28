@@ -1,3 +1,4 @@
+import logging
 from django.conf import settings
 from django.contrib.sites.models import Site
 from django.db.models import Q, Count
@@ -16,7 +17,6 @@ from open_municipio.people.models import Sitting, SittingItem
 from django.core import serializers
 
 from sorl.thumbnail import get_thumbnail
-
 
 class InstitutionListView(ListView):
     model = Institution
@@ -76,7 +76,7 @@ class CouncilListView(TemplateView):
         context = super(CouncilListView, self).get_context_data(**kwargs)
 
         mayor = municipality.mayor.as_charge
-        council = municipality.council
+        council = municipality.council        
 
         president = None
         if municipality.council.president is not None:
@@ -112,6 +112,7 @@ class CouncilListView(TemplateView):
         
         # Update context with extra values we need
         context.update(extra_context)
+        
         return context
 
 
@@ -538,7 +539,6 @@ class SittingDetailView(DetailView):
     template_name = 'people/sitting_detail.html'
 
     def get_context_data(self, **kwargs):
-#        print "kwargs: %s " % (args, kwargs, )
 
         context = super(SittingDetailView, self).get_context_data(**kwargs)
 
