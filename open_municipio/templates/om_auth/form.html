@@ -45,7 +45,9 @@
                         {% include "registration/form_element.html" with element=social_form.email %}
                     {% endif %}
                     {% include "registration/form_element.html" with element=social_form.location %}
-                    {% include "registration/form_element.html" with element=social_form.uses_nickname checkbox=1 %}
+                    {% if UI_ALLOW_NICKNAMES %}                    
+                    	{% include "registration/form_element.html" with element=social_form.uses_nickname checkbox=1 %}
+                    {% endif %}
                     {% include "registration/form_element.html" with element=social_form.says_is_politician checkbox=1 %}
                     {% include "registration/form_element.html" with element=social_form.wants_newsletter checkbox=1 %}
 

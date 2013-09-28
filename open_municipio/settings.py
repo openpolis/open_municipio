@@ -333,6 +333,7 @@ TINYMCE_DEFAULT_CONFIG = {
 # the UI_* configurations are passed by the default context processor
 UI_SITTINGS_CALENDAR = True
 UI_LOCATIONS = True
+UI_ALLOW_NICKNAMES = True
 
 # act search by type urls
 SEARCH_URLS = {
