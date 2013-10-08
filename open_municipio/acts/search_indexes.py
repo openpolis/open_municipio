@@ -60,11 +60,9 @@ class ActIndex(indexes.SearchIndex, indexes.Indexable):
             return ''
 
     def prepare_person(self, obj):
-        return set(
-            [p['person__slug'] for p in
+        return [p['person__slug'] for p in
                 list(obj.first_signers.values('person__slug').distinct()) +
                 list(obj.co_signers.values('person__slug').distinct())]
-        )
 
 
     def prepare_url(self, obj):
@@ -94,7 +92,7 @@ class SpeechIndex(indexes.SearchIndex, indexes.Indexable):
         if obj.author != None:
             author = obj.author.slug
         
-        return set( author )
+        return [ author, ]
 
     def prepare_date(self, obj):
         return obj.date
