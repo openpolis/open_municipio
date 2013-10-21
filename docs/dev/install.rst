@@ -51,7 +51,7 @@ Moreover, the following software packages are required [#]_:
 * ``mercurial``: needed for installing packages hosted on BitBucket
 
 
-..  _Django: http://djangoproject.com/
+..  _Django: http://djangoproject.com/ 
 .. _`corresponding requirements`: http://docs.djangoproject.com/en/dev/faq/install/
 .. _`virtualenv`: http://pypi.python.org/pypi/virtualenv
 .. _`virtualenvwrapper`: http://www.doughellmann.com/docs/virtualenvwrapper/
