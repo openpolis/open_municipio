@@ -4,6 +4,7 @@
 *.sqlite
 .*.swp
 .idea
+.settings/
 open_municipio/settings_*.py
 sitestatic
 open_municipio/media

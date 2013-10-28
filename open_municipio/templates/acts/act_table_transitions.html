@@ -193,7 +193,7 @@
               <b>{% trans act.get_status_display %} </b>
               {% if transition.votation %}
                   <br/>
-                  <a href="{{ transition.votation.get_absolute_url }}">{{ transition.votation }}</a>
+                  <a href="{{ transition.votation.get_absolute_url }}">{% trans "votation" %}</a>
               {% endif %}
             </p>
           </li>

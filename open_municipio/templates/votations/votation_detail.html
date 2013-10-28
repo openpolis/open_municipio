@@ -149,7 +149,10 @@
               <tr>
                 <td class="text-left">
                   <a href="{{ politician.get_absolute_url }}">
-                    <strong>{{ politician.full_name }}</strong> ({{ charge_vote.charge.council_group.acronym }})
+                    <strong>{{ politician.full_name }}</strong> 
+                    {% if charge_vote.charge.council_group.acronym %}
+                    ({{ charge_vote.charge.council_group.acronym }})
+                    {% endif %}
                   </a>
                 </td>
                 <td>
@@ -198,7 +201,10 @@
               <tr>
                 <td>
                   <a href="{{ politician.get_absolute_url }}">
-                    <strong>{{ politician.full_name }}</strong> ({{ charge_vote.charge.council_group.acronym }})
+                    <strong>{{ politician.full_name }}</strong> 
+                    {% if charge_vote.charge.council_group.acronym %}
+                    ({{ charge_vote.charge.council_group.acronym }})
+                    {% endif %}
                   </a>
                 </td>
                 <td>
