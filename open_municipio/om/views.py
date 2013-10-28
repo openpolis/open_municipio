@@ -93,3 +93,14 @@ class HomeView(TemplateView):
         return context
 
     
+
+class ContactsView(TemplateView):
+    template_name = "om/contatti.html"
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(ContactsView, self).get_context_data(**kwargs)
+
+        context["contacts_email"] = settings.CONTACTS_EMAIL.replace("@","[chioccia]").replace(".","[punto]")
+        
+        return context
