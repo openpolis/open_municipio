@@ -194,9 +194,10 @@
         percentage_extract = function(match, $1, offset, original) { return $1; }
 
        	sort_percentage_asc = function(a,b) {
-            var x = a.replace(/\D*?(\d*)%/, percentage_extract);
-            var y = b.replace(/\D*?(\d*)%/, percentage_extract);
-            return ((x < y) ? -1 : ((x > y) ?  1 : 0));
+            var x = parseInt(a.replace(/\D*?(\d*)%/, percentage_extract));
+            var y = parseInt(b.replace(/\D*?(\d*)%/, percentage_extract));
+            var res = ((x < y) ? -1 : ((x > y) ?  1 : 0));
+            return res;
         };
         
         $.fn.dataTableExt.oSort['percentage-asc']  = sort_percentage_asc; 
