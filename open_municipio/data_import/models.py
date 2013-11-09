@@ -1,14 +1,13 @@
-from open_municipio.people.models import Person, InstitutionCharge, \
-    CompanyCharge, AdministrationCharge
+#from open_municipio.people.models import Person, InstitutionCharge, \
+#    CompanyCharge, AdministrationCharge
 from django.db import models
 import datetime
-from django.db import models
 from model_utils import Choices
 from django.utils.translation import ugettext_lazy as _
 
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 
-from open_municipio.people.models import Charge
+#from open_municipio.people.models import Charge
 
 
 import logging
@@ -33,6 +32,7 @@ class LookupObject(models.Model):
 
     @staticmethod
     def extract_active(lookup_objs, as_of):
+        from open_municipio.people.models import Charge
         
         found = None
         
@@ -76,7 +76,10 @@ class LookupObject(models.Model):
     def __unicode__(self):
         return u"%s [%s > %s]" % (self.local, self.provider, self.external)
 
+
 class LookupPerson(LookupObject):
+    from open_municipio.people.models import Person
+    
     local = models.ForeignKey(Person,verbose_name=_('OM id'))
     external = models.CharField(max_length=256,verbose_name=_('provider id'))
     provider = models.ForeignKey(Provider,verbose_name=_('provider'))
@@ -89,7 +92,10 @@ class LookupPerson(LookupObject):
         verbose_name = _("lookup person")
         verbose_name = _("lookup persons")
 
+
 class LookupInstitutionCharge(LookupObject):
+    from open_municipio.people.models import InstitutionCharge
+    
     local = models.ForeignKey(InstitutionCharge,verbose_name=_('OM id'))
     external = models.CharField(max_length=256,verbose_name=_('provider id'))
     provider = models.ForeignKey(Provider,verbose_name=_('provider'))
@@ -114,6 +120,8 @@ class LookupInstitutionCharge(LookupObject):
    
 
 class LookupCompanyCharge(LookupObject):
+    from open_municipio.people.models import CompanyCharge
+    
     local = models.ForeignKey(CompanyCharge,verbose_name=_('OM id'))
     external = models.CharField(max_length=256,verbose_name=_('provider id'))
     provider = models.ForeignKey(Provider,verbose_name=_('provider'))
@@ -127,7 +135,10 @@ class LookupCompanyCharge(LookupObject):
         verbose_name = _("lookup company charge")
         verbose_name_plural = _("lookup company charges")
  
+ 
 class LookupAdministrationCharge(LookupObject):
+    from open_municipio.people.models import AdministrationCharge
+    
     local = models.ForeignKey(AdministrationCharge,verbose_name=_('OM id'))
     external = models.CharField(max_length=256,verbose_name=_('provider id'))
     provider = models.ForeignKey(Provider,verbose_name=_('provider'))
