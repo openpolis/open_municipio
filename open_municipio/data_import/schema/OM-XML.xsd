@@ -306,7 +306,7 @@
 				<xs:element ref="Interpellation" minOccurs="0" maxOccurs="unbounded"/>
 				<xs:element ref="Motion" minOccurs="0" maxOccurs="unbounded"/>
 				<xs:element ref="Agenda" minOccurs="0" maxOccurs="unbounded"/>
-				<xs:element ref="Emendation" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="Amendment" minOccurs="0" maxOccurs="unbounded"/>
 				<xs:element ref="CouncilDeliberation" minOccurs="0" maxOccurs="unbounded"/>
 			</xs:sequence>
 		</xs:complexType>
@@ -412,7 +412,7 @@
 			<xs:complexContent>
 				<xs:extension base="councilActType">
 					<xs:sequence>
-						<xs:element ref="Emendation" minOccurs="0" maxOccurs="unbounded"/>
+						<xs:element ref="Amendment" minOccurs="0" maxOccurs="unbounded"/>
 						<xs:element maxOccurs="unbounded" minOccurs="0" ref="Attachment"/>
 						<xs:element ref="AgendaTransition" maxOccurs="unbounded" minOccurs="0"/>
 					</xs:sequence>
@@ -427,7 +427,7 @@
 			<xs:complexContent>
 				<xs:extension base="councilActType">
 					<xs:sequence>
-						<xs:element ref="Emendation" minOccurs="0" maxOccurs="unbounded"/>
+						<xs:element ref="Amendment" minOccurs="0" maxOccurs="unbounded"/>
 						<xs:element maxOccurs="unbounded" minOccurs="0" ref="Attachment"/>
 						<xs:element ref="MotionTransition" minOccurs="0" maxOccurs="unbounded"/>
 					</xs:sequence>
@@ -459,7 +459,7 @@
 		</xs:complexType>
 	</xs:element>
 
-	<xs:element name="Emendation">
+	<xs:element name="Amendment">
 		<xs:complexType>
 			<xs:complexContent>
 				<xs:extension base="councilActType">
@@ -599,7 +599,7 @@
 						<xs:element ref="Attachment" minOccurs="0" maxOccurs="unbounded"/>
 						<xs:element ref="CouncilDeliberationTransition" minOccurs="0"
 							maxOccurs="unbounded"/>
-						<xs:element maxOccurs="unbounded" minOccurs="0" ref="Emendation"/>
+						<xs:element maxOccurs="unbounded" minOccurs="0" ref="Amendment"/>
 					</xs:sequence>
 					<xs:attribute name="final_id" type="xs:string"/>
 					<!-- no need fro approval_date, add a CouncilDeliberationTransition with
