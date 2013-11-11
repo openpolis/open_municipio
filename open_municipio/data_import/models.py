@@ -58,7 +58,7 @@ class LookupObject(models.Model):
         
         local_objs = map(lambda x: x.local, lookup_objs)
         
-        if as_of:
+        if len(local_objs) > 0 and as_of is not None:
             found = LookupObject.extract_active(local_objs, as_of)
         elif len(local_objs) == 1:
             found = local_objs[0]
@@ -67,7 +67,7 @@ class LookupObject(models.Model):
                              (external, local_objs, ))
         else:
             # no object found
-            raise ValueError("No correspondence found for external id %s" % (external, ))
+            raise ValueError("No correspondence found for external id %s (as of %s)" % (external, as_of, ))
         
         return found
 

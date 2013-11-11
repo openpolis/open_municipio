@@ -616,7 +616,7 @@ class Motion(Act):
     """
     It is a political act, used to publicly influence members of the City Government, or the Mayor,
     on a broad type of issues (specific to the Comune proceedings, or of a more general category)
-    It is submitted to the Council approval and Emendations to it can be presented before the votation.
+    It is submitted to the Council approval and Amendments to it can be presented before the votation.
     """
     FINAL_STATUSES = (
         ('APPROVED', _('approved')),
@@ -646,7 +646,7 @@ class Agenda(Act):
     Maps the *Ordine del Giorno* act type.
     It is a political act, used to publicly influence the following discussions on Deliberations.
     It is specifically used with respect to issues specific to the deliberation process.
-    It is submitted to the Council approval and Emendations to it can be presented before the votation.
+    It is submitted to the Council approval and Amendments to it can be presented before the votation.
     """
     FINAL_STATUSES = (
         ('APPROVED', _('approved')),
@@ -693,6 +693,11 @@ class Amendment(Act):
         verbose_name = _('amendment')
         verbose_name_plural = _('amendments')
 
+
+    # TODO this should be completed. Now it is left empty to avoid at least
+    # an infinite recursion (caused by Act.get_absolute_url(...))
+    def get_absolute_url(self):
+        return ""
 
 #
 # Workflows

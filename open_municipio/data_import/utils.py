@@ -176,7 +176,7 @@ class ChargeSeekerFromMapMixin:
     logger = logging.getLogger("import")
 #    charge_map_cache = {}
 
-    def lookup_charge(self, external, provider, as_of):
+    def lookup_charge(self, external, provider, as_of=None):
 
         # if already mapped, return the result from the cache
 #        if provider in self.charge_map_cache: 

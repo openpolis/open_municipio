@@ -5,7 +5,7 @@ from django.core.files import File
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils import simplejson as json
 from django.db.utils import IntegrityError
-from django.db import transaction
+from django.db import transaction, models
 
 from open_municipio.data_import.lib import DataSource, BaseReader, BaseWriter, JSONWriter, XMLWriter, OMWriter
 # import OM-XML language tags
@@ -99,18 +99,24 @@ class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
         return act_conf.OM_EMITTING_INSTITUTION_MAP[act_type]
 
     def _detect_act_om_type(self, act):
+        
+        assert isinstance(act, Act)
+        
         act_obj_type = act.__class__.__name__
 
         # dynamic instantiation of OM type
-        om_type = NoneType
-        if act_obj_type == "CouncilDeliberation":
-            om_type = OMDeliberation
-        elif act_obj_type == "Motion":
-            om_type = OMMotion
-        elif act_obj_type == "Agenda":
-            om_type = OMAgenda
-        elif act_obj_type == "CityGovernmentDeliberation":
-            om_type = OMCGDeliberation
+        
+#        om_type = NoneType
+#        if act_obj_type == "CouncilDeliberation":
+#            om_type = OMDeliberation
+#        elif act_obj_type == "Motion":
+#            om_type = OMMotion
+#        elif act_obj_type == "Agenda":
+#            om_type = OMAgenda
+#        elif act_obj_type == "CityGovernmentDeliberation":
+#            om_type = OMCGDeliberation
+        om_type = act_conf.OM_ACT_MAP.get(act_obj_type, NoneType)
+        
 
         if om_type == NoneType:
             self.logger.error("Unable to instantiate type: %s" %
@@ -177,6 +183,9 @@ class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
 
 
     def _init_act_create_defaults(self, act):
+        
+        assert isinstance(act, Act)
+        
         act_obj_type = act.__class__.__name__
 
         om_emitting = OMActsWriter._get_emitting_institution(act)
@@ -206,6 +215,15 @@ class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
 
             create_defaults['final_idnum'] = act.final_id
             self.logger.info("Set the final_idnum: %s" % act.final_id)
+        elif act_obj_type == "Amendment":
+            try:
+                referred_act = OMDeliberation.objects.get(
+                                    models.Q(idnum=act.referred_act) |
+                                    models.Q(final_idnum=act.referred_act))
+                create_defaults["act"] = referred_act
+            except ObjectDoesNotExist:
+                self.logger.error("Unable to find referred act (%s) for amendment (%s)" % (act.referred_act, act.id))
+
 
         self.logger.debug("Act presentation date: %s" % create_defaults["presentation_date"])
 
@@ -258,7 +276,19 @@ class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
                     transaction.rollback()
 
     def _add_subscribers(self, act, om_act):
-
+        """
+        Assign the subscribers as represented in act, to the om_act instance.
+        Remember that om_act is an instance of (a subtype of) the Act model,
+        while act is an instance of the "intermediate" representation.
+        
+        Adding the subscriber, we use the get_or_create method, so that no
+        duplicates are produced (e.g. in case the same data is first manually
+        inserted, and later automatically imported) 
+        """
+        
+        assert isinstance(act, Act)
+        assert isinstance(om_act, OMAct)
+        
         if act == None or om_act == None:
             raise Exception("Cannot add the subscribers if you don't pass both the parsed act and the partially imported OM act.")
 
@@ -270,32 +300,39 @@ class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
             self.logger.warning("In order to continue, you must set a data provider for charges in act importation")
             return
 
+        self.logger.debug("Reset subscribers of act %s ..." % (om_act, ))
+        # delete previous supporter for the act (ASSUMPTION: the imported data are complete and correct)
+        OMActSupport.objects.filter(act = om_act).delete()
+
         for curr_sub in act.subscribers:
-            om_ch = self.lookup_charge(curr_sub.charge.id, self.conf.ACTS_PROVIDER)
+            act_date = getattr(act, "presentation_date", None)
+            
+            om_ch = self.lookup_charge(curr_sub.charge.id, self.conf.ACTS_PROVIDER, act_date)
 
             if om_ch is None:
-                raise Exception("Unable to find charge for %s" % curr_sub)
+                raise Exception("Unable to find charge for %s as of %s" % (curr_sub, act_date, ))
 
-            self.logger.info("Charge for subscriber: %s (was %s) ..." % (om_ch,curr_sub.charge.id))
+            self.logger.info("Charge for subscriber: %s (was %s) as of %s ..." % (om_ch,curr_sub.charge.id, act_date,))
 
             # detect support type
             om_support_type = OMActSupport.SUPPORT_TYPE.co_signer
             if curr_sub.type == "first_subscriber":
                 om_support_type = OMActSupport.SUPPORT_TYPE.first_signer
-            self.logger.info("Mapping subscriber type: %s -> %s" % (curr_sub.type,om_support_type))
+            #self.logger.info("Mapping subscriber type: %s -> %s" % (curr_sub.type,om_support_type))
 
             create_defaults = self._init_subscriber_create_defaults(om_act, om_ch,
                 om_support_type)
 
-            (om_sub, created) = OMActSupport.objects.get_or_create(
-                act = om_act, charge = om_ch, defaults = create_defaults
-            )
-
-            if created:
+            #(om_sub, created) = OMActSupport.objects.get_or_create(
+            #    act = om_act, charge = om_ch, defaults = create_defaults
+            #)
+            try:
+                om_sub = OMActSupport(act=om_act, charge=om_ch, **create_defaults)
                 self.logger.info("Added charge %s as subscriber ..." % om_ch)
-            else:
-                self.logger.info("Charge %s already known to be a subscriber ..."
-                    % om_ch)
+            except Exception, e:
+                self.logger.info("Error settin charge %s as subscriber for act %s: %s ..."
+                    % (om_act, om_ch, e))
+        
 
     def update_act(self, om_act, dict_values):
 
@@ -311,12 +348,14 @@ class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
 
     def write_act(self, act):
         
+        assert isinstance(act, Act)
+        
         act_obj_type = act.__class__.__name__
         self.logger.info("Writing act (id: %s, type %s)" % (act.id,act_obj_type))
 
         create_defaults = self._init_act_create_defaults(act)
 
-        self.logger.info("Piece of content: %s ..." % act.content[0:30])
+        #self.logger.info("Piece of content: %s ..." % act.content[0:30])
 #        self.logger.info("Defaults: %s ..." % create_defaults)
 
         om_type = self._detect_act_om_type(act)
@@ -332,14 +371,16 @@ class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
             self.update_act(om_act, create_defaults)
             self.logger.info("OM act  %s updated ..." % om_act.idnum)
 
-        self.logger.info("Set the act supporters ...")
-        self._add_subscribers(act, om_act)
-
         self.logger.info("Now let's add the attachment ...")
         self._add_attachments(act, om_act)
 
         # append transitions to acts on OM
         self._add_act_transitions(act, om_act)
+
+                
+        self.logger.info("Set the act supporters ...")
+        self._add_subscribers(act, om_act)
+
         
 
 # python object layer for imported data
@@ -389,8 +430,10 @@ class Motion(Act):
 class Agenda(Act):
     pass
 
-class Emendation(Act):
-    pass
+class Amendment(Act):
+    
+    # a reference to the amended act
+    referred_act = None
 
 class Attachment:
     description = ""
