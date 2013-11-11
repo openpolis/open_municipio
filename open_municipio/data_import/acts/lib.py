@@ -302,7 +302,8 @@ class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
 
         self.logger.debug("Reset subscribers of act %s ..." % (om_act, ))
         # delete previous supporter for the act (ASSUMPTION: the imported data are complete and correct)
-        OMActSupport.objects.filter(act = om_act).delete()
+        #OMActSupport.objects.filter(act = om_act).delete()
+        om_act.presenter_set.delete()
 
         for curr_sub in act.subscribers:
             act_date = getattr(act, "presentation_date", None)
@@ -327,11 +328,18 @@ class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
             #    act = om_act, charge = om_ch, defaults = create_defaults
             #)
             try:
-                om_sub = OMActSupport(act=om_act, charge=om_ch, **create_defaults)
+                om_sub = OMActSupport(**create_defaults)
+                om_sub.save()
                 self.logger.info("Added charge %s as subscriber ..." % om_ch)
             except Exception, e:
-                self.logger.info("Error settin charge %s as subscriber for act %s: %s ..."
+                self.logger.warning("Error setting charge %s as subscriber for act %s: %s ..."
                     % (om_act, om_ch, e))
+
+        n_subs_read = len(act.subscribers)
+        n_subs_written = om_act.presenter_set.count()
+        if n_subs_read != n_subs_written:
+            self.logger.warning("Something wrong happened importing subscribers: %s read, %s written ..."
+                    % (n_subs_read, n_subs_written, ))
         
 
     def update_act(self, om_act, dict_values):
