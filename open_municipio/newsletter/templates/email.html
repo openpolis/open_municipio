@@ -44,15 +44,15 @@
     </table>
 
     <div style="margin-top: 2em;">
-        <p>Ricevi questa email  perché stai monitorando {{ profile.monitored_objects|length }} tra politici,
+        <p>Ricevi questa email perché stai monitorando {{ profile.monitored_objects|length }} tra politici,
             atti e argomenti nel sito <a href="http://{{ city|lower }}.openmunicipio.it">Open Municipio di {{ city }}</a>.</p>
 
         <p>Per modificare le impostazioni di monitoraggio accedi al tuo profilo Open Municipio;
         per aggiungere o eliminare atti, politici  o argomenti dal tuo monitoraggio, vai alla pagina
         del singolo atto, politico o argomento e clicca su "Non monitorare più".</p>
 
-        <p>Open municipio è un progetto <a href="http://www.openpolis.it">Openpolis</a>,
-            distribuito da <a href="http://www.depp.it">Depp</a> srl, via degli Equi, 42, 00185 Roma - T. 06.83608392, info@depp.it</p>
+        <p>Open Municipio è un progetto <a href="http://www.openpolis.it">Openpolis</a>,
+            distribuito da <a href="{{ webmaster.website }}">{{ webmaster.name }}</a>, {{ webmaster.address }} - Tel. {{ webmaster.phone }}, <a href="mailto:{{ webmaster.email }}">{{ webmaster.email }}</a></p>
     </div>
 
 </div>

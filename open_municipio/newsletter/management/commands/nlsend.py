@@ -143,6 +143,7 @@ class Command(LabelCommand):
                 if not options['dryrun']:
                     d = Context({ 'profile': profile,
                                   'city': settings.SITE_INFO['main_city'],
+                                  'webmaster': settings.WEBMASTER_INFO,
                                   'user_news': [{'date': rn.news_date, 'text': re.sub('href=\"\/', 'href="http://{0}/'.format(site_domain), rn.text)} for rn in user_news]})
 
                     subject, from_email, to = 'Monitoraggio Open Municipio', 'noreply@openmunicipio.it', profile.user.email

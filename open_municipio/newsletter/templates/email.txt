@@ -17,5 +17,5 @@ Per modificare le impostazioni di monitoraggio accedi al tuo profilo Open Munici
 per aggiungere o eliminare atti, politici  o argomenti dal tuo monitoraggio, vai alla pagina
 del singolo atto, politico o argomento e clicca su "Non monitorare più".
 
-Open municipio è un progetto Openpolis, distribuito da Depp srl, via degli Equi, 42, 00185 Roma - T. 06.83608392, info@depp.it
+Open Municipio è un progetto Openpolis, distribuito da {{ webmaster.name }}, {{ webmaster.address }} - Tel. {{ webmaster.phone }}, {{ webmaster.email }}, {{ webmaster.website }}
 
