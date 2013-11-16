@@ -303,7 +303,8 @@ class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
         self.logger.debug("Reset subscribers of act %s ..." % (om_act, ))
         # delete previous supporter for the act (ASSUMPTION: the imported data are complete and correct)
         #OMActSupport.objects.filter(act = om_act).delete()
-        om_act.presenter_set.delete()
+        #om_act.presenter_set.delete()
+        OMActSupport.objects.filter(act=om_act).delete()
 
         for curr_sub in act.subscribers:
             act_date = getattr(act, "presentation_date", None)

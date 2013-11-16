@@ -24,6 +24,7 @@ from open_municipio.newscache.models import News, NewsTargetMixin
 from open_municipio.people.models import Institution, InstitutionCharge, Person
 from open_municipio.taxonomy.managers import TopicableManager
 from open_municipio.monitoring.models import MonitorizedItem, Monitoring
+from django.core.urlresolvers import resolve, reverse
 
 
 #
@@ -697,7 +698,23 @@ class Amendment(Act):
     # TODO this should be completed. Now it is left empty to avoid at least
     # an infinite recursion (caused by Act.get_absolute_url(...))
     def get_absolute_url(self):
-        return ""
+        #return ""
+        map_urls = {
+            "Deliberation":"om_deliberation_detail_emendations",
+            "CGDeliberation":"om_cgdeliberation_detail_emendations",
+            "Agenda":"om_agenda_detail_emendations",
+            "Interpellation":"om_interpellation_detail_emendations",
+            "Interrogation":"om_interrogation_detail_emendations",
+            "Motion":"om_motion_detail_emendations",
+        }
+        
+        act_type = self.act.downcast().__class__.__name__
+        
+        url_name = None
+        if act_type in map_urls:
+            url_name = map_urls.get(act_type,None)
+            
+        return reverse(url_name, args=(), kwargs={"pk":self.act.pk, "tab":"emendations"})
 
 #
 # Workflows
