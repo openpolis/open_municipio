@@ -336,6 +336,12 @@ class ImportActsCommand(LabelCommand):
 
                 try:
                     file_content = solr_backend.extract_file_contents(attach_f)
+
+                    if file_content is None:
+                        self.logger.error("  could not extract textual content from file, with solr-tika; skipping")
+                        attach_f.close()
+                        continue
+
                     html_content = html.fromstring(file_content['contents'].encode('utf-8'))
                     document_text = html_content.cssselect('body')[0].text_content()
 
