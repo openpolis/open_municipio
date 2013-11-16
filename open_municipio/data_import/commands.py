@@ -484,7 +484,7 @@ class ImportActsCommand(LabelCommand):
                 )
                 continue
                 # transform xml value into database string
-            initiative = initiative_types.__dict__['_choice_dict'][initiative]
+            initiative = initiative_types._choice_dict[initiative]
 
 
             title = xml_act.xpath("./om:Title", namespaces=NS)
