@@ -105,7 +105,7 @@ class Person(models.Model, MonitorizedItem):
         """
         return self.institutioncharge_set.select_related().current(moment=moment).filter(
             institution__institution_type__in=(Institution.COMMITTEE, Institution.JOINT_COMMITTEE)
-        ).order_by('-institutionresponsability__charge_type')
+        ).order_by('-institutionresponsability__charge_type','institution__position')
     current_committee_charges = property(get_current_committee_charges)
 
     def get_current_charge_in_institution(self, institution, moment=None):
