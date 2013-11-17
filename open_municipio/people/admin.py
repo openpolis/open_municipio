@@ -3,6 +3,8 @@ from django.utils.translation import ugettext_lazy as _
 from open_municipio.people.models import *
 from open_municipio.votations.admin import VotationsInline
 from open_municipio.acts.models import Speech
+from open_municipio.widgets import SortWidget
+
 from sorl.thumbnail.admin import AdminImageMixin
 
 from django.contrib.admin.util import unquote
@@ -10,6 +12,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.utils.functional import update_wrapper
 from django.utils.html import strip_spaces_between_tags as short
+from django.forms import ModelForm
 
 from open_municipio.people.forms import SittingItemFormSet, SpeechInlineForm
 from open_municipio.om.admin import LinkedTabularInline
@@ -181,6 +184,8 @@ class OfficeAdmin(BodyAdmin):
 
 class InstitutionAdmin(BodyAdmin):
 
+    list_filter = ("institution_type", )
+
     def get_urls(self):
         from django.conf.urls.defaults import patterns, url
 
@@ -208,19 +213,21 @@ class InstitutionAdmin(BodyAdmin):
 
     link_html = short("""
         <a href="../../%(app_label)s/%(module_name)s/%(object_id)s/move-up/">UP</a> |
-        <a href="../../%(app_label)s/%(module_name)s/%(object_id)s/move-down/">DOWN</a>""")
+        <a href="../../%(app_label)s/%(module_name)s/%(object_id)s/move-down/">DOWN</a> (%(position)s)
+        """)
 
     def move_up_down_links(self, obj):
         return self.link_html % {
             'app_label': self.model._meta.app_label,
             'module_name': self.model._meta.module_name,
             'object_id': obj.id,
+            'position': obj.position, 
         }
     move_up_down_links.allow_tags = True
     move_up_down_links.short_description = _(u'Move')
 
     inlines = [InstitutionResourceInline, InstitutionChargeInline]
-    list_display = ('name', 'institution_type', 'move_up_down_links')
+    list_display = ('name', 'institution_type', 'move_up_down_links',)
 
 class SpeechInline(LinkedTabularInline):
     model = Speech

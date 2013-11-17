@@ -2,7 +2,7 @@ import datetime
 
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
-from django.db import models
+from django.db import models, transaction
 from django.db.models import permalink
 from django.db.models.query import EmptyQuerySet
 from django.utils.datetime_safe import date
@@ -983,27 +983,54 @@ class Institution(Body):
     def resources(self):
         return self.resource_set.all()
 
+    @transaction.commit_on_success
     def _move(self, up):
-        qs = self.__class__._default_manager
-        if up:
-            qs = qs.order_by('-position').filter(position__lt=self.position)
-        else:
-            qs = qs.filter(position__gt=self.position)
-        try:
-            replacement = qs[0]
-        except IndexError:
-            all_institutions = self.__class__._default_manager.filter(position=0)
-            if len(all_institutions) > 1:
-                # initialize positions
-                for i, institution in enumerate(all_institutions):
-                    institution.position = i
-                    institution.save()
+        """
+        To move an object requires, potentially, to update all the list of objects.
+        In fact, we cannot assume that the position arguments are all consecutive.
+        Doing some insertions and deletions it is possible to create "bubbles" and
+        duplicates for the position values. The sorting algorithms goes like this:
 
-            # already first/last
-            return
-        self.position, replacement.position = replacement.position, self.position
+        - assign everyone a consecutive and unique position value
+        - detect the previous and next institution, w.r.t. self
+        - if up, switch position with previous and save previous
+        - if down, switch position with next and save next
+        - save self
+        """
+        qs = self.__class__._default_manager
+
+        qs.order_by("position")
+
+        p = 0
+        prev_inst = None
+        next_inst = None
+        found = False
+        for curr_inst in qs.all():
+ 
+            found = found or (curr_inst == self)
+
+            if curr_inst.position != p:
+                curr_inst.position = p
+                curr_inst.save()
+
+            p = p + 1
+
+            if not found:
+                prev_inst = curr_inst
+            elif next_inst is None and curr_inst != self:
+                next_inst = curr_inst
+
+        if up:
+            if prev_inst:
+                prev_inst.position,self.position = self.position,prev_inst.position
+                prev_inst.save()
+        else:
+            if next_inst:
+
+                next_inst.position,self.position = self.position,next_inst.position
+                next_inst.save()
+
         self.save()
-        replacement.save()
 
     def move_down(self):
         """
