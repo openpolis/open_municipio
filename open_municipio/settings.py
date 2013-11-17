@@ -346,6 +346,8 @@ SEARCH_URLS = {
     "interrogation": "/acts/?q=&selected_facets=act_type:interrogazione",
 }
 
+CONTACTS_EMAIL = "info@openmunicipio.it"
+
 WEBMASTER_INFO = {
     'name': u'OpenPolis',
     'website': u'http://www.openmunicipio.it',

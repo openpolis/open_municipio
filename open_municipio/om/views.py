@@ -101,7 +101,7 @@ class ContactsView(TemplateView):
         # Call the base implementation first to get a context
         context = super(ContactsView, self).get_context_data(**kwargs)
 
-        context["webmaster_info"] = settings.WEBMASTER_INFO
+        context["contacts_email"] = settings.CONTACTS_EMAIL
         
         return context
 
