@@ -23,7 +23,7 @@ from django.views.generic import TemplateView
 from django.contrib import admin
 from registration.views import register
 
-from open_municipio.om.views import HomeView, ContactsView
+from open_municipio.om.views import HomeView, ContactsView, PrivacyView
 from open_municipio.inline_edit.views import InlineEditView
 from open_municipio.om_auth.views import login_done, login_error, login_form, logout
 from open_municipio.users.forms import UserRegistrationForm
@@ -41,7 +41,7 @@ urlpatterns = patterns('',
     url(r'^progetto/$', TemplateView.as_view(template_name='om/info.html'), name='om_progetto'),
     url(r'^regolamento/$', TemplateView.as_view(template_name='om/rules.html'), name='om_regolamento'),
     url(r'^condizioni/$', TemplateView.as_view(template_name='om/terms-and-conditions.html'), name='om_condizioni'),
-    url(r'^privacy/$', TemplateView.as_view(template_name='om/privacy.html'), name='om_privacy'),
+    url(r'^privacy/$', PrivacyView.as_view(), name='om_privacy'),
     url(r'^opendata/$', TemplateView.as_view(template_name='om/opendata.html'), name='om_opendata'),
     url(r'^software/$', TemplateView.as_view(template_name='om/software.html'), name='om_software'),
     url(r'^registrarsi/$', TemplateView.as_view(template_name='om/registrarsi.html'), name='om_registrarsi'),
