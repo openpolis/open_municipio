@@ -199,14 +199,13 @@ class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
                     'transitions' : None,
                 }
 
-        if "Presented" in act.transitions:
-            # the presentation date is unique, take the first item
-            self.logger.debug("Presentation dates: %s" % act.transitions["Presented"])
-            pdate = act.transitions["Presented"][0]
-            self.logger.debug("presentation date found: %s" % pdate) 
+        pdate = self.load_transition_date(act.transitions, "Presented")
+        if pdate:
             create_defaults["presentation_date"] = pdate
-        else:
-            self.logger.debug("Presentation date not found: %s" % act.transitions)
+
+        adate = self.load_transition_date(act.transitions, "Accepted")
+        if adate:
+            create_defaults["approval_date"] = adate
 
         if act_obj_type == "CouncilDeliberation":
             om_initiative = OMActsWriter._get_initiative(act)
@@ -240,6 +239,20 @@ class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
             create_defaults['support_date'] = date
 
         return create_defaults
+
+    def load_transition_date(self, transitions, label):
+        if label in transitions:
+            # the presentation date is unique, take the first item
+            self.logger.debug("%s dates: %s" % (label, transitions[label],))
+            date = transitions[label][0]
+            self.logger.debug("label=%s date found: %s" % (label, date, )) 
+
+            return date
+        else:
+            self.logger.debug("label=%s date not found" % label)
+            return None
+
+
 
     @transaction.commit_on_success
     def _add_attachments(self, act, om_act):
@@ -351,6 +364,7 @@ class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
         for (k, v) in dict_values.items():
             # don't update if the field is None (or you risk to delete data)
             if v is not None:
+                self.logger.debug("Update field: %s <- %s" % (k,v,))
                 setattr(om_act, k, v)
 
         om_act.save()
