@@ -56,17 +56,30 @@
 		<xs:complexContent>
 			<xs:extension base="actType">
 				<xs:sequence>
-					<xs:element ref="ActSubscribers" minOccurs="1" maxOccurs="1"/>
+					<xs:element ref="ActSubscribers" minOccurs="0" maxOccurs="1"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
 
+    <xs:complexType name="amendableActType">
+		<xs:complexContent>
+			<xs:extension base="councilActType">
+				<xs:sequence>
+					<xs:element ref="ApprovedContent" minOccurs="0" maxOccurs="1"/>
+					<xs:element ref="Amendment" maxOccurs="unbounded" minOccurs="0"/>
+
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+
 	<xs:complexType name="cityGovernmentActType">
 		<xs:complexContent>
 			<xs:extension base="actType">
 				<xs:sequence>
-					<xs:element ref="ActSubscribers" minOccurs="1" maxOccurs="2"/>
+					<xs:element ref="ActSubscribers" minOccurs="0" maxOccurs="2"/>
 				</xs:sequence>
 				<xs:attribute name="sitting_id" use="optional" type="xs:string"/>
 			</xs:extension>
@@ -410,9 +423,8 @@
 	<xs:element name="Agenda">
 		<xs:complexType>
 			<xs:complexContent>
-				<xs:extension base="councilActType">
+				<xs:extension base="amendableActType">
 					<xs:sequence>
-						<xs:element ref="Amendment" minOccurs="0" maxOccurs="unbounded"/>
 						<xs:element maxOccurs="unbounded" minOccurs="0" ref="Attachment"/>
 						<xs:element ref="AgendaTransition" maxOccurs="unbounded" minOccurs="0"/>
 					</xs:sequence>
@@ -425,9 +437,8 @@
 	<xs:element name="Motion">
 		<xs:complexType>
 			<xs:complexContent>
-				<xs:extension base="councilActType">
+				<xs:extension base="amendableActType">
 					<xs:sequence>
-						<xs:element ref="Amendment" minOccurs="0" maxOccurs="unbounded"/>
 						<xs:element maxOccurs="unbounded" minOccurs="0" ref="Attachment"/>
 						<xs:element ref="MotionTransition" minOccurs="0" maxOccurs="unbounded"/>
 					</xs:sequence>
@@ -462,7 +473,7 @@
 	<xs:element name="Amendment">
 		<xs:complexType>
 			<xs:complexContent>
-				<xs:extension base="councilActType">
+				<xs:extension base="amendableActType">
 					<xs:sequence>
 						<xs:element ref="ReferredDeliberationArticle" minOccurs="1" maxOccurs="1"/>
 					</xs:sequence>
@@ -563,6 +574,8 @@
 
 	<xs:element name="Content" type="contentType"/>
 	<xs:element name="Section" type="contentType"/>
+	<xs:element name="ApprovedContent" type="contentType"/>
+
 
 	<xs:element name="CouncilDeliberationTransition">
 		<xs:complexType>
@@ -593,13 +606,12 @@
 	<xs:element name="CouncilDeliberation">
 		<xs:complexType>
 			<xs:complexContent>
-				<xs:extension base="councilActType">
+				<xs:extension base="amendableActType">
 					<xs:sequence>
 						<xs:element ref="OfficeOpinion" minOccurs="0" maxOccurs="1"/>
 						<xs:element ref="Attachment" minOccurs="0" maxOccurs="unbounded"/>
 						<xs:element ref="CouncilDeliberationTransition" minOccurs="0"
 							maxOccurs="unbounded"/>
-						<xs:element maxOccurs="unbounded" minOccurs="0" ref="Amendment"/>
 					</xs:sequence>
 					<xs:attribute name="final_id" type="xs:string"/>
 					<!-- no need fro approval_date, add a CouncilDeliberationTransition with

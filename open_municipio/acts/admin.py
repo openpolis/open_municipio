@@ -139,6 +139,7 @@ class MotionAdmin(ActAdmin):
             'classes': ('collapse',),
             'fields': ('presentation_date', 'text', 'emitting_institution'),
             }),
+
         )
 
 class SpeechInActInline(admin.TabularInline):
