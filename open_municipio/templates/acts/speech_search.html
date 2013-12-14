@@ -38,6 +38,10 @@ em {
                 <td>{{result.object.date|circled:"full" }}</td>
                 <td>
                     <h4><a href="{{ result.object.get_absolute_url }}">{{ result.object.title }}</a></h4>
+                    Intervento n. {{ result.object.n_seq }}
+                    {% if result.object.title %} <br/>
+                    {{ result.object.title }}
+                    {% endif %}
                     <strong><a href="{{ result.object.sitting.get_absolute_url }}">{{ result.object.sitting }}</a></strong><br/>
                     {{ result.object.author_name }}
                 </td>
