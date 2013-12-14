@@ -111,7 +111,8 @@ em {
             {% for facet in selected_facets  %}
                 <dt>{{ facets_labels|key:facet.field|safe }}</dt>
                 <dd>
-                    <a href="{{ facet.url }}"><i class="icon-remove"></i></a>
+                    <a href="{{ facet.url }}&person={{ request.GET.person|default:"" }}">
+                    <i class="icon-remove"></i></a>
                     {{ facet.r_label }}
                 </dd>
             {% endfor %}
