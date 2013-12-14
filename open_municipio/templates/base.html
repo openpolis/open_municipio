@@ -80,7 +80,7 @@
                   <a href="#" id="dropsignin"
                      role="button" class="dropdown-toggle" data-toggle="dropdown"
                   >Ciao, <strong>
-{% UI_ALLOW_NICKNAMES %}{{ user.username }}{% else %}{{ user.first_name }} {{ user.last_name }}{% endif %}
+{% if UI_ALLOW_NICKNAMES %}{{ user.username }}{% else %}{{ user.first_name }} {{ user.last_name }}{% endif %}
                     </strong><b class="caret" style="margin-top:6px"></b></a>
                   <ul class="dropdown-menu" role="menu" aria-labelledby="dropsignin">
                       <li><a tabindex="-1" href="{% url profiles_edit_profile %}">impostazioni</a></li>
