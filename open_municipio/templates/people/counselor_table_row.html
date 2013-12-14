@@ -31,9 +31,7 @@
                     <br/>
                     in carica dal {{ charge.start_date|date:"d.m.Y" }}
 
-                    {% comment %}
-                        {% object_inline_monitoring charge.person shows_monitoring_users=False %}
-                    {%  endcomment %}
+                    {% object_inline_monitoring charge.person shows_monitoring_users=False %}
                 </div>
             </div>
         </div>
