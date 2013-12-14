@@ -44,7 +44,9 @@
 
     <!-- presented acts -->
     <td class="text-center">
+        <a href="{% url om_act_search %}?q=&person={{ charge.person.slug }}">
         {{ charge.n_presented_acts }}
+        </a>
     </td>
 
     <!-- monitoring users -->
