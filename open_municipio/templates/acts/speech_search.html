@@ -37,8 +37,9 @@ em {
             <tr>
                 <td>{{result.object.date|circled:"full" }}</td>
                 <td>
-                    <h4><a href="{{ result.object.get_absolute_url }}">{{ result.object.title }}</a></h4>
-                    Intervento n. {{ result.object.seq_order }} <br/>
+                    <h4><a href="{{ result.object.get_absolute_url }}">
+                    Intervento n. {{ result.object.seq_order }} 
+                    </a></h4>
                     {% if result.object.title %}
                     "{{ result.object.title }}" <br/>
                     {% endif %}
