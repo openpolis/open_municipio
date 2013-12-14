@@ -249,6 +249,7 @@ class Resource(models.Model):
         ('PERSON', 'person', _('person')),
         ('TWITTER', 'twitter', _('twitter')),
         ('FACEBOOK', 'facebook', _('facebook')),
+        ('FINANCIAL', 'financial', _('financial information')),
     )
     resource_type = models.CharField(verbose_name=_('type'), max_length=10, choices=RES_TYPE)
     value = models.CharField(verbose_name=_('value'), max_length=64)
@@ -257,6 +258,7 @@ class Resource(models.Model):
     class Meta:
         abstract = True
         verbose_name = _('Resource')
+        verbose_name_plural = ('Resources')
 
 class PersonResource(Resource):
     person = models.ForeignKey('Person', verbose_name=_('person'), related_name='resource_set')

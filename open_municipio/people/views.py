@@ -248,6 +248,7 @@ class CommitteeDetailView(DetailView):
                 for r in self.object.resources.values('resource_type', 'value', 'description')
         )
 
+
         events = Event.objects.filter(institution=self.object)
 
         extra_context = {
@@ -279,6 +280,9 @@ class PoliticianDetailView(DetailView):
             (r['resource_type'], {'value': r['value'], 'description': r['description']})
             for r in self.object.resources.values('resource_type', 'value', 'description')
         )
+
+        print "resources: %s" % (context['resources'], )
+
         current_charges = self.object.get_current_institution_charges().exclude(
             institutionresponsability__charge_type__in=(
                 InstitutionResponsability.CHARGE_TYPES.mayor,

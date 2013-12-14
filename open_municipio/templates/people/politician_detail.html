@@ -116,6 +116,17 @@
           </ul>
       {% endif %}
 
+      {% if resources.FINANCIAL %}
+        <br/>
+        <p>
+        {% with label=resources.FINANCIAL.description|default:"Informazioni finanziarie" %}
+        {{ label }} <a href="{{ resources.FINANCIAL.value  }}" alt="{{ label }}" title="{{ label }}" target="_blank"><i class="icon-download"></i></a>
+        {% endwith %}
+        </p>
+      {% endif %}
+
+
+
     </div>
 
     <div class="span4">
