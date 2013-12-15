@@ -67,7 +67,9 @@ class LookupObject(models.Model):
                              (external, local_objs, ))
         else:
             # no object found
-            raise ValueError("No correspondence found for external id %s (as of %s)" % (external, as_of, ))
+#            raise ValueError("No correspondence found for external id %s (as of %s)" % (external, as_of, ))
+            self.logger.info("No correspondence found for external id %s (as of %s)" % (external, as_of, ))
+            found = None
         
         return found
 
