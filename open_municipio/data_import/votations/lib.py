@@ -273,16 +273,19 @@ class DBVotationWriter(BaseVotationWriter):
         * n_absents
         """
 
+        isinstance(votation, OMBallot)
+
         # reset: remove all GroupVotes for this votation,
         # so that group votes are never counted more than once
         votation.group_votes.delete()
 
         for cv in votation.charge_votes:
-            g = cv.charge_group_at_vote_date
 
-            if g == municipality.mayor.as_charge:
+            if cv.charge == municipality.mayor.as_charge:
                 # skip the mayor, he/she does not belong to any group
                 continue
+
+            g = cv.charge_group_at_vote_date
 
             v = cv.vote
 
@@ -431,7 +434,7 @@ class DBVotationWriter(BaseVotationWriter):
                 assert isinstance(b, OMBallot)
                 b.verify_integrity()
             except Exception, e:
-                self.logger.warning("Imported ballot %s does not pass integrity check: %s" % (b, e, ))
+                self.logger.warning("Imported ballot %s (sitting: %s) does not pass integrity check: %s" % (b, b.sitting, e, ))
 
             # compute and cache group votes into GroupVote
             self.logger.info("Compute group vote of %s (date:%s)" % (b,b.sitting.date))
