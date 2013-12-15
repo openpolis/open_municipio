@@ -3,6 +3,7 @@
 {% load tags_cloud %}
 {% load om_utils %}
 {% load popover_info %}
+{% load people_tags %}
 
 
 {% block title %}Home page{% endblock %}
@@ -114,7 +115,9 @@
               <ul class="people-list">
                   {% for politician in least_absent %}
                       <li>
-                          {% include 'people/politician_list_section.html' with value=politician.n_absent_votations what='assenze' %}
+                          {% with politician|get_absent_label as absent_label %}
+                          {% include 'people/politician_list_section.html' with value=absent_label %}
+                          {% endwith %}
                           {% object_inline_monitoring politician.person %}
                       </li>
                   {% endfor %}

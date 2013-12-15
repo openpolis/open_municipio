@@ -4,6 +4,7 @@
 {% load newscache_tags %}
 {% load om_utils %}
 {% load thumbnail %}
+{% load people_tags %}
 
 {% block title %} Politici {% endblock %}
 {% block content_header %}Politici{% endblock %}
@@ -39,7 +40,9 @@
             <ul class="people-list">
                 {% for politician in least_absent %}
                     <li>
-                        {% include 'people/politician_list_section.html' with value=politician.n_absent_votations what='assenze' %}
+                        {% with politician|get_absent_label as absence %}
+                        {% include 'people/politician_list_section.html' with value=absence what='' %}   
+                        {% endwith %}
                         {% object_inline_monitoring politician.person %}
                     </li>
                 {% endfor %}
@@ -109,7 +112,9 @@
             <ul class="people-list">
                 {% for politician in most_rebellious %}
                     <li>
-                        {% include 'people/politician_list_section.html' with value=politician.n_rebel_votations what='ribellioni' %}
+                        {% with politician|get_rebel_label as label %}
+                        {% include 'people/politician_list_section.html' with value=label %}   
+                        {% endwith %}
                         {% object_inline_monitoring politician.person %}
                     </li>
                 {% endfor %}
