@@ -7,7 +7,7 @@ from open_municipio.data_import.lib import DataSource, BaseReader, BaseWriter, J
 # import OM-XML language tags
 from open_municipio.data_import.om_xml import *
 # import models used in DBVotationWriter
-from open_municipio.people.models import Institution
+from open_municipio.people.models import Institution, municipality
 from open_municipio.votations.models import Sitting as OMSitting, GroupVote
 from open_municipio.votations.models import Votation as OMBallot
 from open_municipio.votations.models import ChargeVote
