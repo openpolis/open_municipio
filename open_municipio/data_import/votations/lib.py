@@ -8,8 +8,8 @@ from open_municipio.data_import.lib import DataSource, BaseReader, BaseWriter, J
 from open_municipio.data_import.om_xml import *
 # import models used in DBVotationWriter
 from open_municipio.people.models import Institution
-from open_municipio.votations.models import Sitting as DBSitting, GroupVote
-from open_municipio.votations.models import Votation as DBBallot
+from open_municipio.votations.models import Sitting as OMSitting, GroupVote
+from open_municipio.votations.models import Votation as OMBallot
 from open_municipio.votations.models import ChargeVote
 
 
@@ -279,6 +279,11 @@ class DBVotationWriter(BaseVotationWriter):
 
         for cv in votation.charge_votes:
             g = cv.charge_group_at_vote_date
+
+            if g == municipality.mayor.as_charge:
+                # skip the mayor, he/she does not belong to any group
+                continue
+
             v = cv.vote
 
             if g is None:
@@ -360,10 +365,10 @@ class DBVotationWriter(BaseVotationWriter):
         inst = Institution.objects.get(name=self.conf.XML_TO_OM_INST[sitting.site])
 
         if not self.dry_run:
-            s, sitting_created = DBSitting.objects.get_or_create(
+            s, sitting_created = OMSitting.objects.get_or_create(
                 idnum=sitting._id,
                 defaults={
-                    'number':      sitting.seq_n,
+                    'number':      sitting.sitting_n, #sitting.seq_n,
                     'date':        sitting.date,
                     'call':        sitting.call,
                     'institution': inst,
@@ -388,7 +393,7 @@ class DBVotationWriter(BaseVotationWriter):
 
             if not self.dry_run:
                 # get or create the ballot in the DB
-                b, created = DBBallot.objects.get_or_create(
+                b, created = OMBallot.objects.get_or_create(
                     idnum=ballot.seq_n,
                     sitting=s,
                     defaults={
@@ -423,7 +428,7 @@ class DBVotationWriter(BaseVotationWriter):
             self.compute_absences(b)
 
             try:
-                assert isinstance(b, DBBallot)
+                assert isinstance(b, OMBallot)
                 b.verify_integrity()
             except Exception, e:
                 self.logger.warning("Imported ballot %s does not pass integrity check: %s" % (b, e, ))

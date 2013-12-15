@@ -126,8 +126,8 @@ class Votation(models.Model):
         
         n_sum = self.n_yes + self.n_no + self.n_abst
         if n_sum != self.n_presents:
-            errors.append("The number of presents (%s) is different from the sum of yes, no and abstained (%s)" % 
-                            (n_sum, self.n_presents, ))
+            errors.append("The number of presents (%s) is different from the sum of yes (%s), no (%s) and abstained (%s): %s" % 
+                            (n_sum, self.n_yes, self.n_no, self.n_abst, self.n_presents, ))
         
         num_charge_votes = self.charge_votes.count()
         if num_charge_votes < self.n_presents:
