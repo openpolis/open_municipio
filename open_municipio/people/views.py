@@ -222,7 +222,7 @@ class CommitteeDetailView(DetailView):
 
         # fetch charges and add group
         president = self.object.president
-        if president:
+        if president and president.charge.original_charge_id:
             president.group = InstitutionCharge.objects.current().select_related().\
                                   get(pk=president.charge.original_charge_id).council_group
         vicepresidents = self.object.vicepresidents
@@ -280,8 +280,6 @@ class PoliticianDetailView(DetailView):
             (r['resource_type'], {'value': r['value'], 'description': r['description']})
             for r in self.object.resources.values('resource_type', 'value', 'description')
         )
-
-        print "resources: %s" % (context['resources'], )
 
         current_charges = self.object.get_current_institution_charges().exclude(
             institutionresponsability__charge_type__in=(
