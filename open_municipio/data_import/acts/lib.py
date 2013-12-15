@@ -325,9 +325,11 @@ class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
             om_ch = self.lookup_charge(curr_sub.charge.id, self.conf.ACTS_PROVIDER, act_date)
 
             if om_ch is None:
-                raise Exception("Unable to find charge for %s as of %s" % (curr_sub, act_date, ))
-
-            self.logger.info("Charge for subscriber: %s (was %s) as of %s ..." % (om_ch,curr_sub.charge.id, act_date,))
+#                raise Exception("Unable to find charge for %s as of %s" % (curr_sub, act_date, ))
+                self.logger.warning("Unable to find charge for %s as of %s" % (curr_sub, act_date, ))
+                continue
+            else:
+                self.logger.info("Charge for subscriber: %s (was %s) as of %s ..." % (om_ch,curr_sub.charge.id, act_date,))
 
             # detect support type
             om_support_type = OMActSupport.SUPPORT_TYPE.co_signer
