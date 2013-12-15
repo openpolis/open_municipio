@@ -227,7 +227,7 @@ class CommitteeDetailView(DetailView):
                                   get(pk=president.charge.original_charge_id).council_group
         vicepresidents = self.object.vicepresidents
         for vp in vicepresidents:
-            if vp:
+            if vp and vp.charge.original_charge_id:
                 vp.group = InstitutionCharge.objects.current().select_related().\
                     get(pk=vp.charge.original_charge_id).council_group
 
