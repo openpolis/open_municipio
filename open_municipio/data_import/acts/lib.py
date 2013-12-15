@@ -204,7 +204,7 @@ class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
             create_defaults["presentation_date"] = pdate
 
         adate = self.load_transition_date(act.transitions, "Accepted")
-        if adate:
+        if adate and act_obj_type in ["CouncilDeliberation","CityGovernmentDeliberation",]:
             create_defaults["approval_date"] = adate
 
         if act_obj_type == "CouncilDeliberation":
