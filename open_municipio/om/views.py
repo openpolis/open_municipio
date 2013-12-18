@@ -106,6 +106,19 @@ class ContactsView(TemplateView):
         return context
 
 
+class ConditionsView(TemplateView):
+    template_name = "om/terms-and-conditions.html"
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(ConditionsView, self).get_context_data(**kwargs)
+
+        context["contacts_email"] = settings.CONTACTS_EMAIL
+        
+        return context
+
+
+
 class PrivacyView(TemplateView):
     template_name = "om/privacy.html"
 
