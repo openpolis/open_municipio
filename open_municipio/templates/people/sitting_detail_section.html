@@ -1,9 +1,6 @@
     <h2>Seduta num. {{ sitting.number }} del 
         <a href="{{ sitting.get_absolute_url }}">{{ sitting.date }}</a></h2>
 
-<!--
-    <h3>{% if sitem_link %}<a href="{{ sitem.get_absolute_url }}">{{ sitem }}</a>{% else %}{{ sitem }}{% endif %}</h3> -->
-
     <div class="sitting-nav">
         {% if sitting.sitting_prev != None %}
             <a href="{{ sitting.sitting_prev.get_absolute_url }}"><img src="{{ STATIC_URL }}img/sitting_prev_selected.png" alt="Precedente" /></a>

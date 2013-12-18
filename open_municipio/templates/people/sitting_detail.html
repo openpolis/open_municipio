@@ -28,27 +28,14 @@
     {% endif %}
 
     {% include 'people/sitting_detail_section.html' with sitting=sitting %}
-<!--
-    <h2>{{ sitting }}</h2>
-
-    {% if pk_prev != None or pk_next != None %}
-<!--
-    <div class="sitting-nav">
-        {% if pk_prev != None %}
-            <a href="{% url om_sitting_detail pk=pk_prev %}">
-        {% endif %}&lt;&lt; Precedente
-        {% if pk_prev != None %}</a>{% endif %} |
-        {% if pk_next != None %}
-            <a href="{% url om_sitting_detail pk=pk_next %}">
-        {% endif %}Successivo &gt;&gt;
-        {% if pk_next != None %}</a>{% endif %}
-    </div>
--->
-    {% endif %} -->
 
     {% for si in sitting_items %}
         <h3><a href="{% url om_sittingitem_detail pk=si.pk %}">{{ si.title }} 
-        {% if si.num_speeches > 0 %}({{ si.num_speeches }} interventi){% endif %}
+        {% if si.num_speeches == 1 %}
+            (1 intervento)
+        {% elif si.num_speeches > 1 %}
+            ({{ si.num_speeches }} interventi)
+        {% endif %}
         </a></h3>
     {% endfor %}
 
