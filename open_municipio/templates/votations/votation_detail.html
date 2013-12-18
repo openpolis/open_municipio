@@ -72,9 +72,22 @@
   <div class="votation-metadata">
     <p class="big">
       <a href="#" id="{{ votation|as_token }}" class="bookmarkable"><i class="{% is_key_class votation %}"></i></a>
-      Seduta <strong>n.{{ votation.sitting.number }}</strong> del
-        <strong>{{ votation.sitting.date|date:"d/m/Y" }}</strong>,
-      Votazione n.{{ votation.idnum }}<br/>
+      {% if votation.sitting.get_absolute_url %}
+      <a href="{{ votation.sitting.get_absolute_url }}">
+      Seduta <strong>n.{{ votation.sitting.number }}</strong>
+      del <strong>{{ votation.sitting.date|date:"d/m/Y" }}</strong>
+      </a>
+      {% else %}
+      Seduta <strong>n.{{ votation.sitting.number }}</strong>
+      del <strong>{{ votation.sitting.date|date:"d/m/Y" }}</strong>
+      {% endif %}, Votazione n.{{ votation.idnum }}<br/>
+      {% if votation.act %}
+      <h3>
+      {{ votation.act.adj_title|default:votation.act.title }}
+      </h3>
+      <br/>
+
+      {% endif %}
       <strong>{{ votation.act_descr }}</strong>
     </p>
     <p class="strong">
