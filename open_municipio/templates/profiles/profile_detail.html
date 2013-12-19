@@ -56,6 +56,10 @@
           {{ profile.description }}
         </p>
 
+        {% if profile.user.is_active %}
+        Questo profilo non &egrave; attivo. Questo pu&ograve; avvenire a seguito di una decisione dell'utente o di una violazione del <a href="{% url om_regolamento %}">regolamento</a>.
+        {% endif %}
+
       </div>
     </div>
 

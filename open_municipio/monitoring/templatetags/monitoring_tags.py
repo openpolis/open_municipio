@@ -76,4 +76,4 @@ def object_inline_monitoring(context, object, shows_monitoring_users=True):
 
 @register.inclusion_tag('monitoring/latest_users.html', takes_context=True)
 def latest_users(context, users):
-    return { "users": users }
+    return { "users": users.filter(user__is_active=True) }
