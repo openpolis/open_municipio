@@ -46,6 +46,10 @@
           {%  else %}
               <li>Utente <strong>registrato</strong></li>
           {% endif %}
+          {% if profile.says_is_politician and profile.person.get_absolute_url %}
+              <li>&Egrave; un <strong>politico</strong>, vai alla sua 
+                <a href="{{ profile.person.get_absolute_url }}">pagina di Open Municipio</a></li>
+          {% endif %}
         </ul>
 
         <p>
