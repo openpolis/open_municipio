@@ -74,7 +74,7 @@ class HomeView(TemplateView):
             counselors = municipality.council.charges.select_related().order_by('person__last_name')
             context['most_rebellious'] = counselors.order_by('-n_rebel_votations')[0:3]
             context['most_trustworthy'] = counselors.order_by('n_rebel_votations')[0:3]
-            context['least_absent'] = counselors.extra(select={'perc_absences':'(n_absent_votations * 100.0)/(n_absent_votations + n_present_votations)'}).order_by('perc_absences')[0:3]
+            context['least_absent'] = counselors.extra(select={'perc_absences':'(n_absent_votations * 100.0)/(n_absent_votations + n_present_votations + 1)'}).order_by('perc_absences')[0:3]
         except ObjectDoesNotExist:
             # city council not present
             counselors = ()
