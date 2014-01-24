@@ -894,7 +894,7 @@ class Institution(Body):
         """
         The WS of all charges current at the specified moment
         """
-        return self.charge_set.current(moment)
+        return self.charge_set.all().current(moment)
 
 
     @property
