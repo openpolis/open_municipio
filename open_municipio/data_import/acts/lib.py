@@ -317,7 +317,9 @@ class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
         # delete previous supporter for the act (ASSUMPTION: the imported data are complete and correct)
         #OMActSupport.objects.filter(act = om_act).delete()
         #om_act.presenter_set.delete()
-        OMActSupport.objects.filter(act=om_act).delete()
+        #OMActSupport.objects.filter(act=om_act).delete()
+        # use get_or_create instead of delete() + recreate (so news are not
+        # replicated)
 
         for curr_sub in act.subscribers:
             act_date = getattr(act, "presentation_date", None)
@@ -340,13 +342,20 @@ class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
             create_defaults = self._init_subscriber_create_defaults(om_act, om_ch,
                 om_support_type)
 
-            #(om_sub, created) = OMActSupport.objects.get_or_create(
-            #    act = om_act, charge = om_ch, defaults = create_defaults
-            #)
             try:
-                om_sub = OMActSupport(**create_defaults)
-                om_sub.save()
-                self.logger.info("Added charge %s as subscriber ..." % om_ch)
+#                om_sub = OMActSupport(**create_defaults)
+                # use get_or_create, so news are not generated if not needed
+                (om_sub, created) = OMActSupport.objects.get_or_create(
+                    act = om_act, charge = om_ch, defaults = create_defaults
+                )
+
+                if not created:
+                    om_sub.__dict__.update(create_defaults)
+                    om_sub.save()   
+                    self.logger.info("Updated charge %s as subscriber..." % om_ch)
+
+                else:
+                    self.logger.info("Added charge %s as subscriber..." % om_ch)
             except Exception, e:
                 self.logger.warning("Error setting charge %s as subscriber for act %s: %s ..."
                     % (om_act, om_ch, e))

@@ -433,9 +433,9 @@ class PoliticianListView(TemplateView):
         ).select_related().order_by('person__last_name')
 
         # fetch most or least
-        context['most_rebellious'] = counselors.extra(select={'perc_rebel':'(n_rebel_votations * 100.0) / (n_absent_votations + n_present_votations + 1)'}).order_by('-perc_rebel')[0:3]
+        context['most_rebellious'] = counselors.extra(select={'perc_rebel':'(n_rebel_votations * 100.0) / GREATEST (n_absent_votations + n_present_votations,1)'}).order_by('-perc_rebel')[0:3]
         context['most_trustworthy'] = counselors.order_by('n_rebel_votations')[0:3]
-        context['least_absent'] = counselors.extra(select={'perc_absences':'(n_absent_votations * 100.0) / (n_absent_votations + n_present_votations + 1)'}).order_by('perc_absences')[0:3]
+        context['least_absent'] = counselors.extra(select={'perc_absences':'(n_absent_votations * 100.0) / GREATEST (n_absent_votations + n_present_votations,1)'}).order_by('perc_absences')[0:3]
         context['most_absent'] = counselors.order_by('-n_absent_votations')[0:3]
 
         context['most_acts'] = municipality.council.as_institution.charge_set.\

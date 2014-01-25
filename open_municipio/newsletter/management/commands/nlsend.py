@@ -50,7 +50,6 @@ class Command(LabelCommand):
 
     def handle(self, *labels, **options):
 
-
         translation.activate('it')
 
         # fix logger level according to verbosity
@@ -82,6 +81,7 @@ class Command(LabelCommand):
 
         # fetch last sent newsletter's timestamp
         nls = Newsletter.objects.filter(finished__isnull=False).order_by('-finished')
+
         if nls:
             from_date = nls[0].started
             # highjack fromdate options, if not already defined
