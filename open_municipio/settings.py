@@ -355,3 +355,5 @@ WEBMASTER_INFO = {
     'email': u'info@openmunicipio.it',
     'phone': u'',
 }
+
+OM_START_YEAR = 2008

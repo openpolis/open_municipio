@@ -13,24 +13,24 @@ from open_municipio.locations.views import ActTagByLocationView
 
 
 ## SearchQuerySet with multiple facets and highlight
-sqs = SearchQuerySet().filter(django_ct='acts.act').\
-    facet('act_type').facet('is_key').facet('is_proposal').\
-    facet('initiative').facet('organ').\
-    query_facet('pub_date', ActSearchView.DATE_INTERVALS_RANGES['2013']['qrange']).\
-    query_facet('pub_date', ActSearchView.DATE_INTERVALS_RANGES['2012']['qrange']).\
-    query_facet('pub_date', ActSearchView.DATE_INTERVALS_RANGES['2011']['qrange']).\
-    query_facet('pub_date', ActSearchView.DATE_INTERVALS_RANGES['2010']['qrange']).\
-    query_facet('pub_date', ActSearchView.DATE_INTERVALS_RANGES['2009']['qrange']).\
-    query_facet('pub_date', ActSearchView.DATE_INTERVALS_RANGES['2008']['qrange']).\
-    order_by('-pub_date').\
-    highlight()
-
+#sqs = SearchQuerySet().filter(django_ct='acts.act').\
+#    facet('act_type').facet('is_key').facet('is_proposal').\
+#    facet('initiative').facet('organ').\
+#    query_facet('pub_date', ActSearchView.DATE_INTERVALS_RANGES['2013']['qrange']).\
+#    query_facet('pub_date', ActSearchView.DATE_INTERVALS_RANGES['2012']['qrange']).\
+#    query_facet('pub_date', ActSearchView.DATE_INTERVALS_RANGES['2011']['qrange']).\
+#    query_facet('pub_date', ActSearchView.DATE_INTERVALS_RANGES['2010']['qrange']).\
+#    query_facet('pub_date', ActSearchView.DATE_INTERVALS_RANGES['2009']['qrange']).\
+#    query_facet('pub_date', ActSearchView.DATE_INTERVALS_RANGES['2008']['qrange']).\
+#    order_by('-pub_date').\
+#    highlight()
+#
 sqs_speech = SearchQuerySet().filter(django_ct='acts.speech').\
     highlight()
 
 urlpatterns = patterns('',
     # faceted navigation
-    url(r'^$', ActSearchView(template='acts/act_search.html', searchqueryset=sqs), name='om_act_search'),
+    url(r'^$', ActSearchView(template='acts/act_search.html'), name='om_act_search'), #, searchqueryset=sqs), name='om_act_search'),
     # agendas
     url(r'^agendas/(?P<pk>\d+)/$', AgendaDetailView.as_view(),  name='om_agenda_detail'),
     url(r'^agendas/(?P<pk>\d+)/(?P<tab>documents)/$', AgendaDetailView.as_view(),  name='om_agenda_detail_documents'),
