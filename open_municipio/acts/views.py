@@ -469,6 +469,7 @@ class ActTransitionRemoveView(ActTransitionToggleBaseView):
 class RecordVoteOnActView(RecordVoteOnItemView):
     model = Act   
 
+
 class SpeechSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
     """
     """
