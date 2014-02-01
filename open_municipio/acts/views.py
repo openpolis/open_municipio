@@ -490,12 +490,9 @@ class SpeechSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
         sqs = SearchQuerySet().filter(django_ct='acts.speech')
 
         for (year, range) in self.DATE_INTERVALS_RANGES.items():
-            sqs = sqs.query_facet('pub_date', range['qrange'])
+            sqs = sqs.query_facet('date', range['qrange'])
 
-        sqs = sqs.highlight()
-        kwargs['searchqueryset'] = sqs
-
-
+        kwargs['searchqueryset'] = sqs.highlight()
 
         # Needed to switch out the default form class.
         if kwargs.get('form_class') is None:
