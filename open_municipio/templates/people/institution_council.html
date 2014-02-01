@@ -188,13 +188,8 @@
     	
         sort_acts_asc = function(node_a,node_b) {
 
-//            console.log($(node_a).text().replace(/^\s+|\s+$/g, ""));
-//            console.log($(node_b).text().replace(/^\s+|\s+$/g, ""));
-
     		acts_a = parseInt($(node_a).text().replace(/^\s+|\s+$/g, ""));
             acts_b = parseInt($(node_b).text().replace(/^\s+|\s+$/g, ""));
-
-//            console.log("a = " + acts_a + ", b = " + acts_b);
 
             if (acts_a < acts_b)
             {
@@ -208,8 +203,6 @@
             {
                 res = 1;
             }
-
-//            console.log("res = " + res);
 
             return res;
         };
