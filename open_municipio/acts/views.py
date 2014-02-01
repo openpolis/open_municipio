@@ -518,6 +518,9 @@ class SpeechSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
         
         extra['base_url'] = reverse('om_speech_search') + '?' + extra['params'].urlencode()
 
+        # get data about custom date range facets
+        extra['facet_queries_date'] = self._get_custom_facet_queries_date('date')
+
         extra['facets_sorted'] = self.FACETS_SORTED
         extra['facets_labels'] = self.FACETS_LABELS
 
