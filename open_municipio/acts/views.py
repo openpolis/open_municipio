@@ -475,8 +475,10 @@ class SpeechSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
     """
     __name__ = 'SpeechSearchView'
 
-    FACETS_SORTED = []
-    FACETS_LABELS = {}
+    FACETS_SORTED = [ 'date', ]
+    FACETS_LABELS = { 
+        'date': _('Year'),
+    }
 
     DATE_INTERVALS_RANGES = { } 
 
@@ -493,7 +495,7 @@ class SpeechSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
         for (year, range) in self.DATE_INTERVALS_RANGES.items():
             sqs = sqs.query_facet('date', range['qrange'])
 
-        kwargs['searchqueryset'] = sqs.highlight()
+        kwargs['searchqueryset'] = sqs.order_by('-date').highlight()
 
         # Needed to switch out the default form class.
         if kwargs.get('form_class') is None:
