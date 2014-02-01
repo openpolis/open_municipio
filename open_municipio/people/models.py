@@ -773,7 +773,13 @@ class GroupResponsability(ChargeResponsability):
 
 
     def __unicode__(self):
-        return u"%s (%s - %s)" % (self.get_charge_type_display(), self.start_date, self.end_date)
+    
+        end_date = ""
+    
+        if self.end_date:
+            end_date = "al %s" % self.end_date
+
+        return u"%s (%s%s)" % (self.get_charge_type_display(), self.start_date, end_date)
 
 
 class GroupIsMajority(models.Model):
