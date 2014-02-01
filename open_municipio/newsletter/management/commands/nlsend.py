@@ -141,12 +141,13 @@ class Command(LabelCommand):
             n_news = len(user_news)
             if n_news:
                 if not options['dryrun']:
-                    d = Context({ 'profile': profile,
+                    d = Context({ 'site_home': settings.SITE_INFO['home'],
+                                  'profile': profile,
                                   'city': settings.SITE_INFO['main_city'],
                                   'webmaster': settings.WEBMASTER_INFO,
                                   'user_news': [{'date': rn.news_date, 'text': re.sub('href=\"\/', 'href="http://{0}/'.format(site_domain), rn.text)} for rn in user_news]})
 
-                    subject, from_email, to = 'Monitoraggio Open Municipio', 'noreply@openmunicipio.it', profile.user.email
+                    subject, from_email, to = settings.NL_TITLE, settings.NL_FROM, profile.user.email
                     text_content = self.plaintext_tpl.render(d)
                     html_content = self.htmly_tpl.render(d)
                     msg = EmailMultiAlternatives(subject, text_content, from_email, [to])

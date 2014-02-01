@@ -47,7 +47,7 @@
         <p>Ricevi questa email perché stai monitorando {{ profile.monitored_objects|length }} tra politici,
             atti e argomenti nel sito <a href="http://{{ city|lower }}.openmunicipio.it">Open Municipio di {{ city }}</a>.</p>
 
-        <p>Per modificare le impostazioni di monitoraggio accedi al tuo profilo Open Municipio;
+        <p>Per modificare le impostazioni di monitoraggio accedi al <a href="{{ site_home }}{{ profile.get_absolute_url }}">tuo profilo</a> Open Municipio;
         per aggiungere o eliminare atti, politici  o argomenti dal tuo monitoraggio, vai alla pagina
         del singolo atto, politico o argomento e clicca su "Non monitorare più".</p>
 

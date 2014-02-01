@@ -359,3 +359,7 @@ WEBMASTER_INFO = {
 OM_START_YEAR = 2008
 
 OP_URL_TEMPLATE = "http://politici.openpolis.it/politico/%(op_id)s"
+
+NL_TITLE = "Monitoraggio Open Municipio"
+NL_FROM = "Open Municipio <noreply@openmunicipio.it>"
+
