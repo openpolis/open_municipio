@@ -518,6 +518,9 @@ class SpeechSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
         
         extra['base_url'] = reverse('om_speech_search') + '?' + extra['params'].urlencode()
 
+        extra['facets_sorted'] = self.FACETS_SORTED
+        extra['facets_labels'] = self.FACETS_LABELS
+
         person_slug = self.request.GET.get('person', None)
         if person_slug:
             try:
