@@ -55,20 +55,13 @@ class ActSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
         'organ': _('Organ'),
         'pub_date': _('Pubblication year')
     }
-    DATE_INTERVALS_RANGES = {
-#        '2013':  {'qrange': '[2013-01-01T00:00:00Z TO 2014-01-01T00:00:00Z]', 'r_label': '2013'},
-#        '2012':  {'qrange': '[2012-01-01T00:00:00Z TO 2013-01-01T00:00:00Z]', 'r_label': '2012'},
-#        '2011':  {'qrange': '[2011-01-01T00:00:00Z TO 2012-01-01T00:00:00Z]', 'r_label': '2011'},
-#        '2010':  {'qrange': '[2010-01-01T00:00:00Z TO 2011-01-01T00:00:00Z]', 'r_label': '2010'},
-#        '2009':  {'qrange': '[2009-01-01T00:00:00Z TO 2010-01-01T00:00:00Z]', 'r_label': '2009'},
-#        '2008':  {'qrange': '[2008-01-01T00:00:00Z TO 2009-01-01T00:00:00Z]', 'r_label': '2008'},
-    }
+    DATE_INTERVALS_RANGES = { }
 
     def __init__(self, *args, **kwargs):
 
         # dynamically compute date ranges for faceted search
         curr_year = datetime.today().year
-        for curr_year in xrange(settings.OM_START_YEAR, curr_year):
+        for curr_year in xrange(settings.OM_START_YEAR, curr_year + 1):
             date_range = self._build_date_range(curr_year)
             self.DATE_INTERVALS_RANGES[curr_year] = date_range
     
@@ -485,20 +478,41 @@ class SpeechSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
     FACETS_LABELS = {}
 
     DATE_INTERVALS_RANGES = {
-        '2013':  {'qrange': '[2013-01-01T00:00:00Z TO 2014-01-01T00:00:00Z]', 'r_label': '2013'},
-        '2012':  {'qrange': '[2012-01-01T00:00:00Z TO 2013-01-01T00:00:00Z]', 'r_label': '2012'},
-        '2011':  {'qrange': '[2011-01-01T00:00:00Z TO 2012-01-01T00:00:00Z]', 'r_label': '2011'},
-        '2010':  {'qrange': '[2010-01-01T00:00:00Z TO 2011-01-01T00:00:00Z]', 'r_label': '2010'},
-        '2009':  {'qrange': '[2009-01-01T00:00:00Z TO 2010-01-01T00:00:00Z]', 'r_label': '2009'},
-        '2008':  {'qrange': '[2008-01-01T00:00:00Z TO 2009-01-01T00:00:00Z]', 'r_label': '2008'},
+#        '2013':  {'qrange': '[2013-01-01T00:00:00Z TO 2014-01-01T00:00:00Z]', 'r_label': '2013'},
+#        '2012':  {'qrange': '[2012-01-01T00:00:00Z TO 2013-01-01T00:00:00Z]', 'r_label': '2012'},
+#        '2011':  {'qrange': '[2011-01-01T00:00:00Z TO 2012-01-01T00:00:00Z]', 'r_label': '2011'},
+#        '2010':  {'qrange': '[2010-01-01T00:00:00Z TO 2011-01-01T00:00:00Z]', 'r_label': '2010'},
+#        '2009':  {'qrange': '[2009-01-01T00:00:00Z TO 2010-01-01T00:00:00Z]', 'r_label': '2009'},
+#        '2008':  {'qrange': '[2008-01-01T00:00:00Z TO 2009-01-01T00:00:00Z]', 'r_label': '2008'},
     }
 
     def __init__(self, *args, **kwargs):
+
+        # dynamically compute date ranges for faceted search
+        curr_year = datetime.today().year
+        for curr_year in xrange(settings.OM_START_YEAR, curr_year + 1):
+            date_range = self._build_date_range(curr_year)
+            self.DATE_INTERVALS_RANGES[curr_year] = date_range
+    
+        sqs = SearchQuerySet().filter(django_ct='acts.speech')
+
+        for (year, range) in self.DATE_INTERVALS_RANGES.items():
+            sqs = sqs.query_facet('pub_date', range['qrange'])
+
+        sqs = sqs.highlight()
+        kwargs['searchqueryset'] = sqs
+
+
+
         # Needed to switch out the default form class.
         if kwargs.get('form_class') is None:
             kwargs['form_class'] = RangeFacetedSearchForm
 
         super(SpeechSearchView, self).__init__(*args, **kwargs)
+
+    def _build_date_range(self, curr_year):
+        return { 'qrange': '[%s-01-01T00:00:00Z TO %s-12-31T00:00:00Z]' % \
+                (curr_year, curr_year), 'r_label': curr_year }
 
     def build_form(self, form_kwargs=None):
         if form_kwargs is None:
