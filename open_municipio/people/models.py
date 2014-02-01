@@ -68,6 +68,16 @@ class Person(models.Model, MonitorizedItem):
         return 'om_politician_detail', (), { 'slug': self.slug }
 
     @property
+    def openpolis_link(self):
+        link = None
+
+        if self.op_politician_id:
+            link = settings.OP_URL_TEMPLATE % { "op_id":self.op_politician_id }
+    
+        print "link:%s" % link
+        return link            
+
+    @property
     def is_om_user(self):
         """
         check whether the person is a registered om user

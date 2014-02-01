@@ -140,8 +140,8 @@
 	      {% if resources.TWITTER %}
             <tr><td><i class="res res-twitter"></i></td><td><a class="twitter" href="{{ resources.TWITTER.value }}">Profilo Twitter</a></td></tr>
 	      {% endif %}
-	      {% if resources.OPENPOLIS %}
-            <tr><td><i class="res res-openpolis"></i></td><td><a class="openpolis" href="{{ resources.OPENPOLIS.value }}">Pagina su Openpolis</a></td></tr>
+	      {% if person.openpolis_link %}
+            <tr><td><i class="res res-openpolis"></i></td><td><a class="openpolis" href="{{ person.openpolis_link }}">Pagina su Openpolis</a></td></tr>
 	      {% endif %}
       </table>
 

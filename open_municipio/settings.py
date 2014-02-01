@@ -357,3 +357,5 @@ WEBMASTER_INFO = {
 }
 
 OM_START_YEAR = 2008
+
+OP_URL_TEMPLATE = "http://politici.openpolis.it/politico/%(op_id)s"
