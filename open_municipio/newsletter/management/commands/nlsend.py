@@ -50,7 +50,7 @@ class Command(LabelCommand):
 
     def handle(self, *labels, **options):
 
-        translation.activate('it')
+        translation.activate(settings.LANGUAGE_CODE)
 
         # fix logger level according to verbosity
         verbosity = options['verbosity']

@@ -361,7 +361,7 @@ class InstitutionCharge(Charge):
     @property
     def denomination(self):
         if self.institution.institution_type == Institution.MAYOR:
-            denomination = _('Mayor').translate(settings.LANGUAGE_CODE)
+            denomination = _('Mayor') #.translate(settings.LANGUAGE_CODE) #-FS why?
             if self.description != "":
                 denomination += ", %s" % self.description
             return denomination
