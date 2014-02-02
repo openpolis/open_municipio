@@ -188,9 +188,15 @@
                           <li><a href="{% url om_contatti %}">Contatti</a></li>
                       </ul>
                       <p>
-                          <a href="http://www.facebook.com/OpenUdine" target="_blank"><img src="{{ STATIC_URL }}img/footer-fb.png"/></a>
+                          <!-- social sites -->
+                          {% if SOCIAL_SITES.facebook %}
+                          <a href="{{ SOCIAL_SITES.facebook }}" target="_blank"><img src="{{ STATIC_URL }}img/footer-fb.png"/></a>                        
                           &nbsp;&nbsp;&nbsp;
-                          <a href="http://www.twitter.com/openudine" target="_blank"><img src="{{ STATIC_URL }}img/footer-tw.png"/></a>
+                          {% endif %}
+                          {% if SOCIAL_SITES.twitter %}
+                          <a href="{{ SOCIAL_SITES.twitter }}" target="_blank"><img src="{{ STATIC_URL }}img/footer-tw.png"/></a>
+                          &nbsp;&nbsp;&nbsp;
+                          {% endif %}
                       </p>
                   </div>
 

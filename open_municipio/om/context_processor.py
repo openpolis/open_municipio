@@ -23,6 +23,6 @@ def defaults(request):
         'UI_SITTINGS_CALENDAR': settings.UI_SITTINGS_CALENDAR,
         'UI_ALLOW_NICKNAMES': settings.UI_ALLOW_NICKNAMES,
         'SEARCH_URLS': settings.SEARCH_URLS,
-        
+        'SOCIAL_SITES': settings.SOCIAL_SITES,       
 
     }
