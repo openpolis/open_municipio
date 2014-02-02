@@ -143,6 +143,9 @@
 	      {% if person.openpolis_link %}
             <tr><td><i class="res res-openpolis"></i></td><td><a class="openpolis" href="{{ person.openpolis_link }}">Pagina su Openpolis</a></td></tr>
 	      {% endif %}
+          {% if person.userprofile %}
+            <tr><td><i class="res res-openpolis"></i></td><td><a class="openpolis" href="{{ person.userprofile.get_absolute_url }}">Pagina su Open Municipio</a></td></tr>
+          {% endif %}
       </table>
 
     </div>
