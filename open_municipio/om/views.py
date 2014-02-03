@@ -114,7 +114,8 @@ class ConditionsView(TemplateView):
         context = super(ConditionsView, self).get_context_data(**kwargs)
 
         context["contacts_email"] = settings.CONTACTS_EMAIL
-        
+        context["webmaster_info"] = settings.WEBMASTER_INFO
+
         return context
 
 
