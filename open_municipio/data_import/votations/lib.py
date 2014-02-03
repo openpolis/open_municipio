@@ -281,8 +281,10 @@ class DBVotationWriter(BaseVotationWriter):
 
         for cv in votation.charge_votes:
 
-            if cv.charge == municipality.mayor.as_charge:
+            if cv.charge.person == municipality.mayor.as_charge.person:
                 # skip the mayor, he/she does not belong to any group
+                # note that the mayor has 2 charges: as mayor and as counselor; for
+                # this reason we check the person linked to the charge
                 continue
 
             g = cv.charge_group_at_vote_date

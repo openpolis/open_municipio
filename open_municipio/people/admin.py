@@ -169,6 +169,8 @@ class GroupChargeAdmin(admin.ModelAdmin):
     list_filter = ['group']
     inlines = [GroupResponsabilityInline]
 
+    search_fields = [ 'charge__person__first_name', 'charge__person__last_name', 'group__name', 'group__acronym', ]
+
 
 class BodyAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("name",)}

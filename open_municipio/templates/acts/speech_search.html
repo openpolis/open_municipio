@@ -6,6 +6,7 @@
 
 {% block title %}Elenco interventi {% endblock title %}
 {% block content_header %}Interventi{% endblock %}
+{% block speech_class %}active{% endblock %}
 {% block body_class %}speech{% endblock %}
 
 {% block extra_style %}
@@ -99,7 +100,7 @@ em {
         <div>
             <dl>
                 {% if not facet_queries_date.is_selected %}
-                    <dt>{{ facets_labels.pub_date }}</dt>
+                    <dt>{{ facets_labels.date }}</dt>
                     {% for range in facet_queries_date.ranges|dictsortreversed:"key"  %}
                         <dd>
                             <a href="{{ base_url }}&selected_facets={{ range.key }}">

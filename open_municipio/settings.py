@@ -355,3 +355,17 @@ WEBMASTER_INFO = {
     'email': u'info@openmunicipio.it',
     'phone': u'',
 }
+
+# links to social sites related to OM
+SOCIAL_SITES = {
+    'twitter': '', # e.g. 'https://twitter.com/<your_twitter_account>',
+    'facebook': '', # e.g. 'https://www.facebook.com/<your_facebook_account>',
+}
+
+OM_START_YEAR = 2008
+
+OP_URL_TEMPLATE = "http://politici.openpolis.it/politico/%(op_id)s"
+
+NL_TITLE = "Monitoraggio Open Municipio"
+NL_FROM = "Open Municipio <noreply@openmunicipio.it>"
+

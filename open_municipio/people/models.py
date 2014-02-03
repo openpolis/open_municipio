@@ -68,6 +68,16 @@ class Person(models.Model, MonitorizedItem):
         return 'om_politician_detail', (), { 'slug': self.slug }
 
     @property
+    def openpolis_link(self):
+        link = None
+
+        if self.op_politician_id:
+            link = settings.OP_URL_TEMPLATE % { "op_id":self.op_politician_id }
+    
+        print "link:%s" % link
+        return link            
+
+    @property
     def is_om_user(self):
         """
         check whether the person is a registered om user
@@ -361,7 +371,7 @@ class InstitutionCharge(Charge):
     @property
     def denomination(self):
         if self.institution.institution_type == Institution.MAYOR:
-            denomination = _('Mayor').translate(settings.LANGUAGE_CODE)
+            denomination = _('Mayor') #.translate(settings.LANGUAGE_CODE) #-FS why?
             if self.description != "":
                 denomination += ", %s" % self.description
             return denomination
@@ -729,12 +739,17 @@ class GroupCharge(models.Model):
     current_responsability = property(get_current_responsability)
 
 
-
     @property
     def responsability(self):
         if self.responsabilities.count() == 1:
             r = self.responsabilities[0]
-            s = "%s: %s - %s" % (r.get_charge_type_display(), r.start_date, r.end_date)
+
+            end_date = ""
+    
+            if r.end_date:
+                end_date = " - %s" % r.end_date
+
+            s = "%s: %s%s" % (r.get_charge_type_display(), r.start_date, end_date)
             return s
         else:
             return ""
@@ -746,9 +761,9 @@ class GroupCharge(models.Model):
 
     def __unicode__(self):
         if self.responsability:
-            return u"%s - %s - %s" % (self.group.acronym, self.charge.person.last_name, self.responsability)
+            return u"%s - %s - %s" % (self.group.acronym, self.charge.person, self.responsability)
         else:
-            return u"%s - %s" % (self.group.acronym, self.charge.person.last_name)
+            return u"%s - %s" % (self.group.acronym, self.charge.person)
 
 class GroupResponsability(ChargeResponsability):
     """
@@ -763,7 +778,13 @@ class GroupResponsability(ChargeResponsability):
 
 
     def __unicode__(self):
-        return u"%s (%s - %s)" % (self.get_charge_type_display(), self.start_date, self.end_date)
+    
+        end_date = ""
+    
+        if self.end_date:
+            end_date = " - %s" % self.end_date
+
+        return u"%s (%s%s)" % (self.get_charge_type_display(), self.start_date, end_date)
 
 
 class GroupIsMajority(models.Model):

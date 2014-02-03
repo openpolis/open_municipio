@@ -186,10 +186,36 @@
            	}
         };
     	
+        sort_acts_asc = function(node_a,node_b) {
+
+    		acts_a = parseInt($(node_a).text().replace(/^\s+|\s+$/g, ""));
+            acts_b = parseInt($(node_b).text().replace(/^\s+|\s+$/g, ""));
+
+            if (acts_a < acts_b)
+            {
+                res = -1;
+            }
+            else if (acts_a == acts_b)
+            {   
+                res = 0;
+            }
+            else
+            {
+                res = 1;
+            }
+
+            return res;
+        };
+
     	$.fn.dataTableExt.oSort['fullname-asc']  = sort_fullname_asc;
     	$.fn.dataTableExt.oSort['fullname-desc'] = function(a,b) {
     		return sort_fullname_asc(b, a);
     	};
+
+        $.fn.dataTableExt.oSort['acts-asc'] = sort_acts_asc;
+        $.fn.dataTableExt.oSort['acts-desc'] = function(a,b) {
+            return sort_acts_asc(b, a);
+        };
     
         percentage_extract = function(match, $1, offset, original) { return $1; }
 
@@ -215,7 +241,8 @@
                     { sType: "fullname", asSorting: ['desc', 'asc']},
                     { sType: "percentage", asSorting: ['desc', 'asc']},
                     {asSorting: ['desc', 'asc']},
-                    {asSorting: ['desc', 'asc']},
+//                    {asSorting: ['desc', 'asc']},
+                    { sType: "acts", asSorting: ['desc', 'asc']},
                     {asSorting: ['desc', 'asc']}
                 ],
                 bPaginate: false,
