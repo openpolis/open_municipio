@@ -252,7 +252,7 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
         WRITEME
         """
         if self.downcast():
-            return self.downcast()._meta.verbose_name
+            return unicode(self.downcast()._meta.verbose_name)
         else:
             return None
 

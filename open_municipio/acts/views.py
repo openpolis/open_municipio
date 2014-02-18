@@ -302,6 +302,12 @@ class ActDetailView(DetailView):
         context['act_type'] = act._meta.verbose_name
         context['transition_groups'] = act.get_transitions_groups()
 
+        # default public date and idnum
+        # may be override for approved acts (see Deliberation and CGDeliberation)
+        context['public_date'] = act.presentation_date
+        context['public_idnum'] = act.idnum
+
+
         # some user can set transitions
         if self.request.user.has_perm('acts.change_transition') : #and context['status_list']
             context['transition_forms'] = {}
@@ -351,8 +357,41 @@ class CGDeliberationDetailView(ActDetailView):
     model = CGDeliberation
     template_name = "acts/deliberation_detail.html"
 
+    def get_context_data(self, **kwargs):
+        """
+        ``public_date`` and ``public_idnum`` override for approved deliberations
+        """
+        context = super(CGDeliberationDetailView, self).get_context_data(**kwargs)
+        d = self.get_object()
+
+        if d.status == 'APPROVED':
+            if d.approval_date:
+                context['public_date'] = d.approval_date
+
+            if d.final_idnum:
+                context['public_idnum'] = d.final_idnum
+
+        return context
+
+
 class DeliberationDetailView(ActDetailView):
     model = Deliberation
+
+    def get_context_data(self, **kwargs):
+        """
+        ``public_date`` and ``public_idnum`` override for approved deliberations
+        """
+        context = super(DeliberationDetailView, self).get_context_data(**kwargs)
+        d = self.get_object()
+
+        if d.status == 'APPROVED':
+            if d.approval_date:
+                context['public_date'] = d.approval_date
+
+            if d.final_idnum:
+                context['public_idnum'] = d.final_idnum
+
+        return context
 
 
 class InterpellationDetailView(ActDetailView):

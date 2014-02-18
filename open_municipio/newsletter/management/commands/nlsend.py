@@ -125,7 +125,7 @@ class Command(LabelCommand):
 
                 # add date filter if required
                 if options['fromdate']:
-                    related_news = related_news.filter(created__gt=options['fromdate'])
+                    related_news = related_news.filter(modified__gt=options['fromdate'])
 
                 # add objects related news to user news
                 user_news |= related_news
