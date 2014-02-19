@@ -230,15 +230,9 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
         """
         WRITEME
         """
-        # TODO: review implementation
         if self.transitions:
-            # FIXME: this assume that transitions are ordered by date
-            return list(self.transitions)[-1]
-        # FIXME: this method returns different kind of objects (list or boolean) 
-        # under different conditions: this is not an ideal API!
-        # A better approach would be to return ``None`` or raise an exception
-        # if no transitions exist for this act
-        return False
+            return list(self.transitions.order_by('-transition_date'))[0]
+        return None
 
     def get_absolute_url(self):
         return self.downcast().get_absolute_url()
