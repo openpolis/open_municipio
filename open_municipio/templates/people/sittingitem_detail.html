@@ -37,7 +37,7 @@
     <h4>Atti a supporto della discussione:</h4>
     <ul>
     {% for act in acts %}
-        <li><a href="{{ act.get_absolute_url }}">{{ act.title|truncatewords:10 }}</a>
+        <li><a href="{{ act.get_absolute_url }}">{{ act.adj_title|default:act.title|truncatewords:10 }}</a>
     {% endfor %}
     </ul>
     </div>
