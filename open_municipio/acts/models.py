@@ -789,7 +789,7 @@ def delete_signature(**kwargs):
 
 @receiver(post_save, sender=Transition)
 def new_transition(**kwargs):
-    if not kwargs.get('raw', False):
+    if not kwargs.get('raw', False) and isinstance(kwargs['instance'], Transition):
         transition = kwargs['instance']
         act = transition.act.downcast()
 
