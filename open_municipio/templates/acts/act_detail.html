@@ -11,7 +11,7 @@
 {% comment %}WebServices tags: share{% endcomment %}
 {% load web_services_tags %}
 
-{% block title %}Dettaglio {% if act.adj_title %}{{ act.adj_title }}{% else %}{{ act }}{% endif %}{% endblock title %}
+{% block title %}Dettaglio {{ act.adj_title|default:act.title }}{% endblock title %}
 {% block content_header %}Atto{% endblock %}
 {% block acts_class %}active{% endblock %}
 {% block body_class %}acts{% endblock %}
@@ -83,7 +83,7 @@
     <h2 id="act_title">
       <a href="#" id="{{ act|as_token }}" class="bookmarkable" {% if act.is_key %} data-toggle="tooltip" data-placement="right" title="Voto chiave"{% endif %}>
           <i class="{% is_key_class act %}"></i></a>
-      <strong class="input-append">{% if act.adj_title %}{{ act.adj_title }}{% else %}{{ act.title }}{% endif %}</strong>
+      <strong class="input-append">{{ act.adj_title|default:act.title }}</strong>
       {% if act.idnum %}
       <small>(N. {{ public_idnum }})</small></h2>
       {% endif %}
@@ -251,9 +251,9 @@
         {% if title_form %}
         // Edit Act Title in-place
         $('#act_title strong').editable('{% url om_act_title_update pk=act.id %}', {
-          name : '{{ title_form.title.html_name }}',
+          name : '{{ title_form.adj_title.html_name }}',
           submitdata : function(value, settings) {
-            return { 'id': {{ act.id }}, 'act_field': 'title' };
+            return { 'id': {{ act.id }}, 'act_field': 'adj_title' };
           },
           cssclass  : 'form-inline',
           submit    : '<button type="submit" class="btn">Salva</button>',

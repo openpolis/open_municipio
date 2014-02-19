@@ -191,6 +191,7 @@ class ActLiveEditView(FormView):
 
     def post(self, request, *args, **kwargs):
         response_data = {}
+
         try:
             if not self.request.user.is_authenticated() or not self.kwargs.get('pk') == request.POST.get('id'):
                 raise Exception('NOT_ALLOWED1')
@@ -198,7 +199,7 @@ class ActLiveEditView(FormView):
             target_act = Act.objects.get(pk=self.kwargs.get('pk'))
             target_act_field = self.request.POST.get('act_field')
 
-            if target_act_field == 'title':
+            if target_act_field == 'adj_title':
                 if not request.user.has_perm('acts.change_act'):
                     raise Exception('NOT_ALLOWED2')
                 form = ActTitleForm(self.request.POST, instance=target_act)
@@ -247,7 +248,7 @@ class ActDetailView(DetailView):
             # add a form for editing title of act
             context['title_form'] = ActTitleForm(initial = {
                 'id': act.pk,
-                'title': act.title,
+                'adj_title': act.adj_title or act.title,
                 })
  
         if self.request.user.has_perm('locations.change_taggedactbylocation'):

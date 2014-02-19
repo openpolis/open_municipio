@@ -10,7 +10,7 @@ from open_municipio.people.models import Institution, InstitutionCharge
 class ActTitleForm(forms.ModelForm):
     class Meta:
         model = Act
-        fields = ('id', 'title',)
+        fields = ('id', 'adj_title',)
 
 
 class ActDescriptionForm(forms.ModelForm):
