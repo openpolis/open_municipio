@@ -152,7 +152,9 @@
                 </form>
               {% endif %}
 
-              {{ transition.transition_date|date:"j.n.Y" }} - {{ transition.note }}</li>
+              {{ transition.transition_date|date:"j.n.Y" }}
+              {% if transition.note %} - {{ transition.note }}{% endif %}
+            </li>
           {% endfor %}
         </ul>
       </td>
@@ -168,7 +170,9 @@
                 </form>
               {% endif %}
 
-              {{ transition.transition_date|date:"j.n.Y" }} - {{ transition.note }}</li>
+              {{ transition.transition_date|date:"j.n.Y" }}
+              {% if transition.note %} - {{ transition.note }}{% endif %}
+            </li>
           {% endfor %}
         </ul>
       </td>
