@@ -1,6 +1,7 @@
 L'atto <a href="{{ act.downcast.get_absolute_url }}">{{ act.downcast.title|truncatewords_html:30 }}</a>
-è stato presentato da
-<a href="{{ act.first_presenters.0.person.get_absolute_url }}">{{ act.first_presenters.0.person }}</a>
+è stato presentato 
+{% if act.first_presenters|length > 0 %}
+da <a href="{{ act.first_presenters.0.person.get_absolute_url }}">{{ act.first_presenters.0.person }}</a>
 
 {% if act.first_presenters|length == 2 %}
   e  un altro
@@ -8,4 +9,5 @@ L'atto <a href="{{ act.downcast.get_absolute_url }}">{{ act.downcast.title|trunc
 
 {% if act.first_presenters|length > 2 %}
     e altri {{ act.first_presenters|length|add:-1 }}
+{% endif %}
 {% endif %}

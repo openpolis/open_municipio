@@ -408,13 +408,13 @@ class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
         self.logger.info("Now let's add the attachment ...")
         self._add_attachments(act, om_act)
 
-        # append transitions to acts on OM
-        self._add_act_transitions(act, om_act)
-
-                
+        # set act signers *before* act transitions, in order to generate
+        # news containing the names of who signed the act
         self.logger.info("Set the act supporters ...")
         self._add_subscribers(act, om_act)
 
+        # append transitions to acts on OM
+        self._add_act_transitions(act, om_act)
         
 
 # python object layer for imported data
