@@ -789,14 +789,12 @@ def delete_signature(**kwargs):
 
 @receiver(post_save, sender=Transition)
 def new_transition(**kwargs):
+    # avoid infinite loop by checking instance type
     if not kwargs.get('raw', False) and isinstance(kwargs['instance'], Transition):
         transition = kwargs['instance']
         act = transition.act.downcast()
 
         # modify act's status
-        # avoid infinite loop by disconnecting and re-connecting
-        # the signal handler
-        post_save.disconnect(new_transition)
         # set act's status according to transition status
         act.status = transition.final_status
         act.save()
@@ -804,7 +802,6 @@ def new_transition(**kwargs):
         if act.is_final_status(act.status):
             act.act_ptr.status_is_final = True
             act.act_ptr.save()
-        post_save.connect(new_transition)
 
         # generate news
         ctx = Context({ 'current_site': Site.objects.get(id=settings.SITE_ID),
