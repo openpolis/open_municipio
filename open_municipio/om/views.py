@@ -1,6 +1,8 @@
+from datetime import datetime
+
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
-from django.db.models import Count
+from django.db.models import Count, Q
 from django.views.generic.base import TemplateView
 from open_municipio.acts.models import Calendar, Act, ActSupport
 from open_municipio.events.models import Event
@@ -61,13 +63,7 @@ class HomeView(TemplateView):
 
         context['top_monitored'] = extract_top_monitored_objects(Person, qnt=3)
 
-        try:
-            context['most_acts'] = municipality.council.as_institution.charge_set.\
-                filter(actsupport__support_type=ActSupport.SUPPORT_TYPE.first_signer).\
-                annotate(n_acts=Count('actsupport')).order_by('-n_acts')[0:3]
-        except ObjectDoesNotExist:
-            # city council not exists
-            context['most_acts'] = []
+        today = datetime.today()
 
         # fetch most or least
         try:
@@ -75,12 +71,18 @@ class HomeView(TemplateView):
             context['most_rebellious'] = counselors.order_by('-n_rebel_votations')[0:3]
             context['most_trustworthy'] = counselors.order_by('n_rebel_votations')[0:3]
             context['least_absent'] = counselors.extra(select={'perc_absences':'(n_absent_votations * 100.0)/(n_absent_votations + n_present_votations + 1)'}).order_by('perc_absences')[0:3]
+            context['most_acts'] = counselors.\
+                filter(actsupport__support_type=ActSupport.SUPPORT_TYPE.first_signer).\
+                filter(start_date__lte=today).filter(Q(end_date=None) | Q(end_date__gte=today)).\
+                annotate(n_acts=Count('actsupport')).order_by('-n_acts')[0:3]
+
         except ObjectDoesNotExist:
             # city council not present
             counselors = ()
             context['most_rebellious'] = ()
             context['most_trustworthy'] = ()
             context['least_absent'] = ()
+            context['most_acts'] = ()
 
         categories = list(Category.objects.all())
         tags = list(Tag.objects.all())
