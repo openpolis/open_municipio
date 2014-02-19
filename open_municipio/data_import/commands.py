@@ -405,9 +405,10 @@ class ImportActsCommand(LabelCommand):
                 }
             )
 
-            # overwrite date of an existing transition
-            if not created and trans.transition_date != transition_date:
+            # overwrite date and status of an existing transition
+            if not created:
                 trans.transition_date = transition_date
+                trans.final_status = transition_status
                 trans.save()
 
 

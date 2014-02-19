@@ -793,16 +793,18 @@ def new_transition(**kwargs):
         transition = kwargs['instance']
         act = transition.act.downcast()
 
-        # modify act's status only when transition is created
-        # avoid infinite loop
-        if kwargs.get('created', False):
-            # set act's status according to transition status
-            act.status = transition.final_status
-            act.save()
-            # if it's a final status, set the according flag in the act's parent
-            if act.is_final_status(act.status):
-                act.act_ptr.status_is_final = True
-                act.act_ptr.save()
+        # modify act's status
+        # avoid infinite loop by disconnecting and re-connecting
+        # the signal handler
+        post_save.disconnect(new_transition)
+        # set act's status according to transition status
+        act.status = transition.final_status
+        act.save()
+        # if it's a final status, set the according flag in the act's parent
+        if act.is_final_status(act.status):
+            act.act_ptr.status_is_final = True
+            act.act_ptr.save()
+        post_save.connect(new_transition)
 
         # generate news
         ctx = Context({ 'current_site': Site.objects.get(id=settings.SITE_ID),
