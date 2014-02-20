@@ -139,13 +139,13 @@ class Command(LabelCommand):
             site_domain = Site.objects.get(pk=settings.SITE_ID)
 
             n_news = len(user_news)
-            self.logger.info("user news (%s): %s" % (n_news, user_news[0:3]))
             if n_news:
                 if not options['dryrun']:
 
                     ordered_user_news = [{'date': rn.news_date, 'text': re.sub('href=\"\/', 'href="http://{0}/'.format(site_domain), rn.text)} for rn in user_news]
 
-                    self.logger.info("ordered news (%s): %s" % (len(ordered_user_news), ordered_user_news[0:3])) 
+                    # NB this can work only if k["date"] is always not None
+                    ordered_user_news = sorted(ordered_user_news, key=lambda k: k["date"], reverse=True)
 
                     d = Context({ 'site_home': settings.SITE_INFO['home'],
                                   'profile': profile,

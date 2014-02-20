@@ -1,4 +1,8 @@
+{% comment %}
 {% regroup user_news|dictsortreversed:"date" by date as news_list %}
+{% endcomment %}
+{% regroup user_news by date as news_list %}
+
 {{ city }} - Notizie dal tuo monitoraggio
 
 {% autoescape off %}
