@@ -76,6 +76,7 @@ class News(TimeStampedModel):
 
         generator = self.generating_object
 
+        news_date = None
         if isinstance(generator, Act):
             news_date = generator.presentation_date
         elif isinstance(generator, ActSupport):
