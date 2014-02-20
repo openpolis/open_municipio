@@ -265,7 +265,7 @@ class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
             f = File(open(curr_att.path))
 
             found_att = OMAttach.objects.filter(act=om_act, \
-                document_type=curr_att.type, document_date=curr_att.document_date)
+                title=curr_att.title[:512], document_date=curr_att.document_date)
 
             if found_att.count() > 0:
                 self.logger.info("Attachment already present: %s" % curr_att.path)
@@ -275,7 +275,7 @@ class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
                     'act' : om_act,
                     'document_type' : curr_att.type,
                     'document_size' : f.size,
-                    'title' : curr_att.title[:512], # TODO parameterize this length
+                    'title' : curr_att.title[:512], # TODO parameterize this size
                     'document_date' : curr_att.document_date,
                 }
                 om_attachment = OMAttach(**defaults)
