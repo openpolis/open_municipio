@@ -261,11 +261,11 @@ class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
 
         self.logger.info("Attachments to add: %d" % len(act.attachments))
         for curr_att in act.attachments:
-            self.logger.info("Processing attachment file %s" % curr_att.path)
+            self.logger.info("Processing attachment file (%s,%s)" % (curr_att.title, curr_att.path))
             f = File(open(curr_att.path))
 
-            found_att = OMAttach.objects.filter(act=om_act, \
-                title=curr_att.title[:512], document_date=curr_att.document_date)
+            found_att = OMAttach.objects.filter(act=om_act,
+                title=curr_att.title[:512], document_type=curr_att.type)
 
             if found_att.count() > 0:
                 self.logger.info("Attachment already present: %s" % curr_att.path)
