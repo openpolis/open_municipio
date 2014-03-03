@@ -40,7 +40,14 @@ class Command(BaseCommand):
             type="string",
             default=None,
             help="Set the type of act for which signatures should be deleted. Values: %s" % (",".join(get_possible_acts()))),
-     
+ 
+           make_option("--charge_id",
+            action="store",
+            dest="charge_id",
+            type="string",
+            default=None,
+            help="Set the charge id whose signatures should be deleted."),
+   
     )
 
     def handle(self, *args, **options):
@@ -61,6 +68,7 @@ class Command(BaseCommand):
         date_to = options.get("date_to", None)
         act_type = options.get("act_type", None)
         support_type = options.get("support_type", None)
+        charge_id = options.get("charge_id", None)
 
         qs = ActSupport.objects
 
@@ -74,6 +82,9 @@ class Command(BaseCommand):
 
         if support_type:
             qs = qs.filter(support_type=support_type)
+    
+        if charge_id:
+            qs = qs.filter(charge_id=charge_id)
 
         # TODO filter by act_type
         # TODO handle errors in input values
