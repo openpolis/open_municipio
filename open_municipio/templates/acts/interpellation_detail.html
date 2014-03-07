@@ -6,7 +6,7 @@
 
 {% block act_tab_body %}
     {{ block.super }}
-    {% include 'acts/act_table_supporters.html' with act_supporters=act.first_signers supporter_title='Proponenti' %}
+    {% include 'acts/act_table_supporters.html' with act_supporters=act.first_signers supporter_title='Proponenti' act=act %}
  
 {% endblock %}
 
