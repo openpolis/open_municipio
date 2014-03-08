@@ -74,7 +74,6 @@ class Person(models.Model, MonitorizedItem):
         if self.op_politician_id:
             link = settings.OP_URL_TEMPLATE % { "op_id":self.op_politician_id }
     
-        print "link:%s" % link
         return link            
 
     @property
@@ -682,7 +681,7 @@ class Group(models.Model):
         """
         All current institution charges in the group, leader **included**
         """
-        return self.charge_set.current(moment=moment)
+        return self.charge_set.all().current(moment=moment)
     institution_charges = property(get_institution_charges)
 
 
