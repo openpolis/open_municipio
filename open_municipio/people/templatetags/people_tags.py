@@ -24,7 +24,7 @@ def get_current_group(charge, as_of):
 
     try:
         curr_group = charge.current_at_moment_groupcharge(moment=as_of).group
-    except GroupCharge.DoesNotExist:
+    except Exception:
         # the mayor does not belong to a group, for example ...
         pass
 
