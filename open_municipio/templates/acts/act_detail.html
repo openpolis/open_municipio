@@ -90,7 +90,7 @@
     <h4>
       <strong>{{ act.get_type_name|capfirst }}</strong>
       {{ act.emitting_institution.name_with_preposition }}
-        N° <strong>{{ public_idnum }}</strong> del <strong><span class="date">{{ public_date }}</span></strong>
+        {% if public_idnum %}N° <strong>{{ public_idnum }}</strong>{% endif %} del <strong><span class="date">{{ public_date }}</span></strong>
     </h4>
   </hgroup>
 
