@@ -603,6 +603,7 @@ class Group(models.Model):
     class Meta:
         verbose_name = _('group')
         verbose_name_plural = _('groups')
+        ordering = ("name", "acronym", )
 
     def get_absolute_url(self):
         return reverse("om_institution_group", kwargs={'slug': self.slug})
