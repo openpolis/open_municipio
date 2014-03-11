@@ -3,6 +3,7 @@ from open_municipio.acts.models import Act, Speech
 from django.utils.translation import activate
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
+import logging
 
 
 class ActIndex(indexes.SearchIndex, indexes.Indexable):
@@ -13,7 +14,7 @@ class ActIndex(indexes.SearchIndex, indexes.Indexable):
     initiative = indexes.FacetCharField()
     is_proposal = indexes.FacetCharField()
     organ = indexes.FacetCharField(model_attr='emitting_institution__lowername')
-    pub_date = indexes.FacetDateField(model_attr='presentation_date')
+    pub_date = indexes.FacetDateField()
     person = indexes.MultiValueField(indexed=True, stored=False)
     tags_with_urls = indexes.MultiValueField(indexed=True, stored=True)
     categories_with_urls = indexes.MultiValueField(indexed=True, stored=True)
@@ -23,6 +24,9 @@ class ActIndex(indexes.SearchIndex, indexes.Indexable):
     # while showing results
     url = indexes.CharField(indexed=False, stored=True)
     title = indexes.CharField(indexed=False, stored=True, model_attr='title')
+
+
+    logger = logging.getLogger('import')
 
     def get_model(self):
         return Act
@@ -44,12 +48,14 @@ class ActIndex(indexes.SearchIndex, indexes.Indexable):
         return obj.get_type_name() if obj else None
 
     def prepare_initiative(self, obj):
+        activate(settings.LANGUAGE_CODE)
         if obj.get_type_name() == 'delibera':
             return obj.downcast().get_initiative_display().lower() if obj.downcast() else None
         else:
             return ''
 
     def prepare_is_proposal(self, obj):
+        activate(settings.LANGUAGE_CODE)
         if obj.get_type_name() == 'delibera':
             if obj.downcast().final_idnum == '':
                 return _('yes')
@@ -58,6 +64,19 @@ class ActIndex(indexes.SearchIndex, indexes.Indexable):
 
         else:
             return ''
+
+    def prepare_pub_date(self, obj):
+        """
+        Return approval_date or presentation_date as pub_date field,
+        according to the status of
+        """
+        ret_date = obj.presentation_date
+        activate(settings.LANGUAGE_CODE)
+        if obj.downcast().status == 'APPROVED' and unicode(obj.get_type_name()) == u'delibera' and obj.downcast().approval_date:
+            ret_date = obj.downcast().approval_date
+
+        return ret_date
+
 
     def prepare_person(self, obj):
         return [p['person__slug'] for p in

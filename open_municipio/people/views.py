@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import logging
 from django.conf import settings
 from django.contrib.sites.models import Site
@@ -438,18 +440,22 @@ class PoliticianListView(TemplateView):
         context['least_absent'] = counselors.extra(select={'perc_absences':'(n_absent_votations * 100.0) / GREATEST (n_absent_votations + n_present_votations,1)'}).order_by('perc_absences')[0:3]
         context['most_absent'] = counselors.order_by('-n_absent_votations')[0:3]
 
-        context['most_acts'] = municipality.council.as_institution.charge_set.\
+        today = datetime.today()
+
+        context['most_acts'] = counselors.\
                                filter(actsupport__support_type=ActSupport.SUPPORT_TYPE.first_signer).\
                                annotate(n_acts=Count('actsupport')).order_by('-n_acts')[0:3]
 
-        context['most_interrogations'] = municipality.council.as_institution.charge_set.select_related().\
+        context['most_interrogations'] = counselors.\
                                          filter(actsupport__act__interrogation__isnull=False,
                                                 actsupport__support_type=ActSupport.SUPPORT_TYPE.first_signer).\
+                                         filter(start_date__lte=today).filter(Q(end_date=None) | Q(end_date__gte=today)).\
                                          annotate(n_acts=Count('actsupport')).order_by('-n_acts')[0:3]
 
-        context['most_motions'] = municipality.council.as_institution.charge_set.select_related().\
+        context['most_motions'] = counselors.\
                                          filter(actsupport__act__motion__isnull=False,
                                                 actsupport__support_type=ActSupport.SUPPORT_TYPE.first_signer).\
+                                         filter(start_date__lte=today).filter(Q(end_date=None) | Q(end_date__gte=today)).\
                                          annotate(n_acts=Count('actsupport')).order_by('-n_acts')[0:3]
 
         # take latest group charge changes

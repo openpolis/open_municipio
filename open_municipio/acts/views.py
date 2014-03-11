@@ -191,6 +191,7 @@ class ActLiveEditView(FormView):
 
     def post(self, request, *args, **kwargs):
         response_data = {}
+
         try:
             if not self.request.user.is_authenticated() or not self.kwargs.get('pk') == request.POST.get('id'):
                 raise Exception('NOT_ALLOWED1')
@@ -198,7 +199,7 @@ class ActLiveEditView(FormView):
             target_act = Act.objects.get(pk=self.kwargs.get('pk'))
             target_act_field = self.request.POST.get('act_field')
 
-            if target_act_field == 'title':
+            if target_act_field == 'adj_title':
                 if not request.user.has_perm('acts.change_act'):
                     raise Exception('NOT_ALLOWED2')
                 form = ActTitleForm(self.request.POST, instance=target_act)
@@ -247,7 +248,7 @@ class ActDetailView(DetailView):
             # add a form for editing title of act
             context['title_form'] = ActTitleForm(initial = {
                 'id': act.pk,
-                'title': act.title,
+                'adj_title': act.adj_title or act.title,
                 })
  
         if self.request.user.has_perm('locations.change_taggedactbylocation'):
@@ -302,6 +303,12 @@ class ActDetailView(DetailView):
         context['act_type'] = act._meta.verbose_name
         context['transition_groups'] = act.get_transitions_groups()
 
+        # default public date and idnum
+        # may be override for approved acts (see Deliberation and CGDeliberation)
+        context['public_date'] = act.presentation_date
+        context['public_idnum'] = act.idnum
+
+
         # some user can set transitions
         if self.request.user.has_perm('acts.change_transition') : #and context['status_list']
             context['transition_forms'] = {}
@@ -351,8 +358,41 @@ class CGDeliberationDetailView(ActDetailView):
     model = CGDeliberation
     template_name = "acts/deliberation_detail.html"
 
+    def get_context_data(self, **kwargs):
+        """
+        ``public_date`` and ``public_idnum`` override for approved deliberations
+        """
+        context = super(CGDeliberationDetailView, self).get_context_data(**kwargs)
+        d = self.get_object()
+
+        if d.status == 'APPROVED':
+            if d.approval_date:
+                context['public_date'] = d.approval_date
+
+            if d.final_idnum:
+                context['public_idnum'] = d.final_idnum
+
+        return context
+
+
 class DeliberationDetailView(ActDetailView):
     model = Deliberation
+
+    def get_context_data(self, **kwargs):
+        """
+        ``public_date`` and ``public_idnum`` override for approved deliberations
+        """
+        context = super(DeliberationDetailView, self).get_context_data(**kwargs)
+        d = self.get_object()
+
+        if d.status == 'APPROVED':
+            if d.approval_date:
+                context['public_date'] = d.approval_date
+
+            if d.final_idnum:
+                context['public_idnum'] = d.final_idnum
+
+        return context
 
 
 class InterpellationDetailView(ActDetailView):

@@ -33,6 +33,7 @@ class Location(SlugModel, MonitorizedItem):
     class Meta:
         verbose_name = _('location')
         verbose_name_plural = _('locations')
+        ordering = ("name",)
     
     def __unicode__(self):
         return u'%s' % self.name

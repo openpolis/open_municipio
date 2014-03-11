@@ -336,6 +336,12 @@ class ImportActsCommand(LabelCommand):
 
                 try:
                     file_content = solr_backend.extract_file_contents(attach_f)
+
+                    if file_content is None:
+                        self.logger.error("  could not extract textual content from file, with solr-tika; skipping")
+                        attach_f.close()
+                        continue
+
                     html_content = html.fromstring(file_content['contents'].encode('utf-8'))
                     document_text = html_content.cssselect('body')[0].text_content()
 
@@ -484,7 +490,7 @@ class ImportActsCommand(LabelCommand):
                 )
                 continue
                 # transform xml value into database string
-            initiative = initiative_types.__dict__['_choice_dict'][initiative]
+            initiative = initiative_types._choice_dict[initiative]
 
 
             title = xml_act.xpath("./om:Title", namespaces=NS)

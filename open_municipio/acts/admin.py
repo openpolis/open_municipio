@@ -265,7 +265,20 @@ class AttachAdmin(admin.ModelAdmin):
     list_display = ('title','document_date','document_type')
 
 class AgendaAdmin(ActAdmin):
-    pass
+    fieldsets = (
+        (None, {
+            'fields': ('idnum', 'title', 'adj_title', 'status')
+        }),
+        ('Presentazione', {
+            'classes': ('collapse',),
+            'fields': ('presentation_date', 'text', 'emitting_institution'),
+            }),
+        ('Post-approvazione', {
+            'classes': ('collapse',),
+            'fields': ('is_key',)
+        }),
+        )
+
 
 admin.site.register(Act, ActAdmin)
 

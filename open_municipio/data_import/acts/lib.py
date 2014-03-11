@@ -261,11 +261,11 @@ class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
 
         self.logger.info("Attachments to add: %d" % len(act.attachments))
         for curr_att in act.attachments:
-            self.logger.info("Processing attachment file %s" % curr_att.path)
+            self.logger.info("Processing attachment file (%s,%s)" % (curr_att.title, curr_att.path))
             f = File(open(curr_att.path))
 
-            found_att = OMAttach.objects.filter(act=om_act, \
-                document_type=curr_att.type, document_date=curr_att.document_date)
+            found_att = OMAttach.objects.filter(act=om_act,
+                title=curr_att.title[:512], document_type=curr_att.type)
 
             if found_att.count() > 0:
                 self.logger.info("Attachment already present: %s" % curr_att.path)
@@ -275,7 +275,7 @@ class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
                     'act' : om_act,
                     'document_type' : curr_att.type,
                     'document_size' : f.size,
-                    'title' : curr_att.title[:512], # TODO parameterize this length
+                    'title' : curr_att.title[:512], # TODO parameterize this size
                     'document_date' : curr_att.document_date,
                 }
                 om_attachment = OMAttach(**defaults)
@@ -408,13 +408,13 @@ class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
         self.logger.info("Now let's add the attachment ...")
         self._add_attachments(act, om_act)
 
-        # append transitions to acts on OM
-        self._add_act_transitions(act, om_act)
-
-                
+        # set act signers *before* act transitions, in order to generate
+        # news containing the names of who signed the act
         self.logger.info("Set the act supporters ...")
         self._add_subscribers(act, om_act)
 
+        # append transitions to acts on OM
+        self._add_act_transitions(act, om_act)
         
 
 # python object layer for imported data

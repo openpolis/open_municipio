@@ -74,7 +74,6 @@ class Person(models.Model, MonitorizedItem):
         if self.op_politician_id:
             link = settings.OP_URL_TEMPLATE % { "op_id":self.op_politician_id }
     
-        print "link:%s" % link
         return link            
 
     @property
@@ -604,6 +603,7 @@ class Group(models.Model):
     class Meta:
         verbose_name = _('group')
         verbose_name_plural = _('groups')
+        ordering = ("name", "acronym", )
 
     def get_absolute_url(self):
         return reverse("om_institution_group", kwargs={'slug': self.slug})
@@ -682,7 +682,7 @@ class Group(models.Model):
         """
         All current institution charges in the group, leader **included**
         """
-        return self.charge_set.current(moment=moment)
+        return self.charge_set.all().current(moment=moment)
     institution_charges = property(get_institution_charges)
 
 

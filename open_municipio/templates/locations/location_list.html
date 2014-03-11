@@ -20,11 +20,11 @@
       <div class="container-fluid">
         <ul class="nav">
           {% for t in topics %}
-            <li {% ifequal t topic %} class="unpipe"{% endifequal %}>
-              <a href="{{ t.get_absolute_url }}"{% if t == topic %} class="active"{% endif %}>{{ t }}</a>
+            <li>
+              <a href="{{ t.get_absolute_url }}">{{ t }}</a>
             </li>
           {% endfor %}
-          <li><a href="{% url om_location_list %}">Territorio</a></li>
+            <li class="unpipe"><a href="#" class="active">Territorio</a></li>
         </ul>
       </div>
     </div>
@@ -119,9 +119,10 @@
         </table>
     </section>
 
-
     {% load web_services_tags %}
+{% comment %}
     {% share topic %}
+{% endcomment %}
 
 {% endblock %}
 
@@ -135,7 +136,9 @@
   <hr>
 
   <section><h2>Monitora {% popover_info 'monitoraggio' 'left' %}</h2>
+{% comment %}
     {% object_monitoring topic %}
+{% endcomment %}
     {% comment %}{% include 'monitoring/summary.html' with object=topic show_politicians=0 %}{% endcomment %}
   </section>
 

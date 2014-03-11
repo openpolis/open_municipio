@@ -75,15 +75,19 @@ class News(TimeStampedModel):
         from open_municipio.acts.models import Act, ActSupport, Transition
 
         generator = self.generating_object
-        if isinstance(generator, Act):
-            return generator.presentation_date
-        elif isinstance(generator, ActSupport):
-            return generator.support_date
-        elif isinstance(generator, Transition):
-            return generator.transition_date
-        else:
-            return self.created
 
+        news_date = None
+        if isinstance(generator, Act):
+            news_date = generator.presentation_date
+        elif isinstance(generator, ActSupport):
+            news_date = generator.support_date
+        elif isinstance(generator, Transition):
+            news_date = generator.transition_date
+
+        if not news_date:
+            news_date = self.created.date()
+
+        return news_date
 
 
     @classmethod

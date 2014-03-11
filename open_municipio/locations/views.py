@@ -1,14 +1,18 @@
-from django.views.generic import DetailView, FormView
+from django.views.generic import DetailView, FormView, ListView
 from django.utils.decorators import method_decorator
 from django.http import HttpResponseBadRequest, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
+from django.db.models import Q
 
 from django.contrib.auth.decorators import user_passes_test
 
-from open_municipio.acts.models import Act
+
+from open_municipio.acts.models import ( Act, Deliberation, CGDeliberation, Motion,
+                                         Calendar, Interrogation, Interpellation )
 
 from open_municipio.locations.models import Location, TaggedActByLocation
 from open_municipio.locations.forms import ActLocationsAddForm
+from open_municipio.taxonomy.models import Category
 from open_municipio.taxonomy.views import TopicDetailView
 
 
@@ -20,6 +24,27 @@ class LocationDetailView(TopicDetailView):
 
     def take_subtopics(self):
         return Location.objects.exclude(pk=self.object.pk)
+
+
+class LocationListView(ListView):
+    
+    model = Location
+    context_object_name = 'subtopics'
+
+    def get_context_data(self, *args, **kwargs):
+
+        ctx = super(LocationListView, self).get_context_data(*args, **kwargs)
+
+        ctx["topic"] = "Territorio"
+        ctx["topics"] = Category.objects.all()
+
+        ctx["n_deliberation_proposals"] = Deliberation.objects.exclude(location_set=None).filter(Q(final_idnum='') | Q(final_idnum__isnull=True)).count()
+        ctx["n_deliberations"] = Deliberation.objects.exclude(location_set=None).filter(~ Q(final_idnum='')).count()
+        ctx["n_cgdeliberations"] = CGDeliberation.objects.exclude(location_set=None).count()
+        ctx["n_motions"] = Motion.objects.exclude(location_set=None).count()
+        ctx["n_interrogations"] = Interrogation.objects.exclude(location_set=None).count()
+
+        return ctx
 
 
 class ActTagByLocationView(FormView):

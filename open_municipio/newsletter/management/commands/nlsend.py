@@ -125,7 +125,7 @@ class Command(LabelCommand):
 
                 # add date filter if required
                 if options['fromdate']:
-                    related_news = related_news.filter(created__gt=options['fromdate'])
+                    related_news = related_news.filter(modified__gt=options['fromdate'])
 
                 # add objects related news to user news
                 user_news |= related_news
@@ -141,11 +141,18 @@ class Command(LabelCommand):
             n_news = len(user_news)
             if n_news:
                 if not options['dryrun']:
+
+                    ordered_user_news = [{'date': rn.news_date, 'text': re.sub('href=\"\/', 'href="http://{0}/'.format(site_domain), rn.text)} for rn in user_news]
+
+                    # NB this can work only if k["date"] is always not None
+                    ordered_user_news = sorted(ordered_user_news, key=lambda k: k["date"], reverse=True)
+
                     d = Context({ 'site_home': settings.SITE_INFO['home'],
                                   'profile': profile,
                                   'city': settings.SITE_INFO['main_city'],
                                   'webmaster': settings.WEBMASTER_INFO,
-                                  'user_news': [{'date': rn.news_date, 'text': re.sub('href=\"\/', 'href="http://{0}/'.format(site_domain), rn.text)} for rn in user_news]})
+                                  'user_news': ordered_user_news,
+                                })
 
                     subject, from_email, to = settings.NL_TITLE, settings.NL_FROM, profile.user.email
                     text_content = self.plaintext_tpl.render(d)

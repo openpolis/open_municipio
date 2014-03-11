@@ -1,2 +1,2 @@
 <a href="{{ signer.person.get_absolute_url }}">{{ signer }}</a>
-ha aggiunto il suo supporto all'atto <a href="{{ act.downcast.get_absolute_url }}">{{ act.downcast.title|truncatewords_html:30 }}</a>
+ha aggiunto il suo supporto all'atto <a href="{{ act.downcast.get_absolute_url }}">{{ act.downcast.adj_title|default:act.downcast.title|truncatewords_html:30 }}</a>

@@ -4,6 +4,7 @@
 {% load voting_tags %}
 {% load bookmarking_tags %}
 {% load newscache_tags %}
+{% load people_tags %}
 
 {% block title %}Dettaglio votazione {{ votation.act.emitting_institution }} N° {{ votation.act.idnum }},
     seduta {{ votation.sitting.number }}
@@ -162,10 +163,10 @@
               <tr>
                 <td class="text-left">
                   <a href="{{ politician.get_absolute_url }}">
-                    <strong>{{ politician.full_name }}</strong> 
-                    {% if charge_vote.charge.council_group.acronym %}
-                    ({{ charge_vote.charge.council_group.acronym }})
-                    {% endif %}
+                    <strong>{{ politician.full_name }}</strong>
+                    {% with curr_group=charge_vote.charge|get_current_group:votation.sitting.date %}
+                    ({{ curr_group.acronym }})
+                    {% endwith %}
                   </a>
                 </td>
                 <td>
