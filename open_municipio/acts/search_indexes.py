@@ -19,6 +19,7 @@ class ActIndex(indexes.SearchIndex, indexes.Indexable):
     tags_with_urls = indexes.MultiValueField(indexed=True, stored=True)
     categories_with_urls = indexes.MultiValueField(indexed=True, stored=True)
     locations_with_urls = indexes.MultiValueField(indexed=True, stored=True)
+    has_locations = indexes.FacetCharField()
 
     # stored fields, used not to touch DB
     # while showing results
@@ -38,6 +39,14 @@ class ActIndex(indexes.SearchIndex, indexes.Indexable):
     def prepare_categories_with_urls(self, obj):
         d_obj = obj.downcast()
         return ["%s|%s" % (t.name, t.get_absolute_url()) for t in list(d_obj.categories)] if d_obj else None
+
+    def prepare_has_locations(self, obj):
+        d_obj = obj.downcast()
+
+        if d_obj.locations and len(d_obj.locations) > 0:
+            return _('yes')
+        else:
+            return _('no')
 
     def prepare_locations_with_urls(self, obj):
         d_obj = obj.downcast()
