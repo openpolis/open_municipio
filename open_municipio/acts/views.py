@@ -46,7 +46,7 @@ class ActSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
     """
     __name__ = 'ActSearchView'
 
-    FACETS_SORTED = ['act_type', 'is_key', 'is_proposal', 'initiative', 'organ', 'pub_date']
+    FACETS_SORTED = ['act_type', 'is_key', 'is_proposal', 'initiative', 'organ', 'pub_date', 'has_locations']
     FACETS_LABELS = {
         'act_type': _('Act type'),
         'is_key': _('Is key act'),
