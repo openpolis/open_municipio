@@ -56,7 +56,7 @@
                 </td>
                 <td>
                     {% if n_deliberation_proposals %}
-                        <a href="{% url om_act_search %}?q=&{{ topic_type }}={{ topic.slug }}&selected_facets=act_type:delibera&selected_facets=is_proposal:sì">{{ n_deliberation_proposals }}</a>
+                        <a href="{% url om_act_search %}?q=&{{ topic_type }}={{ topic.slug }}&selected_facets=act_type:delibera&selected_facets=is_proposal:sì&selected_facets=has_locations:sì">{{ n_deliberation_proposals }}</a>
                     {% endif %}
                 </td>
 {#                <td></td>#}
@@ -65,12 +65,12 @@
                 <td class="text-left">Delibere</td>
                 <td>
                   {% if n_cgdeliberations %}
-                      <a href="{% url om_act_search %}?q=&{{ topic_type }}={{ topic.slug }}&selected_facets=act_type:delibera di giunta">{{ n_cgdeliberations }}</a>
+                      <a href="{% url om_act_search %}?q=&{{ topic_type }}={{ topic.slug }}&selected_facets=act_type:delibera di giunta&selected_facets=has_locations:sì">{{ n_cgdeliberations }}</a>
                   {% endif %}
                 </td>
                 <td>
                     {% if n_deliberations %}
-                        <a href="{% url om_act_search %}?q=&{{ topic_type }}={{ topic.slug }}&selected_facets=act_type:delibera&selected_facets=is_proposal:no&selected_facets=organ:consiglio comunale">{{ n_deliberations }}</a>
+                        <a href="{% url om_act_search %}?q=&{{ topic_type }}={{ topic.slug }}&selected_facets=act_type:delibera&selected_facets=is_proposal:no&selected_facets=organ:consiglio comunale&selected_facets=has_locations:sì">{{ n_deliberations }}</a>
                     {% endif %}
                 </td>
 {#                <td></td>#}
@@ -80,7 +80,7 @@
                 <td></td>
                 <td>
                     {% if n_motions %}
-                        <a href="{% url om_act_search %}?q=&{{ topic_type }}={{ topic.slug }}&selected_facets=act_type:mozione&selected_facets=organ:consiglio comunale">{{ n_motions }}</a>
+                        <a href="{% url om_act_search %}?q=&{{ topic_type }}={{ topic.slug }}&selected_facets=act_type:mozione&selected_facets=organ:consiglio comunale&selected_facets=has_locations:sì">{{ n_motions }}</a>
                     {% endif %}
                 </td>
 {#                <td></td>#}
@@ -90,7 +90,7 @@
                 <td></td>
                 <td>
                     {% if n_calendars %}
-                        <a href="{% url om_act_search %}?q=&{{ topic_type }}={{ topic.slug }}&selected_facets=act_type:ordine del giorno&selected_facets=organ:consiglio comunale">{{ n_calendars }}</a>
+                        <a href="{% url om_act_search %}?q=&{{ topic_type }}={{ topic.slug }}&selected_facets=act_type:ordine del giorno&selected_facets=organ:consiglio comunale&selected_facets=has_locations:sì">{{ n_calendars }}</a>
                     {% endif %}
                 </td>
 {#                <td></td>#}
@@ -100,7 +100,7 @@
                 <td></td>
                 <td>
                     {% if n_interrogations %}
-                        <a href="{% url om_act_search %}?q=&{{ topic_type }}={{ topic.slug }}&selected_facets=act_type:interrogazione&selected_facets=organ:consiglio comunale">{{ n_interrogations }}</a>
+                        <a href="{% url om_act_search %}?q=&{{ topic_type }}={{ topic.slug }}&selected_facets=act_type:interrogazione&selected_facets=organ:consiglio comunale&selected_facets=has_locations:sì">{{ n_interrogations }}</a>
                     {% endif %}
                 </td>
 {#                <td></td>#}
@@ -110,7 +110,7 @@
                 <td></td>
                 <td>
                     {% if n_interpellations %}
-                        <a href="{% url om_act_search %}?q=&{{ topic_type }}={{ topic.slug }}&selected_facets=act_type:interpellanza&selected_facets=organ:consiglio comunale">{{ n_interpellations }}</a>
+                        <a href="{% url om_act_search %}?q=&{{ topic_type }}={{ topic.slug }}&selected_facets=act_type:interpellanza&selected_facets=organ:consiglio comunale&selected_facets=has_locations:sì">{{ n_interpellations }}</a>
                     {% endif %}
                 </td>
 {#                <td></td>#}

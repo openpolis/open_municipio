@@ -43,10 +43,11 @@ class ActIndex(indexes.SearchIndex, indexes.Indexable):
     def prepare_has_locations(self, obj):
         d_obj = obj.downcast()
 
+        value = _("no")
         if d_obj.locations and len(d_obj.locations) > 0:
-            return _('yes')
-        else:
-            return _('no')
+            value = _("yes")
+
+        return value
 
     def prepare_locations_with_urls(self, obj):
         d_obj = obj.downcast()
