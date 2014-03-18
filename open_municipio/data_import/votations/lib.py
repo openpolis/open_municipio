@@ -264,7 +264,7 @@ class DBVotationWriter(BaseVotationWriter):
             v = cv.vote
 
             if g is None:
-                self.logger.warning(u"no group found for charge vote %s (vote date: %s)" % (cv,votation.sitting.date))
+                self.logger.warning(u"no group found for charge vote %s (vote date: %s), may be an assessore" % (cv,votation.sitting.date))
                 continue
 
             # get or create group votation
