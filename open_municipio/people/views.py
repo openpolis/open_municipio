@@ -447,14 +447,16 @@ class PoliticianListView(TemplateView):
                                annotate(n_acts=Count('actsupport')).order_by('-n_acts')[0:3]
 
         context['most_interrogations'] = counselors.\
-                                         filter(actsupport__act__interrogation__isnull=False,
-                                                actsupport__support_type=ActSupport.SUPPORT_TYPE.first_signer).\
+                                         filter(Q(actsupport__act__interrogation__isnull=False) |
+                                                Q(actsupport__act__interpellation__isnull=False),
+                                                Q(actsupport__support_type=ActSupport.SUPPORT_TYPE.first_signer)).\
                                          filter(start_date__lte=today).filter(Q(end_date=None) | Q(end_date__gte=today)).\
                                          annotate(n_acts=Count('actsupport')).order_by('-n_acts')[0:3]
 
         context['most_motions'] = counselors.\
-                                         filter(actsupport__act__motion__isnull=False,
-                                                actsupport__support_type=ActSupport.SUPPORT_TYPE.first_signer).\
+                                         filter(Q(actsupport__act__motion__isnull=False) |
+                                                Q(actsupport__act__agenda__isnull=False),
+                                                Q(actsupport__support_type=ActSupport.SUPPORT_TYPE.first_signer)).\
                                          filter(start_date__lte=today).filter(Q(end_date=None) | Q(end_date__gte=today)).\
                                          annotate(n_acts=Count('actsupport')).order_by('-n_acts')[0:3]
 
