@@ -17,27 +17,27 @@ urlpatterns = patterns('',
     # agendas
     url(r'^agendas/(?P<pk>\d+)/$', AgendaDetailView.as_view(),  name='om_agenda_detail'),
     url(r'^agendas/(?P<pk>\d+)/(?P<tab>documents)/$', AgendaDetailView.as_view(),  name='om_agenda_detail_documents'),
-    url(r'^agendas/(?P<pk>\d+)/(?P<tab>emendations)/$', AgendaDetailView.as_view(),  name='om_agenda_detail_emendations'),
+    url(r'^agendas/(?P<pk>\d+)/(?P<tab>amendments)/$', AgendaDetailView.as_view(),  name='om_agenda_detail_amendments'),
     # cg-deliberations
     url(r'^cgdeliberations/(?P<pk>\d+)/$', CGDeliberationDetailView.as_view(),  name='om_cgdeliberation_detail'),
     url(r'^cgdeliberations/(?P<pk>\d+)/(?P<tab>documents)/$', CGDeliberationDetailView.as_view(),  name='om_cgdeliberation_detail_documents'),
-    url(r'^cgdeliberations/(?P<pk>\d+)/(?P<tab>emendations)/$', CGDeliberationDetailView.as_view(),  name='om_cgdeliberation_detail_emendations'),
+    url(r'^cgdeliberations/(?P<pk>\d+)/(?P<tab>amendments)/$', CGDeliberationDetailView.as_view(),  name='om_cgdeliberation_detail_amendments'),
     # deliberations
     url(r'^deliberations/(?P<pk>\d+)/$', DeliberationDetailView.as_view(),  name='om_deliberation_detail'),
     url(r'^deliberations/(?P<pk>\d+)/(?P<tab>documents)/$', DeliberationDetailView.as_view(),  name='om_deliberation_detail_documents'),
-    url(r'^deliberations/(?P<pk>\d+)/(?P<tab>emendations)/$', DeliberationDetailView.as_view(),  name='om_deliberation_detail_emendations'),
+    url(r'^deliberations/(?P<pk>\d+)/(?P<tab>amendments)/$', DeliberationDetailView.as_view(),  name='om_deliberation_detail_amendments'),
     # interpellations
     url(r'^interpellations/(?P<pk>\d+)/$', InterpellationDetailView.as_view(),  name='om_interpellation_detail'),
     url(r'^interpellations/(?P<pk>\d+)/(?P<tab>documents)/$', InterpellationDetailView.as_view(),  name='om_interpellation_detail_documents'),
-    url(r'^interpellations/(?P<pk>\d+)/(?P<tab>emendations)/$', InterpellationDetailView.as_view(),  name='om_interpellation_detail_emendations'),
+    url(r'^interpellations/(?P<pk>\d+)/(?P<tab>amendments)/$', InterpellationDetailView.as_view(),  name='om_interpellation_detail_amendments'),
     # interrogations
     url(r'^interrogations/(?P<pk>\d+)/$', InterrogationDetailView.as_view(),  name='om_interrogation_detail'),
     url(r'^interrogations/(?P<pk>\d+)/(?P<tab>documents)/$', InterrogationDetailView.as_view(),  name='om_interrogation_detail_documents'),
-    url(r'^interrogations/(?P<pk>\d+)/(?P<tab>emendations)/$', InterrogationDetailView.as_view(),  name='om_interrogation_detail_emendations'),
+    url(r'^interrogations/(?P<pk>\d+)/(?P<tab>amendments)/$', InterrogationDetailView.as_view(),  name='om_interrogation_detail_amendments'),
     # motions
     url(r'^motions/(?P<pk>\d+)/$', MotionDetailView.as_view(),  name='om_motion_detail'),
     url(r'^motions/(?P<pk>\d+)/(?P<tab>documents)/$', MotionDetailView.as_view(),  name='om_motion_detail_documents'),
-    url(r'^motions/(?P<pk>\d+)/(?P<tab>emendations)/$', MotionDetailView.as_view(),  name='om_motion_detail_emendations'),
+    url(r'^motions/(?P<pk>\d+)/(?P<tab>amendments)/$', MotionDetailView.as_view(),  name='om_motion_detail_amendments'),
 )
 
 ## Tag management

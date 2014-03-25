@@ -298,6 +298,7 @@ class ActDetailView(DetailView):
 
         context['n_documents'] = act.attachment_set.count()
         context['n_votes'] = act.votation_set.count()
+        context['n_amendments'] = act.amendment_set.count()
 
         # retrieve a dictionary with status and its transitions
         context['act_type'] = act._meta.verbose_name
@@ -326,9 +327,9 @@ class ActDetailView(DetailView):
         """
         pass
     
-    def get_related_emendations(self):
+    def get_related_amendments(self):
         """
-        Retrieve context needed for populating the *emendations* tab.
+        Retrieve context needed for populating the *amendments* tab.
         """
         pass
 

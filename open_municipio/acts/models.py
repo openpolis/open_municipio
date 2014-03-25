@@ -34,7 +34,7 @@ from django.core.urlresolvers import resolve, reverse
 class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
     """
     This is the base class for all the different act types: it contains the common fields for
-    deliberations, interrogations, interpellations, motions, agendas and emendations.
+    deliberations, interrogations, interpellations, motions, agendas and amendments.
   
     it is a ``TimeStampedModel``, so it tracks creation and modification timestamps for each record.
 
@@ -147,8 +147,8 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
         return self.presenter_set.filter(actsupport__support_type=ActSupport.SUPPORT_TYPE.co_signer)
 
     @property
-    def emendations(self):
-        return self.emendation_set.all()
+    def amendments(self):
+        return self.amendment_set.all()
 
     @property
     def tags(self):
@@ -282,8 +282,8 @@ class ActSection(models.Model):
         db_table = u'acts_act_section'
 
     @property
-    def emendations(self):
-        return self.emendation_set.all()
+    def amendments(self):
+        return self.amendment_set.all()
 
 
 class ActSupport(models.Model):
@@ -673,8 +673,8 @@ class Amendment(Act):
     """
     It is a modification of a particular act, that can be voted specifically and separately from the act itself.
     
-    An emendation relates to an act, and it can relate theoretically to another emendation (sub-emendations).
-    Optionally, an emendation relates to an act section (article, paragraph).
+    An amendment relates to an act, and it can relate theoretically to another amendment (sub-amendments).
+    Optionally, an amendment relates to an act section (article, paragraph).
     """
     # TODO: add additional statuses allowed for this act type
     STATUS = Choices(
@@ -697,12 +697,12 @@ class Amendment(Act):
     def get_absolute_url(self):
         #return ""
         map_urls = {
-            "Deliberation":"om_deliberation_detail_emendations",
-            "CGDeliberation":"om_cgdeliberation_detail_emendations",
-            "Agenda":"om_agenda_detail_emendations",
-            "Interpellation":"om_interpellation_detail_emendations",
-            "Interrogation":"om_interrogation_detail_emendations",
-            "Motion":"om_motion_detail_emendations",
+            "Deliberation":"om_deliberation_detail_amendments",
+            "CGDeliberation":"om_cgdeliberation_detail_amendments",
+            "Agenda":"om_agenda_detail_amendments",
+            "Interpellation":"om_interpellation_detail_amendments",
+            "Interrogation":"om_interrogation_detail_amendments",
+            "Motion":"om_motion_detail_amendments",
         }
         
         act_type = self.act.downcast().__class__.__name__
@@ -711,7 +711,7 @@ class Amendment(Act):
         if act_type in map_urls:
             url_name = map_urls.get(act_type,None)
             
-        return reverse(url_name, args=(), kwargs={"pk":self.act.pk, "tab":"emendations"})
+        return reverse(url_name, args=(), kwargs={"pk":self.act.pk, "tab":"amendments"})
 
 #
 # Workflows

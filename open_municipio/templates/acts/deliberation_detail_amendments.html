@@ -1,0 +1,28 @@
+{% extends "acts/deliberation_detail.html" %}
+
+{% block act_tab_status_class %}{% endblock %}
+{% block act_tab_amendments_class %}class="active"{% endblock %}
+{% block act_text %}{% endblock %}
+
+{% block act_tab_body %}
+
+{% if act.amendments|length == 0 %}
+
+    <div class="alert alert-info">
+        Questo atto non contiene nessun emendamento
+    </div>
+
+{% else %}
+    <ul class="documents-list unstyled">
+        {% for amendment in act.amendments %}
+        <li>
+           {{ amendment.title }}
+        </li>
+        {% endfor %}
+    </ul>
+
+{% endif %}
+  
+{% endblock act_tab_body %}
+
+

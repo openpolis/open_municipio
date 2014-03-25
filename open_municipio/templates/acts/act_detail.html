@@ -120,6 +120,9 @@
       {% if n_votes %}
           <li><a href="/votations/?act_url={{ act.get_absolute_url }}"><strong>{{ n_votes }} Vot{{ n_votes|pluralize:"o,i" }}</strong></a></li>
       {% endif %}
+      {% if n_amendments %}
+          <li {% block act_tab_amendments_class %}{% endblock %}><a href="{{ act.get_absolute_url }}amendments">{{ n_amendments }} Emendament{{ n_amendments|pluralize:"o,i" }}</a></li>
+      {% endif %}
     </ul>
   </div>
 
