@@ -1,7 +1,7 @@
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Count, Q
 from django.views.generic import DetailView, ListView
-from open_municipio.acts.models import Deliberation, Interpellation, Interrogation, Calendar, Motion, CGDeliberation
+from open_municipio.acts.models import Deliberation, Interpellation, Interrogation, Agenda, Motion, Amendment, CGDeliberation
 from open_municipio.locations.models import Location
 from open_municipio.monitoring.models import Monitoring
 
@@ -74,9 +74,10 @@ class TopicDetailView(DetailView):
         context['n_deliberations'] = Deliberation.objects.filter(pk__in=ta_ids).filter(~ Q(final_idnum='')).count()
         context['n_cgdeliberations'] = CGDeliberation.objects.filter(pk__in=ta_ids).count()
         context['n_motions'] = Motion.objects.filter(pk__in=ta_ids).count()
-        context['n_calendars'] = Calendar.objects.filter(pk__in=ta_ids).count()
+        context['n_agendas'] = Agenda.objects.filter(pk__in=ta_ids).count()
         context['n_interrogations'] = Interrogation.objects.filter(pk__in=ta_ids).count()
         context['n_interpellations'] = Interpellation.objects.filter(pk__in=ta_ids).count()
+        context['n_amendments'] = Amendment.objects.filter(pk__in=ta_ids).count()
         return context
 
     def take_subtopics(self):

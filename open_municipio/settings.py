@@ -344,6 +344,7 @@ SEARCH_URLS = {
     "agenda": "/acts/?q=&selected_facets=act_type:agenda",
     "interpellation": "/acts/?q=&selected_facets=act_type:interpellanza",
     "interrogation": "/acts/?q=&selected_facets=act_type:interrogazione",
+    "amendment": "/acts/?q=&selected_facets=act_type:emendamento",
 }
 
 CONTACTS_EMAIL = "info@openmunicipio.it"

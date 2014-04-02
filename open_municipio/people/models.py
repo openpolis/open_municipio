@@ -1389,6 +1389,14 @@ class CityCouncil(object):
         """
         from open_municipio.acts.models import Agenda
         return Agenda.objects.select_related().filter(emitting_institution=self.as_institution)
+    
+    @property
+    def amendments(self):
+        """
+        The QuerySet of all amendments emitted by the City Council.
+        """
+        from open_municipio.acts.models import Amendment
+        return Amendment.objects.select_related().filter(emitting_institution=self.as_institution)
 
 
 class CityGovernment(object):
@@ -1469,6 +1477,14 @@ class CityGovernment(object):
         """
         from open_municipio.acts.models import Agenda
         return Agenda.objects.select_related().filter(emitting_institution=self.as_institution)
+    
+    @property
+    def amendments(self):
+        """
+        The QuerySet of all amendments emitted by the City Government.
+        """
+        from open_municipio.acts.models import Amendment
+        return Amendment.objects.select_related().filter(emitting_institution=self.as_institution)
 
 
 class Committees(object):

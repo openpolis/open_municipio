@@ -15,7 +15,7 @@ from haystack.query import SearchQuerySet
 
 from voting.views import RecordVoteOnItemView
 
-from open_municipio.acts.models import Act, Agenda, CGDeliberation, Deliberation, Interpellation, Interrogation, Motion, Transition
+from open_municipio.acts.models import Act, Agenda, CGDeliberation, Deliberation, Interpellation, Interrogation, Motion, Amendment, Transition
 from open_municipio.acts.forms import ActDescriptionForm, ActTransitionForm, ActFinalTransitionForm, ActTitleForm
 from open_municipio.locations.models import Location
 
@@ -406,6 +406,10 @@ class InterrogationDetailView(ActDetailView):
 
 class MotionDetailView(ActDetailView):
     model = Motion
+
+
+class AmendmentDetailView(ActDetailView):
+    model = Amendment
     
 
 ## tags/categories management

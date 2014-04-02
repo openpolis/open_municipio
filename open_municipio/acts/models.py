@@ -676,11 +676,17 @@ class Amendment(Act):
     An amendment relates to an act, and it can relate theoretically to another amendment (sub-amendments).
     Optionally, an amendment relates to an act section (article, paragraph).
     """
+    FINAL_STATUSES = (
+        ('APPROVED', _('approved')),
+        ('REJECTED', _('rejected')),
+    )
+
     # TODO: add additional statuses allowed for this act type
     STATUS = Choices(
         ('PRESENTED', 'presented', _('presented')), 
-        ('APPROVED', 'approved', _('approved'))
-    )
+        ('APPROVED', 'approved', _('approved')),
+        ('REJECTED', 'rejected', _('rejected')),
+   )
     
     status = models.CharField(_('status'), choices=STATUS, max_length=12)
     act = models.ForeignKey(Act, related_name='amendment_set', on_delete=models.PROTECT)
@@ -691,27 +697,9 @@ class Amendment(Act):
         verbose_name = _('amendment')
         verbose_name_plural = _('amendments')
 
-
-    # TODO this should be completed. Now it is left empty to avoid at least
-    # an infinite recursion (caused by Act.get_absolute_url(...))
+    @models.permalink
     def get_absolute_url(self):
-        #return ""
-        map_urls = {
-            "Deliberation":"om_deliberation_detail_amendments",
-            "CGDeliberation":"om_cgdeliberation_detail_amendments",
-            "Agenda":"om_agenda_detail_amendments",
-            "Interpellation":"om_interpellation_detail_amendments",
-            "Interrogation":"om_interrogation_detail_amendments",
-            "Motion":"om_motion_detail_amendments",
-        }
-        
-        act_type = self.act.downcast().__class__.__name__
-        
-        url_name = None
-        if act_type in map_urls:
-            url_name = map_urls.get(act_type,None)
-            
-        return reverse(url_name, args=(), kwargs={"pk":self.act.pk, "tab":"amendments"})
+        return ('om_amendment_detail', (), {'pk': str(self.pk)})
 
 #
 # Workflows

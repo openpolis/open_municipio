@@ -4,7 +4,7 @@ from haystack.query import SearchQuerySet
 
 from open_municipio.acts.views import (ActSearchView, AgendaDetailView,
                                        DeliberationDetailView, InterpellationDetailView,
-                                       InterrogationDetailView, MotionDetailView,
+                                       InterrogationDetailView, MotionDetailView, AmendmentDetailView,
                                        ActTransitionAddView, ActTransitionRemoveView, ActTagEditorView, 
                                        ActLiveEditView, RecordVoteOnActView, CGDeliberationDetailView,
                                        SpeechSearchView, SpeechDetailView, )
@@ -38,6 +38,10 @@ urlpatterns = patterns('',
     url(r'^motions/(?P<pk>\d+)/$', MotionDetailView.as_view(),  name='om_motion_detail'),
     url(r'^motions/(?P<pk>\d+)/(?P<tab>documents)/$', MotionDetailView.as_view(),  name='om_motion_detail_documents'),
     url(r'^motions/(?P<pk>\d+)/(?P<tab>amendments)/$', MotionDetailView.as_view(),  name='om_motion_detail_amendments'),
+    # amendments
+    url(r'^amendments/(?P<pk>\d+)/$', AmendmentDetailView.as_view(),  name='om_amendment_detail'),
+    url(r'^amendments/(?P<pk>\d+)/(?P<tab>documents)/$', AmendmentDetailView.as_view(),  name='om_amendment_detail_documents'),
+    url(r'^amendments/(?P<pk>\d+)/(?P<tab>amendments)/$', AmendmentDetailView.as_view(),  name='om_amendment_detail_amendments'),
 )
 
 ## Tag management
