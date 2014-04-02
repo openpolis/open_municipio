@@ -90,7 +90,7 @@
                 <td></td>
                 <td>
                     {% if n_agendas %}
-                        <a href="{% url om_act_search %}?q=&{{ topic_type }}={{ topic.slug }}&selected_facets=act_type:ordine del giorno&selected_facets=organ:consiglio comunale">{{ n_agendas }}</a>
+                        <a href="{% url om_act_search %}?q=&{{ topic_type }}={{ topic.slug }}&selected_facets=act_type:agenda&selected_facets=organ:consiglio comunale">{{ n_agendas }}</a>
                     {% endif %}
                 </td>
 {#                <td></td>#}
