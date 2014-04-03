@@ -1,0 +1,38 @@
+{% if act.attachments|length == 0 %}
+
+  <div class="alert alert-info">
+    Questo atto non contiene nessun allegato
+  </div>
+
+{% else %}
+
+  <ul class="documents-list unstyled">
+    {% for attach in act.attachments %}
+      <li>
+        <img src="{{ STATIC_URL }}img/{{ attach.document_type }}-icon-16x16.png" alt="{{ attach.document_type|upper }}">
+        {{ attach.title }}
+        -
+        {% if attach.text|length > 0 %}
+            <a data-toggle="modal" href="#mod-{{ forloop.counter }}" title="visualizza un'anteprima del testo" >anteprima</a> -
+
+            <div class="modal hide fade" style="display: none;" id="mod-{{ forloop.counter }}">
+                <div class="modal-header">
+                    <button class="close" data-dismiss="modal">×</button>
+                    <h3>{{ attach.title }}</h3>
+                </div>
+                <div class="modal-body">
+                    <pre>{{ attach.text }}</pre>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn" data-dismiss="modal">Close</a>
+                </div>
+            </div>
+
+        {% endif %}
+        <a href="{{ MEDIA_URL }}{{ attach.file }}">scarica</a> ({{ attach.document_size|filesizeformat }})
+
+      </li>
+    {% endfor %}
+  </ul>
+
+{% endif %}

@@ -1,0 +1,49 @@
+{% load om_utils %}
+{% load comments %}
+{% load voting_tags %}
+
+{% if acts_list|length == 0 %}
+
+    <div class="alert alert-info">
+        Nessun atto presente
+    </div>
+
+{% else %}
+
+  <table class="data">
+    <thead>
+      <tr>
+        <th class="text-left span5">Atto</th>
+        <th>Stato</th>
+        <th>Voti degli utenti</th>
+        <th>Commenti</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for act in acts_list %}
+        <tr>
+          <td><a href="{{ act.downcast.get_absolute_url }}"><strong>{% if act.adj_title %}{{ act.adj_title }}{% else %}{{ act.title }}{% endif %}</strong></a></td>
+          <td class="text-center">
+
+            {% if not act.is_final_status %}
+              <span class="label">In esame</span>
+            {% else %}
+              <span class="label
+                {% if act.status == "APPROVED" or act.status == "ANSWERED" %}label-success
+                {% else %}{% if act.status == 'REJECTED' or act.status == "NOTANSWERED" %}label-important
+                {% endif %}{% endif %} ">{{ act.downcast.get_status_display|title }}</span>
+            {% endif %}
+          </td>
+          {% votes_for_object act as amendment_num_votes %}
+          <td class="text-center">
+            <span class="label label-success">{{ amendment_num_votes.upvotes }}</span>
+            <span class="label label-important">{{ amendment_num_votes.downvotes }}</span>
+          </td>
+          {% get_comment_count for act as comment_count %}
+          <td class="text-center"><a href="{{ act.downcast.get_absolute_url }}"><strong>{{ comment_count }}</strong></a></td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+{% endif %}
