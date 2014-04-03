@@ -45,7 +45,7 @@ class PoliticianSearchView(ListView):
 
         current_site = Site.objects.get(pk=settings.SITE_ID)
 
-        charges = InstitutionCharge.objects.current().\
+        charges = InstitutionCharge.objects.\
             filter(Q(institution__institution_type=Institution.COUNCIL) | Q(institution__institution_type=Institution.CITY_GOVERNMENT)).\
             filter(Q(person__first_name__icontains=key) | Q(person__last_name__icontains=key))[0:max_rows]
 
