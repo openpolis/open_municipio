@@ -556,7 +556,8 @@ div.pre {
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   border-radius: 4px;
-  word-break: break-all;
+/*  word-break: break-all; *//* this cause problems with chrome */
+  text-align: justify;
   word-wrap: break-word;
 }
 pre {
