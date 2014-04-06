@@ -17,7 +17,7 @@ def defaults(request):
         'DEBUG': settings.DEBUG,
         'TEMPLATE_DEBUG': settings.TEMPLATE_DEBUG,
         'IS_DEMO': settings.IS_DEMO,
-#        'GOOGLE_ANALYTICS': settings.WEB_SERVICES['google_analytics'],
+        'GOOGLE_ANALYTICS': settings.WEB_SERVICES.get('google_analytics', None),
         'login_url': url,
         'UI_LOCATIONS': settings.UI_LOCATIONS,
         'UI_SITTINGS_CALENDAR': settings.UI_SITTINGS_CALENDAR,
