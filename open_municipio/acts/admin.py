@@ -71,14 +71,6 @@ class TransitionInline(admin.TabularInline):
         return super(TransitionInline, self).get_formset(request, obj, **kwargs)
 
 
-class TaggedActInline(admin.TabularInline):
-    model = TaggedAct
-    
-    fields = ("tag", "category", )    
-    raw_id_fields = ("category","tag",)
-    extra = 0
-
-
 class ActAdmin(admin.ModelAdmin):
     list_display = ('idnum', 'title', 'presentation_date', 'emitting_institution', 'status')
     search_fields = ('idnum', 'title',)
@@ -98,10 +90,10 @@ class ActAdmin(admin.ModelAdmin):
     def change_view(self, request, object_id, form_url='', extra_context=None):
 
         if request.user.is_superuser:
-            self.inlines = [TaggedActInline, PresenterInline, AttachInline, TransitionInline, AmendmentInline]
+            self.inlines = [ PresenterInline, AttachInline, TransitionInline, AmendmentInline]
             self.readonly = ['status']
         else:
-            self.inlines = [TaggedActInline, TransitionInline]
+            self.inlines = [ TransitionInline]
             self.readonly_fields = ['idnum', 'title', 'status', 'presentation_date', 'text', 'emitting_institution']
 
         self.inline_instances = []
@@ -164,11 +156,11 @@ class InterrogationAdmin(ActAdmin):
             }),
         )
     form = InterrogationAdminForm
-    inlines = [PresenterInline, SpeechInActInline,  ]
+    inlines = [PresenterInline, SpeechInActInline, AttachInline ]
     list_display = ( "presentation_date", "author", "title", "status", )
 
     def __init__(self, *args, **kwargs):
-        self.inlines = [PresenterInline, SpeechInActInline, ]
+        self.inlines = [PresenterInline, SpeechInActInline, AttachInline ]
         super(InterrogationAdmin, self).__init__(*args, **kwargs)
         self.list_filter += ( "status", "answer_type", )
 
@@ -176,7 +168,7 @@ class InterrogationAdmin(ActAdmin):
         # override modifications by ActAdmin.change_view 
         # (which modifies the self.inlines)
 
-        self.inlines = [PresenterInline,SpeechInActInline, ]
+        self.inlines = [PresenterInline,SpeechInActInline, AttachInline ]
 
         self.inline_instances = []
         for inline_class in self.inlines:

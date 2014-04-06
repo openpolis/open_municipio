@@ -28,6 +28,9 @@ class _TopicableManager(_TaggableManager):
     @require_instance_manager
     def add(self, *tags, **extra_kwargs):
 
+        # TODO check below how to check only once that "category" is among
+        # the passed arguments (otherwise return...)
+
         if not tags:
             kwargs = self._lookup_kwargs()
             kwargs.update(extra_kwargs)
@@ -38,6 +41,11 @@ class _TopicableManager(_TaggableManager):
 
             self.through.objects.get_or_create(**kwargs)
         else:
+        
+            # continuing without a category, will cause an exception
+            if "category" not in extra_kwargs:
+                return
+        
             super(_TopicableManager, self).add(*tags, **extra_kwargs)
 
         # call custom Signal
