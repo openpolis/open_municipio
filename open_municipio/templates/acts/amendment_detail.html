@@ -13,8 +13,7 @@
   </h4>
   {% if act.act %}
   <h4>
-    Atto emendato: <strong>{{ act.act.get_type_name|capfirst }}
-    <a href="{{ act.act.downcast.get_absolute_url }}">{{ act.act.adj_title|default:act.act.title }}</a></strong>
+    Atto emendato: <a href="{{ act.act.downcast.get_absolute_url }}"><strong>{{ act.act.adj_title|default:act.act.title }}</strong></a> (<strong>{{ act.act.get_type_name|capfirst }}</strong>)
   </h4>
   {% endif %}
 {% endblock content_subtitle %}
