@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.conf import settings
 
 urlpatterns = patterns('',
-    url(r'^(?P<username>\w+)/$',
+    url(r'^(?P<username>[\w\.@]+)/$',
         UserDetailView.as_view(
          model=User,
          context_object_name='registered_user',
@@ -18,7 +18,7 @@ urlpatterns += patterns('profiles.views',
        'edit_profile',
        { 'form_class': UserProfileForm},
        name='profiles_edit_profile'),
-    url(r'^profile/(?P<username>[\w\.]+)/$',
+    url(r'^profile/(?P<username>[\w\.@]+)/$',
         UserProfileDetailView.as_view(),
        name='profiles_profile_detail'),
     url(r'^$',
