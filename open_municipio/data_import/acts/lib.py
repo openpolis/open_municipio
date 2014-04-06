@@ -375,7 +375,7 @@ class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
         for (k, v) in dict_values.items():
             # don't update if the field is None (or you risk to delete data)
             if v is not None:
-                self.logger.debug("Update field: %s <- %s" % (k,v,))
+#                self.logger.debug("Update field: %s <- %s" % (k,v,))
                 setattr(om_act, k, v)
 
         om_act.save()

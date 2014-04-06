@@ -124,10 +124,15 @@ class Votation(models.Model):
         """
         errors = []
         
+        # check legal number is greater than 0
+        if self.n_legal < 0:
+            errors.append("The legal number should always be positive. Passed: %s" % self.n_legal)
+
+        # count the number of presents is consistent with yes + no + abstained
+
         n_sum = self.n_yes + self.n_no + self.n_abst
         if n_sum != self.n_presents:
-            errors.append("The number of presents (%s) is different from the sum of yes (%s), no (%s) and abstained (%s): %s" % 
-                            (n_sum, self.n_yes, self.n_no, self.n_abst, self.n_presents, ))
+            errors.append("The number of presents (%s) is different from the sum of yes (%s), no (%s) and abstained (%s): %s. Additional info: absents = %s, rebels = %s" % (self.n_presents, self.n_yes, self.n_no, self.n_abst, n_sum, self.n_absents, self.n_rebels))
         
         num_charge_votes = self.charge_votes.count()
         if num_charge_votes < self.n_presents:
@@ -137,7 +142,12 @@ class Votation(models.Model):
         if num_charge_votes < n_sum:
             errors.append("The number of related votes (%s) is less than the yes, no and abst votes (%s)" %
                             (num_charge_votes, n_sum, ))
-        
+      
+        # check the number of presents is greater than the legal number
+
+        if self.n_presents < self.n_legal:
+            errors.append("Number of presents (%s) should not be less than legal number (%s)" % (self.n_presents, self.n_legal))
+  
         if len(errors) > 0:
             raise Exception(",".join(errors))
 
