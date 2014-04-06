@@ -55,7 +55,9 @@
                     <p>{{ result.act_descr }}</p>
                 {% endif %}
 
+                {% if result.act_rendered %}
                 {{ result.act_rendered|safe }}
+                {% endif %}
 
                 {% if result.highlighted.text %}
                   {{ result.highlighted.text.0|safe }}<br/>
