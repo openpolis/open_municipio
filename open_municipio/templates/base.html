@@ -1,4 +1,6 @@
 {% load i18n %}
+{% load url from future %}
+
 <!doctype html>
 <html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
@@ -69,7 +71,7 @@
     <!-- TOPBAR -->
   <div class="navbar" id="navbar-top">
     <nav class="navbar-inner">
-      <a href="{% url home %}" class="brand">
+      <a href="{% url "home" %}" class="brand">
         <img src="{{ STATIC_URL }}img/logo-openmunicipio.png" alt="Openmunicipio - Informati, monitora e partecipa ai lavori del tuo municipio">
         <!--open<strong>municipio</strong>{% if site_version %}<span class="version">{{ site_version }}</span>{% endif %}
         <small></small>-->
@@ -83,15 +85,19 @@
 {% if UI_ALLOW_NICKNAMES %}{{ user.username }}{% else %}{% if user.first_name or user.last_name %}{{ user.first_name }} {{ user.last_name }}{% else %}{{ user.username }}{% endif %}{% endif %}
                     </strong><b class="caret" style="margin-top:6px"></b></a>
                   <ul class="dropdown-menu" role="menu" aria-labelledby="dropsignin">
+
+                  {% if request.user.is_superuser %}
+                      <li><a tabindex="-1" href="{% url "admin:index" %}">amministrazione</a></li>
+                  {% endif %}
                   {% if request.user.userprofile %}
-                      <li><a tabindex="-1" href="{% url profiles_edit_profile %}">impostazioni</a></li>
-                      <li><a tabindex="-1" href="{%  url profiles_profile_detail user.username %}">profilo</a></li>
+                      <li><a tabindex="-1" href="{% url "profiles_edit_profile" %}">impostazioni</a></li>
+                      <li><a tabindex="-1" href="{%  url "profiles_profile_detail" user.username %}">profilo</a></li>
                       <li class="divider"></li>
 
                   {% endif %}
                       <li>
                           <a tabindex="-1"
-                             href="{% url logout %}?next={% if "/accounts" in request.path %}/{% else %}{{ request.path }}{% endif %}"
+                             href="{% url "logout" %}?next={% if "/accounts" in request.path %}/{% else %}{{ request.path }}{% endif %}"
                                   >esci</a>
                       </li>
                   </ul>
@@ -136,16 +142,16 @@
             <div class="navbar-inner">
                 <nav class="container-fluid" style="padding:0;">
                     <ul class="nav">
-                        <li {% block people_class %}{% endblock %}><a href="{% url om_politician_list %}">Politici</a></li>
-                        <li class="{% block acts_class %}{% endblock %}"><a href="{% url om_act_search %}">Atti</a></li>
-                        <li class="{% block speech_class %}{% endblock %}"><a href="{% url om_speech_search %}">Dibattiti</a></li>
-                        <li class="{% block votations_class %}{% endblock %}"><a href="{% url om_votation_search %}">Votazioni</a></li>
-                        <li {% block tags_class %}{% endblock %}><a href="{% url om_topic_list %}">Argomenti</a></li>
+                        <li {% block people_class %}{% endblock %}><a href="{% url "om_politician_list" %}">Politici</a></li>
+                        <li class="{% block acts_class %}{% endblock %}"><a href="{% url "om_act_search" %}">Atti</a></li>
+                        <li class="{% block speech_class %}{% endblock %}"><a href="{% url "om_speech_search" %}">Dibattiti</a></li>
+                        <li class="{% block votations_class %}{% endblock %}"><a href="{% url "om_votation_search" %}">Votazioni</a></li>
+                        <li {% block tags_class %}{% endblock %}><a href="{% url "om_topic_list" %}">Argomenti</a></li>
                         <li {% block users_class %}{% endblock %}><a href="/users/">Cittadini</a></li>
                     </ul>
                     {% comment %}
                     <ul class="nav pull-right">
-                        <form method="get" action="{% url om_act_search %}" id="search-form">
+                        <form method="get" action="{% url "om_act_search" %}" id="search-form">
                             <input type="text" class="input-medium search-query" name="q" placeholder="Cerca negli atti">
                             <button type="submit" class="btn">Cerca</button>
                         </form>
@@ -182,10 +188,10 @@
                           di {{ main_city }}.
                       </p>
                       <ul><li><a href="http://www.openmunicipio.it">Il progetto</a></li>
-                          <li><a href="{% url om_regolamento %}">Regolamento</a></li>
-                          <li><a href="{% url om_condizioni %}">Condizioni d'uso</a></li>
-                          <li><a href="{% url om_privacy %}">Informativa sui dati personali</a></li>
-                          <li><a href="{% url om_contatti %}">Contatti</a></li>
+                          <li><a href="{% url "om_regolamento" %}">Regolamento</a></li>
+                          <li><a href="{% url "om_condizioni" %}">Condizioni d'uso</a></li>
+                          <li><a href="{% url "om_privacy" %}">Informativa sui dati personali</a></li>
+                          <li><a href="{% url "om_contatti" %}">Contatti</a></li>
                       </ul>
                       <p>
                           <!-- social sites -->
@@ -203,10 +209,10 @@
                   <div class="span4">
                       <h2>Come fare per</h2>
                       <ul>
-                          <li><a href="{% url om_registrarsi %}">Registrarsi</a></li>
-                          <li><a href="{% url om_monitorare %}">Monitorare un atto, un politico o un argomento</a></li>
-                          <li><a href="{% url om_votare %}">Votare e commentare un atto</a></li>
-                          <li><a href="{% url om_domande %}">Altre domande e risposte frequenti</a></li>
+                          <li><a href="{% url "om_registrarsi" %}">Registrarsi</a></li>
+                          <li><a href="{% url "om_monitorare" %}">Monitorare un atto, un politico o un argomento</a></li>
+                          <li><a href="{% url "om_votare" %}">Votare e commentare un atto</a></li>
+                          <li><a href="{% url "om_domande" %}">Altre domande e risposte frequenti</a></li>
                       </ul>
                   </div>
 
@@ -218,8 +224,8 @@
                       </p>
                       <ul>
                           <li><a href="http://github.com/openpolis/open_municipio" target="_blank">Il codice sorgente</a></li>
-                          <li><a href="{% url om_software %}">I software utilizzati</a></li>
-                          <li><a href="{% url om_opendata %}">Perché non ci sono ancora gli Open data?</a></li>
+                          <li><a href="{% url "om_software" %}">I software utilizzati</a></li>
+                          <li><a href="{% url "om_opendata" %}">Perché non ci sono ancora gli Open data?</a></li>
                       </ul>
                   </div>
 
