@@ -79,20 +79,22 @@
 
   {% endif %}
 
+  {% block content_title %}
   <hgroup>
     <h2 id="act_title">
       <a href="#" id="{{ act|as_token }}" class="bookmarkable" {% if act.is_key %} data-toggle="tooltip" data-placement="right" title="Voto chiave"{% endif %}>
           <i class="{% is_key_class act %}"></i></a>
       <strong class="input-append">{{ act.adj_title|default:act.title }}</strong>
-      {% if act.idnum %}
-      <small>(N. {{ public_idnum }})</small></h2>
-      {% endif %}
+    </h2>
+    {% block content_subtitle %}
     <h4>
       <strong>{{ act.get_type_name|capfirst }}</strong>
       {{ act.emitting_institution.name_with_preposition }}
         {% if public_idnum %}N° <strong>{{ public_idnum }}</strong>{% endif %} del <strong><span class="date">{{ public_date }}</span></strong>
     </h4>
+    {% endblock content_subtitle %}
   </hgroup>
+  {% endblock content_title %}
 
   {% if act.description|length > 0 %}
       <div class="description-container" style="margin-bottom: 20px;">

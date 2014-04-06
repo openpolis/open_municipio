@@ -145,12 +145,12 @@
 
   <hr>
 
-  <section><h2>Monitora {% popover_info 'monitoraggio' 'left' %}</h2>
 {% comment %}
+  <section><h2>Monitora {% popover_info 'monitoraggio' 'left' %}</h2>
     {% object_monitoring topic %}
-{% endcomment %}
-    {% comment %}{% include 'monitoring/summary.html' with object=topic show_politicians=0 %}{% endcomment %}
+    {% include 'monitoring/summary.html' with object=topic show_politicians=0 %}
   </section>
+{% endcomment %}
 
   <hr>
 
