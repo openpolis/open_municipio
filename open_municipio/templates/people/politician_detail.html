@@ -61,16 +61,16 @@
         {% endfor %}
 
         <p>
-          {% if resources.EMAIL %}
-            <a href="mailto:{{ resources.EMAIL.value }}">{{ resources.EMAIL.value }}</a>
-          {% endif %}
+          {% for resource in resources.EMAIL %}
+            <a href="mailto:{{ resource.value }}">{{ resource.value }}</a>
+          {% endfor %}
           <br>
-          {% if resources.PHONE %}
-            T.{{ resources.PHONE.value }}
-          {% endif %}
-          {% if resources.FAX %}
-            F.{{ resources.FAX.value }}
-          {% endif %}
+          {% for resource in resources.PHONE %}
+            T.{{ resource.value }}
+          {% endfor %}
+          {% for resource in resources.FAX %}
+            F.{{ resource.value }}
+          {% endfor %}
         </p>
       </header>
 
@@ -117,29 +117,29 @@
       {% endif %}
 
       {% if resources.FINANCIAL %}
-        <br/>
         <p>
-        {% with label=resources.FINANCIAL.description|default:"Informazioni finanziarie" %}
-        {{ label }} <a href="{{ resources.FINANCIAL.value  }}" alt="{{ label }}" title="{{ label }}" target="_blank"><i class="icon-download"></i></a>
+        {% for resource in resources.FINANCIAL %}
+        <br/>
+        {% with label=resource.description|default:"Informazioni finanziarie" %}
+        {{ label }} <a href="{{ resource.value  }}" alt="{{ label }}" title="{{ label }}" target="_blank"><i class="icon-download"></i></a>
         {% endwith %}
+        {% endfor %}
         </p>
       {% endif %}
-
-
 
     </div>
 
     <div class="span4">
       <table>
-	      {% if resources.URL %}
-            <tr><td><i class="res res-feed"></i></td><td><a class="website" href="{{ resources.URL.value }}">Sito web</a></td></tr>
-	      {% endif %}
-	      {% if resources.FACEBOOK %}
-            <tr><td><i class="res res-facebook"></i></td><td><a class="facebook" href="{{ resources.FACEBOOK.value }}">Pagina Facebook</a></td></tr>
-	      {% endif %}
-	      {% if resources.TWITTER %}
-            <tr><td><i class="res res-twitter"></i></td><td><a class="twitter" href="{{ resources.TWITTER.value }}">Profilo Twitter</a></td></tr>
-	      {% endif %}
+          {% for resource in resources.URL %}
+            <tr><td><i class="res res-feed"></i></td><td><a class="website" href="{{ resource.value }}">Sito web</a></td></tr>
+	      {% endfor %}
+          {% for resource in resources.FACEBOOK %}
+            <tr><td><i class="res res-facebook"></i></td><td><a class="facebook" href="{{ resource.value }}">Pagina Facebook</a></td></tr>
+	      {% endfor %}
+          {% for resource in resources.TWITTER %}
+            <tr><td><i class="res res-twitter"></i></td><td><a class="twitter" href="{{ resource.value }}">Profilo Twitter</a></td></tr>
+	      {% endfor %}
 	      {% if person.openpolis_link %}
             <tr><td><i class="res res-openpolis"></i></td><td><a class="openpolis" href="{{ person.openpolis_link }}">Pagina su Openpolis</a></td></tr>
 	      {% endif %}

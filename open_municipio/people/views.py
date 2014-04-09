@@ -278,10 +278,12 @@ class PoliticianDetailView(DetailView):
         # Add in a QuerySet of all the institutions
         context['institution_list'] = Institution.objects.all()
 
-        context['resources'] = dict(
-            (r['resource_type'], {'value': r['value'], 'description': r['description']})
-            for r in self.object.resources.values('resource_type', 'value', 'description')
-        )
+        context['resources'] = { }
+
+        for r in self.object.resources.values('resource_type', 'value', 'description'):
+            context['resources'].setdefault(r['resource_type'], []).append(
+                {'value': r['value'], 'description': r['description']}
+            )
 
         current_charges = self.object.get_current_institution_charges().exclude(
             institutionresponsability__charge_type__in=(
