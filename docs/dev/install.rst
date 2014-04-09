@@ -49,6 +49,7 @@ Moreover, the following software packages are required [#]_:
 * ``python-dev`` (needed for compiling Python C-coded extension modules, such as `PIL`_ and `lxml`_)
 * ``libxml2``, ``libxml2-dev``, ``libxslt1.1``, ``libxslt-dev``  (needed by lxml)
 * ``mercurial``: needed for installing packages hosted on BitBucket
+* ``gettext``: need for generating localization files
 
 
 ..  _Django: http://djangoproject.com/ 

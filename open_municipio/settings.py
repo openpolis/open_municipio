@@ -341,7 +341,7 @@ SEARCH_URLS = {
     "cg_deliberation": "/acts/?q=&selected_facets=act_type:delibera di giunta",
     "interrogation": "/acts/?q=&selected_facets=act_type:interrogazione",
     "motion": "/acts/?q=&selected_facets=act_type:mozione",
-    "agenda": "/acts/?q=&selected_facets=act_type:agenda",
+    "agenda": "/acts/?q=&selected_facets=act_type:ordine del giorno",
     "interpellation": "/acts/?q=&selected_facets=act_type:interpellanza",
     "interrogation": "/acts/?q=&selected_facets=act_type:interrogazione",
     "amendment": "/acts/?q=&selected_facets=act_type:emendamento",

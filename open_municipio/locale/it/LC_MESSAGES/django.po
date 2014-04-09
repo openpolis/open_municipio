@@ -23,15 +23,15 @@ msgstr "Specifica un orario valido"
 
 #: filters.py:10
 msgid "year"
-msgstr ""
+msgstr "anno"
 
 #: filters.py:57
 msgid "month"
-msgstr ""
+msgstr "mese"
 
 #: filters.py:89 people/models.py:251
 msgid "type"
-msgstr ""
+msgstr "tipo"
 
 #: acts/admin.py:139
 msgid "Speech in act"
