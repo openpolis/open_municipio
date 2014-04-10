@@ -40,16 +40,20 @@
 
     <!-- presences -->
     <td class="text-center">
-        <strong>{% widthratio charge.n_present_votations charge.n_present_votations|add:charge.n_absent_votations 100 %}%</strong>
-        <br/>
-        {% if charge != None %}
-        <span class="small">({{ charge.n_present_votations }} su {{ charge.n_present_votations|add:charge.n_absent_votations }})</span>
+      {% if charge != None %}
+        {% if charge.n_present_votations %}
+          <strong>{% widthratio charge.n_present_votations charge.n_present_votations|add:charge.n_absent_votations 100 %}%</strong>
+          <br/>
+          <span class="small">({{ charge.n_present_votations }} su {{ charge.n_present_votations|add:charge.n_absent_votations }})</span>
         {% endif %}
+      {% endif %}
     </td>
 
     <!-- rebellions -->
     <td class="text-center">
+      {% if charge.n_present_votations %}
         {{ charge.n_rebel_votations }}
+      {% endif %}
     </td>
 
     <!-- presented acts -->
