@@ -434,7 +434,7 @@ class PoliticianListView(TemplateView):
                 InstitutionResponsability.CHARGE_TYPES.mayor,
             ),
             institutionresponsability__end_date__isnull=True
-        ).select_related().order_by('person__last_name')
+        ).select_related().exclude(n_present_votations=0).order_by('person__last_name')
 
         # fetch most or least
         context['most_rebellious'] = counselors.extra(select={'perc_rebel':'(n_rebel_votations * 100.0) / GREATEST (n_absent_votations + n_present_votations,1)'}).order_by('-perc_rebel')[0:3]
