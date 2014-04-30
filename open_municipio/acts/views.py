@@ -85,6 +85,10 @@ class ActSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
         return { 'qrange': '[%s-01-01T00:00:00Z TO %s-12-31T00:00:00Z]' % \
                 (curr_year, curr_year), 'r_label': curr_year }
 
+    def build_page(self):
+        self.results_per_page = int(self.request.GET.get('results_per_page', settings.HAYSTACK_SEARCH_RESULTS_PER_PAGE))
+        return super(ActSearchView, self).build_page()
+
     def build_form(self, form_kwargs=None):
         if form_kwargs is None:
             form_kwargs = {}
@@ -151,7 +155,7 @@ class ActSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
         if 'initiative' in extra['facets']['fields']:
             extra['show_initiative_facets'] = sum(map(lambda x: x[1], extra['facets']['fields']['initiative']['counts']))
 
-        paginator = Paginator(self.results, settings.HAYSTACK_SEARCH_RESULTS_PER_PAGE)
+        paginator = Paginator(self.results, self.results_per_page)
         page = self.request.GET.get('page', 1)
         try:
             page_obj = paginator.page(page)
@@ -167,7 +171,6 @@ class ActSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
 
 
         return extra
-
 
 
 from django.http import HttpResponse
