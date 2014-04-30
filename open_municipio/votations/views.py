@@ -52,6 +52,10 @@ class VotationSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin
 
         super(VotationSearchView, self).__init__(*args, **kwargs)
 
+    def build_page(self):
+        self.results_per_page = int(self.request.GET.get('results_per_page', settings.HAYSTACK_SEARCH_RESULTS_PER_PAGE))
+        return super(VotationSearchView, self).build_page()
+
     def build_form(self, form_kwargs=None):
         if form_kwargs is None:
             form_kwargs = {}
@@ -100,7 +104,7 @@ class VotationSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin
         extra['facets_sorted'] = self.FACETS_SORTED
         extra['facets_labels'] = self.FACETS_LABELS
 
-        paginator = Paginator(self.results, settings.HAYSTACK_SEARCH_RESULTS_PER_PAGE)
+        paginator = Paginator(self.results, self.results_per_page)
         page = self.request.GET.get('page', 1)
         try:
             page_obj = paginator.page(page)
