@@ -415,9 +415,9 @@ class DBVotationWriter(BaseVotationWriter):
                 )
 
                 if created:
-                    self.logger.debug("%s created in DB" % b)
+                    self.logger.debug("%s created in DB..." % b)
                 else:
-                    self.logger.debug("%s found in DB" % b)
+                    self.logger.debug("%s found in DB, not updated..." % b)
 
 
             if self.dry_run:

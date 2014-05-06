@@ -182,6 +182,8 @@
                 <td>
                   {% if charge_vote.vote == charge_vote.VOTES.abstained %}
                     <span class="label">Astenuto</span>
+                  {% elif charge_vote.vote == charge_vote.VOTES.pres %}
+                    <span class="label">Pres. non vot.</span>
                   {% endif %}
                 </td>
                 <td>

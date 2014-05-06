@@ -736,9 +736,9 @@ class Document(TimeStampedModel):
     It is possible for a single document to have more than one type of content:
     for example, a textual and a PDF local versions, or remote links...
     """
-    document_date = models.DateField(null=True, blank=True)
-    document_type = models.CharField(max_length=5, null=True, blank=True)
-    document_size = models.IntegerField(blank=True, null=True)
+    document_date = models.DateField(null=True, blank=True, verbose_name=_("date"))
+    document_type = models.CharField(max_length=5, null=True, blank=True, verbose_name=_("type"))
+    document_size = models.IntegerField(blank=True, null=True, verbose_name=_("size"))
     text = models.TextField(blank=True,verbose_name=_('text'))
     text_url = models.URLField(blank=True)
     file_url = models.URLField(blank=True)

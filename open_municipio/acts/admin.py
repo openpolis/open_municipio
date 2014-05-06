@@ -254,7 +254,34 @@ class SpeechAdmin(admin.ModelAdmin):
     list_filter = ( SpeechByYearFilterSpec, SpeechByMonthFilterSpec, )
 
 class AttachAdmin(admin.ModelAdmin):
-    list_display = ('title','document_date','document_type')
+
+    list_display = ('title','document_date','document_type','act_title','act_type')
+
+    search_fields = ['title', 'act__title', 'act__adj_title',]
+    list_filter = [ 'document_type', ]    
+
+    raw_id_fields = [ 'act', ]
+
+    def attach_title(self, obj):
+        return obj.title
+    attach_title.short_text_description = _("title")
+
+    def act_title(self, obj):
+        act_title = ""
+        if obj.act:
+            act_title = obj.act.adj_title or obj.act.title
+
+        return act_title
+    act_title.short_text_description = _("act")
+
+    def act_type(self, obj):
+        act_type = None
+
+        if obj.act:
+            act_type = obj.act.get_type_name()
+        return act_type
+
+    act_type.short_text_description = _("act type")
 
 class AgendaAdmin(ActAdmin):
     fieldsets = (
