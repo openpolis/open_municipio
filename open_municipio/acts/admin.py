@@ -75,7 +75,15 @@ class ActAdmin(admin.ModelAdmin):
     list_display = ('idnum', 'title', 'presentation_date', 'emitting_institution', 'status')
     search_fields = ('idnum', 'title',)
     list_filter = ( ActByYearFilterSpec, ActByMonthFilterSpec,)
-    
+
+    inlines_superuser = [ PresenterInline, AttachInline, TransitionInline, 
+                          AmendmentInline ]
+    inlines_base = [ TransitionInline]    
+
+    readonly_fields_superuser = ['status']
+    readonly_fields_base = ['idnum', 'title', 'status', 'presentation_date', 
+                            'text', 'emitting_institution']
+
 
     # genial hack to allow users with no permissions to show
     # the list of related acts for a raw field
@@ -89,12 +97,14 @@ class ActAdmin(admin.ModelAdmin):
     # add some inlines  for superuser users only
     def change_view(self, request, object_id, form_url='', extra_context=None):
 
+        self.inlines = []
+
         if request.user.is_superuser:
-            self.inlines = [ PresenterInline, AttachInline, TransitionInline, AmendmentInline]
-            self.readonly = ['status']
+            self.inlines = self.inlines_superuser
+            self.readonly_fields = self.readonly_fields_superuser
         else:
-            self.inlines = [ TransitionInline]
-            self.readonly_fields = ['idnum', 'title', 'status', 'presentation_date', 'text', 'emitting_institution']
+            self.inlines = self.inlines_base
+            self.readonly_fields = self.readonly_fields_base
 
         self.inline_instances = []
         for inline_class in self.inlines:
