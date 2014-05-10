@@ -83,7 +83,7 @@
       {% endif %}
 
       {% if current_groupcharge %}
-          Gruppo <strong>{{ current_groupcharge.group }}</strong>
+          Gruppo <a href="{% url om_institution_group slug=current_groupcharge.group.slug %}"><strong>{{ current_groupcharge.group }}</strong></a>
           {% if current_groupcharge.current_responsability %}
               - {% trans current_groupcharge.current_responsability.get_charge_type_display %}
               dal {{ current_groupcharge.current_responsability.start_date|date:'d.m.Y' }}
