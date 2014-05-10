@@ -119,6 +119,22 @@
             </ul>
         </div>
 
+        <div class="span6">
+            <h2>I consiglieri con più interventi in aula</h2>
+            <p>
+                Sono i Consiglieri che presentano più spesso interventi ed interrogazioni in aula.
+            </p>
+            <ul class="people-list">
+                {% for politician in most_speeches %}
+                    <li>
+                        {% include 'people/politician_list_section.html' with value=politician.n_speeches what="interventi" %}   
+                        {% object_inline_monitoring politician.person %}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+
     </div>
 </div>
 
