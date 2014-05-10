@@ -14,11 +14,11 @@ class ProfileAdmin(admin.ModelAdmin):
 class OMUserAdmin(auth.admin.UserAdmin):
     list_display_extra = ( "is_active", )
 
-    def changelist_view(self, request, extra_context=None):
+    def get_list_display(self, *args, **kwargs):
+        ld_base = super(OMUserAdmin, self).get_list_display(*args, **kwargs) 
 
-        self.list_display += self.list_display_extra
+        return ld_base + self.list_display_extra
 
-        return super(OMUserAdmin, self).changelist_view(request, extra_context)
 
     class Meta:
         app_label = "auth"
