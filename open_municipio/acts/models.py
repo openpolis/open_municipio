@@ -83,11 +83,9 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
     monitoring_set = generic.GenericRelation(Monitoring, object_id_field='object_pk')
 
     def __unicode__(self):
-        rv = u'%s' % (self.title, )
+        rv = u'%s' % (self.adj_title or self.title, )
         if self.idnum:
-            rv = u'%s - %s' % (self.idnum, rv)
-        if self.adj_title:
-            rv = u'%s (%s)' % (rv, self.adj_title)
+            rv = u'%s - %s' % (rv, self.idnum)
         return rv
 
     def downcast(self):

@@ -20,6 +20,7 @@ class ActIndex(indexes.SearchIndex, indexes.Indexable):
     categories_with_urls = indexes.MultiValueField(indexed=True, stored=True)
     locations_with_urls = indexes.MultiValueField(indexed=True, stored=True)
     has_locations = indexes.FacetCharField()
+    idnum = indexes.CharField(indexed=True, stored=False, model_attr='idnum')
 
     # stored fields, used not to touch DB
     # while showing results
