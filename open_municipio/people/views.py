@@ -85,7 +85,7 @@ class CouncilListView(TemplateView):
             president = municipality.council.president.charge
 
         vicepresidents = municipality.council.vicepresidents
-        groups = municipality.council.groups
+        groups = municipality.council.groups.active().order_by("name")
         committees = municipality.committees.as_institution
         latest_acts = Act.objects.filter(
             emitting_institution__institution_type=Institution.COUNCIL
@@ -169,7 +169,7 @@ class GroupListView(ListView):
     context_object_name = 'groups'
 
     def get_queryset(self):
-        return Group.objects.filter(groupcharge__end_date__isnull=True).distinct()
+        return Group.objects.active().order_by("name")
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context

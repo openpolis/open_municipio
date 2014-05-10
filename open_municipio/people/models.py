@@ -19,7 +19,7 @@ from sorl.thumbnail import ImageField
 
 from open_municipio.monitoring.models import MonitorizedItem
 from open_municipio.newscache.models import NewsTargetMixin
-from open_municipio.people.managers import TimeFramedQuerySet
+from open_municipio.people.managers import TimeFramedQuerySet, GroupQuerySet
 from open_municipio.om_utils.models import SlugModel
 
 import open_municipio
@@ -587,8 +587,8 @@ class AdministrationCharge(Charge):
     def __unicode__(self):
         # TODO: implement ``get_charge_type_display()`` method
         return u'%s - %s' % (self.get_charge_type_display(), self.office.name)
-  
-  
+ 
+
 class Group(models.Model):
     """
     This model represents a group of counselors.
@@ -599,6 +599,9 @@ class Group(models.Model):
     slug = models.SlugField(unique=True, blank=True, null=True, help_text=_('Suggested value automatically generated from name, must be unique'))
 
     img = ImageField(upload_to="group_images", blank=True, null=True)
+
+    objects = PassThroughManager.for_queryset_class(GroupQuerySet)()
+
 
     class Meta:
         verbose_name = _('group')
