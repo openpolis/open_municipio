@@ -31,7 +31,7 @@ class ChargeVoteInline(admin.TabularInline):
 
 class VotationAdmin(admin.ModelAdmin):
     search_fields = ('act_descr','idnum', )
-    list_display = ('idnum', 'act_descr', 'sitting', 'is_linked', 'outcome')
+    list_display = ('idnum', 'act_descr', 'sitting', 'is_linked_col','outcome')
     list_filter = ('sitting',)
     raw_id_fields = ['act']
     readonly_fields = ('sitting', 'idnum' )
@@ -52,6 +52,10 @@ class VotationAdmin(admin.ModelAdmin):
             self.inline_instances.append(inline_instance)
 
         return super(VotationAdmin, self).change_view(request, object_id)
+
+    def is_linked_col(self, object):
+        return object.is_linked
+    is_linked_col.boolean = True
 
 
 class VotationsInline(admin.TabularInline):

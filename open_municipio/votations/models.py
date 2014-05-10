@@ -98,8 +98,17 @@ class Votation(models.Model):
         return self.transition_set.all()
 
     @property
+    def ref_act(self):
+        if self.act:
+            return self.act
+        elif self.transitions.count() > 0:
+            return self.transitions[0].act
+        else:
+            return None
+
+    @property
     def is_linked(self):
-        if self.act is None:
+        if self.ref_act is None:
             return False
         else:
             return True

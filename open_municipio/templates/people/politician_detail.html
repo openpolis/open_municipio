@@ -204,13 +204,15 @@
                     {{ charge_vote.votation.idnum }}
                   </a>
               </td>
-              <td {% if not charge_vote.votation.act %}class="text-center"{%  endif %}>
-                  {% if charge_vote.votation.act %}
-                      <a href="{{ charge_vote.votation.act.downcast.get_absolute_url }}"><strong>{{ charge_vote.votation.act.title }}</strong></a>
+              {% with curr_act=charge_vote.votation.ref_act %}
+              <td {% if not curr_act %}class="text-center"{%  endif %}>
+                  {% if curr_act %}
+                      <a href="{{ curr_act.downcast.get_absolute_url }}"><strong>{{ curr_act.adj_title|default:curr_act.title }}</strong></a>
                   {%  else %}
                       -
                   {% endif %}
               </td>
+              {% endwith %}
               <td class="text-center"><span class="label
                                                            {% if charge_vote.get_vote_display == "Sì" %}label-success{% else %}
                                                            {% if charge_vote.get_vote_display == "No" %}label-important{% endif %}{% endif %}
