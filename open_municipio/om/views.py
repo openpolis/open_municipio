@@ -45,10 +45,6 @@ class HomeView(TemplateView):
 
         context['events'] = Event.future.all().order_by('date')[0:2]
 
-#        context['last_presented_acts'] = Act.objects.\
-#            filter(actsupport__support_type=ActSupport.SUPPORT_TYPE.first_signer).distinct().\
-#            order_by('-actsupport__support_date')[0:3]
-
         context['last_presented_acts'] = Act.objects.\
             filter(presentation_date__isnull=False).distinct().\
             order_by('-presentation_date')[0:3]

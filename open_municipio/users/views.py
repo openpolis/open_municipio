@@ -6,6 +6,7 @@ from django.db.models import Count
 from django.views.generic import DetailView
 from django.views.generic.list import ListView
 from open_municipio.acts.models import Deliberation, Motion, Interpellation, Amendment, Agenda, Interrogation
+from open_municipio.newscache.models import News
 from open_municipio.locations.models import Location
 from open_municipio.monitoring.models import Monitoring
 from open_municipio.people.models import Person, GroupCharge
@@ -74,11 +75,22 @@ class UserProfileListView(ListView):
         # call the base implementation first to get a context
         context = super(UserProfileListView, self).get_context_data(**kwargs)
 
+        top_mon_politicians = extract_top_monitored_objects(Person,qnt=3)
+        top_mon_topics = extract_top_monitored_objects(Tag,Category,Location,
+                                                        qnt=5)
+        top_mon_acts = extract_top_monitored_objects(Deliberation, Motion, 
+                        Interpellation, Agenda, Interrogation, Amendment,qnt=5)
+
+        news = News.objects.filter(news_type=News.NEWS_TYPE.community, priority=1)
+        news_community = sorted(news, key=lambda n: n.news_date, 
+                                reverse=True)[0:3]
+
         context.update({
             # TODO if a person not have a institution_charge...?
-            'top_monitored_politicians': extract_top_monitored_objects(Person,qnt=3),
-            'top_monitored_topics': extract_top_monitored_objects(Tag,Category,Location,qnt=5),
-            'top_monitored_acts': extract_top_monitored_objects(Deliberation, Motion, Interpellation, Agenda, Interrogation, Amendment,qnt=5),
+            'top_monitored_politicians': top_mon_politicians,
+            'top_monitored_topics': top_mon_topics,
+            'top_monitored_acts': top_mon_acts,
+            'news_community': news_community,
         })
         return context
 
