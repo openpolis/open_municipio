@@ -4,7 +4,7 @@ from django.views.generic import DetailView
 from django.core.urlresolvers import reverse
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from open_municipio.om_search.mixins import FacetRangeDateIntervalsMixin
-from open_municipio.people.models import Person
+from open_municipio.people.models import Person, InstitutionCharge
 from django.utils.translation import ugettext_lazy as _
 
 from open_municipio.votations.models import Votation, ChargeVote
@@ -136,7 +136,21 @@ class VotationDetailView(DetailView):
         # get last two calendar events
 
         votation = self.get_object()
+        voters = InstitutionCharge.objects.filter(chargevote__votation=votation).values('person__first_name', 'person__last_name','chargevote__vote').order_by('person__last_name', 'person__first_name')
+        voters_yes = filter(lambda v: v["chargevote__vote"] == "YES", voters)
+        voters_no = filter(lambda v: v["chargevote__vote"] == "NO", voters)
+        voters_abst = filter(lambda v: v["chargevote__vote"] in [ "ABSTAINED", "PRES"] , voters)
+
+        names_yes = ", ".join(map(lambda v: "%s. %s" % (v["person__first_name"][0], v["person__last_name"],), voters_yes))
+        names_no = ", ".join(map(lambda v: "%s. %s" % (v["person__first_name"][0], v["person__last_name"],), voters_no))
+        names_abst = ", ".join(map(lambda v: "%s. %s" % (v["person__first_name"][0], v["person__last_name"],), voters_abst))
+
+
         context['n_absents'] = votation.chargevote_set.filter(vote=ChargeVote.VOTES.absent).count()
         context['votation_difference'] = abs(votation.n_yes - votation.n_no)
+        context['names_yes'] = names_yes
+        context['names_no'] = names_no
+        context['names_abst'] = names_abst
+
         return context
 

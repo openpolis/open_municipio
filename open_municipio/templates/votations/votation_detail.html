@@ -259,13 +259,13 @@
 
   <table class="stats">
     <tr>
-      <td>{{ votation.n_yes|circled:"voteok" }}</td>
+      <td title="{{ names_yes|default:"Nessuno" }}">{{ votation.n_yes|circled:"voteok" }}</td>
       <th class="span6">Favorevoli</th>
-      <td>{{ votation.n_no|circled:"voteko" }}</td>
+      <td title="{{ names_no|default:"Nessuno" }}">{{ votation.n_no|circled:"voteko" }}</td>
       <th class="span6">Contrari</th>
     </tr>
     <tr>
-      <td>{{ votation.n_abst|circled }}</td>
+      <td title="{{ names_abst|default:"Nessuno" }}">{{ votation.n_abst|circled }}</td>
       <th class="span6">Astenuti</th>
       <td>{{ votation_difference|circled }}</td>
       <th class="span6">Voti di scarto</th>
