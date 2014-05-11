@@ -136,14 +136,13 @@ class VotationDetailView(DetailView):
         # get last two calendar events
 
         votation = self.get_object()
-        voters = InstitutionCharge.objects.filter(chargevote__votation=votation).values('person__first_name', 'person__last_name','chargevote__vote').order_by('person__last_name', 'person__first_name')
-        voters_yes = filter(lambda v: v["chargevote__vote"] == "YES", voters)
-        voters_no = filter(lambda v: v["chargevote__vote"] == "NO", voters)
-        voters_abst = filter(lambda v: v["chargevote__vote"] in [ "ABSTAINED", "PRES"] , voters)
+        voters = ChargeVote.objects.filter(votation=votation).order_by('charge__person__last_name', 'charge__person__first_name')
 
-        names_yes = ", ".join(map(lambda v: "%s. %s" % (v["person__first_name"][0], v["person__last_name"],), voters_yes))
-        names_no = ", ".join(map(lambda v: "%s. %s" % (v["person__first_name"][0], v["person__last_name"],), voters_no))
-        names_abst = ", ".join(map(lambda v: "%s. %s" % (v["person__first_name"][0], v["person__last_name"],), voters_abst))
+        print "voters: %s" % voters
+
+        names_yes = self._get_names(voters, ["YES",])
+        names_no = self._get_names(voters, ["NO",])
+        names_abst = self._get_names(voters, ["ABSTAINED","PRES",])
 
 
         context['n_absents'] = votation.chargevote_set.filter(vote=ChargeVote.VOTES.absent).count()
@@ -154,3 +153,29 @@ class VotationDetailView(DetailView):
 
         return context
 
+    def _get_names(self, voters, vote_list):
+        
+        print "voters = %s, votes = %s" % (voters, vote_list)
+
+        matching = filter(lambda v: v.vote in vote_list, voters)
+
+        print "matching = %s" % matching
+
+        return ", ".join(map(self._get_label, matching))
+       
+
+    def _get_label(self, cv):
+
+        assert isinstance(cv, ChargeVote)
+
+        name = cv.charge.person.first_name
+        surname = cv.charge.person.last_name
+        group = ""
+        try:
+            group = " (%s)" % (cv.charge.current_groupcharge.group.acronym,)
+        except: 
+            pass
+
+        label = "%s. %s%s" % (name[0], surname, group)
+
+        return label
