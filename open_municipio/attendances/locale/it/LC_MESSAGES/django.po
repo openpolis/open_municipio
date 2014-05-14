@@ -1,0 +1,163 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-05-14 22:45+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+
+#: admin.py:21
+msgid "is linked"
+msgstr "collegato ad un atto"
+
+#: filters.py:22
+msgid "is_linked"
+msgstr "collegato ad un atto"
+
+#: models.py:27
+msgid "idact"
+msgstr "identificativo atto"
+
+#: models.py:28
+msgid "sitting"
+msgstr "seduta"
+
+#: models.py:29
+msgid "act"
+msgstr "atto"
+
+#: models.py:33
+msgid "act description"
+msgstr "descrizione atto"
+
+#: models.py:35
+#, fuzzy
+msgid "charges"
+msgstr "incarico"
+
+#: models.py:36
+msgid "legal number"
+msgstr "num. legale"
+
+#: models.py:37
+msgid "num. presents"
+msgstr "num. presenti"
+
+#: models.py:38
+msgid "num. voters"
+msgstr "num. votanti"
+
+#: models.py:38
+msgid ""
+"This should result as the sum of those that expressed a yes, no or abstained "
+"vote"
+msgstr "Questo numero dovrebbe essere uguale alla somma di coloro che hanno "
+"espresso un voto fra: Sì, No, Astenuto"
+
+#: models.py:39
+#, fuzzy
+msgid "num. absents"
+msgstr "Assente"
+
+#: models.py:40
+msgid "num. yes"
+msgstr "num. sì"
+
+#: models.py:41
+msgid "num. no"
+msgstr "num. no"
+
+#: models.py:42
+#, fuzzy
+msgid "num. abstained"
+msgstr "Astenuto"
+
+#: models.py:43
+msgid "majority"
+msgstr "maggioranza"
+
+#: models.py:44
+msgid "outcome"
+msgstr "risultato"
+
+#: models.py:45
+msgid "Specify whether this is a key attendance"
+msgstr "Specifica se è una seduta chiave"
+
+#: models.py:45
+msgid "is key"
+msgstr "voto chiave"
+
+#: models.py:71 models.py:98
+msgid "attendance"
+msgstr "partecipazione a seduta"
+
+#: models.py:72
+msgid "attendances"
+msgstr "partecipazioni a sedute"
+
+#: models.py:80
+#, python-format
+msgid " of %(date)s"
+msgstr " del %(date)s"
+
+#: models.py:81
+#, python-format
+msgid "Attendance%(idnum)s%(date)s"
+msgstr "Seduta%(idnum)s%(date)s"
+
+#: models.py:89
+msgid "Yes"
+msgstr "Sì"
+
+#: models.py:90
+msgid "No"
+msgstr "No"
+
+#: models.py:91
+msgid "Abstained"
+msgstr "Astenuto"
+
+#: models.py:92
+msgid "Vote was canceled"
+msgstr "Voto cancellato"
+
+#: models.py:93
+msgid "Present but not voting"
+msgstr "Presente non votante"
+
+#: models.py:94
+msgid "Is absent"
+msgstr "Assente"
+
+#: models.py:95
+msgid "Vote was not tracked"
+msgstr "Voto non tracciato"
+
+#: models.py:99
+msgid "vote"
+msgstr "voto"
+
+#: models.py:100
+msgid "charge"
+msgstr "incarico"
+
+#: models.py:103
+msgid "charge attendance"
+msgstr "presenza della carica"
+
+#: models.py:104
+msgid "charge attendances"
+msgstr "presenze delle cariche"

@@ -12,7 +12,13 @@ class GroupVoteAdmin(admin.ModelAdmin):
 
 class ChargeVoteAdmin(admin.ModelAdmin):
     list_display = ('id', 'votation', 'charge', 'charge_group_at_vote_date', 'vote')
-    list_filter = ('votation__id',)
+    list_filter = ('vote',)
+    raw_id_fields = ['votation', 'charge']
+    search_fields = ['charge__person__first_name', 'charge__person__last_name', ]
+
+    def charge_group_at_vote_date(self, object):
+        return object.charge_group_at_vote_date
+    charge_group_at_vote_date.short_description = _('Charge group at vote date')
 
 class GroupVoteInline(admin.TabularInline):
     model = GroupVote
@@ -33,7 +39,7 @@ class VotationAdmin(admin.ModelAdmin):
     search_fields = ('act_descr','idnum', )
     list_display = ('idnum', 'act_descr', 'sitting', 'is_linked_col','outcome')
     list_filter = ('sitting',)
-    raw_id_fields = ['act']
+    raw_id_fields = ['act','sitting',]
     readonly_fields = ('sitting', 'idnum' )
     ordering = ['-sitting__date']
 
@@ -56,6 +62,7 @@ class VotationAdmin(admin.ModelAdmin):
     def is_linked_col(self, object):
         return object.is_linked
     is_linked_col.boolean = True
+    is_linked_col.short_description = _('is linked')
 
 
 class VotationsInline(admin.TabularInline):

@@ -1,0 +1,104 @@
+import locale
+import datetime
+
+from django.db import models
+from django.utils.translation import ugettext_lazy as _
+
+from model_utils import Choices
+from model_utils.models import TimeStampedModel
+from model_utils.managers import QueryManager
+
+from open_municipio.people.models import Group, InstitutionCharge, Sitting, Institution
+from open_municipio.acts.models import Act
+
+
+class Attendance(models.Model):
+
+    OUTCOMES = Choices(
+        (0, 'No Esito'),
+        (1, 'Approvato'),
+        (2, 'Respinto'),
+        (3, 'SI Numero Legale'),
+        (4, 'NO Numero Legale'),
+        (5, 'Annullata'),
+    )
+
+
+    idnum = models.CharField(blank=True, max_length=64, null=True, verbose_name=_('idact'))
+    sitting = models.ForeignKey(Sitting, null=True, verbose_name=_('sitting'))
+    act = models.ForeignKey(Act, null=True, verbose_name=_('act'))
+    
+    # this field is used to keep the textual description of the related act
+    # as expressed in the attendance system
+    act_descr = models.CharField(blank=True, max_length=255, verbose_name=_('act description'))
+    
+    charge_set = models.ManyToManyField(InstitutionCharge, through='ChargeAttendance', verbose_name=_('charges'))
+    n_legal = models.IntegerField(default=0, verbose_name=_('legal number'))
+    n_presents = models.IntegerField(default=0, verbose_name=_('num. presents'))
+    n_partecipants = models.IntegerField(default=0, verbose_name=_('num. voters'), help_text=_('This should result as the sum of those that expressed a yes, no or abstained vote'))
+    n_absents = models.IntegerField(default=0, verbose_name=_('num. absents'))
+    n_yes = models.IntegerField(default=0, verbose_name=_('num. yes'))
+    n_no = models.IntegerField(default=0, verbose_name=_('num. no'))
+    n_abst = models.IntegerField(default=0, verbose_name=_('num. abstained'))
+    n_maj = models.IntegerField(default=0, verbose_name=_('majority'))
+    outcome = models.IntegerField(choices=OUTCOMES, blank=True, null=True, verbose_name=_('outcome'))
+    is_key = models.BooleanField(default=False, help_text=_("Specify whether this is a key attendance"), verbose_name=_('is key'))    
+
+    # default manager must be explicitly defined, when
+    # at least another manager is present
+    objects = models.Manager()
+
+    # use this manager to retrieve only key attendances
+    key = QueryManager(is_key=True).order_by('-sitting__date')
+
+    # use this manager to retrieve only linked acts
+    is_linked_to_act = QueryManager(act__isnull=False)
+
+    @property
+    def ref_act(self):
+        if self.act:
+            return self.act
+        elif self.transitions.count() > 0:
+            return self.transitions[0].act
+        else:
+            return None
+
+    @property
+    def is_linked(self):
+        return (self.ref_act is not None)
+
+    class Meta:
+        verbose_name = _("attendance")
+        verbose_name_plural = _("attendances")
+
+    def __unicode__(self):
+        idnum = ''
+        if self.idnum:
+            idnum = ' %(idnum)s' % { 'idnum':self.idnum, }
+        date = ''
+        if self.sitting:
+            date = _(' of %(date)s') % { 'date':self.sitting.date, }
+        return _('Attendance%(idnum)s%(date)s') % { 'idnum':idnum, 'date':date }
+
+
+class ChargeAttendance(TimeStampedModel):
+    """
+    WRITEME
+    """  
+    VOTES = Choices(
+        ('YES', 'yes', _('Yes')),
+        ('NO', 'no', _('No')),
+        ('ABSTAINED', 'abstained', _('Abstained')),
+        ('CANCELED', 'canceled', _('Vote was canceled')),
+        ('PRES', 'pres', _('Present but not voting')),
+        ('ABSENT', 'absent', _('Is absent')),
+        ('UNTRACKED', 'untracked', _('Vote was not tracked')),  # nothing can be said about presence
+    )
+    
+    attendance = models.ForeignKey(Attendance, verbose_name=_('attendance'))
+    vote = models.CharField(choices=VOTES, max_length=12, verbose_name=_('vote'))
+    charge = models.ForeignKey(InstitutionCharge, verbose_name=_('charge'))
+
+    class Meta:
+        verbose_name = _("charge attendance")
+        verbose_name_plural = _("charge attendances")

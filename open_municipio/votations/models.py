@@ -108,10 +108,7 @@ class Votation(models.Model):
 
     @property
     def is_linked(self):
-        if self.ref_act is None:
-            return False
-        else:
-            return True
+        return self.ref_act is not None
 
     @property
     def is_secret(self):
@@ -209,10 +206,10 @@ class ChargeVote(TimeStampedModel):
         ('UNTRACKED', 'untracked', _('Vote was not tracked')),  # nothing can be said about presence
     )
     
-    votation = models.ForeignKey(Votation)
-    vote = models.CharField(choices=VOTES, max_length=12)
-    charge = models.ForeignKey(InstitutionCharge)
-    is_rebel = models.BooleanField(default=False)
+    votation = models.ForeignKey(Votation, verbose_name=_('votation'))
+    vote = models.CharField(choices=VOTES, max_length=12, verbose_name=_('vote'))
+    charge = models.ForeignKey(InstitutionCharge, verbose_name=_('charge'))
+    is_rebel = models.BooleanField(default=False, verbose_name=_('is rebel'))
 
     @property
     def original_charge(self):
