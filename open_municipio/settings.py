@@ -136,6 +136,7 @@ INSTALLED_APPS = (
     'open_municipio.taxonomy',
     'open_municipio.locations',
     'open_municipio.votations',
+    'open_municipio.attendances',
     'open_municipio.users',
     'open_municipio.monitoring',
     'open_municipio.web_services',

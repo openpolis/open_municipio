@@ -236,3 +236,5 @@ class ChargeVote(TimeStampedModel):
 
     def __unicode__(self):
         return u"%s - %s - %s" % (self.votation, self.original_charge.person, self.get_vote_display())
+
+
