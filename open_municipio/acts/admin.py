@@ -309,6 +309,23 @@ class AgendaAdmin(ActAdmin):
         )
 
 
+class TransitionAdmin(admin.ModelAdmin):
+    
+    search_fields = ("id", "act__title", "act__adj_title")
+    list_display = ["id", "act_short", "transition_date", "final_status"]
+    list_filter = ["final_status", ]
+
+    raw_id_fields = ["act","votation", ]
+    readonly_fields = ["symbol", "final_status", ]
+
+    def act_short(self, obj):
+#        print "obj: %s" % obj
+        text = u"%s" % obj.act
+        if len(text) > 50:
+            text = "%s..." % text[:50]
+        return text
+    act_short.short_description = _("act")
+
 admin.site.register(Act, ActAdmin)
 
 # The following two lines restore the default admin for the class Act
@@ -324,6 +341,6 @@ admin.site.register(Motion, MotionAdmin)
 admin.site.register(Calendar, CalendarAdmin)
 admin.site.register(Amendment, AmendmentAdmin)
 admin.site.register(Attach, AttachAdmin)
-admin.site.register(Transition)
+admin.site.register(Transition, TransitionAdmin)
 admin.site.register(Speech, SpeechAdmin)
 admin.site.register(Agenda, AgendaAdmin)
