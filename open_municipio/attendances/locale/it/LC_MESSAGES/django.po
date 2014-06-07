@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-05-14 22:45+0200\n"
+"POT-Creation-Date: 2014-06-08 01:42+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,138 +26,155 @@ msgstr "collegato ad un atto"
 msgid "is_linked"
 msgstr "collegato ad un atto"
 
-#: models.py:27
+#: models.py:18
+msgid "No outcome"
+msgstr "No esito"
+
+#: models.py:19
+msgid "Yes legal number"
+msgstr "Sì numero legale"
+
+#: models.py:20
+msgid "No legal number"
+msgstr "No numero legale"
+
+#: models.py:21
+msgid "Rejected"
+msgstr "Annullata"
+
+#: models.py:25
 msgid "idact"
 msgstr "identificativo atto"
 
-#: models.py:28
+#: models.py:26
 msgid "sitting"
 msgstr "seduta"
 
-#: models.py:29
+#: models.py:27
 msgid "act"
 msgstr "atto"
 
-#: models.py:33
+#: models.py:31
 msgid "act description"
 msgstr "descrizione atto"
 
-#: models.py:35
-#, fuzzy
+#: models.py:33
 msgid "charges"
-msgstr "incarico"
+msgstr "incarichi"
 
-#: models.py:36
+#: models.py:34
 msgid "legal number"
 msgstr "num. legale"
 
-#: models.py:37
+#: models.py:35
 msgid "num. presents"
 msgstr "num. presenti"
 
-#: models.py:38
-msgid "num. voters"
-msgstr "num. votanti"
-
-#: models.py:38
-msgid ""
-"This should result as the sum of those that expressed a yes, no or abstained "
-"vote"
-msgstr "Questo numero dovrebbe essere uguale alla somma di coloro che hanno "
-"espresso un voto fra: Sì, No, Astenuto"
-
-#: models.py:39
-#, fuzzy
+#: models.py:36
 msgid "num. absents"
-msgstr "Assente"
+msgstr "num. assenti"
 
-#: models.py:40
-msgid "num. yes"
-msgstr "num. sì"
-
-#: models.py:41
-msgid "num. no"
-msgstr "num. no"
-
-#: models.py:42
-#, fuzzy
-msgid "num. abstained"
-msgstr "Astenuto"
-
-#: models.py:43
-msgid "majority"
-msgstr "maggioranza"
-
-#: models.py:44
+#: models.py:37
 msgid "outcome"
 msgstr "risultato"
 
-#: models.py:45
+#: models.py:38
 msgid "Specify whether this is a key attendance"
 msgstr "Specifica se è una seduta chiave"
 
-#: models.py:45
-msgid "is key"
-msgstr "voto chiave"
+#: models.py:38
+msgid "is key attendance"
+msgstr "partecipazione chiave"
 
-#: models.py:71 models.py:98
+#: models.py:64 models.py:88
 msgid "attendance"
 msgstr "partecipazione a seduta"
 
-#: models.py:72
+#: models.py:65
 msgid "attendances"
 msgstr "partecipazioni a sedute"
 
-#: models.py:80
+#: models.py:73
 #, python-format
 msgid " of %(date)s"
 msgstr " del %(date)s"
 
-#: models.py:81
+#: models.py:74
 #, python-format
 msgid "Attendance%(idnum)s%(date)s"
 msgstr "Seduta%(idnum)s%(date)s"
 
-#: models.py:89
-msgid "Yes"
-msgstr "Sì"
+#: models.py:83
+msgid "Present"
+msgstr "Presente"
 
-#: models.py:90
-msgid "No"
-msgstr "No"
-
-#: models.py:91
-msgid "Abstained"
-msgstr "Astenuto"
-
-#: models.py:92
-msgid "Vote was canceled"
-msgstr "Voto cancellato"
-
-#: models.py:93
-msgid "Present but not voting"
-msgstr "Presente non votante"
-
-#: models.py:94
+#: models.py:84
 msgid "Is absent"
 msgstr "Assente"
 
-#: models.py:95
-msgid "Vote was not tracked"
-msgstr "Voto non tracciato"
+#: models.py:85
+msgid "On a mission"
+msgstr "In missione"
 
-#: models.py:99
-msgid "vote"
-msgstr "voto"
+#: models.py:89
+msgid "value"
+msgstr "valore"
 
-#: models.py:100
+#: models.py:90
 msgid "charge"
 msgstr "incarico"
 
-#: models.py:103
+#: models.py:93
 msgid "charge attendance"
 msgstr "presenza della carica"
 
-#: models.py:104
+#: models.py:94
 msgid "charge attendances"
 msgstr "presenze delle cariche"
+
+#~ msgid "Present but not voting"
+#~ msgstr "Presente non votante"
+
+#~ msgid "vote"
+#~ msgstr "voto"
+
+#~ msgid "is key"
+#~ msgstr "voto chiave"
+
+#~ msgid "num. voters"
+#~ msgstr "num. votanti"
+
+#~ msgid ""
+#~ "This should result as the sum of those that expressed a yes, no or "
+#~ "abstained vote"
+#~ msgstr ""
+#~ "Questo numero dovrebbe essere uguale alla somma di coloro che hanno "
+#~ "espresso un voto fra: Sì, No, Astenuto"
+
+#~ msgid "num. yes"
+#~ msgstr "num. sì"
+
+#~ msgid "num. no"
+#~ msgstr "num. no"
+
+#, fuzzy
+#~ msgid "num. abstained"
+#~ msgstr "Astenuto"
+
+#~ msgid "majority"
+#~ msgstr "maggioranza"
+
+#~ msgid "Yes"
+#~ msgstr "Sì"
+
+#~ msgid "No"
+#~ msgstr "No"
+
+#~ msgid "Abstained"
+#~ msgstr "Astenuto"
+
+#~ msgid "Vote was canceled"
+#~ msgstr "Voto cancellato"
+
+#~ msgid "Vote was not tracked"
+#~ msgstr "Voto non tracciato"
