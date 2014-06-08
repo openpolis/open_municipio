@@ -54,7 +54,7 @@ class AmendmentInline(admin.StackedInline):
 
 
 class TransitionInline(admin.TabularInline):
-    raw_id_fields = ( 'votation', )
+    raw_id_fields = ( 'votation', 'attendance', )
     model = Transition
     extra = 0
 

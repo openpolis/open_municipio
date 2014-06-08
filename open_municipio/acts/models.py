@@ -706,6 +706,7 @@ class Transition(models.Model):
     final_status = models.CharField(_('final status'), max_length=100)
     act = models.ForeignKey(Act, related_name='transition_set')
     votation = models.ForeignKey('votations.Votation', null=True, blank=True)
+    attendance = models.ForeignKey('attendances.Attendance', null=True, blank=True)
     transition_date = models.DateField(default=None)
     symbol = models.CharField(_('symbol'), max_length=128, blank=True, null=True)
     note = models.CharField(_('note'), max_length=255, blank=True, null=True)
