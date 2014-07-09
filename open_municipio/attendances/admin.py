@@ -25,6 +25,9 @@ class ChargeAttendanceAdmin(admin.ModelAdmin):
 
     raw_id_fields = ['attendance', 'charge',]
 
+    list_display = ("charge", "attendance", "value")
+    list_filter = ("value", "charge",)
+
 
 admin.site.register(Attendance, AttendanceAdmin)
 admin.site.register(ChargeAttendance, ChargeAttendanceAdmin)
