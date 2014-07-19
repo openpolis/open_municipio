@@ -15,10 +15,12 @@ from open_municipio.acts.models import Act
 class Attendance(models.Model):
 
     OUTCOMES = Choices(
-        (0, 'No outcome', _('No outcome')),
-        (1, 'Yes legal number', _('Yes legal number')),
-        (2, 'No legal number', _('No legal number')),
-        (3, 'Rejected', _('Rejected')),
+        (0, 'No Esito'),
+        (1, 'Approvato'),
+        (2, 'Respinto'),
+        (3, 'SI Numero Legale'),
+        (4, 'NO Numero Legale'),
+        (5, 'Annullata'),
     )
 
 
@@ -28,14 +30,19 @@ class Attendance(models.Model):
     
     # this field is used to keep the textual description of the related act
     # as expressed in the attendance system
-    act_descr = models.CharField(blank=True, max_length=255, verbose_name=_('act description'))
+    act_descr = models.CharField(blank=True, max_length=1024, verbose_name=_('act description'))
     
     charge_set = models.ManyToManyField(InstitutionCharge, through='ChargeAttendance', verbose_name=_('charges'))
     n_legal = models.IntegerField(default=0, verbose_name=_('legal number'))
     n_presents = models.IntegerField(default=0, verbose_name=_('num. presents'))
+    n_partecipants = models.IntegerField(default=0, verbose_name=_('num. voters'), help_text=_('This should result as the sum of those that expressed a yes, no or abstained vote'))
     n_absents = models.IntegerField(default=0, verbose_name=_('num. absents'))
+    n_yes = models.IntegerField(default=0, verbose_name=_('num. yes'))
+    n_no = models.IntegerField(default=0, verbose_name=_('num. no'))
+    n_abst = models.IntegerField(default=0, verbose_name=_('num. abstained'))
+    n_maj = models.IntegerField(default=0, verbose_name=_('majority'))
     outcome = models.IntegerField(choices=OUTCOMES, blank=True, null=True, verbose_name=_('outcome'))
-    is_key = models.BooleanField(default=False, help_text=_("Specify whether this is a key attendance"), verbose_name=_('is key attendance'))    
+    is_key = models.BooleanField(default=False, help_text=_("Specify whether this is a key attendance"), verbose_name=_('is key'))    
 
     # default manager must be explicitly defined, when
     # at least another manager is present
@@ -76,17 +83,20 @@ class Attendance(models.Model):
 
 class ChargeAttendance(TimeStampedModel):
     """
-    This model expresses whether a charge is present or not during the sitting
-    linked to the Attendance instance.
+    WRITEME
     """  
-    VALUES = Choices(
-        ('PRES', 'pres', _('Present')),
+    VOTES = Choices(
+        ('YES', 'yes', _('Yes')),
+        ('NO', 'no', _('No')),
+        ('ABSTAINED', 'abstained', _('Abstained')),
+        ('CANCELED', 'canceled', _('Vote was canceled')),
+        ('PRES', 'pres', _('Present but not voting')),
         ('ABSENT', 'absent', _('Is absent')),
-        ('MISSION', 'mission', _('On a mission')),
+        ('UNTRACKED', 'untracked', _('Vote was not tracked')),  # nothing can be said about presence
     )
     
     attendance = models.ForeignKey(Attendance, verbose_name=_('attendance'))
-    value = models.CharField(choices=VALUES, max_length=12, verbose_name=_('value'))
+    vote = models.CharField(choices=VOTES, max_length=12, verbose_name=_('vote'))
     charge = models.ForeignKey(InstitutionCharge, verbose_name=_('charge'))
 
     class Meta:
