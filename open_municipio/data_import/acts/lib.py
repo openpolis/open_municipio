@@ -72,15 +72,32 @@ class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
     def setup(self):
         self.conf = conf
 
-    @transaction.commit_on_success
+#    @transaction.commit_on_success
     def write(self):
         self.logger.info("Acts to write: %d" % len(self.acts.values()))
+
+        amendments = []
+
         for act in self.acts.values():
+
+            if isinstance(act, Amendment):
+                amendments.append(act)
+            else:
+                try:
+                    self.write_act(act)
+                except Exception, e:
+                    self.logger.error(u"Error storing act: %s" % act)
+                    self.logger.exception(e)
+#                    self.logger.er#ror(u"Error storing act into OM (%s) : %s. Trace: %s" % (act, e, traceback.format_exc().decode('utf-8')))
+#                    transaction.rollback()
+            
+        for act in amendments:
             try:
                 self.write_act(act)
             except Exception, e:
-                self.logger.error(u"Error storing act into OM (%s) : %s. Trace: %s" % (act, e, traceback.format_exc()))
-                transaction.rollback()
+                self.logger.error("Error storing amendment: %s" % act)
+                self.logger.exception(e)
+
  
     @staticmethod
     def _get_initiative(act):
@@ -215,13 +232,23 @@ class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
             create_defaults['final_idnum'] = act.final_id
             self.logger.info("Set the final_idnum: %s" % act.final_id)
         elif act_obj_type == "Amendment":
-            try:
-                referred_act = OMDeliberation.objects.get(
-                                    models.Q(idnum=act.referred_act) |
-                                    models.Q(final_idnum=act.referred_act))
-                create_defaults["act"] = referred_act
-            except ObjectDoesNotExist:
+            
+            referred_acts = OMAct.objects.filter(idnum=act.referred_act)
+
+            if not referred_acts:
+                referred_acts = OMDeliberation.objects.filter(final_idnum=act.referred_act)
+
+
+            if referred_acts:
+                if len(referred_acts) > 1:
+                    self.logger.warning("Many referred acts (%s) found with id '%s'. The amendment '%s' is linked to the first: '%s'" % (len(referred_acts), act.referred_act, act.id, referred_acts[0]))
+
+                create_defaults["act"] = referred_acts[0]
+                    
+            else:
                 self.logger.error("Unable to find referred act (%s) for amendment (%s)" % (act.referred_act, act.id))
+
+               
 
 
         self.logger.debug("Act presentation date: %s" % create_defaults["presentation_date"])
@@ -439,10 +466,10 @@ class Act:
         self.subscribers.append(charge)
         
     def __str__(self):
-        return "%s (%s) [%s]" % (self.title, self.id, self.content[0:20])
+        return unicode(self).encode('utf-8')
       
     def __unicode__(self):
-      return u"%s (%s) [%s]" % (self.title, self.id, self.content[0:20])
+        return u"%s" % (self.id,)
 
 class CouncilDeliberation(Act):
     final_id = None
@@ -501,7 +528,8 @@ class Person:
         self.ssn = ssn
         
     def __str__(self):
-        return "%s %s (%s)" % (self.name, self.surname, self.id)
+#        return "%s %s (%s)" % (self.name, self.surname, self.id)
+        return unicode(self).encode('utf-8')
     
     def __unicode__(self):
         return u"%s %s (%s)" % (self.name, self.surname, self.id)
@@ -524,8 +552,9 @@ class Charge:
         
     def __str__(self):
 #        return "%s as %s from %s (%s)" % (self.person, self.name, self.start_date, self.id)
-        return "%s as %s from %s (%s)" % (self.charge, self.name, \
-            self.start_date, self.id)
+#        return "%s as %s from %s (%s)" % (self.charge, self.name, \
+#            self.start_date, self.id)
+        return unicode(self).encode('utf-8')
     
     def __unicode__(self):
 #        return u"%s as %s from %s (%s)" % (self.person, self.name, self.start_date, self.id)
@@ -566,7 +595,8 @@ class Subscriber:
 
     def __str__(self):
 #        return "%s (%s)" % (self.person, self.type)
-        return "%s (%s)" % (self.charge, self.type)
+#        return "%s (%s)" % (self.charge, self.type)
+        return unicode(self).encode('utf-8')
 
     def __unicode__(self):
 #        return u"%s (%s)" % (self.person, self.type)
