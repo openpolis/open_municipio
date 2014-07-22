@@ -1136,7 +1136,12 @@ class Sitting(TimeStampedModel):
         verbose_name_plural = _('sittings')
     
     def __unicode__(self):
-        return u'Seduta num. %s del %s (%s)' % (self.number, self.date.strftime('%d/%m/%Y'), self.institution.name)
+
+        num = ""
+        if self.number:
+            num = " num. %s " % self.number
+
+        return u'Seduta %s del %s (%s)' % (num, self.date.strftime('%d/%m/%Y'), self.institution.name)
      
     @property
     def sitting_items(self):

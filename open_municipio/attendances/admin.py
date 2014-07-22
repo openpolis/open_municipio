@@ -20,7 +20,7 @@ class AttendanceAdmin(admin.ModelAdmin):
                     VotationByMonthFilterSpec,) 
     raw_id_fields = ['act','sitting',]
     ordering = ['sitting__date',]
-    list_display = ['idnum', 'act_descr', 'sitting', 'is_linked_col','n_presents', 'n_absents']
+    list_display = ['idnum', 'act_descr', 'sitting', 'is_linked_col','n_presents', 'n_absents', ]
 
     def is_linked_col(self, object):
         return object.is_linked
@@ -28,6 +28,7 @@ class AttendanceAdmin(admin.ModelAdmin):
     is_linked_col.short_description = _('is linked')
 
     inlines = [ ChargeAttendanceInline, ]
+
 
 
 class ChargeAttendanceAdmin(admin.ModelAdmin):
