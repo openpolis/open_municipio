@@ -5,6 +5,13 @@ from .models import Attendance, ChargeAttendance
 from open_senigallia.votations.filters import VotationIsLinkedToAct, \
                             VotationByYearFilterSpec, VotationByMonthFilterSpec
 
+class ChargeAttendanceInline(admin.TabularInline):
+    
+    model = ChargeAttendance
+
+    fields = [ "attendance", "charge", "value", ]
+
+
 
 class AttendanceAdmin(admin.ModelAdmin):
     
@@ -20,13 +27,16 @@ class AttendanceAdmin(admin.ModelAdmin):
     is_linked_col.boolean = True
     is_linked_col.short_description = _('is linked')
 
+    inlines = [ ChargeAttendanceInline, ]
+
 
 class ChargeAttendanceAdmin(admin.ModelAdmin):
 
     raw_id_fields = ['attendance', 'charge',]
 
-    list_display = ("charge", "attendance", "value")
-    list_filter = ("value", )
+    list_display = ("charge", "attendance", )
+#    list_filter = ("value", )
+
 
 
 admin.site.register(Attendance, AttendanceAdmin)
