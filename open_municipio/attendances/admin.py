@@ -16,11 +16,11 @@ class ChargeAttendanceInline(admin.TabularInline):
 class AttendanceAdmin(admin.ModelAdmin):
     
     search_fields = ('act_descr', 'idnum', 'act__title', 'act__adj_title',)
-    list_filter = ('outcome', VotationIsLinkedToAct, VotationByYearFilterSpec,
+    list_filter = (VotationIsLinkedToAct, VotationByYearFilterSpec,
                     VotationByMonthFilterSpec,) 
     raw_id_fields = ['act','sitting',]
     ordering = ['sitting__date',]
-    list_display = ['idnum', 'act_descr', 'sitting', 'is_linked_col', 'outcome',]
+    list_display = ['idnum', 'act_descr', 'sitting', 'is_linked_col','n_presents', 'n_absents']
 
     def is_linked_col(self, object):
         return object.is_linked

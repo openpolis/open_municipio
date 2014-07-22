@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-06-08 01:42+0200\n"
+"POT-Creation-Date: 2014-07-22 13:00+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
-#: admin.py:21
+#: admin.py:28
 msgid "is linked"
 msgstr "collegato ad un atto"
 
@@ -26,122 +26,121 @@ msgstr "collegato ad un atto"
 msgid "is_linked"
 msgstr "collegato ad un atto"
 
-#: models.py:18
-msgid "No outcome"
-msgstr "No esito"
-
-#: models.py:19
-msgid "Yes legal number"
-msgstr "Sì numero legale"
-
-#: models.py:20
-msgid "No legal number"
-msgstr "No numero legale"
-
-#: models.py:21
-msgid "Rejected"
-msgstr "Annullata"
-
-#: models.py:25
+#: models.py:17
 msgid "idact"
 msgstr "identificativo atto"
 
-#: models.py:26
+#: models.py:18
 msgid "sitting"
 msgstr "seduta"
 
-#: models.py:27
+#: models.py:19
 msgid "act"
 msgstr "atto"
 
-#: models.py:31
+#: models.py:23
 msgid "act description"
 msgstr "descrizione atto"
 
-#: models.py:33
+#: models.py:25
 msgid "charges"
 msgstr "incarichi"
 
-#: models.py:34
+#: models.py:26
 msgid "legal number"
 msgstr "num. legale"
 
-#: models.py:35
+#: models.py:27
 msgid "num. presents"
 msgstr "num. presenti"
 
-#: models.py:36
+#: models.py:28
+msgid "num. participants"
+msgstr "num. partecipanti"
+
+#: models.py:28
+msgid "This should be equal to the number of presents"
+msgstr "Questo dovrebbe essere uguale al numero dei presenti"
+
+#: models.py:29
 msgid "num. absents"
 msgstr "num. assenti"
 
-#: models.py:37
-msgid "outcome"
-msgstr "risultato"
+#: models.py:30
+msgid "num. yes"
+msgstr "num. sì"
 
-#: models.py:38
+#: models.py:31
+msgid "num. no"
+msgstr "num. no"
+
+#: models.py:32
+msgid "num. abstained"
+msgstr "num. astenuti"
+
+#: models.py:33
+msgid "majority"
+msgstr "maggioranza"
+
+#: models.py:34
 msgid "Specify whether this is a key attendance"
 msgstr "Specifica se è una seduta chiave"
 
-#: models.py:38
-msgid "is key attendance"
-msgstr "partecipazione chiave"
+#: models.py:34
+msgid "is key"
+msgstr "voto chiave"
 
-#: models.py:64 models.py:88
+#: models.py:60 models.py:84
 msgid "attendance"
 msgstr "partecipazione a seduta"
 
-#: models.py:65
+#: models.py:61
 msgid "attendances"
 msgstr "partecipazioni a sedute"
 
-#: models.py:73
+#: models.py:69
 #, python-format
 msgid " of %(date)s"
 msgstr " del %(date)s"
 
-#: models.py:74
+#: models.py:70
 #, python-format
 msgid "Attendance%(idnum)s%(date)s"
 msgstr "Seduta%(idnum)s%(date)s"
 
-#: models.py:83
+#: models.py:78
 msgid "Present"
 msgstr "Presente"
 
-#: models.py:84
-msgid "Is absent"
+#: models.py:79
+msgid "Absent"
 msgstr "Assente"
 
-#: models.py:85
-msgid "On a mission"
+#: models.py:80
+msgid "Absent for mission"
 msgstr "In missione"
 
-#: models.py:89
+#: models.py:81
+msgid "N/A"
+msgstr "N/N"
+
+#: models.py:85
 msgid "value"
 msgstr "valore"
 
-#: models.py:90
+#: models.py:86
 msgid "charge"
 msgstr "incarico"
 
-#: models.py:93
+#: models.py:89
 msgid "charge attendance"
 msgstr "presenza della carica"
 
-#: models.py:94
+#: models.py:90
 msgid "charge attendances"
 msgstr "presenze delle cariche"
 
-#~ msgid "Present but not voting"
-#~ msgstr "Presente non votante"
-
-#~ msgid "vote"
-#~ msgstr "voto"
-
-#~ msgid "is key"
-#~ msgstr "voto chiave"
-
-#~ msgid "num. voters"
+#~ msgid "num. voers"
 #~ msgstr "num. votanti"
 
 #~ msgid ""
@@ -151,18 +150,29 @@ msgstr "presenze delle cariche"
 #~ "Questo numero dovrebbe essere uguale alla somma di coloro che hanno "
 #~ "espresso un voto fra: Sì, No, Astenuto"
 
-#~ msgid "num. yes"
-#~ msgstr "num. sì"
+#~ msgid "No outcome"
+#~ msgstr "No esito"
 
-#~ msgid "num. no"
-#~ msgstr "num. no"
+#~ msgid "Yes legal number"
+#~ msgstr "Sì numero legale"
 
-#, fuzzy
-#~ msgid "num. abstained"
-#~ msgstr "Astenuto"
+#~ msgid "No legal number"
+#~ msgstr "No numero legale"
 
-#~ msgid "majority"
-#~ msgstr "maggioranza"
+#~ msgid "Rejected"
+#~ msgstr "Annullata"
+
+#~ msgid "outcome"
+#~ msgstr "risultato"
+
+#~ msgid "is key attendance"
+#~ msgstr "partecipazione chiave"
+
+#~ msgid "Present but not voting"
+#~ msgstr "Presente non votante"
+
+#~ msgid "vote"
+#~ msgstr "voto"
 
 #~ msgid "Yes"
 #~ msgstr "Sì"
