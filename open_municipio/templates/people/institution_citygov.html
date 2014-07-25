@@ -56,7 +56,6 @@
         {% include 'commons/calendar.html' with events=events %}
     </section>
 
-  {% comment %}
   <h2>Ultimi 3 atti della Giunta</h2>
   <ul class="list-plain">
     {% for act in latest_acts %}
@@ -68,32 +67,11 @@
     {% endfor %}
   </ul>
 
+  {% comment %}
   <hr>
-
-  <h2>Atti della Giunta</h2>
-  <table class="stats">
-    <tr>
-      <td>{{ num_acts.deliberation|circled:"colored" }}</td>
-      <th class="span6">Delibere</th>
-      <td>{{ num_acts.interrogation|circled:"colored" }}</td>
-      <th class="span6">Interrogazioni</th>
-    </tr>
-    <tr>
-      <td>{{ num_acts.motion|circled:"colored" }}</td>
-      <th class="span6">Mozioni</th>
-      <td>{{ num_acts.agenda|circled:"colored" }}</td>
-      <th class="span6">Ordini del giorno</th>
-    </tr>
-    <tr>
-      <td>{{ num_acts.interpellation|circled:"colored" }}</td>
-      <th colspan="3">Interpellanze</th>
-    </tr>
-  </table>
-
-  <hr>
-
   {% include 'commons/news_list.html' with news_list=FILLME news_title='Ultime dalla Giunta' %}
   {% endcomment %}
+
 {% endblock %}
 
 
