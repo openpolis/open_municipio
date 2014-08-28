@@ -66,15 +66,20 @@ class ActIndex(indexes.SearchIndex, indexes.Indexable):
             return ''
 
     def prepare_is_proposal(self, obj):
-        activate(settings.LANGUAGE_CODE)
-        if obj.get_type_name() == 'delibera':
-            if obj.downcast().final_idnum == '':
-                return _('yes')
-            else:
-                return _('no')
 
+        if obj.downcast().is_final_status(obj.downcast().status):
+            return _('no')
         else:
-            return ''
+            return _('yes')
+#        activate(settings.LANGUAGE_CODE)
+#        if obj.get_type_name() == 'delibera':
+#            if obj.downcast().final_idnum == '':
+#                return _('yes')
+#            else:
+#                return _('no')
+
+#        else:
+#            return ''
 
     def prepare_pub_date(self, obj):
         """
