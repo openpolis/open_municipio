@@ -1,5 +1,6 @@
 from haystack import indexes
 from open_municipio.acts.models import Act, Speech
+from open_municipio.people.models import Institution
 from django.utils.translation import activate
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
@@ -59,11 +60,18 @@ class ActIndex(indexes.SearchIndex, indexes.Indexable):
         return obj.get_type_name() if obj else None
 
     def prepare_initiative(self, obj):
-        activate(settings.LANGUAGE_CODE)
-        if obj.get_type_name() == 'delibera':
-            return obj.downcast().get_initiative_display().lower() if obj.downcast() else None
-        else:
-            return ''
+
+        if obj.downcast().presenter_set.filter(actsupport__charge__institution__institution_type=Institution.MAYOR).count():
+            return _("Mayor")
+
+        elif obj.downcast().presenter_set.filter(actsupport__charge__institution__institution_type=Institution.CITY_GOVERNMENT).count():
+            return _("Town government")
+
+        elif obj.downcast().presenter_set.filter(actsupport__charge__institution__institution_type=Institution.COUNCIL).count():
+            return _("Council")
+
+        return ''
+
 
     def prepare_is_proposal(self, obj):
 
@@ -71,15 +79,7 @@ class ActIndex(indexes.SearchIndex, indexes.Indexable):
             return _('no')
         else:
             return _('yes')
-#        activate(settings.LANGUAGE_CODE)
-#        if obj.get_type_name() == 'delibera':
-#            if obj.downcast().final_idnum == '':
-#                return _('yes')
-#            else:
-#                return _('no')
 
-#        else:
-#            return ''
 
     def prepare_pub_date(self, obj):
         """
