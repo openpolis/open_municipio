@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Count, Q
 from django.views.generic import DetailView, ListView
@@ -70,14 +72,22 @@ class TopicDetailView(DetailView):
             tagged_act_id_field = 'content_object_id'
 
         ta_ids = set([ta[tagged_act_id_field] for ta in topic.tagged_acts.values(tagged_act_id_field)])
-        context['n_deliberation_proposals'] = Deliberation.objects.filter(pk__in=ta_ids).filter(Q(final_idnum='') | Q(final_idnum__isnull=True)).count()
-        context['n_deliberations'] = Deliberation.objects.filter(pk__in=ta_ids).filter(~ Q(final_idnum='')).count()
+
+        context['n_deliberation_nonfinal'] = Deliberation.objects.filter(pk__in=ta_ids).filter(~ Q(status__in=(s[0] for s in Deliberation.FINAL_STATUSES))).count()
+        context['n_deliberations'] = Deliberation.objects.filter(pk__in=ta_ids).count()
+        context['n_cgdeliberation_nonfinal'] = CGDeliberation.objects.filter(pk__in=ta_ids).filter(~ Q(status__in=(s[0] for s in CGDeliberation.FINAL_STATUSES))).count()
         context['n_cgdeliberations'] = CGDeliberation.objects.filter(pk__in=ta_ids).count()
+        context['n_motions_nonfinal'] = Motion.objects.filter(pk__in=ta_ids).filter(~ Q(status__in=(s[0] for s in Motion.FINAL_STATUSES))).count()
         context['n_motions'] = Motion.objects.filter(pk__in=ta_ids).count()
+        context['n_agendas_nonfinal'] = Agenda.objects.filter(pk__in=ta_ids).filter(~ Q(status__in=(s[0] for s in Agenda.FINAL_STATUSES))).count()
         context['n_agendas'] = Agenda.objects.filter(pk__in=ta_ids).count()
+        context['n_interrogations_nonfinal'] = Interrogation.objects.filter(pk__in=ta_ids).filter(~ Q(status__in=(s[0] for s in Interrogation.FINAL_STATUSES))).count()
         context['n_interrogations'] = Interrogation.objects.filter(pk__in=ta_ids).count()
+        context['n_interpellations_nonfinal'] = Interpellation.objects.filter(pk__in=ta_ids).filter(~ Q(status__in=(s[0] for s in Interpellation.FINAL_STATUSES))).count()
         context['n_interpellations'] = Interpellation.objects.filter(pk__in=ta_ids).count()
+        context['n_amendments_nonfinal'] = Amendment.objects.filter(pk__in=ta_ids).filter(~ Q(status__in=(s[0] for s in Amendment.FINAL_STATUSES))).count()
         context['n_amendments'] = Amendment.objects.filter(pk__in=ta_ids).count()
+
         return context
 
     def take_subtopics(self):
