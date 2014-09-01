@@ -13,8 +13,9 @@ class VotationIndex(indexes.SearchIndex, indexes.Indexable):
     is_key = indexes.FacetCharField(model_attr='is_key_yesno')
     organ = indexes.FacetCharField(model_attr='sitting__institution__lowername')
     votation_date = indexes.FacetDateField(model_attr='sitting__date')
-
-
+    n_presents_range = indexes.FacetCharField()
+    n_rebels_range = indexes.FacetCharField()
+    n_variance = indexes.FacetCharField()
 
     # stored fields, used not to touch DB
     # while showing results
@@ -32,7 +33,7 @@ class VotationIndex(indexes.SearchIndex, indexes.Indexable):
     votation_n_abst = indexes.IntegerField(indexed=False, stored=True, model_attr='n_abst')
     votation_n_maj = indexes.IntegerField(indexed=False, stored=True, model_attr='n_maj')
     votation_n_rebels = indexes.IntegerField(indexed=False, stored=True, model_attr='n_rebels')
-    votation_outcome = indexes.CharField(indexed=False, stored=True, default='')
+    votation_outcome = indexes.FacetCharField(stored=True, default='')
 
     # needed to filter votations by person
     person = indexes.MultiValueField(indexed=True, stored=False)
@@ -60,4 +61,26 @@ class VotationIndex(indexes.SearchIndex, indexes.Indexable):
             [p['person__slug'] for p in obj.charge_set.values('person__slug').distinct()]
         )
 
+
+    def prepare_n_presents_range(self, obj):
+
+        if obj.n_presents <= 12: return '12-'
+        elif 13 <= obj.n_presents <= 15: return '13 - 15'
+        elif 16 <= obj.n_presents <= 17: return '16 - 17'
+        elif 18 <= obj.n_presents <= 22: return '18 - 22'
+        else: return '23+'
+
+    def prepare_n_rebels_range(self, obj):
+
+        return str(obj.n_rebels)
+
+    def prepare_n_variance(self, obj):
+
+        v = abs(obj.n_yes - obj.n_no)
+
+        if v <= 2: return '1 - 2'
+        elif 3 <= v <= 6: return '3 - 6'
+        elif 7 <= v <= 15: return '7 - 15'
+        elif 16 <= v <= 22: return '16 - 22'
+        else: return '23+'
 

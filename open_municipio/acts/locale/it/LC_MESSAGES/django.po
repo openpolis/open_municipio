@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-29 15:02+0200\n"
+"POT-Creation-Date: 2014-09-01 15:55+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -124,11 +124,11 @@ msgstr "località"
 msgid "Specify whether this act should be featured"
 msgstr "Specificare se questo atto è chiave"
 
-#: models.py:181 search_indexes.py:49 search_indexes.py:73
+#: models.py:181 search_indexes.py:50 search_indexes.py:81
 msgid "yes"
 msgstr "sì"
 
-#: models.py:183 search_indexes.py:47 search_indexes.py:71
+#: models.py:183 search_indexes.py:48 search_indexes.py:79
 msgid "no"
 msgstr "no"
 
@@ -160,7 +160,7 @@ msgstr "Assessore"
 msgid "City Government"
 msgstr "Giunta"
 
-#: models.py:325 models.py:383
+#: models.py:325 models.py:383 search_indexes.py:65
 msgid "Mayor"
 msgstr "Sindaco"
 
@@ -381,6 +381,16 @@ msgstr "atti menzionati nell'intervento"
 #: models.py:905 models.py:906
 msgid "calendar"
 msgstr "calendario"
+
+#: search_indexes.py:68
+#, fuzzy
+msgid "Town government"
+msgstr "Giunta"
+
+#: search_indexes.py:71
+#, fuzzy
+msgid "Council"
+msgstr "consiglio"
 
 #: views.py:51
 msgid "Act type"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-11-25 09:55+0100\n"
+"POT-Creation-Date: 2014-09-01 15:55+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -52,7 +52,8 @@ msgid "Terms"
 msgstr "Termini"
 
 #: templatetags/popover_info.py:15
-msgid "Term not yet defined."
+#, fuzzy
+msgid "<em>Term not yet defined.</em>"
 msgstr "Non ancora definito."
 
 #~ msgid ""

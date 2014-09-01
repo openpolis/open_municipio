@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic import DetailView
@@ -6,6 +7,8 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from open_municipio.om_search.mixins import FacetRangeDateIntervalsMixin
 from open_municipio.people.models import Person, InstitutionCharge
 from django.utils.translation import ugettext_lazy as _
+
+from haystack.query import SearchQuerySet
 
 from open_municipio.votations.models import Votation, ChargeVote
 
@@ -27,30 +30,48 @@ class VotationSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin
     """
     __name__ = 'VotationSearchView'
 
-    FACETS_SORTED = ['act_type', 'is_key', 'organ', 'votation_date']
+    FACETS_SORTED = ['act_type', 'is_key', 'organ', 'votation_outcome',
+        'n_presents_range', 'n_rebels_range', 'n_variance', 'votation_date']
+
     FACETS_LABELS = {
         'act_type': _('Related act type'),
         'is_key': _('Is key act'),
         'organ': _('Organ'),
+        'votation_outcome': _('Outcome'),
+        'n_presents_range': _('Presents'),
+        'n_rebels_range': _('Rebels'),
+        'n_variance': _('Votation variance'),
         'votation_date': _('Votation year')
     }
-
-    DATE_INTERVALS_RANGES = {
-        '2013':  {'qrange': '[2013-01-01T00:00:00Z TO 2014-01-01T00:00:00Z]', 'r_label': '2013'},
-        '2012':  {'qrange': '[2012-01-01T00:00:00Z TO 2013-01-01T00:00:00Z]', 'r_label': '2012'},
-        '2011':  {'qrange': '[2011-01-01T00:00:00Z TO 2012-01-01T00:00:00Z]', 'r_label': '2011'},
-        '2010':  {'qrange': '[2010-01-01T00:00:00Z TO 2011-01-01T00:00:00Z]', 'r_label': '2010'},
-        '2009':  {'qrange': '[2009-01-01T00:00:00Z TO 2010-01-01T00:00:00Z]', 'r_label': '2009'},
-        '2008':  {'qrange': '[2008-01-01T00:00:00Z TO 2009-01-01T00:00:00Z]', 'r_label': '2008'},
-    }
-
+    DATE_INTERVALS_RANGES = { }
 
     def __init__(self, *args, **kwargs):
+
+        # dynamically compute date ranges for faceted search
+        curr_year = datetime.today().year
+        for curr_year in xrange(settings.OM_START_YEAR, curr_year + 1):
+            date_range = self._build_date_range(curr_year)
+            self.DATE_INTERVALS_RANGES[curr_year] = date_range
+    
+        sqs = SearchQuerySet().filter(django_ct='votations.votation').\
+            facet('act_type').facet('is_key').facet('organ').\
+            facet('n_presents_range').facet('n_rebels_range').facet('n_variance').facet('votation_outcome')
+
+        for (year, range) in self.DATE_INTERVALS_RANGES.items():
+            sqs = sqs.query_facet('votation_date', range['qrange'])
+
+        sqs = sqs.order_by('-votation_date').highlight()
+        kwargs['searchqueryset'] = sqs
+
         # Needed to switch out the default form class.
         if kwargs.get('form_class') is None:
             kwargs['form_class'] = RangeFacetedSearchForm
 
         super(VotationSearchView, self).__init__(*args, **kwargs)
+
+    def _build_date_range(self, curr_year):
+        return { 'qrange': '[%s-01-01T00:00:00Z TO %s-12-31T00:00:00Z]' % \
+                (curr_year, curr_year), 'r_label': curr_year }
 
     def build_page(self):
         self.results_per_page = int(self.request.GET.get('results_per_page', settings.HAYSTACK_SEARCH_RESULTS_PER_PAGE))

@@ -1,7 +1,5 @@
 from django.conf.urls.defaults import patterns, url
 
-from haystack.query import SearchQuerySet
-
 from open_municipio.acts.views import (ActSearchView, AgendaDetailView,
                                        DeliberationDetailView, InterpellationDetailView,
                                        InterrogationDetailView, MotionDetailView, AmendmentDetailView,

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-11-06 11:04+0100\n"
+"POT-Creation-Date: 2014-09-01 15:54+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,51 +18,51 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
-#: models.py:32
+#: models.py:31
 msgid "Event date"
 msgstr "Data evento"
 
-#: models.py:32
+#: models.py:31
 msgid "The day when the event is going to be held"
 msgstr "Il giorno in cui si tiene l'evento"
 
-#: models.py:33
+#: models.py:32
 msgid "Event time"
 msgstr "Orario evento"
 
-#: models.py:33
+#: models.py:32
 msgid "The time of the event"
 msgstr "L'ora in cui si tiene l'evento"
 
-#: models.py:34
+#: models.py:33
 msgid "Institution"
 msgstr "Istituzione"
 
-#: models.py:34
+#: models.py:33
 msgid "The institution that's going to meet during the event"
 msgstr "L'istituzione cui l'evento si riferisce"
 
-#: models.py:35
+#: models.py:34
 msgid "Acts"
 msgstr "Atti"
 
-#: models.py:35
+#: models.py:34
 msgid "Acts the discussion is linked to, if any"
 msgstr "Atti cui l'evento si riferisce, se ce ne sono"
 
-#: models.py:36
+#: models.py:35
 msgid "Title"
 msgstr "Titolo"
 
-#: models.py:36
+#: models.py:35
 msgid "A short title for this event"
 msgstr "Un breve titolo dell'evento"
 
-#: models.py:37
+#: models.py:36
 msgid "Description"
 msgstr "Descrizione"
 
-#: models.py:37
+#: models.py:36
 msgid ""
 "A description, containing the list of things that will be discussed during "
 "this event"
@@ -70,19 +70,18 @@ msgstr ""
 "Una descrizione completa, con l'ordine del giorno o i punti in discussione "
 "durante l'evento"
 
-#: models.py:38
+#: models.py:37
 msgid "Address"
 msgstr "Indirizzo"
 
-#: models.py:38
+#: models.py:37
 msgid "The physical address where the meeting is going to be held"
 msgstr "L'indirizzo fisico dell'evento"
 
-#: models.py:46
+#: models.py:45
 msgid "event"
 msgstr "evento"
 
-#: models.py:47
+#: models.py:46
 msgid "events"
 msgstr "eventi"
-
