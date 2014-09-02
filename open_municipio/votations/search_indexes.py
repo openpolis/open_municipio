@@ -25,7 +25,7 @@ class VotationIndex(indexes.SearchIndex, indexes.Indexable):
     act_rendered = indexes.CharField(use_template=True, indexed=False)
 
     act_url = indexes.CharField(indexed=True, stored=True, default='')
-    act_descr = indexes.CharField(indexed=False, stored=True, default='', model_attr='act_descr')
+    act_descr = indexes.CharField(indexed=False, stored=True, default='')
     title = indexes.CharField(indexed=False, stored=True, model_attr='act__title', default='')
     votation_num = indexes.CharField(indexed=False, stored=True, model_attr='idnum')
     votation_sitting_num = indexes.IntegerField(indexed=False, stored=True, model_attr='sitting__number')
@@ -56,9 +56,21 @@ class VotationIndex(indexes.SearchIndex, indexes.Indexable):
         except IndexError:
             return _('none')
 
+    def prepare_act_descr(self, obj):
+        try:
+            related_act = obj.act if obj.act else Transition.objects.filter(votation=obj)[0].act
+            return related_act.adj_title or related_act.title if related_act else obj.act_descr
+
+        except IndexError:
+            return obj.act_descr
+
     def prepare_act_url(self, obj):
-        if obj.act:
-            return obj.act.downcast().get_absolute_url()
+        try:
+            related_act = obj.act if obj.act else Transition.objects.filter(votation=obj)[0].act
+            if related_act: return related_act.downcast().get_absolute_url()
+
+        except IndexError:
+            pass
 
     def prepare_votation_outcome(self, obj):
         return obj.get_outcome_display()

@@ -49,7 +49,9 @@
                     <a href="{{ result.url }}">Votazione n. {{ result.votation_num }}</a>
                 </h4>
                 {% if result.act_descr %}
-                    <p>{{ result.act_descr }}</p>
+                    <p>{% if result.act_url %}<a href="{{ result.act_url }}">{% endif %}
+                        {{ result.act_descr }}
+                    {% if result.act_url %}</a>{% endif %}</p>
                 {% endif %}
 
                 {% if result.act_rendered %}
