@@ -1,15 +1,17 @@
 from django.utils.translation import activate
 from haystack import indexes
 from django.conf import settings
+from django.utils.translation import ugettext_lazy as _
 
 from open_municipio.votations.models import Votation
+from open_municipio.acts.models import Transition
 
 
 class VotationIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
 
     # faceting fields
-    act_type = indexes.FacetCharField(default='notlinked')
+    act_type = indexes.FacetCharField()
     is_key = indexes.FacetCharField(model_attr='is_key_yesno')
     organ = indexes.FacetCharField(model_attr='sitting__institution__lowername')
     votation_date = indexes.FacetDateField(model_attr='sitting__date')
@@ -46,8 +48,13 @@ class VotationIndex(indexes.SearchIndex, indexes.Indexable):
 
     def prepare_act_type(self, obj):
         activate(settings.LANGUAGE_CODE)
-        if obj.act:
-            return obj.act.get_type_name()
+
+        try:
+            related_act = obj.act if obj.act else Transition.objects.filter(votation=obj)[0].act
+            if related_act: return related_act.get_type_name()
+
+        except IndexError:
+            return _('none')
 
     def prepare_act_url(self, obj):
         if obj.act:
