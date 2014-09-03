@@ -37,7 +37,8 @@
     <section>
     <h2><span class="colored">{{ topic|title }}</span></h2>
 
-        Atti che trattano di {{ topic }}
+        <a href="{% url om_act_search %}?q=&{{ topic_type }}={{ topic.slug }}{{ facets }}">
+            {{ n_acts }} atti</a> che trattano di {{ topic }}
         <br/><br/>
 
         <table class="data">

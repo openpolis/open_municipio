@@ -3,7 +3,7 @@
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Count, Q
 from django.views.generic import DetailView, ListView
-from open_municipio.acts.models import Deliberation, Interpellation, Interrogation, Agenda, Motion, Amendment, CGDeliberation
+from open_municipio.acts.models import Act, Deliberation, Interpellation, Interrogation, Agenda, Motion, Amendment, CGDeliberation
 from open_municipio.locations.models import Location
 from open_municipio.monitoring.models import Monitoring
 
@@ -72,6 +72,8 @@ class TopicDetailView(DetailView):
             tagged_act_id_field = 'content_object_id'
 
         ta_ids = set([ta[tagged_act_id_field] for ta in topic.tagged_acts.values(tagged_act_id_field)])
+
+        context['n_acts'] = Act.objects.filter(pk__in=ta_ids).count()
 
         context['n_deliberation_nonfinal'] = Deliberation.objects.filter(pk__in=ta_ids).filter(~ Q(status__in=(s[0] for s in Deliberation.FINAL_STATUSES))).count()
         context['n_deliberations'] = Deliberation.objects.filter(pk__in=ta_ids).count()

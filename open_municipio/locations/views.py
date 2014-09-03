@@ -39,6 +39,8 @@ class LocationListView(ListView):
         context["topic"] = "Territorio"
         context["topics"] = Category.objects.all()
 
+        context['n_acts'] = Act.objects.exclude(location_set=None).count()
+
         context['n_deliberation_nonfinal'] = Deliberation.objects.exclude(location_set=None).filter(~ Q(status__in=(s[0] for s in Deliberation.FINAL_STATUSES))).count()
         context['n_deliberations'] = Deliberation.objects.exclude(location_set=None).count()
         context['n_cgdeliberation_nonfinal'] = CGDeliberation.objects.exclude(location_set=None).filter(~ Q(status__in=(s[0] for s in CGDeliberation.FINAL_STATUSES))).count()
