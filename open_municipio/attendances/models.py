@@ -25,12 +25,12 @@ class Attendance(models.Model):
     charge_set = models.ManyToManyField(InstitutionCharge, through='ChargeAttendance', verbose_name=_('charges'))
     n_legal = models.IntegerField(default=0, verbose_name=_('legal number'))
     n_presents = models.IntegerField(default=0, verbose_name=_('num. presents'))
-    n_partecipants = models.IntegerField(default=0, verbose_name=_('num. participants'), help_text=_('This should be equal to the number of presents'))
+#    n_partecipants = models.IntegerField(default=0, verbose_name=_('num. participants'), help_text=_('This should be equal to the number of presents'))
     n_absents = models.IntegerField(default=0, verbose_name=_('num. absents'))
-    n_yes = models.IntegerField(default=0, verbose_name=_('num. yes'))
-    n_no = models.IntegerField(default=0, verbose_name=_('num. no'))
-    n_abst = models.IntegerField(default=0, verbose_name=_('num. abstained'))
-    n_maj = models.IntegerField(default=0, verbose_name=_('majority'))
+#    n_yes = models.IntegerField(default=0, verbose_name=_('num. yes'))
+#    n_no = models.IntegerField(default=0, verbose_name=_('num. no'))
+#    n_abst = models.IntegerField(default=0, verbose_name=_('num. abstained'))
+#    n_maj = models.IntegerField(default=0, verbose_name=_('majority'))
     is_key = models.BooleanField(default=False, help_text=_("Specify whether this is a key attendance"), verbose_name=_('is key'))    
 
     # default manager must be explicitly defined, when
