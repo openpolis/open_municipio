@@ -46,14 +46,15 @@ class ActSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
     """
     __name__ = 'ActSearchView'
 
-    FACETS_SORTED = ['act_type', 'is_key', 'is_proposal', 'initiative', 'organ', 'pub_date', 'has_locations']
+    FACETS_SORTED = ['act_type', 'is_key', 'is_proposal', 'initiative', 'organ', 'pub_date', 'has_locations', 'month']
     FACETS_LABELS = {
         'act_type': _('Act type'),
         'is_key': _('Is key act'),
         'is_proposal': _('Is proposal'),
         'initiative': _('Initiative'),
         'organ': _('Organ'),
-        'pub_date': _('Pubblication year')
+        'pub_date': _('Pubblication year'),
+        'month': _('Month')
     }
     DATE_INTERVALS_RANGES = { }
 
@@ -67,7 +68,7 @@ class ActSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
     
         sqs = SearchQuerySet().filter(django_ct='acts.act').\
             facet('act_type').facet('is_key').facet('is_proposal').\
-            facet('initiative').facet('organ')
+            facet('initiative').facet('organ').facet('month')
 
         for (year, range) in self.DATE_INTERVALS_RANGES.items():
             sqs = sqs.query_facet('pub_date', range['qrange'])

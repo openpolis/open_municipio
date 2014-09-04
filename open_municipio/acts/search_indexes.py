@@ -22,6 +22,7 @@ class ActIndex(indexes.SearchIndex, indexes.Indexable):
     locations_with_urls = indexes.MultiValueField(indexed=True, stored=True)
     has_locations = indexes.FacetCharField()
     idnum = indexes.CharField(indexed=True, stored=False, model_attr='idnum')
+    month = indexes.FacetCharField()
 
     # stored fields, used not to touch DB
     # while showing results
@@ -102,6 +103,9 @@ class ActIndex(indexes.SearchIndex, indexes.Indexable):
 
     def prepare_url(self, obj):
         return obj.downcast().get_absolute_url() if obj.downcast() else None
+
+    def prepare_month(self, obj):
+        return obj.presentation_date.strftime("%B")
 
 
 class SpeechIndex(indexes.SearchIndex, indexes.Indexable):
