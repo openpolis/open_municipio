@@ -159,8 +159,6 @@ class VotationDetailView(DetailView):
         votation = self.get_object()
         voters = ChargeVote.objects.filter(votation=votation).order_by('charge__person__last_name', 'charge__person__first_name')
 
-        print "voters: %s" % voters
-
         names_yes = self._get_names(voters, ["YES",])
         names_no = self._get_names(voters, ["NO",])
         names_abst = self._get_names(voters, ["ABSTAINED","PRES",])
@@ -176,11 +174,7 @@ class VotationDetailView(DetailView):
 
     def _get_names(self, voters, vote_list):
         
-        print "voters = %s, votes = %s" % (voters, vote_list)
-
         matching = filter(lambda v: v.vote in vote_list, voters)
-
-        print "matching = %s" % matching
 
         return ", ".join(map(self._get_label, matching))
        

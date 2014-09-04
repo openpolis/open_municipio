@@ -1,6 +1,7 @@
 import locale
 import datetime
 
+from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
@@ -59,6 +60,10 @@ class Attendance(models.Model):
     class Meta:
         verbose_name = _("attendance")
         verbose_name_plural = _("attendances")
+
+    def get_absolute_url(self):
+        return reverse('om_attendance_detail', kwargs={ "pk": self.pk })
+
 
     def __unicode__(self):
         idnum = ''
