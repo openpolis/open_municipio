@@ -42,6 +42,21 @@
         {{ charge.denomination }}
     </td>
 
+    <!-- presenze -->
+    <td class="text-center">
+      {% if charge != None %}
+        {% if charge.n_present_attendances %}
+            {% with charge.n_present_attendances|add:charge.n_absent_attendances as tot_attendances %}
+          <strong>{% widthratio charge.n_present_attendances tot_attendances 100 %}%</strong>
+          <br/>
+          <span class="small">({{ charge.n_present_attendances }} su {{ tot_attendances }})</span>
+            {% endwith %}
+        {% endif %}
+      {% endif %}
+
+
+    </td>
+
     <!-- presented acts -->
     <td class="text-center">
         <a href="{% url om_act_search %}?q=&person={{ charge.person.slug }}">
