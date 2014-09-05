@@ -152,14 +152,18 @@ class InstitutionChargeAdmin(ChargeAdmin):
         (None, {
             'fields': (('person', 'op_charge_id', 'institution', 'original_charge'),
                  ('start_date', 'end_date', 'end_reason'), 
-                 'description',
+                  'description',
                  ('substitutes', 'substituted_by'))
+        }),
+        (_("Presences"), {
+            'fields': (('n_present_votations', 'n_absent_votations'), ('n_present_attendances', 'n_absent_attendances'))
         }),
     )
     list_display = ('__unicode__', 'institution', 'start_date', 'end_date')
     list_select_related = True
     list_filter = ['institution__name']
     inlines = [InstitutionResponsabilityInline]
+
 
 
 class GroupChargeAdmin(admin.ModelAdmin):

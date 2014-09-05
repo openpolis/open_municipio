@@ -346,10 +346,10 @@ class InstitutionCharge(Charge):
                                            related_name='committee_charge_set',
                                            verbose_name=_('original institution charge'))
     n_rebel_votations = models.IntegerField(default=0)
-    n_present_votations = models.IntegerField(default=0)
-    n_absent_votations = models.IntegerField(default=0)
-    n_present_attendances = models.IntegerField(default=0)
-    n_absent_attendances = models.IntegerField(default=0)
+    n_present_votations = models.IntegerField(default=0, verbose_name=_("number of presences at ballots"))
+    n_absent_votations = models.IntegerField(default=0, verbose_name=_("number of absences at ballots"))
+    n_present_attendances = models.IntegerField(default=0, verbose_name=_("number of attended sittings"))
+    n_absent_attendances = models.IntegerField(default=0, verbose_name=_("number of non attended sittings"))
 
 
     class Meta(Charge.Meta):
