@@ -348,6 +348,8 @@ class InstitutionCharge(Charge):
     n_rebel_votations = models.IntegerField(default=0)
     n_present_votations = models.IntegerField(default=0)
     n_absent_votations = models.IntegerField(default=0)
+    n_present_attendances = models.IntegerField(default=0)
+    n_absent_votation = models.IntegerField(default=0)
 
 
     class Meta(Charge.Meta):
