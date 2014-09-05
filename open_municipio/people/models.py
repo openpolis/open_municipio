@@ -521,8 +521,8 @@ class InstitutionCharge(Charge):
         self.n_absent_votations = self.chargevote_set.filter(vote=absent).count()
 
         attendance_abset = ChargeAttendance.VOTES.absent
-        self.n_present_attendances = self.chargeattendance_set.exclude(vote=absent).count()
-        self.n_absent_attendances = self.chargeattendance_set.filter(vote=absent).count()
+        self.n_present_attendances = self.chargeattendance_set.exclude(value=absent).count()
+        self.n_absent_attendances = self.chargeattendance_set.filter(value=absent).count()
         self.save()
 
 class InstitutionResponsability(ChargeResponsability):
