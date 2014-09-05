@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-05 12:15+0200\n"
+"POT-Creation-Date: 2014-09-05 19:05+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,7 +25,7 @@ msgstr "Opzioni avanzate"
 msgid "Presences"
 msgstr "Presenze"
 
-#: admin.py:232
+#: admin.py:233
 msgid "Move"
 msgstr ""
 
@@ -168,20 +168,20 @@ msgid "original institution charge"
 msgstr "incarico istituzionale originale"
 
 #: models.py:349
-msgid "number of presences at ballots"
+msgid "number of presences during votes"
 msgstr "presenze alle votazioni"
 
 #: models.py:350
-msgid "number of absences at ballots"
+msgid "number of absences during votes"
 msgstr "assenze alle votazioni"
 
 #: models.py:351
-msgid "number of attended sittings"
-msgstr "presenze alle sedute di Giunta"
+msgid "number of present attendances"
+msgstr "presenze in approvazione di atti"
 
 #: models.py:352
-msgid "number of non attended sittings"
-msgstr "assenze alle sedute di Giunta"
+msgid "number of absent attendances"
+msgstr "assenze in approvazione di atti"
 
 #: models.py:357
 msgid "institution charge"
@@ -390,3 +390,9 @@ msgstr "punto odg seduta"
 #: models.py:1211
 msgid "sitting items"
 msgstr "punti odg seduta"
+
+#~ msgid "number of attended sittings"
+#~ msgstr "presenze alle sedute di Giunta"
+
+#~ msgid "number of non attended sittings"
+#~ msgstr "assenze alle sedute di Giunta"

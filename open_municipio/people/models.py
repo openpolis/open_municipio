@@ -346,10 +346,10 @@ class InstitutionCharge(Charge):
                                            related_name='committee_charge_set',
                                            verbose_name=_('original institution charge'))
     n_rebel_votations = models.IntegerField(default=0)
-    n_present_votations = models.IntegerField(default=0, verbose_name=_("number of presences at ballots"))
-    n_absent_votations = models.IntegerField(default=0, verbose_name=_("number of absences at ballots"))
-    n_present_attendances = models.IntegerField(default=0, verbose_name=_("number of attended sittings"))
-    n_absent_attendances = models.IntegerField(default=0, verbose_name=_("number of non attended sittings"))
+    n_present_votations = models.IntegerField(default=0, verbose_name=_("number of presences during votes"))
+    n_absent_votations = models.IntegerField(default=0, verbose_name=_("number of absences during votes"))
+    n_present_attendances = models.IntegerField(default=0, verbose_name=_("number of present attendances"))
+    n_absent_attendances = models.IntegerField(default=0, verbose_name=_("number of absent attendances"))
 
 
     class Meta(Charge.Meta):
@@ -520,9 +520,9 @@ class InstitutionCharge(Charge):
         self.n_present_votations = self.chargevote_set.exclude(vote=absent).count()
         self.n_absent_votations = self.chargevote_set.filter(vote=absent).count()
 
-        attendance_abset = ChargeAttendance.VOTES.absent
-        self.n_present_attendances = self.chargeattendance_set.exclude(value=absent).count()
-        self.n_absent_attendances = self.chargeattendance_set.filter(value=absent).count()
+        attendance_absent = ChargeAttendance.VALUES.absent
+        self.n_present_attendances = self.chargeattendance_set.exclude(value=attendance_absent).count()
+        self.n_absent_attendances = self.chargeattendance_set.filter(value=attendance_absent).count()
         self.save()
 
 class InstitutionResponsability(ChargeResponsability):
