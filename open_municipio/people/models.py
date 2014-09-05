@@ -349,7 +349,7 @@ class InstitutionCharge(Charge):
     n_present_votations = models.IntegerField(default=0)
     n_absent_votations = models.IntegerField(default=0)
     n_present_attendances = models.IntegerField(default=0)
-    n_absent_votation = models.IntegerField(default=0)
+    n_absent_attendances = models.IntegerField(default=0)
 
 
     class Meta(Charge.Meta):
@@ -514,10 +514,15 @@ class InstitutionCharge(Charge):
         and update the respective counters
         """
         from open_municipio.votations.models import ChargeVote
+        from open_municipio.attendances.models import ChargeAttendance
          
         absent = ChargeVote.VOTES.absent
         self.n_present_votations = self.chargevote_set.exclude(vote=absent).count()
         self.n_absent_votations = self.chargevote_set.filter(vote=absent).count()
+
+        attendance_abset = ChargeAttendance.VOTES.absent
+        self.n_present_attendances = self.chargeattendance_set.exclude(vote=absent).count()
+        self.n_absent_attendances = self.chargeattendance_set.filter(vote=absent).count()
         self.save()
 
 class InstitutionResponsability(ChargeResponsability):

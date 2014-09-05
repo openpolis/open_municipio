@@ -13,8 +13,8 @@ class Migration(SchemaMigration):
                       self.gf('django.db.models.fields.IntegerField')(default=0),
                       keep_default=False)
 
-        # Adding field 'InstitutionCharge.n_absent_votation'
-        db.add_column(u'people_institution_charge', 'n_absent_votation',
+        # Adding field 'InstitutionCharge.n_absent_attendances'
+        db.add_column(u'people_institution_charge', 'n_absent_attendances',
                       self.gf('django.db.models.fields.IntegerField')(default=0),
                       keep_default=False)
 
@@ -23,8 +23,8 @@ class Migration(SchemaMigration):
         # Deleting field 'InstitutionCharge.n_present_attendances'
         db.delete_column(u'people_institution_charge', 'n_present_attendances')
 
-        # Deleting field 'InstitutionCharge.n_absent_votation'
-        db.delete_column(u'people_institution_charge', 'n_absent_votation')
+        # Deleting field 'InstitutionCharge.n_absent_attendances'
+        db.delete_column(u'people_institution_charge', 'n_absent_attendances')
 
 
     models = {
@@ -221,7 +221,7 @@ class Migration(SchemaMigration):
             'end_reason': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'institution': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'charge_set'", 'on_delete': 'models.PROTECT', 'to': "orm['people.Institution']"}),
-            'n_absent_votation': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
+            'n_absent_attendances': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
             'n_absent_votations': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
             'n_present_attendances': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
             'n_present_votations': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
