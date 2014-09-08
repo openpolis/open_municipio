@@ -27,7 +27,7 @@ class ActIndex(indexes.SearchIndex, indexes.Indexable):
     # stored fields, used not to touch DB
     # while showing results
     url = indexes.CharField(indexed=False, stored=True)
-    title = indexes.CharField(indexed=False, stored=True, model_attr='title')
+    title = indexes.CharField(indexed=False, stored=True)
 
 
     logger = logging.getLogger('import')
@@ -55,6 +55,20 @@ class ActIndex(indexes.SearchIndex, indexes.Indexable):
     def prepare_locations_with_urls(self, obj):
         d_obj = obj.downcast()
         return ["%s|%s" % (t.name, t.get_absolute_url()) for t in list(d_obj.locations)] if d_obj else None
+    
+    def prepare_title(self, obj):
+
+        activate(settings.LANGUAGE_CODE)
+        d_obj = obj.downcast()
+
+        if d_obj.get_type_name() == u'emendamento':
+            r_title = d_obj.act.adj_title if d_obj.act.adj_title else d_obj.act.title
+            r_title += ' - '
+        else:
+            r_title = ''
+
+        r_title += obj.adj_title if obj.adj_title else obj.title
+        return r_title
     
     def prepare_act_type(self, obj):
         activate(settings.LANGUAGE_CODE)

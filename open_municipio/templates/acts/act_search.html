@@ -44,7 +44,7 @@ em {
           <tr>
             <td>{{ result.pub_date|circled:"full" }}</td>
             <td>
-              <h4><a href="{{ result.url }}">{% if result.object.adj_title %}{{ result.object.adj_title }}{% else %}{{ result.title }}{% endif %}</a></h4>
+              <h4><a href="{{ result.url }}">{{ result.title }}</a></h4>
               <strong>{{ result.act_type }}</strong>
               {% if result.act_type == 'delibera' %}
                   di {{ result.organ }}
