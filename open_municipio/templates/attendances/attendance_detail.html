@@ -6,11 +6,11 @@
 {% load newscache_tags %}
 {% load people_tags %}
 
-{% block title %}Dettaglio votazione {{ attendance.ref_act.emitting_institution }} N° {{ attendance.ref_act.idnum }},
+{% block title %}Dettaglio partecipazione a seduta {{ attendance.ref_act.emitting_institution }} N° {{ attendance.ref_act.idnum }},
     seduta {{ attendance.sitting.number }}
     del {{ attendance.ref_act.presentation_date|date:"d F Y" }}{% endblock %}
 
-{% block content_header %}Votazione{% endblock %}
+{% block content_header %}Presenza a seduta{% endblock %}
 {% block attendance_class %}active{% endblock %}
 {% block body_class %}attendances{% endblock %}
 
@@ -73,7 +73,7 @@
       {% else %}
       Seduta <strong>n.{{ attendance.sitting.number }}</strong>
       del <strong>{{ attendance.sitting.date|date:"d/m/Y" }}</strong>
-      {% endif %}, Votazione n.{{ attendance.idnum }}<br/>
+      {% endif %} <br/>
       {% if attendance.ref_act %}
       <h3>
       {{ attendance.ref_act.adj_title|default:attendance.ref_act.title }}

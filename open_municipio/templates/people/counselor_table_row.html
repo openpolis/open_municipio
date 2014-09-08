@@ -42,9 +42,11 @@
     <td class="text-center">
       {% if charge != None %}
         {% if charge.n_present_votations %}
-          <strong>{% widthratio charge.n_present_votations charge.n_present_votations|add:charge.n_absent_votations 100 %}%</strong>
+            {% with charge.n_present_votations|add:charge.n_absent_votations as tot_votations %}
+          <strong>{% widthratio charge.n_present_votations tot_votations 100 %}%</strong>
           <br/>
-          <span class="small">({{ charge.n_present_votations }} su {{ charge.n_present_votations|add:charge.n_absent_votations }})</span>
+          <span class="small">({{ charge.n_present_votations }} su {{ tot_votations }})</span>
+            {% endwith %}
         {% endif %}
       {% endif %}
     </td>

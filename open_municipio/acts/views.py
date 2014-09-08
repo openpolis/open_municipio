@@ -54,7 +54,7 @@ class ActSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
         'initiative': _('Initiative'),
         'organ': _('Organ'),
         'pub_date': _('Pubblication year'),
-        'month': _('Month')
+        'month': _('Pubblication month')
     }
     DATE_INTERVALS_RANGES = { }
 

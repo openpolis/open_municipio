@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-01 15:55+0200\n"
+"POT-Creation-Date: 2014-09-05 08:45+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -35,9 +35,8 @@ msgid "act"
 msgstr "atto"
 
 #: admin.py:294
-#, fuzzy
 msgid "act type"
-msgstr "Tipologia"
+msgstr "tipo di atto"
 
 #: forms.py:83
 msgid "If the author is present in Open Municipio, search it"
@@ -124,11 +123,11 @@ msgstr "località"
 msgid "Specify whether this act should be featured"
 msgstr "Specificare se questo atto è chiave"
 
-#: models.py:181 search_indexes.py:50 search_indexes.py:81
+#: models.py:181 search_indexes.py:51 search_indexes.py:82
 msgid "yes"
 msgstr "sì"
 
-#: models.py:183 search_indexes.py:48 search_indexes.py:79
+#: models.py:183 search_indexes.py:49 search_indexes.py:80
 msgid "no"
 msgstr "no"
 
@@ -160,7 +159,7 @@ msgstr "Assessore"
 msgid "City Government"
 msgstr "Giunta"
 
-#: models.py:325 models.py:383 search_indexes.py:65
+#: models.py:325 models.py:383 search_indexes.py:66
 msgid "Mayor"
 msgstr "Sindaco"
 
@@ -294,9 +293,8 @@ msgid "date"
 msgstr "data"
 
 #: models.py:739
-#, fuzzy
 msgid "type"
-msgstr "Tipologia"
+msgstr "tipo"
 
 #: models.py:740
 msgid "size"
@@ -382,15 +380,13 @@ msgstr "atti menzionati nell'intervento"
 msgid "calendar"
 msgstr "calendario"
 
-#: search_indexes.py:68
-#, fuzzy
+#: search_indexes.py:69
 msgid "Town government"
 msgstr "Giunta"
 
-#: search_indexes.py:71
-#, fuzzy
+#: search_indexes.py:72
 msgid "Council"
-msgstr "consiglio"
+msgstr "Consiglio"
 
 #: views.py:51
 msgid "Act type"
@@ -416,7 +412,11 @@ msgstr "Organo"
 msgid "Pubblication year"
 msgstr "Anno di pubblicazione"
 
-#: views.py:528
+#: views.py:57
+msgid "Pubblication month"
+msgstr "Mese di pubblicazione"
+
+#: views.py:529
 msgid "Year"
 msgstr "Anno"
 

@@ -79,7 +79,7 @@ class ChargeAttendance(TimeStampedModel):
     """
     WRITEME
     """  
-    VOTES = Choices(
+    VALUES = Choices(
         ('PRES', 'pres', _('Present')),
         ('ABSENT', 'absent', _('Absent')),
         ('MISSION', 'mission', _('Absent for mission')),
@@ -87,7 +87,7 @@ class ChargeAttendance(TimeStampedModel):
     )
     
     attendance = models.ForeignKey(Attendance, verbose_name=_('attendance'))
-    value = models.CharField(choices=VOTES, max_length=12, verbose_name=_('value'))
+    value = models.CharField(choices=VALUES, max_length=12, verbose_name=_('value'))
     charge = models.ForeignKey(InstitutionCharge, verbose_name=_('charge'))
 
     class Meta:
