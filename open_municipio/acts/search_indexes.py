@@ -1,3 +1,4 @@
+import locale
 from haystack import indexes
 from open_municipio.acts.models import Act, Speech
 from open_municipio.people.models import Institution
@@ -6,6 +7,7 @@ from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 import logging
 
+locale.setlocale(locale.LC_ALL, 'it_IT.utf8')
 
 class ActIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
@@ -149,3 +151,5 @@ class SpeechIndex(indexes.SearchIndex, indexes.Indexable):
 
     def prepare_date(self, obj):
         return obj.date
+
+locale.setlocale(locale.LC_ALL, '')
