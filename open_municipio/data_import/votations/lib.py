@@ -187,6 +187,9 @@ class DBVotationWriter(BaseVotationWriter):
         """
         votation_moment = votation.sitting.date.strftime('%Y-%m-%d')
         charges = votation.sitting.institution.get_current_charges(moment=votation_moment)
+        self.logger.debug("Charges at date (%s): %s" % (votation_moment, 
+                ",".join(map(lambda c: c.person.full_name, charges))))
+    
         for c in charges:
             try:
                 cv = votation.chargevote_set.get(charge__pk=c.pk)
@@ -197,6 +200,7 @@ class DBVotationWriter(BaseVotationWriter):
                     votation=votation,
                     vote=ChargeVote.VOTES.absent
                 )
+                self.logger.debug("Add absent ChargeVote: %s ..." % c)
             except MultipleObjectsReturned, e:
                 self.logger.warning("Multiple vote from single charge. Votation: %s, charge: %s, charge pk: %s, error: %s. Continue ..." % (votation, c, c.pk, e))
 
@@ -344,7 +348,6 @@ class DBVotationWriter(BaseVotationWriter):
 
             # save updates
             gv.save()
-
 
 
     def write_vote(self, vote, db_ballot=None):
