@@ -162,9 +162,11 @@ class VotationDetailView(DetailView):
         names_yes = self._get_names(voters, ["YES",])
         names_no = self._get_names(voters, ["NO",])
         names_abst = self._get_names(voters, ["ABSTAINED","PRES",])
-
+        n_pres_not_voting = abs(votation.n_presents - votation.n_partecipants)
 
         context['n_absents'] = votation.chargevote_set.filter(vote=ChargeVote.VOTES.absent).count()
+        context['n_pres_not_voting'] = n_pres_not_voting
+        context['n_abst'] = votation.n_abst + n_pres_not_voting
         context['votation_difference'] = abs(votation.n_yes - votation.n_no)
         context['names_yes'] = names_yes
         context['names_no'] = names_no
