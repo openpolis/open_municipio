@@ -1,8 +1,12 @@
 import locale
 import datetime
+import re
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from django.core.urlresolvers import reverse
+from django.template.defaultfilters import slugify
+
 
 from model_utils import Choices
 from model_utils.models import TimeStampedModel
@@ -46,6 +50,7 @@ class Votation(models.Model):
     outcome = models.IntegerField(choices=OUTCOMES, blank=True, null=True)
     is_key = models.BooleanField(default=False, help_text=_("Specify whether this is a key votation"))    
     n_rebels = models.IntegerField(default= 0)
+    slug = models.SlugField(max_length=100, blank=True, null=True)
 
     # default manager must be explicitly defined, when
     # at least another manager is present
@@ -69,9 +74,37 @@ class Votation(models.Model):
         else:
             return _('no')
 
+    def save(self, *args, **kwargs):
+        """
+        This method takes care of setting a default slug for Votations
+        that are linked to a Sitting. 
+
+        This transparently helps the slug field for most of the "normal"
+        use cases of Votation.
+        """
+        if not self.slug:
+            self.slug = self.get_default_slug()
+
+        super(Votation, self).save(*args, **kwargs)
+
     @property
     def date(self):
         return self.sitting.date
+
+    def get_default_slug(self):
+        """
+        This method will be used for assigning a default slug to a
+        Votation that does not have one.
+        """
+
+        if self.sitting and self.idnum:
+            cleaned_idnum = re.sub(r'[^\w\d]+', '-', self.idnum)
+            return slugify("%s-%s" % (self.sitting.date.isoformat(), 
+                                        cleaned_idnum))
+        else:
+            raise ValueError("In order to compute the default slug, the Votation should be linked to a Sitting")
+                
+                
 
     class Meta:
         verbose_name = _('votation')
@@ -81,9 +114,10 @@ class Votation(models.Model):
         
         return _('Votation %(idnum)s') % { "idnum":self.idnum, }
 
-    @models.permalink
+#    @models.permalink
     def get_absolute_url(self):
-        return 'om_votation_detail', [str(self.pk)]
+#        return 'om_votation_detail', [str(self.pk)]
+        return reverse('om_votation_detail', kwargs={"slug":self.slug})
     
     @property
     def group_votes(self):

@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 import logging
+import re
+from django.template.defaultfilters import slugify
 from datetime import datetime
 from django.core.exceptions import ObjectDoesNotExist
 from south.modelsinspector import add_ignored_fields
@@ -71,6 +73,7 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
     location_set = models.ManyToManyField('locations.Location', through='locations.TaggedActByLocation', verbose_name=_('locations'), blank=True, null=True)
     status_is_final = models.BooleanField(default=False)
     is_key = models.BooleanField(default=False, help_text=_("Specify whether this act should be featured"))
+    slug = models.SlugField(max_length=100, blank=True, null=True)
 
     objects = InheritanceManager()
     # use this manager to retrieve only key acts
@@ -87,6 +90,28 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
         if self.idnum:
             rv = u'%s - %s' % (rv, self.idnum)
         return rv
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+
+            self.slug = self.get_default_slug()
+
+        super(Act, self).save(*args, **kwargs)
+            
+
+    def get_default_slug(self):
+        """
+        This method will be used for assigning a default slug to an
+        Act that does not have one.
+        """
+
+        if self.presentation_date and self.idnum:
+            cleaned_idnum = re.sub(r'[^\w\d]+', '-', self.idnum)
+            return slugify("%s-%s" % (self.presentation_date, cleaned_idnum))
+        else:
+            raise ValueError("In order to compute the default slug, the Act should have a presentation date and an idnum")
+                
+ 
 
     def downcast(self):
         """
@@ -367,7 +392,9 @@ class CGDeliberation(Act):
 
     @models.permalink
     def get_absolute_url(self):
-        return ('om_cgdeliberation_detail', (), {'pk': str(self.pk)})
+#        return ('om_cgdeliberation_detail', (), {'pk': str(self.pk)})
+        return ('om_cgdeliberation_detail', (), {'slug': str(self.slug)})
+
 
 
 
@@ -426,7 +453,9 @@ class Deliberation(Act):
 
     @models.permalink
     def get_absolute_url(self):
-        return ('om_deliberation_detail', (), {'pk': str(self.pk)})
+#        return ('om_deliberation_detail', (), {'pk': str(self.pk)})
+        return ('om_deliberation_detail', (), {'slug': str(self.slug)})
+
     
 
 class Interrogation(Act):
@@ -634,7 +663,9 @@ class Motion(Act):
         
     @models.permalink
     def get_absolute_url(self):
-        return ('om_motion_detail', (), {'pk': str(self.pk)})
+#        return ('om_motion_detail', (), {'pk': str(self.pk)})
+        return ('om_motion_detail', (), {'slug': str(self.slug)})
+
 
 
 class Agenda(Act):
@@ -664,7 +695,9 @@ class Agenda(Act):
 
     @models.permalink
     def get_absolute_url(self):
-        return ('om_agenda_detail', (), {'pk': str(self.pk)})
+#        return ('om_agenda_detail', (), {'pk': str(self.pk)})
+        return ('om_agenda_detail', (), {'slug': str(self.slug)})
+
 
 
 class Amendment(Act):
@@ -697,7 +730,9 @@ class Amendment(Act):
 
     @models.permalink
     def get_absolute_url(self):
-        return ('om_amendment_detail', (), {'pk': str(self.pk)})
+#        return ('om_amendment_detail', (), {'pk': str(self.pk)})
+        return ('om_amendment_detail', (), {'slug': str(self.slug)})
+
 
 #
 # Workflows
