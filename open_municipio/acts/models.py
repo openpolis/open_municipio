@@ -73,7 +73,7 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
     location_set = models.ManyToManyField('locations.Location', through='locations.TaggedActByLocation', verbose_name=_('locations'), blank=True, null=True)
     status_is_final = models.BooleanField(default=False)
     is_key = models.BooleanField(default=False, help_text=_("Specify whether this act should be featured"))
-    slug = models.SlugField(max_length=100, blank=True, null=True)
+    slug = models.SlugField(max_length=500, blank=True, null=True)
 
     objects = InheritanceManager()
     # use this manager to retrieve only key acts
@@ -105,9 +105,12 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
         Act that does not have one.
         """
 
-        if self.presentation_date and self.idnum:
+        if self.presentation_date and (self.idnum or self.title):
             cleaned_idnum = re.sub(r'[^\w\d]+', '-', self.idnum)
-            return slugify("%s-%s" % (self.presentation_date, cleaned_idnum))
+            slug = slugify("%s-%s-%s" % (self.presentation_date, cleaned_idnum, 
+                            self.title))
+
+            return slug[:500]
         else:
             raise ValueError("In order to compute the default slug, the Act should have a presentation date and an idnum")
                 
@@ -392,7 +395,6 @@ class CGDeliberation(Act):
 
     @models.permalink
     def get_absolute_url(self):
-#        return ('om_cgdeliberation_detail', (), {'pk': str(self.pk)})
         return ('om_cgdeliberation_detail', (), {'slug': str(self.slug)})
 
 
@@ -453,7 +455,6 @@ class Deliberation(Act):
 
     @models.permalink
     def get_absolute_url(self):
-#        return ('om_deliberation_detail', (), {'pk': str(self.pk)})
         return ('om_deliberation_detail', (), {'slug': str(self.slug)})
 
     
@@ -490,7 +491,7 @@ class Interrogation(Act):
     
     @models.permalink
     def get_absolute_url(self):
-        return 'om_interrogation_detail', (), {'pk': str(self.pk)}
+        return 'om_interrogation_detail', (), {'slug': str(self.slug)}
     
     @property
     def author(self):
@@ -578,7 +579,7 @@ class Interpellation(Act):
     
     @models.permalink
     def get_absolute_url(self):
-        return 'om_interpellation_detail', (), {'pk': str(self.pk)}
+        return 'om_interpellation_detail', (), {'slug': str(self.slug)}
     
     @property
     def author(self):
@@ -663,7 +664,6 @@ class Motion(Act):
         
     @models.permalink
     def get_absolute_url(self):
-#        return ('om_motion_detail', (), {'pk': str(self.pk)})
         return ('om_motion_detail', (), {'slug': str(self.slug)})
 
 
@@ -695,7 +695,6 @@ class Agenda(Act):
 
     @models.permalink
     def get_absolute_url(self):
-#        return ('om_agenda_detail', (), {'pk': str(self.pk)})
         return ('om_agenda_detail', (), {'slug': str(self.slug)})
 
 
@@ -730,7 +729,6 @@ class Amendment(Act):
 
     @models.permalink
     def get_absolute_url(self):
-#        return ('om_amendment_detail', (), {'pk': str(self.pk)})
         return ('om_amendment_detail', (), {'slug': str(self.slug)})
 
 

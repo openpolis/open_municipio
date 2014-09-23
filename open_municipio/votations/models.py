@@ -99,8 +99,9 @@ class Votation(models.Model):
 
         if self.sitting and self.idnum:
             cleaned_idnum = re.sub(r'[^\w\d]+', '-', self.idnum)
-            return slugify("%s-%s" % (self.sitting.date.isoformat(), 
+            slug = slugify("%s-%s" % (self.sitting.date.isoformat(), 
                                         cleaned_idnum))
+            return slug[:100]
         else:
             raise ValueError("In order to compute the default slug, the Votation should be linked to a Sitting")
                 

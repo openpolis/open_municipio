@@ -31,9 +31,10 @@ class Migration(DataMigration):
         Act that does not have one.
         """
 
-        if act.presentation_date and act.idnum:
+        if act.presentation_date and (act.idnum or act.title):
             cleaned_idnum = re.sub(r'[^\w\d]+', '-', act.idnum)
-            act.slug = slugify("%s-%s" % (act.presentation_date, cleaned_idnum))
+            act.slug = slugify("%s-%s-%s" % (act.presentation_date, 
+                cleaned_idnum, self.title))
             act.save()
         else:
             msg = "In order to compute the default slug, the Act should have a presentation date and an idnum: act pk %s" % act.pk

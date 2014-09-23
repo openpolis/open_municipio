@@ -41,14 +41,23 @@ urlpatterns = patterns('',
     url(r'^deliberations/(?P<slug>[\w\-]+)/(?P<tab>documents)/$', DeliberationDetailView.as_view(),  name='om_deliberation_detail_documents'),
     url(r'^deliberations/(?P<slug>[\w\-]+)/(?P<tab>amendments)/$', DeliberationDetailView.as_view(),  name='om_deliberation_detail_amendments'),
 
-    # interpellations
+    # interpellations (old urls, pk)
     url(r'^interpellations/(?P<pk>\d+)/$', InterpellationDetailView.as_view(),  name='om_interpellation_detail'),
     url(r'^interpellations/(?P<pk>\d+)/(?P<tab>documents)/$', InterpellationDetailView.as_view(),  name='om_interpellation_detail_documents'),
     url(r'^interpellations/(?P<pk>\d+)/(?P<tab>amendments)/$', InterpellationDetailView.as_view(),  name='om_interpellation_detail_amendments'),
-    # interrogations
+    # interpellations
+    url(r'^interpellations/(?P<slug>[\w,\-]+)/$', InterpellationDetailView.as_view(),  name='om_interpellation_detail'),
+    url(r'^interpellations/(?P<slug>[\w,\-]+)/(?P<tab>documents)/$', InterpellationDetailView.as_view(),  name='om_interpellation_detail_documents'),
+    url(r'^interpellations/(?P<slug>[\w,\-]+)/(?P<tab>amendments)/$', InterpellationDetailView.as_view(),  name='om_interpellation_detail_amendments'),
+
+    # interrogations (old urls, pk)
     url(r'^interrogations/(?P<pk>\d+)/$', InterrogationDetailView.as_view(),  name='om_interrogation_detail'),
     url(r'^interrogations/(?P<pk>\d+)/(?P<tab>documents)/$', InterrogationDetailView.as_view(),  name='om_interrogation_detail_documents'),
     url(r'^interrogations/(?P<pk>\d+)/(?P<tab>amendments)/$', InterrogationDetailView.as_view(),  name='om_interrogation_detail_amendments'),
+    # interrogations
+    url(r'^interrogations/(?P<slug>[\w,\-]+)/$', InterrogationDetailView.as_view(),  name='om_interrogation_detail'),
+    url(r'^interrogations/(?P<slug>[\w,\-]+)/(?P<tab>documents)/$', InterrogationDetailView.as_view(),  name='om_interrogation_detail_documents'),
+    url(r'^interrogations/(?P<slug>[\w,\-]+)/(?P<tab>amendments)/$', InterrogationDetailView.as_view(),  name='om_interrogation_detail_amendments'),
 
     # motions (old urls, pk)
     url(r'^motions/(?P<pk>\d+)/$', MotionDetailView.as_view(),  name='om_motion_detail'),

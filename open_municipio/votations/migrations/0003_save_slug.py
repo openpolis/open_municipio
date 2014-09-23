@@ -18,7 +18,7 @@ class Migration(DataMigration):
 
         for v in orm.Votation.objects.all():
             if not v.slug:
-                v.slug = self.set_default_slug(v)
+                self.set_default_slug(v)
 
     def set_default_slug(self, votation):
         """
@@ -28,8 +28,9 @@ class Migration(DataMigration):
 
         if votation.sitting and votation.idnum:
             cleaned_idnum = re.sub(r'[^\w\d]+', '-', votation.idnum)
+            # slug max len is 100
             votation.slug = slugify("%s-%s" % (votation.sitting.date.isoformat(), 
-                                        cleaned_idnum))
+                                        cleaned_idnum))[:100]
             votation.save()
 
         else:

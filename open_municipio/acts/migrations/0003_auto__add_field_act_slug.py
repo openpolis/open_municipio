@@ -10,7 +10,7 @@ class Migration(SchemaMigration):
     def forwards(self, orm):
         # Adding field 'Act.slug'
         db.add_column('acts_act', 'slug',
-                      self.gf('django.db.models.fields.SlugField')(max_length=100, null=True, blank=True),
+                      self.gf('django.db.models.fields.SlugField')(max_length=500, null=True, blank=True),
                       keep_default=False)
 
 
@@ -35,7 +35,7 @@ class Migration(SchemaMigration):
             'presentation_date': ('django.db.models.fields.DateField', [], {'null': 'True'}),
             'presenter_set': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'presented_act_set'", 'to': "orm['people.InstitutionCharge']", 'through': "orm['acts.ActSupport']", 'blank': 'True', 'symmetrical': 'False', 'null': 'True'}),
             'recipient_set': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "'received_act_set'", 'null': 'True', 'symmetrical': 'False', 'to': "orm['people.InstitutionCharge']"}),
-            'slug': ('django.db.models.fields.SlugField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
+            'slug': ('django.db.models.fields.SlugField', [], {'max_length': '500', 'null': 'True', 'blank': 'True'}),
             'status_is_final': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'text': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '1024', 'blank': 'True'})
