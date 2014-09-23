@@ -111,4 +111,6 @@ urlpatterns += patterns('',
     # faceted navigation
     url(r'^speech/$', SpeechSearchView(template='acts/speech_search.html'),name='om_speech_search'),
     url(r'^speech/(?P<pk>\d+)/$', SpeechDetailView.as_view(),name='om_speech_detail'),
+    url(r'^speech/(?P<slug>[\w\-]+)/$', SpeechDetailView.as_view(),name='om_speech_detail'),
+
 )

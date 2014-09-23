@@ -98,7 +98,7 @@ class SpeechAdminForm(forms.ModelForm):
     class Meta:
         fields = ( 'author', 'author_name_when_external', 'sitting_item',
             'seq_order', 'title', 'text', 'text_url', 'file', 'file_url',
-            'audio_url','audio_file','votation','initial_time','duration',)
+            'audio_url','audio_file','votation','initial_time','duration','slug')
 
 
 class SpeechInActInlineFormSet(forms.models.BaseInlineFormSet):

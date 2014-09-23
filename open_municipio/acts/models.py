@@ -823,6 +823,7 @@ class Speech(Document):
 #    duration = models.IntegerField(blank=True, null=True)
     audio_url = models.URLField(blank=True,verbose_name=_('audio url'))
     audio_file = models.FileField(upload_to="attached_audio/%Y%m%d", blank=True, max_length=255,verbose_name=_('audio file'))
+    slug = models.SlugField(max_length=500, blank=True, null=True)
 
     class Meta(Document.Meta):
         verbose_name = _('speech')
@@ -831,14 +832,33 @@ class Speech(Document):
     def __unicode__(self):
         return u'%s' % self.title
 
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+
+            self.slug = self.get_default_slug()
+
+        super(Speech, self).save(*args, **kwargs)
+            
+
+
+    def get_default_slug(self):
+        if self.author_name and self.date and self.seq_order and self.sitting_item:
+            slug = "%s-%s-%s-%s" % (self.author_name, self.date, self.sitting_item.title, self.seq_order)
+            if self.title:
+                slug = "%s-%s" % (slug, self.title)
+            return slugify(slug)
+        else:
+            ValueError("In order to get the default slug, the Speech must have an author, a date, a sitting item and a sequential order")
+
     @models.permalink
     def get_absolute_url(self):
-        return('om_speech_detail', (), {'pk': str(self.pk)})
+        return('om_speech_detail', (), {'slug': str(self.slug)})
 
     @property
     def author_name(self):
         if self.author != None:
-            return self.author
+            return "%s %s" % (self.author.first_name, self.author.last_name)
 
         return self.author_name_when_external
 

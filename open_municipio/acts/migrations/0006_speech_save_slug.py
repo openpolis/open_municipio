@@ -1,42 +1,45 @@
 # -*- coding: utf-8 -*-
-import re
-
-from django.template.defaultfilters import slugify
-
 from south.utils import datetime_utils as datetime
 from south.db import db
 from south.v2 import DataMigration
 from django.db import models
+from django.template.defaultfilters import slugify
 
 class Migration(DataMigration):
 
     def forwards(self, orm):
 
-        for a in orm.Act.objects.all():
-            if not a.slug:
-                self.set_default_slug(a)
-
+        for speech in orm.Speech.objects.all():
+            if not speech.slug:
+                self.set_default_slug(speech)
 
     def backwards(self, orm):
-        "nothing to do"
+        # do nothing
         pass
 
-    def set_default_slug(self, act):
-        """
-        This method will be used for assigning a default slug to an
-        Act that does not have one.
-        """
+    def get_author_name(self, speech):
 
-        if act.presentation_date and (act.idnum or act.title):
-            cleaned_idnum = re.sub(r'[^\w\d]+', '-', act.idnum)
-            act.slug = slugify("%s-%s-%s" % (act.presentation_date, 
-                cleaned_idnum, self.title))
-            act.save()
+        if speech.author != None:
+            return "%s %s" % (speech.author.first_name, speech.author.last_name)
+        
+        return speech.author_name_when_external
+
+    def set_default_slug(self, speech):
+
+        author_name = self.get_author_name(speech)
+
+        date = speech.sitting_item.sitting.date
+
+        if author_name and date and speech.seq_order:
+            slug = "%s-%s-%s-%s" % (author_name, date, speech.sitting_item.title, speech.seq_order)
+            if speech.title:
+                slug = "%s-%s" % (slug, speech.title)
+            speech.slug = slugify(slug)
+            speech.save()
         else:
-            msg = "In order to compute the default slug, the Act should have a presentation date and an idnum: act pk %s" % act.pk
+            msg = "In order to get the default slug, the Speech must have an author, a date and a sequential order: speech pk %s" % speech.pk
             print msg
-                
- 
+
 
     models = {
         'acts.act': {
@@ -54,7 +57,7 @@ class Migration(DataMigration):
             'presentation_date': ('django.db.models.fields.DateField', [], {'null': 'True'}),
             'presenter_set': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'presented_act_set'", 'to': "orm['people.InstitutionCharge']", 'through': "orm['acts.ActSupport']", 'blank': 'True', 'symmetrical': 'False', 'null': 'True'}),
             'recipient_set': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "'received_act_set'", 'null': 'True', 'symmetrical': 'False', 'to': "orm['people.InstitutionCharge']"}),
-            'slug': ('django.db.models.fields.SlugField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
+            'slug': ('django.db.models.fields.SlugField', [], {'max_length': '500', 'null': 'True', 'blank': 'True'}),
             'status_is_final': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'text': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '1024', 'blank': 'True'})
@@ -187,6 +190,7 @@ class Migration(DataMigration):
             'related_act_set': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['acts.Act']", 'through': "orm['acts.ActHasSpeech']", 'symmetrical': 'False'}),
             'seq_order': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
             'sitting_item': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['people.SittingItem']"}),
+            'slug': ('django.db.models.fields.SlugField', [], {'max_length': '500', 'null': 'True', 'blank': 'True'}),
             'text': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             'text_url': ('django.db.models.fields.URLField', [], {'max_length': '200', 'blank': 'True'}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),

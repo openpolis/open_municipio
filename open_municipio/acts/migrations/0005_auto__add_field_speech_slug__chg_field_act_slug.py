@@ -1,42 +1,29 @@
 # -*- coding: utf-8 -*-
-import re
-
-from django.template.defaultfilters import slugify
-
 from south.utils import datetime_utils as datetime
 from south.db import db
-from south.v2 import DataMigration
+from south.v2 import SchemaMigration
 from django.db import models
 
-class Migration(DataMigration):
+
+class Migration(SchemaMigration):
 
     def forwards(self, orm):
+        # Adding field 'Speech.slug'
+        db.add_column('acts_speech', 'slug',
+                      self.gf('django.db.models.fields.SlugField')(max_length=500, null=True, blank=True),
+                      keep_default=False)
 
-        for a in orm.Act.objects.all():
-            if not a.slug:
-                self.set_default_slug(a)
 
+        # Changing field 'Act.slug'
+        db.alter_column('acts_act', 'slug', self.gf('django.db.models.fields.SlugField')(max_length=500, null=True))
 
     def backwards(self, orm):
-        "nothing to do"
-        pass
+        # Deleting field 'Speech.slug'
+        db.delete_column('acts_speech', 'slug')
 
-    def set_default_slug(self, act):
-        """
-        This method will be used for assigning a default slug to an
-        Act that does not have one.
-        """
 
-        if act.presentation_date and (act.idnum or act.title):
-            cleaned_idnum = re.sub(r'[^\w\d]+', '-', act.idnum)
-            act.slug = slugify("%s-%s-%s" % (act.presentation_date, 
-                cleaned_idnum, self.title))
-            act.save()
-        else:
-            msg = "In order to compute the default slug, the Act should have a presentation date and an idnum: act pk %s" % act.pk
-            print msg
-                
- 
+        # Changing field 'Act.slug'
+        db.alter_column('acts_act', 'slug', self.gf('django.db.models.fields.SlugField')(max_length=100, null=True))
 
     models = {
         'acts.act': {
@@ -54,7 +41,7 @@ class Migration(DataMigration):
             'presentation_date': ('django.db.models.fields.DateField', [], {'null': 'True'}),
             'presenter_set': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'presented_act_set'", 'to': "orm['people.InstitutionCharge']", 'through': "orm['acts.ActSupport']", 'blank': 'True', 'symmetrical': 'False', 'null': 'True'}),
             'recipient_set': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "'received_act_set'", 'null': 'True', 'symmetrical': 'False', 'to': "orm['people.InstitutionCharge']"}),
-            'slug': ('django.db.models.fields.SlugField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
+            'slug': ('django.db.models.fields.SlugField', [], {'max_length': '500', 'null': 'True', 'blank': 'True'}),
             'status_is_final': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'text': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '1024', 'blank': 'True'})
@@ -187,6 +174,7 @@ class Migration(DataMigration):
             'related_act_set': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['acts.Act']", 'through': "orm['acts.ActHasSpeech']", 'symmetrical': 'False'}),
             'seq_order': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
             'sitting_item': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['people.SittingItem']"}),
+            'slug': ('django.db.models.fields.SlugField', [], {'max_length': '500', 'null': 'True', 'blank': 'True'}),
             'text': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             'text_url': ('django.db.models.fields.URLField', [], {'max_length': '200', 'blank': 'True'}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
@@ -446,4 +434,3 @@ class Migration(DataMigration):
     }
 
     complete_apps = ['acts']
-    symmetrical = True
