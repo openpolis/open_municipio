@@ -889,7 +889,7 @@ class Speech(Document):
             slug = "%s-%s-%s-%s" % (self.author_name, self.date, self.sitting_item.title, self.seq_order)
             if self.title:
                 slug = "%s-%s" % (slug, self.title)
-            return slugify(slug)
+            return slugify(slug)[:500]
         else:
             ValueError("In order to get the default slug, the Speech must have an author, a date, a sitting item and a sequential order")
 
