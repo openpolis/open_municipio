@@ -270,8 +270,29 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
 
         return None
 
+    @models.permalink
     def get_absolute_url(self):
-        return self.downcast().get_absolute_url()
+        """
+        Introduce url based on slugs. The self.OM_DETAIL_VIEW_NAME is used by any
+        subclass of Act to specify their detail view name. In order to keep
+        retro-compatibility, we use the downcast method as before, in case such
+        attribute has not been set. Of course, any subclass of Act can 
+        override this method
+        """
+
+        dc_act = self.downcast()
+
+        if getattr(dc_act, "OM_DETAIL_VIEW_NAME"):
+            if getattr(dc_act, "slug", None):
+                return (dc_act.OM_DETAIL_VIEW_NAME, (), {'slug': self.slug })
+            else:
+                return (dc_act.OM_DETAIL_VIEW_NAME, (), {'pk': self.pk })
+        else:
+            return dc_act.get_absolute_url()
+           
+
+
+        
 
     def get_type_name(self):
         """
@@ -285,6 +306,7 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
     class Meta:
         verbose_name = _('act')
         verbose_name_plural = _('acts')
+        unique_together = (('slug',), ('presentation_date','idnum','title',))
 
 
 class ActSection(models.Model):
@@ -366,6 +388,8 @@ class CGDeliberation(Act):
         ('REJECTED', 'rejected', _('rejected')),
     )
 
+    OM_DETAIL_VIEW_NAME="om_cgdeliberation_detail"
+
     status = models.CharField(_('status'), choices=STATUS, max_length=12)
     approval_date = models.DateField(_('approval date'), null=True, blank=True)
     publication_date = models.DateField(_('publication date'), null=True, blank=True)
@@ -393,9 +417,11 @@ class CGDeliberation(Act):
         """
         return self.next_events[0] if self.next_events else None
 
-    @models.permalink
-    def get_absolute_url(self):
-        return ('om_cgdeliberation_detail', (), {'slug': str(self.slug)})
+##    @models.permalink
+##    def get_absolute_url(self):
+##
+##        return ('om_cgdeliberation_detail', (), {'slug': str(self.slug)})
+##
 
 
 
@@ -424,6 +450,8 @@ class Deliberation(Act):
         ('APPROVED', 'approved', _('approved')),
         ('REJECTED', 'rejected', _('rejected')),
     )
+
+    OM_DETAIL_VIEW_NAME = "om_deliberation_detail"
     
     status = models.CharField(_('status'), choices=STATUS, max_length=12)
     approval_date = models.DateField(_('approval date'), null=True, blank=True)
@@ -453,10 +481,10 @@ class Deliberation(Act):
         """
         return self.next_events[0] if self.next_events else None
 
-    @models.permalink
-    def get_absolute_url(self):
-        return ('om_deliberation_detail', (), {'slug': str(self.slug)})
-
+##    @models.permalink
+##    def get_absolute_url(self):
+##        return ('om_deliberation_detail', (), {'slug': str(self.slug)})
+##
     
 
 class Interrogation(Act):
@@ -479,6 +507,8 @@ class Interrogation(Act):
         ('NOTANSWERED', 'notanswered', _('not answered')),
     )
     
+    OM_DETAIL_VIEW_NAME = "om_interrogation_detail"
+    
     status = models.CharField(_('status'), choices=STATUS, max_length=12)
     answer_type = models.CharField(_('answer type'), max_length=8, choices=ANSWER_TYPES)
     question_motivation = models.TextField(blank=True)
@@ -489,10 +519,10 @@ class Interrogation(Act):
         verbose_name = _('interrogation')
         verbose_name_plural = _('interrogations')
     
-    @models.permalink
-    def get_absolute_url(self):
-        return 'om_interrogation_detail', (), {'slug': str(self.slug)}
-    
+##    @models.permalink
+##    def get_absolute_url(self):
+##        return 'om_interrogation_detail', (), {'slug': str(self.slug)}
+##    
     @property
     def author(self):
         if len(self.presenters) == 0:
@@ -567,6 +597,8 @@ class Interpellation(Act):
         ('ANSWERED', 'answered', _('answered')),
         ('NOTANSWERED', 'notanswered', _('not answered')),
     )
+    
+    OM_DETAIL_VIEW_NAME = "om_interpellation_detail"
 
     status = models.CharField(_('status'), choices=STATUS, max_length=12)
     answer_type = models.CharField(_('answer type'), max_length=8, choices=ANSWER_TYPES)
@@ -577,9 +609,9 @@ class Interpellation(Act):
         verbose_name = _('interpellation')
         verbose_name_plural = _('interpellations')
     
-    @models.permalink
-    def get_absolute_url(self):
-        return 'om_interpellation_detail', (), {'slug': str(self.slug)}
+##    @models.permalink
+##    def get_absolute_url(self):
+##        return 'om_interpellation_detail', (), {'slug': str(self.slug)}
     
     @property
     def author(self):
@@ -656,15 +688,18 @@ class Motion(Act):
         ('REJECTED', 'rejected', _('rejected')),
     )
 
+    OM_DETAIL_VIEW_NAME = "om_motion_detail"
+
+
     status = models.CharField(_('status'), choices=STATUS, max_length=12)
     
     class Meta:
         verbose_name = _('motion')
         verbose_name_plural = _('motions')
         
-    @models.permalink
-    def get_absolute_url(self):
-        return ('om_motion_detail', (), {'slug': str(self.slug)})
+##    @models.permalink
+##    def get_absolute_url(self):
+##        return ('om_motion_detail', (), {'slug': str(self.slug)})
 
 
 
@@ -687,15 +722,18 @@ class Agenda(Act):
         ('REJECTED', 'rejected', _('rejected')),
     )
 
+    OM_DETAIL_VIEW_NAME = "om_agenda_detail"
+
+
     status = models.CharField(_('status'), choices=STATUS, max_length=12)
 
     class Meta:
         verbose_name = _('agenda')
         verbose_name_plural = _('agenda')
 
-    @models.permalink
-    def get_absolute_url(self):
-        return ('om_agenda_detail', (), {'slug': str(self.slug)})
+##    @models.permalink
+##    def get_absolute_url(self):
+##        return ('om_agenda_detail', (), {'slug': str(self.slug)})
 
 
 
@@ -716,7 +754,10 @@ class Amendment(Act):
         ('PRESENTED', 'presented', _('presented')), 
         ('APPROVED', 'approved', _('approved')),
         ('REJECTED', 'rejected', _('rejected')),
-   )
+    )
+
+    OM_DETAIL_VIEW_NAME = "om_amendment_detail"
+
     
     status = models.CharField(_('status'), choices=STATUS, max_length=12)
     act = models.ForeignKey(Act, related_name='amendment_set', on_delete=models.PROTECT)
@@ -727,9 +768,9 @@ class Amendment(Act):
         verbose_name = _('amendment')
         verbose_name_plural = _('amendments')
 
-    @models.permalink
-    def get_absolute_url(self):
-        return ('om_amendment_detail', (), {'slug': str(self.slug)})
+##    @models.permalink
+##    def get_absolute_url(self):
+##        return ('om_amendment_detail', (), {'slug': str(self.slug)})
 
 
 #
@@ -828,6 +869,7 @@ class Speech(Document):
     class Meta(Document.Meta):
         verbose_name = _('speech')
         verbose_name_plural = _('speeches')
+        unique_together = (('slug',),('author','author_name_when_external','sitting_item','seq_order'))
 
     def __unicode__(self):
         return u'%s' % self.title

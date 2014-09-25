@@ -1,27 +1,86 @@
 # -*- coding: utf-8 -*-
+
+import re
+
 from south.utils import datetime_utils as datetime
 from south.db import db
-from south.v2 import SchemaMigration
+from south.v2 import DataMigration
 from django.db import models
+from django.template.defaultfilters import slugify
 
+class Migration(DataMigration):
 
-class Migration(SchemaMigration):
+    ACT_SLUG_MAX_LEN = 500
+    SPEECH_SLUG_MAX_LEN = 500
 
     def forwards(self, orm):
-        # Adding field 'Act.slug'
-        db.add_column('acts_act', 'slug',
-                      self.gf('django.db.models.fields.SlugField')(max_length=500, null=True, blank=True),
-                      keep_default=False)
+
+        # select acts and speeches that do not have a slug, an set it
+
+        for a in orm.Act.objects.filter(models.Q(slug="") | models.Q(slug__isnull=True)):
+            self.set_act_default_slug(a)
+
+        for speech in orm.Speech.objects.filter(models.Q(slug="") | models.Q(slug__isnull=True)):
+            self.set_speech_default_slug(speech)
 
 
     def backwards(self, orm):
-        # Deleting field 'Act.slug'
-        db.delete_column('acts_act', 'slug')
+
+        for a in orm.Act.objects.exclude(slug="").exclude(slug__isnull=True):
+            a.slug = None
+            a.save()
+    
+        for s in orm.Speech.objects.exclude(slug="").exclude(slug__isnull=True):
+            s.slug = None
+            s.save()
+
+    def set_act_default_slug(self, act):
+        """
+        This method will be used for assigning a default slug to an
+        Act that does not have one.
+        """
+        
+        if act.presentation_date and (act.idnum or act.title):
+            cleaned_idnum = re.sub(r'[^\w\d]+', '-', act.idnum)
+            act.slug = slugify("%s-%s-%s" % (act.presentation_date, 
+                cleaned_idnum, act.title))[:self.ACT_SLUG_MAX_LEN]
+            act.save()
+        else:
+            msg = "In order to compute the default slug, the Act should have a presentation date and an idnum: act pk %s" % act.pk
+#                print msg
+            raise RuntimeError(msg)
+
+
+    def get_author_name(self, speech):
+
+        if speech.author != None:
+            return "%s %s" % (speech.author.first_name, speech.author.last_name)
+        
+        return speech.author_name_when_external
+
+    def set_speech_default_slug(self, speech):
+
+        author_name = self.get_author_name(speech)
+
+        date = speech.sitting_item.sitting.date
+
+        if author_name and date and speech.seq_order:
+            slug = "%s-%s-%s-%s" % (author_name, date, speech.sitting_item.title, speech.seq_order)
+            if speech.title:
+                slug = "%s-%s" % (slug, speech.title)
+            speech.slug = slugify(slug)[:self.SPEECH_SLUG_MAX_LEN]
+            speech.save()
+        else:
+            msg = "In order to get the default slug, the Speech must have an author, a date and a sequential order: speech pk %s" % speech.pk
+#            print msg
+            raise RuntimeError(msg)
+
+
 
 
     models = {
         'acts.act': {
-            'Meta': {'object_name': 'Act'},
+            'Meta': {'unique_together': "(('slug',), ('presentation_date', 'idnum', 'title'))", 'object_name': 'Act'},
             'adj_title': ('django.db.models.fields.CharField', [], {'max_length': '1024', 'blank': 'True'}),
             'category_set': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'to': "orm['taxonomy.Category']", 'null': 'True', 'blank': 'True'}),
             'created': ('model_utils.fields.AutoCreatedField', [], {'default': 'datetime.datetime.now'}),
@@ -150,7 +209,7 @@ class Migration(SchemaMigration):
             'status': ('django.db.models.fields.CharField', [], {'max_length': '12'})
         },
         'acts.speech': {
-            'Meta': {'object_name': 'Speech'},
+            'Meta': {'unique_together': "(('slug',), ('author', 'author_name_when_external', 'sitting_item', 'seq_order'))", 'object_name': 'Speech'},
             'audio_file': ('django.db.models.fields.files.FileField', [], {'max_length': '255', 'blank': 'True'}),
             'audio_url': ('django.db.models.fields.URLField', [], {'max_length': '200', 'blank': 'True'}),
             'author': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['people.Person']", 'null': 'True', 'blank': 'True'}),
@@ -168,6 +227,7 @@ class Migration(SchemaMigration):
             'related_act_set': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['acts.Act']", 'through': "orm['acts.ActHasSpeech']", 'symmetrical': 'False'}),
             'seq_order': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
             'sitting_item': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['people.SittingItem']"}),
+            'slug': ('django.db.models.fields.SlugField', [], {'max_length': '500', 'null': 'True', 'blank': 'True'}),
             'text': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             'text_url': ('django.db.models.fields.URLField', [], {'max_length': '200', 'blank': 'True'}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
@@ -421,9 +481,9 @@ class Migration(SchemaMigration):
             'n_rebels': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
             'n_yes': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
             'outcome': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
-            'sitting': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['people.Sitting']", 'null': 'True'}),
-            'slug': ('django.db.models.fields.SlugField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'})
+            'sitting': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['people.Sitting']"})
         }
     }
 
     complete_apps = ['acts']
+    symmetrical = True

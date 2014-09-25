@@ -1,51 +1,39 @@
 # -*- coding: utf-8 -*-
-import re
-
-from django.template.defaultfilters import slugify
-
 from south.utils import datetime_utils as datetime
 from south.db import db
-from south.v2 import DataMigration
+from south.v2 import SchemaMigration
 from django.db import models
 
-class Migration(DataMigration):
+
+class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        "Write your forwards methods here."
-        # Note: Don't use "from appname.models import ModelName". 
-        # Use orm.ModelName to refer to models in this application,
-        # and orm['appname.ModelName'] for models in other applications.
+        # Adding field 'Votation.slug'
+        db.add_column('votations_votation', 'slug',
+                      self.gf('django.db.models.fields.SlugField')(max_length=500, null=True, blank=True),
+                      keep_default=False)
 
-        for v in orm.Votation.objects.all():
-            if not v.slug:
-                self.set_default_slug(v)
+        # Adding unique constraint on 'Votation', fields ['sitting', 'idnum']
+        db.create_unique('votations_votation', ['sitting_id', 'idnum'])
 
-    def set_default_slug(self, votation):
-        """
-        This method will be used for assigning a default slug to a
-        Votation that does not have one.
-        """
+        # Adding unique constraint on 'Votation', fields ['slug']
+        db.create_unique('votations_votation', ['slug'])
 
-        if votation.sitting and votation.idnum:
-            cleaned_idnum = re.sub(r'[^\w\d]+', '-', votation.idnum)
-            # slug max len is 100
-            votation.slug = slugify("%s-%s" % (votation.sitting.date.isoformat(), 
-                                        cleaned_idnum))[:100]
-            votation.save()
-
-        else:
-            msg = "In order to compute the default slug, the Votation should be linked to a Sitting"
-            print msg
-                
- 
 
     def backwards(self, orm):
-        # nothing to do 
-        pass
+        # Removing unique constraint on 'Votation', fields ['slug']
+        db.delete_unique('votations_votation', ['slug'])
+
+        # Removing unique constraint on 'Votation', fields ['sitting', 'idnum']
+        db.delete_unique('votations_votation', ['sitting_id', 'idnum'])
+
+        # Deleting field 'Votation.slug'
+        db.delete_column('votations_votation', 'slug')
+
 
     models = {
         'acts.act': {
-            'Meta': {'object_name': 'Act'},
+            'Meta': {'unique_together': "(('slug',), ('presentation_date', 'idnum', 'title'))", 'object_name': 'Act'},
             'adj_title': ('django.db.models.fields.CharField', [], {'max_length': '1024', 'blank': 'True'}),
             'category_set': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'to': "orm['taxonomy.Category']", 'null': 'True', 'blank': 'True'}),
             'created': ('model_utils.fields.AutoCreatedField', [], {'default': 'datetime.datetime.now'}),
@@ -59,6 +47,7 @@ class Migration(DataMigration):
             'presentation_date': ('django.db.models.fields.DateField', [], {'null': 'True'}),
             'presenter_set': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'presented_act_set'", 'to': "orm['people.InstitutionCharge']", 'through': "orm['acts.ActSupport']", 'blank': 'True', 'symmetrical': 'False', 'null': 'True'}),
             'recipient_set': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "'received_act_set'", 'null': 'True', 'symmetrical': 'False', 'to': "orm['people.InstitutionCharge']"}),
+            'slug': ('django.db.models.fields.SlugField', [], {'max_length': '500', 'null': 'True', 'blank': 'True'}),
             'status_is_final': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'text': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '1024', 'blank': 'True'})
@@ -259,7 +248,7 @@ class Migration(DataMigration):
             'vote': ('django.db.models.fields.CharField', [], {'max_length': '16'})
         },
         'votations.votation': {
-            'Meta': {'object_name': 'Votation'},
+            'Meta': {'unique_together': "(('slug',), ('sitting', 'idnum'))", 'object_name': 'Votation'},
             'act': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['acts.Act']", 'null': 'True'}),
             'act_descr': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
             'charge_set': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['people.InstitutionCharge']", 'through': "orm['votations.ChargeVote']", 'symmetrical': 'False'}),
@@ -277,10 +266,9 @@ class Migration(DataMigration):
             'n_rebels': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
             'n_yes': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
             'outcome': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
-            'sitting': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['people.Sitting']", 'null': 'True'}),
-            'slug': ('django.db.models.fields.SlugField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'})
+            'sitting': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['people.Sitting']"}),
+            'slug': ('django.db.models.fields.SlugField', [], {'max_length': '500', 'null': 'True', 'blank': 'True'})
         }
     }
 
     complete_apps = ['votations']
-    symmetrical = True

@@ -200,7 +200,7 @@
             <tr>
               <td class="text-center">{{ charge_vote.votation.sitting.date }}</td>
               <td class="text-center">
-                  <a href="{% url om_votation_detail charge_vote.votation.slug %}">
+                  <a href="{{ charge_vote.votation.get_absolute_url }}">
                     {{ charge_vote.votation.idnum }}
                   </a>
               </td>

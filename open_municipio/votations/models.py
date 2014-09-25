@@ -30,7 +30,7 @@ class Votation(models.Model):
     )
 
     idnum = models.CharField(blank=True, max_length=64)
-    sitting = models.ForeignKey(Sitting, null=True)
+    sitting = models.ForeignKey(Sitting, blank=False, null=False)
     act = models.ForeignKey(Act, null=True)
     
     # this field is used to keep the textual description of the related act
@@ -50,7 +50,7 @@ class Votation(models.Model):
     outcome = models.IntegerField(choices=OUTCOMES, blank=True, null=True)
     is_key = models.BooleanField(default=False, help_text=_("Specify whether this is a key votation"))    
     n_rebels = models.IntegerField(default= 0)
-    slug = models.SlugField(max_length=100, blank=True, null=True)
+    slug = models.SlugField(max_length=500, blank=True, null=True)
 
     # default manager must be explicitly defined, when
     # at least another manager is present
@@ -110,15 +110,28 @@ class Votation(models.Model):
     class Meta:
         verbose_name = _('votation')
         verbose_name_plural = _('votations')
+
+        unique_together = (('slug',), ('sitting','idnum',))
     
     def __unicode__(self):
         
         return _('Votation %(idnum)s') % { "idnum":self.idnum, }
 
-#    @models.permalink
+    @models.permalink
     def get_absolute_url(self):
-#        return 'om_votation_detail', [str(self.pk)]
-        return reverse('om_votation_detail', kwargs={"slug":self.slug})
+        """
+        Introduce url based on slugs. To keen retro-compatibility during 
+        introduction of slugs, it also allows to view the old url using pk.
+        """
+
+        if getattr(self, "slug", None) and self.slug:
+            print "resolving votation..."
+            return ("om_votation_detail", (), {'slug': self.slug })
+        else:
+            return ("om_votation_detail", (), {'pk': self.pk })
+           
+
+
     
     @property
     def group_votes(self):

@@ -1,33 +1,50 @@
 # -*- coding: utf-8 -*-
+import re
+
 from south.utils import datetime_utils as datetime
 from south.db import db
-from south.v2 import SchemaMigration
+from south.v2 import DataMigration
 from django.db import models
+from django.template.defaultfilters import slugify
 
+class Migration(DataMigration):
 
-class Migration(SchemaMigration):
+    VOTATION_SLUG_MAX_LEN=500
 
     def forwards(self, orm):
-        # Adding field 'Speech.slug'
-        db.add_column('acts_speech', 'slug',
-                      self.gf('django.db.models.fields.SlugField')(max_length=500, null=True, blank=True),
-                      keep_default=False)
-
-
-        # Changing field 'Act.slug'
-        db.alter_column('acts_act', 'slug', self.gf('django.db.models.fields.SlugField')(max_length=500, null=True))
+        for v in orm.Votation.objects.filter(models.Q(slug="") | models.Q(slug__isnull=True)):
+            self.set_votation_default_slug(v) 
 
     def backwards(self, orm):
-        # Deleting field 'Speech.slug'
-        db.delete_column('acts_speech', 'slug')
+        # reset slugs
+
+        for v in orm.Votation.objects.exclude(slug="").exclude(slug__isnull=True):
+            v.slug = None
+            v.save()
 
 
-        # Changing field 'Act.slug'
-        db.alter_column('acts_act', 'slug', self.gf('django.db.models.fields.SlugField')(max_length=100, null=True))
+    def set_votation_default_slug(self, votation):
+        """
+        This method will be used for assigning a default slug to a
+        Votation that does not have one.
+        """
+
+        if votation.sitting and votation.idnum:
+            cleaned_idnum = re.sub(r'[^\w\d]+', '-', votation.idnum)
+            # slug max len is 100
+            votation.slug = slugify("%s-%s" % (votation.sitting.date.isoformat(), 
+                                        cleaned_idnum))[:self.VOTATION_SLUG_MAX_LEN]
+            votation.save()
+
+        else:
+            msg = "In order to compute the default slug, the Votation should be linked to a Sitting and have an idnum"
+#            print msg
+            raise RuntimeError(msg)
+ 
 
     models = {
         'acts.act': {
-            'Meta': {'object_name': 'Act'},
+            'Meta': {'unique_together': "(('slug',), ('presentation_date', 'idnum', 'title'))", 'object_name': 'Act'},
             'adj_title': ('django.db.models.fields.CharField', [], {'max_length': '1024', 'blank': 'True'}),
             'category_set': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'to': "orm['taxonomy.Category']", 'null': 'True', 'blank': 'True'}),
             'created': ('model_utils.fields.AutoCreatedField', [], {'default': 'datetime.datetime.now'}),
@@ -46,29 +63,6 @@ class Migration(SchemaMigration):
             'text': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '1024', 'blank': 'True'})
         },
-        'acts.actdescriptor': {
-            'Meta': {'object_name': 'ActDescriptor', 'db_table': "u'acts_act_descriptor'"},
-            'act': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['acts.Act']"}),
-            'created': ('model_utils.fields.AutoCreatedField', [], {'default': 'datetime.datetime.now'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'modified': ('model_utils.fields.AutoLastModifiedField', [], {'default': 'datetime.datetime.now'}),
-            'person': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['people.Person']"})
-        },
-        'acts.acthasspeech': {
-            'Meta': {'object_name': 'ActHasSpeech'},
-            'act': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['acts.Act']"}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'relation_type': ('django.db.models.fields.CharField', [], {'max_length': '4'}),
-            'speech': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['acts.Speech']"})
-        },
-        'acts.actsection': {
-            'Meta': {'object_name': 'ActSection', 'db_table': "u'acts_act_section'"},
-            'act': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['acts.Act']", 'on_delete': 'models.PROTECT'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'parent_section': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['acts.ActSection']", 'on_delete': 'models.PROTECT'}),
-            'text': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
-            'title': ('django.db.models.fields.CharField', [], {'max_length': '1024', 'blank': 'True'})
-        },
         'acts.actsupport': {
             'Meta': {'object_name': 'ActSupport', 'db_table': "u'acts_act_support'"},
             'act': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['acts.Act']"}),
@@ -76,142 +70,6 @@ class Migration(SchemaMigration):
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'support_date': ('django.db.models.fields.DateField', [], {'default': 'None', 'null': 'True', 'blank': 'True'}),
             'support_type': ('django.db.models.fields.CharField', [], {'max_length': '12'})
-        },
-        'acts.agenda': {
-            'Meta': {'object_name': 'Agenda', '_ormbases': ['acts.Act']},
-            'act_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['acts.Act']", 'unique': 'True', 'primary_key': 'True'}),
-            'status': ('django.db.models.fields.CharField', [], {'max_length': '12'})
-        },
-        'acts.amendment': {
-            'Meta': {'object_name': 'Amendment', '_ormbases': ['acts.Act']},
-            'act': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'amendment_set'", 'on_delete': 'models.PROTECT', 'to': "orm['acts.Act']"}),
-            'act_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['acts.Act']", 'unique': 'True', 'primary_key': 'True'}),
-            'act_section': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'amendment_set'", 'null': 'True', 'on_delete': 'models.PROTECT', 'to': "orm['acts.ActSection']"}),
-            'status': ('django.db.models.fields.CharField', [], {'max_length': '12'})
-        },
-        'acts.attach': {
-            'Meta': {'object_name': 'Attach'},
-            'act': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'attachment_set'", 'to': "orm['acts.Act']"}),
-            'created': ('model_utils.fields.AutoCreatedField', [], {'default': 'datetime.datetime.now'}),
-            'document_date': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
-            'document_size': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
-            'document_type': ('django.db.models.fields.CharField', [], {'max_length': '5', 'null': 'True', 'blank': 'True'}),
-            'file': ('django.db.models.fields.files.FileField', [], {'max_length': '255', 'blank': 'True'}),
-            'file_url': ('django.db.models.fields.URLField', [], {'max_length': '200', 'blank': 'True'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'modified': ('model_utils.fields.AutoLastModifiedField', [], {'default': 'datetime.datetime.now'}),
-            'text': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
-            'text_url': ('django.db.models.fields.URLField', [], {'max_length': '200', 'blank': 'True'}),
-            'title': ('django.db.models.fields.CharField', [], {'max_length': '512'})
-        },
-        'acts.calendar': {
-            'Meta': {'object_name': 'Calendar'},
-            'act_set': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['acts.Act']", 'symmetrical': 'False'}),
-            'date': ('django.db.models.fields.DateField', [], {}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'site': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['people.Institution']"})
-        },
-        'acts.cgdeliberation': {
-            'Meta': {'object_name': 'CGDeliberation', '_ormbases': ['acts.Act']},
-            'act_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['acts.Act']", 'unique': 'True', 'primary_key': 'True'}),
-            'approval_date': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
-            'approved_text': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
-            'execution_date': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
-            'final_idnum': ('django.db.models.fields.CharField', [], {'max_length': '64', 'null': 'True', 'blank': 'True'}),
-            'initiative': ('django.db.models.fields.CharField', [], {'max_length': '12'}),
-            'publication_date': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
-            'status': ('django.db.models.fields.CharField', [], {'max_length': '12'})
-        },
-        'acts.deliberation': {
-            'Meta': {'object_name': 'Deliberation', '_ormbases': ['acts.Act']},
-            'act_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['acts.Act']", 'unique': 'True', 'primary_key': 'True'}),
-            'approval_date': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
-            'approved_text': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
-            'execution_date': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
-            'final_idnum': ('django.db.models.fields.CharField', [], {'max_length': '64', 'null': 'True', 'blank': 'True'}),
-            'initiative': ('django.db.models.fields.CharField', [], {'max_length': '12'}),
-            'publication_date': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
-            'status': ('django.db.models.fields.CharField', [], {'max_length': '12'})
-        },
-        'acts.interpellation': {
-            'Meta': {'object_name': 'Interpellation', '_ormbases': ['acts.Act']},
-            'act_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['acts.Act']", 'unique': 'True', 'primary_key': 'True'}),
-            'answer_text': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
-            'answer_type': ('django.db.models.fields.CharField', [], {'max_length': '8'}),
-            'question_motivation': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
-            'status': ('django.db.models.fields.CharField', [], {'max_length': '12'})
-        },
-        'acts.interrogation': {
-            'Meta': {'object_name': 'Interrogation', '_ormbases': ['acts.Act']},
-            'act_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['acts.Act']", 'unique': 'True', 'primary_key': 'True'}),
-            'answer_text': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
-            'answer_type': ('django.db.models.fields.CharField', [], {'max_length': '8'}),
-            'question_motivation': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
-            'reply_text': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
-            'status': ('django.db.models.fields.CharField', [], {'max_length': '12'})
-        },
-        'acts.motion': {
-            'Meta': {'object_name': 'Motion', '_ormbases': ['acts.Act']},
-            'act_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['acts.Act']", 'unique': 'True', 'primary_key': 'True'}),
-            'status': ('django.db.models.fields.CharField', [], {'max_length': '12'})
-        },
-        'acts.speech': {
-            'Meta': {'object_name': 'Speech'},
-            'audio_file': ('django.db.models.fields.files.FileField', [], {'max_length': '255', 'blank': 'True'}),
-            'audio_url': ('django.db.models.fields.URLField', [], {'max_length': '200', 'blank': 'True'}),
-            'author': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['people.Person']", 'null': 'True', 'blank': 'True'}),
-            'author_name_when_external': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
-            'created': ('model_utils.fields.AutoCreatedField', [], {'default': 'datetime.datetime.now'}),
-            'document_date': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
-            'document_size': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
-            'document_type': ('django.db.models.fields.CharField', [], {'max_length': '5', 'null': 'True', 'blank': 'True'}),
-            'duration': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
-            'file': ('django.db.models.fields.files.FileField', [], {'max_length': '255', 'blank': 'True'}),
-            'file_url': ('django.db.models.fields.URLField', [], {'max_length': '200', 'blank': 'True'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'initial_time': ('django.db.models.fields.TimeField', [], {'null': 'True', 'blank': 'True'}),
-            'modified': ('model_utils.fields.AutoLastModifiedField', [], {'default': 'datetime.datetime.now'}),
-            'related_act_set': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['acts.Act']", 'through': "orm['acts.ActHasSpeech']", 'symmetrical': 'False'}),
-            'seq_order': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
-            'sitting_item': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['people.SittingItem']"}),
-            'slug': ('django.db.models.fields.SlugField', [], {'max_length': '500', 'null': 'True', 'blank': 'True'}),
-            'text': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
-            'text_url': ('django.db.models.fields.URLField', [], {'max_length': '200', 'blank': 'True'}),
-            'title': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
-            'votation': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['votations.Votation']", 'null': 'True', 'blank': 'True'})
-        },
-        'acts.transition': {
-            'Meta': {'object_name': 'Transition'},
-            'act': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'transition_set'", 'to': "orm['acts.Act']"}),
-            'attendance': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['attendances.Attendance']", 'null': 'True', 'blank': 'True'}),
-            'final_status': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'note': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
-            'symbol': ('django.db.models.fields.CharField', [], {'max_length': '128', 'null': 'True', 'blank': 'True'}),
-            'transition_date': ('django.db.models.fields.DateField', [], {'default': 'None'}),
-            'votation': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['votations.Votation']", 'null': 'True', 'blank': 'True'})
-        },
-        'attendances.attendance': {
-            'Meta': {'object_name': 'Attendance'},
-            'act': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['acts.Act']", 'null': 'True'}),
-            'act_descr': ('django.db.models.fields.CharField', [], {'max_length': '1024', 'blank': 'True'}),
-            'charge_set': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['people.InstitutionCharge']", 'through': "orm['attendances.ChargeAttendance']", 'symmetrical': 'False'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'idnum': ('django.db.models.fields.CharField', [], {'max_length': '64', 'null': 'True', 'blank': 'True'}),
-            'is_key': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'n_absents': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
-            'n_legal': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
-            'n_presents': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
-            'sitting': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['people.Sitting']", 'null': 'True'})
-        },
-        'attendances.chargeattendance': {
-            'Meta': {'object_name': 'ChargeAttendance'},
-            'attendance': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['attendances.Attendance']"}),
-            'charge': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['people.InstitutionCharge']"}),
-            'created': ('model_utils.fields.AutoCreatedField', [], {'default': 'datetime.datetime.now'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'modified': ('model_utils.fields.AutoLastModifiedField', [], {'default': 'datetime.datetime.now'}),
-            'value': ('django.db.models.fields.CharField', [], {'max_length': '12'})
         },
         'auth.group': {
             'Meta': {'object_name': 'Group'},
@@ -360,15 +218,6 @@ class Migration(SchemaMigration):
             'modified': ('model_utils.fields.AutoLastModifiedField', [], {'default': 'datetime.datetime.now'}),
             'number': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'})
         },
-        'people.sittingitem': {
-            'Meta': {'object_name': 'SittingItem'},
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'item_type': ('django.db.models.fields.CharField', [], {'max_length': '4'}),
-            'related_act_set': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'to': "orm['acts.Act']", 'null': 'True', 'blank': 'True'}),
-            'seq_order': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
-            'sitting': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['people.Sitting']"}),
-            'title': ('django.db.models.fields.CharField', [], {'max_length': '512'})
-        },
         'taxonomy.category': {
             'Meta': {'object_name': 'Category'},
             'count': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
@@ -410,7 +259,7 @@ class Migration(SchemaMigration):
             'vote': ('django.db.models.fields.CharField', [], {'max_length': '16'})
         },
         'votations.votation': {
-            'Meta': {'object_name': 'Votation'},
+            'Meta': {'unique_together': "(('slug',), ('sitting', 'idnum'))", 'object_name': 'Votation'},
             'act': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['acts.Act']", 'null': 'True'}),
             'act_descr': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
             'charge_set': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['people.InstitutionCharge']", 'through': "orm['votations.ChargeVote']", 'symmetrical': 'False'}),
@@ -428,9 +277,10 @@ class Migration(SchemaMigration):
             'n_rebels': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
             'n_yes': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
             'outcome': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
-            'sitting': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['people.Sitting']", 'null': 'True'}),
-            'slug': ('django.db.models.fields.SlugField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'})
+            'sitting': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['people.Sitting']"}),
+            'slug': ('django.db.models.fields.SlugField', [], {'max_length': '500', 'null': 'True', 'blank': 'True'})
         }
     }
 
-    complete_apps = ['acts']
+    complete_apps = ['votations']
+    symmetrical = True

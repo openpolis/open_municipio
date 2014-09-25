@@ -3,43 +3,55 @@ from south.utils import datetime_utils as datetime
 from south.db import db
 from south.v2 import DataMigration
 from django.db import models
-from django.template.defaultfilters import slugify
 
 class Migration(DataMigration):
 
+    act_unique_fields = [ "presentation_date", "idnum", "title", ]
+    speech_unique_fields = [ "author", "author_name_when_external", "sitting_item", "seq_order" ]
+
     def forwards(self, orm):
 
-        for speech in orm.Speech.objects.all():
-            if not speech.slug:
-                self.set_default_slug(speech)
+        dup_acts = self.get_dup_act(orm)
+
+        dup_speeches = self.get_dup_speech(orm)
+
+        msg_acts = ""
+        if len(dup_acts) > 0:
+
+            msg_acts = "Non unique acts for the following parameters: %s" % dup_acts
+
+        msg_speeches = ""
+        if len(dup_speeches) > 0:
+
+            msg_speeches = "Non unique speeches for the following parameters: %s" % dup_speeches
+
+        if msg_acts or msg_speeches:
+
+            msg = "Resolve manually this inconsistency, before re-running this migration"
+
+            raise RuntimeError("%s. %s. %s" % (msg_acts, msg_speeches, msg))
+
+
+
+
+    def get_dup_act(self, orm):
+        
+        duplicates = orm.Act.objects.all().values(*self.act_unique_fields).annotate(_num_dup=models.Count("pk")).filter(_num_dup__gt=1)
+
+        return duplicates
+
+    def get_dup_speech(self, orm):
+        """
+        Speech.objects.all().values("sitting_item", "seq_order").annotate(num=Count("pk")).filter(num__gt=1)
+        """
+        duplicates = orm.Speech.objects.all().values(*self.speech_unique_fields).annotate(_num_dup=models.Count("pk")).filter(_num_dup__gt=1)
+
+        return duplicates
+
 
     def backwards(self, orm):
-        # do nothing
+        # nothing to do
         pass
-
-    def get_author_name(self, speech):
-
-        if speech.author != None:
-            return "%s %s" % (speech.author.first_name, speech.author.last_name)
-        
-        return speech.author_name_when_external
-
-    def set_default_slug(self, speech):
-
-        author_name = self.get_author_name(speech)
-
-        date = speech.sitting_item.sitting.date
-
-        if author_name and date and speech.seq_order:
-            slug = "%s-%s-%s-%s" % (author_name, date, speech.sitting_item.title, speech.seq_order)
-            if speech.title:
-                slug = "%s-%s" % (slug, speech.title)
-            speech.slug = slugify(slug)
-            speech.save()
-        else:
-            msg = "In order to get the default slug, the Speech must have an author, a date and a sequential order: speech pk %s" % speech.pk
-            print msg
-
 
     models = {
         'acts.act': {
@@ -57,7 +69,6 @@ class Migration(DataMigration):
             'presentation_date': ('django.db.models.fields.DateField', [], {'null': 'True'}),
             'presenter_set': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'presented_act_set'", 'to': "orm['people.InstitutionCharge']", 'through': "orm['acts.ActSupport']", 'blank': 'True', 'symmetrical': 'False', 'null': 'True'}),
             'recipient_set': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "'received_act_set'", 'null': 'True', 'symmetrical': 'False', 'to': "orm['people.InstitutionCharge']"}),
-            'slug': ('django.db.models.fields.SlugField', [], {'max_length': '500', 'null': 'True', 'blank': 'True'}),
             'status_is_final': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'text': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '1024', 'blank': 'True'})
@@ -190,7 +201,6 @@ class Migration(DataMigration):
             'related_act_set': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['acts.Act']", 'through': "orm['acts.ActHasSpeech']", 'symmetrical': 'False'}),
             'seq_order': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
             'sitting_item': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['people.SittingItem']"}),
-            'slug': ('django.db.models.fields.SlugField', [], {'max_length': '500', 'null': 'True', 'blank': 'True'}),
             'text': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             'text_url': ('django.db.models.fields.URLField', [], {'max_length': '200', 'blank': 'True'}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
@@ -426,7 +436,7 @@ class Migration(DataMigration):
             'vote': ('django.db.models.fields.CharField', [], {'max_length': '16'})
         },
         'votations.votation': {
-            'Meta': {'object_name': 'Votation'},
+            'Meta': {'unique_together': "(('slug',), ('sitting', 'idnum'))", 'object_name': 'Votation'},
             'act': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['acts.Act']", 'null': 'True'}),
             'act_descr': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
             'charge_set': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['people.InstitutionCharge']", 'through': "orm['votations.ChargeVote']", 'symmetrical': 'False'}),
@@ -444,8 +454,8 @@ class Migration(DataMigration):
             'n_rebels': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
             'n_yes': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
             'outcome': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
-            'sitting': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['people.Sitting']", 'null': 'True'}),
-            'slug': ('django.db.models.fields.SlugField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'})
+            'sitting': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['people.Sitting']"}),
+            'slug': ('django.db.models.fields.SlugField', [], {'max_length': '500', 'null': 'True', 'blank': 'True'})
         }
     }
 
