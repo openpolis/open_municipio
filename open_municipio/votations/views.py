@@ -30,12 +30,13 @@ class VotationSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin
     """
     __name__ = 'VotationSearchView'
 
-    FACETS_SORTED = ['act_type', 'is_key', 'organ', 'votation_outcome',
+    FACETS_SORTED = ['act_type', 'is_key', 'is_secret', 'organ', 'votation_outcome',
         'n_presents_range', 'n_rebels_range', 'n_variance', 'votation_date']
 
     FACETS_LABELS = {
         'act_type': _('Related act type'),
-        'is_key': _('Is key act'),
+        'is_key': _('Is key'),
+        'is_secret': _('Is secret'),
         'organ': _('Organ'),
         'votation_outcome': _('Outcome'),
         'n_presents_range': _('Presents'),
@@ -54,8 +55,9 @@ class VotationSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin
             self.DATE_INTERVALS_RANGES[curr_year] = date_range
     
         sqs = SearchQuerySet().filter(django_ct='votations.votation').\
-            facet('act_type').facet('is_key').facet('organ').\
-            facet('n_presents_range').facet('n_rebels_range').facet('n_variance').facet('votation_outcome')
+            facet('act_type').facet('is_key').facet('is_secret').facet('organ').\
+            facet('n_presents_range').facet('n_rebels_range').\
+            facet('n_variance').facet('votation_outcome')
 
         for (year, range) in self.DATE_INTERVALS_RANGES.items():
             sqs = sqs.query_facet('votation_date', range['qrange'])

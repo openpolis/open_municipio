@@ -150,6 +150,21 @@
                 {% endif %}
             </dl>
             <dl>
+                {% if facets.fields.is_secret and not facets.fields.is_secret.is_field_selected %}
+                    <dt>{{ facets_labels.is_secret }}</dt>
+                    {# Provide both cases (true, false) #}
+                    {% for t in facets.fields.is_secret.counts %}
+                        {% if t.1 %}
+                            <dd>
+                                {% if not t.2 %}
+                                    <a href="{{ base_url }}&selected_facets=is_secret:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
+                                {% endif %}
+                            </dd>
+                        {%  endif %}
+                    {% endfor %}
+                {% endif %}
+            </dl>
+            <dl>
                 {% if facets.fields.organ and not facets.fields.organ.is_field_selected %}
                     <dt>{{ facets_labels.organ }}</dt>
                     {# Provide both cases (true, false) #}

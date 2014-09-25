@@ -36,6 +36,7 @@ class VotationIndex(indexes.SearchIndex, indexes.Indexable):
     votation_n_maj = indexes.IntegerField(indexed=False, stored=True, model_attr='n_maj')
     votation_n_rebels = indexes.IntegerField(indexed=False, stored=True, model_attr='n_rebels')
     votation_outcome = indexes.FacetCharField(stored=True, default='')
+    is_secret = indexes.FacetCharField(stored=True, default='')
 
     # needed to filter votations by person
     person = indexes.MultiValueField(indexed=True, stored=False)
@@ -102,4 +103,11 @@ class VotationIndex(indexes.SearchIndex, indexes.Indexable):
         elif 7 <= v <= 15: return '7 - 15'
         elif 16 <= v <= 22: return '16 - 22'
         else: return '23+'
+
+    def prepare_is_secret(self, obj):
+
+        if obj.is_secret:
+            return _('yes')
+        else:
+            return _('no')
 
