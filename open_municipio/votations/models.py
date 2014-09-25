@@ -125,7 +125,6 @@ class Votation(models.Model):
         """
 
         if getattr(self, "slug", None) and self.slug:
-            print "resolving votation..."
             return ("om_votation_detail", (), {'slug': self.slug })
         else:
             return ("om_votation_detail", (), {'pk': self.pk })
