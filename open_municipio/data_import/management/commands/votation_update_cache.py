@@ -28,7 +28,7 @@ class Command(BaseCommand):
         n_absent = ChargeVote.objects.filter(votation=v, vote=ChargeVote.VOTES.absent).count()
 
 
-        cache_n_presents = n_yes + n_no + n_abstained + n_secrets
+        cache_n_presents = n_yes + n_no + n_pres + n_abstained + n_secrets
         cache_n_partecipants = n_yes + n_no + n_secrets
         cache_n_absents = n_absent + n_untracked
         cache_n_yes = n_yes
