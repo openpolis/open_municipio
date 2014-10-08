@@ -17,6 +17,7 @@ def defaults(request):
         'DEBUG': settings.DEBUG,
         'TEMPLATE_DEBUG': settings.TEMPLATE_DEBUG,
         'ALERT_POPUP': settings.ALERT_POPUP,
+        'ALERT_BAR': settings.ALERT_BAR,
         'ALERT_NAVBAR': settings.ALERT_NAVBAR,
         'GOOGLE_ANALYTICS': settings.WEB_SERVICES.get('google_analytics', None),
         'login_url': url,
