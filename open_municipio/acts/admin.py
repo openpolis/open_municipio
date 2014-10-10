@@ -122,14 +122,8 @@ class CalendarAdmin(admin.ModelAdmin):
     filter_horizontal = ( 'act_set' , )
 
 
-class ActAdminWithAttaches(admin.ModelAdmin):
-    inlines = [AttachInline, TransitionInline]
-
-class AmendmentAdmin(ActAdminWithAttaches):
+class AmendmentAdmin(ActAdmin):
     raw_id_fields = ("act", )
-
-class ActAdminWithAmendments(admin.ModelAdmin):
-    inlines = [AmendmentInline]
 
 
 class MotionAdmin(ActAdmin):
