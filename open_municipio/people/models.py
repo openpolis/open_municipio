@@ -674,7 +674,7 @@ class Group(models.Model):
 ##                ),
 ##            groupcharge__groupresponsability__end_date__isnull=True
 ##        )
-        group_members = self.groupcharge_set.exclude(
+        group_members = self.groupcharge_set.current().exclude(
             groupresponsability__charge_type__in=(
                 GroupResponsability.CHARGE_TYPES.leader,
                 GroupResponsability.CHARGE_TYPES.deputy
