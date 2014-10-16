@@ -543,6 +543,9 @@ class Charge:
     description = ""
     
     def __init__(self, id, start_date, charge, name, description):
+        # TODO not clear what the argument charge should be. we are building the 
+        # charge, so to what (existing) charge should a (new) charge be linked to?
+        # - FS
         self.id = id
         self.start_date = start_date
 #        self.person = person
