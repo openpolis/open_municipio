@@ -119,6 +119,10 @@ class Command(LabelCommand):
             # filter: institutional news of highest priority, only
             user_news = EmptyQuerySet()
             for mo in mos:
+
+                # in case of deleted objects being monitored yet (needs fix?)
+                if mo == None: continue
+
                 related_news = mo.related_news.\
                     filter(news_type=News.NEWS_TYPE.institutional).\
                     filter(priority__lte=2)
