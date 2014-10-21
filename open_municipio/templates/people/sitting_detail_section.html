@@ -1,4 +1,4 @@
-    <h2>Seduta num. {{ sitting.number }} del 
+    <h2>Seduta {% if sitting.number != None %} num. {{ sitting.number }} {% endif %} del 
         <a href="{{ sitting.get_absolute_url }}">{{ sitting.date }}</a></h2>
 
     <div class="sitting-nav">
