@@ -29,7 +29,37 @@ class AttendanceDetailView(DetailView):
 
         attendance = self.get_object()
 
-        context['n_absents'] = attendance.n_absents
+        ca = ChargeAttendance.objects.filter(attendance=attendance).order_by('charge__person__last_name', 'charge__person__first_name')
+
+        names_presents = self._get_names(ca, ["PRES",])
+        names_absents = self._get_names(ca, ["ABSENT","MISSION",])
+
+        context['n_presents'] = attendance.chargeattendance_set.filter(value=ChargeAttendance.VALUES.pres).count()
+        context['n_absents'] = attendance.chargeattendance_set.exclude(value=ChargeAttendance.VALUES.pres).count()
+        context['names_presents'] = names_presents
+        context['names_absents'] = names_absents
 
         return context
 
+    def _get_names(self, voters, value_list):
+        
+        matching = filter(lambda v: v.value in value_list, voters)
+
+        return ", ".join(map(self._get_label, matching))
+       
+
+    def _get_label(self, ca):
+
+        assert isinstance(ca, ChargeAttendance)
+
+        name = ca.charge.person.first_name
+        surname = ca.charge.person.last_name
+        group = ""
+        try:
+            group = " (%s)" % (ca.charge.current_groupcharge.group.acronym,)
+        except: 
+            pass
+
+        label = "%s. %s%s" % (name[0], surname, group)
+
+        return label

@@ -195,6 +195,10 @@
                   <br/>
                   <a href="{{ transition.votation.get_absolute_url }}">{% trans "votation" %}</a>
               {% endif %}
+              {% if transition.attendance %}
+                  <br/>
+                  <a href="{{ transition.attendance.get_absolute_url }}">{% trans "attendance" %}</a>
+              {% endif %}
             </p>
           </li>
         </ul>

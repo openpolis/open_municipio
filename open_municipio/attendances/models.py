@@ -73,6 +73,10 @@ class Attendance(models.Model):
         if self.sitting:
             date = _(' of %(date)s') % { 'date':self.sitting.date, }
         return _('Attendance%(idnum)s%(date)s') % { 'idnum':idnum, 'date':date }
+    
+    @property
+    def charge_attendances(self):
+        return self.chargeattendance_set.all()
 
 
 class ChargeAttendance(TimeStampedModel):

@@ -74,14 +74,13 @@
       Seduta <strong>n.{{ attendance.sitting.number }}</strong>
       del <strong>{{ attendance.sitting.date|date:"d/m/Y" }}</strong>
       {% endif %} <br/>
-      {% if attendance.ref_act %}
       <h3>
+      {% if attendance.ref_act %}
       {{ attendance.ref_act.adj_title|default:attendance.ref_act.title }}
-      </h3>
-      <br/>
-
+      {% else %}
+      {{ attendance.act_descr }}
       {% endif %}
-      <strong>{{ attendance.act_descr }}</strong>
+      </h3>
     </p>
     <p>
       {% if attendance.ref_act %}
@@ -106,44 +105,29 @@
           <thead>
           <tr>
             <th class="sorter-left text-left span4">Politico</th>
-            <th>Favorevole</th>
-            <th>Contrario</th>
-            <th>Astenuto</th>
+            <th>Presente</th>
             <th>Assente</th>
           </tr>
           </thead>
           <tbody>
-          {% for charge_vote in attendance.charge_votes %}
-            {% with charge_vote.charge.person as politician %}
+          {% for charge_attendance in attendance.charge_attendances %}
+            {% with charge_attendance.charge.person as politician %}
               <tr>
                 <td class="text-left">
                   <a href="{{ politician.get_absolute_url }}">
                     <strong>{{ politician.full_name }}</strong>
-                    {% with curr_group=charge_vote.charge|get_current_group:attendance.sitting.date %}
-                    ({{ curr_group.acronym }})
-                    {% endwith %}
                   </a>
                 </td>
                 <td>
-                  {% if charge_vote.vote == charge_vote.VOTES.yes %}
-                    <span class="label label-success">Favorevole</span>
+                  {% if charge_attendance.value == charge_attendance.VALUES.pres %}
+                    <span class="label label-success">Presente</span>
                   {% endif %}
                 </td>
                 <td>
-                  {% if charge_vote.vote == charge_vote.VOTES.no %}
-                    <span class="label label-important">Contrario</span>
-                  {% endif %}
-                </td>
-                <td>
-                  {% if charge_vote.vote == charge_vote.VOTES.abstained %}
-                    <span class="label">Astenuto</span>
-                  {% elif charge_vote.vote == charge_vote.VOTES.pres %}
-                    <span class="label">Pres. non vot.</span>
-                  {% endif %}
-                </td>
-                <td>
-                  {% if charge_vote.vote == charge_vote.VOTES.absent %}
-                    <span class="label label-text">Assente</span>
+                  {% if charge_attendance.value == charge_attendance.VALUES.absent %}
+                    <span class="label label-important">Assente</span>
+                  {% elif charge_attendance.value == charge_attendance.VALUES.mission %}
+                    <span class="label">In missione</span>
                   {% endif %}
                 </td>
               </tr>
@@ -161,9 +145,9 @@
 
   <table class="stats">
     <tr>
-      <td title="{{ names_yes|default:"Nessuno" }}">{{ attendance.n_presents|circled:"voteok" }}</td>
+      <td title="{{ names_presents|default:"Nessuno" }}">{{ attendance.n_presents|circled:"voteok" }}</td>
       <th class="span6">Presenti</th>
-      <td title="{{ names_no|default:"Nessuno" }}">{{ attendance.n_absents|circled:"voteko" }}</td>
+      <td title="{{ names_absents|default:"Nessuno" }}">{{ attendance.n_absents|circled:"voteko" }}</td>
       <th class="span6">Assenti</th>
     </tr>
   </table>
@@ -172,13 +156,14 @@
 
   <div class="tabbable">
     <ul class="nav nav-tabs">
-      <li class="active"><a href="#chart-tab-presents" data-toggle="tab">Presenti</a></li>
+      <li class="active"><a href="#chart-tab-presents" data-toggle="tab">Presenze</a></li>
     </ul>
     <div class="tab-content">
       <!-- presents -->
       <div class="tab-pane active" id="chart-tab-presents">
+        <p><img src="https://chart.googleapis.com/chart?cht=p&chs=368x154&chl=Presenti {{ attendance.n_presents }}|Assenti {{ attendance.n_absents }}&chd=t:{{ attendance.n_presents }},{{ attendance.n_absents }}&chco=285698,e2e4e6">
+        </p>
       </div>
-
     </div>
   </div>
 
