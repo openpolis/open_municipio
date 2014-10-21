@@ -61,19 +61,8 @@
   <div class="attendance-metadata">
     <p class="big">
       <a href="#" id="{{ attendance|as_token }}" class="bookmarkable"><i class="{% is_key_class attendance %}"></i></a>
-      {% if attendance.sitting.get_absolute_url %}
-      <a href="{{ attendance.sitting.get_absolute_url }}">
-      {% if attendance.sitting.number %}
-      Seduta <strong>n.{{ attendance.sitting.number }}</strong>
-      {% else %}
-      Seduta
-      {% endif %}
-      del <strong>{{ attendance.sitting.date|date:"d/m/Y" }}</strong>
-      </a>
-      {% else %}
-      Seduta <strong>n.{{ attendance.sitting.number }}</strong>
-      del <strong>{{ attendance.sitting.date|date:"d/m/Y" }}</strong>
-      {% endif %} <br/>
+      Seduta {% if attendance.sitting.number %}<strong>n. {{ attendance.sitting.number }}</strong>{% endif %}
+      del <strong>{{ attendance.sitting.date|date:"d/m/Y" }}</strong><br/>
       <h3>
       {% if attendance.ref_act %}
       {{ attendance.ref_act.adj_title|default:attendance.ref_act.title }}
