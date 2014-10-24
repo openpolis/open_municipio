@@ -303,6 +303,7 @@ class ActDetailView(DetailView):
         context['n_documents'] = act.attachment_set.count()
         context['n_votes'] = act.votation_set.count()
         context['n_amendments'] = act.amendment_set.count()
+        context['n_speeches'] = len(act.speeches)
 
         # retrieve a dictionary with status and its transitions
         context['act_type'] = act._meta.verbose_name
@@ -563,6 +564,10 @@ class SpeechSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
     def build_form(self, form_kwargs=None):
         if form_kwargs is None:
             form_kwargs = {}
+
+        # This way the form can always receive a list containing zero or more
+        # facet expressions:
+        form_kwargs['act_url'] = self.request.GET.get("act_url")
 
         return super(SpeechSearchView, self).build_form(form_kwargs)
 

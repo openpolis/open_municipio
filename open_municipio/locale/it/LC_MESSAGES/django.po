@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-05 08:45+0200\n"
+"POT-Creation-Date: 2014-10-23 23:05+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,28 +29,28 @@ msgstr "anno"
 msgid "month"
 msgstr "mese"
 
-#: filters.py:89 acts/models.py:739 people/models.py:263
+#: filters.py:89 acts/models.py:827 people/models.py:263
 msgid "type"
 msgstr "tipo"
 
-#: acts/admin.py:151
+#: acts/admin.py:145
 msgid "Speech in act"
 msgstr "Intervento collegato"
 
-#: acts/admin.py:152
+#: acts/admin.py:146
 msgid "Speeches in act"
 msgstr "Interventi collegati"
 
-#: acts/admin.py:277 acts/models.py:62 acts/models.py:780
+#: acts/admin.py:271 acts/models.py:64 acts/models.py:868
 msgid "title"
 msgstr "titolo"
 
-#: acts/admin.py:285 acts/admin.py:327 acts/models.py:258
+#: acts/admin.py:279 acts/admin.py:321 acts/models.py:321
 #: attendances/models.py:20 data_import/models.py:163
 msgid "act"
 msgstr "atto"
 
-#: acts/admin.py:294
+#: acts/admin.py:288
 msgid "act type"
 msgstr "Tipo di atto"
 
@@ -67,345 +67,345 @@ msgstr ""
 msgid "The same speech cannot be referred twice by an act"
 msgstr "Lo stesso intervento non può riferirsi a più di un atto"
 
-#: acts/models.py:56 acts/models.py:334 acts/models.py:392 acts/models.py:447
-#: acts/models.py:536 acts/models.py:623 acts/models.py:653 acts/models.py:684
+#: acts/models.py:58 acts/models.py:398 acts/models.py:461 acts/models.py:519
+#: acts/models.py:610 acts/models.py:699 acts/models.py:733 acts/models.py:768
 msgid "presented"
 msgstr "presentato"
 
-#: acts/models.py:57 acts/models.py:329 acts/models.py:337 acts/models.py:387
-#: acts/models.py:395 acts/models.py:618 acts/models.py:625 acts/models.py:648
-#: acts/models.py:655 acts/models.py:678 acts/models.py:685
+#: acts/models.py:59 acts/models.py:393 acts/models.py:401 acts/models.py:456
+#: acts/models.py:464 acts/models.py:694 acts/models.py:701 acts/models.py:728
+#: acts/models.py:735 acts/models.py:762 acts/models.py:769
 msgid "approved"
 msgstr "approvato"
 
-#: acts/models.py:58 acts/models.py:330 acts/models.py:338 acts/models.py:388
-#: acts/models.py:396 acts/models.py:619 acts/models.py:626 acts/models.py:649
-#: acts/models.py:656 acts/models.py:679 acts/models.py:686
+#: acts/models.py:60 acts/models.py:394 acts/models.py:402 acts/models.py:457
+#: acts/models.py:465 acts/models.py:695 acts/models.py:702 acts/models.py:729
+#: acts/models.py:736 acts/models.py:763 acts/models.py:770
 msgid "rejected"
 msgstr "rifiutato"
 
-#: acts/models.py:61
+#: acts/models.py:63
 msgid ""
 "A string representing the identification or sequence number for this act, "
 "used internally by the municipality's administration."
 msgstr ""
 "Una stringa ideitificativa dell'atto, usata dal Comune al proprio interno"
 
-#: acts/models.py:63
+#: acts/models.py:65
 msgid "adjoint title"
 msgstr "titolo aggiuntivo"
 
-#: acts/models.py:63
+#: acts/models.py:65
 msgid "An adjoint title, added to further explain an otherwise cryptic title"
 msgstr "Un titolo aggiunto, per spiegare meglio un titolo altrimenti criptico"
 
-#: acts/models.py:64
+#: acts/models.py:66
 msgid "presentation date"
 msgstr "data di presentazione"
 
-#: acts/models.py:64
+#: acts/models.py:66
 msgid "Date of presentation, as stated in the act"
 msgstr "Data di presentazione, come risulta sull'atto"
 
-#: acts/models.py:65 data_import/models.py:16 people/models.py:265
-#: people/models.py:292 people/models.py:322 people/models.py:829
+#: acts/models.py:67 data_import/models.py:16 people/models.py:265
+#: people/models.py:292 people/models.py:322 people/models.py:849
 msgid "description"
 msgstr "descrizione"
 
-#: acts/models.py:66 acts/models.py:741 newscache/models.py:54
+#: acts/models.py:68 acts/models.py:829 newscache/models.py:54
 msgid "text"
 msgstr "testo"
 
-#: acts/models.py:67
+#: acts/models.py:69
 msgid "presenters"
 msgstr "firmatari"
 
-#: acts/models.py:68
+#: acts/models.py:70
 msgid "recipients"
 msgstr "destinatari"
 
-#: acts/models.py:69
+#: acts/models.py:71
 msgid "emitting institution"
 msgstr "istituzione emittente"
 
-#: acts/models.py:70 taxonomy/models.py:76
+#: acts/models.py:72 taxonomy/models.py:76
 msgid "categories"
 msgstr "categorie"
 
-#: acts/models.py:71 locations/models.py:35
+#: acts/models.py:73 locations/models.py:35
 msgid "locations"
 msgstr "località"
 
-#: acts/models.py:73
+#: acts/models.py:75
 msgid "Specify whether this act should be featured"
 msgstr "Specifica se questo è un atto chiave"
 
-#: acts/models.py:181 acts/search_indexes.py:51 acts/search_indexes.py:82
-#: votations/models.py:68
+#: acts/models.py:209 acts/search_indexes.py:53 acts/search_indexes.py:98
+#: votations/models.py:73 votations/search_indexes.py:110
 msgid "yes"
 msgstr "sì"
 
-#: acts/models.py:183 acts/search_indexes.py:49 acts/search_indexes.py:80
-#: votations/models.py:70
+#: acts/models.py:211 acts/search_indexes.py:51 acts/search_indexes.py:96
+#: votations/models.py:75 votations/search_indexes.py:112
 msgid "no"
 msgstr ""
 
-#: acts/models.py:259
+#: acts/models.py:322
 msgid "acts"
 msgstr "atti"
 
-#: acts/models.py:293
+#: acts/models.py:357
 msgid "first signer"
 msgstr "firmatario"
 
-#: acts/models.py:294
+#: acts/models.py:358
 msgid "co-signer"
 msgstr "co-firmatario"
 
-#: acts/models.py:300
+#: acts/models.py:364
 msgid "support date"
 msgstr "data di sottoscrizione"
 
-#: acts/models.py:322 acts/models.py:380 people/models.py:528
-#: people/models.py:550
+#: acts/models.py:386 acts/models.py:449 people/models.py:535
+#: people/models.py:557
 msgid "President"
 msgstr "Presidente"
 
-#: acts/models.py:323 acts/models.py:381
+#: acts/models.py:387 acts/models.py:450
 msgid "City Government Member"
 msgstr "Assessore"
 
-#: acts/models.py:324 acts/models.py:382
+#: acts/models.py:388 acts/models.py:451
 msgid "City Government"
 msgstr "Giunta"
 
-#: acts/models.py:325 acts/models.py:383 acts/search_indexes.py:66
-#: people/models.py:373 people/models.py:447 people/models.py:526
-#: people/models.py:855
+#: acts/models.py:389 acts/models.py:452 acts/search_indexes.py:82
+#: people/models.py:375 people/models.py:449 people/models.py:533
+#: people/models.py:875
 msgid "Mayor"
 msgstr "Sindaco"
 
-#: acts/models.py:335 acts/models.py:393
+#: acts/models.py:399 acts/models.py:462
 msgid "committee"
 msgstr "commissione"
 
-#: acts/models.py:336 acts/models.py:394 acts/models.py:624 acts/models.py:654
+#: acts/models.py:400 acts/models.py:463 acts/models.py:700 acts/models.py:734
 msgid "council"
 msgstr "consiglio"
 
-#: acts/models.py:341 acts/models.py:399 acts/models.py:452 acts/models.py:541
-#: acts/models.py:629 acts/models.py:659 acts/models.py:689
+#: acts/models.py:407 acts/models.py:470 acts/models.py:526 acts/models.py:617
+#: acts/models.py:708 acts/models.py:742 acts/models.py:776
 msgid "status"
 msgstr "stato"
 
-#: acts/models.py:342 acts/models.py:400
+#: acts/models.py:408 acts/models.py:471
 msgid "approval date"
 msgstr "data di approvazione"
 
-#: acts/models.py:343 acts/models.py:401
+#: acts/models.py:409 acts/models.py:472
 msgid "publication date"
 msgstr "data di pubblicazione"
 
-#: acts/models.py:344 acts/models.py:402
+#: acts/models.py:410 acts/models.py:473
 msgid "Internal identification string for the deliberation, when approved"
 msgstr ""
 "Identificativo della delibera approvata usato dal Comune al proprio interno"
 
-#: acts/models.py:345 acts/models.py:403
+#: acts/models.py:411 acts/models.py:474
 msgid "execution date"
 msgstr "data di esecutività"
 
-#: acts/models.py:346 acts/models.py:404
+#: acts/models.py:412 acts/models.py:475
 msgid "initiative"
 msgstr "iniziativa"
 
-#: acts/models.py:350
+#: acts/models.py:416
 msgid "city government deliberation"
 msgstr "delibera di giunta"
 
-#: acts/models.py:351
+#: acts/models.py:417
 msgid "city government deliberations"
 msgstr "delibere di giunta"
 
-#: acts/models.py:379 people/models.py:389 people/models.py:451
+#: acts/models.py:448 people/models.py:391 people/models.py:453
 msgid "Counselor"
 msgstr "Consigliere"
 
-#: acts/models.py:408
+#: acts/models.py:479
 msgid "deliberation"
 msgstr "delibera"
 
-#: acts/models.py:409
+#: acts/models.py:480
 msgid "deliberations"
 msgstr "delibere"
 
-#: acts/models.py:437 acts/models.py:526
+#: acts/models.py:509 acts/models.py:600
 msgid "Written"
 msgstr "Scritto"
 
-#: acts/models.py:438 acts/models.py:527
+#: acts/models.py:510 acts/models.py:601
 msgid "Verbal"
 msgstr "Orale"
 
-#: acts/models.py:442 acts/models.py:448 acts/models.py:531 acts/models.py:537
+#: acts/models.py:514 acts/models.py:520 acts/models.py:605 acts/models.py:611
 msgid "answered"
 msgstr "risposta"
 
-#: acts/models.py:443 acts/models.py:449 acts/models.py:532 acts/models.py:538
+#: acts/models.py:515 acts/models.py:521 acts/models.py:606 acts/models.py:612
 msgid "not answered"
 msgstr "non risposta"
 
-#: acts/models.py:453 acts/models.py:542
+#: acts/models.py:527 acts/models.py:618
 msgid "answer type"
 msgstr "tipo di risposta"
 
-#: acts/models.py:459 people/models.py:1193
+#: acts/models.py:533 people/models.py:1213
 msgid "interrogation"
 msgstr "interrogazione"
 
-#: acts/models.py:460
+#: acts/models.py:534
 msgid "interrogations"
 msgstr "interrogazioni"
 
-#: acts/models.py:547
+#: acts/models.py:623
 msgid "interpellation"
 msgstr "interpellanza"
 
-#: acts/models.py:548
+#: acts/models.py:624
 msgid "interpellations"
 msgstr "interpellanze"
 
-#: acts/models.py:632
+#: acts/models.py:711
 msgid "motion"
 msgstr "mozione"
 
-#: acts/models.py:633
+#: acts/models.py:712
 msgid "motions"
 msgstr "mozioni"
 
-#: acts/models.py:662 acts/models.py:663
+#: acts/models.py:745 acts/models.py:746
 msgid "agenda"
 msgstr "ordine del giorno"
 
-#: acts/models.py:695
+#: acts/models.py:782
 msgid "amendment"
 msgstr "emendamento"
 
-#: acts/models.py:696
+#: acts/models.py:783
 msgid "amendments"
 msgstr "emendamenti"
 
-#: acts/models.py:706
+#: acts/models.py:794
 msgid "final status"
 msgstr "stato finale"
 
-#: acts/models.py:711
+#: acts/models.py:799
 msgid "symbol"
 msgstr "simbolo"
 
-#: acts/models.py:712
+#: acts/models.py:800
 msgid "note"
 msgstr "nota"
 
-#: acts/models.py:716 acts/models.py:717
+#: acts/models.py:804 acts/models.py:805
 msgid "status transition"
 msgstr "transizione di stato"
 
-#: acts/models.py:738 acts/models.py:844
+#: acts/models.py:826 acts/models.py:953
 msgid "date"
 msgstr "data"
 
-#: acts/models.py:740
+#: acts/models.py:828
 msgid "size"
 msgstr "dimensione"
 
-#: acts/models.py:761
+#: acts/models.py:849
 msgid "attach"
 msgstr "allegato"
 
-#: acts/models.py:762
+#: acts/models.py:850
 msgid "attaches"
 msgstr "allegati"
 
-#: acts/models.py:782 acts/models.py:851
+#: acts/models.py:870 acts/models.py:960
 msgid "author"
 msgstr "autore"
 
-#: acts/models.py:783
+#: acts/models.py:871
 msgid "author name when external"
 msgstr "nome dell'autore se esterno"
 
-#: acts/models.py:784 data_import/models.py:164
-#: templates/acts/act_table_transitions.html:196 votations/models.py:77
-#: votations/models.py:209
+#: acts/models.py:872 data_import/models.py:164
+#: templates/acts/act_table_transitions.html:196 votations/models.py:111
+#: votations/models.py:256
 msgid "votation"
 msgstr "votazione"
 
-#: acts/models.py:786
+#: acts/models.py:874
 msgid "initial_time"
 msgstr "ora di inizio"
 
-#: acts/models.py:787
+#: acts/models.py:875
 msgid "duration"
 msgstr "durata"
 
-#: acts/models.py:788
+#: acts/models.py:876
 msgid "sequential order"
 msgstr "ordine sequenziale"
 
-#: acts/models.py:789
+#: acts/models.py:877
 msgid "initial time"
 msgstr "ora di inizio"
 
-#: acts/models.py:791
+#: acts/models.py:879
 msgid "audio url"
 msgstr "url del file audio"
 
-#: acts/models.py:792
+#: acts/models.py:880
 msgid "audio file"
 msgstr "percorso del file audio"
 
-#: acts/models.py:795
+#: acts/models.py:884
 msgid "speech"
 msgstr "intervento"
 
-#: acts/models.py:796
+#: acts/models.py:885
 msgid "speeches"
 msgstr "interventi"
 
-#: acts/models.py:858 attendances/models.py:19 people/models.py:1135
+#: acts/models.py:967 attendances/models.py:19 people/models.py:1155
 msgid "sitting"
 msgstr "seduta"
 
-#: acts/models.py:868
+#: acts/models.py:977
 msgid "request"
 msgstr "richiesta"
 
-#: acts/models.py:869
+#: acts/models.py:978
 msgid "response"
 msgstr "risposta"
 
-#: acts/models.py:870
+#: acts/models.py:979
 msgid "reference"
 msgstr "riferimento"
 
-#: acts/models.py:878
+#: acts/models.py:987
 msgid "act mentioned in speech"
 msgstr "atto menzionato nell'intervento"
 
-#: acts/models.py:879
+#: acts/models.py:988
 msgid "acts mentioned in speech"
 msgstr "atti menzionati nell'intervento"
 
-#: acts/models.py:905 acts/models.py:906
+#: acts/models.py:1014 acts/models.py:1015
 msgid "calendar"
 msgstr "calendario"
 
-#: acts/search_indexes.py:69 people/models.py:857
+#: acts/search_indexes.py:85 people/models.py:877
 msgid "Town government"
 msgstr "Giunta"
 
-#: acts/search_indexes.py:72 people/models.py:856
+#: acts/search_indexes.py:88 people/models.py:876
 msgid "Council"
 msgstr "Consiglio"
 
@@ -413,7 +413,7 @@ msgstr "Consiglio"
 msgid "Act type"
 msgstr "Tipo di atto"
 
-#: acts/views.py:52 votations/views.py:38
+#: acts/views.py:52
 msgid "Is key act"
 msgstr "Atto chiave"
 
@@ -425,7 +425,7 @@ msgstr "In esame"
 msgid "Initiative"
 msgstr "Iniziativa"
 
-#: acts/views.py:55 votations/views.py:39
+#: acts/views.py:55 votations/views.py:40
 msgid "Organ"
 msgstr "Organo"
 
@@ -447,7 +447,7 @@ msgstr "è collegato"
 
 #: attendances/filters.py:22
 msgid "is_linked"
-msgstr ""
+msgstr "è collegato"
 
 #: attendances/models.py:18
 msgid "idact"
@@ -481,7 +481,8 @@ msgstr "Specifica se questo intervento deve essere evidenziato"
 msgid "is key"
 msgstr "in evidenza"
 
-#: attendances/models.py:61 attendances/models.py:89
+#: attendances/models.py:61 attendances/models.py:93
+#: templates/acts/act_table_transitions.html:200
 msgid "attendance"
 msgstr "presenza"
 
@@ -499,36 +500,36 @@ msgstr ""
 msgid "Attendance%(idnum)s%(date)s"
 msgstr ""
 
-#: attendances/models.py:83
+#: attendances/models.py:87
 msgid "Present"
 msgstr "Presente"
 
-#: attendances/models.py:84
+#: attendances/models.py:88
 msgid "Absent"
 msgstr "Assente"
 
-#: attendances/models.py:85
+#: attendances/models.py:89
 msgid "Absent for mission"
 msgstr "Assente per missione"
 
-#: attendances/models.py:86
+#: attendances/models.py:90
 msgid "N/A"
 msgstr "N/D"
 
-#: attendances/models.py:90 people/models.py:264
+#: attendances/models.py:94 people/models.py:264
 msgid "value"
 msgstr "valore"
 
-#: attendances/models.py:91 people/models.py:533 people/models.py:780
-#: votations/models.py:211
+#: attendances/models.py:95 people/models.py:540 people/models.py:800
+#: votations/models.py:258
 msgid "charge"
 msgstr "carica"
 
-#: attendances/models.py:94
+#: attendances/models.py:98
 msgid "charge attendance"
 msgstr "presenza della carica"
 
-#: attendances/models.py:95
+#: attendances/models.py:99
 msgid "charge attendances"
 msgstr "presenze della carica"
 
@@ -795,7 +796,12 @@ msgstr ""
 msgid "Advanced options"
 msgstr "Opzioni avanzate"
 
-#: people/admin.py:229
+#: people/admin.py:158
+#, fuzzy
+msgid "Presences"
+msgstr "Presenti"
+
+#: people/admin.py:233
 msgid "Move"
 msgstr "Sposta"
 
@@ -880,11 +886,11 @@ msgstr "informazioni finanziarie"
 msgid "Resource"
 msgstr "Risorsa"
 
-#: people/models.py:276 people/models.py:343 people/models.py:867
+#: people/models.py:276 people/models.py:343 people/models.py:887
 msgid "institution"
 msgstr "istituzione"
 
-#: people/models.py:279 people/models.py:607
+#: people/models.py:279 people/models.py:614
 msgid "group"
 msgstr "gruppo"
 
@@ -926,180 +932,197 @@ msgstr ""
 msgid "original institution charge"
 msgstr ""
 
-#: people/models.py:355
+#: people/models.py:349
+msgid "number of presences during votes"
+msgstr ""
+
+#: people/models.py:350
+msgid "number of absences during votes"
+msgstr ""
+
+#: people/models.py:351
+msgid "number of present attendances"
+msgstr ""
+
+#: people/models.py:352
+#, fuzzy
+msgid "number of absent attendances"
+msgstr "presenze della carica"
+
+#: people/models.py:357
 msgid "institution charge"
 msgstr "carica istituzionale"
 
-#: people/models.py:356
+#: people/models.py:358
 msgid "institution charges"
 msgstr "cariche istituzionali"
 
-#: people/models.py:394
+#: people/models.py:396
 msgid "Member"
 msgstr "Membro"
 
-#: people/models.py:449
+#: people/models.py:451
 msgid "City government member"
 msgstr "Assessore"
 
-#: people/models.py:453
+#: people/models.py:455
 msgid "Committee member"
 msgstr "Consigliere"
 
-#: people/models.py:527
+#: people/models.py:534
 msgid "First deputy mayor"
 msgstr ""
 
-#: people/models.py:529 people/models.py:551
+#: people/models.py:536 people/models.py:558
 msgid "Vice president"
 msgstr "Vice presidente"
 
-#: people/models.py:530
+#: people/models.py:537
 msgid "Vice vice president"
 msgstr "Vice vice presidente"
 
-#: people/models.py:534 people/models.py:556 people/models.py:580
-#: people/models.py:779 templates/people/institution_detail.html:21
+#: people/models.py:541 people/models.py:563 people/models.py:587
+#: people/models.py:799 templates/people/institution_detail.html:21
 msgid "charge type"
 msgstr "tipo di carica"
 
-#: people/models.py:536
+#: people/models.py:543
 msgid "institutional responsability"
 msgstr "responsabilità istituzionale"
 
-#: people/models.py:537
+#: people/models.py:544
 msgid "institutional responsabilities"
 msgstr "responsabilità istituzionali"
 
-#: people/models.py:549
+#: people/models.py:556
 msgid "Chief Executive Officer"
 msgstr "Amministratore delegato"
 
-#: people/models.py:552
+#: people/models.py:559
 msgid "Member of the board"
 msgstr ""
 
-#: people/models.py:555 people/models.py:1079
+#: people/models.py:562 people/models.py:1099
 msgid "company"
 msgstr "azienda"
 
-#: people/models.py:560
+#: people/models.py:567
 msgid "organization charge"
 msgstr "Incarico in municipalizzate"
 
-#: people/models.py:561
+#: people/models.py:568
 msgid "organization charges"
 msgstr "Incarichi in municipalizzate"
 
-#: people/models.py:575
+#: people/models.py:582
 msgid "Director"
 msgstr "Direttore"
 
-#: people/models.py:576
+#: people/models.py:583
 msgid "Executive"
 msgstr ""
 
-#: people/models.py:579 people/models.py:1100
+#: people/models.py:586 people/models.py:1120
 msgid "office"
 msgstr "ufficio"
 
-#: people/models.py:584
+#: people/models.py:591
 msgid "administration charge"
 msgstr "incarico amministrativo"
 
-#: people/models.py:585
+#: people/models.py:592
 msgid "administration charges"
 msgstr "incarichi amministrativi"
 
-#: people/models.py:599 people/models.py:828
+#: people/models.py:606 people/models.py:848
 msgid "Suggested value automatically generated from name, must be unique"
 msgstr ""
 
-#: people/models.py:608
+#: people/models.py:615
 msgid "groups"
 msgstr "gruppi"
 
-#: people/models.py:762
+#: people/models.py:782
 msgid "group charge"
 msgstr "incarico di gruppo"
 
-#: people/models.py:763
+#: people/models.py:783
 msgid "group charges"
 msgstr "incarichi di gruppo"
 
-#: people/models.py:776
+#: people/models.py:796
 msgid "Group leader"
 msgstr "Capogruppo"
 
-#: people/models.py:777
+#: people/models.py:797
 msgid "Group deputy leader"
 msgstr "Vice capogruppo"
 
-#: people/models.py:798
+#: people/models.py:818
 msgid "Is majority"
 msgstr "E' maggioranza"
 
-#: people/models.py:799
+#: people/models.py:819
 msgid "Start date"
 msgstr "Data di inizio"
 
-#: people/models.py:800
+#: people/models.py:820
 msgid "End date"
 msgstr "Data di fine"
 
-#: people/models.py:805
+#: people/models.py:825
 msgid "group majority"
 msgstr "maggioranza di gruppo"
 
-#: people/models.py:806
+#: people/models.py:826
 msgid "group majorities"
 msgstr "maggioranze di gruppo"
 
-#: people/models.py:827 templates/people/institution_detail.html:20
+#: people/models.py:847 templates/people/institution_detail.html:20
 msgid "name"
 msgstr "nome"
 
-#: people/models.py:858
+#: people/models.py:878
 msgid "Committee"
 msgstr "Commissione"
 
-#: people/models.py:859
+#: people/models.py:879
 msgid "Joint committee"
 msgstr "Commissione congiunta"
 
-#: people/models.py:868
+#: people/models.py:888
 msgid "institutions"
 msgstr "istituzioni"
 
-#: people/models.py:1080
+#: people/models.py:1100
 msgid "companies"
 msgstr "aziende"
 
-#: people/models.py:1101
+#: people/models.py:1121
 msgid "offices"
 msgstr "uffici"
 
-#: people/models.py:1136
+#: people/models.py:1156
 msgid "sittings"
 msgstr "sedute"
 
-#: people/models.py:1191
+#: people/models.py:1211
 msgid "ordine del giorno"
 msgstr ""
 
-#: people/models.py:1192
+#: people/models.py:1212
 msgid "questione procedurale"
 msgstr ""
 
-#: people/models.py:1199
+#: people/models.py:1219
 msgid "seq_order"
 msgstr ""
 
-#: people/models.py:1203
+#: people/models.py:1223
 msgid "sitting item"
 msgstr ""
 
-#: people/models.py:1204
+#: people/models.py:1224
 msgid "sitting items"
 msgstr ""
 
@@ -1181,16 +1204,16 @@ msgstr "Report PDF"
 msgid "RTF Report"
 msgstr "Report RTF"
 
-#: templates/commons/comments.html:21
+#: templates/commons/comments.html:23
 #, python-format
 msgid "You still have %(seconds)s seconds to delete this comment"
 msgstr "Hai ancora %(seconds)s secondi per rimuovere questo commento"
 
-#: templates/commons/comments.html:23
+#: templates/commons/comments.html:25
 msgid "Delete"
 msgstr "Rimuovi"
 
-#: templates/commons/comments.html:61
+#: templates/commons/comments.html:63
 msgid "Post"
 msgstr "Invia"
 
@@ -1274,7 +1297,7 @@ msgstr "tutti"
 msgid "some"
 msgstr "alcuni"
 
-#: users/models.py:50 votations/search_indexes.py:57
+#: users/models.py:50 votations/search_indexes.py:58
 msgid "none"
 msgstr "nessuno"
 
@@ -1302,76 +1325,76 @@ msgstr "Gruppo al momento del voto"
 msgid "Any"
 msgstr "Tutti"
 
-#: votations/filters.py:36 votations/models.py:167 votations/models.py:199
+#: votations/filters.py:36 votations/models.py:214 votations/models.py:246
 msgid "Yes"
 msgstr "Sì"
 
-#: votations/filters.py:40 votations/models.py:168 votations/models.py:200
+#: votations/filters.py:40 votations/models.py:215 votations/models.py:247
 msgid "No"
 msgstr "No"
 
-#: votations/models.py:47
+#: votations/models.py:51
 msgid "Specify whether this is a key votation"
 msgstr "Specifica se questo è un voto chiave"
 
-#: votations/models.py:78
+#: votations/models.py:112
 msgid "votations"
 msgstr "votazioni"
 
-#: votations/models.py:82
+#: votations/models.py:118
 #, python-format
 msgid "Votation %(idnum)s"
 msgstr "Votazione %(idnum)s"
 
-#: votations/models.py:169 votations/models.py:201
+#: votations/models.py:216 votations/models.py:248
 msgid "Abstained"
 msgstr "Astenuto"
 
-#: votations/models.py:170
+#: votations/models.py:217
 msgid "Non computable"
 msgstr "Non calcolabile"
 
-#: votations/models.py:187
+#: votations/models.py:234
 msgid "group vote"
 msgstr "voto del gruppo"
 
-#: votations/models.py:188
+#: votations/models.py:235
 msgid "group votes"
 msgstr "voti del gruppo"
 
-#: votations/models.py:202
+#: votations/models.py:249
 msgid "Vote was canceled"
 msgstr "Il voto è stato cancellato"
 
-#: votations/models.py:203
+#: votations/models.py:250
 msgid "Present but not voting"
 msgstr "Presente non votante"
 
-#: votations/models.py:204
+#: votations/models.py:251
 msgid "Secret votation"
 msgstr "Voto segreto"
 
-#: votations/models.py:205
+#: votations/models.py:252
 msgid "Is absent"
 msgstr "E' assente"
 
-#: votations/models.py:206
+#: votations/models.py:253
 msgid "Vote was not tracked"
 msgstr "Voto non tracciato"
 
-#: votations/models.py:210
+#: votations/models.py:257
 msgid "vote"
 msgstr "voto"
 
-#: votations/models.py:212
+#: votations/models.py:259
 msgid "is rebel"
 msgstr "è ribelle"
 
-#: votations/models.py:231
+#: votations/models.py:278
 msgid "charge vote"
 msgstr "voto della carica"
 
-#: votations/models.py:232
+#: votations/models.py:279
 msgid "charge votes"
 msgstr "voti della carica"
 
@@ -1379,23 +1402,31 @@ msgstr "voti della carica"
 msgid "Related act type"
 msgstr "Tipo di atto associato"
 
-#: votations/views.py:40
+#: votations/views.py:38
+msgid "Is key"
+msgstr "In evidenza"
+
+#: votations/views.py:39
+msgid "Is secret"
+msgstr "Segreto"
+
+#: votations/views.py:41
 msgid "Outcome"
 msgstr "Esito"
 
-#: votations/views.py:41
+#: votations/views.py:42
 msgid "Presents"
 msgstr "Presenti"
 
-#: votations/views.py:42
+#: votations/views.py:43
 msgid "Rebels"
 msgstr "Ribelli"
 
-#: votations/views.py:43
+#: votations/views.py:44
 msgid "Votation variance"
 msgstr "Voti di scarto"
 
-#: votations/views.py:44
+#: votations/views.py:45
 msgid "Votation year"
 msgstr "Anno del voto"
 

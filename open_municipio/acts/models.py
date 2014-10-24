@@ -23,7 +23,7 @@ from model_utils.fields import StatusField
 
 from open_municipio.newscache.models import News, NewsTargetMixin
 
-from open_municipio.people.models import Institution, InstitutionCharge, Person
+from open_municipio.people.models import Institution, InstitutionCharge, Person, SittingItem
 from open_municipio.taxonomy.managers import TopicableManager
 from open_municipio.monitoring.models import MonitorizedItem, Monitoring
 from django.core.urlresolvers import resolve, reverse
@@ -289,10 +289,17 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
                 return (dc_act.OM_DETAIL_VIEW_NAME, (), {'pk': self.pk })
         else:
             return dc_act.get_absolute_url()
-           
 
 
-        
+    def get_short_url(self):
+
+        dc_act = self.downcast()
+
+        if getattr(dc_act, "OM_DETAIL_VIEW_NAME"):
+            return reverse(dc_act.OM_DETAIL_VIEW_NAME, args=(self.pk,))
+        else:
+            return dc_act.get_short_url()
+
 
     def get_type_name(self):
         """
@@ -302,6 +309,22 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
             return unicode(self.downcast()._meta.verbose_name)
         else:
             return None
+    
+    @property
+    def speeches(self):
+        act_speeches = []
+        try:
+            act_speeches = [a_s.speech for a_s in ActHasSpeech.objects.filter(act=self)]
+        except ObjectDoesNotExist:
+            pass
+
+        try:
+            items = SittingItem.objects.filter(related_act_set=self).all()
+            act_speeches.extend(Speech.objects.filter(sitting_item__in=items))
+        except ObjectDoesNotExist:
+            pass
+
+        return act_speeches
 
     class Meta:
         verbose_name = _('act')
@@ -569,7 +592,7 @@ class Interrogation(Act):
 
     @property
     def related_speeches(self):
-        speeches = []
+        act_speeches = []
         try:
             act_speeches = ActHasSpeech.objects.filter(act=self).filter(~ models.Q(relation_type = 'REQ')).order_by('pk')
         except ObjectDoesNotExist:
@@ -661,7 +684,7 @@ class Interpellation(Act):
 
     @property
     def related_speeches(self):
-        speeches = []
+        act_speeches = []
         try:
             act_speeches = ActHasSpeech.objects.filter(act=self).filter(~ models.Q(relation_type = 'REQ')).order_by('pk')
 
@@ -953,6 +976,11 @@ class Speech(Document):
     sitting_admin.short_description = _('sitting')
     sitting_admin.allow_tags = True
     sitting_admin.admin_order_field = 'sitting_item__sitting__number'
+
+    @property
+    def ref_acts(self):
+        return [act for act in self.related_act_set.all()] + \
+            [act for act in self.sitting_item.related_act_set.all()]
 
 class ActHasSpeech(models.Model):
     """

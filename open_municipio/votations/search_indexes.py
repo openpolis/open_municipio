@@ -68,7 +68,7 @@ class VotationIndex(indexes.SearchIndex, indexes.Indexable):
     def prepare_act_url(self, obj):
         try:
             related_act = obj.act if obj.act else Transition.objects.filter(votation=obj)[0].act
-            if related_act: return related_act.downcast().get_absolute_url()
+            if related_act: return related_act.downcast().get_short_url()
 
         except IndexError:
             pass
