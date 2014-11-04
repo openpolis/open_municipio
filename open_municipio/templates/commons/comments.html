@@ -27,7 +27,7 @@
           {% endif %}
 
           <p>
-            <a href="{% url profiles_profile_detail comment.user.username %}">{{ comment.user.username|capfirst }}</a>
+            <a href="{% url profiles_profile_detail comment.user.username %}">{{ comment.user.first_name }} {{ comment.user.last_name }}</a>
             {{ comment.comment }}
           </p>
 

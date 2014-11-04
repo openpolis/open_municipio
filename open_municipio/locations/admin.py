@@ -4,6 +4,6 @@ from open_municipio.locations.models import Location
 
 
 class LocationAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('name', 'count')
 
 admin.site.register(Location, LocationAdmin)

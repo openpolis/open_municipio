@@ -12,7 +12,7 @@ class ProfileAdmin(admin.ModelAdmin):
 
 
 class OMUserAdmin(auth.admin.UserAdmin):
-    list_display_extra = ( "is_active", )
+    list_display_extra = ( "is_active", "date_joined" )
 
     def get_list_display(self, *args, **kwargs):
         ld_base = super(OMUserAdmin, self).get_list_display(*args, **kwargs) 

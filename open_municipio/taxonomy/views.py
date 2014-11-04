@@ -75,9 +75,9 @@ class TopicDetailView(DetailView):
 
         context['n_acts'] = Act.objects.filter(pk__in=ta_ids).count()
 
-        context['n_deliberation_nonfinal'] = Deliberation.objects.filter(pk__in=ta_ids).filter(~ Q(status__in=(s[0] for s in Deliberation.FINAL_STATUSES))).count()
+        context['n_deliberations_nonfinal'] = Deliberation.objects.filter(pk__in=ta_ids).filter(~ Q(status__in=(s[0] for s in Deliberation.FINAL_STATUSES))).count()
         context['n_deliberations'] = Deliberation.objects.filter(pk__in=ta_ids).count()
-        context['n_cgdeliberation_nonfinal'] = CGDeliberation.objects.filter(pk__in=ta_ids).filter(~ Q(status__in=(s[0] for s in CGDeliberation.FINAL_STATUSES))).count()
+        context['n_cgdeliberations_nonfinal'] = CGDeliberation.objects.filter(pk__in=ta_ids).filter(~ Q(status__in=(s[0] for s in CGDeliberation.FINAL_STATUSES))).count()
         context['n_cgdeliberations'] = CGDeliberation.objects.filter(pk__in=ta_ids).count()
         context['n_motions_nonfinal'] = Motion.objects.filter(pk__in=ta_ids).filter(~ Q(status__in=(s[0] for s in Motion.FINAL_STATUSES))).count()
         context['n_motions'] = Motion.objects.filter(pk__in=ta_ids).count()

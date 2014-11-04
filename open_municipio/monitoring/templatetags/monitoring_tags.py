@@ -75,5 +75,5 @@ def object_inline_monitoring(context, object, shows_monitoring_users=True):
     return args
 
 @register.inclusion_tag('monitoring/latest_users.html', takes_context=True)
-def latest_users(context, users):
-    return { "users": users.filter(user__is_active=True) }
+def latest_users(context, users, users_number=20):
+    return { "users": users.filter(user__is_active=True).order_by('-user__date_joined')[:users_number] }
