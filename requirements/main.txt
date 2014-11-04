@@ -17,3 +17,4 @@ cssselect #required by lxml
 sorl-thumbnail
 django-social-auth
 django-tinymce
+Pillow==2.3.0
