@@ -75,6 +75,8 @@
                               {% object_inline_monitoring a.downcast %}
                           </td>
                       </tr>
+                  {% empty %}
+                  Nessun atto presentato
                   {% endfor %}
                   </tbody>
               </table>
@@ -98,6 +100,8 @@
                               {{ n.text|safe }}
                           </td>
                       </tr>
+                  {% empty %}
+                  Nessuna attivit&agrave; 
                   {% endfor %}
                   </tbody>
               </table>
@@ -120,6 +124,8 @@
                           {% endwith %}
                           {% object_inline_monitoring politician.person %}
                       </li>
+                  {% empty %}
+                  Nessun consigliere
                   {% endfor %}
               </ul>
           </div>
@@ -136,6 +142,9 @@
                           {% include 'people/politician_list_section.html' with politician=p.object.current_institution_charges.0 %}
                           {% object_inline_monitoring p.object %}
                       </li>
+                  {% empty %}
+                  Nessun amministratore monitorato
+
                   {% endfor %}
               </ul>
           </div>
@@ -150,6 +159,9 @@
                           {% include 'people/politician_list_section.html' with politician=p value=p.n_acts what='atti' %}
                           {% object_inline_monitoring p.person %}
                       </li>
+                  {% empty %}
+                  Nessun consigliere
+
                   {% endfor %}
               </ul>
           </div>
@@ -193,7 +205,11 @@
       <div class="row-fluid">
           <div class="span12">
               <h2>Argomenti più discussi {% popover_info 'argomenti-piu-discussi' %}</h2>
+              {% if tags_to_cloud %}
               {% tags_cloud tags_to_cloud %}
+              {% else %}
+              Nessun argomento
+              {% endif %}
           </div>
       </div>
 

@@ -1261,14 +1261,32 @@ class Mayor(object):
         """
         A municipality mayor, as an *institution*.
         """
-        return Institution.objects.select_related().get(institution_type=Institution.MAYOR)
+        
+        mayor = None
+
+        try:
+            mayor = Institution.objects.select_related().get(institution_type=Institution.MAYOR)
+        except Institution.DoesNotExist:
+            # mayor does not exist, currently
+            pass
+
+        return mayor
     
     @property
     def as_charge(self):
         """
         A municipality mayor, as a *charge*.
         """
-        return InstitutionCharge.objects.select_related().get(institution__institution_type=Institution.MAYOR)
+        mayor = None
+
+        try:
+            mayor = InstitutionCharge.objects.select_related().get(institution__institution_type=Institution.MAYOR)
+
+        except InstitutionCharge.DoesNotExist:
+            # mayor has not been created
+            pass
+
+        return mayor
     
     @property
     def acts(self):

@@ -45,6 +45,8 @@
                         {% endwith %}
                         {% object_inline_monitoring politician.person %}
                     </li>
+                {% empty %}
+                Nessun consigliere
                 {% endfor %}
             </ul>
         </div>
@@ -60,6 +62,8 @@
                         {% include 'people/politician_list_section.html' with politician=p value=p.n_acts what='atti' %}
                         {% object_inline_monitoring p.person %}
                     </li>
+                {% empty %}
+                Nessun consigliere
                 {% endfor %}
             </ul>
         </div>
@@ -79,6 +83,8 @@
                         {% include 'people/politician_list_section.html' with value=politician.n_acts what='mozioni' %}
                         {% object_inline_monitoring politician.person %}
                     </li>
+                {% empty %}
+                Nessun consigliere
                 {% endfor %}
             </ul>
         </div>
@@ -94,6 +100,9 @@
                         {% include 'people/politician_list_section.html' with value=politician.n_acts what='interrogazioni' %}
                         {% object_inline_monitoring politician.person %}
                     </li>
+                {% empty %}
+                Nessun consigliere
+
                 {% endfor %}
             </ul>
         </div>
@@ -115,6 +124,9 @@
                         {% endwith %}
                         {% object_inline_monitoring politician.person %}
                     </li>
+                {% empty %}
+                Nessun consigliere
+
                 {% endfor %}
             </ul>
         </div>
@@ -130,6 +142,9 @@
                         {% include 'people/politician_list_section.html' with value=politician.n_speeches what="interventi" %}   
                         {% object_inline_monitoring politician.person %}
                     </li>
+                {% empty %}
+                Nessun consigliere
+
                 {% endfor %}
             </ul>
         </div>

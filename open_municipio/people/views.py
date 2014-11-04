@@ -485,7 +485,21 @@ class PoliticianListView(TemplateView):
         context['age_stats']['sessantenni'] = 0
         context['age_stats']['seniores'] = 0
 
-        all_members = set(list(municipality.council.members) + list(municipality.gov.members) + [municipality.mayor.as_charge,])
+#        all_members = set(list(municipality.council.members) + list(municipality.gov.members) + [municipality.mayor.as_charge,])
+
+        list_members = []
+        
+        if municipality.council:
+            list_members.extend(municipality.council.members)
+
+        if municipality.gov:
+            list_members.extend(municipality.gov.members)
+
+        if municipality.mayor and municipality.mayor.as_charge:
+            list_members.append(municipality.mayor.as_charge)
+
+        all_members = set(list_members)
+
         for charge in all_members:
             if charge.person.sex == Person.MALE_SEX:
                 context['gender_stats']['Uomini'] += 1
