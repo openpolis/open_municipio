@@ -84,6 +84,10 @@ class ActAdmin(admin.ModelAdmin):
     readonly_fields_base = ['idnum', 'title', 'status', 'presentation_date', 
                             'text', 'emitting_institution']
 
+    # tag and categories are designed to work on the frontend; including them
+    # here will generate errors when rendering particular configurations of tags
+    exclude = ("category_set", "tag_set",)
+
 
     # genial hack to allow users with no permissions to show
     # the list of related acts for a raw field
