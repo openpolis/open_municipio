@@ -1305,7 +1305,16 @@ class CityCouncil(object):
         """
         A municipality council, as an *institution*.
         """
-        return Institution.objects.get(institution_type=Institution.COUNCIL)
+
+        city_council = None
+
+        try:
+            city_council = Institution.objects.get(institution_type=Institution.COUNCIL)
+        except Institution.DoesNotExist:
+            # the city council has not been created
+            pass
+        
+        return city_council
     
     @property
     def charges(self):
@@ -1313,7 +1322,12 @@ class CityCouncil(object):
         All current members of the municipality council (aka *counselors*), as charges.
         President and vice-presidents **included**.
         """
-        return self.as_institution.charges.select_related()
+        charges = InstitutionCharge.objects.none()
+
+        if self.as_institution:
+            charges = self.as_institution.charges.select_related()
+    
+        return charges
 
     @property
     def president(self):
@@ -1321,7 +1335,12 @@ class CityCouncil(object):
         The current president of the city council as InstitutionResponsability
         None if not found.
         """
-        return  self.as_institution.president
+        president = None
+    
+        if self.as_institution:
+            president = self.as_institution.president
+
+        return president
 
 
     @property
@@ -1331,7 +1350,13 @@ class CityCouncil(object):
 
         There can be more than one vicepresident
         """
-        return self.as_institution.vicepresidents.select_related()
+
+        vp = None
+
+        if self.as_institution:
+            vp = self.as_institution.vicepresidents.select_related()
+
+        return vp
 
     @property
     def members(self):
@@ -1339,7 +1364,12 @@ class CityCouncil(object):
         Members of the municipality council (aka *counselors*), as charges.
         Current president and vice presidents **excluded**.
         """
-        return self.as_institution.members.select_related()
+        members = InstitutionCharge.objects.none()
+
+        if self.as_institution:
+            members = self.as_institution.members.select_related()
+
+        return members
 
     @property
     def majority_members(self):
@@ -1451,7 +1481,15 @@ class CityGovernment(object):
         """
         A municipality government, as an *institution*.
         """
-        return Institution.objects.get(institution_type=Institution.CITY_GOVERNMENT)
+        city_gov = None
+
+        try:
+            city_gov = Institution.objects.get(institution_type=Institution.CITY_GOVERNMENT)
+        except Institution.DoesNotExist:
+            # city gov has not been created, yet
+            pass
+
+        return city_gov
     
     @property
     def charges(self):
@@ -1465,14 +1503,25 @@ class CityGovernment(object):
         """
         Returns the first deputy mayor, if existing, None if not existing
         """
-        return  self.as_institution.firstdeputy
+        firstdeputy = None
+
+        if self.as_institution:
+            firstdeputy = self.as_institution.firstdeputy
+
+        return firstdeputy
 
     @property
     def members(self):
         """
         Members of a municipality government (mayor and first deputy excluded), as charges.
         """
-        return self.as_institution.members.select_related()
+
+        members = InstitutionCharge.objects.none()
+    
+        if self.as_institution:
+            members = self.as_institution.members.select_related()
+
+        return members
 
     @property
     def acts(self):
