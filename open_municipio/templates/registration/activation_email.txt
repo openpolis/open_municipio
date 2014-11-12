@@ -1,3 +1,4 @@
+{% load url from future %}
 Salve :-)
 abbiamo ricevuto la tua richiesta di registrazione al sito Open municipio.
 Per attivarla basta fare click su questo link:

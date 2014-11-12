@@ -5,6 +5,8 @@
 {% load bookmarking_tags %}
 {% load newscache_tags %}
 {% load people_tags %}
+{% load url from future %}
+
 
 {% block title %}Dettaglio votazione {{ votation.ref_act.emitting_institution }} N° {{ votation.ref_act.idnum }},
     seduta {{ votation.sitting.number }}

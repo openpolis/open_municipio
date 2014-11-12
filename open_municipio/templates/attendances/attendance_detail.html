@@ -5,6 +5,8 @@
 {% load bookmarking_tags %}
 {% load newscache_tags %}
 {% load people_tags %}
+{% load url from future %}
+
 
 {% block title %}Dettaglio partecipazione a seduta {{ attendance.ref_act.emitting_institution }} N° {{ attendance.ref_act.idnum }},
     seduta {{ attendance.sitting.number }}
