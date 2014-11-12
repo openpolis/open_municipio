@@ -164,11 +164,11 @@ class InterrogationAdmin(ActAdmin):
             }),
         )
     form = InterrogationAdminForm
-    inlines = [PresenterInline, SpeechInActInline, AttachInline ]
+    inlines = [PresenterInline, SpeechInActInline, AttachInline]
     list_display = ( "presentation_date", "author", "title", "status", )
 
     def __init__(self, *args, **kwargs):
-        self.inlines = [PresenterInline, SpeechInActInline, AttachInline ]
+        self.inlines = [PresenterInline, SpeechInActInline, AttachInline]
         super(InterrogationAdmin, self).__init__(*args, **kwargs)
         self.list_filter += ( "status", "answer_type", )
 
@@ -176,7 +176,7 @@ class InterrogationAdmin(ActAdmin):
         # override modifications by ActAdmin.change_view 
         # (which modifies the self.inlines)
 
-        self.inlines = [PresenterInline,SpeechInActInline, AttachInline ]
+        self.inlines = [PresenterInline,SpeechInActInline, AttachInline]
 
         self.inline_instances = []
         for inline_class in self.inlines:
@@ -199,11 +199,8 @@ class InterpellationAdmin(ActAdmin):
         }),
         )
 
-    inlines = [PresenterInline, SpeechInActInline, ]
-    # beware: the custom form provides a queryset and ordering for selecting only
-    # the mayor and members of city gov; if you use raw_id_fields, you waste the
-    # custom admin form
     form = InterpellationAdminForm
+    inlines = [PresenterInline, SpeechInActInline, AttachInline]
 
     list_display = ( "presentation_date", "author", "title", "status", )
 
@@ -215,7 +212,7 @@ class InterpellationAdmin(ActAdmin):
         # override modifications by ActAdmin.change_view 
         # (which modifies the self.inlines)
 
-        self.inlines = [PresenterInline,SpeechInActInline, ]
+        self.inlines = [PresenterInline,SpeechInActInline, AttachInline]
 
         self.inline_instances = []
         for inline_class in self.inlines:
