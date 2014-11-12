@@ -118,7 +118,7 @@
       {% for group_vote in votation.group_votes %}
       <tr>
         <td class="text-left">
-            <a href="{% url om_institution_group group_vote.group.slug %}"><strong>{{ group_vote.group.name }}</strong> ({{ group_vote.group.acronym }})</a></td>
+            <a href="{% url 'om_institution_group' group_vote.group.slug %}"><strong>{{ group_vote.group.name }}</strong> ({{ group_vote.group.acronym }})</a></td>
         <td>{{ group_vote.n_yes }}</td>
         <td>{{ group_vote.n_no }}</td>
         <td>{{ group_vote.n_abst }}</td>

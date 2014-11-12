@@ -1,2 +1,2 @@
-<a href="{%  url profiles_profile_detail commenting_user.user.username %}">{{ commenting_user.public_name }}</a>
+<a href="{%  url 'profiles_profile_detail' commenting_user.user.username %}">{{ commenting_user.public_name }}</a>
 ha commentato <a href="{{ object.get_absolute_url }}">{{ object|truncatewords_html:10 }}</a>
