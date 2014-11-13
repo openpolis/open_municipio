@@ -453,9 +453,10 @@
 					<xs:restriction base="xs:token">
 						<!-- generic -->
 						<xs:enumeration value="Presented"/>
-						<xs:enumeration value="Voted"/>
 						<xs:enumeration value="Accepted"/>
 						<xs:enumeration value="Rejected"/>
+                        <xs:enumeration value="Decayed"/>
+                        <xs:enumeration value="Retired"/>
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:attribute>
@@ -558,6 +559,7 @@
 						<!-- generic -->
 						<xs:enumeration value="Presented"/>
 						<xs:enumeration value="Accepted"/>
+                        <xs:enumeration value="Rejected"/>
 						<xs:enumeration value="Decayed"/>
 						<xs:enumeration value="Retired"/>
 					</xs:restriction>
@@ -583,6 +585,7 @@
 						<xs:enumeration value="Presented"/>
 						<xs:enumeration value="Accepted"/>
 						<xs:enumeration value="Rejected"/>
+                        <xs:enumeration value="Decayed"/>
 						<xs:enumeration value="Retired"/>
 						<xs:enumeration value="Postponed"/>
 						<xs:enumeration value="DiscussedCommission"/>
