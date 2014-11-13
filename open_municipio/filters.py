@@ -125,3 +125,44 @@ class OMBySubTypeFilterSpec(SimpleListFilter):
             return qs
 
         return queryset
+
+
+class OMByFieldDistinctFilter(SimpleListFilter):
+    
+    title = None
+    model = None
+    field = None
+    field_label = None
+    parameter_name = None
+    
+    def __init__(self, *args, **kwargs):
+        self.title = self.title or self.field
+        self.parameter_name = self.parameter_name or self.field
+
+        super(OMByFieldDistinctFilter, self).__init__(*args, **kwargs)
+
+    def lookups(self, request, model_admin):
+
+#        print "in lookups: model = %s, field = %s ..." % (self.model, self.field)
+
+        assert self.model != None
+        assert self.field != None
+
+        values = self.model.objects.all().values(self.field, self.field_label).distinct()
+
+        res = map(lambda v: (v[self.field], v[self.field_label]), values)
+        
+#        print "res: %s" % res
+        return res
+
+    def queryset(self, request, queryset):
+        res_qs = queryset
+
+        if self.value() != None:
+            filter_by = { self.field: self.value() }
+            res_qs = res_qs.filter(**filter_by)
+
+        return res_qs
+
+
+
