@@ -375,6 +375,9 @@ class ActSupport(models.Model):
     class Meta:
         db_table = u'acts_act_support'
 
+    def __unicode__(self):
+        return _(u"%(support)s") % { "support": self.support_type }
+
 
 class ActDescriptor(TimeStampedModel):
     """
@@ -813,6 +816,9 @@ class Transition(models.Model):
         verbose_name = _('status transition')
         verbose_name_plural = _('status transition')
 
+
+    def __unicode__(self):
+        return _(u"%(status)s on %(date)s") % { "status": self.final_status, "date": self.transition_date }
 
 #
 # Documents
