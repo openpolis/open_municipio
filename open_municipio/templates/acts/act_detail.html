@@ -3,6 +3,7 @@
 {% load voting_tags %}
 {% load popover_info %}
 {% load newscache_tags %}
+{% load url from future %}
 
 {% comment %}Bookmarking tags{% endcomment %}
 {% load om_utils %}
@@ -196,7 +197,7 @@
     </dl>
 
     {% if location_form %}
-    <form id="location-form" data-toggle="#location_form_link" class="form-inline" action="{% url om_act_locations_add pk=act.act_ptr.pk %}" method="post">
+    <form id="location-form" data-toggle="#location_form_link" class="form-inline" action="{% url 'om_act_locations_add' pk=act.act_ptr.pk %}" method="post">
       {% csrf_token %}{% for hidden in location_form.hidden_fields %}{{ hidden }}{% endfor %}
       {{ location_form.locations }}
       <div class="form-actions text-center">
@@ -258,7 +259,7 @@
 
         {% if title_form %}
         // Edit Act Title in-place
-        $('#act_title strong').editable('{% url om_act_title_update pk=act.id %}', {
+        $('#act_title strong').editable('{% url "om_act_title_update" pk=act.id %}', {
           name : '{{ title_form.adj_title.html_name }}',
           submitdata : function(value, settings) {
             return { 'id': {{ act.id }}, 'act_field': 'adj_title' };
@@ -282,7 +283,7 @@
 
         {% if description_form %}
           // Edit Act Description in-place
-        $('#act_description').editable('{% url om_act_description_update pk=act.id %}', {
+        $('#act_description').editable('{% url "om_act_description_update" pk=act.id %}', {
           type: 'autogrow',
           name : '{{ description_form.description.html_name }}',
           submitdata : function(value, settings) {

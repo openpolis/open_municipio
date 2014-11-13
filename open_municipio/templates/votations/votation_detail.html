@@ -5,6 +5,8 @@
 {% load bookmarking_tags %}
 {% load newscache_tags %}
 {% load people_tags %}
+{% load url from future %}
+
 
 {% block title %}Dettaglio votazione {{ votation.ref_act.emitting_institution }} N° {{ votation.ref_act.idnum }},
     seduta {{ votation.sitting.number }}
@@ -118,7 +120,7 @@
       {% for group_vote in votation.group_votes %}
       <tr>
         <td class="text-left">
-            <a href="{% url om_institution_group group_vote.group.slug %}"><strong>{{ group_vote.group.name }}</strong> ({{ group_vote.group.acronym }})</a></td>
+            <a href="{% url 'om_institution_group' group_vote.group.slug %}"><strong>{{ group_vote.group.name }}</strong> ({{ group_vote.group.acronym }})</a></td>
         <td>{{ group_vote.n_yes }}</td>
         <td>{{ group_vote.n_no }}</td>
         <td>{{ group_vote.n_abst }}</td>

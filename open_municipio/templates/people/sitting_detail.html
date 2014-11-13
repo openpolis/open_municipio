@@ -4,6 +4,7 @@
 {% load thumbnail %}
 {% load popover_info %}
 
+{% load url from future %}
 {% block title %}Consiglio{% endblock %}
 {% block content_header %}Consiglio {% endblock %}
 {% block people_class %}class="active"{% endblock %}
@@ -30,7 +31,7 @@
     {% include 'people/sitting_detail_section.html' with sitting=sitting %}
 
     {% for si in sitting_items %}
-        <h3><a href="{% url om_sittingitem_detail pk=si.pk %}">{{ si.title }} 
+        <h3><a href="{% url 'om_sittingitem_detail' pk=si.pk %}">{{ si.title }} 
         {% if si.num_speeches == 1 %}
             (1 intervento)
         {% elif si.num_speeches > 1 %}

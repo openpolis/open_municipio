@@ -3,6 +3,8 @@
 {% load om_utils %}
 {% load i18n %}
 {% load digg_paginator %}
+{% load url from future %}
+
 
 {% block title %}Elenco votazioni {% endblock title %}
 {% block content_header %}Votazioni{% endblock %}
@@ -92,7 +94,7 @@
 {% block sidebar %}
 
   <h4>Cerca nelle votazioni</h4>
-  <form method="get" action="{% url om_votation_search %}" id="search-form"  class="form-search">
+  <form method="get" action="{% url 'om_votation_search' %}" id="search-form"  class="form-search">
     <input type="text" class="input-medium search-query" name="{{ form.q.html_name }}" value="{% if form.q.value %}{{ form.q.value }}{% endif %}" placeholder="Testo della ricerca" />
     <button type="submit" class="btn">Cerca</button>
   </form>

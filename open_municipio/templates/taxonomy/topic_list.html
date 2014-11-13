@@ -2,6 +2,7 @@
 {% load popover_info %}
 {% load monitoring_tags %}
 {% load tags_cloud %}
+{% load url from future %}
 
 {% block content_header %}Argomenti{% endblock %}
 {% block title %}Lista degli Argomenti{% endblock %}
@@ -23,7 +24,7 @@
                         <a href="{{ c.get_absolute_url }}">{{ c }}</a>
                     </li>
                 {% endfor %}
-                <li><a href="{% url om_location_list %}">Territori</a></li>
+                <li><a href="{% url 'om_location_list' %}">Territori</a></li>
             </ul>
         </div>
     </div>
@@ -50,7 +51,7 @@
     {% endfor %}
     <dl>
       <dt>
-      <h3><a href="{% url om_location_list %}">Territorio</a></h3>
+      <h3><a href="{% url 'om_location_list' %}">Territorio</a></h3>
       </dt>
       <dd>
         {% for location in locations %}

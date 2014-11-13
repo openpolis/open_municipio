@@ -1,3 +1,4 @@
+{% load url from future %}
     <div id="cteditor" class="hide">
 
         <div class="modal" id="modal-container">
@@ -6,7 +7,7 @@
 
                 <h3>Editor Argomenti</h3>
             </div>
-            <form action="{% url om_act_topics_update pk=act.act_ptr.pk %}" method="post" class="form-horizontal modal-form">{% csrf_token %}
+            <form action="{% url 'om_act_topics_update' pk=act.act_ptr.pk %}" method="post" class="form-horizontal modal-form">{% csrf_token %}
                 <div class="modal-body">
                   {% regroup act.topics by category as categorized_topics %}
                   {% for grouped_tags in categorized_topics %}

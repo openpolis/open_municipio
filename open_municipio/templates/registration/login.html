@@ -1,5 +1,6 @@
 {% extends "base_one_column.html" %}
 {%  load i18n %}
+{% load url from future %}
 
 {% block title %}Accedi al sito {{ site_name }}{% endblock %}
 
@@ -12,19 +13,19 @@
                 <h2>Accedi coi social network</h2>
                 <p>Usa i tuoi account dei social network per accedere comodamente a Open municipio</p>
                 <p>
-                    <a href="{% url socialauth_begin 'google-oauth2' %}" class="btn btn-inverse">
+                    <a href="{% url 'socialauth_begin' 'google-oauth2' %}" class="btn btn-inverse">
                         <img src="{{ STATIC_URL }}img/login-google-icon.png"/>&nbsp;&nbsp;&nbsp;
                         Accedi con Google
                     </a>
                 </p>
                 <p>
-                    <a href="{% url socialauth_begin 'twitter' %}" class="btn btn-info">
+                    <a href="{% url 'socialauth_begin' 'twitter' %}" class="btn btn-info">
                         <img src="{{ STATIC_URL }}img/login-twitter-icon.png"/>&nbsp;&nbsp;&nbsp;
                         Accedi con Twitter
                     </a>
                 </p>
                 <p>
-                    <a href="{% url socialauth_begin 'facebook' %}" class="btn btn-primary">
+                    <a href="{% url 'socialauth_begin' 'facebook' %}" class="btn btn-primary">
                         <img src="{{ STATIC_URL }}img/login-fb-icon.png"/>&nbsp;&nbsp;&nbsp;
                         Accedi con Facebook
                     </a>
@@ -33,7 +34,7 @@
             <div class="span4">
                 <h2>Entra con username e password</h2>
                 <p>Usa il tuo username e la tua password per accedere al sito o
-                    <a href="{% url registration_register %}">registrati a Open municipio</a> per ricevere le tue credenziali di accesso.</p>
+                    <a href="{% url 'registration_register' %}">registrati a Open municipio</a> per ricevere le tue credenziali di accesso.</p>
                 <form action="/accounts/login/" method="post" class="form-horizontal">{% csrf_token %}
                     {{ form.non_field_errors }}
                     <div class="control-group">

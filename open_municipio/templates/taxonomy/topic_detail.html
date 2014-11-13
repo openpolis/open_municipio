@@ -3,6 +3,7 @@
 {% load newscache_tags %}
 {% load monitoring_tags %}
 {% load popover_info %}
+{% load url from future %}
 
 {% block title %}Argomento {{ topic }}{% endblock title %}
 {% block content_header %}Argomento{% endblock %}
@@ -24,7 +25,7 @@
               <a href="{{ t.get_absolute_url }}"{% if t == topic %} class="active"{% endif %}>{{ t }}</a>
             </li>
           {% endfor %}
-          <li><a href="{% url om_location_list %}">Territorio</a></li>
+          <li><a href="{% url 'om_location_list' %}">Territorio</a></li>
         </ul>
       </div>
     </div>
@@ -37,7 +38,7 @@
     <section>
     <h2><span class="colored">{{ topic|title }}</span></h2>
 
-        <a href="{% url om_act_search %}?q=&{{ topic_type }}={{ topic.slug }}{{ facets }}">
+        <a href="{% url 'om_act_search' %}?q=&{{ topic_type }}={{ topic.slug }}{{ facets }}">
             {{ n_acts }} atti</a> che trattano di {{ topic }}
         <br/><br/>
 
@@ -55,12 +56,12 @@
                 <td class="text-left">Delibere di Giunta</td>
                 <td>
                     {% if n_cgdeliberations %}
-                        <a href="{% url om_act_search %}?q=&{{ topic_type }}={{ topic.slug }}{{ facets }}&selected_facets=act_type:delibera di giunta">{{ n_cgdeliberations }}</a>
+                        <a href="{% url 'om_act_search' %}?q=&{{ topic_type }}={{ topic.slug }}{{ facets }}&selected_facets=act_type:delibera di giunta">{{ n_cgdeliberations }}</a>
                     {% endif %}
                 </td>
                 <td>
                     {% if n_cgdeliberations_nonfinal %}
-                        <a href="{% url om_act_search %}?q=&{{ topic_type }}={{ topic.slug }}{{ facets }}&selected_facets=act_type:delibera di giunta&selected_facets=is_proposal:sì">{{ n_cgdeliberations_nonfinal }}</a>
+                        <a href="{% url 'om_act_search' %}?q=&{{ topic_type }}={{ topic.slug }}{{ facets }}&selected_facets=act_type:delibera di giunta&selected_facets=is_proposal:sì">{{ n_cgdeliberations_nonfinal }}</a>
                     {% endif %}
                 </td>
 {#                <td></td>#}
@@ -69,12 +70,12 @@
                 <td class="text-left">Delibere di Consiglio</td>
                 <td>
                     {% if n_deliberations %}
-                        <a href="{% url om_act_search %}?q=&{{ topic_type }}={{ topic.slug }}{{ facets }}&selected_facets=act_type:delibera">{{ n_deliberations }}</a>
+                        <a href="{% url 'om_act_search' %}?q=&{{ topic_type }}={{ topic.slug }}{{ facets }}&selected_facets=act_type:delibera">{{ n_deliberations }}</a>
                     {% endif %}
                 </td>
                 <td>
                     {% if n_deliberations_nonfinal %}
-                        <a href="{% url om_act_search %}?q=&{{ topic_type }}={{ topic.slug }}{{ facets }}&selected_facets=act_type:delibera&selected_facets=is_proposal:sì">{{ n_deliberations_nonfinal }}</a>
+                        <a href="{% url 'om_act_search' %}?q=&{{ topic_type }}={{ topic.slug }}{{ facets }}&selected_facets=act_type:delibera&selected_facets=is_proposal:sì">{{ n_deliberations_nonfinal }}</a>
                     {% endif %}
                 </td>
 {#                <td></td>#}
@@ -83,12 +84,12 @@
                 <td class="text-left">Mozioni</td>
                 <td>
                     {% if n_motions %}
-                        <a href="{% url om_act_search %}?q=&{{ topic_type }}={{ topic.slug }}{{ facets }}&selected_facets=act_type:mozione">{{ n_motions }}</a>
+                        <a href="{% url 'om_act_search' %}?q=&{{ topic_type }}={{ topic.slug }}{{ facets }}&selected_facets=act_type:mozione">{{ n_motions }}</a>
                     {% endif %}
                 </td>
                 <td>
                     {% if n_motions_nonfinal %}
-                        <a href="{% url om_act_search %}?q=&{{ topic_type }}={{ topic.slug }}{{ facets }}&selected_facets=act_type:mozione&selected_facets=is_proposal:sì">{{ n_motions_nonfinal }}</a>
+                        <a href="{% url 'om_act_search' %}?q=&{{ topic_type }}={{ topic.slug }}{{ facets }}&selected_facets=act_type:mozione&selected_facets=is_proposal:sì">{{ n_motions_nonfinal }}</a>
                     {% endif %}
                 </td>
 {#                <td></td>#}
@@ -97,12 +98,12 @@
                 <td class="text-left">Ordini del giorno</td>
                 <td>
                     {% if n_agendas %}
-                        <a href="{% url om_act_search %}?q=&{{ topic_type }}={{ topic.slug }}{{ facets }}&selected_facets=act_type:ordine del giorno">{{ n_agendas }}</a>
+                        <a href="{% url 'om_act_search' %}?q=&{{ topic_type }}={{ topic.slug }}{{ facets }}&selected_facets=act_type:ordine del giorno">{{ n_agendas }}</a>
                     {% endif %}
                 </td>
                 <td>
                     {% if n_agendas_nonfinal %}
-                        <a href="{% url om_act_search %}?q=&{{ topic_type }}={{ topic.slug }}{{ facets }}&selected_facets=act_type:ordine del giorno&selected_facets=is_proposal:sì">{{ n_agendas_nonfinal }}</a>
+                        <a href="{% url 'om_act_search' %}?q=&{{ topic_type }}={{ topic.slug }}{{ facets }}&selected_facets=act_type:ordine del giorno&selected_facets=is_proposal:sì">{{ n_agendas_nonfinal }}</a>
                     {% endif %}
                 </td>
 {#                <td></td>#}
@@ -111,12 +112,12 @@
                 <td class="text-left">Emendamenti</td>
                 <td>
                     {% if n_amendments %}
-                        <a href="{% url om_act_search %}?q=&{{ topic_type }}={{ topic.slug }}{{ facets }}&selected_facets=act_type:emendamento">{{ n_amendments }}</a>
+                        <a href="{% url 'om_act_search' %}?q=&{{ topic_type }}={{ topic.slug }}{{ facets }}&selected_facets=act_type:emendamento">{{ n_amendments }}</a>
                     {% endif %}
                 </td>
                 <td>
                     {% if n_amendments_nonfinal %}
-                        <a href="{% url om_act_search %}?q=&{{ topic_type }}={{ topic.slug }}{{ facets }}&selected_facets=act_type:emendamento&selected_facets=is_proposal:sì">{{ n_amendments_nonfinal }}</a>
+                        <a href="{% url 'om_act_search' %}?q=&{{ topic_type }}={{ topic.slug }}{{ facets }}&selected_facets=act_type:emendamento&selected_facets=is_proposal:sì">{{ n_amendments_nonfinal }}</a>
                     {% endif %}
                 </td>
 {#                <td></td>#}
@@ -125,12 +126,12 @@
                 <td class="text-left">Interrogazioni</td>
                 <td>
                     {% if n_interrogations %}
-                        <a href="{% url om_act_search %}?q=&{{ topic_type }}={{ topic.slug }}{{ facets }}&selected_facets=act_type:interrogazione">{{ n_interrogations }}</a>
+                        <a href="{% url 'om_act_search' %}?q=&{{ topic_type }}={{ topic.slug }}{{ facets }}&selected_facets=act_type:interrogazione">{{ n_interrogations }}</a>
                     {% endif %}
                 </td>
                 <td>
                     {% if n_interrogations_nonfinal %}
-                        <a href="{% url om_act_search %}?q=&{{ topic_type }}={{ topic.slug }}{{ facets }}&selected_facets=act_type:interrogazione&selected_facets=is_proposal:sì">{{ n_interrogations_nonfinal }}</a>
+                        <a href="{% url 'om_act_search' %}?q=&{{ topic_type }}={{ topic.slug }}{{ facets }}&selected_facets=act_type:interrogazione&selected_facets=is_proposal:sì">{{ n_interrogations_nonfinal }}</a>
                     {% endif %}
                 </td>
 {#                <td></td>#}
@@ -139,12 +140,12 @@
                 <td class="text-left">Interpellanze</td>
                 <td>
                     {% if n_interpellations %}
-                        <a href="{% url om_act_search %}?q=&{{ topic_type }}={{ topic.slug }}{{ facets }}&selected_facets=act_type:interpellanza">{{ n_interpellations }}</a>
+                        <a href="{% url 'om_act_search' %}?q=&{{ topic_type }}={{ topic.slug }}{{ facets }}&selected_facets=act_type:interpellanza">{{ n_interpellations }}</a>
                     {% endif %}
                 </td>
                 <td>
                     {% if n_interpellations_nonfinal %}
-                        <a href="{% url om_act_search %}?q=&{{ topic_type }}={{ topic.slug }}{{ facets }}&selected_facets=act_type:interpellanza&selected_facets=is_proposal:sì">{{ n_interpellations_nonfinal }}</a>
+                        <a href="{% url 'om_act_search' %}?q=&{{ topic_type }}={{ topic.slug }}{{ facets }}&selected_facets=act_type:interpellanza&selected_facets=is_proposal:sì">{{ n_interpellations_nonfinal }}</a>
                     {% endif %}
                 </td>
 {#                <td></td>#}

@@ -7,6 +7,7 @@
 {% load monitoring_tags %}
 {% load newscache_tags %}
 {% load popover_info %}
+{% load url from future %}
 
 
 {% block title %}Dettaglio {{ person }}{% endblock %}
@@ -83,7 +84,7 @@
       {% endif %}
 
       {% if current_groupcharge %}
-          Gruppo <a href="{% url om_institution_group slug=current_groupcharge.group.slug %}"><strong>{{ current_groupcharge.group }}</strong></a>
+          Gruppo <a href="{% url 'om_institution_group' slug=current_groupcharge.group.slug %}"><strong>{{ current_groupcharge.group }}</strong></a>
           {% if current_groupcharge.current_responsability %}
               - {% trans current_groupcharge.current_responsability.get_charge_type_display %}
               dal {{ current_groupcharge.current_responsability.start_date|date:'d.m.Y' }}
@@ -226,7 +227,7 @@
           </tbody>
         </table>
         {% comment %}
-        <p><i class="icon-play"></i> <a href="{% url om_votation_search %}?q=&person={{ person.slug }}&selected_facets=is_key:sì">Vedi tutti i voti chiave</a></p>
+        <p><i class="icon-play"></i> <a href="{% url 'om_votation_search' %}?q=&person={{ person.slug }}&selected_facets=is_key:sì">Vedi tutti i voti chiave</a></p>
         {% endcomment %}
       </section>
 
@@ -247,7 +248,7 @@
       <section>
           <h2>Atti su cui lavora ({{ n_presented_acts }}) {% popover_info 'atti-su-cui-lavora' %}</h2>
             {% include 'acts/act_table_detail.html' with acts_list=presented_acts %}
-          <p><i class="icon-play"></i> <a href="{% url om_act_search %}?q=&person={{ person.slug }}">Vedi tutti gli atti su cui lavora</a></p>
+          <p><i class="icon-play"></i> <a href="{% url 'om_act_search' %}?q=&person={{ person.slug }}">Vedi tutti gli atti su cui lavora</a></p>
 
       </section>
   {% endif %}
@@ -276,7 +277,7 @@
               {% endfor %}
 
         </table>
-        <p><i class="icon-play"></i> <a href="{% url om_speech_search %}?q=&person={{ person.slug }}">Vedi tutti gli interventi</a></p>
+        <p><i class="icon-play"></i> <a href="{% url 'om_speech_search' %}?q=&person={{ person.slug }}">Vedi tutti gli interventi</a></p>
 
 
       </section>

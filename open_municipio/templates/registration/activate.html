@@ -1,4 +1,5 @@
 {% extends "registration/base_user.html" %}
+{% load url from future %}
 
 {% block title %}Account activiation unsuccessful{% endblock %}
 
@@ -10,5 +11,5 @@
     &egrave; gi&agrave; stato attivato o la chiave &egrave; scaduta. In
     questo secondo caso, ripeti la procedura di registrazione.
   </p>
-  <p><a href="{% url registration_register %}">Registrati nuovamente &raquo;</a></p>
+  <p><a href="{% url 'registration_register' %}">Registrati nuovamente &raquo;</a></p>
 {% endblock %}

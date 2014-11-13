@@ -1,6 +1,8 @@
 {% extends "base_two_columns.html" %}
 {% load popover_info %}
 {% load newscache_tags %}
+{% load url from future %}
+
 
 {% block title %}Profilo utente{% endblock %}
 {% block content_header %}Profilo di {{ profile }}{% endblock %}
@@ -57,7 +59,7 @@
         </p>
 
         {% if not profile.user.is_active %}
-        Questo profilo non &egrave; attivo. Questo pu&ograve; avvenire a seguito di una decisione dell'utente o di una violazione del <a href="{% url om_regolamento %}">regolamento</a>.
+        Questo profilo non &egrave; attivo. Questo pu&ograve; avvenire a seguito di una decisione dell'utente o di una violazione del <a href="{% url 'om_regolamento' %}">regolamento</a>.
         {% endif %}
 
       </div>

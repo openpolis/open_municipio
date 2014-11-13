@@ -3,6 +3,7 @@
 {% load om_utils %}
 {% load i18n %}
 {% load digg_paginator %}
+{% load url from future %}
 
 {% block title %}Elenco atti {% endblock title %}
 {% block content_header %}Atti{% endblock %}
@@ -89,7 +90,7 @@ em {
 {% block sidebar %}
 
   <h4>Cerca negli atti</h4>
-  <form method="get" action="{% url om_act_search %}" class="form-search">
+  <form method="get" action="{% url 'om_act_search' %}" class="form-search">
       <div class="control-group input-append">
           {%  spaceless %}
               <input id="query" type="text" class="input-medium search-query" name="{{ form.q.html_name }}"

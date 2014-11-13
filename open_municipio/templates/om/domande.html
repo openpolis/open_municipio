@@ -1,5 +1,7 @@
 {% extends "base_one_column.html" %}
 
+{% load url from future %}
+
 {% block title %}Domande e risposte frequenti{% endblock %}
 {% block content_header %}Domande e risposte frequenti{% endblock %}
 
@@ -34,7 +36,7 @@
 
                 <dt>Che tipo di software avete utilizzato?</dt>
                 <dd>Per realizzare e sviluppare i progetti di openpolis usiamo software libero e open source.
-                    <a href="{% url om_software %}">Qui la lista dei software</a> utilizzati.</dd>
+                    <a href="{% url 'om_software' %}">Qui la lista dei software</a> utilizzati.</dd>
             </dl>
 
 

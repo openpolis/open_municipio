@@ -1,5 +1,7 @@
 {% extends "base_one_column.html" %}
 
+{% load url from future %}
+
 {% block title %}Registrarsi al sito{% endblock %}
 {% block content_header %}Registrarsi al sito{% endblock %}
 
@@ -12,7 +14,7 @@
                 monitorare, votare e commentare un atto bisogna registrarsi come utente del sito Open municipio.</p>
 
             <p>La registrazione è molto semplice: dopo aver completato e inviato il
-                <a href="{% url registration_register %}">form di registrazione</a>
+                <a href="{% url 'registration_register' %}">form di registrazione</a>
                 si riceve un'email che richiede una conferma.
                 Seguendo le istruzioni contenute nell'email (si tratta di cliccare su un link)
                 si è a tutti gli effetti un utente registrato, condizione che consente attività di

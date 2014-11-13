@@ -1,4 +1,6 @@
 {% extends "base_one_column.html" %}
+{% load url from future %}
+
 {% block title %}Modifica impostazioni utente{% endblock %}
 {% block content_header %}Modifica impostazioni utente{% endblock %}
 
@@ -20,12 +22,12 @@
                             {% if account.is_connected %}
                                 associato
                                 {% if user.is_authenticated %}
-                                    (<a href="{%  url socialauth_disconnect account.name %}">dissociati</a>)
+                                    (<a href="{%  url 'socialauth_disconnect' account.name %}">dissociati</a>)
                                 {% endif %}
                             {%  else %}
                                 non associato
                                 {% if user.is_authenticated %}
-                                    (<a href="{%  url socialauth_associate_begin account.name %}">associati</a>)
+                                    (<a href="{%  url 'socialauth_associate_begin' account.name %}">associati</a>)
                                 {% endif %}
                             {% endif %}
                         </li>
