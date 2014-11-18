@@ -457,6 +457,7 @@
 						<xs:enumeration value="Rejected"/>
                         <xs:enumeration value="Decayed"/>
                         <xs:enumeration value="Retired"/>
+                        <xs:enumeration value="Postponed"/>
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:attribute>
@@ -537,6 +538,7 @@
 						<xs:enumeration value="Answered"/>
 						<xs:enumeration value="Decayed"/>
 						<xs:enumeration value="Retired"/>
+                        <xs:enumeration value="Postponed"/>
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:attribute>
@@ -562,6 +564,7 @@
                         <xs:enumeration value="Rejected"/>
 						<xs:enumeration value="Decayed"/>
 						<xs:enumeration value="Retired"/>
+                        <xs:enumeration value="Postponed"/>
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:attribute>
