@@ -83,7 +83,7 @@ class UserProfileListView(ListView):
 
         news = News.objects.filter(news_type=News.NEWS_TYPE.community, priority=1)
         news_community = sorted(news, key=lambda n: n.news_date, 
-                                reverse=True)[0:3]
+                                reverse=True)[0:10]
 
         context.update({
             # TODO if a person not have a institution_charge...?
