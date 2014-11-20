@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-13 13:19+0100\n"
+"POT-Creation-Date: 2014-11-20 22:47+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,15 +26,15 @@ msgstr "Intervento in atto"
 msgid "Speeches in act"
 msgstr "Interventi in atto"
 
-#: admin.py:275 models.py:64 models.py:883
+#: admin.py:272 models.py:64 models.py:883
 msgid "title"
 msgstr "titolo"
 
-#: admin.py:283 admin.py:325 models.py:330
+#: admin.py:280 admin.py:322 models.py:330
 msgid "act"
 msgstr "atto"
 
-#: admin.py:292
+#: admin.py:289
 msgid "act type"
 msgstr "tipo di atto"
 
@@ -149,8 +149,8 @@ msgstr "data della firma"
 
 #: models.py:379
 #, fuzzy, python-format
-msgid "%(support)s"
-msgstr "data della firma"
+#msgid "%(support)s"
+#msgstr "data della firma"
 
 #: models.py:398 models.py:461
 msgid "President"
@@ -308,7 +308,7 @@ msgstr "tipo"
 
 #: models.py:843
 msgid "size"
-msgstr ""
+msgstr "dimensione"
 
 #: models.py:864
 msgid "attach"
@@ -429,6 +429,10 @@ msgstr "Mese di pubblicazione"
 #: views.py:530
 msgid "Year"
 msgstr "Anno"
+
+#: views.py:531
+msgid "Month"
+msgstr "Mese"
 
 #~ msgid "minute"
 #~ msgstr "minuta"

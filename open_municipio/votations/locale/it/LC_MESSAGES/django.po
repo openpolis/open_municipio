@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-10-23 23:10+0200\n"
+"POT-Creation-Date: 2014-11-20 22:46+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -42,11 +42,11 @@ msgstr "No"
 msgid "Specify whether this is a key votation"
 msgstr "Specifica se è una votazione chiave"
 
-#: models.py:73 search_indexes.py:110
+#: models.py:73 search_indexes.py:114
 msgid "yes"
 msgstr "sì"
 
-#: models.py:75 search_indexes.py:112
+#: models.py:75 search_indexes.py:116
 msgid "no"
 msgstr "no"
 
@@ -119,9 +119,9 @@ msgstr "voto incarico"
 msgid "charge votes"
 msgstr "voti incarico"
 
-#: search_indexes.py:58
+#: search_indexes.py:59
 msgid "none"
-msgstr ""
+msgstr "nessuno"
 
 #: views.py:37
 msgid "Related act type"
@@ -156,5 +156,9 @@ msgid "Votation variance"
 msgstr "Voti di scarto"
 
 #: views.py:45
-msgid "Votation year"
+msgid "Sitting year"
 msgstr "Anno della seduta"
+
+#: views.py:46
+msgid "Sitting month"
+msgstr "Mese della seduta"

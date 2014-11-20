@@ -37,6 +37,7 @@ class VotationIndex(indexes.SearchIndex, indexes.Indexable):
     votation_n_rebels = indexes.IntegerField(indexed=False, stored=True, model_attr='n_rebels')
     votation_outcome = indexes.FacetCharField(stored=True, default='')
     is_secret = indexes.FacetCharField(stored=True, default='')
+    month = indexes.FacetCharField()
 
     # needed to filter votations by person
     person = indexes.MultiValueField(indexed=True, stored=False)
@@ -72,6 +73,9 @@ class VotationIndex(indexes.SearchIndex, indexes.Indexable):
 
         except IndexError:
             pass
+
+    def prepare_month(self, obj):
+        return obj.sitting.date.strftime("%B")
 
     def prepare_votation_outcome(self, obj):
         return obj.get_outcome_display()

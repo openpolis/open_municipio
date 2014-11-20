@@ -525,9 +525,10 @@ class SpeechSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
     """
     __name__ = 'SpeechSearchView'
 
-    FACETS_SORTED = [ 'date', ]
+    FACETS_SORTED = [ 'date', 'month' ]
     FACETS_LABELS = { 
         'date': _('Year'),
+        'month': _('Month')
     }
 
     DATE_INTERVALS_RANGES = { } 
@@ -540,7 +541,7 @@ class SpeechSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
             date_range = self._build_date_range(curr_year)
             self.DATE_INTERVALS_RANGES[curr_year] = date_range
     
-        sqs = SearchQuerySet().filter(django_ct='acts.speech')
+        sqs = SearchQuerySet().filter(django_ct='acts.speech').facet('month')
 
         for (year, range) in self.DATE_INTERVALS_RANGES.items():
             sqs = sqs.query_facet('date', range['qrange'])

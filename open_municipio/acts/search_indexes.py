@@ -133,6 +133,7 @@ class SpeechIndex(indexes.SearchIndex, indexes.Indexable):
     person = indexes.MultiValueField(indexed=True, stored=False)
 
     act_url = indexes.MultiValueField(indexed=True, stored=True)
+    month = indexes.FacetCharField()
 
     def get_model(self):
         return Speech
@@ -153,6 +154,9 @@ class SpeechIndex(indexes.SearchIndex, indexes.Indexable):
 
     def prepare_date(self, obj):
         return obj.date
+
+    def prepare_month(self, obj):
+        return obj.sitting.date.strftime("%B")
 
     def prepare_act_url(self, obj):
         return [act.get_short_url() for act in obj.ref_acts]

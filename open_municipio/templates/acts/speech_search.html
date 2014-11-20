@@ -110,6 +110,22 @@ em {
                     {% endfor %}
                 {% endif %}
             </dl>
+
+            <dl>
+                {% if facets.fields.month and not facets.fields.month.is_field_selected %}
+                    <dt>{{ facets_labels.month }}</dt>
+                    {# Provide both cases (true, false) #}
+                    {% for t in facets.fields.month.counts %}
+                        {% if t.1 %}
+                            <dd>
+                                {% if not t.2 %}
+                                    <a href="{{ base_url }}&selected_facets=month:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
+                                {% endif %}
+                            </dd>
+                        {%  endif %}
+                    {% endfor %}
+                {% endif %}
+            </dl>
         </div>
     
         <!-- End faceting -->
