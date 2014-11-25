@@ -24,7 +24,7 @@ class VotationIndex(indexes.SearchIndex, indexes.Indexable):
     url = indexes.CharField(indexed=False, stored=True)
     act_rendered = indexes.CharField(use_template=True, indexed=False)
 
-    act_url = indexes.CharField(indexed=True, stored=True, default='')
+    act_url = indexes.MultiValueField(indexed=True, stored=True)
     act_descr = indexes.CharField(indexed=False, stored=True, default='')
     title = indexes.CharField(indexed=False, stored=True, model_attr='act__title', default='')
     votation_num = indexes.CharField(indexed=False, stored=True, model_attr='idnum')
@@ -50,28 +50,57 @@ class VotationIndex(indexes.SearchIndex, indexes.Indexable):
     def prepare_act_type(self, obj):
         activate(settings.LANGUAGE_CODE)
 
-        try:
-            related_act = obj.act if obj.act else Transition.objects.filter(votation=obj)[0].act
-            if related_act: return related_act.get_type_name()
+        res = _('none')
 
-        except IndexError:
-            return _('none')
+        related_act = obj.act
+
+        if not related_act:
+            transitions = Transition.objects.filter(votation=obj)
+            if len(transitions) > 0:
+                related_act = transitions[0].act
+
+        if related_act:
+            res = related_act.get_type_name()
+
+        return res
+
 
     def prepare_act_descr(self, obj):
-        try:
-            related_act = obj.act if obj.act else Transition.objects.filter(votation=obj)[0].act
-            return related_act.adj_title or related_act.title if related_act else obj.act_descr
 
-        except IndexError:
-            return obj.act_descr
+        res = obj.act_descr
+
+        related_act = obj.act
+
+        if not related_act:
+            transitions = Transition.objects.filter(votation=obj)
+
+            if len(transitions) > 0:
+                related_act = transitions[0].act
+
+        if related_act:
+            res = related_act.adj_title or related_act.title
+
+        return res
+        
+
 
     def prepare_act_url(self, obj):
-        try:
-            related_act = obj.act if obj.act else Transition.objects.filter(votation=obj)[0].act
-            if related_act: return related_act.downcast().get_short_url()
 
-        except IndexError:
-            pass
+        res = set([])
+
+        related_act = obj.act
+
+        if not related_act:
+
+            transitions = Transition.objects.filter(votation=obj)
+            if len(transitions) > 0:
+                related_act = transitions[0].act
+
+        if related_act:
+            res = set([ related_act.downcast().get_absolute_url() ])
+
+        return res
+
 
     def prepare_votation_outcome(self, obj):
         return obj.get_outcome_display()
