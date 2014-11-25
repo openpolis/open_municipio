@@ -50,7 +50,7 @@
 <div id="wrapper"><!-- #wrapper -->
 
 
-  {% if ALERT_BAR|length > 0 %}
+  {% if ALERT_BAR %}
       <!-- DEMO ALERT -->
       <div style="position: inherit;" class="navbar navbar-fixed-top" id="page-alert">
         <div class="navbar-inner">
@@ -72,8 +72,8 @@
         <img src="{{ STATIC_URL }}img/logo-openmunicipio.png" alt="Openmunicipio - Informati, monitora e partecipa ai lavori del tuo municipio">
         <!--open<strong>municipio</strong>{% if site_version %}<span class="version">{{ site_version }}</span>{% endif %}
         <small></small>-->
-        {% if ALERT_NAVBAR|length > 0 %}
-          <button class="btn btn-danger navbar-fixed-top ">{{ ALERT_NAVBAR|safe }}</button>
+        {% if ALERT_NAVBAR %}
+          <button class="btn btn-danger pull-right navbar-fixed-top ">{{ ALERT_NAVBAR|safe }}</button>
         {% endif %}
       </a>
       
