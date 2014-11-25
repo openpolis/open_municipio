@@ -43,3 +43,11 @@ class DeleteOwnCommentView(View):
 
 class RecordVoteOnCommentView(RecordVoteOnItemView):
     model = CommentWithMood  
+
+    def get(self, *args, **kwargs):
+        """ 
+        In django-voting, the GET request is not allowed. Here we "trick" the 
+        library to accept it, transforming it to a POST request.
+        """
+    
+        return super(RecordVoteOnCommentView, self).post(*args, **kwargs)
