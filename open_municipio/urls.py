@@ -31,6 +31,7 @@ from open_municipio.users.forms import UserRegistrationForm
 
 admin.autodiscover()
 
+handler500 = 'open_municipio.om.views.server_error'
 
 urlpatterns = patterns('',
     url(r'^500/$', server_error, name='om_error_500'),

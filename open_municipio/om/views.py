@@ -25,6 +25,7 @@ def server_error(request, template_name='500.html'):
     Templates: `500.html`
     Context: None
     """
+    
     c = Context({
         'STATIC_URL':settings.STATIC_URL,
         'main_city': settings.SITE_INFO['main_city'],
