@@ -111,9 +111,16 @@ class VotationSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin
         extra['base_url'] = reverse('om_votation_search') + '?' + extra['params'].urlencode()
 
         if self.request.GET.get("act_url"):
-            act_id = int(self.request.GET.get('act_url').split("/")[-2])
+            act_id_or_slug = self.request.GET.get('act_url').split("/")[-2]
+
+            act = None
+            if act_id_or_slug.isdigit():
+                act = Act.objects.get(pk=act_id_or_slug)
+            else:
+                act = Act.objects.get(slug=act_id_or_slug)
+
             extra['act_votations'] = True
-            extra['act'] = Act.objects.get(pk=act_id).downcast()
+            extra['act'] = act.downcast()
 
         person_slug = self.request.GET.get('person', None)
         if person_slug:

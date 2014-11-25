@@ -270,7 +270,7 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
 
         return None
 
-    @models.permalink
+#    @models.permalink
     def get_absolute_url(self):
         """
         Introduce url based on slugs. The self.OM_DETAIL_VIEW_NAME is used by any
@@ -284,22 +284,25 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
 
         if getattr(dc_act, "OM_DETAIL_VIEW_NAME"):
             if getattr(dc_act, "slug", None):
-                return (dc_act.OM_DETAIL_VIEW_NAME, (), {'slug': self.slug })
+#                return (dc_act.OM_DETAIL_VIEW_NAME, (), {'slug': self.slug })
+                return reverse(dc_act.OM_DETAIL_VIEW_NAME, kwargs={'slug':self.slug})
             else:
-                return (dc_act.OM_DETAIL_VIEW_NAME, (), {'pk': self.pk })
+#                return (dc_act.OM_DETAIL_VIEW_NAME, (), {'pk': self.pk })
+                return reverse(dc_act.OM_DETAIL_VIEW_NAME, kwargs={'pk':self.pk})
         else:
             return dc_act.get_absolute_url()
 
 
-    def get_short_url(self):
-
-        dc_act = self.downcast()
-
-        if getattr(dc_act, "OM_DETAIL_VIEW_NAME"):
-            return reverse(dc_act.OM_DETAIL_VIEW_NAME, args=(self.pk,))
-        else:
-            return dc_act.get_short_url()
-
+## it was only a temporary patch, get rid of it - FS
+##    def get_short_url(self):
+##
+##        dc_act = self.downcast()
+##
+##        if getattr(dc_act, "OM_DETAIL_VIEW_NAME"):
+##            return reverse(dc_act.OM_DETAIL_VIEW_NAME, args=(self.pk,))
+##        else:
+##            return dc_act.get_short_url()
+##
 
     def get_type_name(self):
         """
@@ -922,9 +925,10 @@ class Speech(Document):
         else:
             ValueError("In order to get the default slug, the Speech must have an author, a date, a sitting item and a sequential order")
 
-    @models.permalink
+#    @models.permalink
     def get_absolute_url(self):
-        return('om_speech_detail', (), {'slug': str(self.slug)})
+#        return('om_speech_detail', (), {'slug': str(self.slug)})
+        return reverse('om_speech_detail', kwargs={'slug':str(self.slug)})
 
     @property
     def author_name(self):

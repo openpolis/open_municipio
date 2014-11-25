@@ -159,6 +159,11 @@ class SpeechIndex(indexes.SearchIndex, indexes.Indexable):
         return obj.sitting.date.strftime("%B")
 
     def prepare_act_url(self, obj):
-        return [act.get_short_url() for act in obj.ref_acts]
+#        return [act.get_short_url() for act in obj.ref_acts]
+        res = [act.get_absolute_url() for act in obj.ref_acts]
+#        print "prepare act url for speech: %s" % res
+
+        return res
+
 
 locale.setlocale(locale.LC_ALL, '')

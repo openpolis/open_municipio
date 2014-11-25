@@ -51,7 +51,7 @@
                     <a href="{{ result.url }}">Votazione n. {{ result.votation_num }}</a>
                 </h4>
                 {% if result.act_descr %}
-                    <p>{% if result.act_url %}<a href="{{ result.act_url }}">{% endif %}
+                    <p>{% if result.act_url %}<a href="{{ result.act_url.0 }}">{% endif %}
                         {{ result.act_descr }}
                     {% if result.act_url %}</a>{% endif %}</p>
                 {% endif %}
