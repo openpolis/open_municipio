@@ -3,11 +3,14 @@ from django.conf.urls.defaults import patterns, url
 from django.contrib.auth.decorators import login_required
 from django.contrib.comments.views.comments import comment_done, post_comment
 
-from open_municipio.om_comments.views import DeleteOwnCommentView, RecordVoteOnCommentView
+from open_municipio.om_comments.views import CommentSearchView, DeleteOwnCommentView, RecordVoteOnCommentView
 
 
 
 urlpatterns = patterns('',
+  # faceted navigation
+  url(r'^$', CommentSearchView(template='om_comments/comments_search.html'), name='om_comments_search'),
+
   # Since in OpenMunicipio only authenticated users are allowed to post comments,                       
   # we have to wrap some views provided by Django's comment framework with the
   # ``login_required`` decorator.
