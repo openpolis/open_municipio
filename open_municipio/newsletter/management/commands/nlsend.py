@@ -124,8 +124,13 @@ class Command(LabelCommand):
                 if mo == None: continue
 
                 related_news = mo.related_news.\
-                    filter(news_type=News.NEWS_TYPE.institutional).\
-                    filter(priority__lte=2)
+                    filter(
+                        models.Q(news_type=News.NEWS_TYPE.institutional, 
+                            priority_lte=2) 
+                    | 
+                        models.Q(news_type=News.NEWS_TYPE.community, 
+                            priority=1)
+                    )
 
                 # add date filter if required
                 if options['fromdate']:

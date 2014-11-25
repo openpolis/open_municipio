@@ -409,8 +409,8 @@ class CGDeliberation(Act):
     FINAL_STATUSES = (
         ('APPROVED', _('approved')),
         ('REJECTED', _('rejected')),
-        ('RETIRED', 'retired', _('retired')),
-        ('DECAYED', 'decayed', _('decayed')),
+        ('RETIRED', _('retired')),
+        ('DECAYED', _('decayed')),
     )
 
     STATUS = Choices(
@@ -476,8 +476,8 @@ class Deliberation(Act):
     FINAL_STATUSES = (
         ('APPROVED', _('approved')),
         ('REJECTED', _('rejected')),
-        ('RETIRED', 'retired', _('retired')),
-        ('DECAYED', 'decayed', _('decayed')),
+        ('RETIRED', _('retired')),
+        ('DECAYED', _('decayed')),
     )
 
     STATUS = Choices(
@@ -538,8 +538,8 @@ class Interrogation(Act):
     FINAL_STATUSES = (
         ('ANSWERED', _('answered')),
         ('NOTANSWERED', _('not answered')),
-        ('RETIRED', 'retired', _('retired')),
-        ('DECAYED', 'decayed', _('decayed')),
+        ('RETIRED', _('retired')),
+        ('DECAYED', _('decayed')),
     )
 
     STATUS = Choices(
@@ -633,8 +633,8 @@ class Interpellation(Act):
     FINAL_STATUSES = (
         ('ANSWERED', _('answered')),
         ('NOTANSWERED', _('not answered')),
-        ('RETIRED', 'retired', _('retired')),
-        ('DECAYED', 'decayed', _('decayed')),
+        ('RETIRED', _('retired')),
+        ('DECAYED', _('decayed')),
     )
 
     STATUS = Choices(
@@ -726,8 +726,8 @@ class Motion(Act):
     FINAL_STATUSES = (
         ('APPROVED', _('approved')),
         ('REJECTED', _('rejected')),
-        ('RETIRED', 'retired', _('retired')),
-        ('DECAYED', 'decayed', _('decayed')),
+        ('RETIRED', _('retired')),
+        ('DECAYED', _('decayed')),
     )
 
     STATUS = Choices(
@@ -764,8 +764,8 @@ class Agenda(Act):
     FINAL_STATUSES = (
         ('APPROVED', _('approved')),
         ('REJECTED', _('rejected')),
-        ('RETIRED', 'retired', _('retired')),
-        ('DECAYED', 'decayed', _('decayed')),
+        ('RETIRED',  _('retired')),
+        ('DECAYED', _('decayed')),
     )
 
     STATUS = Choices(
@@ -802,8 +802,8 @@ class Amendment(Act):
     FINAL_STATUSES = (
         ('APPROVED', _('approved')),
         ('REJECTED', _('rejected')),
-        ('RETIRED', 'retired', _('retired')),
-        ('DECAYED', 'decayed', _('decayed')),
+        ('RETIRED', _('retired')),
+        ('DECAYED', _('decayed')),
     )
 
     # TODO: add additional statuses allowed for this act type
