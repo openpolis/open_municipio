@@ -1,0 +1,2 @@
+{{ object.comment }}
+{{ object.submit_date }}
