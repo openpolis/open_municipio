@@ -36,6 +36,7 @@
                 <p>Usa il tuo username e la tua password per accedere al sito o
                     <a href="{% url 'registration_register' %}">registrati a Open municipio</a> per ricevere le tue credenziali di accesso.</p>
                 <form action="/accounts/login/" method="post" class="form-horizontal">{% csrf_token %}
+                    <input type="hidden" name="next" value="{% if "/accounts" in request.REQUEST.next %}/{% else %}{% firstof request.REQUEST.next "/" %}{% endif %}" />
                     {{ form.non_field_errors }}
                     <div class="control-group">
                         <label for="id_username" class="control-label">{% trans "Username" %}:</label>

@@ -12,6 +12,9 @@
 {% block users_class %}class="active"{% endblock %}
 {% block body_class %}citizen{% endblock %}
 
+{% block sub_nav %}
+    {%  include 'profiles/profile_subnav.html' %}
+{% endblock %}
 
 {% block head_js_includes %}
   {{ block.super }}

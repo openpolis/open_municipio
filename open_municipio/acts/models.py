@@ -58,6 +58,8 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
         ('PRESENTED', 'presented', _('presented')),
         ('APPROVED', 'approved', _('approved')),
         ('REJECTED', 'rejected', _('rejected')),
+        ('RETIRED', 'retired', _('retired')),
+        ('DECAYED', 'decayed', _('decayed')),
     )
 
     idnum = models.CharField(max_length=64, blank=True, help_text=_("A string representing the identification or sequence number for this act, used internally by the municipality's administration."))
@@ -407,6 +409,8 @@ class CGDeliberation(Act):
     FINAL_STATUSES = (
         ('APPROVED', _('approved')),
         ('REJECTED', _('rejected')),
+        ('RETIRED', 'retired', _('retired')),
+        ('DECAYED', 'decayed', _('decayed')),
     )
 
     STATUS = Choices(
@@ -415,6 +419,8 @@ class CGDeliberation(Act):
         ('COUNCIL', 'council', _('council')),
         ('APPROVED', 'approved', _('approved')),
         ('REJECTED', 'rejected', _('rejected')),
+        ('RETIRED', 'retired', _('retired')),
+        ('DECAYED', 'decayed', _('decayed')),
     )
 
     OM_DETAIL_VIEW_NAME="om_cgdeliberation_detail"
@@ -470,6 +476,8 @@ class Deliberation(Act):
     FINAL_STATUSES = (
         ('APPROVED', _('approved')),
         ('REJECTED', _('rejected')),
+        ('RETIRED', 'retired', _('retired')),
+        ('DECAYED', 'decayed', _('decayed')),
     )
 
     STATUS = Choices(
@@ -478,6 +486,8 @@ class Deliberation(Act):
         ('COUNCIL', 'council', _('council')),
         ('APPROVED', 'approved', _('approved')),
         ('REJECTED', 'rejected', _('rejected')),
+        ('RETIRED', 'retired', _('retired')),
+        ('DECAYED', 'decayed', _('decayed')),
     )
 
     OM_DETAIL_VIEW_NAME = "om_deliberation_detail"
@@ -528,12 +538,16 @@ class Interrogation(Act):
     FINAL_STATUSES = (
         ('ANSWERED', _('answered')),
         ('NOTANSWERED', _('not answered')),
+        ('RETIRED', 'retired', _('retired')),
+        ('DECAYED', 'decayed', _('decayed')),
     )
 
     STATUS = Choices(
         ('PRESENTED', 'presented', _('presented')),
         ('ANSWERED', 'answered', _('answered')),
         ('NOTANSWERED', 'notanswered', _('not answered')),
+        ('RETIRED', 'retired', _('retired')),
+        ('DECAYED', 'decayed', _('decayed')),
     )
     
     OM_DETAIL_VIEW_NAME = "om_interrogation_detail"
@@ -619,12 +633,16 @@ class Interpellation(Act):
     FINAL_STATUSES = (
         ('ANSWERED', _('answered')),
         ('NOTANSWERED', _('not answered')),
+        ('RETIRED', 'retired', _('retired')),
+        ('DECAYED', 'decayed', _('decayed')),
     )
 
     STATUS = Choices(
         ('PRESENTED', 'presented', _('presented')),
         ('ANSWERED', 'answered', _('answered')),
         ('NOTANSWERED', 'notanswered', _('not answered')),
+        ('RETIRED', 'retired', _('retired')),
+        ('DECAYED', 'decayed', _('decayed')),
     )
     
     OM_DETAIL_VIEW_NAME = "om_interpellation_detail"
@@ -708,6 +726,8 @@ class Motion(Act):
     FINAL_STATUSES = (
         ('APPROVED', _('approved')),
         ('REJECTED', _('rejected')),
+        ('RETIRED', 'retired', _('retired')),
+        ('DECAYED', 'decayed', _('decayed')),
     )
 
     STATUS = Choices(
@@ -715,6 +735,8 @@ class Motion(Act):
         ('COUNCIL', 'council', _('council')),
         ('APPROVED', 'approved', _('approved')),
         ('REJECTED', 'rejected', _('rejected')),
+        ('RETIRED', 'retired', _('retired')),
+        ('DECAYED', 'decayed', _('decayed')),
     )
 
     OM_DETAIL_VIEW_NAME = "om_motion_detail"
@@ -742,6 +764,8 @@ class Agenda(Act):
     FINAL_STATUSES = (
         ('APPROVED', _('approved')),
         ('REJECTED', _('rejected')),
+        ('RETIRED', 'retired', _('retired')),
+        ('DECAYED', 'decayed', _('decayed')),
     )
 
     STATUS = Choices(
@@ -749,6 +773,8 @@ class Agenda(Act):
         ('COUNCIL', 'council', _('council')),
         ('APPROVED', 'approved', _('approved')),
         ('REJECTED', 'rejected', _('rejected')),
+        ('RETIRED', 'retired', _('retired')),
+        ('DECAYED', 'decayed', _('decayed')),
     )
 
     OM_DETAIL_VIEW_NAME = "om_agenda_detail"
@@ -776,6 +802,8 @@ class Amendment(Act):
     FINAL_STATUSES = (
         ('APPROVED', _('approved')),
         ('REJECTED', _('rejected')),
+        ('RETIRED', 'retired', _('retired')),
+        ('DECAYED', 'decayed', _('decayed')),
     )
 
     # TODO: add additional statuses allowed for this act type
@@ -783,6 +811,8 @@ class Amendment(Act):
         ('PRESENTED', 'presented', _('presented')), 
         ('APPROVED', 'approved', _('approved')),
         ('REJECTED', 'rejected', _('rejected')),
+        ('RETIRED', 'retired', _('retired')),
+        ('DECAYED', 'decayed', _('decayed')),
     )
 
     OM_DETAIL_VIEW_NAME = "om_amendment_detail"

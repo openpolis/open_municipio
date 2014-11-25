@@ -16,6 +16,7 @@ from open_municipio.locations.models import Location
 from open_municipio.monitoring.models import Monitoring
 from open_municipio.newscache.models import NewsTargetMixin
 from open_municipio.people.models import Person
+from open_municipio.acts.models import Act
 
 
 class UserProfile(NewsTargetMixin, models.Model):
@@ -105,7 +106,31 @@ class UserProfile(NewsTargetMixin, models.Model):
         """
         Returns objects monitored by this user (as a list).
         """
-        return [o.content_object for o in Monitoring.objects.filter(user=self.user)]
+
+        # 1. return the objects that the user monitors 
+        mon = [o.content_object for o in Monitoring.objects.filter(user=self.user)]
+
+        # 2. append the acts that he/she supports (if politician) TODO
+        try:
+            if self.is_politician_verified:
+                signed_acts = Act.objects.filter(actsupport__charge__in=self.person.institutioncharge_set).distinct()
+
+                signed_acts_dc = map(lambda a: a.downcast(), signed_acts)
+                mon.extend(signed_acts_dc)
+        except Error, e:
+            logger.warning("Error looking for subscribed acts to monitor")
+            logger.exception(e)
+
+        return mon
+
+    @property
+    def is_politician_verified(self):
+        """
+        This method returns True if the user is a member of the POLITICIANS_GROUP.
+        This is possible only if the administrator said so, thus it is a verified
+        information.
+        """
+        return self.user.groups.filter(name=settings.POLITICIANS_GROUP).count() > 0
 
     def is_editor(self):
         try:
@@ -125,7 +150,7 @@ def update_group(**kwargs):
     """
     profile = kwargs['instance']
 
-    politician_group = Group.objects.get(name='politicians')
+    politician_group = Group.objects.get(name=settings.POLITICIANS_GROUP)
 
     if profile.person is None:
         profile.user.groups.remove(politician_group)

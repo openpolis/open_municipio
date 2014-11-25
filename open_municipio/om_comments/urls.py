@@ -18,5 +18,8 @@ urlpatterns = patterns('',
   url(r'^posted/$', login_required(comment_done), name='comments-comment-done'),
   url(r'^delete-own/(?P<pk>\d+)/$', DeleteOwnCommentView.as_view(), name='comments-delete-own-comment'),
   # Users can vote comments
-  url(r'^(?P<pk>\d+)/vote/(?P<direction>up|down|clear)/$', RecordVoteOnCommentView.as_view(), name='om_comments_record_user_vote'),
+# at the moment, only positive votes are allowed. do not accept negative or clar votes
+#  url(r'^(?P<pk>\d+)/vote/(?P<direction>up|down|clear)/$', RecordVoteOnCommentView.as_view(), name='om_comments_record_user_vote'),
+  url(r'^(?P<pk>\d+)/vote/(?P<direction>up)/$', RecordVoteOnCommentView.as_view(), name='om_comments_record_user_vote'),
+
 )
