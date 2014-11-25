@@ -1085,33 +1085,47 @@ def new_signature(**kwargs):
 #        if signature.support_date > act.presentation_date:
         if signature_support_date > act_presentation_date:
             created = False
+            news_text = News.get_text_for_news(ctx, 'newscache/act_signed_after_presentation.html')
+            defaults = { "text": news_text }
             news, created = News.objects.get_or_create(
                 generating_object_pk=signature.pk,
                 generating_content_type=ContentType.objects.get_for_model(signature),
                 related_object_pk=act.pk,
                 related_content_type=ContentType.objects.get_for_model(act),
                 priority=3,
-                text=News.get_text_for_news(ctx, 'newscache/act_signed_after_presentation.html')
+                defaults=defaults
             )
             if created:
                 logger.debug("  act was signed after presentation news created")
             else:
-                logger.debug("  act was signed after presentation news found")
+                if news.text != news_text:
+                    news.text = news_text
+                    news.update()
+                    logger.debug("  act was signed after presentation news found and updated")
+                else:
+                    logger.debug("  act was signed after presentation news found")
 
         # generate signature news, for the politician
         created = False
+        news_text=News.get_text_for_news(ctx, 'newscache/person_signed.html')
+        defaults = { "text":news_text }
         news, created = News.objects.get_or_create(
             generating_object_pk=signature.pk,
             generating_content_type=ContentType.objects.get_for_model(signature),
             related_object_pk=signer.pk,
             related_content_type=ContentType.objects.get_for_model(signer),
             priority=2,
-            text=News.get_text_for_news(ctx, 'newscache/person_signed.html')
+            defaults=defaults
         )
         if created:
             logger.debug("  user signed act news created")
         else:
-            logger.debug("  user signed act news found")
+            if news.text != news_text:  
+                news.text = news_text
+                news.update()
+                logger.debug("  user signed act news found and updated")
+            else:
+                logger.debug("  user signed act news found")
 
 
 @receiver(pre_delete, sender=ActSupport)
@@ -1158,33 +1172,47 @@ def new_transition(**kwargs):
         # to shorten acts' presentations, with signatures
         if transition.final_status == 'PRESENTED':
             created = False
+            news_text=News.get_text_for_news(ctx, 'newscache/act_presented.html')
+            defaults = { "text": news_text }
             news, created = News.objects.get_or_create(
                 generating_object_pk=transition.pk,
                 generating_content_type=ContentType.objects.get_for_model(transition),
                 related_object_pk=act.pk,
                 related_content_type=ContentType.objects.get_for_model(act),
                 priority=1,
-                text=News.get_text_for_news(ctx, 'newscache/act_presented.html')
             )
             if created:
                 logger.debug("  act presentation news created")
             else:
-                logger.debug("  act presentation news found")
+                if news.text != news_text:
+                    news.text = news_text
+                    news.update()
+                    logger.debug("  act presentation news found and updated")
+                else:
+                    logger.debug("  act presentation news found")
 
         else:
             created = False
+            news_text=News.get_text_for_news(ctx, 'newscache/act_changed_status.html')
+            defaults = { "text": news_text }
+
             news, created = News.objects.get_or_create(
                 generating_object_pk=transition.pk,
                 generating_content_type=ContentType.objects.get_for_model(transition),
                 related_object_pk=act.pk,
                 related_content_type=ContentType.objects.get_for_model(act),
                 priority=1,
-                text=News.get_text_for_news(ctx, 'newscache/act_changed_status.html')
+                defaults=defaults
             )
             if created:
                 logger.debug("  act changed status news created")
             else:
-                logger.debug("  act changed status news found")
+                if news.text != news_text:
+                    news.text = news_text
+                    news.update()
+                    logger.debug("  act changed status news found and updated")
+                else:
+                    logger.debug("  act changed status news found")
 
 @receiver(pre_delete, sender=Transition)
 def pre_delete_transition(**kwargs):
