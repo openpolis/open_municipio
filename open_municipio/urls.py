@@ -24,7 +24,7 @@ from django.contrib import admin
 from registration.views import register
 
 from open_municipio.om.views import ( HomeView, ContactsView, ConditionsView, \
-                                PrivacyView )
+                                PrivacyView, server_error )
 from open_municipio.inline_edit.views import InlineEditView
 from open_municipio.om_auth.views import login_done, login_error, login_form, logout
 from open_municipio.users.forms import UserRegistrationForm
@@ -33,6 +33,7 @@ admin.autodiscover()
 
 
 urlpatterns = patterns('',
+    url(r'^500/$', server_error, name='om_error_500'),
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),   
     # home page
