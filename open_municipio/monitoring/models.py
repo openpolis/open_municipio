@@ -147,11 +147,11 @@ def new_monitoring(**kwargs):
 
         # two news are generated
 
-        # first news related to the monitored object, with priority 1 (home)
+        # first news related to the monitored object, with priority 2 (home)
         # User X has started to monitor item Y
         News.objects.create(
             generating_object=generating_item, related_object=monitored_object,
-            priority=1, news_type=News.NEWS_TYPE.community,
+            priority=2, news_type=News.NEWS_TYPE.community,
             text=News.get_text_for_news(ctx, 'newscache/object_monitored.html')
         )
         # second news related to the monitoring user, with priority 3 (user's page)
