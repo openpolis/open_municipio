@@ -1130,7 +1130,7 @@ def new_signature(**kwargs):
             else:
                 if news.text != news_text:
                     news.text = news_text
-                    news.update()
+                    news.save()
                     logger.debug("  act was signed after presentation news found and updated")
                 else:
                     logger.debug("  act was signed after presentation news found")
@@ -1152,7 +1152,7 @@ def new_signature(**kwargs):
         else:
             if news.text != news_text:  
                 news.text = news_text
-                news.update()
+                news.save()
                 logger.debug("  user signed act news found and updated")
             else:
                 logger.debug("  user signed act news found")
@@ -1216,7 +1216,7 @@ def new_transition(**kwargs):
             else:
                 if news.text != news_text:
                     news.text = news_text
-                    news.update()
+                    news.save()
                     logger.debug("  act presentation news found and updated")
                 else:
                     logger.debug("  act presentation news found")
@@ -1239,7 +1239,7 @@ def new_transition(**kwargs):
             else:
                 if news.text != news_text:
                     news.text = news_text
-                    news.update()
+                    news.save()
                     logger.debug("  act changed status news found and updated")
                 else:
                     logger.debug("  act changed status news found")
