@@ -4,7 +4,7 @@ from datetime import datetime
 from django.contrib.sites.models import Site
 from django.core.management.base import LabelCommand, BaseCommand, CommandError
 from django.db.models.query import EmptyQuerySet
-
+from django.db import models
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import get_template
 from django.template import Context
@@ -126,7 +126,7 @@ class Command(LabelCommand):
                 related_news = mo.related_news.\
                     filter(
                         models.Q(news_type=News.NEWS_TYPE.institutional, 
-                            priority_lte=2) 
+                            priority__lte=2) 
                     | 
                         models.Q(news_type=News.NEWS_TYPE.community, 
                             priority=1)
