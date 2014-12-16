@@ -139,6 +139,10 @@ class Votation(models.Model):
     @property
     def charge_votes(self):
         return self.chargevote_set.all()
+    
+    @property
+    def charge_rebel_votes(self):
+        return self.chargevote_set.filter(is_rebel=True)
 
     @property
     def transitions(self):

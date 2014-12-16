@@ -1,0 +1,66 @@
+{% load om_utils %}
+{% load voting_tags %}
+{% load people_tags %}
+{% load url from future %}
+
+<table class="data text-right tablesorter">
+  <thead>
+  <tr>
+    <th class="sorter-left text-left span4">Politico</th>
+    {% if votation.is_secret %}
+    <th>Votante</th>
+    {% else %}
+    <th>Favorevole</th>
+    <th>Contrario</th>
+    {% endif %}
+    <th>Astenuto</th>
+    <th>Assente</th>
+  </tr>
+  </thead>
+  <tbody>
+  {% for charge_vote in charge_votes %}
+    {% with charge_vote.charge.person as politician %}
+      <tr>
+        <td class="text-left">
+          <a href="{{ politician.get_absolute_url }}">
+            <strong>{{ politician.full_name }}</strong>
+            {% with curr_group=charge_vote.charge|get_current_group:votation.sitting.date %}
+            ({{ curr_group.acronym }})
+            {% endwith %}
+          </a>
+        </td>
+        {% if votation.is_secret %}
+        <td>
+          {% if charge_vote.vote == charge_vote.VOTES.secret %}
+            <span class="label label-success">Votante</span>
+          {% endif %}
+        </td>
+        {% else %}
+        <td>
+          {% if charge_vote.vote == charge_vote.VOTES.yes %}
+            <span class="label label-success">Favorevole</span>
+          {% endif %}
+        </td>
+        <td>
+          {% if charge_vote.vote == charge_vote.VOTES.no %}
+            <span class="label label-important">Contrario</span>
+          {% endif %}
+        </td>
+        {% endif %}
+        <td>
+          {% if charge_vote.vote == charge_vote.VOTES.abstained %}
+            <span class="label">Astenuto</span>
+          {% elif charge_vote.vote == charge_vote.VOTES.pres %}
+            <span class="label">Pres. non vot.</span>
+          {% endif %}
+        </td>
+        <td>
+          {% if charge_vote.vote == charge_vote.VOTES.absent %}
+            <span class="label label-text">Assente</span>
+          {% endif %}
+        </td>
+      </tr>
+    {% endwith %}
+  {% endfor %}
+  </tbody>
+</table>

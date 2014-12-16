@@ -1,0 +1,42 @@
+{% load om_utils %}
+{% load voting_tags %}
+{% load url from future %}
+
+  <table class="data text-right table-condensed tablesorter" id="votation_results">
+    <thead>
+      <tr>
+        <th class="sorter-left text-left">Gruppi</th>
+        {% if votation.is_secret %}{% else %}
+        <th>Favorevoli</th>
+        <th>Contrari</th>
+        {% endif %}
+        <th>Astenuti</th>
+        <th>Assenti</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for group_vote in votation.group_votes %}
+      <tr>
+        <td class="text-left">
+            <a href="{% url 'om_institution_group' group_vote.group.slug %}"><strong>{{ group_vote.group.name }}</strong> ({{ group_vote.group.acronym }})</a></td>
+        {% if votation.is_secret %}{% else %}
+        <td>{{ group_vote.n_yes }}</td>
+        <td>{{ group_vote.n_no }}</td>
+        {% endif %}
+        <td>{{ group_vote.n_abst }}</td>
+        <td>{{ group_vote.n_absents }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+    <tfoot>
+      <tr>
+        <td class="text-left">Totale</td>
+        {% if votation.is_secret %}{% else %}
+        <td>{{ votation.n_yes }}</td>
+        <td>{{ votation.n_no }}</td>
+        {% endif %}
+        <td>{{ votation.n_abst }}</td>
+        <td>{{ n_absents }}</td>
+      </tr>
+    </tfoot>
+  </table>
