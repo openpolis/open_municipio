@@ -30,15 +30,23 @@
 
     {% include 'people/sitting_detail_section.html' with sitting=sitting %}
 
-    {% for si in sitting_items %}
-        <h3><a href="{% url 'om_sittingitem_detail' pk=si.pk %}">{{ si.title }} 
-        {% if si.num_speeches == 1 %}
-            (1 intervento)
-        {% elif si.num_speeches > 1 %}
-            ({{ si.num_speeches }} interventi)
-        {% endif %}
-        </a></h3>
-    {% endfor %}
+  <section>
+    <table class="search-results">
+      <tbody>
+        {% for si in sitting_items %}
+          <tr>
+            <td>{{ forloop.counter|circled:"full" }}</td>
+            <td>
+              <h4><a href="{% url 'om_sittingitem_detail' pk=si.pk %}">{{ si.title }}</a></h4>
+              {% if si.num_speeches > 0 %}
+              {{ si.num_speeches }} intervent{{ si.num_speeches|pluralize:"o,i" }}
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
 
 {% endblock %}
 
