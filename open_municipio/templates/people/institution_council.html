@@ -39,6 +39,7 @@
           <th class="span2">Presenze</th>
           <th class="span2">Voti ribelli</th>
           <th class="span2">Atti</th>
+          <th class="span2">Interventi</th>
           <th class="span2">Monitorato</th>
       </tr>
       </thead>
@@ -240,12 +241,11 @@
                 bFilter: false,
                 aoColumns: [
                     null,
-                    //null,
                     { sType: "fullname", asSorting: ['desc', 'asc']},
                     { sType: "percentage", asSorting: ['desc', 'asc']},
                     {asSorting: ['desc', 'asc']},
-//                    {asSorting: ['desc', 'asc']},
                     { sType: "acts", asSorting: ['desc', 'asc']},
+                    {asSorting: ['desc', 'asc']},
                     {asSorting: ['desc', 'asc']}
                 ],
                 bPaginate: false,

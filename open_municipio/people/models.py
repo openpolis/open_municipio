@@ -237,6 +237,20 @@ class Person(models.Model, MonitorizedItem):
             news |= c.related_news
         return news
 
+    @property
+    def speeches(self):
+        """
+        Speeches of a politician
+        """
+        return open_municipio.acts.models.Speech.objects.filter(author=self)
+
+    @property
+    def n_speeches(self):
+        """
+        Number of speeches of a politician
+        """
+        return self.speeches.count()
+
 
 class Resource(models.Model):
     """
