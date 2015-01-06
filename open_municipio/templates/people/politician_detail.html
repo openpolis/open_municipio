@@ -78,7 +78,7 @@
       {% if current_charges %}
         <ul class="list-plain">
             {% for c in current_charges %}
-                <li><strong>{{ c.denomination }}</strong> dal {{ c.start_date|date:"d.m.Y" }}{% if c.end_date %} al {{ c.end_date|date:"d.m.Y" }}{% endif %}</li>
+                <li><strong>{{ c.denomination }}</strong> dal {{ c.start_date|date:"d.m.Y" }}{% if c.end_date %} al {{ c.end_date|date:"d.m.Y" }}{% endif %} {% popover_info 'carica-attuale' %}</li>
             {% endfor %}
         </ul>
       {% endif %}
