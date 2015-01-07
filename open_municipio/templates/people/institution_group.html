@@ -1,6 +1,7 @@
 {% extends 'base_two_columns.html' %}
 {% load monitoring_tags %}
 {% load thumbnail %}
+{% load popover_info %}
 
 {% block title %}Politici | {{ group.name }}{% endblock title %}
 {% block content_header %}Organi politici{% endblock %}
@@ -57,7 +58,7 @@
                     <th class="span2">Presenze</th>
                     <th class="span2">Voti ribelli</th>
                     <th class="span2">Atti</th>
-                    <th class="span2">Interventi</th>
+                    <th class="span2">Interventi {% popover_info 'interventi-consiglieri' %}</th>
                     <th class="span2">Monitorato</th>
                 </tr>
                 </thead>
