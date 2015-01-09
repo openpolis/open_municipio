@@ -1,4 +1,6 @@
 {% extends 'base_two_columns.html' %}
+
+{% load cache %}
 {% load monitoring_tags %}
 {% load thumbnail %}
 {% load popover_info %}
@@ -39,11 +41,13 @@
           </tr>
           </thead>
           <tbody>
+          {% cache 86400 gov_members %}
           {%  include 'people/gov_member_table_row.html' with charge=mayor  label="Sindaco" id_prefix="0" %}
           {%  include 'people/gov_member_table_row.html' with charge=firstdeputy  label="Vice sindaco" id_prefix="1" %}
           {% for c in citygov.members %}
               {%  include 'people/gov_member_table_row.html' with charge=c id_prefix="2" %}
           {% endfor %}
+          {% endcache %}
           </tbody>
       </table>
 

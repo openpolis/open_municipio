@@ -3,7 +3,6 @@ from open_municipio.users.forms import UserProfileForm
 from open_municipio.users.views import UserDetailView, UserProfileListView, UserProfileDetailView
 from django.contrib.auth.models import User
 from django.conf import settings
-from django.views.decorators.cache import cache_page
 
 urlpatterns = patterns('',
     url(r'^(?P<username>[\w\.@]+)/$',
@@ -23,6 +22,6 @@ urlpatterns += patterns('profiles.views',
         UserProfileDetailView.as_view(),
        name='profiles_profile_detail'),
     url(r'^$',
-        cache_page(60 * 60)(UserProfileListView.as_view()),
+        UserProfileListView.as_view(),
        name='profiles_profile_list'),
 )

@@ -21,7 +21,6 @@
 from django.conf.urls.defaults import patterns, url, include
 from django.views.generic import TemplateView
 from django.contrib import admin
-from django.views.decorators.cache import cache_page
 
 from registration.views import register
 
@@ -40,7 +39,7 @@ urlpatterns = patterns('',
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),   
     # home page
-    url(r'^$', cache_page(60 * 720)(HomeView.as_view()), name="home"),
+    url(r'^$', HomeView.as_view(), name="home"),
     # info page
     url(r'^contatti/$', ContactsView.as_view(), name='om_contatti'),
     url(r'^progetto/$', TemplateView.as_view(template_name='om/info.html'), name='om_progetto'),
