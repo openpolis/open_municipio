@@ -5,8 +5,10 @@ from open_municipio.people.models import *
 class ProfileAdmin(admin.ModelAdmin):
     raw_id_fields = ('user', 'person')
 
+    list_display = [ 'user', 'says_is_politician', 'person', 'privacy_level', 'wants_newsletter', 'location' ]
+
     list_filter = [ 'says_is_politician', 'wants_newsletter', 'location', ]
-    
+
     search_fields = [ "user__first_name", "user__last_name", "user__email", ]
 
 
