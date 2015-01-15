@@ -69,7 +69,8 @@
   <div class="navbar" id="navbar-top">
     <nav class="navbar-inner">
       <a href="{% url "home" %}" class="brand">
-        <img src="{{ STATIC_URL }}img/logo-openmunicipio.png" alt="Openmunicipio - Informati, monitora e partecipa ai lavori del tuo municipio">
+        <img src="{% if LOGO_URL %}{{ LOGO_URL }}{% else %}{{ STATIC_URL }}img/logo-openmunicipio.png{% endif %}"
+        alt="Openmunicipio - Informati, monitora e partecipa ai lavori del tuo municipio">
         <!--open<strong>municipio</strong>{% if site_version %}<span class="version">{{ site_version }}</span>{% endif %}
         <small></small>-->
         {% if ALERT_NAVBAR %}

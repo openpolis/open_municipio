@@ -26,5 +26,6 @@ def defaults(request):
         'UI_ALLOW_NICKNAMES': settings.UI_ALLOW_NICKNAMES,
         'SEARCH_URLS': settings.SEARCH_URLS,
         'SOCIAL_SITES': settings.SOCIAL_SITES,       
+        'LOGO_URL': getattr(settings, 'LOGO_URL', None)
 
     }

@@ -228,7 +228,7 @@
       <div class="modal" id="home-alert">
           <div class="modal-header">
               <button class="close" data-dismiss="modal">×</button>
-              <img src="{{ STATIC_URL }}img/logo-openmunicipio.png" alt="Open municipio">
+              <img src="{% if LOGO_URL %}{{ LOGO_URL }}{% else %}{{ STATIC_URL }}img/logo-openmunicipio.png{% endif %}" alt="Open municipio">
           </div>
           <div class="modal-body">
               <p>{{ ALERT_POPUP|safe }}</p>
