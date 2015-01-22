@@ -70,8 +70,10 @@ class TransitionInline(admin.TabularInline):
         this is why we check the obj.downcast() type, first)
         """
 
-        if obj:
-            self.form = transition_form_factory(type(obj.downcast()))
+        specific_object = obj.downcast()
+
+        if specific_object:
+            self.form = transition_form_factory(type(specific_object))
         elif self.parent_model is not None:
             self.form = transition_form_factory(self.parent_model)
 
@@ -131,7 +133,7 @@ class ActAdmin(admin.ModelAdmin):
         # in the ActAdmin view)
         specific_object_type = type(object.downcast())
 
-        print "object type: %s" % specific_object_type
+#        print "object type: %s" % specific_object_type
 
         self.inlines = []
 
