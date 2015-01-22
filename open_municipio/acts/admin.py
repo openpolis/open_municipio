@@ -66,8 +66,13 @@ class TransitionInline(admin.TabularInline):
         parent model. the parent model is the model of the
         being edited in the main form
         so it's a deliberation, a motion, an interrogation, ...
+        (note that in the ActAdmin view, the parent model is the Act class,
+        this is why we check the obj.downcast() type, first)
         """
-        if self.parent_model is not None:
+
+        if obj:
+            self.form = transition_form_factory(type(obj.downcast()))
+        elif self.parent_model is not None:
             self.form = transition_form_factory(self.parent_model)
 
         return super(TransitionInline, self).get_formset(request, obj, **kwargs)
@@ -117,7 +122,16 @@ class ActAdmin(admin.ModelAdmin):
     # add some inlines  for superuser users only
     def change_view(self, request, object_id, form_url='', extra_context=None):
 
+        print "in change view ..."
+
         object = self.model.objects.get(id=object_id)
+
+        # type(object.downcast()) returns the specific type of act (Deliberation, 
+        # Interrogation, ...) even when self.model is Act (i.e. it is invoked
+        # in the ActAdmin view)
+        specific_object_type = type(object.downcast())
+
+        print "object type: %s" % specific_object_type
 
         self.inlines = []
 
@@ -128,10 +142,7 @@ class ActAdmin(admin.ModelAdmin):
 
         self.inline_instances = []
         for inline_class in self.inlines:
-            # type(object) returns the specific type of act (Deliberation, 
-            # Interrogation, ...) even when self.model is Act (i.e. it is invoked
-            # in the ActAdmin view)
-            inline_instance = inline_class(type(object), self.admin_site)
+            inline_instance = inline_class(specific_object_type, self.admin_site)
             self.inline_instances.append(inline_instance)
 
         return super(ActAdmin, self).change_view(request, object_id, form_url, extra_context)
