@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django import forms
+from django.utils import formats
 from django.db import models
 from django.contrib.admin.widgets import FilteredSelectMultiple
 from django.utils.translation import ugettext_lazy as _
@@ -22,10 +23,11 @@ def transition_form_factory(act_model):
     passed inside the get_formset method
     """
     class RuntimeTransitionForm(forms.ModelForm):
-        final_status = forms.ChoiceField(label='Status', choices=act_model.STATUS)
+        final_status = forms.ChoiceField(label=_('Status'), choices=act_model.STATUS)
 
         class Meta:
             model = Transition
+
 
     return RuntimeTransitionForm
 
@@ -98,21 +100,38 @@ class ActAdmin(admin.ModelAdmin):
         return request.GET.get('pop', None) == '1' or\
                super(ActAdmin, self).has_change_permission(request, obj)
 
+    def get_readonly_fields(self, request, *args, **kwargs):
+
+        readonly_fields = self.readonly_fields
+
+        if request.user.is_superuser:
+            if getattr(self, "readonly_fields_superuser"):
+                readonly_fields = self.readonly_fields_superuser
+
+        else:
+            if getattr(self, "Readonly_fields_base"):
+                readonly_fields = self.readonly_fields_base
+
+        return readonly_fields
+
     # add some inlines  for superuser users only
     def change_view(self, request, object_id, form_url='', extra_context=None):
+
+        object = self.model.objects.get(id=object_id)
 
         self.inlines = []
 
         if request.user.is_superuser:
             self.inlines = self.inlines_superuser
-            self.readonly_fields = self.readonly_fields_superuser
         else:
             self.inlines = self.inlines_base
-            self.readonly_fields = self.readonly_fields_base
 
         self.inline_instances = []
         for inline_class in self.inlines:
-            inline_instance = inline_class(self.model, self.admin_site)
+            # type(object) returns the specific type of act (Deliberation, 
+            # Interrogation, ...) even when self.model is Act (i.e. it is invoked
+            # in the ActAdmin view)
+            inline_instance = inline_class(type(object), self.admin_site)
             self.inline_instances.append(inline_instance)
 
         return super(ActAdmin, self).change_view(request, object_id, form_url, extra_context)
@@ -160,31 +179,36 @@ class InterrogationAdmin(ActAdmin):
             'fields': ('presentation_date', 'text', 'emitting_institution'),
             }),
         ('Risposta', {
-            'fields': ( 'answer_type', 'answer_text', )
+            'fields': ( 'answer_type', 'answer_date', 'answer_text', )
             }),
         )
     form = InterrogationAdminForm
-    inlines = [PresenterInline, SpeechInActInline, AttachInline]
+
+    inlines_superuser = [ PresenterInline, SpeechInActInline, AttachInline, TransitionInline ]
+
     list_display = ( "presentation_date", "author", "title", "status", )
+    list_filter = ActAdmin.list_filter + ( "status", "answer_type" )
 
-    def __init__(self, *args, **kwargs):
-        self.inlines = [PresenterInline, SpeechInActInline, AttachInline]
-        super(InterrogationAdmin, self).__init__(*args, **kwargs)
-        self.list_filter += ( "status", "answer_type", )
+    # due to django internal checks, we must specify "answer_date" in the 
+    # attribute readonly_fields AND return it using get_readonly_fields
+    readonly_fields = [ "answer_date",]
 
-    def change_view(self, request, object_id, form_url='', extra_context=None):
-        # override modifications by ActAdmin.change_view 
-        # (which modifies the self.inlines)
+    def answer_date(self, obj):
+        return formats.date_format(obj.answer_date)
+    answer_date.short_description = _("answer date")
 
-        self.inlines = [PresenterInline,SpeechInActInline, AttachInline]
+    # due to django internal checks, we must specify "answer_date" in the 
+    # attribute readonly_fields AND return it using get_readonly_fields
+    def get_readonly_fields(self, request, *args, **kwargs):
+        fields = list( super(InterrogationAdmin, self).get_readonly_fields(request, *args, **kwargs) )
 
-        self.inline_instances = []
-        for inline_class in self.inlines:
-            inline_instance = inline_class(self.model, self.admin_site)
-            self.inline_instances.append(inline_instance)
+        fields.append("answer_date")
 
-        return super(ActAdmin, self).change_view(request, object_id, form_url, 
-            extra_context)
+        return fields
+
+
+
+
 
 class InterpellationAdmin(ActAdmin):
     fieldsets = (
@@ -195,33 +219,34 @@ class InterpellationAdmin(ActAdmin):
             'fields': ('presentation_date', 'text', 'emitting_institution'),
             }),
         ('Risposta', {
-            'fields': ( 'answer_type', 'answer_text', ),
+            'fields': ( 'answer_type', 'answer_date', 'answer_text', ),
         }),
         )
 
     form = InterpellationAdminForm
-    inlines = [PresenterInline, SpeechInActInline, AttachInline]
+    inlines_superuser = [PresenterInline, SpeechInActInline, AttachInline, TransitionInline]
 
     list_display = ( "presentation_date", "author", "title", "status", )
 
-    def __init__(self, *args, **kwargs):
-        super(InterpellationAdmin, self).__init__(*args, **kwargs)
-        self.list_filter += ( "status", )
+    list_filter = ActAdmin.list_filter + ("status", )
 
-    def change_view(self, request, object_id, form_url='', extra_context=None):
-        # override modifications by ActAdmin.change_view 
-        # (which modifies the self.inlines)
+    # due to django internal checks, we must specify "answer_date" in the 
+    # attribute readonly_fields AND return it using get_readonly_fields
+    readonly_fields = [ "answer_date",]
 
-        self.inlines = [PresenterInline,SpeechInActInline, AttachInline]
 
-        self.inline_instances = []
-        for inline_class in self.inlines:
-            inline_instance = inline_class(self.model, self.admin_site)
-            self.inline_instances.append(inline_instance)
+    def answer_date(self, obj):
+        return formats.date_format(obj.answer_date)
+    answer_date.short_description = _("answer date")
 
-        return super(ActAdmin, self).change_view(request, object_id, form_url, 
-            extra_context)
+    # due to django internal checks, we must specify "answer_date" in the 
+    # attribute readonly_fields AND return it using get_readonly_fields
+    def get_readonly_fields(self, request, *args, **kwargs):
+        fields = list( super(InterpellationAdmin, self).get_readonly_fields(request, *args, **kwargs) )
 
+        fields.append("answer_date")
+
+        return fields
 
 
 class DeliberationAdmin(ActAdmin):

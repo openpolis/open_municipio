@@ -70,7 +70,7 @@ class SpeechAdminForm(forms.ModelForm):
             'theme_advanced_path': False
         },
     ),
-    required=False)
+    required=False, label=_('text'))
 
 
     def is_valid_at_least_one_author(self):
@@ -140,7 +140,7 @@ class InterpellationAdminForm(forms.ModelForm):
             'theme_advanced_path': False
         },
     ),
-    required=False)
+    required=False, label=_('text'))
 
     answer_text = CharField(widget=TinyMCE(
         attrs={'cols':80,'rows':25},
@@ -156,7 +156,7 @@ class InterpellationAdminForm(forms.ModelForm):
             'theme_advanced_path': False
         },
     ),
-    required=False)
+    required=False, label=_('Answer text'))
 
 
     def __init__(self, *args, **kwargs):
@@ -184,7 +184,7 @@ class InterrogationAdminForm(forms.ModelForm):
             'theme_advanced_path': False
         },
     ),
-    required=False)
+    required=False, label=_('Text'))
 
     answer_text = CharField(widget=TinyMCE(
         attrs={'cols':80,'rows':25},
@@ -200,7 +200,7 @@ class InterrogationAdminForm(forms.ModelForm):
             'theme_advanced_path': False
         },
     ),
-    required=False)
+    required=False, label=_('Answer text'))
 
     def __init__(self, *args, **kwargs):
         super(InterrogationAdminForm, self).__init__(*args, **kwargs)

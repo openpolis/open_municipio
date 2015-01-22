@@ -3,6 +3,7 @@ import logging
 import re
 from django.template.defaultfilters import slugify
 from datetime import datetime
+from django.utils import formats
 from django.core.exceptions import ObjectDoesNotExist
 from south.modelsinspector import add_ignored_fields
 from django.conf import settings
@@ -554,9 +555,9 @@ class Interrogation(Act):
     
     status = models.CharField(_('status'), choices=STATUS, max_length=12)
     answer_type = models.CharField(_('answer type'), max_length=8, choices=ANSWER_TYPES)
-    question_motivation = models.TextField(blank=True)
-    answer_text = models.TextField(blank=True)
-    reply_text = models.TextField(blank=True)
+    question_motivation = models.TextField(blank=True, verbose_name=_("question motivation"))
+    answer_text = models.TextField(blank=True, verbose_name=_("answer text"))
+    reply_text = models.TextField(blank=True, verbose_name=_("reply text"))
 
     class Meta:
         verbose_name = _('interrogation')
@@ -619,6 +620,18 @@ class Interrogation(Act):
             pass
 
         return act_speeches
+
+    @property
+    def answer_date(self):
+    
+        date = None
+
+        answer_dates = self.transition_set.filter(final_status=Interrogation.STATUS.answered).values("transition_date").order_by("-transition_date")
+
+        if len(answer_dates) > 0:
+            date = answer_dates[0]["transition_date"]
+
+        return date        
 
 
 class Interpellation(Act):
@@ -716,6 +729,20 @@ class Interpellation(Act):
             pass
 
         return act_speeches
+
+    @property
+    def answer_date(self):
+    
+        date = None
+
+        answer_dates = self.transition_set.filter(final_status=Interpellation.STATUS.answered).values("transition_date").order_by("-transition_date")
+
+        if len(answer_dates) > 0:
+            date = answer_dates[0]["transition_date"]
+
+        return date        
+
+
 
 class Motion(Act):
     """
@@ -851,7 +878,7 @@ class Transition(models.Model):
 
 
     def __unicode__(self):
-        return _(u"%(status)s on %(date)s") % { "status": self.final_status, "date": self.transition_date }
+        return _(u"%(status)s on %(date)s") % { "status": self.final_status, "date": formats.date_format(self.transition_date) }
 
 #
 # Documents
