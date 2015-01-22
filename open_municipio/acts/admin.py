@@ -184,7 +184,7 @@ class SpeechInActInline(admin.TabularInline):
 class InterrogationAdmin(ActAdmin):
     fieldsets = (
         (None, {
-            'fields': ('title', 'adj_title', 'status', 'recipient_set')
+            'fields': ('title', 'adj_title', 'status', 'status_is_final', 'recipient_set')
         }),
         ('Presentazione', {
             'fields': ('presentation_date', 'text', 'emitting_institution'),
@@ -202,7 +202,7 @@ class InterrogationAdmin(ActAdmin):
 
     # due to django internal checks, we must specify "answer_date" in the 
     # attribute readonly_fields AND return it using get_readonly_fields
-    readonly_fields = [ "answer_date",]
+    readonly_fields = [ "answer_date", "status_is_final", ]
 
     def answer_date(self, obj):
         return formats.date_format(obj.answer_date)
@@ -213,7 +213,7 @@ class InterrogationAdmin(ActAdmin):
     def get_readonly_fields(self, request, *args, **kwargs):
         fields = list( super(InterrogationAdmin, self).get_readonly_fields(request, *args, **kwargs) )
 
-        fields.append("answer_date")
+        fields.extend(["answer_date", "status_is_final"])
 
         return fields
 
@@ -224,7 +224,7 @@ class InterrogationAdmin(ActAdmin):
 class InterpellationAdmin(ActAdmin):
     fieldsets = (
         (None, {
-            'fields': ('title', 'adj_title', 'status', 'recipient_set')
+            'fields': ('title', 'adj_title', 'status', 'status_is_final', 'recipient_set')
         }),
         ('Presentazione', {
             'fields': ('presentation_date', 'text', 'emitting_institution'),
@@ -243,7 +243,7 @@ class InterpellationAdmin(ActAdmin):
 
     # due to django internal checks, we must specify "answer_date" in the 
     # attribute readonly_fields AND return it using get_readonly_fields
-    readonly_fields = [ "answer_date",]
+    readonly_fields = [ "answer_date", "status_is_final", ]
 
 
     def answer_date(self, obj):
@@ -255,7 +255,7 @@ class InterpellationAdmin(ActAdmin):
     def get_readonly_fields(self, request, *args, **kwargs):
         fields = list( super(InterpellationAdmin, self).get_readonly_fields(request, *args, **kwargs) )
 
-        fields.append("answer_date")
+        fields.extend(["answer_date", "status_is_final"])
 
         return fields
 

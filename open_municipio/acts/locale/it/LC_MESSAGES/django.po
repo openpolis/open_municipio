@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-01-22 08:22+0100\n"
+"POT-Creation-Date: 2015-01-22 09:11+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,27 +18,31 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
-#: admin.py:162
+#: admin.py:26
+msgid "Status"
+msgstr "Stato"
+
+#: admin.py:179
 msgid "Speech in act"
 msgstr "Intervento in atto"
 
-#: admin.py:163
+#: admin.py:180
 msgid "Speeches in act"
 msgstr "Interventi in atto"
 
-#: admin.py:192 admin.py:234
+#: admin.py:209 admin.py:251
 msgid "answer date"
 msgstr "data risposta"
 
-#: admin.py:291 models.py:67 models.py:943
+#: admin.py:308 models.py:67 models.py:943
 msgid "title"
 msgstr "titolo"
 
-#: admin.py:299 admin.py:341 models.py:336
+#: admin.py:316 admin.py:358 models.py:336
 msgid "act"
 msgstr "atto"
 
-#: admin.py:308
+#: admin.py:325
 msgid "act type"
 msgstr "tipo di atto"
 
@@ -142,6 +146,10 @@ msgstr "categorie"
 #: models.py:76
 msgid "locations"
 msgstr "località"
+
+#: models.py:77
+msgid "status is final"
+msgstr "stato finale"
 
 #: models.py:78
 msgid "Specify whether this act should be featured"

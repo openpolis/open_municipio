@@ -74,7 +74,7 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
     emitting_institution = models.ForeignKey(Institution, related_name='emitted_act_set', verbose_name=_('emitting institution'))
     category_set = models.ManyToManyField('taxonomy.Category', verbose_name=_('categories'), blank=True, null=True)
     location_set = models.ManyToManyField('locations.Location', through='locations.TaggedActByLocation', verbose_name=_('locations'), blank=True, null=True)
-    status_is_final = models.BooleanField(default=False)
+    status_is_final = models.BooleanField(_('status is final'), default=False)
     is_key = models.BooleanField(default=False, help_text=_("Specify whether this act should be featured"))
     slug = models.SlugField(max_length=500, blank=True, null=True)
 
