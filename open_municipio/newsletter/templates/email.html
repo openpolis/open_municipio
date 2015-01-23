@@ -43,7 +43,7 @@
         </tbody>
     </table>
 
-    <div style="margin-top: 2em;">
+    <div style="margin-top: 2em;"><small>
         <p>Ricevi questa email perché stai monitorando {{ profile.monitored_objects|length }} tra politici,
             atti e argomenti nel sito <a href="http://{{ city|lower }}.openmunicipio.it">Open Municipio di {{ city }}</a>.</p>
 
@@ -53,7 +53,7 @@
 
         <p>Open Municipio è un progetto di <a href="http://www.openpolis.it">Openpolis</a> e <a href="http://www.informaetica.it">InformaEtica</a>, ed è
             distribuito nel Comune di {{ city }} da <a href="{{ webmaster.website }}">{{ webmaster.name }}</a>, {{ webmaster.address }} - Tel. {{ webmaster.phone }}, <a href="mailto:{{ webmaster.email }}">{{ webmaster.email }}</a></p>
-    </div>
+    </small></div>
 
 </div>
 
