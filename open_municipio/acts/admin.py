@@ -130,8 +130,6 @@ class ActAdmin(admin.ModelAdmin):
     # add some inlines  for superuser users only
     def change_view(self, request, object_id, form_url='', extra_context=None):
 
-        print "in change view ..."
-
         object = self.model.objects.get(id=object_id)
 
         # type(object.downcast()) returns the specific type of act (Deliberation, 

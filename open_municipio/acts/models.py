@@ -1230,6 +1230,7 @@ def new_transition(**kwargs):
         if transition.final_status == 'PRESENTED':
             created = False
             news_text=News.get_text_for_news(ctx, 'newscache/act_presented.html')
+    
             defaults = { "text": news_text }
             news, created = News.objects.get_or_create(
                 generating_object_pk=transition.pk,
@@ -1237,6 +1238,7 @@ def new_transition(**kwargs):
                 related_object_pk=act.pk,
                 related_content_type=ContentType.objects.get_for_model(act),
                 priority=1,
+                defaults=defaults
             )
             if created:
                 logger.debug("  act presentation news created")
