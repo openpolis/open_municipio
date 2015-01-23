@@ -107,6 +107,12 @@ class ActAdmin(admin.ModelAdmin):
         return request.GET.get('pop', None) == '1' or\
                super(ActAdmin, self).has_change_permission(request, obj)
 
+    def has_add_permission(self, rerquest):
+ 
+        # disable adding for ActAdmin but not for its subclasses
+        return self.model != Act
+   
+
     def get_readonly_fields(self, request, *args, **kwargs):
 
         readonly_fields = self.readonly_fields
