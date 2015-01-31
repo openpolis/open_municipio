@@ -13,7 +13,7 @@ def comment_TTL(comment):
     to delete it. Given a comment, this filter returns the number of
     seconds the comment is still available for removal.
     """
-    max_time = datetime.timedelta(minutes=settings.OM_COMMENTS_REMOVAL_MAX_TIME)
+    max_time = datetime.timedelta(seconds=settings.OM_COMMENTS_REMOVAL_MAX_TIME)
     submit_date = comment.submit_date
     now = datetime.datetime.now()
     TTL = submit_date + max_time - now
