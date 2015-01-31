@@ -21,9 +21,13 @@
           {% endif %}
         {% else %}
           <i class="icon-thumbs-up"></i>
+        {% if request.user.is_authenticated %}
           <form method="post" action="{% url 'om_act_record_user_vote' pk=act.id direction='up' %}">{% csrf_token %}
             <button type="submit">Vota</button>
           </form>
+        {% else %}
+          <a href="{% url "auth_login" %}?next={{ object.get_absolute_url }}">Entra per votare</a>
+        {% endif %}
         {% endif %}
       </td>
     </tr>
@@ -40,9 +44,13 @@
           {% endif %}
         {% else %}
           <i class="icon-thumbs-down"></i>
+          {% if request.user.is_authenticated %}
           <form method="post" action="{% url 'om_act_record_user_vote' pk=act.id direction='down' %}">{% csrf_token %}
             <button type="submit">Vota</button>
           </form>
+          {% else %}
+          <a href="{% url "auth_login" %}?next={{ object.get_absolute_url }}">Entra per votare</a>
+          {% endif %}
         {% endif %}
       </td>
     </tr>

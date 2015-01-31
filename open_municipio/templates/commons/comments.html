@@ -39,7 +39,9 @@
           {% score_for_object comment as comment_score %}
           {% if request.user.is_authenticated %}
             {% vote_by_user request.user on comment as vote %}
+            {% if not vote %}
             <a href="{% url "om_comments_record_user_vote" pk=comment.id direction="up" %}" id="comments-vote-{{ comment.id }}-up" class='vote{% if vote.vote and vote.vote > 0 %} up-voted{% endif %}'>Mi piace</a> &middot;
+            {% endif %}
           {% else %}
             <a href="{% url "auth_login" %}?next={{ object.get_absolute_url }}" class="vote"><span class='like'>Mi piace</span></a>  &middot;
           {% endif %}
