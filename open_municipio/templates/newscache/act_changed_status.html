@@ -14,6 +14,12 @@ L'atto <a href="{{ act.downcast.get_absolute_url }}">{{ act.downcast.adj_title|d
         non ha ricevuto risposta
     {% case act.STATUS.rejected %}
         è stato respinto
+    {% case act.STATUS.retired %}
+        è stato ritirato
+    {% case act.STATUS.decayed %}
+        è decaduto
+    {% case act.STATUS.postponed %}
+        è stato posticipato
     {%  else %}
         è in uno stato non determinabile
 {% endswitch %}

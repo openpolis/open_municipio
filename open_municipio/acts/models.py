@@ -61,6 +61,7 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
         ('REJECTED', 'rejected', _('rejected')),
         ('RETIRED', 'retired', _('retired')),
         ('DECAYED', 'decayed', _('decayed')),
+        ('POSTPONED', 'postponed', _('postponed')),
     )
 
     idnum = models.CharField(max_length=64, blank=True, help_text=_("A string representing the identification or sequence number for this act, used internally by the municipality's administration."))
@@ -489,6 +490,7 @@ class Deliberation(Act):
         ('REJECTED', 'rejected', _('rejected')),
         ('RETIRED', 'retired', _('retired')),
         ('DECAYED', 'decayed', _('decayed')),
+        ('POSTPONED', 'postponed', _('postponed')),
     )
 
     OM_DETAIL_VIEW_NAME = "om_deliberation_detail"
@@ -549,6 +551,7 @@ class Interrogation(Act):
         ('NOTANSWERED', 'notanswered', _('not answered')),
         ('RETIRED', 'retired', _('retired')),
         ('DECAYED', 'decayed', _('decayed')),
+        ('POSTPONED', 'postponed', _('postponed')),
     )
     
     OM_DETAIL_VIEW_NAME = "om_interrogation_detail"
@@ -656,6 +659,7 @@ class Interpellation(Act):
         ('NOTANSWERED', 'notanswered', _('not answered')),
         ('RETIRED', 'retired', _('retired')),
         ('DECAYED', 'decayed', _('decayed')),
+        ('POSTPONED', 'postponed', _('postponed')),
     )
     
     OM_DETAIL_VIEW_NAME = "om_interpellation_detail"
@@ -764,6 +768,7 @@ class Motion(Act):
         ('REJECTED', 'rejected', _('rejected')),
         ('RETIRED', 'retired', _('retired')),
         ('DECAYED', 'decayed', _('decayed')),
+        ('POSTPONED', 'postponed', _('postponed')),
     )
 
     OM_DETAIL_VIEW_NAME = "om_motion_detail"
@@ -802,6 +807,7 @@ class Agenda(Act):
         ('REJECTED', 'rejected', _('rejected')),
         ('RETIRED', 'retired', _('retired')),
         ('DECAYED', 'decayed', _('decayed')),
+        ('POSTPONED', 'postponed', _('postponed')),
     )
 
     OM_DETAIL_VIEW_NAME = "om_agenda_detail"
@@ -840,6 +846,7 @@ class Amendment(Act):
         ('REJECTED', 'rejected', _('rejected')),
         ('RETIRED', 'retired', _('retired')),
         ('DECAYED', 'decayed', _('decayed')),
+        ('POSTPONED', 'postponed', _('postponed')),
     )
 
     OM_DETAIL_VIEW_NAME = "om_amendment_detail"
