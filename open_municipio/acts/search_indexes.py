@@ -19,6 +19,7 @@ class ActIndex(indexes.SearchIndex, indexes.Indexable):
     organ = indexes.FacetCharField(model_attr='emitting_institution__lowername')
     pub_date = indexes.FacetDateField()
     person = indexes.MultiValueField(indexed=True, stored=False)
+    recipient = indexes.MultiValueField(indexed=True, stored=False)
     tags_with_urls = indexes.MultiValueField(indexed=True, stored=True)
     categories_with_urls = indexes.MultiValueField(indexed=True, stored=True)
     locations_with_urls = indexes.MultiValueField(indexed=True, stored=True)
@@ -30,7 +31,6 @@ class ActIndex(indexes.SearchIndex, indexes.Indexable):
     # while showing results
     url = indexes.CharField(indexed=False, stored=True)
     title = indexes.CharField(indexed=False, stored=True)
-
 
     logger = logging.getLogger('import')
 
@@ -115,6 +115,11 @@ class ActIndex(indexes.SearchIndex, indexes.Indexable):
         return [p['person__slug'] for p in
                 list(obj.first_signers.values('person__slug').distinct()) +
                 list(obj.co_signers.values('person__slug').distinct())]
+
+
+    def prepare_recipient(self, obj):
+        return [p['person__slug'] for p in
+                list(obj.recipients.values('person__slug').distinct())]
 
 
     def prepare_url(self, obj):

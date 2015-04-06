@@ -453,6 +453,13 @@ class InstitutionCharge(Charge):
         return self.received_act_set.all()
 
     @property
+    def n_received_acts(self):
+        """
+        The QuerySet of acts received by this charge.
+        """
+        return self.received_act_set.count()
+
+    @property
     def charge_type(self):
         """
         Returns the basic charge type translated string, according to the institution.

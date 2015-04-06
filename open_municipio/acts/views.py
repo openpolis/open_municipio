@@ -129,16 +129,25 @@ class ActSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
                 extra['category'] = Category.objects.get(slug=category_slug)
             except ObjectDoesNotExist:
                 pass
+
         tag_slug = self.request.GET.get('tag', None)
         if tag_slug:
             try:
                 extra['tag'] = Tag.objects.get(slug=tag_slug)
             except ObjectDoesNotExist:
                 pass
+
         location_slug = self.request.GET.get('location', None)
         if location_slug:
             try:
                 extra['location'] = Location.objects.get(slug=location_slug)
+            except ObjectDoesNotExist:
+                pass
+
+        recipient_slug = self.request.GET.get('recipient', None)
+        if recipient_slug:
+            try:
+                extra['recipient'] = Person.objects.get(slug=recipient_slug)
             except ObjectDoesNotExist:
                 pass
 

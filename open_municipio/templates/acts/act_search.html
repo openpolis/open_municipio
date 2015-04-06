@@ -39,6 +39,10 @@ em {
               <p>per la località: <a href="{{ location.get_absolute_url }}">{{ location }}</a>  </p>
           {% endif %}
 
+          {% if recipient %}
+              <p>per il destinatario: <a href="{{ person.get_absolute_url }}">{{ recipient }}</a>  </p>
+          {% endif %}
+
           <table class="search-results">
           <tbody>
           {% for result in page.object_list %}
