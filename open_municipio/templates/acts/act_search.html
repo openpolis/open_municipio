@@ -159,6 +159,20 @@ em {
                     {% endfor %}
                 {% endif %}
             </dl>
+            {% if facets.fields.status and facets.fields.act_type.is_field_selected and not facets.fields.status.is_field_selected %}
+            <dl>
+                <dt>{{ facets_labels.status }}</dt>
+                {% for t in facets.fields.status.counts %}
+                    {% if t.1 %}
+                    <dd>
+                        {% if not t.2 %}
+                            <a href="{{ base_url }}&selected_facets=status:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
+                        {% endif %}
+                    </dd>
+                    {%  endif %}
+                {% endfor %}
+            </dl>
+            {% endif %}
             <dl>
                 {% if facets.fields.is_key and not facets.fields.is_key.is_field_selected %}
                     <dt>{{ facets_labels.is_key }}</dt>
