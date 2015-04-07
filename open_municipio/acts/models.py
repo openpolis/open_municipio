@@ -245,6 +245,38 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
             if groups.has_key(transition.final_status):
                 groups.get(transition.final_status).append(transition)
         return groups
+        
+    def get_first_non_final_transitions(self):
+        """
+        Retrieve the first non final transition
+        """
+        this = self.downcast()
+
+        statuses = []
+        for final_status in this.FINAL_STATUSES: statuses.append(final_status[0])
+
+        # fill groups with ordered transitions
+        for transition in this.transitions.order_by('transition_date'):
+            if not transition.final_status in statuses:
+                return transition
+
+        return None
+        
+    def get_last_final_transitions(self):
+        """
+        Retrieve the first non final transition
+        """
+        this = self.downcast()
+
+        statuses = []
+        for final_status in this.FINAL_STATUSES: statuses.append(final_status[0])
+
+        # fill groups with ordered transitions
+        for transition in this.transitions.order_by('-transition_date'):
+            if transition.final_status in statuses:
+                return transition
+
+        return None
 
     def is_final_status(self, status=None):
         """
