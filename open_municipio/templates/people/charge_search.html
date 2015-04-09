@@ -1,0 +1,149 @@
+{% extends 'base_two_columns.html' %}
+{% load highlight %}
+{% load om_utils %}
+{% load i18n %}
+{% load digg_paginator %}
+
+{% block title %}Elenco cariche {% endblock title %}
+{% block content_header %}Cariche{% endblock %}
+{% block body_class %}charge{% endblock %}
+
+{% block extra_style %}
+em {
+    background-color: green;
+}
+{% endblock %}
+
+{% block content %}
+{% if n_results %}
+<section>
+  <h2>{% if not query %}Trovate {% endif %} {{ n_results }} cariche</h2>
+    
+    {% if person %}
+      <p>per: <a href="{{ person.get_absolute_url }}">{{ person }}</a> </p>
+    {% endif %}
+    
+    <table class="data dataTable">
+      <thead>
+        <tr>
+          <th>Inizio</th>
+          <th>Fine</th>
+          <th>Nome</th>
+          <th>Istituzione</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tbody>
+        {% for result in page.object_list %}
+            <tr>
+                <td>{{result.start_date|circled:"full" }}</td>
+                <td>{% if result.end_date %}{{result.end_date|circled:"full" }}{% endif %}</td>
+                <td>{{result.person_name }}</td>
+                <td>{{result.institution }}</td>
+            </tr>
+        {% empty %}
+            <p>Nessun commento trovato.</p>
+        {% endfor %}
+        </tbody>
+        </table>
+        </section>
+        {% digg_paginator %}
+    {% else %}
+        <section class="search-empty">
+            <p>
+                La ricerca di <strong>{{ form.q.value }}</strong> non è andata a buon fine.<br/>
+                Controlla che tutte le parole siano state digitate correttamente.</br>
+                oppure prova con parole diverse.
+            </p>
+            <p>
+                Grazie,<br/>
+                lo staff di Open Municipio
+            </p>
+        </section>
+    {% endif %} 
+
+{% endblock %}
+
+{% block sidebar %}
+ 
+    {% include "om_comments/comments_search_box.html" %}
+   
+    {% if n_results %}
+        {% if selected_facets %}
+            <h2>Modifica i filtri</h2>
+            {% for facet in selected_facets %}
+                <dt>{{ facets_labels|key:facet.field|safe }}</dt>
+                <dd>
+                    <a href="{{ facet.url }}"><i class="icon-remove"></i></a>
+                    {{ facet.r_label }}
+                </dd>
+            {% endfor %}
+    
+        {% else %}
+            <h2>Filtra</h2>
+            <p>Puoi trovare il commento che ti interessa scorrendo la lista 
+            degli ultimi pubblicati, qui a fianco.
+            Puoi perfezionare la ricerca usando i filtri nella colonna qui sotto, 
+            oppure puoi usare il form di ricerca con una parola che pensi sia 
+            contenuta nel commento, in cima alla colonna qui a destra</p>
+        {% endif %}
+    
+        <!-- Begin faceting. -->
+        <div>
+            <dl>
+                {% if facets.fields.is_active and not facets.fields.is_active.is_field_selected  %}
+                    <dt>{{ facets_labels.is_active }}</dt>
+                    {% for t in facets.fields.is_active.counts %}
+                        <dd>
+                            {% if not t.2 %}
+                                <a href="{{ base_url }}&selected_facets=is_active:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
+                            {% endif %}
+                        </dd>
+                    {% endfor %}
+                {% endif %}
+            </dl>
+
+            <dl>
+                {% if facets.fields.institution and not facets.fields.institution.is_field_selected  %}
+                    <dt>{{ facets_labels.institution }}</dt>
+                    {% for t in facets.fields.institution.counts %}
+                        <dd>
+                            {% if not t.2 %}
+                                <a href="{{ base_url }}&selected_facets=institution:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
+                            {% endif %}
+                        </dd>
+                    {% endfor %}
+                {% endif %}
+            </dl>
+
+            <dl>
+                {% if not facet_queries_start_date.is_selected %}
+                    <dt>{{ facets_labels.start_date }}</dt>
+                    {% for range in facet_queries_start_date.ranges|dictsortreversed:"key"  %}
+                        <dd>
+                            <a href="{{ base_url }}&selected_facets={{ range.key }}">
+                                {{ range.label|safe }}
+                            </a> ({{ range.count }})
+                        </dd>
+                    {% endfor %}
+                {% endif %}
+            </dl>
+
+            <dl>
+                {% if not facet_queries_end_date.is_selected %}
+                    <dt>{{ facets_labels.end_date }}</dt>
+                    {% for range in facet_queries_end_date.ranges|dictsortreversed:"key"  %}
+                        <dd>
+                            <a href="{{ base_url }}&selected_facets={{ range.key }}">
+                                {{ range.label|safe }}
+                            </a> ({{ range.count }})
+                        </dd>
+                    {% endfor %}
+                {% endif %}
+            </dl>
+
+        </div>
+    
+        <!-- End faceting -->
+    {% endif %}
+{% endblock %}

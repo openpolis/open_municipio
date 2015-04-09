@@ -15,6 +15,11 @@ class InstitutionChargeIndex(indexes.SearchIndex, indexes.Indexable):
     start_date = indexes.FacetDateField(model_attr='start_date')
     end_date = indexes.FacetDateField(model_attr='end_date')
 
+    is_active = indexes.FacetCharField()
+
+    n_presented_acts = indexes.IntegerField(indexed=False, stored=True, model_attr='n_presented_acts')
+    n_received_acts = indexes.IntegerField(indexed=False, stored=True, model_attr='n_received_acts')
+
     n_rebel_votations = indexes.IntegerField(indexed=False, stored=True, model_attr='n_rebel_votations')
     n_present_votations = indexes.IntegerField(indexed=False, stored=True, model_attr='n_present_votations')
     n_absent_votations = indexes.IntegerField(indexed=False, stored=True, model_attr='n_absent_votations')
@@ -23,3 +28,7 @@ class InstitutionChargeIndex(indexes.SearchIndex, indexes.Indexable):
 
     def get_model(self):
         return InstitutionCharge
+
+    def prepare_is_active(self, obj):
+
+        return _("no") if obj.end_date else _("yes")
