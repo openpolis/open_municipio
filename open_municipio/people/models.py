@@ -98,6 +98,12 @@ class Person(models.Model, MonitorizedItem):
         """
         return self.institutioncharge_set.select_related().all()
 
+    def get_past_institution_charges(self, moment=None):
+        return self.institutioncharge_set.select_related().past(moment=moment).exclude(
+            institution__institution_type__in=(Institution.COMMITTEE, Institution.JOINT_COMMITTEE)
+    )
+    past_institution_charges = property(get_past_institution_charges)
+
     def get_current_institution_charges(self, moment=None):
         """
         Returns the current institution charges at the given moment (no committees).
@@ -105,7 +111,6 @@ class Person(models.Model, MonitorizedItem):
         return self.institutioncharge_set.select_related().current(moment=moment).exclude(
             institution__institution_type__in=(Institution.COMMITTEE, Institution.JOINT_COMMITTEE)
         )
-
     current_institution_charges = property(get_current_institution_charges)
 
     def get_current_committee_charges(self, moment=None):
@@ -116,6 +121,7 @@ class Person(models.Model, MonitorizedItem):
             institution__institution_type__in=(Institution.COMMITTEE, Institution.JOINT_COMMITTEE)
         ).order_by('-institutionresponsability__charge_type','institution__position')
     current_committee_charges = property(get_current_committee_charges)
+
 
     def get_current_charge_in_institution(self, institution, moment=None):
         """
@@ -364,6 +370,16 @@ class InstitutionCharge(Charge):
     n_absent_votations = models.IntegerField(default=0, verbose_name=_("number of absences during votes"))
     n_present_attendances = models.IntegerField(default=0, verbose_name=_("number of present attendances"))
     n_absent_attendances = models.IntegerField(default=0, verbose_name=_("number of absent attendances"))
+
+    def get_absolute_url(self):
+        return reverse("om_politician_detail", 
+            kwargs={"slug":self.person.slug, 
+                "institution_slug": self.institution.slug,
+                "year":self.start_date.year, "month": self.start_date.month, 
+                "day":self.start_date.day })
+
+    def is_counselor(self):
+        return self.institution.institution_type == Institution.COUNCIL
 
 
     class Meta(Charge.Meta):

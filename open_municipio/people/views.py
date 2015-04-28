@@ -1,5 +1,7 @@
-from datetime import datetime
+from datetime import datetime, date
 import logging
+
+from django.shortcuts import get_object_or_404
 
 from django.conf import settings
 from django.contrib.sites.models import Site
@@ -280,6 +282,25 @@ class PoliticianDetailView(DetailView):
     context_object_name = 'person'
     template_name='people/politician_detail.html'
 
+    def get_charge(self):
+
+        institution_slug = self.kwargs.get("institution_slug", None)
+        year = int(self.kwargs.get("year", "0"))
+        month = int(self.kwargs.get("month", "0"))
+        day = int(self.kwargs.get("day", "0"))
+
+        charg = None
+
+        if institution_slug and year and month and day: 
+            start_date = date(year=year, month=month, day=day)
+            charge = InstitutionCharge.objects.get(person=self.object, institution__slug=institution_slug, start_date=start_date)
+        else:
+            all_charges = self.object.get_current_institution_charges()
+            if len(all_charges) > 0:
+                charge = all_charges[0]
+
+        return charge
+
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super(PoliticianDetailView, self).get_context_data(**kwargs)
@@ -288,12 +309,24 @@ class PoliticianDetailView(DetailView):
 
         context['resources'] = { }
 
-        for r in self.object.resources.values('resource_type', 'value', 'description'):
+        person = self.object
+
+        context['person'] = person
+
+        charge = self.get_charge()
+
+        context['charge'] = charge
+
+        for r in person.resources.values('resource_type', 'value', 'description'):
             context['resources'].setdefault(r['resource_type'], []).append(
                 {'value': r['value'], 'description': r['description']}
             )
 
-        current_charges = self.object.get_current_institution_charges().exclude(
+
+        past_charges = person.get_past_institution_charges()
+        context['past_charges'] = past_charges
+
+        current_charges = person.get_current_institution_charges().exclude(
             institutionresponsability__charge_type__in=(
                 InstitutionResponsability.CHARGE_TYPES.mayor,
             ),
@@ -301,18 +334,18 @@ class PoliticianDetailView(DetailView):
         )
         context['current_charges'] = current_charges
         context['current_institutions'] = current_charges.values("institution__name").distinct()
-        context['current_committee_charges'] = self.object.get_current_committee_charges()
-        context['is_counselor'] = self.object.is_counselor()
-        context['current_counselor_charge'] = self.object.current_counselor_charge()
+        context['current_committee_charges'] = person.get_current_committee_charges()
+#        context['is_counselor'] = person.is_counselor()
+        context['current_counselor_charge'] = person.current_counselor_charge()
 
-        context['current_groupcharge'] = self.object.current_groupcharge
+        context['current_groupcharge'] = person.current_groupcharge
 
-        historical_groupcharges = self.object.historical_groupcharges
+        historical_groupcharges = person.historical_groupcharges
         context['historical_groupcharges'] = historical_groupcharges.order_by('start_date') if historical_groupcharges else None
 
-        # Is politician a counselor? If so, we show present/absent
+        # Is the current charge a counselor? If so, we show present/absent
         # graph
-        if context['is_counselor']:
+        if self.object.is_counselor:
             # Calculate average present/absent for counselors
             percentage_present = 0
             percentage_absent = 0
@@ -333,7 +366,7 @@ class PoliticianDetailView(DetailView):
                 "%.1f" % (float(percentage_absent) / n_counselors * 100)
 
             # Calculate present/absent for current counselor
-            charge = context['current_counselor_charge']
+#            charge = context['current_counselor_charge']
             charge.percentage_present_votations = charge.percentage_absent_votations = 0.0
 
             if charge.n_present_votations + charge.n_absent_votations > 0:
@@ -358,14 +391,14 @@ class PoliticianDetailView(DetailView):
 
         # last 10 presented acts
         presented_acts = Act.objects\
-            .filter(actsupport__charge__pk__in=self.object.current_institution_charges)\
+            .filter(actsupport__charge__pk__in=person.current_institution_charges)\
             .order_by('-presentation_date')
         context['n_presented_acts'] = presented_acts.count()
         context['presented_acts'] = presented_acts[0:10]
 
         # last 5 speeches
         speeches = Speech.objects\
-            .filter(author=self.object)
+            .filter(author=person)
         context['n_speeches'] = speeches.count()
         context['speeches'] = speeches[0:5]
 
@@ -376,12 +409,12 @@ class PoliticianDetailView(DetailView):
                 # add a monitoring form, to context,
                 # to switch monitoring on and off
                 context['monitoring_form'] = MonitoringForm(data = {
-                    'content_type_id': context['person'].content_type_id,
-                    'object_pk': context['person'].id,
+                    'content_type_id': person.content_type_id,
+                    'object_pk': person.id,
                     'user_id': self.request.user.id
                 })
 
-                if context['person'] in self.request.user.get_profile().monitored_objects:
+                if person in self.request.user.get_profile().monitored_objects:
                     context['is_user_monitoring'] = True
         except ObjectDoesNotExist:
             context['is_user_monitoring'] = False
@@ -394,7 +427,7 @@ class PoliticianDetailView(DetailView):
         #
 
         # get the person from the view
-        p = self.object
+        p = person #self.object
         for charge in p.current_institution_charges:
             for act in charge.presented_acts:
                 for topic in act.topics:
@@ -411,7 +444,7 @@ class PoliticianDetailView(DetailView):
         """
         # Obscurated form of the above code :-)
 
-        for topics in [y.topics for x in self.object.get_current_institution_charges() for y in x.presented_act_set.all() ]:
+        for topics in [y.topics for x in person.get_current_institution_charges() for y in x.presented_act_set.all() ]:
             for topic in topics:
                 if topic.category in [t.category for t in context['person_topics']]:
                     if topic.tag in [t.tag for t in context['person_topics']]:
