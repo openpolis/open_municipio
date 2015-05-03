@@ -2,6 +2,7 @@
 {% load popover_info %}
 {% load newscache_tags %}
 {% load url from future %}
+{% load users_tags %}
 
 
 {% block title %}Profilo utente{% endblock %}
@@ -27,15 +28,27 @@
 
     <div class="row-fluid">
       <div class="span12">
+{% comment %}
         {% if person %}
           {% thumbnail profile.person.image "100x100" crop="center" as im %}
-            <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" class="thumb-left">
+            <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" class="thumb-left" />
           {% endthumbnail %}
         {%  else %}
           {% thumbnail profile.image "100x100" crop="center" as im %}
-            <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" class="thumb-left">
+            <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" class="thumb-left" />
           {% endthumbnail %}
         {%  endif %}
+{% endcomment %}
+
+          {% with profile|get_profile_image as curr_image %}
+          {% if curr_image %}
+          {% thumbnail curr_image "100x100" crop="center" as im %}
+            <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" class-"thumb-left" />
+          {% endthumbnail %}
+          {% else %}
+          <img src="{{ STATIC_URL }}img/placehold/face_100.png" />
+          {% endif %}
+          {% endwith %}
 
         <h2>{{ profile.public_name }}</h2>
         <ul class="unstyled">
