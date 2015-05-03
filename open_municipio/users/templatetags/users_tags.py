@@ -21,8 +21,8 @@ def get_profile_image(obj):
     person = profile.person
 
     img = None
-    if person and person.image:
-        img = person.image
+    if person and person.img:
+        img = person.img
     elif profile.image:
         img = profile.image
     
