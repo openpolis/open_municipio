@@ -29,7 +29,7 @@
 
           <p>
             <a href="{% url 'profiles_profile_detail' comment.user.username %}">{{ comment.user.first_name }} {{ comment.user.last_name }}</a>
-            {{ comment.comment|linebreaks|urlize }}
+            {{ comment.comment|urlize|linebreaks }}
           </p>
 
           {% if comment.mood == "+" %}<i class="hand-ok hand-active"></i>{% else %}
