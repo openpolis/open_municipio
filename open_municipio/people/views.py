@@ -289,13 +289,13 @@ class PoliticianDetailView(DetailView):
         month = int(self.kwargs.get("month", "0"))
         day = int(self.kwargs.get("day", "0"))
 
-        charg = None
+        charge = None
 
         if institution_slug and year and month and day: 
             start_date = date(year=year, month=month, day=day)
             charge = InstitutionCharge.objects.get(person=self.object, institution__slug=institution_slug, start_date=start_date)
         else:
-            all_charges = self.object.get_current_institution_charges()
+            all_charges = self.object.all_institution_charges.order_by("-start_date")
             if len(all_charges) > 0:
                 charge = all_charges[0]
 
@@ -340,12 +340,12 @@ class PoliticianDetailView(DetailView):
 
         context['current_groupcharge'] = person.current_groupcharge
 
-        historical_groupcharges = person.historical_groupcharges
+        historical_groupcharges = charge.historical_groupcharges #person.historical_groupcharges
         context['historical_groupcharges'] = historical_groupcharges.order_by('start_date') if historical_groupcharges else None
 
         # Is the current charge a counselor? If so, we show present/absent
         # graph
-        if self.object.is_counselor:
+        if charge and charge.is_counselor:
             # Calculate average present/absent for counselors
             percentage_present = 0
             percentage_absent = 0

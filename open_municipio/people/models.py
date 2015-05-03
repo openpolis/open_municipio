@@ -98,6 +98,7 @@ class Person(models.Model, MonitorizedItem):
         """
         return self.institutioncharge_set.select_related().all()
 
+
     def get_past_institution_charges(self, moment=None):
         return self.institutioncharge_set.select_related().past(moment=moment).exclude(
             institution__institution_type__in=(Institution.COMMITTEE, Institution.JOINT_COMMITTEE)
@@ -372,11 +373,19 @@ class InstitutionCharge(Charge):
     n_absent_attendances = models.IntegerField(default=0, verbose_name=_("number of absent attendances"))
 
     def get_absolute_url(self):
-        return reverse("om_politician_detail", 
-            kwargs={"slug":self.person.slug, 
-                "institution_slug": self.institution.slug,
-                "year":self.start_date.year, "month": self.start_date.month, 
-                "day":self.start_date.day })
+
+        url = None
+
+        if self.institution.institution_type == Institution.COMMITTEE:
+            url = self.person.get_absolute_url()
+        else:
+            url = reverse("om_politician_detail", 
+                kwargs={"slug":self.person.slug, 
+                    "institution_slug": self.institution.slug,
+                    "year":self.start_date.year, "month": self.start_date.month, 
+                    "day":self.start_date.day })
+
+        return url
 
     def is_counselor(self):
         return self.institution.institution_type == Institution.COUNCIL

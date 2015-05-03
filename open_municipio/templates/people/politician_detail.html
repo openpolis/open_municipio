@@ -39,7 +39,10 @@
 
 {% block content %}
 
+  <hgroup>
+
   <div class="row-fluid">
+
     <div class="span8">
 
       <header class="clearfix">
@@ -90,16 +93,15 @@
               dal {{ current_groupcharge.current_responsability.start_date|date:'d.m.Y' }}
           {%  endif %}
           <br/>
-
-          {% if historical_groupcharges %}
-              le altre appartenenze
+      {% endif %}
+      {% if historical_groupcharges %}
+          Gruppi precedenti:
               <ul>
                   {% for gc in historical_groupcharges %}
-                      <li>dal {{ gc.start_date|date:'d.m.Y' }} {%  if gc.end_date %} al {{ gc.end_date|date:'d.m.Y' }}{%  endif %} - {{ gc.group.name }}</li>
+                      <li>{{ gc.group.name }} - dal {{ gc.start_date|date:'d.m.Y' }} {%  if gc.end_date %} al {{ gc.end_date|date:'d.m.Y' }}{%  endif %}</li>
                   {% endfor %}
               </ul>
           {% endif %}
-      {% endif %}
 
       {% if current_committee_charges %}
           <ul class="list-plain">
@@ -152,20 +154,21 @@
     </div>
 
   </div>
+  </hgroup>
 
   <div class="nav-tabs-container">
     <ul class="nav nav-tabs page-tabs">
       {% for c in current_charges %}
         <li {% if c == charge %}class="active" {% endif %} >
             <a href="{{ c.get_absolute_url }}">
-            {{ c.denomination }} dal {{ c.start_date|date:"d.m.Y" }}{% if c.end_date %} al {{ c.end_date|date:"d.m.Y" }}{% endif %}
+            {{ c.charge_type }} dal {{ c.start_date|date:"Y" }}{% if c.end_date %} al {{ c.end_date|date:"Y" }}{% endif %}
             </a>
         </li>
       {% endfor %}
       {% for c in past_charges %}
         <li {% if c == charge %}class="active" {% endif %} >
             <a href="{{ c.get_absolute_url }}">
-            {{ c.denomination }} dal {{ c.start_date|date:"d.m.Y" }}{% if c.end_date %} al {{ c.end_date|date:"d.m.Y" }}{% endif %}
+            {{ c.charge_type }} dal {{ c.start_date|date:"Y" }}{% if c.end_date %} al {{ c.end_date|date:"Y" }}{% endif %}
             </a>
         </li>
       {% endfor %}

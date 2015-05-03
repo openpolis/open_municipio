@@ -5396,6 +5396,16 @@ table.tablesorter th.tablesorter-headerSortDown {
 
   background-image: url(data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjI8Bya2wnINUMopZAQA7);
 }
+
+body.politician .page-tabs {
+    background-color: #72C056;
+}
+
+body.politician .page-tabs li.active a {
+  border-color: #72C056;
+  border-bottom: 1px solid white;
+}
+
 .page-tabs {
   background-color: #4788C2;
   padding: 0 15px;
@@ -5408,6 +5418,7 @@ table.tablesorter th.tablesorter-headerSortDown {
 .page-tabs li.active {
   border: 0;
 }
+
 .page-tabs li.active a {
   margin-top: -8px;
   padding: 8px 30px;
