@@ -6,11 +6,8 @@ from django.conf import settings
 
 urlpatterns = patterns('',
     url(r'^(?P<username>[\w\.@]+)/$',
-        UserDetailView.as_view(
-         model=User,
-         context_object_name='registered_user',
-         template_name='users/user_detail.html',
-    ), name='users_user_detail'),
+        UserDetailView.as_view(),
+    name='users_user_detail'),
 )
 
 urlpatterns += patterns('profiles.views',
