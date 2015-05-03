@@ -5343,7 +5343,7 @@ dl.data-list dt + dd {
   text-align: center;
 }
 .tags-cloud li {
-  display: inline;
+  display: inline-block;
 }
 .tags-cloud a {
   padding: 0 5px 0 0;
