@@ -336,7 +336,7 @@ class PoliticianDetailView(DetailView):
         context['current_institutions'] = current_charges.values("institution__name").distinct()
         context['current_committee_charges'] = person.get_current_committee_charges()
 #        context['is_counselor'] = person.is_counselor()
-        context['current_counselor_charge'] = person.current_counselor_charge()
+#        context['current_counselor_charge'] = person.current_counselor_charge()
 
         context['current_groupcharge'] = person.current_groupcharge
 
@@ -383,8 +383,8 @@ class PoliticianDetailView(DetailView):
 
         # Current politician's charge votes for key votations
         # last 10 are passed to template
-        charge = context['current_counselor_charge']
-        if charge:
+#        charge = context['current_counselor_charge']
+        if charge and charge.is_counselor:
             context['current_charge_votes'] = charge.chargevote_set \
                 .filter(votation__is_key=True) \
                 .order_by('-votation__sitting__date')[0:10]

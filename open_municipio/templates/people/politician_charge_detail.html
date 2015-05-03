@@ -11,7 +11,7 @@
       <div class="meter-bar float-container">
         <div class="meter-bar-container">
           <label>Presenze</label>
-          <div class="meter-label"><strong class="green">{{ percentage_present_votations }}%</strong>&nbsp;({{ current_counselor_charge.n_present_votations }})</div>
+          <div class="meter-label"><strong class="green">{{ percentage_present_votations }}%</strong>&nbsp;({{ charge.n_present_votations }})</div>
           <div class="green-meter-bar">
             <div style="left: {{ percentage_present_votations_average }}%;" class="meter-average"><label>valore medio: {{ percentage_present_votations_average }}%</label>&nbsp;</div>
             <div style="width: {{ percentage_present_votations }}%;" class="meter-value">&nbsp;</div>
@@ -19,7 +19,7 @@
         </div>
         <div class="meter-bar-container">
           <label>Assenze</label>
-          <div class="meter-label"><strong class="red">{{ percentage_absent_votations }}%</strong>&nbsp;({{ current_counselor_charge.n_absent_votations }})</div>
+          <div class="meter-label"><strong class="red">{{ percentage_absent_votations }}%</strong>&nbsp;({{ charge.n_absent_votations }})</div>
           <div class="red-meter-bar">
             <div style="left: {{ percentage_absent_votations_average }}%;" class="meter-average"><label>valore medio: {{ percentage_absent_votations_average }}%</label>&nbsp;</div>
             <div style="width: {{ percentage_absent_votations }}%;" class="meter-value">&nbsp;</div>
@@ -82,7 +82,7 @@
       <section>
           <h2>Voti ribelli ({{ percentage_rebel_votations }}%) {% popover_info 'voti-ribelli' %}</h2>
           <p>
-              Ha votato {{ current_counselor_charge.n_rebel_votations }} volte ({{ percentage_rebel_votations }}% sul totale dei voti cui era presente) <strong>diversamente dal proprio gruppo</strong> di appartenenza.
+              Ha votato {{ charge.n_rebel_votations }} volte ({{ percentage_rebel_votations }}% sul totale dei voti cui era presente) <strong>diversamente dal proprio gruppo</strong> di appartenenza.
           </p>
       </section>
 
