@@ -70,7 +70,7 @@ class TransitionInline(admin.TabularInline):
         this is why we check the obj.downcast() type, first)
         """
 
-        specific_object = obj.downcast()
+        specific_object = obj.downcast() if obj else None
 
         if specific_object:
             self.form = transition_form_factory(type(specific_object))
