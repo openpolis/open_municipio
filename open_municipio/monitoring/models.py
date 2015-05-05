@@ -170,7 +170,14 @@ def remove_monitoring(**kwargs):
     """
     generating_item = kwargs['instance']
     monitored_object = generating_item.content_object
-    monitoring_user = generating_item.user.get_profile()
+
+    monitoring_user = None
+
+    try:
+        monitoring_user = generating_item.user.get_profile()
+    except ObjectDoesNotExist, e:
+        # maybe the user or the associated profile has been deleted
+        pass
 
     if not generating_item:
         return
