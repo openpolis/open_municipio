@@ -114,7 +114,11 @@ def extract_top_monitored_objects(*models, **kwargs):
             annotate(n_monitoring=Count('object_pk')).\
             order_by('-n_monitoring')[:limit]:
         ct = ContentType.objects.get(pk=el['content_type'])
-        object = ct.get_object_for_this_type(pk=el['object_pk'])
+        try:
+            object = ct.get_object_for_this_type(pk=el['object_pk'])
+        except ObjectDoesNotExist, e:
+            # probably a monitored object has been deleted. skip it
+            continue
         monitored_objects.append({'content_type': ct, 'object': object, 'n_monitoring': el['n_monitoring']})
 
     return monitored_objects
