@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.urlresolvers import reverse 
+from django.core.exceptions import ObjectDoesNotExist
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
