@@ -80,14 +80,14 @@ class ActIndex(indexes.SearchIndex, indexes.Indexable):
 
     def prepare_initiative(self, obj):
 
-        if obj.downcast().presenter_set.filter(actsupport__charge__institution__institution_type=Institution.MAYOR).count():
-            return _("Mayor")
+        if obj.downcast().presenter_set.filter(actsupport__charge__institution__institution_type=Institution.COUNCIL).count():
+            return _("Council")
 
         elif obj.downcast().presenter_set.filter(actsupport__charge__institution__institution_type=Institution.CITY_GOVERNMENT).count():
             return _("Town government")
 
-        elif obj.downcast().presenter_set.filter(actsupport__charge__institution__institution_type=Institution.COUNCIL).count():
-            return _("Council")
+        elif obj.downcast().presenter_set.filter(actsupport__charge__institution__institution_type=Institution.MAYOR).count():
+            return _("Mayor")
 
         return ''
 
