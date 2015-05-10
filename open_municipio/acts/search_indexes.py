@@ -17,8 +17,8 @@ class ActIndex(indexes.SearchIndex, indexes.Indexable):
     initiative = indexes.FacetCharField()
     is_proposal = indexes.FacetCharField()
     organ = indexes.FacetCharField(model_attr='emitting_institution__lowername')
-    pub_date = indexes.FacetDateField()
-    final_date = indexes.DateField()
+    pub_date = indexes.FacetDateField(model_attr='first_date')
+    final_date = indexes.DateField(model_attr='final_date')
     person = indexes.MultiValueField(indexed=True, stored=False)
     recipient = indexes.MultiValueField(indexed=True, stored=False)
     tags_with_urls = indexes.MultiValueField(indexed=True, stored=True)
@@ -28,6 +28,7 @@ class ActIndex(indexes.SearchIndex, indexes.Indexable):
     idnum = indexes.CharField(indexed=True, stored=False, model_attr='idnum')
     month = indexes.FacetCharField()
     status = indexes.FacetCharField()
+    iter_duration = indexes.FacetCharField()
 
     # stored fields, used not to touch DB
     # while showing results
@@ -99,31 +100,6 @@ class ActIndex(indexes.SearchIndex, indexes.Indexable):
         else:
             return _('yes')
 
-
-    def prepare_pub_date(self, obj):
-        """
-        Return approval_date or presentation_date as pub_date field,
-        according to the status of
-        """
-        transition = obj.get_first_non_final_transitions()
-
-        return transition.transition_date if transition else obj.presentation_date
-
-
-    def prepare_final_date(self, obj):
-        """
-        WRITEME
-        """
-        transition = obj.get_last_final_transitions()
-
-        if (transition):
-            return transition.transition_date
-
-        this = obj.downcast()
-
-        return this.approval_date if hasattr(this, 'approval_date') else obj.presentation_date
-
-
     def prepare_person(self, obj):
         return [p['person__slug'] for p in
                 list(obj.first_signers.values('person__slug').distinct()) +
@@ -143,6 +119,16 @@ class ActIndex(indexes.SearchIndex, indexes.Indexable):
 
     def prepare_status(self, obj):
         return obj.downcast().get_status_display()
+
+    def prepare_iter_duration(self, obj):
+
+        if not obj.iter_duration.days: return '0'
+        elif obj.iter_duration.days <= 7: return '1 - 7'
+        elif obj.iter_duration.days <= 14: return '8 - 14'
+        elif obj.iter_duration.days <= 21: return '15 - 21'
+        elif obj.iter_duration.days <= 30: return '21 - 30'
+        elif obj.iter_duration.days <= 60: return 'oltre un mese'
+        else: return 'oltre due mesi'
 
 
 class SpeechIndex(indexes.SearchIndex, indexes.Indexable):

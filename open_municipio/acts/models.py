@@ -306,6 +306,42 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
 
         return None
 
+    @property
+    def first_date(self):
+        """
+        Return approval_date or presentation_date as pub_date field,
+        according to the status of
+        """
+        transition = self.get_first_non_final_transitions()
+
+        return transition.transition_date if transition else self.presentation_date
+
+    @property
+    def final_date(self):
+        """
+        WRITEME
+        """
+        transition = self.get_last_final_transitions()
+
+        if (transition):
+            return transition.transition_date
+
+        this = self.downcast()
+
+        rv = None
+
+        if hasattr(this, 'approval_date'): rv = this.approval_date
+
+        return rv if rv else self.presentation_date
+
+    @property
+    def iter_duration(self):
+        """
+        WRITEME
+        """
+
+        return (self.final_date - self.first_date)
+
 #    @models.permalink
     def get_absolute_url(self):
         """
