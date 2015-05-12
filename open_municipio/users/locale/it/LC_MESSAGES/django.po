@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-20 22:46+0100\n"
+"POT-Creation-Date: 2015-05-11 08:29+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -42,7 +42,7 @@ msgstr "Desidero ricevere la newsletter"
 msgid "Location, if applicable"
 msgstr "Località, se applicabile"
 
-#: forms.py:44 models.py:80
+#: forms.py:44 models.py:81
 msgid "Description"
 msgstr "Descrizione"
 
@@ -78,35 +78,35 @@ msgstr "Un utente con questo username già esiste."
 msgid "E-mail"
 msgstr "Email"
 
-#: models.py:48
+#: models.py:49
 msgid "all"
 msgstr "Pieno"
 
-#: models.py:49
+#: models.py:50
 msgid "some"
 msgstr "Parziale"
 
-#: models.py:50
+#: models.py:51
 msgid "none"
 msgstr "Nessuno"
 
-#: models.py:58
+#: models.py:59
 msgid "show my nickname, not my name"
 msgstr "mostra il mio nickname, non il mio nome e cognome"
 
-#: models.py:64
+#: models.py:65
 msgid "i am a politician"
 msgstr "sono un politico"
 
-#: models.py:70
+#: models.py:71
 msgid "privacy level"
 msgstr "livello di privacy"
 
-#: models.py:73
+#: models.py:74
 msgid "i want the newsletter"
 msgstr "desidero ricevere la newsletter"
 
-#: models.py:76
+#: models.py:77
 msgid "location"
 msgstr "località"
 
