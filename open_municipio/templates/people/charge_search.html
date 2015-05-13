@@ -3,6 +3,7 @@
 {% load om_utils %}
 {% load i18n %}
 {% load digg_paginator %}
+{% load url from future %}
 
 {% block title %}Elenco cariche {% endblock title %}
 {% block content_header %}Cariche{% endblock %}
@@ -49,22 +50,43 @@ em {
         <tbody>
         {% for result in page.object_list %}
             <tr>
-                <td>{{ result.object.person }}<br />{{ result.institution }}</td>
+                <td>{{ result.last_name }} {{ result.first_name }}<br />{{ result.institution }}</td>
                 <td>{{ result.start_date }}<br />{% if result.end_date %}{{ result.end_date }}{% endif %}</td>
                 <td>{{ result.object.duration.days }}</td>
-                <td>{% if result.n_cgdeliberations %}{{ result.n_cgdeliberations }}{% endif %}</td>
+                <td>{% if result.n_cgdeliberations %}
+                	<a href="{% url 'om_act_search' %}?q=&person={{ result.object.person.slug }}&selected_facets=act_type:delibera di giunta">
+                	{{ result.n_cgdeliberations }}</a>
+                {% endif %}</td>
                 <td>{% if result.n_cgdeliberations %}{{ result.n_cgdeliberations_index|floatformat:3 }}{% endif %}</td>
-                <td>{% if result.n_deliberations %}{{ result.n_deliberations }}{% endif %}</td>
+                <td>{% if result.n_deliberations %}
+                	<a href="{% url 'om_act_search' %}?q=&person={{ result.object.person.slug }}&selected_facets=act_type:delibera">
+                	{{ result.n_deliberations }}</a>
+                {% endif %}</td>
                 <td>{% if result.n_deliberations %}{{ result.n_deliberations_index|floatformat:3 }}{% endif %}</td>
-                <td>{% if result.n_motions %}{{ result.n_motions }}{% endif %}</td>
+                <td>{% if result.n_motions %}
+                	<a href="{% url 'om_act_search' %}?q=&person={{ result.object.person.slug }}&selected_facets=act_type:mozione">
+                	{{ result.n_motions }}</a>
+                {% endif %}</td>
                 <td>{% if result.n_motions %}{{ result.n_motions_index|floatformat:3 }}{% endif %}</td>
-                <td>{% if result.n_agendas %}{{ result.n_agendas }}{% endif %}</td>
+                <td>{% if result.n_agendas %}
+                	<a href="{% url 'om_act_search' %}?q=&person={{ result.object.person.slug }}&selected_facets=act_type:ordine del giorno">
+                	{{ result.n_agendas }}</a>
+                {% endif %}</td>
                 <td>{% if result.n_agendas %}{{ result.n_agendas_index|floatformat:3 }}{% endif %}</td>
-                <td>{% if result.n_amendments %}{{ result.n_amendments }}{% endif %}</td>
+                <td>{% if result.n_amendments %}
+                	<a href="{% url 'om_act_search' %}?q=&person={{ result.object.person.slug }}&selected_facets=act_type:emendamento">
+                	{{ result.n_amendments }}</a>
+                {% endif %}</td>
                 <td>{% if result.n_amendments %}{{ result.n_amendments_index|floatformat:3 }}{% endif %}</td>
-                <td>{% if result.n_interrogations %}{{ result.n_interrogations }}{% endif %}</td>
+                <td>{% if result.n_interrogations %}
+                	<a href="{% url 'om_act_search' %}?q=&person={{ result.object.person.slug }}&selected_facets=act_type:interrogazione">
+                	{{ result.n_interrogations }}</a>
+                {% endif %}</td>
                 <td>{% if result.n_interrogations %}{{ result.n_interrogations_index|floatformat:3 }}{% endif %}</td>
-                <td>{% if result.n_interpellations %}{{ result.n_interpellations }}{% endif %}</td>
+                <td>{% if result.n_interpellations %}
+                	<a href="{% url 'om_act_search' %}?q=&person={{ result.object.person.slug }}&selected_facets=act_type:interpellanza">
+                	{{ result.n_interpellations }}</a>
+                {% endif %}</td>
                 <td>{% if result.n_interpellations %}{{ result.n_interpellations_index|floatformat:3 }}{% endif %}</td>
 			</tr>
         {% empty %}

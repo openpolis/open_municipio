@@ -9,7 +9,8 @@ class InstitutionChargeIndex(indexes.SearchIndex, indexes.Indexable):
 
     text = indexes.CharField(document=True, use_template=True)
 
-    person_name = indexes.CharField(model_attr='person__full_name')
+    first_name = indexes.CharField(model_attr='person__first_name')
+    last_name = indexes.CharField(model_attr='person__last_name')
     institution = indexes.FacetCharField(model_attr='institution__lowername')
 
     start_date = indexes.FacetDateField(model_attr='start_date')
