@@ -28,8 +28,10 @@ em {
       <thead>
         <tr>
           <th>Carica</th>
-          <th>Periodo</th>
-          <th>Durata<br />(giorni)</th>
+          <th>Period</th>
+          <th>Gior</th>
+          <th>AP</th>
+          <th>AR</th>
           <th>DG</th>
           <th>DG /<br />mese</th>
           <th>DC</th>
@@ -53,6 +55,11 @@ em {
                 <td>{{ result.last_name }} {{ result.first_name }}<br />{{ result.institution }}</td>
                 <td>{{ result.start_date }}<br />{% if result.end_date %}{{ result.end_date }}{% endif %}</td>
                 <td>{{ result.object.duration.days }}</td>
+                <td>{% if result.n_presented_acts %}
+                	<a href="{% url 'om_act_search' %}?q=&person={{ result.object.person.slug }}">
+                	{{ result.n_presented_acts }}</a>
+                {% endif %}</td>
+                <td>{% if result.n_received_acts %}{{ result.n_received_acts }}{% endif %}</td>
                 <td>{% if result.n_cgdeliberations %}
                 	<a href="{% url 'om_act_search' %}?q=&person={{ result.object.person.slug }}&selected_facets=act_type:delibera di giunta">
                 	{{ result.n_cgdeliberations }}</a>
