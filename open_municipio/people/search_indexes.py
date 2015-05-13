@@ -71,22 +71,22 @@ class InstitutionChargeIndex(indexes.SearchIndex, indexes.Indexable):
         return obj.presented_act_set.filter(interpellation__isnull=False).count()
 
     def prepare_n_deliberations_index(self, obj):
-        return (float(obj.presented_act_set.filter(deliberation__isnull=False).count()) / obj.duration.days) if obj.duration.days else None
+        return (float(obj.presented_act_set.filter(deliberation__isnull=False).count()) / obj.duration.days) * 30 if obj.duration.days else None
 
     def prepare_n_cgdeliberations_index(self, obj):
-        return (float(obj.presented_act_set.filter(cgdeliberation__isnull=False).count()) / obj.duration.days) if obj.duration.days else None
+        return (float(obj.presented_act_set.filter(cgdeliberation__isnull=False).count()) / obj.duration.days) * 30 if obj.duration.days else None
 
     def prepare_n_agendas_index(self, obj):
-        return (float(obj.presented_act_set.filter(agenda__isnull=False).count()) / obj.duration.days) if obj.duration.days else None
+        return (float(obj.presented_act_set.filter(agenda__isnull=False).count()) / obj.duration.days) * 30 if obj.duration.days else None
 
     def prepare_n_motions_index(self, obj):
-        return (float(obj.presented_act_set.filter(motion__isnull=False).count()) / obj.duration.days) if obj.duration.days else None
+        return (float(obj.presented_act_set.filter(motion__isnull=False).count()) / obj.duration.days) * 30 if obj.duration.days else None
 
     def prepare_n_amendments_index(self, obj):
-        return (float(obj.presented_act_set.filter(amendment__isnull=False).count()) / obj.duration.days) if obj.duration.days else None
+        return (float(obj.presented_act_set.filter(amendment__isnull=False).count()) / obj.duration.days) * 30 if obj.duration.days else None
 
     def prepare_n_interrogations_index(self, obj):
-        return (float(obj.presented_act_set.filter(interrogation__isnull=False).count()) / obj.duration.days) if obj.duration.days else None
+        return (float(obj.presented_act_set.filter(interrogation__isnull=False).count()) / obj.duration.days) * 30 if obj.duration.days else None
 
     def prepare_n_interpellations_index(self, obj):
-        return (float(obj.presented_act_set.filter(interpellation__isnull=False).count()) / obj.duration.days) if obj.duration.days else None
+        return (float(obj.presented_act_set.filter(interpellation__isnull=False).count()) / obj.duration.days) * 30 if obj.duration.days else None

@@ -695,6 +695,7 @@ class ChargeSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
             sqs = sqs.query_facet('end_date', range['qrange'])
 
         kwargs['searchqueryset'] = sqs.order_by('-start_date').highlight()
+        #kwargs['searchqueryset'] = sqs.order_by('person__last_name').highlight()
 
         # Needed to switch out the default form class.
         if kwargs.get('form_class') is None:

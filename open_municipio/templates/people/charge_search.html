@@ -26,57 +26,46 @@ em {
     <table class="data dataTable">
       <thead>
         <tr>
-          <th>Inizio</th>
-          <th>Fine</th>
-          <th>Durata</th>
-          <th>Nome</th>
-          <th>Istituzione</th>
+          <th>Carica</th>
+          <th>Periodo</th>
+          <th>Durata<br />(giorni)</th>
           <th>DG</th>
+          <th>DG /<br />mese</th>
           <th>DC</th>
+          <th>DC /<br />mese</th>
           <th>M</th>
+          <th>M /<br />mese</th>
           <th>ODG</th>
+          <th>ODG /<br />mese</th>
           <th>E</th>
-          <th>INTR</th>
-          <th>INTP</th>
+          <th>E /<br />mese</th>
+          <th>ITR</th>
+          <th>ITR /<br />mese</th>
+          <th>ITP</th>
+          <th>ITP /<br />mese</th>
         </tr>
       </thead>
       <tbody>
         <tbody>
         {% for result in page.object_list %}
             <tr>
-                <td>{{ result.start_date|circled:"full" }}</td>
-                <td>{% if result.end_date %}{{ result.end_date|circled:"full" }}{% endif %}</td>
+                <td>{{ result.object.person }}<br />{{ result.institution }}</td>
+                <td>{{ result.start_date }}<br />{% if result.end_date %}{{ result.end_date }}{% endif %}</td>
                 <td>{{ result.object.duration.days }}</td>
-                <td>{{ result.person_name }}</td>
-                <td>{{ result.institution }}</td>
-                <td>{% if result.n_cgdeliberations %}
-                	{{ result.n_cgdeliberations_index|floatformat:3 }}<br />
-                	{{ result.n_cgdeliberations }}
-                </td>{% endif %}
-                <td>{% if result.n_deliberations %}
-                	{{ result.n_deliberations_index|floatformat:3 }}<br />
-                	{{ result.n_deliberations }}
-                </td>{% endif %}
-                <td>{% if result.n_motions %}
-                	{{ result.n_motions_index|floatformat:3 }}<br />
-                	{{ result.n_motions }}
-                </td>{% endif %}
-                <td>{% if result.n_agendas %}
-                	{{ result.n_agendas_index|floatformat:3 }}<br />
-                	{{ result.n_agendas }}
-                </td>{% endif %}
-                <td>{% if result.n_amendments %}
-                	{{ result.n_amendments_index|floatformat:3 }}<br />
-                	{{ result.n_amendments }}
-                </td>{% endif %}
-                <td>{% if result.n_interrogations %}
-                	{{ result.n_interrogations_index|floatformat:3 }}<br />
-                	{{ result.n_interrogations }}
-                </td>{% endif %}
-                <td>{% if result.n_interpellations %}
-                	{{ result.n_interpellations_index|floatformat:3 }}<br />
-                	{{ result.n_interpellations }}
-                </td>{% endif %}
+                <td>{% if result.n_cgdeliberations %}{{ result.n_cgdeliberations }}{% endif %}</td>
+                <td>{% if result.n_cgdeliberations %}{{ result.n_cgdeliberations_index|floatformat:3 }}{% endif %}</td>
+                <td>{% if result.n_deliberations %}{{ result.n_deliberations }}{% endif %}</td>
+                <td>{% if result.n_deliberations %}{{ result.n_deliberations_index|floatformat:3 }}{% endif %}</td>
+                <td>{% if result.n_motions %}{{ result.n_motions }}{% endif %}</td>
+                <td>{% if result.n_motions %}{{ result.n_motions_index|floatformat:3 }}{% endif %}</td>
+                <td>{% if result.n_agendas %}{{ result.n_agendas }}{% endif %}</td>
+                <td>{% if result.n_agendas %}{{ result.n_agendas_index|floatformat:3 }}{% endif %}</td>
+                <td>{% if result.n_amendments %}{{ result.n_amendments }}{% endif %}</td>
+                <td>{% if result.n_amendments %}{{ result.n_amendments_index|floatformat:3 }}{% endif %}</td>
+                <td>{% if result.n_interrogations %}{{ result.n_interrogations }}{% endif %}</td>
+                <td>{% if result.n_interrogations %}{{ result.n_interrogations_index|floatformat:3 }}{% endif %}</td>
+                <td>{% if result.n_interpellations %}{{ result.n_interpellations }}{% endif %}</td>
+                <td>{% if result.n_interpellations %}{{ result.n_interpellations_index|floatformat:3 }}{% endif %}</td>
 			</tr>
         {% empty %}
             <p>Nessun commento trovato.</p>
