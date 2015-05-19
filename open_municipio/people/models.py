@@ -328,6 +328,13 @@ class Charge(NewsTargetMixin, models.Model):
         
         return as_of >= self.start_date and (not self.end_date or as_of <= self.end_date)
 
+    @property
+    def duration(self):
+
+        if not self.start_date: return None
+
+        return (self.end_date if self.end_date else datetime.datetime.now().date()) - self.start_date
+
 class ChargeResponsability(models.Model):
     """
     Describes a responsability that the  charge has
