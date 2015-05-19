@@ -30,6 +30,10 @@ from haystack.query import SearchQuerySet
 
 from sorl.thumbnail import get_thumbnail
 
+import logging
+
+logger = logging.getLogger('webapp')
+
 class InstitutionListView(ListView):
     model = Institution
     template_name = 'people/institution_list.html'
@@ -299,6 +303,7 @@ class PoliticianDetailView(DetailView):
             if len(all_charges) > 0:
                 charge = all_charges[0]
 
+
         return charge
 
     def get_context_data(self, **kwargs):
@@ -314,6 +319,9 @@ class PoliticianDetailView(DetailView):
         context['person'] = person
 
         charge = self.get_charge()
+
+        print "Default charge: %s -> %s" % (self.object, charge)
+        
 
         context['charge'] = charge
 
