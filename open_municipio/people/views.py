@@ -30,8 +30,6 @@ from haystack.query import SearchQuerySet
 
 from sorl.thumbnail import get_thumbnail
 
-import logging
-
 logger = logging.getLogger('webapp')
 
 class InstitutionListView(ListView):
@@ -297,9 +295,9 @@ class PoliticianDetailView(DetailView):
 
         if institution_slug and year and month and day: 
             start_date = date(year=year, month=month, day=day)
-            charge = InstitutionCharge.objects.get(person=self.object, institution__slug=institution_slug, start_date=start_date)
+            charge = InstitutionCharge.objects.exclude(institution__institution_type=Institution.COMMITTEE).get(person=self.object, institution__slug=institution_slug, start_date=start_date)
         else:
-            all_charges = self.object.all_institution_charges.order_by("-start_date")
+            all_charges = self.object.all_institution_charges.exclude(institution__institution_type=Institution.COMMITTEE).order_by("-start_date")
             if len(all_charges) > 0:
                 charge = all_charges[0]
 
@@ -319,9 +317,6 @@ class PoliticianDetailView(DetailView):
         context['person'] = person
 
         charge = self.get_charge()
-
-        print "Default charge: %s -> %s" % (self.object, charge)
-        
 
         context['charge'] = charge
 
