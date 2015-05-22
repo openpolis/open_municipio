@@ -282,7 +282,8 @@ class Resource(models.Model):
         ('FINANCIAL', 'financial', _('financial information')),
     )
     resource_type = models.CharField(verbose_name=_('type'), max_length=10, choices=RES_TYPE)
-    value = models.CharField(verbose_name=_('value'), max_length=64)
+    # 2000 chars is the maximum length suggested for url length (see: http://stackoverflow.com/questions/417142/what-is-the-maximum-length-of-a-url-in-different-browsers )
+    value = models.CharField(verbose_name=_('value'), max_length=2000)
     description = models.CharField(verbose_name=_('description'), max_length=255, blank=True)
 
     class Meta:
