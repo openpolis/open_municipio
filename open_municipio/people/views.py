@@ -584,16 +584,10 @@ class PoliticianListView(TemplateView):
 class SittingCalendarView(TemplateView):
     template_name = "people/sitting_calendar.html"
 
-    def get_queryset(self):
-        # TODO make this year a dynamic parameter passed to the class instance
-        year = 2012
-        return Event.objects.filter(institution__institution_type=Institution.COUNCIL).filter(date__year=year)
-
     def get_context_data(self, **kwargs):
         context = super(SittingCalendarView, self).get_context_data(**kwargs)
 
         sittings = Sitting.objects.filter(institution__institution_type=Institution.COUNCIL)
-
         events = Event.objects.filter(institution__institution_type=Institution.COUNCIL)
 
         extra_context = {

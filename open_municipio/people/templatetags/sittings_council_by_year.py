@@ -1,5 +1,6 @@
 from django import template
 from django.db import models
+from django.conf import settings
 from datetime import date
 from django.core.urlresolvers import reverse
 from open_municipio.people.models import Institution
@@ -12,11 +13,14 @@ def get_sittings_years(max_len=5):
     if Institution.COUNCIL == None:
         return []
 
-    year_dates = Sitting.objects.filter(institution__institution_type=Institution.COUNCIL).dates("date","year","DESC")
+    curr_year = date.today().year
 
-    years = map(lambda d: str(d.year), year_dates[0:max_len])
- 
-    return years
+    # FIXME find a way to show all year (even older ones, e.g. with a paginator)
+    from_year = max(settings.OM_START_YEAR, curr_year - max_len)
+
+    sitting_years = list(reversed(range(from_year, curr_year + 1)))
+
+    return sitting_years
 
 @register.simple_tag
 def print_sittings_council_list(year, month):
