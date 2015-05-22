@@ -133,7 +133,8 @@ class ActIndex(indexes.SearchIndex, indexes.Indexable):
 
 class SpeechIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)   
-    title = indexes.CharField(model_attr='title')
+#    title = indexes.CharField(model_attr='title')
+    title = indexes.CharField(indexed=False, stored=True)
 
     url = indexes.CharField(indexed=False, stored=True)
     date = indexes.DateField(indexed=True, stored=False)
@@ -141,6 +142,12 @@ class SpeechIndex(indexes.SearchIndex, indexes.Indexable):
 
     act_url = indexes.MultiValueField(indexed=True, stored=True)
     month = indexes.FacetCharField()
+
+    def prepare_title(self, obj):
+
+        activate(settings.LANGUAGE_CODE)
+
+        return obj.title
 
     def get_model(self):
         return Speech
