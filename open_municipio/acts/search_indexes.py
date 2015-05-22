@@ -1,4 +1,6 @@
 import locale
+from django.utils.html import strip_tags
+from HTMLParser import HTMLParser
 from haystack import indexes
 from open_municipio.acts.models import Act, Speech
 from open_municipio.people.models import Institution
@@ -33,7 +35,7 @@ class ActIndex(indexes.SearchIndex, indexes.Indexable):
     # stored fields, used not to touch DB
     # while showing results
     url = indexes.CharField(indexed=False, stored=True)
-    title = indexes.CharField(indexed=False, stored=True)
+    title = indexes.CharField(indexed=True, stored=True)
 
     logger = logging.getLogger('import')
 
@@ -133,8 +135,7 @@ class ActIndex(indexes.SearchIndex, indexes.Indexable):
 
 class SpeechIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)   
-#    title = indexes.CharField(model_attr='title')
-    title = indexes.CharField(indexed=False, stored=True)
+    title = indexes.CharField(indexed=True, stored=True)
 
     url = indexes.CharField(indexed=False, stored=True)
     date = indexes.DateField(indexed=True, stored=False)
@@ -142,6 +143,15 @@ class SpeechIndex(indexes.SearchIndex, indexes.Indexable):
 
     act_url = indexes.MultiValueField(indexed=True, stored=True)
     month = indexes.FacetCharField()
+
+    htmlparser = HTMLParser()
+
+    def prepare_text(self, obj):
+        activate(settings.LANGUAGE_CODE)
+
+        plain_text = SpeechIndex.htmlparser.unescape(strip_tags(obj.text))
+
+        return plain_text
 
     def prepare_title(self, obj):
 
@@ -175,7 +185,6 @@ class SpeechIndex(indexes.SearchIndex, indexes.Indexable):
     def prepare_act_url(self, obj):
 #        return [act.get_short_url() for act in obj.ref_acts]
         res = [act.get_absolute_url() for act in obj.ref_acts]
-#        print "prepare act url for speech: %s" % res
 
         return res
 
