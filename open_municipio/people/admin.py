@@ -93,6 +93,8 @@ class GroupAdminWithCharges(AdminImageMixin, admin.ModelAdmin):
     list_display = ('name', 'acronym', 'is_majority_now', 'in_council_now')
     inlines = [GroupResourceInline, GroupIsMajorityInline, GroupChargeInline]
 
+    search_fields = [ 'name', 'acronym', 'slug', 'charge_set__person__first_name', 'charge_set__person__last_name', ]
+
     list_filter = [ InCouncilNow, 'groupismajority__is_majority' ]
  
     ordering = [ 'name', 'acronym' ]   
