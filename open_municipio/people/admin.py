@@ -1,5 +1,7 @@
 from django.contrib import admin 
 from django.utils.translation import ugettext_lazy as _
+from django.utils.datetime_safe import date
+from django.db.models import Q
 from open_municipio.people.models import *
 from open_municipio.votations.admin import VotationsInline
 from open_municipio.acts.models import Speech
@@ -47,15 +49,54 @@ class GroupChargeInline(admin.TabularInline):
 
 class GroupIsMajorityInline(admin.TabularInline):
     model = GroupIsMajority
-    extra = 1
+    extra = 0
+
+
+class InCouncilNow(admin.SimpleListFilter):
+
+    title = _("In council now")
+
+    parameter_name = "in_council_now"
+
+    def lookups(self, request, model_admin):
+    
+        return(
+            ('1', _('Yes')),   
+            ('0', _('No')),
+        )
+    
+    def queryset(self, request, queryset):
+    
+        val = self.value()
+
+        today = date.today()
+    
+        groups_in_council = Group.objects.filter(Q(groupismajority__end_date__gt=today) | Q(groupismajority__end_date__isnull=True))
+
+        if val == '1':
+            queryset = queryset.filter(pk__in=groups_in_council)
+        elif val == '0':
+            queryset = queryset.exclude(pk__in=groups_in_council)
+
+        return queryset   
 
 
 class GroupAdminWithCharges(AdminImageMixin, admin.ModelAdmin):
     prepopulated_fields = {"slug": ("name",)}
-    list_display = ('name', 'acronym', 'is_majority_now')
+    list_display = ('name', 'acronym', 'is_majority_now', 'in_council_now')
     inlines = [GroupResourceInline, GroupIsMajorityInline, GroupChargeInline]
+
+    list_filter = [ InCouncilNow, 'groupismajority__is_majority' ]
  
     ordering = [ 'name', 'acronym' ]   
+
+    def is_majority_now(self, obj):
+        return obj.is_majority_now
+    is_majority_now.short_description = _("Is majority now")
+
+    def in_council_now(self, obj):
+        return obj.in_council_now
+    in_council_now.short_description = _("In council now")
 
 class ChargeInline(admin.StackedInline):
     raw_id_fields = ('person', )

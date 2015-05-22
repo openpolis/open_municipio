@@ -1,9 +1,9 @@
-import datetime
+import datetime # FIXME perhaps we should remove this, and rely only on django.utils.datetime_safe? -FS
 
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.db import models, transaction
-from django.db.models import permalink
+from django.db.models import permalink, Q
 from django.db.models.query import EmptyQuerySet
 from django.utils.datetime_safe import date
 from django.utils.translation import ugettext_lazy as _
@@ -724,7 +724,7 @@ class Group(models.Model):
         Current members of the group, as institution charges, leader and
         council president and vice presidents **excluded**.
         """
-## this query does is wrong because it mixes GroupResponsability for
+## what this query does is wrong because it mixes GroupResponsability for
 ## GroupCharges belonging to groups different from the current one
 ## (think about someone changing groups, and having responsibilities in past
 ## groups but not current one)
@@ -782,10 +782,22 @@ class Group(models.Model):
         return self.groupismajority_set.all()
 
     @property
+    def in_council_now(self):
+        today = date.today()
+
+        found = self.majority_records.filter(Q(end_date__gt=today) | Q(end_date__isnull=True))
+
+        return found.count() > 0
+
+    @property
     def is_majority_now(self):
-        # only one majority record with no ``end_date`` should exists
-        # at a time (i.e. the current one)
-        return self.majority_records.get(end_date__isnull=True).is_majority
+        # only one majority record with no ``end_date`` (or with an ``end_date``
+        # set in the future) should exists at a time (i.e. the current one)
+
+        today = date.today()
+
+        found = self.majority_records.filter(is_majority=True).exclude(end_date__lt=today)
+        return found.count() > 0
 
     @property
     def resources(self):
