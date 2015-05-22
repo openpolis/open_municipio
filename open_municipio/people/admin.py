@@ -70,12 +70,19 @@ class InCouncilNow(admin.SimpleListFilter):
         val = self.value()
 
         today = date.today()
-    
-        groups_in_council = Group.objects.filter(Q(groupismajority__end_date__gt=today) | Q(groupismajority__end_date__isnull=True))
+
+        # note: groups with no related item (groupismajority) will be considered
+        # as not in council
 
         if val == '1':
-            queryset = queryset.filter(pk__in=groups_in_council)
+            queryset = queryset.exclude(groupismajority__isnull=True).filter(Q(groupismajority__end_date__gt=today) | Q(groupismajority__end_date__isnull=True))
+
         elif val == '0':
+            # the check for groups NOT in majority is more complex because
+            # we have to check that ALL related objects (groupismajority)
+            # have an end_date previous the current date
+            groups_in_council = Group.objects.exclude(groupismajority__isnull=True).filter(Q(groupismajority__end_date__gt=today) | Q(groupismajority__end_date__isnull=True))
+
             queryset = queryset.exclude(pk__in=groups_in_council)
 
         return queryset   
