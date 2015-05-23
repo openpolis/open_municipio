@@ -24,6 +24,8 @@ from open_municipio.om_utils.models import SlugModel
 
 import open_municipio
 
+from collections import Counter
+
 #
 # Persons, charges and groups
 #
@@ -586,6 +588,18 @@ class InstitutionCharge(Charge):
         self.n_present_attendances = self.chargeattendance_set.exclude(value=attendance_absent).count()
         self.n_absent_attendances = self.chargeattendance_set.filter(value=attendance_absent).count()
         self.save()
+
+    @property
+    def taxonomy_count(self):
+
+        count = { 'categories' : Counter(), 'tags' : Counter(), 'topics' : Counter(), 'locations' : Counter() }
+
+        for act in self.presented_acts:
+            count['categories'].update(act.categories)
+            count['tags'].update(act.tags)
+            count['locations'].update(act.locations)
+
+        return count
 
 class InstitutionResponsability(ChargeResponsability):
     """
