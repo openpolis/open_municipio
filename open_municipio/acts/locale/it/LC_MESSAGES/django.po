@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-05-11 08:29+0200\n"
+"POT-Creation-Date: 2015-05-25 11:33+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
-#: admin.py:26 views.py:59
+#: admin.py:26 views.py:60
 msgid "Status"
 msgstr "Stato"
 
@@ -160,11 +160,11 @@ msgstr "stato finale"
 msgid "Specify whether this act should be featured"
 msgstr "Specificare se questo atto è chiave"
 
-#: models.py:213 search_indexes.py:56 search_indexes.py:101
+#: models.py:213 search_indexes.py:58 search_indexes.py:103
 msgid "yes"
 msgstr "sì"
 
-#: models.py:215 search_indexes.py:54 search_indexes.py:99
+#: models.py:215 search_indexes.py:56 search_indexes.py:101
 msgid "no"
 msgstr "no"
 
@@ -203,7 +203,7 @@ msgstr "Assessore"
 msgid "City Government"
 msgstr "Giunta"
 
-#: models.py:476 models.py:543 search_indexes.py:91
+#: models.py:476 models.py:543 search_indexes.py:93
 msgid "Mayor"
 msgstr "Sindaco"
 
@@ -441,11 +441,11 @@ msgstr "atti menzionati nell'intervento"
 msgid "calendar"
 msgstr "calendario"
 
-#: search_indexes.py:85
+#: search_indexes.py:87
 msgid "Council"
 msgstr "Consiglio"
 
-#: search_indexes.py:88
+#: search_indexes.py:90
 msgid "Town government"
 msgstr "Giunta"
 
@@ -478,14 +478,18 @@ msgid "Pubblication year"
 msgstr "Anno di pubblicazione"
 
 #: views.py:58
+msgid "Has locations"
+msgstr "Riguarda una località"
+
+#: views.py:59
 msgid "Pubblication month"
 msgstr "Mese di pubblicazione"
 
-#: views.py:541
+#: views.py:542
 msgid "Year"
 msgstr "Anno"
 
-#: views.py:542
+#: views.py:543
 msgid "Month"
 msgstr "Mese"
 

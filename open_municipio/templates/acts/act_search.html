@@ -237,6 +237,22 @@ em {
             </dl>
 
             <dl>
+                {% if facets.fields.has_locations and not facets.fields.has_locations.is_field_selected %}
+                    <dt>{{ facets_labels.has_locations }}</dt>
+                    {# Provide both cases (true, false) #}
+                    {% for t in facets.fields.has_locations.counts %}
+                        {% if t.1 %}
+                            <dd>
+                                {% if not t.2 %}
+                                    <a href="{{ base_url }}&selected_facets=has_locations:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
+                                {% endif %}
+                            </dd>
+                        {%  endif %}
+                    {% endfor %}
+                {% endif %}
+            </dl>
+
+            <dl>
                 {% if not facet_queries_date.is_selected %}
                     <dt>{{ facets_labels.pub_date }}</dt>
                     {% for range in facet_queries_date.ranges|dictsortreversed:"key"  %}
