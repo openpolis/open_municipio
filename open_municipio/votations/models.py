@@ -220,11 +220,41 @@ class Votation(models.Model):
             else:
                 count['minority'].update({ cv.vote : 1 })
 
-        csv = str(self.sitting) + ',' + str(self.idnum) + ',' + str(self.outcome) + ','
-        csv += str(count['majority']['YES']) + ','
-        csv += str(count['minority']['YES']) + ','
-        csv += str(count['majority']['NO']) + ','
-        csv += str(count['minority']['NO'])
+        may_presents = count['majority']['YES'] + count['majority']['NO'] + \
+            count['majority']['ABSTAINED'] + count['majority']['PRES'] + \
+            count['majority']['SECRET']
+
+        min_presents = count['minority']['YES'] + count['minority']['NO'] + \
+            count['minority']['ABSTAINED'] + count['minority']['PRES'] + \
+            count['minority']['SECRET']
+
+        n_presents = may_presents + min_presents
+        quorum = (n_presents / 2) + 1
+
+        if self.outcome == 1:
+            outcome = 'YES'
+        elif self.outcome == 2:
+            outcome = 'NO'
+
+        csv = str(self.sitting) + ',' + str(self.idnum) + ',' + \
+            str(self.outcome) + ',' + str(outcome) + ','
+
+        # no numero legale
+        if (may_presents < 16):
+            csv += 'LEGALE ' + str(may_presents) + '+' + str(min_presents) + '>=16'
+
+        csv += ','
+
+        # voto segreto
+        if (count['majority']['SECRET']):
+            csv += 'SECRET'
+
+        # minoranza decisiva
+        elif (count['majority'][outcome] < quorum):
+            csv += 'DECISIVA ' + str(count['majority'][outcome]) + '<' + str(quorum) + \
+                ' (' + str(count['minority'][outcome]) + ')'
+
+        csv += ','
 
         print csv
 
