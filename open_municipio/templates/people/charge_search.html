@@ -46,6 +46,8 @@ em {
           <th>ITR /<br />mese</th>
           <th>ITP</th>
           <th>ITP /<br />mese</th>
+          <th>S</th>
+          <th>S/<br />mese</th>
         </tr>
       </thead>
       <tbody>
@@ -95,6 +97,11 @@ em {
                 	{{ result.n_interpellations }}</a>
                 {% endif %}</td>
                 <td>{% if result.n_interpellations %}{{ result.n_interpellations_index|floatformat:3 }}{% endif %}</td>
+                <td>{% if result.n_speeches %}
+                	<a href="{% url 'om_speech_search' %}?q=&person={{ result.object.person.slug }}">
+                	{{ result.n_speeches }}</a>
+                {% endif %}</td>
+                <td>{% if result.n_speeches %}{{ result.n_speeches_index|floatformat:3 }}{% endif %}</td>
 			</tr>
         {% empty %}
             <p>Nessun commento trovato.</p>

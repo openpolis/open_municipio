@@ -43,6 +43,9 @@ class InstitutionChargeIndex(indexes.SearchIndex, indexes.Indexable):
     n_interrogations_index = indexes.DecimalField()
     n_interpellations_index = indexes.DecimalField()
 
+    n_speeches = indexes.IntegerField()
+    n_speeches_index = indexes.DecimalField()
+
     def get_model(self):
         return InstitutionCharge
 
@@ -91,3 +94,9 @@ class InstitutionChargeIndex(indexes.SearchIndex, indexes.Indexable):
 
     def prepare_n_interpellations_index(self, obj):
         return (float(obj.presented_act_set.filter(interpellation__isnull=False).count()) / obj.duration.days) * 30 if obj.duration.days else None
+
+    def prepare_n_speeches(self, obj):
+        return obj.person.n_speeches
+
+    def prepare_n_speeches_index(self, obj):
+        return (float(obj.person.n_speeches) / obj.duration.days) * 30 if obj.duration.days else None
