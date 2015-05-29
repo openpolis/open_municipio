@@ -209,7 +209,8 @@ class Votation(models.Model):
         if len(errors) > 0:
             raise Exception(",".join(errors))
 
-    def majority_vote(self):
+    @property
+    def majority_vs_minority(self):
 
         count = { 'majority' : Counter(), 'minority' : Counter() }
 
@@ -220,68 +221,7 @@ class Votation(models.Model):
             else:
                 count['minority'].update({ cv.vote : 1 })
 
-        may_presents = count['majority']['YES'] + count['majority']['NO'] + \
-            count['majority']['ABSTAINED'] + count['majority']['PRES'] + \
-            count['majority']['SECRET']
-
-        min_presents = count['minority']['YES'] + count['minority']['NO'] + \
-            count['minority']['ABSTAINED'] + count['minority']['PRES'] + \
-            count['minority']['SECRET']
-
-        total_presents = may_presents + min_presents
-
-        may_partecipants = count['majority']['YES'] + count['majority']['NO']
-        min_partecipants = count['minority']['YES'] + count['minority']['NO']
-        total_partecipants = may_partecipants + min_partecipants
-
-        quorum = (total_partecipants / 2) + 1
-
-        total_yes = count['majority']['YES'] + count['minority']['YES']
-        total_no = count['majority']['NO'] + count['minority']['NO']
-        total_abst = count['majority']['ABSTAINED'] + count['minority']['ABSTAINED']
-        total_pres = count['majority']['PRES'] + count['minority']['PRES']
-
-        if self.outcome == 1:
-            outcome = 'YES'
-        elif self.outcome == 2:
-            outcome = 'NO'
-
-        csv = str()
-
-        if self.n_legal is not 16:
-            csv += 'n_legal %s/16,'  % (self.n_legal,)
-        if self.n_presents is not total_presents:
-            csv += 'n_presents %s/%s,'  % (self.n_presents,total_presents)
-
-        # no numero legale
-        if (may_presents < 16):
-            csv += 'LEGALE ' + str(may_presents) + '+' + str(min_presents) + '>=16,'
-
-        if (not count['majority']['SECRET']):
-            if self.n_partecipants is not total_partecipants:
-                csv += 'n_partecipants %s/%s,'  % (self.n_partecipants,total_partecipants)
-            if self.n_yes is not total_yes:
-                csv += 'n_yes %s/%s,'  % (self.n_yes,total_yes)
-            if self.n_no is not total_no:
-                csv += 'n_no %s/%s,'  % (self.n_no,total_no)
-            if (self.n_abst is not total_abst) and (self.n_abst is not (total_abst + total_pres)):
-                csv += 'n_abst %s/%s/%s,'  % (self.n_abst,total_abst,total_pres)
-            if self.n_maj is not quorum:
-                csv += 'n_maj %s/%s,'  % (self.n_maj,quorum)
-            if total_yes == total_no and not self.outcome == 2:
-                csv += 'total_yes/no %s/%s,'  % (total_yes,self.outcome)
-
-            # si e no si equivalgono: outcome NO
-            if total_yes == total_no: quorum = total_yes;
-
-            # minoranza decisiva
-            if (count['majority'][outcome] < quorum):
-                csv += 'DECISIVA ' + str(count['majority'][outcome]) \
-                    + '+' + str(count['minority'][outcome]) + '>=' + str(quorum)
-
-        if csv:
-            print str(self.sitting) + ',' + str(self.idnum) + ',' + \
-                str(self.outcome) + ',' + str(outcome) + ',' + csv
+        return dict(count)
 
 
 class GroupVote(TimeStampedModel):
