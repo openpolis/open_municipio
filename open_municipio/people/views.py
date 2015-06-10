@@ -27,6 +27,7 @@ from open_municipio.om_search.views import ExtendedFacetedSearchView
 
 from django.core import serializers
 from haystack.query import SearchQuerySet
+from haystack.inputs import Raw
 
 from sorl.thumbnail import get_thumbnail
 
@@ -652,7 +653,6 @@ class SittingItemDetailView(DetailView):
 def show_mayor(request):
     return HttpResponseRedirect( municipality.mayor.as_charge.person.get_absolute_url() )
 
-
 class ChargeSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
     """
 
@@ -683,7 +683,7 @@ class ChargeSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
             self.DATE_INTERVALS_RANGES[curr_year] = date_range
     
         sqs = SearchQuerySet().filter(django_ct='people.institutioncharge').\
-            facet('is_active').facet('institution')
+            filter(institution = Raw("[* TO *]")).facet('is_active').facet('institution')
 
         for (year, range) in self.DATE_INTERVALS_RANGES.items():
             sqs = sqs.query_facet('start_date', range['qrange'])
