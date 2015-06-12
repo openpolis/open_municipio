@@ -133,7 +133,7 @@
                 {% endif %}</td>
 			</tr>
         {% empty %}
-            <p>Nessun commento trovato.</p>
+            <p>Nessuna carica trovata.</p>
         {% endfor %}
         </tbody>
         </table>
@@ -157,8 +157,6 @@
 
 {% block sidebar %}
  
-    {% include "om_comments/comments_search_box.html" %}
-   
     {% if n_results %}
         {% if selected_facets %}
             <h2>Modifica i filtri</h2>
@@ -172,11 +170,8 @@
     
         {% else %}
             <h2>Filtra</h2>
-            <p>Puoi trovare il commento che ti interessa scorrendo la lista 
-            degli ultimi pubblicati, qui a fianco.
-            Puoi perfezionare la ricerca usando i filtri nella colonna qui sotto, 
-            oppure puoi usare il form di ricerca con una parola che pensi sia 
-            contenuta nel commento, in cima alla colonna qui a destra</p>
+            <p>Puoi trovare la carica che ti interessa scorrendo la lista qui a fianco.<br />
+            Puoi perfezionare la ricerca usando i filtri nella colonna qui sotto</p>
         {% endif %}
     
         <!-- Begin faceting. -->
