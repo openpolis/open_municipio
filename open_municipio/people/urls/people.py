@@ -6,7 +6,7 @@ urlpatterns = patterns('',
     url(r'^$', PoliticianListView.as_view(), name='om_politician_list'),
 
     # faceted navigation
-    url(r'^charge/$', ChargeSearchView(template='people/charge_search.html'), name='charge_search'),
+    url(r'^charge/$', ChargeSearchView(template='people/charge_search.html'), name='om_charge_search'),
 
     url(r'^search/$', PoliticianSearchView.as_view(), name='om_politician_search'),
     url(r'^(?P<slug>[-\w]+)/$', PoliticianDetailView.as_view(), name='om_politician_detail'),

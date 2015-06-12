@@ -736,7 +736,7 @@ class ChargeSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
         Add extra content here, when needed
         """
         extra = super(ChargeSearchView, self).extra_context()
-        extra['base_url'] = reverse('charge_search') + '?' + extra['params'].urlencode()
+        extra['base_url'] = reverse('om_charge_search') + '?' + extra['params'].urlencode()
 
         # get data about custom date range facets
         extra['facet_queries_start_date'] = self._get_custom_facet_queries_date('start_date')

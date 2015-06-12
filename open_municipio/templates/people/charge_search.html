@@ -4,22 +4,26 @@
 {% load i18n %}
 {% load digg_paginator %}
 {% load url from future %}
+{% load thumbnail %}
 
-{% block title %}Elenco cariche {% endblock title %}
+{% block title %}Politici | Cariche{% endblock title %}
 {% block content_header %}Cariche{% endblock %}
-{% block body_class %}charge{% endblock %}
+{% block people_class %}class="active"{% endblock %}
+{% block body_class %}politician{% endblock %}
 
-{% block extra_style %}
-em {
-    background-color: green;
-}
+{% block sub_nav %}
+    {%  include 'commons/subnav.html' with active='Cariche' %}
 {% endblock %}
 
 {% block content %}
 {% if n_results %}
 <section>
   <h2>{% if not query %}Trovate {% endif %} {{ n_results }} cariche</h2>
-    
+
+  <p>
+      Tra parentesi il tasso mensile, calcolato in rapporto alla durata della carica.
+  </p>
+
     {% if person %}
       <p>per: <a href="{{ person.get_absolute_url }}">{{ person }}</a> </p>
     {% endif %}
@@ -28,80 +32,105 @@ em {
       <thead>
         <tr>
           <th>Carica</th>
-          <th>Period</th>
-          <th>Gior</th>
-          <th>AP</th>
-          <th>AR</th>
-          <th>DG</th>
-          <th>DG /<br />mese</th>
-          <th>DC</th>
-          <th>DC /<br />mese</th>
-          <th>M</th>
-          <th>M /<br />mese</th>
-          <th>ODG</th>
-          <th>ODG /<br />mese</th>
-          <th>E</th>
-          <th>E /<br />mese</th>
-          <th>ITR</th>
-          <th>ITR /<br />mese</th>
-          <th>ITP</th>
-          <th>ITP /<br />mese</th>
-          <th>S</th>
-          <th>S/<br />mese</th>
+          <th>Giorni</th>
+          <th>Atti firmati</th>
+          <th>Atti ricevuti</th>
+          <th>Delib. Giunta</th>
+          <th>Delib. Consiglio</th>
+          <th>Mozioni</th>
+          <th>Ordini del Giorno</th>
+          <th>Emend.</th>
+          <th>Interr.</th>
+          <th>Interp.</th>
+          <th>Interventi</th>
         </tr>
       </thead>
       <tbody>
         <tbody>
         {% for result in page.object_list %}
-            <tr>
-                <td>{{ result.last_name }} {{ result.first_name }}<br />{{ result.institution }}</td>
-                <td>{{ result.start_date }}<br />{% if result.end_date %}{{ result.end_date }}{% endif %}</td>
-                <td>{{ result.object.duration.days }}</td>
+          <tr>
+          <!-- politician -->
+            <td>
+
+              <!-- thumbnail -->
+              <div class="container-fluid">
+                <div class="span3 row-fluid">
+                  <div class="span2" style="min-width: 50px">
+                    <a href="{{ result.object.person.get_absolute_url }}">
+                      {% if result.object.person.img %}
+                        {% thumbnail result.object.person.img "50x50" crop="center" as im %}
+                          <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" class="politician-picture">
+                        {% endthumbnail %}
+                      {% else %}
+                        <img src="{{ STATIC_URL }}img/placehold/face_50.png" width="50" height="50" class="politician-picture">
+                      {% endif %}
+                    </a>
+                  </div>
+
+                  <!-- name -->
+                  <div class="span8">
+                    <a href="{{ result.object.person.get_absolute_url }}">
+                      <strong class="person_name">{{ result.object.person|title }}</strong>
+                    </a>
+                    <br />
+                    {{ result.institution }} dal {{ result.start_date|date:"Y" }}
+                    {% if result.end_date %} al {{ result.end_date|date:"Y" }}{% endif %}
+                  </div>
+                </div>
+              </div>
+            </td>
+
+            <td>{{ result.object.duration.days }}</td>
+
                 <td>{% if result.n_presented_acts %}
                 	<a href="{% url 'om_act_search' %}?q=&person={{ result.object.person.slug }}">
                 	{{ result.n_presented_acts }}</a>
                 {% endif %}</td>
-                <td>{% if result.n_received_acts %}{{ result.n_received_acts }}{% endif %}</td>
+
+                <td>{% if result.n_received_acts %}
+                	<a href="{% url 'om_act_search' %}?q=&recipient={{ result.object.person.slug }}">
+                    {{ result.n_received_acts }}</a>
+                {% endif %}</td>
+
                 <td>{% if result.n_cgdeliberations %}
                 	<a href="{% url 'om_act_search' %}?q=&person={{ result.object.person.slug }}&selected_facets=act_type:delibera di giunta">
-                	{{ result.n_cgdeliberations }}</a>
+                	{{ result.n_cgdeliberations }}</a><br />({{ result.n_cgdeliberations_index|floatformat:2 }})
                 {% endif %}</td>
-                <td>{% if result.n_cgdeliberations %}{{ result.n_cgdeliberations_index|floatformat:3 }}{% endif %}</td>
+
                 <td>{% if result.n_deliberations %}
                 	<a href="{% url 'om_act_search' %}?q=&person={{ result.object.person.slug }}&selected_facets=act_type:delibera">
-                	{{ result.n_deliberations }}</a>
+                	{{ result.n_deliberations }}</a><br />({{ result.n_deliberations_index|floatformat:2 }})
                 {% endif %}</td>
-                <td>{% if result.n_deliberations %}{{ result.n_deliberations_index|floatformat:3 }}{% endif %}</td>
+
                 <td>{% if result.n_motions %}
                 	<a href="{% url 'om_act_search' %}?q=&person={{ result.object.person.slug }}&selected_facets=act_type:mozione">
-                	{{ result.n_motions }}</a>
+                	{{ result.n_motions }}</a><br />({{ result.n_motions_index|floatformat:2 }})
                 {% endif %}</td>
-                <td>{% if result.n_motions %}{{ result.n_motions_index|floatformat:3 }}{% endif %}</td>
+
                 <td>{% if result.n_agendas %}
                 	<a href="{% url 'om_act_search' %}?q=&person={{ result.object.person.slug }}&selected_facets=act_type:ordine del giorno">
-                	{{ result.n_agendas }}</a>
+                	{{ result.n_agendas }}</a><br />({{ result.n_agendas_index|floatformat:2 }})
                 {% endif %}</td>
-                <td>{% if result.n_agendas %}{{ result.n_agendas_index|floatformat:3 }}{% endif %}</td>
+
                 <td>{% if result.n_amendments %}
                 	<a href="{% url 'om_act_search' %}?q=&person={{ result.object.person.slug }}&selected_facets=act_type:emendamento">
-                	{{ result.n_amendments }}</a>
+                	{{ result.n_amendments }}</a><br />({{ result.n_amendments_index|floatformat:2 }})
                 {% endif %}</td>
-                <td>{% if result.n_amendments %}{{ result.n_amendments_index|floatformat:3 }}{% endif %}</td>
+
                 <td>{% if result.n_interrogations %}
                 	<a href="{% url 'om_act_search' %}?q=&person={{ result.object.person.slug }}&selected_facets=act_type:interrogazione">
-                	{{ result.n_interrogations }}</a>
+                	{{ result.n_interrogations }}</a><br />({{ result.n_interrogations_index|floatformat:2 }})
                 {% endif %}</td>
-                <td>{% if result.n_interrogations %}{{ result.n_interrogations_index|floatformat:3 }}{% endif %}</td>
+
                 <td>{% if result.n_interpellations %}
                 	<a href="{% url 'om_act_search' %}?q=&person={{ result.object.person.slug }}&selected_facets=act_type:interpellanza">
-                	{{ result.n_interpellations }}</a>
+                	{{ result.n_interpellations }}</a><br />({{ result.n_interpellations_index|floatformat:2 }})
                 {% endif %}</td>
-                <td>{% if result.n_interpellations %}{{ result.n_interpellations_index|floatformat:3 }}{% endif %}</td>
+
                 <td>{% if result.n_speeches %}
                 	<a href="{% url 'om_speech_search' %}?q=&person={{ result.object.person.slug }}">
-                	{{ result.n_speeches }}</a>
+                	{{ result.n_speeches }}</a><br />({{ result.n_speeches_index|floatformat:2 }})
                 {% endif %}</td>
-                <td>{% if result.n_speeches %}{{ result.n_speeches_index|floatformat:3 }}{% endif %}</td>
 			</tr>
         {% empty %}
             <p>Nessun commento trovato.</p>
