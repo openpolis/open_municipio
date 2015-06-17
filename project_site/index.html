@@ -13,9 +13,6 @@
 
   <link rel="stylesheet" href="assets/css/styles.css">
   <link rel="stylesheet" href="assets/css/responsive.css">
-
-  <script type="text/javascript" src="assets/js/jquery.js" charset="utf-8"></script>
-
 </head>
 <body>
 
@@ -38,7 +35,13 @@
         <ul class="nav">
           <li><a href="progetto.html">Il progetto</a></li>
           <li><a href="aderire.html">Come aderire</a></li>
-          <li><a href="http://udine.openmunicipio.it/">La prima città "open"</a></li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Le prime città "open"</a>
+            <ul class="dropdown-menu">
+              <li><a href="http://udine.openmunicipio.it/">Udine</a></li>
+              <li><a href="http://senigallia.openmunicipio.it/">Senigallia</a></li>
+            </ul>
+          </li>
         </ul>
       </nav>
     </div>
@@ -66,10 +69,11 @@
 
       </div>
       <div class="span4">
-        <div id="citycard" class="thumbnail">
-          <img src="assets/img/openudine.png" alt="" width="100%">
-          <p class="caption">Udine è il primo comune che aderisce alla piattaforma web Open municipio. <br />
-            <a href="http://udine.openmunicipio.it" title="Vai su Open Udine">Entra nel sito</a> e naviga gli atti, i voti, gli argomenti. Monitora l’attività dei politici, partecipa al dibattito pubblico della città.
+        <div id="citycard" class="thumbnail" style="position: relative;">
+          <div style="background-color: black; opacity:0.75; color: white; font-size: 28px; min-height: 34px; padding: 4px; position: absolute; left: 20px; top: 20px; ">Open Senigallia!</div>
+          <img src="assets/img/opensenigallia.png" alt="" width="100%">
+          <p class="caption"><b>Senigallia</b> è il secondo comune che aderisce alla piattaforma web Open municipio. <br />
+            <a href="http://senigallia.openmunicipio.it" title="Vai su Open Udine">Entra nel sito</a> e naviga gli atti, i voti, gli argomenti. Monitora l’attività dei politici, partecipa al dibattito pubblico della città.
           </p>
         </div>
       </div>
@@ -143,6 +147,9 @@
   </div>
 
 </div>
+
+<script type="text/javascript" src="assets/js/jquery.js" charset="utf-8"></script>
+<script src="assets/js/bootstrap-dropdown.js"></script>
 
 <script type="text/javascript" >
   $(document).ready(function(){
