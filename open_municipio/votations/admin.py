@@ -3,6 +3,7 @@ from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 
 from open_municipio.votations.models import ChargeVote, GroupVote, Votation  
+from open_municipio.votations.filters import VotationIsLinkedToAct, VotationByYearFilterSpec, VotationByMonthFilterSpec
 
 
 class GroupVoteAdmin(admin.ModelAdmin):
@@ -38,7 +39,7 @@ class ChargeVoteInline(admin.TabularInline):
 class VotationAdmin(admin.ModelAdmin):
     search_fields = ('act_descr','idnum', )
     list_display = ('idnum', 'act_descr', 'sitting', 'is_linked_col','outcome')
-    list_filter = ('sitting',)
+    list_filter = ('outcome', VotationIsLinkedToAct, VotationByYearFilterSpec, VotationByMonthFilterSpec, )
     raw_id_fields = ['act','sitting',]
     readonly_fields = ('sitting', 'idnum' )
     ordering = ['-sitting__date']

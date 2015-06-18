@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 
 from .models import Attendance, ChargeAttendance
-from open_senigallia.votations.filters import VotationIsLinkedToAct, \
+from open_municipio.votations.filters import VotationIsLinkedToAct, \
                             VotationByYearFilterSpec, VotationByMonthFilterSpec
 
 class ChargeAttendanceInline(admin.TabularInline):
