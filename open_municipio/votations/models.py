@@ -1,5 +1,12 @@
+import locale
+import datetime
+import re
+
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from django.core.urlresolvers import reverse
+from django.template.defaultfilters import slugify
+
 
 from model_utils import Choices
 from model_utils.models import TimeStampedModel
@@ -8,6 +15,7 @@ from model_utils.managers import QueryManager
 from open_municipio.people.models import Group, InstitutionCharge, Sitting, Institution
 from open_municipio.acts.models import Act
 
+from collections import Counter
 
 class Votation(models.Model):
     """
@@ -23,7 +31,7 @@ class Votation(models.Model):
     )
 
     idnum = models.CharField(blank=True, max_length=64)
-    sitting = models.ForeignKey(Sitting, null=True)
+    sitting = models.ForeignKey(Sitting, blank=False, null=False)
     act = models.ForeignKey(Act, null=True)
     
     # this field is used to keep the textual description of the related act
@@ -43,6 +51,7 @@ class Votation(models.Model):
     outcome = models.IntegerField(choices=OUTCOMES, blank=True, null=True)
     is_key = models.BooleanField(default=False, help_text=_("Specify whether this is a key votation"))    
     n_rebels = models.IntegerField(default= 0)
+    slug = models.SlugField(max_length=500, blank=True, null=True)
 
     # default manager must be explicitly defined, when
     # at least another manager is present
@@ -66,16 +75,63 @@ class Votation(models.Model):
         else:
             return _('no')
 
+    def save(self, *args, **kwargs):
+        """
+        This method takes care of setting a default slug for Votations
+        that are linked to a Sitting. 
+
+        This transparently helps the slug field for most of the "normal"
+        use cases of Votation.
+        """
+        if not self.slug:
+            self.slug = self.get_default_slug()
+
+        super(Votation, self).save(*args, **kwargs)
+
+    @property
+    def date(self):
+        return self.sitting.date
+
+    def get_default_slug(self):
+        """
+        This method will be used for assigning a default slug to a
+        Votation that does not have one.
+        """
+
+        if self.sitting and self.idnum:
+            cleaned_idnum = re.sub(r'[^\w\d]+', '-', self.idnum)
+            slug = slugify("%s-%s" % (self.sitting.date.isoformat(), 
+                                        cleaned_idnum))
+            return slug[:100]
+        else:
+            raise ValueError("In order to compute the default slug, the Votation should be linked to a Sitting")
+                
+                
+
     class Meta:
         verbose_name = _('votation')
         verbose_name_plural = _('votations')
+
+        unique_together = (('slug',), ('sitting','idnum',))
     
     def __unicode__(self):
-        return u'votation %s' % self.idnum
+        
+        return _('Votation %(idnum)s') % { "idnum":self.idnum, }
 
     @models.permalink
     def get_absolute_url(self):
-        return 'om_votation_detail', [str(self.pk)]
+        """
+        Introduce url based on slugs. To keen retro-compatibility during 
+        introduction of slugs, it also allows to view the old url using pk.
+        """
+
+        if getattr(self, "slug", None) and self.slug:
+            return ("om_votation_detail", (), {'slug': self.slug })
+        else:
+            return ("om_votation_detail", (), {'pk': self.pk })
+           
+
+
     
     @property
     def group_votes(self):
@@ -84,17 +140,27 @@ class Votation(models.Model):
     @property
     def charge_votes(self):
         return self.chargevote_set.all()
+    
+    @property
+    def charge_rebel_votes(self):
+        return self.chargevote_set.filter(is_rebel=True)
 
     @property
     def transitions(self):
         return self.transition_set.all()
 
     @property
-    def is_linked(self):
-        if self.act is None:
-            return False
+    def ref_act(self):
+        if self.act:
+            return self.act
+        elif self.transitions.count() > 0:
+            return self.transitions[0].act
         else:
-            return True
+            return None
+
+    @property
+    def is_linked(self):
+        return self.ref_act is not None
 
     @property
     def is_secret(self):
@@ -107,6 +173,55 @@ class Votation(models.Model):
         """
         for vc in self.charge_votes:
             vc.charge.update_presence_cache()
+            
+    def verify_integrity(self):
+        """
+        Verify the integrity of the ballot structure. In particular checks that 
+        related self.votes are consistent with the votes counted in the self.n_*
+        fields. If an error is detected, raise an exception explaining the problem
+        """
+        errors = []
+        
+        # check legal number is greater than 0
+        if self.n_legal < 0:
+            errors.append("The legal number should always be positive. Passed: %s" % self.n_legal)
+
+        # count the number of presents is consistent with yes + no + abstained
+
+        n_sum = self.n_yes + self.n_no + self.n_abst
+        if n_sum > self.n_presents:
+            errors.append("The number of presents (%s) is smaller than the sum of yes (%s), no (%s) and abstained (%s): %s. Additional info: absents = %s, rebels = %s" % (self.n_presents, self.n_yes, self.n_no, self.n_abst, n_sum, self.n_absents, self.n_rebels))
+        
+        num_charge_votes = self.charge_votes.count()
+        if num_charge_votes < self.n_presents:
+            errors.append("The related votes (%s) are less that the reported number of presents (%s)" %
+                            (num_charge_votes, self.n_presents, ))
+        
+        if num_charge_votes < n_sum:
+            errors.append("The number of related votes (%s) is less than the yes, no and abst votes (%s)" %
+                            (num_charge_votes, n_sum, ))
+      
+        # check the number of presents is greater than the legal number
+
+        if self.n_presents < self.n_legal:
+            errors.append("Number of presents (%s) should not be less than legal number (%s)" % (self.n_presents, self.n_legal))
+  
+        if len(errors) > 0:
+            raise Exception(",".join(errors))
+
+    @property
+    def majority_vs_minority(self):
+
+        count = { 'majority' : Counter(), 'minority' : Counter() }
+
+        for cv in self.chargevote_set.all():
+
+            if (not cv.charge_group_at_vote_date or cv.charge_group_at_vote_date.is_majority_now):
+                count['majority'].update({ cv.vote : 1 })
+            else:
+                count['minority'].update({ cv.vote : 1 })
+
+        return dict(count)
 
 
 class GroupVote(TimeStampedModel):
@@ -156,10 +271,10 @@ class ChargeVote(TimeStampedModel):
         ('UNTRACKED', 'untracked', _('Vote was not tracked')),  # nothing can be said about presence
     )
     
-    votation = models.ForeignKey(Votation)
-    vote = models.CharField(choices=VOTES, max_length=12)
-    charge = models.ForeignKey(InstitutionCharge)
-    is_rebel = models.BooleanField(default=False)
+    votation = models.ForeignKey(Votation, verbose_name=_('votation'))
+    vote = models.CharField(choices=VOTES, max_length=12, verbose_name=_('vote'))
+    charge = models.ForeignKey(InstitutionCharge, verbose_name=_('charge'))
+    is_rebel = models.BooleanField(default=False, verbose_name=_('is rebel'))
 
     @property
     def original_charge(self):
@@ -183,3 +298,5 @@ class ChargeVote(TimeStampedModel):
 
     def __unicode__(self):
         return u"%s - %s - %s" % (self.votation, self.original_charge.person, self.get_vote_display())
+
+

@@ -51,8 +51,14 @@ class MonitoringStartView(MonitoringToggleBaseView):
                     user=request.user)
              
             form = self.form_class(request.POST, instance=monitoring)
-            
+
             if form.is_valid():
+            
+                # update profile
+                if not current_user_profile.wants_newsletter:
+                    current_user_profile.wants_newsletter=True
+                    current_user_profile.save()
+
                 return self.form_valid(form)
             else:
                 return self.form_invalid(form)

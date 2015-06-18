@@ -12,10 +12,20 @@ def defaults(request):
 
     return {
         'main_city': settings.SITE_INFO['main_city'],
+        'main_city_website': settings.SITE_INFO['main_city_website'],
         'beta': settings.SITE_INFO['site_version'],
         'DEBUG': settings.DEBUG,
         'TEMPLATE_DEBUG': settings.TEMPLATE_DEBUG,
-        'IS_DEMO': settings.IS_DEMO,
-        'GOOGLE_ANALYTICS': settings.WEB_SERVICES['google_analytics'],
+        'ALERT_POPUP': settings.ALERT_POPUP,
+        'ALERT_BAR': settings.ALERT_BAR,
+        'ALERT_NAVBAR': settings.ALERT_NAVBAR,
+        'GOOGLE_ANALYTICS': settings.WEB_SERVICES.get('google_analytics', None),
         'login_url': url,
+        'UI_LOCATIONS': settings.UI_LOCATIONS,
+        'UI_SITTINGS_CALENDAR': settings.UI_SITTINGS_CALENDAR,
+        'UI_ALLOW_NICKNAMES': settings.UI_ALLOW_NICKNAMES,
+        'SEARCH_URLS': settings.SEARCH_URLS,
+        'SOCIAL_SITES': settings.SOCIAL_SITES,       
+        'LOGO_URL': getattr(settings, 'LOGO_URL', None)
+
     }

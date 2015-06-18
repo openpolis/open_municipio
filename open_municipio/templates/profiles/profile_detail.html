@@ -1,6 +1,9 @@
 {% extends "base_two_columns.html" %}
 {% load popover_info %}
 {% load newscache_tags %}
+{% load url from future %}
+{% load users_tags %}
+
 
 {% block title %}Profilo utente{% endblock %}
 {% block content_header %}Profilo di {{ profile }}{% endblock %}
@@ -13,6 +16,10 @@
 {% block users_class %}class="active"{% endblock %}
 {% block body_class %}citizen{% endblock %}
 
+{% block sub_nav %}
+    {%  include 'profiles/profile_subnav.html' %}
+{% endblock %}
+
 {% load thumbnail %}
  
 {% block content %}
@@ -21,15 +28,27 @@
 
     <div class="row-fluid">
       <div class="span12">
+{% comment %}
         {% if person %}
           {% thumbnail profile.person.image "100x100" crop="center" as im %}
-            <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" class="thumb-left">
+            <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" class="thumb-left" />
           {% endthumbnail %}
         {%  else %}
           {% thumbnail profile.image "100x100" crop="center" as im %}
-            <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" class="thumb-left">
+            <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" class="thumb-left" />
           {% endthumbnail %}
         {%  endif %}
+{% endcomment %}
+
+          {% with profile|get_profile_image as curr_image %}
+          {% if curr_image %}
+          {% thumbnail curr_image "100x100" crop="center" as im %}
+            <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" class-"thumb-left" />
+          {% endthumbnail %}
+          {% else %}
+          <img src="{{ STATIC_URL }}img/placehold/face_100.png" />
+          {% endif %}
+          {% endwith %}
 
         <h2>{{ profile.public_name }}</h2>
         <ul class="unstyled">
@@ -46,11 +65,19 @@
           {%  else %}
               <li>Utente <strong>registrato</strong></li>
           {% endif %}
+          {% if profile.says_is_politician and profile.person.get_absolute_url %}
+              <li>&Egrave; un <strong>politico</strong>, vai alla sua 
+                <a href="{{ profile.person.get_absolute_url }}">pagina di Open Municipio</a></li>
+          {% endif %}
         </ul>
 
         <p>
           {{ profile.description }}
         </p>
+
+        {% if not profile.user.is_active %}
+        Questo profilo non &egrave; attivo. Questo pu&ograve; avvenire a seguito di una decisione dell'utente o di una violazione del <a href="{% url 'om_regolamento' %}">regolamento</a>.
+        {% endif %}
 
       </div>
     </div>
@@ -91,7 +118,7 @@
                 </td>
                 <td>
                     {% for p in politician_monitoring_list %}
-                        <a href="{{ p.object.get_absolute_url }}">{{ p.object }}</a>
+                        <a href="{{ p.object.get_absolute_url }}">{{ p.object.first_name }} {{ p.object.last_name }}</a>
                         {% if not forloop.last %}, {% endif %}
                     {% endfor %}
                 </td>
@@ -112,7 +139,9 @@
         </dl>
     {% endif %}
 
-    {% news_for_object profile as i_news %}
-    {% include 'commons/news_list.html' with news_list=i_news news_title='Ultime su '|add:profile.public_name %}
+	{% if profile %}
+    	{% news_for_object profile as i_news %}
+    	{% include 'commons/news_list.html' with news_list=i_news news_title='Ultime su '|add:profile.public_name %}
+    {% endif %}
 
 {% endblock %}

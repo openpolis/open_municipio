@@ -45,6 +45,7 @@
 		<xs:sequence>
 			<xs:element ref="Title" minOccurs="1" maxOccurs="1"/>
 			<xs:element ref="Content" minOccurs="0"/>
+			<xs:element ref="Attachment" minOccurs="0" maxOccurs="unbounded" />
 		</xs:sequence>
 		<xs:attribute name="id" use="required" type="xs:string"/>
 		<xs:attribute name="presentation_date" use="optional" type="xs:date"/>
@@ -56,17 +57,30 @@
 		<xs:complexContent>
 			<xs:extension base="actType">
 				<xs:sequence>
-					<xs:element ref="ActSubscribers" minOccurs="1" maxOccurs="1"/>
+					<xs:element ref="ActSubscribers" minOccurs="0" maxOccurs="1"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
 
+    <xs:complexType name="amendableActType">
+		<xs:complexContent>
+			<xs:extension base="councilActType">
+				<xs:sequence>
+					<xs:element ref="ApprovedContent" minOccurs="0" maxOccurs="1"/>
+					<xs:element ref="Amendment" maxOccurs="unbounded" minOccurs="0"/>
+
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+
 	<xs:complexType name="cityGovernmentActType">
 		<xs:complexContent>
 			<xs:extension base="actType">
 				<xs:sequence>
-					<xs:element ref="ActSubscribers" minOccurs="1" maxOccurs="2"/>
+					<xs:element ref="ActSubscribers" minOccurs="0" maxOccurs="2"/>
 				</xs:sequence>
 				<xs:attribute name="sitting_id" use="optional" type="xs:string"/>
 			</xs:extension>
@@ -93,7 +107,7 @@
 	<xs:element name="ActSubscribers">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element maxOccurs="unbounded" name="ActSubscriber">
+				<xs:element name="ActSubscriber" maxOccurs="unbounded">
 					<xs:complexType>
 						<xs:attribute name="chargeID" type="xs:string"/>
 						<xs:attribute name="date" type="xs:date"/>
@@ -122,7 +136,7 @@
 	<xs:element name="ActTargets">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element maxOccurs="unbounded" ref="ChargeRef"/>
+				<xs:element ref="ChargeRef" maxOccurs="unbounded" />
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
@@ -176,9 +190,9 @@
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element ref="Scheduling" minOccurs="0"/>
-				<xs:element minOccurs="0" maxOccurs="1" ref="Subjects"/>
+				<xs:element ref="Subjects" minOccurs="0" maxOccurs="1"/>
 				<xs:element ref="Acts" minOccurs="0" maxOccurs="1"/>
-				<xs:element maxOccurs="1" minOccurs="0" ref="Sittings"/>
+				<xs:element ref="Sittings" maxOccurs="1" minOccurs="0"/>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
@@ -217,7 +231,7 @@
 	<xs:element name="Group">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element maxOccurs="unbounded" minOccurs="1" ref="ChargeRef"/>
+				<xs:element ref="ChargeRef" maxOccurs="unbounded" minOccurs="1"/>
 			</xs:sequence>
 			<xs:attribute name="name" type="xs:string"/>
 			<xs:attribute name="acronym" type="xs:string"/>
@@ -306,7 +320,7 @@
 				<xs:element ref="Interpellation" minOccurs="0" maxOccurs="unbounded"/>
 				<xs:element ref="Motion" minOccurs="0" maxOccurs="unbounded"/>
 				<xs:element ref="Agenda" minOccurs="0" maxOccurs="unbounded"/>
-				<xs:element ref="Emendation" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="Amendment" minOccurs="0" maxOccurs="unbounded"/>
 				<xs:element ref="CouncilDeliberation" minOccurs="0" maxOccurs="unbounded"/>
 			</xs:sequence>
 		</xs:complexType>
@@ -352,9 +366,8 @@
 						<xs:element ref="ActTargets" minOccurs="1" maxOccurs="1"/>
 						<!-- 						<xs:element ref="QuestionText" minOccurs="1" maxOccurs="1" /> -->
 						<!-- the Answer is optional because the act may have not received it, yet -->
-						<xs:element minOccurs="0" ref="QuestionMotivationText"/>
+						<xs:element ref="QuestionMotivationText" minOccurs="0"/>
 						<xs:element ref="Answer" minOccurs="0" maxOccurs="1"/>
-						<xs:element maxOccurs="unbounded" minOccurs="0" ref="Attachment"/>
 						<xs:element ref="InterrogationTransition" minOccurs="0"
 							maxOccurs="unbounded"/>
 					</xs:sequence>
@@ -375,7 +388,7 @@
 				<xs:element name="AnswerText">
 					<xs:complexType mixed="true"/>
 				</xs:element>
-				<xs:element minOccurs="0" name="ReplyText">
+				<xs:element name="ReplyText" minOccurs="0">
 					<xs:complexType mixed="true"/>
 				</xs:element>
 			</xs:sequence>
@@ -395,9 +408,8 @@
 					<xs:sequence>
 						<xs:element ref="ActTargets" minOccurs="1" maxOccurs="1"/>
 						<!-- the Answer is optional because the act may have not received it, yet -->
-						<xs:element minOccurs="0" ref="QuestionMotivationText"/>
+						<xs:element ref="QuestionMotivationText" minOccurs="0"/>
 						<xs:element ref="Answer" minOccurs="0" maxOccurs="1"/>
-						<xs:element maxOccurs="unbounded" minOccurs="0" ref="Attachment"/>
 						<xs:element ref="InterpellationTransition" minOccurs="0"
 							maxOccurs="unbounded"/>
 					</xs:sequence>
@@ -410,10 +422,8 @@
 	<xs:element name="Agenda">
 		<xs:complexType>
 			<xs:complexContent>
-				<xs:extension base="councilActType">
+				<xs:extension base="amendableActType">
 					<xs:sequence>
-						<xs:element ref="Emendation" minOccurs="0" maxOccurs="unbounded"/>
-						<xs:element maxOccurs="unbounded" minOccurs="0" ref="Attachment"/>
 						<xs:element ref="AgendaTransition" maxOccurs="unbounded" minOccurs="0"/>
 					</xs:sequence>
 					<xs:attribute name="site" type="siteType"/>
@@ -425,10 +435,8 @@
 	<xs:element name="Motion">
 		<xs:complexType>
 			<xs:complexContent>
-				<xs:extension base="councilActType">
+				<xs:extension base="amendableActType">
 					<xs:sequence>
-						<xs:element ref="Emendation" minOccurs="0" maxOccurs="unbounded"/>
-						<xs:element maxOccurs="unbounded" minOccurs="0" ref="Attachment"/>
 						<xs:element ref="MotionTransition" minOccurs="0" maxOccurs="unbounded"/>
 					</xs:sequence>
 					<xs:attribute name="site" type="siteType"/>
@@ -445,9 +453,11 @@
 					<xs:restriction base="xs:token">
 						<!-- generic -->
 						<xs:enumeration value="Presented"/>
-						<xs:enumeration value="Voted"/>
 						<xs:enumeration value="Accepted"/>
 						<xs:enumeration value="Rejected"/>
+                        <xs:enumeration value="Decayed"/>
+                        <xs:enumeration value="Retired"/>
+                        <xs:enumeration value="Postponed"/>
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:attribute>
@@ -459,10 +469,10 @@
 		</xs:complexType>
 	</xs:element>
 
-	<xs:element name="Emendation">
+	<xs:element name="Amendment">
 		<xs:complexType>
 			<xs:complexContent>
-				<xs:extension base="councilActType">
+				<xs:extension base="amendableActType">
 					<xs:sequence>
 						<xs:element ref="ReferredDeliberationArticle" minOccurs="1" maxOccurs="1"/>
 					</xs:sequence>
@@ -528,6 +538,7 @@
 						<xs:enumeration value="Answered"/>
 						<xs:enumeration value="Decayed"/>
 						<xs:enumeration value="Retired"/>
+                        <xs:enumeration value="Postponed"/>
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:attribute>
@@ -550,8 +561,10 @@
 						<!-- generic -->
 						<xs:enumeration value="Presented"/>
 						<xs:enumeration value="Accepted"/>
+                        <xs:enumeration value="Rejected"/>
 						<xs:enumeration value="Decayed"/>
 						<xs:enumeration value="Retired"/>
+                        <xs:enumeration value="Postponed"/>
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:attribute>
@@ -563,6 +576,8 @@
 
 	<xs:element name="Content" type="contentType"/>
 	<xs:element name="Section" type="contentType"/>
+	<xs:element name="ApprovedContent" type="contentType"/>
+
 
 	<xs:element name="CouncilDeliberationTransition">
 		<xs:complexType>
@@ -573,6 +588,7 @@
 						<xs:enumeration value="Presented"/>
 						<xs:enumeration value="Accepted"/>
 						<xs:enumeration value="Rejected"/>
+                        <xs:enumeration value="Decayed"/>
 						<xs:enumeration value="Retired"/>
 						<xs:enumeration value="Postponed"/>
 						<xs:enumeration value="DiscussedCommission"/>
@@ -593,13 +609,11 @@
 	<xs:element name="CouncilDeliberation">
 		<xs:complexType>
 			<xs:complexContent>
-				<xs:extension base="councilActType">
+				<xs:extension base="amendableActType">
 					<xs:sequence>
 						<xs:element ref="OfficeOpinion" minOccurs="0" maxOccurs="1"/>
-						<xs:element ref="Attachment" minOccurs="0" maxOccurs="unbounded"/>
 						<xs:element ref="CouncilDeliberationTransition" minOccurs="0"
 							maxOccurs="unbounded"/>
-						<xs:element maxOccurs="unbounded" minOccurs="0" ref="Emendation"/>
 					</xs:sequence>
 					<xs:attribute name="final_id" type="xs:string"/>
 					<!-- no need fro approval_date, add a CouncilDeliberationTransition with
@@ -697,7 +711,6 @@
 						<xs:element ref="CityGovernmentDeliberationTransition" minOccurs="0"
 							maxOccurs="unbounded"/>
 						<!-- Institution keeps track of present people -->
-						<xs:element ref="Attachment" minOccurs="0" maxOccurs="unbounded"/>
 					</xs:sequence>
 					<xs:attribute name="deliberation_date" use="optional" type="xs:date"/>
 					<xs:attribute name="deliberation_id" use="optional" type="xs:string"/>
@@ -738,7 +751,6 @@
 					<xs:sequence>
 						<xs:element ref="InvestigationTransition" minOccurs="0"
 							maxOccurs="unbounded"/>
-						<xs:element ref="Attachment" minOccurs="0" maxOccurs="unbounded"/>
 					</xs:sequence>
 				</xs:extension>
 			</xs:complexContent>
@@ -771,7 +783,6 @@
 						<!-- Charge records the persons present at the current sitting -->
 						<xs:element ref="PresentingOffice" minOccurs="1" maxOccurs="unbounded"/>
 						<xs:element ref="DecisionTransition" minOccurs="0" maxOccurs="unbounded"/>
-						<xs:element ref="Attachment" minOccurs="0" maxOccurs="unbounded"/>
 					</xs:sequence>
 				</xs:extension>
 			</xs:complexContent>
@@ -808,7 +819,6 @@
 				<xs:extension base="actType">
 					<xs:sequence>
 						<xs:element name="RegulationTransition" type="mayorActTransition"/>
-						<xs:element ref="Attachment" minOccurs="0" maxOccurs="unbounded"/>
 					</xs:sequence>
 				</xs:extension>
 			</xs:complexContent>
@@ -821,7 +831,6 @@
 				<xs:extension base="actType">
 					<xs:sequence>
 						<xs:element name="Decree" type="mayorActTransition"/>
-						<xs:element ref="Attachment" minOccurs="0" maxOccurs="unbounded"/>
 					</xs:sequence>
 				</xs:extension>
 			</xs:complexContent>
@@ -935,14 +944,14 @@
 	<xs:element name="Sittings">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element maxOccurs="unbounded" ref="Sitting"/>
+				<xs:element ref="Sitting" maxOccurs="unbounded"/>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="Sitting">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element maxOccurs="unbounded" minOccurs="0" ref="Votation"/>
+				<xs:element ref="Votation" maxOccurs="unbounded" minOccurs="0"/>
 			</xs:sequence>
 			<xs:attribute name="num" type="xs:string"/>
 			<xs:attribute name="date" type="xs:date"/>
@@ -1009,7 +1018,7 @@
 	<xs:element name="Scheduling">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element maxOccurs="unbounded" ref="Event"/>
+				<xs:element ref="Event" maxOccurs="unbounded"/>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>

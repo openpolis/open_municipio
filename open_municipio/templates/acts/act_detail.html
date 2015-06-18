@@ -3,6 +3,7 @@
 {% load voting_tags %}
 {% load popover_info %}
 {% load newscache_tags %}
+{% load url from future %}
 
 {% comment %}Bookmarking tags{% endcomment %}
 {% load om_utils %}
@@ -11,7 +12,7 @@
 {% comment %}WebServices tags: share{% endcomment %}
 {% load web_services_tags %}
 
-{% block title %}Dettaglio {{ act }}{% endblock title %}
+{% block title %}Dettaglio {{ act.adj_title|default:act.title }}{% endblock title %}
 {% block content_header %}Atto{% endblock %}
 {% block acts_class %}active{% endblock %}
 {% block body_class %}acts{% endblock %}
@@ -79,18 +80,22 @@
 
   {% endif %}
 
+  {% block content_title %}
   <hgroup>
     <h2 id="act_title">
       <a href="#" id="{{ act|as_token }}" class="bookmarkable" {% if act.is_key %} data-toggle="tooltip" data-placement="right" title="Voto chiave"{% endif %}>
           <i class="{% is_key_class act %}"></i></a>
-      <strong class="input-append">{{ act.title }}</strong>
-      <small>(N. {{ public_idnum }})</small></h2>
+      <strong class="input-append">{{ act.adj_title|default:act.title }}</strong>
+    </h2>
+    {% block content_subtitle %}
     <h4>
       <strong>{{ act.get_type_name|capfirst }}</strong>
       {{ act.emitting_institution.name_with_preposition }}
-        N° <strong>{{ public_idnum }}</strong> del <strong><span class="date">{{ public_date }}</span></strong>
+        {% if public_idnum %}N° <strong>{{ public_idnum }}</strong>{% endif %} del <strong><span class="date">{{ public_date }}</span></strong>
     </h4>
+    {% endblock content_subtitle %}
   </hgroup>
+  {% endblock content_title %}
 
   {% if act.description|length > 0 %}
       <div class="description-container" style="margin-bottom: 20px;">
@@ -116,7 +121,19 @@
           <li {% block act_tab_documents_class %}{% endblock %}><a href="{{ act.get_absolute_url }}documents">{{ n_documents }} Document{{ n_documents|pluralize:"o,i" }}</a></li>
       {% endif %}
       {% if n_votes %}
+{% comment %}
+          <li><a href="/votations/?act_url={{ act.get_short_url }}"><strong>{{ n_votes }} Vot{{ n_votes|pluralize:"o,i" }}</strong></a></li>
+{% endcomment %}
           <li><a href="/votations/?act_url={{ act.get_absolute_url }}"><strong>{{ n_votes }} Vot{{ n_votes|pluralize:"o,i" }}</strong></a></li>
+      {% endif %}
+      {% if n_amendments %}
+          <li {% block act_tab_amendments_class %}{% endblock %}><a href="{{ act.get_absolute_url }}amendments">{{ n_amendments }} Emendament{{ n_amendments|pluralize:"o,i" }}</a></li>
+      {% endif %}
+      {% if n_speeches %}
+{% comment %}
+          <li><a href="/acts/speech/?act_url={{ act.get_short_url }}"><strong>{{ n_speeches }} Intervent{{ n_speeches|pluralize:"o,i" }}</strong></a></li>
+{% endcomment %}
+          <li><a href="/acts/speech/?act_url={{ act.get_absolute_url }}"><strong>{{ n_speeches }} Intervent{{ n_speeches|pluralize:"o,i" }}</strong></a></li>
       {% endif %}
     </ul>
   </div>
@@ -179,14 +196,14 @@
         {% endif %}
         <dd><a href="{{ location.get_absolute_url }}">{{ location }}</a></dd>
       {% empty %}
-        {% if location_form %}
+        {% if UI_LOCATIONS and location_form %}
           <dt><a href="#" id="location_form_link"><i class="icon-edit"></i></a> Territorio</dt>
         {% endif %}
       {% endfor %}
     </dl>
 
     {% if location_form %}
-    <form id="location-form" data-toggle="#location_form_link" class="form-inline" action="{% url om_act_locations_add pk=act.act_ptr.pk %}" method="post">
+    <form id="location-form" data-toggle="#location_form_link" class="form-inline" action="{% url 'om_act_locations_add' pk=act.act_ptr.pk %}" method="post">
       {% csrf_token %}{% for hidden in location_form.hidden_fields %}{{ hidden }}{% endfor %}
       {{ location_form.locations }}
       <div class="form-actions text-center">
@@ -248,10 +265,10 @@
 
         {% if title_form %}
         // Edit Act Title in-place
-        $('#act_title strong').editable('{% url om_act_title_update pk=act.id %}', {
-          name : '{{ title_form.title.html_name }}',
+        $('#act_title strong').editable('{% url "om_act_title_update" pk=act.id %}', {
+          name : '{{ title_form.adj_title.html_name }}',
           submitdata : function(value, settings) {
-            return { 'id': {{ act.id }}, 'act_field': 'title' };
+            return { 'id': {{ act.id }}, 'act_field': 'adj_title' };
           },
           cssclass  : 'form-inline',
           submit    : '<button type="submit" class="btn">Salva</button>',
@@ -272,7 +289,7 @@
 
         {% if description_form %}
           // Edit Act Description in-place
-        $('#act_description').editable('{% url om_act_description_update pk=act.id %}', {
+        $('#act_description').editable('{% url "om_act_description_update" pk=act.id %}', {
           type: 'autogrow',
           name : '{{ description_form.description.html_name }}',
           submitdata : function(value, settings) {

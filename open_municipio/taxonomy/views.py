@@ -1,7 +1,9 @@
+# -*- coding: utf-8 -*-
+
 from django.contrib.contenttypes.models import ContentType
-from django.db.models import Count
+from django.db.models import Count, Q
 from django.views.generic import DetailView, ListView
-from open_municipio.acts.models import Deliberation, Interpellation, Interrogation, Calendar, Motion, CGDeliberation
+from open_municipio.acts.models import Act, Deliberation, Interpellation, Interrogation, Agenda, Motion, Amendment, CGDeliberation
 from open_municipio.locations.models import Location
 from open_municipio.monitoring.models import Monitoring
 
@@ -70,13 +72,24 @@ class TopicDetailView(DetailView):
             tagged_act_id_field = 'content_object_id'
 
         ta_ids = set([ta[tagged_act_id_field] for ta in topic.tagged_acts.values(tagged_act_id_field)])
-        context['n_deliberation_proposals'] = Deliberation.objects.filter(pk__in=ta_ids, approval_date__isnull=True).count()
-        context['n_deliberations'] = Deliberation.objects.filter(pk__in=ta_ids, approval_date__isnull=False).count()
-        context['n_cgdeliberations'] = CGDeliberation.objects.filter(pk__in=ta_ids, approval_date__isnull=False).count()
+
+        context['n_acts'] = Act.objects.filter(pk__in=ta_ids).count()
+
+        context['n_deliberations_nonfinal'] = Deliberation.objects.filter(pk__in=ta_ids).filter(~ Q(status__in=(s[0] for s in Deliberation.FINAL_STATUSES))).count()
+        context['n_deliberations'] = Deliberation.objects.filter(pk__in=ta_ids).count()
+        context['n_cgdeliberations_nonfinal'] = CGDeliberation.objects.filter(pk__in=ta_ids).filter(~ Q(status__in=(s[0] for s in CGDeliberation.FINAL_STATUSES))).count()
+        context['n_cgdeliberations'] = CGDeliberation.objects.filter(pk__in=ta_ids).count()
+        context['n_motions_nonfinal'] = Motion.objects.filter(pk__in=ta_ids).filter(~ Q(status__in=(s[0] for s in Motion.FINAL_STATUSES))).count()
         context['n_motions'] = Motion.objects.filter(pk__in=ta_ids).count()
-        context['n_calendars'] = Calendar.objects.filter(pk__in=ta_ids).count()
+        context['n_agendas_nonfinal'] = Agenda.objects.filter(pk__in=ta_ids).filter(~ Q(status__in=(s[0] for s in Agenda.FINAL_STATUSES))).count()
+        context['n_agendas'] = Agenda.objects.filter(pk__in=ta_ids).count()
+        context['n_interrogations_nonfinal'] = Interrogation.objects.filter(pk__in=ta_ids).filter(~ Q(status__in=(s[0] for s in Interrogation.FINAL_STATUSES))).count()
         context['n_interrogations'] = Interrogation.objects.filter(pk__in=ta_ids).count()
+        context['n_interpellations_nonfinal'] = Interpellation.objects.filter(pk__in=ta_ids).filter(~ Q(status__in=(s[0] for s in Interpellation.FINAL_STATUSES))).count()
         context['n_interpellations'] = Interpellation.objects.filter(pk__in=ta_ids).count()
+        context['n_amendments_nonfinal'] = Amendment.objects.filter(pk__in=ta_ids).filter(~ Q(status__in=(s[0] for s in Amendment.FINAL_STATUSES))).count()
+        context['n_amendments'] = Amendment.objects.filter(pk__in=ta_ids).count()
+
         return context
 
     def take_subtopics(self):

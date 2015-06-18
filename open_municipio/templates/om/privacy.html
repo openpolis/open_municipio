@@ -1,5 +1,7 @@
 {% extends "base_one_column.html" %}
 
+{% load hidden_mail %}
+
 {% block title %}Informativa sui dati personali{% endblock %}
 {% block content_header %}Informativa sui dati personali{% endblock %}
 
@@ -69,7 +71,7 @@
 
   <h2>Titolare del trattamento</h2>
   <p>
-      Il titolare del trattamento &egrave; Depp srl, via degli Equi 42 - 00185 Roma. Per qualsiasi richiesta o informazione relativa al trattamento dei dati personali puoi scrivere a info@depp.it
+      Il titolare del trattamento &egrave; {{ webmaster_info.name }}, {{ webmaster_info.address }}. Per qualsiasi richiesta o informazione relativa al trattamento dei dati personali puoi scrivere a <a class="email-nascosta" href="mailto:{{ webmaster_info.email|hide_mail }}">{{ webmaster_info.email|hide_mail }}</a>.
   </p>
 
   <h2>Diritti degli interessati</h2>
@@ -83,8 +85,9 @@
       Gli interessati possono verificare l'esattezza dei dati o chiederne l'integrazione, l'aggiornamento,
       la rettifica, la cancellazione, la trasformazione in forma anonima oppure il blocco dei dati trattati
       in violazione di legge, nonch&eacute; di opporsi in ogni caso, per motivi legittimi, al loro trattamento.
-      Le richieste vanno rivolte Depp srl, via degli Equi 42 - 00185 Roma,
-      <a href="mailto:info[chioccia]depp[punto]it" class="email-nascosta">info[chioccia]depp[punto]it</a>
+      Le richieste vanno rivoltea{{ webmaster_info.name }},
+      {{ webmaster_info.address }},
+      <a href="mailto:{{ webmaster_info.email|hide_mail }}" class="email-nascosta">{{ webmaster_info.email|hide_mail }}</a>
   </p>
     </div>
   </div>

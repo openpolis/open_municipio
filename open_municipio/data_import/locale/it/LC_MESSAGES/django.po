@@ -1,0 +1,103 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-05-11 08:29+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+
+#: models.py:16
+msgid "description"
+msgstr "descrizione"
+
+#: models.py:22 models.py:87 models.py:103 models.py:129 models.py:146
+msgid "provider"
+msgstr "fornitore"
+
+#: models.py:23
+msgid "providers"
+msgstr "fornitori"
+
+#: models.py:85 models.py:101 models.py:127 models.py:144
+msgid "OM id"
+msgstr "id Open Municipio"
+
+#: models.py:86 models.py:102 models.py:128 models.py:145
+msgid "provider id"
+msgstr "id fornitore"
+
+#: models.py:94
+msgid "lookup person"
+msgstr "risolvi persona"
+
+#: models.py:95
+msgid "lookup persons"
+msgstr "risolvi persone"
+
+#: models.py:120
+msgid "lookup institution charge"
+msgstr "risolvi incarico istituzionale"
+
+#: models.py:121
+msgid "lookup institution charges"
+msgstr "risolvi incarichi istituzionali"
+
+#: models.py:137
+msgid "lookup company charge"
+msgstr "risolvi incarico aziendale"
+
+#: models.py:138
+msgid "lookup company charges"
+msgstr "risolvi incarichi aziendali"
+
+#: models.py:154
+msgid "lookup administration charge"
+msgstr "risolvi incarico amministrativi"
+
+#: models.py:155
+msgid "lookup administration charges"
+msgstr "risolvi incarichi amministrativi"
+
+#: models.py:163
+msgid "act"
+msgstr "atto"
+
+#: models.py:164
+msgid "votation"
+msgstr "votazione"
+
+#: models.py:168
+msgid "started at"
+msgstr "ora inizio"
+
+#: models.py:169
+msgid "closed at"
+msgstr "ora chiusura"
+
+#: models.py:170
+msgid "path to file"
+msgstr "percorso del file"
+
+#: models.py:171
+msgid "import sequence"
+msgstr "sequenza di importazione"
+
+#: models.py:185
+msgid "file import"
+msgstr "File importato"
+
+#: models.py:186
+msgid "files import"
+msgstr "File importati"

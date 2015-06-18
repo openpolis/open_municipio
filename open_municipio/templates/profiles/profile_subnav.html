@@ -1,0 +1,15 @@
+{% load url from future %}
+{% comment %}
+<nav class="navbar" id="sub-nav">
+    <div class="navbar-inner">
+        <div class="container-fluid">
+            <ul class="nav">
+                <li {% ifequal active 'Commenti' %}class="unpipe"{% endifequal %}>
+                    <a href="{% url 'om_comments_search' %}"
+                       {% ifequal active 'Commenti' %} class="active"{% endifequal %}>Commenti</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+{% endcomment %}

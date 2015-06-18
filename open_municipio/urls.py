@@ -21,27 +21,31 @@
 from django.conf.urls.defaults import patterns, url, include
 from django.views.generic import TemplateView
 from django.contrib import admin
+
 from registration.views import register
 
-from open_municipio.om.views import HomeView
+from open_municipio.om.views import ( HomeView, ContactsView, ConditionsView, \
+                                PrivacyView, server_error )
 from open_municipio.inline_edit.views import InlineEditView
 from open_municipio.om_auth.views import login_done, login_error, login_form, logout
 from open_municipio.users.forms import UserRegistrationForm
 
 admin.autodiscover()
 
+handler500 = 'open_municipio.om.views.server_error'
 
 urlpatterns = patterns('',
+    url(r'^500/$', server_error, name='om_error_500'),
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),   
     # home page
     url(r'^$', HomeView.as_view(), name="home"),
     # info page
-    url(r'^contatti/$', TemplateView.as_view(template_name='om/contatti.html'), name='om_contatti'),
+    url(r'^contatti/$', ContactsView.as_view(), name='om_contatti'),
     url(r'^progetto/$', TemplateView.as_view(template_name='om/info.html'), name='om_progetto'),
     url(r'^regolamento/$', TemplateView.as_view(template_name='om/rules.html'), name='om_regolamento'),
-    url(r'^condizioni/$', TemplateView.as_view(template_name='om/terms-and-conditions.html'), name='om_condizioni'),
-    url(r'^privacy/$', TemplateView.as_view(template_name='om/privacy.html'), name='om_privacy'),
+    url(r'^condizioni/$', ConditionsView.as_view(), name='om_condizioni'),
+    url(r'^privacy/$', PrivacyView.as_view(), name='om_privacy'),
     url(r'^opendata/$', TemplateView.as_view(template_name='om/opendata.html'), name='om_opendata'),
     url(r'^software/$', TemplateView.as_view(template_name='om/software.html'), name='om_software'),
     url(r'^registrarsi/$', TemplateView.as_view(template_name='om/registrarsi.html'), name='om_registrarsi'),
@@ -53,14 +57,15 @@ urlpatterns = patterns('',
     url(r'^institutions/', include('open_municipio.people.urls.institutions')),
     url(r'^offices/', include('open_municipio.people.urls.offices')),
     url(r'^companies/', include('open_municipio.people.urls.companies')), 
+    url(r'^sittings/', include('open_municipio.people.urls.sittings')),
     url(r'^acts/', include('open_municipio.acts.urls')),
     url(r'^votations/', include('open_municipio.votations.urls')),
+    url(r'^attendances/', include('open_municipio.attendances.urls')),
     url(r'^topics/', include('open_municipio.taxonomy.urls.topics')),
     url(r'^categories/', include('open_municipio.taxonomy.urls.categories')),
     url(r'^tags/', include('open_municipio.taxonomy.urls.tags')),
     url(r'^locations/', include('open_municipio.locations.urls')),
     url(r'^webservices/', include('open_municipio.web_services.urls')),
-    #url(r'^speech/', include('open_municipio.speech.urls')),
 )
 
 # inline editing

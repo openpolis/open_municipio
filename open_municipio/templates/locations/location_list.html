@@ -1,0 +1,22 @@
+{% extends 'taxonomy/topic_detail.html' %}
+
+{% load popover_info %}
+
+{% block sidebar %}
+
+  {% if subtopics %}
+  <section>
+      <h2>Altri argomenti in {{ topic|title }} {% popover_info 'altri-argomenti' 'left' %}</h2>
+
+      <dl class="taxonomy-cloud">
+          {% for tag in subtopics %}
+              <dd><a href="{{ tag.get_absolute_url }}">{{ tag }}</a></dd>
+          {% endfor %}
+      </dl>
+  </section>
+  {% endif %}
+
+{% endblock %}
+
+{% block share %}
+{% endblock %}

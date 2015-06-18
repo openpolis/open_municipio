@@ -1,5 +1,7 @@
 {% extends "base_one_column.html" %}
 
+{% load url from future %}
+
 {% block title %}Domande e risposte frequenti{% endblock %}
 {% block content_header %}Domande e risposte frequenti{% endblock %}
 
@@ -10,11 +12,11 @@
 
             <h2>Domande di carattere generale</h2>
             <dl>
-                <dt>Cos'è openmunicipio?</dt>
+                <dt>Cos'è OpenMunicipio?</dt>
                 <dd>E' il sito che ti permette di seguire da vicino ma anche di prendere posizione
                     su tutto quello che viene discusso e deciso nel tuo comune.</dd>
 
-                <dt>Che cos'è il monitoraggio di openmunicipio?</dt>
+                <dt>Che cos'è il monitoraggio di OpenMunicipio?</dt>
                 <dd>E' un servizio che ti permette di seguire facilmente gli atti e i politici che
                     più ti interessano grazie agli aggiornamenti che quotidianamente il sistema
                     invia nella tua pagina personale e nella tua email.</dd>
@@ -25,7 +27,7 @@
                     democratica e il confronto tra gli interessi alla luce del sole.</dd>
 
                 <dt>Chi siete?</dt>
-                <dd>Open municipio è un progetto di Openpolis realizzato e gestito da Depp srl in collaborazione con InformaEtica e a cui ha aderito il Comune di Udine.</dd>
+                <dd>OpenMunicipio è un progetto di Openpolis e di InformaEtica, a cui hanno aderito i comuni di Senigallia e Udine.</dd>
 
                 <dt>E' gratuito?</dt>
                 <dd>La consultazione completa di tutti i dati, la registrazione al sito e i servizi di monitoraggio
@@ -34,7 +36,7 @@
 
                 <dt>Che tipo di software avete utilizzato?</dt>
                 <dd>Per realizzare e sviluppare i progetti di openpolis usiamo software libero e open source.
-                    <a href="{% url om_software %}">Qui la lista dei software</a> utilizzati.</dd>
+                    <a href="{% url 'om_software' %}">Qui la lista dei software</a> utilizzati.</dd>
             </dl>
 
 
@@ -42,20 +44,21 @@
 
             <dl>
                 <dt>Da dove prendete i dati?</dt>
-                <dd>I dati sono di fonte ufficiale e vengono trasmessi quotidianamente dal Comune di Udine.
+                <dd>I dati sono di fonte ufficiale e vengono trasmessi quotidianamente dal comune che lo adotta.
                     Si tratta delle informazioni riguardanti sia i consiglieri (e la loro afferenza a
                     gruppi e commissioni consiliari) che gli atti.
-                    Nel dettaglio, per ogni atto vengono fornitii: firmatari, documenti,
+                    Nel dettaglio, per ogni atto vengono forniti: firmatari, documenti,
                     avanzamenti di iter e votazioni.</dd>
 
                 <dt>Quali atti sono presi in considerazione?</dt>
-                <dd>Viene analizzata l’attività del Consiglio comunale attraverso le delibere del Consiglio e
-                    le interrogazioni, interpellanze e mozioni presentate dai singoli consiglieri.
-                    Invece, non sono disponibili gli ordini del giorno e gli emendamenti.</dd>
+                <dd>Viene analizzata l’attività della Giunta e del Consiglio comunale attraverso le delibere,
+                    le interrogazioni, interpellanze, mozioni ed emendamenti presentate dai singoli consiglieri,
+                    nonché i loro interventi durante i dibattiti in aula.
+                </dd>
 
-                <dt>Quali informazioni vengono elaborate dalla redazione di openudine?</dt>
+                <dt>Quali informazioni vengono elaborate dalla redazione di OpenMunicipio?</dt>
                 <dd>Tutti gli atti pubblicati sulla piattaforma vengono analizzati e categorizzati
-                    per argomenti e territorio dalla redazione di openudine.
+                    per argomenti e territorio dalla redazione di OpenMunicipio.
                     Inoltre è suo compito procedere all’individuazione degli atti e dei voti chiave,
                     scelti in base all’importanza della materia trattata e al loro valore politico.</dd>
 

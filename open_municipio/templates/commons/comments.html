@@ -2,31 +2,44 @@
 {% load om_comments_tags %}
 {% load comments %}
 {% load voting_tags %}
+{% load popover_info %}
+{% load url from future %}
+{% load users_tags %}
+{% load thumbnail %}
 
 {% get_comment_count for object as comment_count %}
 {% get_comment_list for object as comment_list %}
 {% get_comment_form for object as form %}
 <section>
-  <h3>Commenti ({{ comment_count }})</h3>
+  <h3>Commenti ({{ comment_count }}) {% popover_info 'commenti' %}</h3>
+
 
   <ul class="comments-list">
     {% for comment in comment_list %}
       <li{% if user.is_authenticated and user.get_profile.person %} class="bg-highlight"{% endif %}>
-        <a href="{% url profiles_profile_detail comment.user.username %}">
-          <img src="{{ STATIC_URL }}img/placehold/50.gif" />
+        <a href="{% url 'profiles_profile_detail' comment.user.username %}">
+          {% with comment.user|get_profile_image as curr_image %}
+          {% if curr_image %}
+          {% thumbnail curr_image "50x50" crop="center" as im %}
+            <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" class-"thumb-left" />
+          {% endthumbnail %}
+          {% else %}
+          <img src="{{ STATIC_URL }}img/placehold/face_50.png" />
+          {% endif %}
+          {% endwith %}
         </a>
 
         <div>
           {% if comment.user == request.user and comment|comment_TTL > 0 %}
             <a href="#" class="pull-right bg-light" title="{% blocktrans with seconds=comment|comment_TTL %}You still have {{ seconds }} seconds to delete this comment{% endblocktrans %}"><i class="icon-remove"></i></a>
-            <form action="{% url comments-delete-own-comment comment.id %}" class="comment-form-delete" method="post">{% csrf_token %}
+            <form action="{% url 'comments-delete-own-comment' comment.id %}" class="comment-form-delete" method="post">{% csrf_token %}
               <button type="submit" class="btn btn-danger btn-mini">{% trans 'Delete' %}</button>
             </form>
           {% endif %}
 
           <p>
-            <a href="{% url profiles_profile_detail comment.user.username %}">{{ comment.user.username|capfirst }}</a>
-            {{ comment.comment }}
+            <a href="{% url 'profiles_profile_detail' comment.user.username %}">{{ comment.user.first_name }} {{ comment.user.last_name }}</a>
+            {{ comment.comment|urlize|linebreaks }}
           </p>
 
           {% if comment.mood == "+" %}<i class="hand-ok hand-active"></i>{% else %}
@@ -36,9 +49,11 @@
           {% score_for_object comment as comment_score %}
           {% if request.user.is_authenticated %}
             {% vote_by_user request.user on comment as vote %}
-            <a href="#" id="comments-vote-{{ comment.id }}-up" class='vote{% if vote.vote and vote.vote > 0 %} up-voted{% endif %}'></a>
+            {% if not vote %}
+            <a href="{% url "om_comments_record_user_vote" pk=comment.id direction="up" %}" id="comments-vote-{{ comment.id }}-up" class='vote{% if vote.vote and vote.vote > 0 %} up-voted{% endif %}'>Mi piace</a> &middot;
+            {% endif %}
           {% else %}
-            <a href="#" class="vote"><span class='like'>Mi piace</span></a>  &middot;
+            <a href="{% url "auth_login" %}?next={{ object.get_absolute_url }}" class="vote"><span class='like'>Mi piace</span></a>  &middot;
           {% endif %}
           <i class="hand-like"></i> <span class="okscore">{{ comment_score.score }}</span>
         </div>

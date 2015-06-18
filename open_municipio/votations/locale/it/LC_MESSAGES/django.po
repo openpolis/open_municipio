@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-11-02 00:28+0100\n"
+"POT-Creation-Date: 2015-05-11 08:29+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,94 +18,147 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
+#: admin.py:21
+msgid "Charge group at vote date"
+msgstr "Gruppo alla data del voto"
+
+#: admin.py:65
+msgid "is linked"
+msgstr "collegato ad atto"
+
 #: filters.py:32
 msgid "Any"
 msgstr "Qualsiasi"
 
-#: filters.py:36 models.py:119 models.py:151
+#: filters.py:36 models.py:218 models.py:250
 msgid "Yes"
 msgstr "Sì"
 
-#: filters.py:40 models.py:120 models.py:152
+#: filters.py:40 models.py:219 models.py:251
 msgid "No"
 msgstr "No"
 
-#: models.py:47
+#: models.py:51
 msgid "Specify whether this is a key votation"
 msgstr "Specifica se è una votazione chiave"
 
-#: models.py:68
+#: models.py:73 search_indexes.py:143
 msgid "yes"
 msgstr "sì"
 
-#: models.py:70
+#: models.py:75 search_indexes.py:145
 msgid "no"
-msgstr ""
+msgstr "no"
 
-#: models.py:73
+#: models.py:111 models.py:260
 msgid "votation"
 msgstr "votazione"
 
-#: models.py:74
+#: models.py:112
 msgid "votations"
 msgstr "votazioni"
 
-#: models.py:121 models.py:153
+#: models.py:118
+#, python-format
+msgid "Votation %(idnum)s"
+msgstr "Votazione %(idnum)s"
+
+#: models.py:220 models.py:252
 msgid "Abstained"
 msgstr "Astenuto"
 
-#: models.py:122
+#: models.py:221
 msgid "Non computable"
 msgstr "Non calcolabile"
 
-#: models.py:139
+#: models.py:238
 msgid "group vote"
 msgstr "voto del gruppo"
 
-#: models.py:140
+#: models.py:239
 msgid "group votes"
 msgstr "voti dei gruppi"
 
-#: models.py:154
+#: models.py:253
 msgid "Vote was canceled"
 msgstr "Voto cancellato"
 
-#: models.py:155
+#: models.py:254
 msgid "Present but not voting"
 msgstr "Presente ma non votante"
 
-#: models.py:156
+#: models.py:255
 msgid "Secret votation"
 msgstr "Votazione segreta"
 
-#: models.py:157
+#: models.py:256
 msgid "Is absent"
 msgstr "Assente"
 
-#: models.py:158
+#: models.py:257
 msgid "Vote was not tracked"
 msgstr "Voto non pervenuto"
 
-#: models.py:183
+#: models.py:261
+msgid "vote"
+msgstr "voto"
+
+#: models.py:262
+msgid "charge"
+msgstr "carica"
+
+#: models.py:263
+msgid "is rebel"
+msgstr "voto ribelle"
+
+#: models.py:282
 msgid "charge vote"
 msgstr "voto incarico"
 
-#: models.py:184
+#: models.py:283
 msgid "charge votes"
 msgstr "voti incarico"
 
-#: views.py:32
+#: search_indexes.py:54
+msgid "none"
+msgstr "nessuno"
+
+#: views.py:37
 msgid "Related act type"
 msgstr "Tipologia di atto relativo"
 
-#: views.py:33
-msgid "Is key act"
-msgstr "&Egrave; atto chiave?"
+#: views.py:38
+msgid "Is key"
+msgstr "In evidenza"
 
-#: views.py:34
+#: views.py:39
+msgid "Is secret"
+msgstr "Segreto"
+
+#: views.py:40
 msgid "Organ"
 msgstr "Organo"
 
-#: views.py:35
-msgid "Votation year"
+#: views.py:41
+msgid "Outcome"
+msgstr "Esito"
+
+#: views.py:42
+msgid "Presents"
+msgstr "Presenti"
+
+#: views.py:43
+msgid "Rebels"
+msgstr "Ribelli"
+
+#: views.py:44
+msgid "Votation variance"
+msgstr "Voti di scarto"
+
+#: views.py:45
+msgid "Sitting year"
 msgstr "Anno della seduta"
+
+#: views.py:46
+msgid "Sitting month"
+msgstr "Mese della seduta"

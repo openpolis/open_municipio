@@ -150,7 +150,7 @@ Configuration
 Haystack can be configured following these simple steps:
 
 #. add ``haystack`` to ``INSTALLED_APPS`` in ``settings.py``
-#. add the following Haystack-related settings to your ``settings_local.py`` module:
+#. (obsolete?) add the following Haystack-related settings to your ``settings_local.py`` module:
 
    .. sourcecode:: python
 

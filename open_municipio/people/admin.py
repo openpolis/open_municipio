@@ -1,7 +1,12 @@
 from django.contrib import admin 
 from django.utils.translation import ugettext_lazy as _
+from django.utils.datetime_safe import date
+from django.db.models import Q
 from open_municipio.people.models import *
 from open_municipio.votations.admin import VotationsInline
+from open_municipio.acts.models import Speech
+from open_municipio.widgets import SortWidget
+
 from sorl.thumbnail.admin import AdminImageMixin
 
 from django.contrib.admin.util import unquote
@@ -9,7 +14,10 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.utils.functional import update_wrapper
 from django.utils.html import strip_spaces_between_tags as short
+from django.forms import ModelForm
 
+from open_municipio.people.forms import SittingItemFormSet, SpeechInlineForm
+from open_municipio.om.admin import LinkedTabularInline
 
 class PersonResourceInline(admin.TabularInline):
     model = PersonResource
@@ -41,15 +49,63 @@ class GroupChargeInline(admin.TabularInline):
 
 class GroupIsMajorityInline(admin.TabularInline):
     model = GroupIsMajority
-    extra = 1
+    extra = 0
+
+
+class InCouncilNow(admin.SimpleListFilter):
+
+    title = _("In council now")
+
+    parameter_name = "in_council_now"
+
+    def lookups(self, request, model_admin):
+    
+        return(
+            ('1', _('Yes')),   
+            ('0', _('No')),
+        )
+    
+    def queryset(self, request, queryset):
+    
+        val = self.value()
+
+        today = date.today()
+
+        # note: groups with no related item (groupismajority) will be considered
+        # as not in council
+
+        if val == '1':
+            queryset = queryset.exclude(groupismajority__isnull=True).filter(Q(groupismajority__end_date__gt=today) | Q(groupismajority__end_date__isnull=True))
+
+        elif val == '0':
+            # the check for groups NOT in majority is more complex because
+            # we have to check that ALL related objects (groupismajority)
+            # have an end_date previous the current date
+            groups_in_council = Group.objects.exclude(groupismajority__isnull=True).filter(Q(groupismajority__end_date__gt=today) | Q(groupismajority__end_date__isnull=True))
+
+            queryset = queryset.exclude(pk__in=groups_in_council)
+
+        return queryset   
 
 
 class GroupAdminWithCharges(AdminImageMixin, admin.ModelAdmin):
     prepopulated_fields = {"slug": ("name",)}
-    list_display = ('name', 'acronym', 'is_majority_now')
+    list_display = ('name', 'acronym', 'is_majority_now', 'in_council_now')
     inlines = [GroupResourceInline, GroupIsMajorityInline, GroupChargeInline]
+
+    search_fields = [ 'name', 'acronym', 'slug', 'charge_set__person__first_name', 'charge_set__person__last_name', ]
+
+    list_filter = [ InCouncilNow, 'groupismajority__is_majority' ]
  
     ordering = [ 'name', 'acronym' ]   
+
+    def is_majority_now(self, obj):
+        return obj.is_majority_now
+    is_majority_now.short_description = _("Is majority now")
+
+    def in_council_now(self, obj):
+        return obj.in_council_now
+    in_council_now.short_description = _("In council now")
 
 class ChargeInline(admin.StackedInline):
     raw_id_fields = ('person', )
@@ -146,8 +202,11 @@ class InstitutionChargeAdmin(ChargeAdmin):
         (None, {
             'fields': (('person', 'op_charge_id', 'institution', 'original_charge'),
                  ('start_date', 'end_date', 'end_reason'), 
-                 'description',
+                  'description',
                  ('substitutes', 'substituted_by'))
+        }),
+        (_("Presences"), {
+            'fields': (('n_present_votations', 'n_absent_votations'), ('n_present_attendances', 'n_absent_attendances'))
         }),
     )
     list_display = ('__unicode__', 'institution', 'start_date', 'end_date')
@@ -156,12 +215,15 @@ class InstitutionChargeAdmin(ChargeAdmin):
     inlines = [InstitutionResponsabilityInline]
 
 
+
 class GroupChargeAdmin(admin.ModelAdmin):
     raw_id_fields = ('charge', )
     list_display = ('__unicode__', 'start_date', 'end_date')
     list_select_related = True
     list_filter = ['group']
     inlines = [GroupResponsabilityInline]
+
+    search_fields = [ 'charge__person__first_name', 'charge__person__last_name', 'group__name', 'group__acronym', ]
 
 
 class BodyAdmin(admin.ModelAdmin):
@@ -177,6 +239,8 @@ class OfficeAdmin(BodyAdmin):
 
 
 class InstitutionAdmin(BodyAdmin):
+
+    list_filter = ("institution_type", )
 
     def get_urls(self):
         from django.conf.urls.defaults import patterns, url
@@ -205,30 +269,49 @@ class InstitutionAdmin(BodyAdmin):
 
     link_html = short("""
         <a href="../../%(app_label)s/%(module_name)s/%(object_id)s/move-up/">UP</a> |
-        <a href="../../%(app_label)s/%(module_name)s/%(object_id)s/move-down/">DOWN</a>""")
+        <a href="../../%(app_label)s/%(module_name)s/%(object_id)s/move-down/">DOWN</a> (%(position)s)
+        """)
 
     def move_up_down_links(self, obj):
         return self.link_html % {
             'app_label': self.model._meta.app_label,
             'module_name': self.model._meta.module_name,
             'object_id': obj.id,
+            'position': obj.position, 
         }
     move_up_down_links.allow_tags = True
     move_up_down_links.short_description = _(u'Move')
 
     inlines = [InstitutionResourceInline, InstitutionChargeInline]
-    list_display = ('name', 'institution_type', 'move_up_down_links')
+    list_display = ('name', 'institution_type', 'move_up_down_links',)
 
-
-class SittingItemInline(admin.TabularInline):
-    model = SittingItem
-    fields = ('title', 'related_act_set', 'item_type', 'seq_order')
-    raw_id_fields = ['related_act_set',]
+class SpeechInline(LinkedTabularInline):
+    model = Speech
+    fields = ("author", "author_name_when_external", "title", \
+              "seq_order", "admin_link", )
+    raw_id_fields = ["author", ]
     extra = 0
+    form = SpeechInlineForm
+
+class SittingItemInline(LinkedTabularInline):
+    model = SittingItem
+    fields = ('title', 'related_act_set', 'item_type', 'seq_order','admin_link',)
+    raw_id_fields = ('related_act_set',)
+    extra = 0
+
+    form = SittingItemFormSet
 
 
 class SittingItemAdmin(admin.ModelAdmin):
-    raw_id_fields = ['related_act_set',]
+    list_display = ( 'title','sitting', 'seq_order','item_type','num_related_acts')
+    ordering = ('-sitting__date','seq_order')
+    search_fields = ['^title', ]
+    list_filter = ['sitting__institution','item_type',]
+
+    raw_id_fields = ( 'sitting', 'related_act_set', )
+
+    inlines = [SpeechInline, ]
+
 
 class SittingAdmin(admin.ModelAdmin):
     inlines = [SittingItemInline, VotationsInline]

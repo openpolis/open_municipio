@@ -4,6 +4,7 @@
 {% load newscache_tags %}
 {% load om_utils %}
 {% load thumbnail %}
+{% load people_tags %}
 
 {% block title %} Politici {% endblock %}
 {% block content_header %}Politici{% endblock %}
@@ -39,9 +40,13 @@
             <ul class="people-list">
                 {% for politician in least_absent %}
                     <li>
-                        {% include 'people/politician_list_section.html' with value=politician.n_absent_votations what='assenze' %}
+                        {% with politician|get_absent_label as absence %}
+                        {% include 'people/politician_list_section.html' with value=absence what='' %}   
+                        {% endwith %}
                         {% object_inline_monitoring politician.person %}
                     </li>
+                {% empty %}
+                Nessun consigliere
                 {% endfor %}
             </ul>
         </div>
@@ -49,9 +54,7 @@
         <div class="span6">
             <h2>I consiglieri con più atti</h2>
             <p>
-                Sono i Consiglieri che hanno presentato più atti come primo
-                firmatario.
-                Sono esclusi gli emendamenti e gli ordini del giorno.
+                Sono i Consiglieri che hanno presentato più atti come primo firmatario.
             </p>
             <ul class="people-list">
                 {% for p in most_acts %}
@@ -59,6 +62,8 @@
                         {% include 'people/politician_list_section.html' with politician=p value=p.n_acts what='atti' %}
                         {% object_inline_monitoring p.person %}
                     </li>
+                {% empty %}
+                Nessun consigliere
                 {% endfor %}
             </ul>
         </div>
@@ -70,7 +75,7 @@
         <div class="span6">
             <h2>I consiglieri con più mozioni</h2>
             <p>
-                Sono i Consiglieri che hanno presentato più mozioni come primo firmatario.
+                Sono i Consiglieri che hanno presentato più mozioni o ordini del giorno come primo firmatario.
             </p>
             <ul class="people-list">
                 {% for politician in most_motions %}
@@ -78,6 +83,8 @@
                         {% include 'people/politician_list_section.html' with value=politician.n_acts what='mozioni' %}
                         {% object_inline_monitoring politician.person %}
                     </li>
+                {% empty %}
+                Nessun consigliere
                 {% endfor %}
             </ul>
         </div>
@@ -85,7 +92,7 @@
         <div class="span6">
             <h2>I consiglieri con più interrogazioni</h2>
             <p>
-                Sono i Consiglieri che hanno presentato più interrogazioni come primo firmatario.
+                Sono i Consiglieri che hanno presentato più interrogazioni o interpellanze come primo firmatario.
             </p>
             <ul class="people-list">
                 {% for politician in most_interrogations %}
@@ -93,6 +100,9 @@
                         {% include 'people/politician_list_section.html' with value=politician.n_acts what='interrogazioni' %}
                         {% object_inline_monitoring politician.person %}
                     </li>
+                {% empty %}
+                Nessun consigliere
+
                 {% endfor %}
             </ul>
         </div>
@@ -109,12 +119,36 @@
             <ul class="people-list">
                 {% for politician in most_rebellious %}
                     <li>
-                        {% include 'people/politician_list_section.html' with value=politician.n_rebel_votations what='ribellioni' %}
+                        {% with politician|get_rebel_label as label %}
+                        {% include 'people/politician_list_section.html' with value=label %}   
+                        {% endwith %}
                         {% object_inline_monitoring politician.person %}
                     </li>
+                {% empty %}
+                Nessun consigliere
+
                 {% endfor %}
             </ul>
         </div>
+
+        <div class="span6">
+            <h2>I consiglieri con più interventi in aula</h2>
+            <p>
+                Sono i Consiglieri che presentano più spesso interventi ed interrogazioni in aula.
+            </p>
+            <ul class="people-list">
+                {% for politician in most_speeches %}
+                    <li>
+                        {% include 'people/politician_list_section.html' with value=politician.n_speeches what="interventi" %}   
+                        {% object_inline_monitoring politician.person %}
+                    </li>
+                {% empty %}
+                Nessun consigliere
+
+                {% endfor %}
+            </ul>
+        </div>
+
 
     </div>
 </div>
@@ -143,19 +177,22 @@
     <table class="stats">
         <tr>
             <td>{{ num_acts.deliberation|circled:"colored" }}</td>
-            <th class="span6">Delibere</th>
-            <td>{{ num_acts.interrogation|circled:"colored" }}</td>
-            <th class="span6">Interrogazioni</th>
+            <th class="span6"><a href="{{ SEARCH_URLS.council_deliberation }}">Delibere di Consiglio</a></th>
+            <td>{{ num_acts.cgdeliberation|circled:"colored" }}</td>
+            <th class="span6"><a href="{{ SEARCH_URLS.cg_deliberation }}">Delibere di Giunta</a></th>
         </tr>
         <tr>
             <td>{{ num_acts.motion|circled:"colored" }}</td>
-            <th class="span6">Mozioni</th>
+            <th class="span6"><a href="{{ SEARCH_URLS.motion }}">Mozioni</a></th>
             <td>{{ num_acts.agenda|circled:"colored" }}</td>
-            <th class="span6">Ordini del giorno</th>
+            <th class="span6"><a href="{{ SEARCH_URLS.agenda }}">Ordini del giorno</a></th>
         </tr>
         <tr>
             <td>{{ num_acts.interpellation|circled:"colored" }}</td>
-            <th colspan="3">Interpellanze</th>
+            <th class="span6"><a href="{{ SEARCH_URLS.interpellation }}">Interpellanze</a></th>
+            <td>{{ num_acts.interrogation|circled:"colored" }}</td>
+            <th class="span6"><a href="{{ SEARCH_URLS.interrogation }}">Interrogazioni</a></th>
+
         </tr>
     </table>
 

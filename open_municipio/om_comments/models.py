@@ -30,6 +30,13 @@ class CommentWithMood(Comment):
     class Meta:
         verbose_name = "Comment"
 
+    def get_absolute_url(self):
+        """
+        A comment at the moment is shown in the detail view of its object.
+        As a consequence, the comment url is the url of the related object
+        """
+        return self.content_object.get_absolute_url()
+
 
 #
 # Signals handlers

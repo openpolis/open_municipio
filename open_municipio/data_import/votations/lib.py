@@ -1,20 +1,22 @@
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.utils import simplejson as json
+from django.db import transaction
 import re
 from open_municipio.acts.models import Act
 from open_municipio.data_import.lib import DataSource, BaseReader, BaseWriter, JSONWriter, XMLWriter, valid_XML_char_ordinal
 # import OM-XML language tags
 from open_municipio.data_import.om_xml import *
 # import models used in DBVotationWriter
-from open_municipio.people.models import Institution
-from open_municipio.votations.models import Sitting as DBSitting, GroupVote
-from open_municipio.votations.models import Votation as DBBallot
+from open_municipio.people.models import Institution, municipality
+from open_municipio.votations.models import Sitting as OMSitting, GroupVote
+from open_municipio.votations.models import Votation as OMBallot
 from open_municipio.votations.models import ChargeVote
 
 
 from lxml import etree
 
 import logging
+import traceback
 
  
 class VotationDataSource(DataSource):
@@ -45,23 +47,27 @@ class VotationDataSource(DataSource):
 
 ## classes of "DOM" elements
 
-class Sitting(object):
-    def __init__(self, call=None, date=None, seq_n=None, site=None):
+class SittingItem(object):
+    def __init__(self, sitting_n=None, call=None, date=None, seq_n=None, site=None, n_votes=0):
         # sitting instance attributes
+        self.sitting_n = sitting_n
         self.call = call         
         self.date =  date
         self.seq_n = seq_n
         self.site = site
         # ballots comprising this sitting
         self.ballots = []
+        self.n_votes = n_votes
     
     def __repr__(self):
-        return "Sitting #%(sitting_n)s of %(sitting_date)s" % {'sitting_n': self.seq_n, 'sitting_date': self.date}
+        return "SittingItem %s of Sitting %s, on date %s" % \
+            ( self.seq_n, self.sitting_n, self.date )
 
 class Ballot(object):
-    def __init__(self, sitting, seq_n=None, timestamp=None, ballot_type=None, short_subj=None, subj=None,
-                 n_presents=None, n_partecipants=None, n_majority=None, n_yes=None, n_no=None, n_abst=None,
-                 n_legal=None, outcome=None):
+    def __init__(self, sitting, seq_n=None, timestamp=None, ballot_type=None, 
+                short_subj=None, subj=None, n_presents=None, n_partecipants=None,
+                n_majority=None, n_yes=None, n_no=None, n_abst=None,
+                n_legal=None, outcome=None):
         # parent sitting
         self.sitting = sitting
         # ballot instance attributes
@@ -83,6 +89,7 @@ class Ballot(object):
 
     def __repr__(self):
         return "Ballot #%(ballot_n)s of %(sitting)s" % {'ballot_n': self.seq_n, 'sitting': self.sitting}
+    
 
 class Vote(object):
     def __init__(self, ballot, cardID=None, componentID=None, groupID=None, component_name=None, choice=None):
@@ -116,13 +123,24 @@ class BaseVotationReader(BaseReader):
         self.sittings = []
         # construct the DOM tree
         all_sittings = data_source.get_sittings()
-        self.logger.info("All sittings: %s" % all_sittings)
-        for sitting in all_sittings:
-            sitting.ballots = data_source.get_ballots(sitting)
-            self.sittings.append(sitting)
-        # as now, ``self.sittings`` should be a object tree 
-        # providing a comprehensive representation of all relevant data
-        # that can be extracted from the data source
+        
+        
+        
+        for sitting_item in all_sittings:
+            assert isinstance(sitting_item, SittingItem)
+            
+            self.logger.debug("Sitting Item: %s, n_votes = %s" % (sitting_item, sitting_item.n_votes, ))
+            if sitting_item.n_votes == 0:
+                continue
+            
+            try:
+                sitting_item.ballots = data_source.get_ballots(sitting_item)
+                self.sittings.append(sitting_item)
+            except Exception, e:
+                self.logger.warning("Sitting %s has been skipped because of the following error: %s" % (sitting_item, e))
+
+        #self.logger.info("Sittings with ballots: %s" % (self.sittings,))
+
         return self.sittings      
 
     
@@ -169,6 +187,9 @@ class DBVotationWriter(BaseVotationWriter):
         """
         votation_moment = votation.sitting.date.strftime('%Y-%m-%d')
         charges = votation.sitting.institution.get_current_charges(moment=votation_moment)
+        self.logger.debug("Charges at date (%s): %s" % (votation_moment, 
+                ",".join(map(lambda c: c.person.full_name, charges))))
+    
         for c in charges:
             try:
                 cv = votation.chargevote_set.get(charge__pk=c.pk)
@@ -179,6 +200,7 @@ class DBVotationWriter(BaseVotationWriter):
                     votation=votation,
                     vote=ChargeVote.VOTES.absent
                 )
+                self.logger.debug("Add absent ChargeVote: %s ..." % c)
             except MultipleObjectsReturned, e:
                 self.logger.warning("Multiple vote from single charge. Votation: %s, charge: %s, charge pk: %s, error: %s. Continue ..." % (votation, c, c.pk, e))
 
@@ -255,16 +277,31 @@ class DBVotationWriter(BaseVotationWriter):
         * n_absents
         """
 
+        isinstance(votation, OMBallot)
+
         # reset: remove all GroupVotes for this votation,
         # so that group votes are never counted more than once
         votation.group_votes.delete()
 
         for cv in votation.charge_votes:
+
+            if cv.charge.person == municipality.mayor.as_charge.person:
+                # skip the mayor, he/she does not belong to any group
+                # note that the mayor has 2 charges: as mayor and as counselor; for
+                # this reason we check the person linked to the charge
+                continue
+
             g = cv.charge_group_at_vote_date
+
             v = cv.vote
 
             if g is None:
-                self.logger.warning(u"no group found for charge vote %s (vote date: %s), may be an assessore" % (cv,votation.sitting.date))
+                if v != ChargeVote.VOTES.absent and v != ChargeVote.VOTES.abstained:
+                    # something is wrong: a person without a charge should
+                    # correspond to an absent or an abstained vote
+                    self.logger.warning(u"no group found for charge vote %s (vote date: %s)" % (cv,votation.sitting.date))
+
+                # continue in any case
                 continue
 
             # get or create group votation
@@ -313,7 +350,6 @@ class DBVotationWriter(BaseVotationWriter):
             gv.save()
 
 
-
     def write_vote(self, vote, db_ballot=None):
         raise Exception("Not implemented")
 
@@ -321,110 +357,99 @@ class DBVotationWriter(BaseVotationWriter):
         self.setup()
 
         for sitting in self.sittings:
-            self.logger.info("processing %s in Mdb" % sitting)
-            self.logger.info("Sitting site code: %s" % sitting.site)
-            inst = Institution.objects.get(name=self.conf.XML_TO_OM_INST[sitting.site])
+            try:
+                self._write_sitting(sitting)
+            except Exception, e:
+                import traceback
+                self.logger.warning("Error saving sitting. Skip. Detail: %s" % (e, ))
+                self.logger.debug("Stacktrace for previous exception: %s" % (traceback.format_exc(), ))
+
+    @transaction.commit_on_success
+    def _write_sitting(self, sitting):
+        assert isinstance(sitting, SittingItem)
+        
+        self.logger.info("Processing %s in Mdb" % sitting)
+#        self.logger.info("Sitting site code: %s" % sitting.site)
+        inst = Institution.objects.get(name=self.conf.XML_TO_OM_INST[sitting.site])
+
+        if not self.dry_run:
+            s, sitting_created = OMSitting.objects.get_or_create(
+                idnum=sitting._id,
+                defaults={
+                    'number':      sitting.sitting_n, #sitting.seq_n,
+                    'date':        sitting.date,
+                    'call':        sitting.call,
+                    'institution': inst,
+                    }
+            )
+            if sitting_created:
+                self.logger.info("%s created in DB" % s)
+            else:
+                self.logger.debug("%s found in DB" % s)
+
+        for ballot in sitting.ballots:
+            assert isinstance(ballot, Ballot)
+            
+#            self.logger.info("read ballot timestamp: %s" % (ballot.time,))
+            ballot_date = ballot.time.date()
+
+            self.logger.info("Processing %s in Mdb" % ballot)
+        
+            if not sitting_created and sitting.date != ballot_date:
+                #raise Exception("Existing sitting number %s, date %s but ballot date is %s" % (sitting.seq_n, sitting.date, ballot_date))
+                self.logger.warning("Existing sitting number %s, date %s but ballot date is %s. Proceed with caution ..." % (sitting.seq_n, sitting.date, ballot_date))
 
             if not self.dry_run:
-                s, created = DBSitting.objects.get_or_create(
-                    idnum=sitting._id,
+                # get or create the ballot in the DB
+                b, created = OMBallot.objects.get_or_create(
+                    idnum=ballot.seq_n,
+                    sitting=s,
                     defaults={
-                        'number':      sitting.seq_n,
-                        'date':        sitting.date,
-                        'call':        sitting.call,
-                        'institution': inst,
-                        }
+                        'act_descr': ballot.subj or ballot.short_subj or "",
+                        'n_legal': int(ballot.n_legal),
+                        'n_presents': int(ballot.n_presents),
+                        'n_partecipants': int(ballot.n_partecipants),
+                        'n_maj': int(ballot.n_majority),
+                        'n_yes': int(ballot.n_yes),
+                        'n_no': int(ballot.n_no),
+                        'n_abst': int(ballot.n_abst),
+                        'outcome': int(ballot.outcome),
+                    }
                 )
+
                 if created:
-                    self.logger.info("%s created in DB" % s)
+                    self.logger.debug("%s created in DB..." % b)
                 else:
-                    self.logger.debug("%s found in DB" % s)
-
-            for ballot in sitting.ballots:
-                self.logger.info("processing %s in Mdb" % ballot)
-
-                if not self.dry_run:
-
-                    # get or create the ballot in the DB
-                    b, created = DBBallot.objects.get_or_create(
-                        idnum=int(ballot.seq_n),
-                        sitting=s,
-                        defaults={
-                            'act_descr': ballot.subj or ballot.short_subj or "",
-                            'n_legal': int(ballot.n_legal),
-                            'n_presents': int(ballot.n_presents),
-                            'n_partecipants': int(ballot.n_partecipants),
-                            'n_maj': int(ballot.n_majority),
-                            'n_yes': int(ballot.n_yes),
-                            'n_no': int(ballot.n_no),
-                            'n_abst': int(ballot.n_abst),
-                            'outcome': int(ballot.outcome),
-                        }
-                    )
-
-                    # try to link to an act
-                    self.logger.debug("act_descr: %s" % b.act_descr.strip())
-                    m = re.match(r"(.+?)-(.+)", b.act_descr.strip())
-                    if m:
-                        try:
-                            act_idnum = str(m.group(1))
-                            self.logger.debug("act_idnum: %s" % act_idnum)
-                            linked_act = Act.objects.get(idnum=act_idnum)
-                            if isinstance(linked_act, Act):
-                                try:
-                                    b.act = linked_act.downcast()
-                                    b.save()
-                                    self.logger.info("act was linked: %s" % b.act)
-                                except ObjectDoesNotExist:
-                                    self.logger.info("act was not linked")
-
-                            else:
-                                self.logger.warning("act of type %s not expected. expected type Act" % linked_act.__class__.__name__)
-
-                        except ObjectDoesNotExist:
-                            self.logger.warning("act %s not present in OM" % act_idnum)
-                        except Exception as e:
-                            self.logger.warning("unexpected error looking for act %s in OM: %s" % (act_idnum, e))
+                    self.logger.debug("%s found in DB, not updated..." % b)
 
 
-                    if created:
-                        self.logger.debug("%s created in DB" % b)
-                    else:
-                        self.logger.debug("%s found in DB" % b)
+            if self.dry_run:
+                return
 
+            for vote in ballot.votes:
+                assert isinstance(vote, Vote)
+                #self.logger.debug("Processing %s in Mdb" % vote)
+                self.write_vote(vote, db_ballot=b)
 
-                if self.dry_run:
-                    continue
+            # since absences are not explicitly set
+            # they must be computed
+            self.compute_absences(b)
 
-                for vote in ballot.votes:
-                    self.logger.debug("processing %s in Mdb" % vote)
-                    self.write_vote(vote, db_ballot=b)
+            try:
+                assert isinstance(b, OMBallot)
+                b.verify_integrity()
+            except Exception, e:
+                self.logger.warning("Imported ballot %s (sitting: %s) does not pass integrity check: %s" % (b, b.sitting, e, ))
 
+            # compute and cache group votes into GroupVote
+            self.logger.info("Compute group vote of %s (date:%s)" % (b,b.sitting.date))
+            self.compute_group_votes(b)
 
-                # since absences are not explicitly set
-                # they must be computed
-                self.compute_absences(b)
+            # compute rebels caches, only if the sitting is not a Committee (no rebellions in committees)
+            if b.sitting.institution.institution_type != Institution.COMMITTEE:
+                self.update_rebel_caches(b)
 
-
-                # TODO:
-                # remove Votation and skip this votation if
-                # sums are not verified
-                #
-                # if not b.verify_sums():
-                #   b.delete()
-                #   continue
-
-                # compute and cache group votes into GroupVote
-                self.logger.info("Compute group vote of %s (date:%s)" % (b,b.sitting.date))
-                self.compute_group_votes(b)
-
-                # compute rebels caches, only if the sitting is not a Committee (no rebellions in committees)
-                if b.sitting.institution.institution_type != Institution.COMMITTEE:
-                    self.update_rebel_caches(b)
-
-                b.update_presence_caches()
-
-                self.logger.info("caches for this votation updated.\n")
+            b.update_presence_caches()
 
 
 class XMLVotationWriter(BaseVotationWriter, XMLWriter):

@@ -23,13 +23,34 @@ class SplitTimeWidget(forms.MultiWidget):
     Widget written to split widget into hours and minutes.
     """
     def __init__(self, attrs=None):
+        h_choices = [ ( "-","-") ]
+        h_choices += ([(hour,hour) for hour in range(0,24)])
+
+        m_choices = [ ("-","-") ]
+        m_choices += ([(minute, str(minute).zfill(2)) \
+                            for minute in range(60)])
         widgets = (
-                    forms.Select(attrs=attrs, choices=([(hour,hour) for hour in range(0,24)])), \
-                    forms.Select(attrs=attrs, choices=([(minute, str(minute).zfill(2)) for minute in range(60)]))
+                    forms.Select(attrs=attrs, \
+                        choices=h_choices), \
+                    forms.Select(attrs=attrs, \
+                        choices=m_choices), \
                   )
         super(SplitTimeWidget, self).__init__(widgets, attrs)
 
     def decompress(self, value):
         if value:
             return [value.hour, value.minute]
-        return [None, None]
+        return ["-","-"]
+
+
+class SortWidget(forms.TextInput):
+    
+    def __init__(self, *args, **kwargs):
+        super(SortWidget, self).__init__(*args, **kwargs)
+        self.attrs['readonly'] = 'readonly'
+        self.attrs['class'] = 'sortable'
+        
+    class Media:
+        css = {
+            'all': [ "css/sort.css", ]
+        }

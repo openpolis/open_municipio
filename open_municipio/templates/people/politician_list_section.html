@@ -11,12 +11,15 @@
 </a>
 <div>
 
-  <a href="{{ politician.person.get_absolute_url }}"><strong>{{ politician.person|title }}</strong></a>
-
+  <a href="{{ politician.person.get_absolute_url }}"><strong>{{ politician.person|title }}</strong></a><br/>
   <span class="inline-block">{% if what %}{{ value }} {{ what }}{% else %}{{ value }}{% endif %}</span>
 
   <br>
 
-  {{ politician.council_group }}
+  {% with c_group=politician.council_group %}
+  {% if c_group %}
+  {{ c_group.name|truncatechars:40 }} ({{ c_group.acronym }})
+  {% endif %}
+  {% endwith %}
 
 </div>

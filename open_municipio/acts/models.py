@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 import logging
-from datetime import date
+import re
+from django.template.defaultfilters import slugify
+from datetime import datetime
+from django.utils import formats
 from django.core.exceptions import ObjectDoesNotExist
 from south.modelsinspector import add_ignored_fields
 from django.conf import settings
@@ -21,9 +24,10 @@ from model_utils.fields import StatusField
 
 from open_municipio.newscache.models import News, NewsTargetMixin
 
-from open_municipio.people.models import Institution, InstitutionCharge, Person
+from open_municipio.people.models import Institution, InstitutionCharge, Person, SittingItem
 from open_municipio.taxonomy.managers import TopicableManager
 from open_municipio.monitoring.models import MonitorizedItem, Monitoring
+from django.core.urlresolvers import resolve, reverse
 
 
 #
@@ -33,7 +37,7 @@ from open_municipio.monitoring.models import MonitorizedItem, Monitoring
 class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
     """
     This is the base class for all the different act types: it contains the common fields for
-    deliberations, interrogations, interpellations, motions, agendas and emendations.
+    deliberations, interrogations, interpellations, motions, agendas and amendments.
   
     it is a ``TimeStampedModel``, so it tracks creation and modification timestamps for each record.
 
@@ -51,6 +55,15 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
     # added to avoid problems with South migrations
     add_ignored_fields(["^open_municipio\.taxonomy\.managers"])
 
+    STATUS = Choices(
+        ('PRESENTED', 'presented', _('presented')),
+        ('APPROVED', 'approved', _('approved')),
+        ('REJECTED', 'rejected', _('rejected')),
+        ('RETIRED', 'retired', _('retired')),
+        ('DECAYED', 'decayed', _('decayed')),
+        ('POSTPONED', 'postponed', _('postponed')),
+    )
+
     idnum = models.CharField(max_length=64, blank=True, help_text=_("A string representing the identification or sequence number for this act, used internally by the municipality's administration."))
     title = models.CharField(_('title'), max_length=1024, blank=True)
     adj_title = models.CharField(_('adjoint title'), max_length=1024, blank=True, help_text=_("An adjoint title, added to further explain an otherwise cryptic title"))
@@ -62,8 +75,9 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
     emitting_institution = models.ForeignKey(Institution, related_name='emitted_act_set', verbose_name=_('emitting institution'))
     category_set = models.ManyToManyField('taxonomy.Category', verbose_name=_('categories'), blank=True, null=True)
     location_set = models.ManyToManyField('locations.Location', through='locations.TaggedActByLocation', verbose_name=_('locations'), blank=True, null=True)
-    status_is_final = models.BooleanField(default=False)
+    status_is_final = models.BooleanField(_('status is final'), default=False)
     is_key = models.BooleanField(default=False, help_text=_("Specify whether this act should be featured"))
+    slug = models.SlugField(max_length=500, blank=True, null=True)
 
     objects = InheritanceManager()
     # use this manager to retrieve only key acts
@@ -76,12 +90,35 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
     monitoring_set = generic.GenericRelation(Monitoring, object_id_field='object_pk')
 
     def __unicode__(self):
-        rv = u'%s' % (self.title, )
+        rv = u'%s' % (self.adj_title or self.title, )
         if self.idnum:
-            rv = u'%s - %s' % (self.idnum, rv)
-        if self.adj_title:
-            rv = u'%s (%s)' % (rv, self.adj_title)
+            rv = u'%s - %s' % (rv, self.idnum)
         return rv
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+
+            self.slug = self.get_default_slug()
+
+        super(Act, self).save(*args, **kwargs)
+            
+
+    def get_default_slug(self):
+        """
+        This method will be used for assigning a default slug to an
+        Act that does not have one.
+        """
+
+        if self.presentation_date and (self.idnum or self.title):
+            cleaned_idnum = re.sub(r'[^\w\d]+', '-', self.idnum)
+            slug = slugify("%s-%s-%s" % (self.presentation_date, cleaned_idnum, 
+                            self.title))
+
+            return slug[:500]
+        else:
+            raise ValueError("In order to compute the default slug, the Act should have a presentation date and an idnum")
+                
+ 
 
     def downcast(self):
         """
@@ -140,8 +177,8 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
         return self.presenter_set.filter(actsupport__support_type=ActSupport.SUPPORT_TYPE.co_signer)
 
     @property
-    def emendations(self):
-        return self.emendation_set.all()
+    def amendments(self):
+        return self.amendment_set.all()
 
     @property
     def tags(self):
@@ -208,6 +245,38 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
             if groups.has_key(transition.final_status):
                 groups.get(transition.final_status).append(transition)
         return groups
+        
+    def get_first_non_final_transitions(self):
+        """
+        Retrieve the first non final transition
+        """
+        this = self.downcast()
+
+        statuses = []
+        for final_status in this.FINAL_STATUSES: statuses.append(final_status[0])
+
+        # fill groups with ordered transitions
+        for transition in this.transitions.order_by('transition_date'):
+            if not transition.final_status in statuses:
+                return transition
+
+        return None
+        
+    def get_last_final_transitions(self):
+        """
+        Retrieve the first non final transition
+        """
+        this = self.downcast()
+
+        statuses = []
+        for final_status in this.FINAL_STATUSES: statuses.append(final_status[0])
+
+        # fill groups with ordered transitions
+        for transition in this.transitions.order_by('-transition_date'):
+            if transition.final_status in statuses:
+                return transition
+
+        return None
 
     def is_final_status(self, status=None):
         """
@@ -230,12 +299,83 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
         """
         WRITEME
         """
-        if self.transitions:
-            return list(self.transitions.order_by('-transition_date'))[0]
-        return None
 
+        last = None
+        if self.transitions and len(self.transitions) > 0:
+            # FIXME: this assumes that last transition's id follows previous one's 
+            last = self.transitions.order_by("-transition_date", "-id")[0]
+
+        return last
+
+    @property
+    def first_date(self):
+        """
+        Return approval_date or presentation_date as pub_date field,
+        according to the status of
+        """
+        transition = self.get_first_non_final_transitions()
+
+        return transition.transition_date if transition else self.presentation_date
+
+    @property
+    def final_date(self):
+        """
+        WRITEME
+        """
+        transition = self.get_last_final_transitions()
+
+        if (transition):
+            return transition.transition_date
+
+        this = self.downcast()
+
+        rv = None
+
+        if hasattr(this, 'approval_date'): rv = this.approval_date
+
+        return rv if rv else self.presentation_date
+
+    @property
+    def iter_duration(self):
+        """
+        WRITEME
+        """
+
+        return (self.final_date - self.first_date)
+
+#    @models.permalink
     def get_absolute_url(self):
-        return self.downcast().get_absolute_url()
+        """
+        Introduce url based on slugs. The self.OM_DETAIL_VIEW_NAME is used by any
+        subclass of Act to specify their detail view name. In order to keep
+        retro-compatibility, we use the downcast method as before, in case such
+        attribute has not been set. Of course, any subclass of Act can 
+        override this method
+        """
+
+        dc_act = self.downcast()
+
+        if getattr(dc_act, "OM_DETAIL_VIEW_NAME"):
+            if getattr(dc_act, "slug", None):
+#                return (dc_act.OM_DETAIL_VIEW_NAME, (), {'slug': self.slug })
+                return reverse(dc_act.OM_DETAIL_VIEW_NAME, kwargs={'slug':self.slug})
+            else:
+#                return (dc_act.OM_DETAIL_VIEW_NAME, (), {'pk': self.pk })
+                return reverse(dc_act.OM_DETAIL_VIEW_NAME, kwargs={'pk':self.pk})
+        else:
+            return dc_act.get_absolute_url()
+
+
+## it was only a temporary patch, get rid of it - FS
+##    def get_short_url(self):
+##
+##        dc_act = self.downcast()
+##
+##        if getattr(dc_act, "OM_DETAIL_VIEW_NAME"):
+##            return reverse(dc_act.OM_DETAIL_VIEW_NAME, args=(self.pk,))
+##        else:
+##            return dc_act.get_short_url()
+##
 
     def get_type_name(self):
         """
@@ -245,6 +385,27 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
             return unicode(self.downcast()._meta.verbose_name)
         else:
             return None
+    
+    @property
+    def speeches(self):
+        act_speeches = []
+        try:
+            act_speeches = [a_s.speech for a_s in ActHasSpeech.objects.filter(act=self)]
+        except ObjectDoesNotExist:
+            pass
+
+        try:
+            items = SittingItem.objects.filter(related_act_set=self).all()
+            act_speeches.extend(Speech.objects.filter(sitting_item__in=items))
+        except ObjectDoesNotExist:
+            pass
+
+        return act_speeches
+
+    class Meta:
+        verbose_name = _('act')
+        verbose_name_plural = _('acts')
+        unique_together = (('slug',), ('presentation_date','idnum','title',))
 
 
 class ActSection(models.Model):
@@ -268,8 +429,8 @@ class ActSection(models.Model):
         db_table = u'acts_act_section'
 
     @property
-    def emendations(self):
-        return self.emendation_set.all()
+    def amendments(self):
+        return self.amendment_set.all()
 
 
 class ActSupport(models.Model):
@@ -289,6 +450,9 @@ class ActSupport(models.Model):
 
     class Meta:
         db_table = u'acts_act_support'
+
+    def __unicode__(self):
+        return _(u"%(support)s") % { "support": self.support_type }
 
 
 class ActDescriptor(TimeStampedModel):
@@ -316,6 +480,8 @@ class CGDeliberation(Act):
     FINAL_STATUSES = (
         ('APPROVED', _('approved')),
         ('REJECTED', _('rejected')),
+        ('RETIRED', _('retired')),
+        ('DECAYED', _('decayed')),
     )
 
     STATUS = Choices(
@@ -324,7 +490,11 @@ class CGDeliberation(Act):
         ('COUNCIL', 'council', _('council')),
         ('APPROVED', 'approved', _('approved')),
         ('REJECTED', 'rejected', _('rejected')),
+        ('RETIRED', 'retired', _('retired')),
+        ('DECAYED', 'decayed', _('decayed')),
     )
+
+    OM_DETAIL_VIEW_NAME="om_cgdeliberation_detail"
 
     status = models.CharField(_('status'), choices=STATUS, max_length=12)
     approval_date = models.DateField(_('approval date'), null=True, blank=True)
@@ -335,8 +505,8 @@ class CGDeliberation(Act):
     approved_text = models.TextField(blank=True)
 
     class Meta:
-        verbose_name = _('deliberation')
-        verbose_name_plural = _('deliberations')
+        verbose_name = _('city government deliberation')
+        verbose_name_plural = _('city government deliberations')
 
     @property
     def next_events(self):
@@ -353,9 +523,12 @@ class CGDeliberation(Act):
         """
         return self.next_events[0] if self.next_events else None
 
-    @models.permalink
-    def get_absolute_url(self):
-        return ('om_cgdeliberation_detail', (), {'pk': str(self.pk)})
+##    @models.permalink
+##    def get_absolute_url(self):
+##
+##        return ('om_cgdeliberation_detail', (), {'slug': str(self.slug)})
+##
+
 
 
 
@@ -374,6 +547,8 @@ class Deliberation(Act):
     FINAL_STATUSES = (
         ('APPROVED', _('approved')),
         ('REJECTED', _('rejected')),
+        ('RETIRED', _('retired')),
+        ('DECAYED', _('decayed')),
     )
 
     STATUS = Choices(
@@ -382,7 +557,12 @@ class Deliberation(Act):
         ('COUNCIL', 'council', _('council')),
         ('APPROVED', 'approved', _('approved')),
         ('REJECTED', 'rejected', _('rejected')),
+        ('RETIRED', 'retired', _('retired')),
+        ('DECAYED', 'decayed', _('decayed')),
+        ('POSTPONED', 'postponed', _('postponed')),
     )
+
+    OM_DETAIL_VIEW_NAME = "om_deliberation_detail"
     
     status = models.CharField(_('status'), choices=STATUS, max_length=12)
     approval_date = models.DateField(_('approval date'), null=True, blank=True)
@@ -395,6 +575,7 @@ class Deliberation(Act):
     class Meta:
         verbose_name = _('deliberation')
         verbose_name_plural = _('deliberations')
+        pass
 
     @property
     def next_events(self):
@@ -411,9 +592,10 @@ class Deliberation(Act):
         """
         return self.next_events[0] if self.next_events else None
 
-    @models.permalink
-    def get_absolute_url(self):
-        return ('om_deliberation_detail', (), {'pk': str(self.pk)})
+##    @models.permalink
+##    def get_absolute_url(self):
+##        return ('om_deliberation_detail', (), {'slug': str(self.slug)})
+##
     
 
 class Interrogation(Act):
@@ -428,28 +610,101 @@ class Interrogation(Act):
     FINAL_STATUSES = (
         ('ANSWERED', _('answered')),
         ('NOTANSWERED', _('not answered')),
+        ('RETIRED', _('retired')),
+        ('DECAYED', _('decayed')),
     )
 
     STATUS = Choices(
         ('PRESENTED', 'presented', _('presented')),
         ('ANSWERED', 'answered', _('answered')),
         ('NOTANSWERED', 'notanswered', _('not answered')),
+        ('RETIRED', 'retired', _('retired')),
+        ('DECAYED', 'decayed', _('decayed')),
+        ('POSTPONED', 'postponed', _('postponed')),
     )
+    
+    OM_DETAIL_VIEW_NAME = "om_interrogation_detail"
     
     status = models.CharField(_('status'), choices=STATUS, max_length=12)
     answer_type = models.CharField(_('answer type'), max_length=8, choices=ANSWER_TYPES)
-    question_motivation = models.TextField(blank=True)
-    answer_text = models.TextField(blank=True)
-    reply_text = models.TextField(blank=True)
+    question_motivation = models.TextField(blank=True, verbose_name=_("question motivation"))
+    answer_text = models.TextField(blank=True, verbose_name=_("answer text"))
+    reply_text = models.TextField(blank=True, verbose_name=_("reply text"))
 
     class Meta:
         verbose_name = _('interrogation')
         verbose_name_plural = _('interrogations')
     
-    @models.permalink
-    def get_absolute_url(self):
-        return 'om_interrogation_detail', (), {'pk': str(self.pk)}
+##    @models.permalink
+##    def get_absolute_url(self):
+##        return 'om_interrogation_detail', (), {'slug': str(self.slug)}
+##    
+    @property
+    def author(self):
+        if len(self.presenters) == 0:
+            return None
+
+        return self.presenters[0]
+
+    @property
+    def answer_verbal(self):
+        ans_verbal = None
+        try:
+            answer = ActHasSpeech.objects.get(act=self,relation_type='RESP')
+            ans_verbal = answer.speech
+        except ObjectDoesNotExist:
+            pass
+
+        return ans_verbal
+
+
+    @property
+    def answer_written(self):
+        if self.answer_text == None or len(self.answer_text) == 0:
+            return None
+
+        return self.answer_text
+
+    @property
+    def request_verbal(self):
+        req_verbal = None
+        try:
+            request = ActHasSpeech.objects.get(act=self,relation_type='REQ')
+            req_verbal = request.speech
+        except ObjectDoesNotExist:
+            pass
+
+        return req_verbal
+
+    @property
+    def request_written(self):
+        if self.text == None or len(self.text) == 0:
+            return None
+
+        return self.text
+
+    @property
+    def related_speeches(self):
+        act_speeches = []
+        try:
+            act_speeches = ActHasSpeech.objects.filter(act=self).filter(~ models.Q(relation_type = 'REQ')).order_by('pk')
+        except ObjectDoesNotExist:
+            pass
+
+        return act_speeches
+
+    @property
+    def answer_date(self):
     
+        date = None
+
+        answer_dates = self.transition_set.filter(final_status=Interrogation.STATUS.answered).values("transition_date").order_by("-transition_date")
+
+        if len(answer_dates) > 0:
+            date = answer_dates[0]["transition_date"]
+
+        return date        
+
 
 class Interpellation(Act):
     """
@@ -463,13 +718,20 @@ class Interpellation(Act):
     FINAL_STATUSES = (
         ('ANSWERED', _('answered')),
         ('NOTANSWERED', _('not answered')),
+        ('RETIRED', _('retired')),
+        ('DECAYED', _('decayed')),
     )
 
     STATUS = Choices(
         ('PRESENTED', 'presented', _('presented')),
         ('ANSWERED', 'answered', _('answered')),
         ('NOTANSWERED', 'notanswered', _('not answered')),
+        ('RETIRED', 'retired', _('retired')),
+        ('DECAYED', 'decayed', _('decayed')),
+        ('POSTPONED', 'postponed', _('postponed')),
     )
+    
+    OM_DETAIL_VIEW_NAME = "om_interpellation_detail"
 
     status = models.CharField(_('status'), choices=STATUS, max_length=12)
     answer_type = models.CharField(_('answer type'), max_length=8, choices=ANSWER_TYPES)
@@ -480,20 +742,92 @@ class Interpellation(Act):
         verbose_name = _('interpellation')
         verbose_name_plural = _('interpellations')
     
-    @models.permalink
-    def get_absolute_url(self):
-        return 'om_interpellation_detail', (), {'pk': str(self.pk)}
+##    @models.permalink
+##    def get_absolute_url(self):
+##        return 'om_interpellation_detail', (), {'slug': str(self.slug)}
     
+    @property
+    def author(self):
+        if len(self.presenters) == 0:
+            return None
+
+        return self.presenters[0]
+
+
+    @property
+    def answer_verbal(self):
+        ans_verbal = None
+        try:
+            answer = ActHasSpeech.objects.get(act=self,relation_type='RESP')
+            ans_verbal = answer.speech
+        except ObjectDoesNotExist:
+            pass
+
+        return ans_verbal
+
+
+    @property
+    def answer_written(self):
+        if self.answer_text == None or len(self.answer_text) == 0:
+            return None
+
+        return self.answer_text
+
+    @property
+    def request_verbal(self):
+        req_verbal = None
+        try:
+            request = ActHasSpeech.objects.get(act=self,relation_type='REQ')
+            req_verbal = request.speech
+        except ObjectDoesNotExist:
+            pass
+
+        return req_verbal
+
+    @property
+    def request_written(self):
+        if self.text == None or len(self.text) == 0:
+            return None
+
+        return self.text
+
+
+    @property
+    def related_speeches(self):
+        act_speeches = []
+        try:
+            act_speeches = ActHasSpeech.objects.filter(act=self).filter(~ models.Q(relation_type = 'REQ')).order_by('pk')
+
+        except ObjectDoesNotExist:
+            pass
+
+        return act_speeches
+
+    @property
+    def answer_date(self):
+    
+        date = None
+
+        answer_dates = self.transition_set.filter(final_status=Interpellation.STATUS.answered).values("transition_date").order_by("-transition_date")
+
+        if len(answer_dates) > 0:
+            date = answer_dates[0]["transition_date"]
+
+        return date        
+
+
 
 class Motion(Act):
     """
     It is a political act, used to publicly influence members of the City Government, or the Mayor,
     on a broad type of issues (specific to the Comune proceedings, or of a more general category)
-    It is submitted to the Council approval and Emendations to it can be presented before the votation.
+    It is submitted to the Council approval and Amendments to it can be presented before the votation.
     """
     FINAL_STATUSES = (
         ('APPROVED', _('approved')),
         ('REJECTED', _('rejected')),
+        ('RETIRED', _('retired')),
+        ('DECAYED', _('decayed')),
     )
 
     STATUS = Choices(
@@ -501,7 +835,13 @@ class Motion(Act):
         ('COUNCIL', 'council', _('council')),
         ('APPROVED', 'approved', _('approved')),
         ('REJECTED', 'rejected', _('rejected')),
+        ('RETIRED', 'retired', _('retired')),
+        ('DECAYED', 'decayed', _('decayed')),
+        ('POSTPONED', 'postponed', _('postponed')),
     )
+
+    OM_DETAIL_VIEW_NAME = "om_motion_detail"
+
 
     status = models.CharField(_('status'), choices=STATUS, max_length=12)
     
@@ -509,9 +849,10 @@ class Motion(Act):
         verbose_name = _('motion')
         verbose_name_plural = _('motions')
         
-    @models.permalink
-    def get_absolute_url(self):
-        return ('om_motion_detail', (), {'pk': str(self.pk)})
+##    @models.permalink
+##    def get_absolute_url(self):
+##        return ('om_motion_detail', (), {'slug': str(self.slug)})
+
 
 
 class Agenda(Act):
@@ -519,11 +860,13 @@ class Agenda(Act):
     Maps the *Ordine del Giorno* act type.
     It is a political act, used to publicly influence the following discussions on Deliberations.
     It is specifically used with respect to issues specific to the deliberation process.
-    It is submitted to the Council approval and Emendations to it can be presented before the votation.
+    It is submitted to the Council approval and Amendments to it can be presented before the votation.
     """
     FINAL_STATUSES = (
         ('APPROVED', _('approved')),
         ('REJECTED', _('rejected')),
+        ('RETIRED',  _('retired')),
+        ('DECAYED', _('decayed')),
     )
 
     STATUS = Choices(
@@ -531,7 +874,13 @@ class Agenda(Act):
         ('COUNCIL', 'council', _('council')),
         ('APPROVED', 'approved', _('approved')),
         ('REJECTED', 'rejected', _('rejected')),
+        ('RETIRED', 'retired', _('retired')),
+        ('DECAYED', 'decayed', _('decayed')),
+        ('POSTPONED', 'postponed', _('postponed')),
     )
+
+    OM_DETAIL_VIEW_NAME = "om_agenda_detail"
+
 
     status = models.CharField(_('status'), choices=STATUS, max_length=12)
 
@@ -539,23 +888,38 @@ class Agenda(Act):
         verbose_name = _('agenda')
         verbose_name_plural = _('agenda')
 
-    @models.permalink
-    def get_absolute_url(self):
-        return ('om_agenda_detail', (), {'pk': str(self.pk)})
+##    @models.permalink
+##    def get_absolute_url(self):
+##        return ('om_agenda_detail', (), {'slug': str(self.slug)})
+
 
 
 class Amendment(Act):
     """
     It is a modification of a particular act, that can be voted specifically and separately from the act itself.
     
-    An emendation relates to an act, and it can relate theoretically to another emendation (sub-emendations).
-    Optionally, an emendation relates to an act section (article, paragraph).
+    An amendment relates to an act, and it can relate theoretically to another amendment (sub-amendments).
+    Optionally, an amendment relates to an act section (article, paragraph).
     """
+    FINAL_STATUSES = (
+        ('APPROVED', _('approved')),
+        ('REJECTED', _('rejected')),
+        ('RETIRED', _('retired')),
+        ('DECAYED', _('decayed')),
+    )
+
     # TODO: add additional statuses allowed for this act type
     STATUS = Choices(
         ('PRESENTED', 'presented', _('presented')), 
-        ('APPROVED', 'approved', _('approved'))
+        ('APPROVED', 'approved', _('approved')),
+        ('REJECTED', 'rejected', _('rejected')),
+        ('RETIRED', 'retired', _('retired')),
+        ('DECAYED', 'decayed', _('decayed')),
+        ('POSTPONED', 'postponed', _('postponed')),
     )
+
+    OM_DETAIL_VIEW_NAME = "om_amendment_detail"
+
     
     status = models.CharField(_('status'), choices=STATUS, max_length=12)
     act = models.ForeignKey(Act, related_name='amendment_set', on_delete=models.PROTECT)
@@ -564,8 +928,11 @@ class Amendment(Act):
 
     class Meta:
         verbose_name = _('amendment')
-        verbose_name_plural = _('amendment')
+        verbose_name_plural = _('amendments')
 
+##    @models.permalink
+##    def get_absolute_url(self):
+##        return ('om_amendment_detail', (), {'slug': str(self.slug)})
 
 
 #
@@ -575,6 +942,7 @@ class Transition(models.Model):
     final_status = models.CharField(_('final status'), max_length=100)
     act = models.ForeignKey(Act, related_name='transition_set')
     votation = models.ForeignKey('votations.Votation', null=True, blank=True)
+    attendance = models.ForeignKey('attendances.Attendance', null=True, blank=True)
     transition_date = models.DateField(default=None)
     symbol = models.CharField(_('symbol'), max_length=128, blank=True, null=True)
     note = models.CharField(_('note'), max_length=255, blank=True, null=True)
@@ -584,6 +952,9 @@ class Transition(models.Model):
         verbose_name = _('status transition')
         verbose_name_plural = _('status transition')
 
+
+    def __unicode__(self):
+        return _(u"%(status)s on %(date)s") % { "status": self.final_status, "date": formats.date_format(self.transition_date) }
 
 #
 # Documents
@@ -603,10 +974,10 @@ class Document(TimeStampedModel):
     It is possible for a single document to have more than one type of content:
     for example, a textual and a PDF local versions, or remote links...
     """
-    document_date = models.DateField(null=True, blank=True)
-    document_type = models.CharField(max_length=5, null=True, blank=True)
-    document_size = models.IntegerField(blank=True, null=True)
-    text = models.TextField(blank=True)
+    document_date = models.DateField(null=True, blank=True, verbose_name=_("date"))
+    document_type = models.CharField(max_length=5, null=True, blank=True, verbose_name=_("type"))
+    document_size = models.IntegerField(blank=True, null=True, verbose_name=_("size"))
+    text = models.TextField(blank=True,verbose_name=_('text'))
     text_url = models.URLField(blank=True)
     file_url = models.URLField(blank=True)
     file = models.FileField(upload_to="attached_documents/%Y%m%d", blank=True, max_length=255)
@@ -645,25 +1016,114 @@ class Speech(Document):
     in that case the ``author`` field may be left blank and the ``author_name_when_external``
     gets the name of the person
     """
-    title = models.CharField(max_length=255, blank=True, null=True)
+    title = models.CharField(max_length=255, blank=True, null=True,verbose_name=_('title'))
     sitting_item = models.ForeignKey('people.SittingItem')
-    author = models.ForeignKey('people.Person', blank=True, null=True)
-    author_name_when_external = models.CharField(max_length=255, blank=True, null=True)
-    votation = models.ForeignKey('votations.Votation', blank=True, null=True)
+    author = models.ForeignKey('people.Person', blank=True, null=True,verbose_name=_('author'))
+    author_name_when_external = models.CharField(max_length=255, blank=True, null=True,verbose_name=_('author name when external'))   
+    votation = models.ForeignKey('votations.Votation', blank=True, null=True,verbose_name=_('votation'))
     related_act_set = models.ManyToManyField('Act', through='ActHasSpeech')
-    seq_order = models.IntegerField(default=0)
-    initial_time = models.TimeField(blank=True, null=True)
-    duration = models.IntegerField(blank=True, null=True)
-    audio_url = models.URLField(blank=True)
-    audio_file = models.FileField(upload_to="attached_audio/%Y%m%d", blank=True, max_length=255)
+    initial_time = models.TimeField(verbose_name=_('initial_time'))
+    duration = models.IntegerField(blank=True, null=True,verbose_name=_('duration'))
+    seq_order = models.IntegerField(default=0,verbose_name=_('sequential order'))
+    initial_time = models.TimeField(blank=True, null=True,verbose_name=_('initial time'))
+#    duration = models.IntegerField(blank=True, null=True)
+    audio_url = models.URLField(blank=True,verbose_name=_('audio url'))
+    audio_file = models.FileField(upload_to="attached_audio/%Y%m%d", blank=True, max_length=255,verbose_name=_('audio file'))
+    slug = models.SlugField(max_length=500, blank=True, null=True)
 
     class Meta(Document.Meta):
         verbose_name = _('speech')
         verbose_name_plural = _('speeches')
+        unique_together = (('slug',),('author','author_name_when_external','sitting_item','seq_order'))
 
     def __unicode__(self):
         return u'%s' % self.title
 
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+
+            self.slug = self.get_default_slug()
+
+        super(Speech, self).save(*args, **kwargs)
+            
+
+
+    def get_default_slug(self):
+        if self.author_name and self.date and self.seq_order and self.sitting_item:
+            slug = "%s-%s-%s-%s" % (self.author_name, self.date, self.sitting_item.title, self.seq_order)
+            if self.title:
+                slug = "%s-%s" % (slug, self.title)
+            return slugify(slug)[:500]
+        else:
+            ValueError("In order to get the default slug, the Speech must have an author, a date, a sitting item and a sequential order")
+
+#    @models.permalink
+    def get_absolute_url(self):
+#        return('om_speech_detail', (), {'slug': str(self.slug)})
+        return reverse('om_speech_detail', kwargs={'slug':str(self.slug)})
+
+    @property
+    def author_name(self):
+        if self.author != None:
+            return "%s %s" % (self.author.first_name, self.author.last_name)
+
+        return self.author_name_when_external
+
+    @property
+    def date(self):
+        return self.sitting_item.sitting.date
+
+    @property
+    def sitting(self):    
+        return self.sitting_item.sitting
+
+    @property
+    def author_charge(self):
+        politician = None
+        try:
+            politician = InstitutionCharge.objects.get(person=self.author,institution__institution_type=Institution.COUNCIL)
+        except ObjectDoesNotExist:
+            try:
+                politician = InstitutionCharge.objects.get(person=self.author, institution__institution_type=Institution.CITY_GOVERNMENT)
+            except ObjectDoesNotExist:
+                pass    
+
+        return politician
+
+    @property
+    def is_public(self):
+        return self.act == None or self.act.status_is_final
+
+    def __unicode__(self):
+        return u"%s - %s" % (self.author_name, self.sitting)
+
+# wrappers for admin list_display and ordering
+    def date_admin(self):
+        return self.date
+
+    date_admin.short_description = _('date')
+    date_admin.allow_tags = True
+    date_admin.admin_order_field = 'sitting_item__sitting__date'
+
+    def author_name_admin(self):
+        return self.author_name
+
+    author_name_admin.short_description = _('author')
+    author_name_admin.allow_tags = True
+    author_name_admin.admin_order_field = 'author'
+
+    def sitting_admin(self):
+        return self.sitting
+
+    sitting_admin.short_description = _('sitting')
+    sitting_admin.allow_tags = True
+    sitting_admin.admin_order_field = 'sitting_item__sitting__number'
+
+    @property
+    def ref_acts(self):
+        return [act for act in self.related_act_set.all()] + \
+            [act for act in self.sitting_item.related_act_set.all()]
 
 class ActHasSpeech(models.Model):
     """
@@ -684,6 +1144,17 @@ class ActHasSpeech(models.Model):
         verbose_name = _('act mentioned in speech')
         verbose_name_plural = _('acts mentioned in speech')
 
+    @property
+    def is_request(self):
+        return self.relation_type == 'REQ'
+
+    @property
+    def is_response(self):
+        return self.relation_type == 'RESP'
+    
+    @property
+    def is_reference(self):
+        return self.relation_type == 'REF'
 
 #
 # Calendar
@@ -710,7 +1181,7 @@ class Calendar(models.Model):
 # Signals handlers
 #
 
-logger = logging.getLogger('import')
+logger = logging.getLogger('webapp')
 
 
 @receiver(post_save, sender=ActSupport)
@@ -735,40 +1206,59 @@ def new_signature(**kwargs):
             signature_support_date = signature.support_date
 
         try:
-            act.presentation_date = act.presentation_date.strftime("%Y-%m-%d")
+#            act.presentation_date = act.presentation_date.strftime("%Y-%m-%d") 
+            act_presentation_date =  act.presentation_date.strftime("%Y-%m-%d") 
+
         except:
-            act.presentation_date = act.presentation_date
+#            act.presentation_date = act.presentation_date
+            act_presentation_date = act.presentation_date
+
 
         # generate new signature after presentation, for the act
-        if signature.support_date > act.presentation_date:
+#        if signature.support_date > act.presentation_date:
+        if signature_support_date > act_presentation_date:
             created = False
+            news_text = News.get_text_for_news(ctx, 'newscache/act_signed_after_presentation.html')
+            defaults = { "text": news_text }
             news, created = News.objects.get_or_create(
                 generating_object_pk=signature.pk,
                 generating_content_type=ContentType.objects.get_for_model(signature),
                 related_object_pk=act.pk,
                 related_content_type=ContentType.objects.get_for_model(act),
                 priority=3,
-                text=News.get_text_for_news(ctx, 'newscache/act_signed_after_presentation.html')
+                defaults=defaults
             )
             if created:
                 logger.debug("  act was signed after presentation news created")
             else:
-                logger.debug("  act was signed after presentation news found")
+                if news.text != news_text:
+                    news.text = news_text
+                    news.save()
+                    logger.debug("  act was signed after presentation news found and updated")
+                else:
+                    logger.debug("  act was signed after presentation news found")
 
         # generate signature news, for the politician
         created = False
+        news_text=News.get_text_for_news(ctx, 'newscache/person_signed.html')
+        defaults = { "text":news_text }
         news, created = News.objects.get_or_create(
             generating_object_pk=signature.pk,
             generating_content_type=ContentType.objects.get_for_model(signature),
             related_object_pk=signer.pk,
             related_content_type=ContentType.objects.get_for_model(signer),
             priority=2,
-            text=News.get_text_for_news(ctx, 'newscache/person_signed.html')
+            defaults=defaults
         )
         if created:
             logger.debug("  user signed act news created")
         else:
-            logger.debug("  user signed act news found")
+            if news.text != news_text:  
+                news.text = news_text
+                news.save()
+                logger.debug("  user signed act news found and updated")
+            else:
+                logger.debug("  user signed act news found")
 
 
 @receiver(pre_delete, sender=ActSupport)
@@ -794,14 +1284,19 @@ def new_transition(**kwargs):
         transition = kwargs['instance']
         act = transition.act.downcast()
 
-        # modify act's status
-        # set act's status according to transition status
-        act.status = transition.final_status
-        act.save()
-        # if it's a final status, set the according flag in the act's parent
-        if act.is_final_status(act.status):
-            act.act_ptr.status_is_final = True
-            act.act_ptr.save()
+        if act is None:
+            raise ValueError("You cannot create a new transition without an act")
+
+        # modify act's status only when transition is created
+        # avoid infinite loop
+        if kwargs.get('created', False):
+            # set act's status according to transition status
+            act.status = transition.final_status
+            act.save()
+            # if it's a final status, set the according flag in the act's parent
+            if act.is_final_status(act.status):
+                act.act_ptr.status_is_final = True
+                act.act_ptr.save()
 
         # generate news
         ctx = Context({ 'current_site': Site.objects.get(id=settings.SITE_ID),
@@ -811,33 +1306,49 @@ def new_transition(**kwargs):
         # to shorten acts' presentations, with signatures
         if transition.final_status == 'PRESENTED':
             created = False
+            news_text=News.get_text_for_news(ctx, 'newscache/act_presented.html')
+    
+            defaults = { "text": news_text }
             news, created = News.objects.get_or_create(
                 generating_object_pk=transition.pk,
                 generating_content_type=ContentType.objects.get_for_model(transition),
                 related_object_pk=act.pk,
                 related_content_type=ContentType.objects.get_for_model(act),
                 priority=1,
-                text=News.get_text_for_news(ctx, 'newscache/act_presented.html')
+                defaults=defaults
             )
             if created:
                 logger.debug("  act presentation news created")
             else:
-                logger.debug("  act presentation news found")
+                if news.text != news_text:
+                    news.text = news_text
+                    news.save()
+                    logger.debug("  act presentation news found and updated")
+                else:
+                    logger.debug("  act presentation news found")
 
         else:
             created = False
+            news_text=News.get_text_for_news(ctx, 'newscache/act_changed_status.html')
+            defaults = { "text": news_text }
+
             news, created = News.objects.get_or_create(
                 generating_object_pk=transition.pk,
                 generating_content_type=ContentType.objects.get_for_model(transition),
                 related_object_pk=act.pk,
                 related_content_type=ContentType.objects.get_for_model(act),
                 priority=1,
-                text=News.get_text_for_news(ctx, 'newscache/act_changed_status.html')
+                defaults=defaults
             )
             if created:
                 logger.debug("  act changed status news created")
             else:
-                logger.debug("  act changed status news found")
+                if news.text != news_text:
+                    news.text = news_text
+                    news.save()
+                    logger.debug("  act changed status news found and updated")
+                else:
+                    logger.debug("  act changed status news found")
 
 @receiver(pre_delete, sender=Transition)
 def pre_delete_transition(**kwargs):

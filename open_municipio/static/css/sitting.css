@@ -1,0 +1,98 @@
+table.sittings-year {
+    width: 100%;
+}
+
+table.sittings-year td {
+    height: 80px;
+    padding: 14px;
+    border-right: solid 1px lightgray;
+    border-bottom: solid 1px lightgray;
+    vertical-align : top;
+}
+
+table.sittings-year td:last-child {
+    border-right: 0px;
+}
+
+table.sitting-year tr:last-child td {
+    border-bottom: 0px;
+}
+
+.sittings-year-month {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+div.sitting-dates {
+    display: block;
+    padding-top: 10px;
+}
+
+.sitting-past {
+    background-color: #32668C;
+}
+
+.sitting-future {
+    background-color: lightgray;
+}
+
+.sitting-date {
+    float: left;
+    width: 30px;
+    line-height: 30px;
+    height: 30px;
+    text-align: center;
+    vertical-align: center;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-right: 5px;
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.sitting-act {
+    margin-top: 10px;
+}
+
+.sittingitem-speeches-list {
+    /* border-top: 1px solid lightgray; *//* TODO non appare nella posizione giusta */
+    padding-bottom: 10px;
+    display: table;
+    clear: both;
+}
+
+.sittingitem-speeches-list.speech-odd-row {
+    background-color: #F7F6F1;
+}
+
+.sittingitem-speech-preview {
+    padding-left: 10px;
+}
+
+.speech-even-row .span8,
+.speech-even-row .span4 {
+    background-color: white;
+}
+
+.speech-odd-row .span8,
+.speech-odd-row .span4 {
+    background-color: #F7F6F1;
+}
+
+.sitting-nav {
+    float: right;
+}
+
+.speech-read-more {
+    float: right;
+}
+
+.sittingitem-speeches-list .span8 {
+    border-right: 1px solid lightgray;
+    padding-right: 10px;
+}
+
+.sittingitem {
+    margin-left: 0px;
+}

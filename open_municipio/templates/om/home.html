@@ -3,6 +3,8 @@
 {% load tags_cloud %}
 {% load om_utils %}
 {% load popover_info %}
+{% load people_tags %}
+{% load url from future %}
 
 
 {% block title %}Home page{% endblock %}
@@ -37,6 +39,8 @@
     </div>
   </section>
 
+    {% if events|length > 0 %}
+
     <section id="agenda">
        <div class="container-fluid">
            <div class="row-fluid">
@@ -52,6 +56,7 @@
        </div>
 
     </section>
+    {% endif %}
 
 {% endblock %}
 
@@ -71,6 +76,8 @@
                               {% object_inline_monitoring a.downcast %}
                           </td>
                       </tr>
+                  {% empty %}
+                  Nessun atto presentato
                   {% endfor %}
                   </tbody>
               </table>
@@ -94,6 +101,8 @@
                               {{ n.text|safe }}
                           </td>
                       </tr>
+                  {% empty %}
+                  Nessuna attivit&agrave; 
                   {% endfor %}
                   </tbody>
               </table>
@@ -111,11 +120,18 @@
               <ul class="people-list">
                   {% for politician in least_absent %}
                       <li>
-                          {% include 'people/politician_list_section.html' with value=politician.n_absent_votations what='assenze' %}
+                          {% with politician|get_absent_label as absent_label %}
+                          {% include 'people/politician_list_section.html' with value=absent_label %}
+                          {% endwith %}
                           {% object_inline_monitoring politician.person %}
                       </li>
+                  {% empty %}
+                  Nessun consigliere
                   {% endfor %}
               </ul>
+              <div>
+              <a href="{% url 'om_institution_council' %}">Vai alla classifica completa</a>
+              </div>
           </div>
           <div class="span4">
               <h2>I più monitorati</h2>
@@ -130,15 +146,18 @@
                           {% include 'people/politician_list_section.html' with politician=p.object.current_institution_charges.0 %}
                           {% object_inline_monitoring p.object %}
                       </li>
+                  {% empty %}
+                  Nessun amministratore monitorato
                   {% endfor %}
               </ul>
+              <div>
+              <a href="{% url 'om_institution_council' %}">Vai alla classifica completa</a>
+              </div>
           </div>
           <div class="span4">
               <h2>I consiglieri con più atti</h2>
               <div>
-                  Sono i Consiglieri che hanno presentato più atti come primo
-                  firmatario.<br/>
-                  Sono esclusi gli emendamenti e gli ordini del giorno.
+                  Sono i Consiglieri che hanno presentato più atti come primo firmatario.
               </div>
               <ul class="people-list">
                   {% for p in most_acts %}
@@ -146,8 +165,13 @@
                           {% include 'people/politician_list_section.html' with politician=p value=p.n_acts what='atti' %}
                           {% object_inline_monitoring p.person %}
                       </li>
+                  {% empty %}
+                  Nessun consigliere
                   {% endfor %}
               </ul>
+              <div>
+              <a href="{% url 'om_institution_council' %}">Vai alla classifica completa</a>
+              </div>
           </div>
       </div>
 
@@ -163,7 +187,7 @@
                       </td></tr>
                   {% empty %}
                       <tr>
-                          <td><p>Nessun voto chiave.</p></td>
+                          <td><p>Nessun atto in evidenza.</p></td>
                       </tr>
                   {% endfor %}
                   </tbody>
@@ -178,7 +202,7 @@
                       {% include 'votations/_votation_inline.html' with votation=v only %}
                   {% empty %}
                       <tr>
-                          <td><p>Nessun atto chiave.</p></td>
+                          <td><p>Nessun voto chiave.</p></td>
                       </tr>
                   {% endfor %}
                   </tbody>
@@ -189,26 +213,25 @@
       <div class="row-fluid">
           <div class="span12">
               <h2>Argomenti più discussi {% popover_info 'argomenti-piu-discussi' %}</h2>
+              {% if tags_to_cloud %}
               {% tags_cloud tags_to_cloud %}
+              {% else %}
+              Nessun argomento
+              {% endif %}
           </div>
       </div>
 
   </article>
 
 
-  {% if IS_DEMO %}
+  {% if ALERT_POPUP|length > 0 %}
       <div class="modal" id="home-alert">
           <div class="modal-header">
               <button class="close" data-dismiss="modal">×</button>
-              <img src="{{ STATIC_URL }}img/logo-openmunicipio.png" alt="Open municipio">
+              <img src="{% if LOGO_URL %}{{ LOGO_URL }}{% else %}{{ STATIC_URL }}img/logo-openmunicipio.png{% endif %}" alt="Open municipio">
           </div>
           <div class="modal-body">
-              <p>
-                  Questa è una versione dimostrativa del sito Open municipio:
-                  <strong>i contenuti sono simulati</strong> e molte delle funzionalità a cui stiamo lavorando
-                  in queste ore non sono attive. Però è un buon punto di partenza per capire come funziona Open municipio.
-              </p>
-              <p>Buona navigazione.</p>
+              <p>{{ ALERT_POPUP|safe }}</p>
           </div>
           <div class="modal-footer">
               <a href="#" class="btn btn-primary btn-large" data-dismiss="modal">Entra nel sito</a>
@@ -241,7 +264,7 @@
           $('#search-politician').typeahead({
               source: function(typeahead, query) {
                   $.ajax({
-                      url: "{% url om_politician_search  %}",
+                      url: "{% url 'om_politician_search'  %}",
                       dataType: "json",
                       type: "GET",
                       data: {
@@ -275,7 +298,7 @@
       });
   </script>
 
-    {% if IS_DEMO %}
+    {% if ALERT_POPUP|length > 0 %}
       <script type="text/javascript">
           $(document).ready(function(){
               $('#home-alert').modal();

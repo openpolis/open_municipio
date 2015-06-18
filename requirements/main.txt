@@ -12,10 +12,9 @@ beautifulsoup
 pysolr
 poster
 lxml
-pil
+cssselect #required by lxml
+#pil
 sorl-thumbnail
 django-social-auth
 django-tinymce
-# speech report generation
-reportlab
-http://sourceforge.net/projects/pyrtf/files/latest/download
+Pillow==2.3.0

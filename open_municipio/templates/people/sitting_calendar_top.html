@@ -1,0 +1,18 @@
+{% load sittings_council_by_year %}
+{% load url from future %}
+
+{% get_sittings_years 6 as years %}
+<div class="sitting-archive">Archivio sedute di Consiglio:
+{% for y in years %}
+    {% if y != params.year %}
+        <a href="{% url 'om_sitting_calendar' year=y %}">
+    {% endif %}
+        {{ y }}
+    {% if y != params.year %}
+        </a>
+    {% endif %}
+    |
+{% empty %}
+Nessuna seduta di consiglio finora
+{% endfor %}
+</div>

@@ -1,0 +1,9 @@
+{% extends "acts/amendment_detail.html" %}
+
+{% block act_tab_status_class %}{% endblock %}
+{% block act_tab_documents_class %}class="active"{% endblock %}
+{% block act_text %}{% endblock %}
+
+{% block act_tab_body %}
+  {% include 'acts/act_list_attachments.html' with act=act %}
+{% endblock act_tab_body %}

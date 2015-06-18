@@ -42,7 +42,7 @@ def login_form(request):
     dsa_session = request.session[session_variable]
     backend =  dsa_session['kwargs']['backend']
     details = dsa_session['kwargs']['details']
-    print dsa_session
+    #print dsa_session
     if backend.name == 'twitter':
         IntegrationForm = SocialTwitterIntegrationForm
     else:

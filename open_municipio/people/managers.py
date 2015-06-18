@@ -5,13 +5,14 @@ from datetime import datetime
 
 class TimeFramedQuerySet(QuerySet):
     """
-    A custom ``QuerySet`` allowing easy retrieval of current, past and future instances 
-    of a timeframed model.
+    A custom ``QuerySet`` allowing easy retrieval of current, past and future 
+    instances of a timeframed model.
     
-    Here, a *timeframed model* denotes a model class having an associated time range.
+    Here, a *timeframed model* denotes a model class having an associated time 
+    range.
     
-    We assume that the time range is described by two ``Date`` (or ``DateTime``) fields
-    named ``start_date`` and ``end_date``, respectively.
+    We assume that the time range is described by two ``Date`` (or 
+    ``DateTime``) fields named ``start_date`` and ``end_date``, respectively.
     """
     def past(self, moment=None):
         """
@@ -50,3 +51,20 @@ class TimeFramedQuerySet(QuerySet):
 
         return self.filter(Q(start_date__lte=moment) &
                            (Q(end_date__gte=moment) | Q(end_date__isnull=True)))
+
+class GroupQuerySet(QuerySet):
+   
+    def active(self, moment=None):
+        """
+        An active group is a group that, at a given moment, has charges that
+        started before and didn't end or ended later
+        """ 
+
+        if moment is None:
+            moment = datetime.now()
+        else:
+            moment = datetime.strptime(moment, "%Y-%m-%d")
+
+        return self.filter(Q(groupcharge__start_date__lte=moment) &
+                            (Q(groupcharge__end_date__gte=moment) | 
+                                Q(groupcharge__end_date=None))).distinct()

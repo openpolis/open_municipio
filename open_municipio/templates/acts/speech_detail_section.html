@@ -1,0 +1,48 @@
+{% load monitoring_tags %}
+
+    <div class="span8 sittingitem">
+    <ul class="people-list">
+    <li>
+    {% if speech.author_charge %}
+        {% include 'people/politician_list_section.html' with politician=speech.author_charge value=speech.author_charge.denomination %} 
+        {% object_inline_monitoring speech.author %}
+    {% elif speech.author_name_when_external %}
+        {{ speech.author_name_when_external }}
+    {% else %}
+        Autore non specificato
+    {% endif %}
+    </li>
+    </ul>
+    <div class="sittingitem-speech-preview">
+    {% if request.get_full_path != speech.get_absolute_url %}
+    {{ speech.text|safe|truncatewords:30 }}
+    {% else %}
+    {{ speech.text|safe }}
+    {% endif %}
+    </div>
+    {% if readmore %}
+    <a class="speech-read-more" href="{{ speech.get_absolute_url }}">Leggi tutto</a>
+    {% endif %}
+    </div>
+    <div class="span4">
+    {% if request.get_full_path != speech.get_absolute_url %}
+    <a href="{{ speech.get_absolute_url }}">Leggi il singolo intervento</a>
+    {% else %}
+    <a href="{{ speech.sitting_item.get_absolute_url }}">Leggi nel contesto</a>
+    {% endif %}
+    <br/>
+    {% if speech.related_act_set.all|length > 0 %}
+    Atti a supporto:<br/>
+    <ul>
+        {% for act in speech.related_act_set.all %}
+        <li><a href="{{ act.get_absolute_url }}">{{ act.title|truncatewords:10 }}</a></li>
+        {% endfor %}
+    </ul>
+    <br/>
+    {% endif %}
+    {% if speech.file %}
+    <a href="{{ speech.file}}">Ascolta l'intervento</a>
+    {% elif speech.file_url %}
+    <a href="{{ speech.file_url }}">Ascolta l'intervento</a>
+   {% endif %}
+   </div> 

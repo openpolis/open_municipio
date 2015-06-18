@@ -1,0 +1,18 @@
+{% load url from future %}
+    <h4>Cerca negli interventi</h4>
+    <form method="get" action="{% url 'om_speech_search' %}" class="form-search">
+        <div class="control-group input-append">
+            {% spaceless %}
+                <input id="query" type="text" class="input-medium search-query" name="{{ form.q.html_name }}"
+                    value="{% if form.q.value %}{{ form.q.value }}{% endif %}" placeholder="Testo della ricerca" />
+            {% endspaceless %}
+        </div>
+        <input id="person-id" name="{{ form.person.html_name }}"
+            value="{% if form.person.value %}{{ form.person.value }}{% endif %}" type="hidden" />
+        <button type="submit" class="btn">Cerca</button>
+    </form>
+
+{% url 'om_speech_search' as search_speech_url %}
+{% ifnotequal request.get_full_path search_speech_url %}
+Leggi <a href="{{ search_speech_url }}">tutti gli interventi</a>.
+{% endifnotequal %}

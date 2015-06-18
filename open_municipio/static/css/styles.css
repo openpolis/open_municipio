@@ -527,7 +527,8 @@ cite {
   font-style: normal;
 }
 code,
-pre {
+pre,
+div.pre {
   padding: 0 3px 2px;
   font-family: Menlo, Monaco, "Courier New", monospace;
   font-size: 13px;
@@ -542,7 +543,8 @@ code {
   background-color: #f7f7f9;
   border: 1px solid #e1e1e8;
 }
-pre {
+pre, 
+div.pre {
   display: block;
   padding: 8px;
   margin: 0 0 8.5px;
@@ -554,10 +556,13 @@ pre {
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   border-radius: 4px;
+/*  word-break: break-all; *//* this cause problems with chrome */
+  text-align: justify;
+  word-wrap: break-word;
+}
+pre {
   white-space: pre;
   white-space: pre-wrap;
-  word-break: break-all;
-  word-wrap: break-word;
 }
 pre.prettyprint {
   margin-bottom: 17px;
@@ -3452,7 +3457,8 @@ input[type="submit"].btn.btn-mini {
 }
 .modal-body {
   overflow-y: auto;
-  max-height: 400px;
+/*  max-height: 400px; */
+  max-height: 200px;
   padding: 15px;
 }
 .modal-form {
@@ -3471,6 +3477,8 @@ input[type="submit"].btn.btn-mini {
   -moz-box-shadow: inset 0 1px 0 #ffffff;
   box-shadow: inset 0 1px 0 #ffffff;
   *zoom: 1;
+  max-height: 200px;
+  overflow-y: auto;
 }
 .modal-footer:before,
 .modal-footer:after {
@@ -5335,7 +5343,7 @@ dl.data-list dt + dd {
   text-align: center;
 }
 .tags-cloud li {
-  display: inline;
+  display: inline-block;
 }
 .tags-cloud a {
   padding: 0 5px 0 0;
@@ -5388,6 +5396,16 @@ table.tablesorter th.tablesorter-headerSortDown {
 
   background-image: url(data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjI8Bya2wnINUMopZAQA7);
 }
+
+body.politician .page-tabs {
+    background-color: #72C056;
+}
+
+body.politician .page-tabs li.active a {
+  border-color: #72C056;
+  border-bottom: 1px solid white;
+}
+
 .page-tabs {
   background-color: #4788C2;
   padding: 0 15px;
@@ -5400,6 +5418,7 @@ table.tablesorter th.tablesorter-headerSortDown {
 .page-tabs li.active {
   border: 0;
 }
+
 .page-tabs li.active a {
   margin-top: -8px;
   padding: 8px 30px;
@@ -5731,4 +5750,7 @@ ul.typehead {
 }
 .res.res-openpolis {
   background-position: -96px 0px;
+}
+.res.res-openmunicipio {
+  background-position: -128px 0px;
 }

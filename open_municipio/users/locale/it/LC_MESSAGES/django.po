@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-09 17:27+0100\n"
+"POT-Creation-Date: 2015-05-11 08:29+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,87 +26,87 @@ msgstr "Nome"
 msgid "Last Name"
 msgstr "Cognome"
 
-#: forms.py:36 forms.py:63
+#: forms.py:36 forms.py:68
 msgid "I want only my nickname to be publicly shown"
 msgstr "Desidero che sia pubblicato solo il mio nickname"
 
-#: forms.py:39 forms.py:66
+#: forms.py:39 forms.py:71
 msgid "I am a politician"
 msgstr "Sono un politico"
 
-#: forms.py:41 forms.py:68
+#: forms.py:41 forms.py:73
 msgid "Wants newsletter"
 msgstr "Desidero ricevere la newsletter"
 
-#: forms.py:42 forms.py:69
+#: forms.py:42 forms.py:74
 msgid "Location, if applicable"
 msgstr "Località, se applicabile"
 
-#: forms.py:44 models.py:80
+#: forms.py:44 models.py:81
 msgid "Description"
-msgstr ""
+msgstr "Descrizione"
 
 #: forms.py:46
 msgid "Your image"
 msgstr "La tua immagine"
 
-#: forms.py:49 forms.py:72
+#: forms.py:49 forms.py:77
 msgid "I have read and approve the Terms of Service"
 msgstr ""
 "Ho letto e condivido il <a href=\"/regolamento\">regolamento</a> e le <a "
 "href=\"/condizioni\">condizioni d'uso</a> del sito"
 
-#: forms.py:50 forms.py:73
+#: forms.py:50 forms.py:78
 msgid "You must agree to the terms to register"
 msgstr "Devi approvare i termini per accedere"
 
-#: forms.py:52 forms.py:75
+#: forms.py:52 forms.py:80
 msgid "I have read and agree to the Privacy conditions"
 msgstr ""
 "Ho letto e condivido il testo sul <a href=\"/privacy\">trattamento dei dati "
 "personali</a>"
 
-#: forms.py:53 forms.py:76
+#: forms.py:53 forms.py:81
 msgid "You must agree to the conditions to register"
 msgstr "Devi approvare le condizioni per accedete"
 
-#: forms.py:87
+#: forms.py:92
 msgid "A user with that username already exists."
 msgstr "Un utente con questo username già esiste."
 
-#: forms.py:93
+#: forms.py:98
 msgid "E-mail"
 msgstr "Email"
 
-#: models.py:48
+#: models.py:49
 msgid "all"
 msgstr "Pieno"
 
-#: models.py:49
+#: models.py:50
 msgid "some"
 msgstr "Parziale"
 
-#: models.py:50
+#: models.py:51
 msgid "none"
 msgstr "Nessuno"
 
-#: models.py:58
+#: models.py:59
 msgid "show my nickname, not my name"
 msgstr "mostra il mio nickname, non il mio nome e cognome"
 
-#: models.py:64
+#: models.py:65
 msgid "i am a politician"
 msgstr "sono un politico"
 
-#: models.py:70
+#: models.py:71
 msgid "privacy level"
 msgstr "livello di privacy"
 
-#: models.py:73
+#: models.py:74
 msgid "i want the newsletter"
 msgstr "desidero ricevere la newsletter"
 
-#: models.py:76
+#: models.py:77
 msgid "location"
 msgstr "località"
 

@@ -16,9 +16,11 @@ admin.site.register(LookupAdministrationCharge)
 admin.site.register(LookupCompanyCharge)
 
 class LookupInstitutionChargeAdmin(admin.ModelAdmin):
-    list_display = ('local','external','provider')
-    list_filter = ('provider', 'local__institution')
+    list_display = ('person','institution','external','provider')
+    list_filter = ('provider', 'local__institution',)
     ordering = ['local__person__last_name','local__person__first_name',]
+
+    raw_id_fields = ( 'local', )
 
 admin.site.register(LookupInstitutionCharge, LookupInstitutionChargeAdmin)
 

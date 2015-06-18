@@ -1,0 +1,16 @@
+    <h2>Seduta {% if sitting.number != None %} num. {{ sitting.number }} {% endif %} del 
+        <a href="{{ sitting.get_absolute_url }}">{{ sitting.date }}</a></h2>
+
+    <div class="sitting-nav">
+        {% if sitting.sitting_prev != None %}
+            <a href="{{ sitting.sitting_prev.get_absolute_url }}"><img src="{{ STATIC_URL }}img/sitting_prev_selected.png" alt="Precedente" /></a>
+        {% else %}
+            <img src="{{ STATIC_URL }}img/sitting_prev_deselected.png" alt="Precedente" />
+
+        {% endif %} |
+        {% if sitting.sitting_next != None %}
+            <a href="{{ sitting.sitting_next.get_absolute_url }}"><img src="{{ STATIC_URL }}img/sitting_next_selected.png" alt="Successiva" /></a>
+        {% else %}
+            <img src="{{ STATIC_URL }}img/sitting_next_deselected.png" alt="Successivo" />
+        {% endif %}
+    </div>

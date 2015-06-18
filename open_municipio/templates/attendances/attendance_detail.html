@@ -1,0 +1,173 @@
+{% extends "base_two_columns.html" %}
+{% load i18n %}
+{% load om_utils %}
+{% load voting_tags %}
+{% load bookmarking_tags %}
+{% load newscache_tags %}
+{% load people_tags %}
+{% load url from future %}
+
+
+{% block title %}Dettaglio partecipazione a seduta {{ attendance.ref_act.emitting_institution }} N° {{ attendance.ref_act.idnum }},
+    seduta {{ attendance.sitting.number }}
+    del {{ attendance.ref_act.presentation_date|date:"d F Y" }}{% endblock %}
+
+{% block content_header %}Presenza a seduta{% endblock %}
+{% block attendance_class %}active{% endblock %}
+{% block body_class %}attendances{% endblock %}
+
+{% block content_header_city_logo %}
+    <img src="{{ STATIC_URL }}img/{{ main_city|lower }}-logo/attendance.png" alt="Comune di {{ main_city }}">
+{% endblock %}
+
+
+{% block head_css_includes %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/bookmarking.css" />
+{% endblock head_css_includes %}
+
+{% block footer_js_includes %}
+    {{ block.super }}
+    <script type="text/javascript" src="{{ STATIC_URL }}js/ajax_csrf.js" charset="utf-8"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap-tab.js"></script>
+    <script src="{{ STATIC_URL }}js/jquery.jeditable.js" type="text/javascript"></script>
+    <script src="{{ STATIC_URL }}js/jquery.submitlink.js" type="text/javascript"></script>
+    <script src="{{ STATIC_URL }}js/jquery.autogrow.js" type="text/javascript"></script>
+    <script src="{{ STATIC_URL }}js/bootstrap-modal.js" type="text/javascript" charset="utf-8"></script>
+    {% if user.is_staff %}
+        <script src="{{ STATIC_URL }}js/bookmarking.js" type="text/javascript" charset="utf-8"></script>
+    {% endif %}
+
+    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.dataTables.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var gTable = $('.tablesorter').dataTable({
+                bFilter: false,
+                bPaginate: false,
+                bLengthChange: false,
+                bSort: true,
+                bInfo: false,
+                bAutoWidth: false,
+                oLanguage: {
+                    sSearch: "Ricerca",
+                    sZeroRecords: "Nessun risultato per questa ricerca"
+                }
+
+            });
+        });
+    </script>
+{% endblock footer_js_includes %}
+
+{% block content %}
+
+  <div class="attendance-metadata">
+    <p class="big">
+      <a href="#" id="{{ attendance|as_token }}" class="bookmarkable"><i class="{% is_key_class attendance %}"></i></a>
+      Seduta {% if attendance.sitting.number %}<strong>n. {{ attendance.sitting.number }}</strong>{% endif %}
+      del <strong>{{ attendance.sitting.date|date:"d/m/Y" }}</strong><br/>
+      <h3>
+      {% if attendance.ref_act %}
+      {{ attendance.ref_act.adj_title|default:attendance.ref_act.title }}
+      {% else %}
+      {{ attendance.act_descr }}
+      {% endif %}
+      </h3>
+    </p>
+    <p>
+      {% if attendance.ref_act %}
+        <strong>{{ attendance.ref_act.get_type_name|capfirst }}</strong>
+        del {{ attendance.ref_act.emitting_institution }} N° <strong>{{ attendance.ref_act.idnum }}</strong>
+        del <strong>{{ attendance.ref_act.presentation_date|date:"d F Y" }}</strong>
+         (<a href="{{ attendance.ref_act.get_absolute_url }}">vai all'atto</a>)
+      {% endif %}
+    </p>
+  </div>
+
+  <br>
+  <section>
+    <ul class="nav nav-tabs page-tabs">
+      <li class="active">
+        <a href="#all_votes_tab" data-toggle="tab">Tutti</a>
+      </li>
+    </ul>
+    <div class="tab-content">
+      <div class="tab-pane active" id="all_votes_tab">
+        <table class="data text-right tablesorter">
+          <thead>
+          <tr>
+            <th class="sorter-left text-left span4">Politico</th>
+            <th>Presente</th>
+            <th>Assente</th>
+          </tr>
+          </thead>
+          <tbody>
+          {% for charge_attendance in attendance.charge_attendances %}
+            {% with charge_attendance.charge.person as politician %}
+              <tr>
+                <td class="text-left">
+                  <a href="{{ politician.get_absolute_url }}">
+                    <strong>{{ politician.full_name }}</strong>
+                  </a>
+                </td>
+                <td>
+                  {% if charge_attendance.value == charge_attendance.VALUES.pres %}
+                    <span class="label label-success">Presente</span>
+                  {% endif %}
+                </td>
+                <td>
+                  {% if charge_attendance.value == charge_attendance.VALUES.absent %}
+                    <span class="label label-important">Assente</span>
+                  {% elif charge_attendance.value == charge_attendance.VALUES.mission %}
+                    <span class="label">In missione</span>
+                  {% endif %}
+                </td>
+              </tr>
+            {% endwith %}
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </section>
+{% endblock content %}
+
+{% block sidebar %}
+
+  <table class="stats">
+    <tr>
+      <td title="{{ names_presents|default:"Nessuno" }}">{{ attendance.n_presents|circled:"voteok" }}</td>
+      <th class="span6">Presenti</th>
+      <td title="{{ names_absents|default:"Nessuno" }}">{{ attendance.n_absents|circled:"voteko" }}</td>
+      <th class="span6">Assenti</th>
+    </tr>
+  </table>
+
+  <hr>
+
+  <div class="tabbable">
+    <ul class="nav nav-tabs">
+      <li class="active"><a href="#chart-tab-presents" data-toggle="tab">Presenze</a></li>
+    </ul>
+    <div class="tab-content">
+      <!-- presents -->
+      <div class="tab-pane active" id="chart-tab-presents">
+        <p><img src="https://chart.googleapis.com/chart?cht=p&chs=368x154&chl=Presenti {{ attendance.n_presents }}|Assenti {{ attendance.n_absents }}&chd=t:{{ attendance.n_presents }},{{ attendance.n_absents }}&chco=285698,e2e4e6">
+        </p>
+      </div>
+    </div>
+  </div>
+
+
+  <hr>
+
+  {% include 'commons/comments.html' with object=attendance %}
+
+  <hr>
+
+  {% comment %}
+  {% news_for_object registered_user.get_profile as i_news %}
+  {% include 'commons/news_list.html' with news_list=i_news news_title='Ultime sul Voto' %}
+  {% endcomment %}
+
+{% endblock sidebar %}

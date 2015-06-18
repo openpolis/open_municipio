@@ -1,0 +1,132 @@
+{% load popover_info %}
+{% load url from future %}
+
+  {% if charge.is_counselor %}
+    <section>
+      <h2>Presenze ({{ n_total_votations }} votazion{{ n_total_votations|pluralize:"e,i" }})</h2>
+      <p>
+          I dati si riferiscono alle votazioni svolte in Consiglio.<br/>
+          Non vengono calcolate le presenze alle sedute né se l'assenza abbia motivazioni politiche.
+      </p>
+      <div class="meter-bar float-container">
+        <div class="meter-bar-container">
+          <label>Presenze</label>
+          <div class="meter-label"><strong class="green">{{ percentage_present_votations }}%</strong>&nbsp;({{ charge.n_present_votations }})</div>
+          <div class="green-meter-bar">
+            <div style="left: {{ percentage_present_votations_average }}%;" class="meter-average"><label>valore medio: {{ percentage_present_votations_average }}%</label>&nbsp;</div>
+            <div style="width: {{ percentage_present_votations }}%;" class="meter-value">&nbsp;</div>
+          </div>
+        </div>
+        <div class="meter-bar-container">
+          <label>Assenze</label>
+          <div class="meter-label"><strong class="red">{{ percentage_absent_votations }}%</strong>&nbsp;({{ charge.n_absent_votations }})</div>
+          <div class="red-meter-bar">
+            <div style="left: {{ percentage_absent_votations_average }}%;" class="meter-average"><label>valore medio: {{ percentage_absent_votations_average }}%</label>&nbsp;</div>
+            <div style="width: {{ percentage_absent_votations }}%;" class="meter-value">&nbsp;</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="big">
+
+      <section>
+        <h2>Ultimi voti chiave {% popover_info 'voti-chiave' %}</h2>
+        <table class="data">
+          <thead>
+          <tr>
+            <th>Data della seduta</th>
+            <th>Num votazione</th>
+            <th>Atto</th>
+            <th class="text-center">Voto</th>
+            <th class="text-center">Esito</th>
+          </tr>
+          </thead>
+          <tbody>
+          {% for charge_vote in current_charge_votes %}
+            <tr>
+              <td class="text-center">{{ charge_vote.votation.sitting.date }}</td>
+              <td class="text-center">
+                  <a href="{{ charge_vote.votation.get_absolute_url }}">
+                    {{ charge_vote.votation.idnum }}
+                  </a>
+              </td>
+              {% with curr_act=charge_vote.votation.ref_act %}
+              <td {% if not curr_act %}class="text-center"{%  endif %}>
+                  {% if curr_act %}
+                      <a href="{{ curr_act.downcast.get_absolute_url }}"><strong>{{ curr_act.adj_title|default:curr_act.title }}</strong></a>
+                  {%  else %}
+                      -
+                  {% endif %}
+              </td>
+              {% endwith %}
+              <td class="text-center"><span class="label
+                                                           {% if charge_vote.get_vote_display == "Sì" %}label-success{% else %}
+                                                           {% if charge_vote.get_vote_display == "No" %}label-important{% endif %}{% endif %}
+                                                                                                     ">{{ charge_vote.get_vote_display }}</span></td>
+              <td class="text-center"><span class="label
+                                                           {% if charge_vote.votation.get_outcome_display == "Accettato" %}label-success{% else %}
+                                                           {% if charge_vote.votation.get_outcome_display == "Respinto" %}label-important{% endif %}{% endif %}
+                                                                                                     ">{{ charge_vote.votation.get_outcome_display }}</span></td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+        {% comment %}
+        <p><i class="icon-play"></i> <a href="{% url 'om_votation_search' %}?q=&person={{ person.slug }}&selected_facets=is_key:sì">Vedi tutti i voti chiave</a></p>
+        {% endcomment %}
+      </section>
+
+      <hr class="big">
+
+      <section>
+          <h2>Voti ribelli ({{ percentage_rebel_votations }}%) {% popover_info 'voti-ribelli' %}</h2>
+          <p>
+              Ha votato {{ charge.n_rebel_votations }} volte ({{ percentage_rebel_votations }}% sul totale dei voti cui era presente) <strong>diversamente dal proprio gruppo</strong> di appartenenza.
+          </p>
+      </section>
+
+      <hr class="big">
+
+  {% endif %}
+
+  {% if n_presented_acts %}
+      <section>
+          <h2>Atti su cui lavora ({{ n_presented_acts }}) {% popover_info 'atti-su-cui-lavora' %}</h2>
+            {% include 'acts/act_table_detail.html' with acts_list=presented_acts %}
+          <p><i class="icon-play"></i> <a href="{% url 'om_act_search' %}?q=&person={{ person.slug }}">Vedi tutti gli atti su cui lavora</a></p>
+
+      </section>
+
+      <hr class="big">
+  {% endif %}
+  
+  {% if n_speeches %}
+      <section>
+          <h2>Ultimi interventi in Consiglio Comunale {% popover_info 'interventi-politico' %}</h2>
+
+          <table class="data">
+              <thead>
+              <tr>
+                  <th class="text-left span5">Seduta</th>
+                  <th>Argomento</th>
+                  <th>Intervento</th>
+              </tr>
+              </thead>
+              <tbody>
+              {% for speech in speeches %}
+                  <tr>
+                      <td>{{ speech.sitting_item.sitting }}</td>
+                      <td>{{ speech.sitting_item.title }}</td>
+                      <td><a href="{{ speech.get_absolute_url }}">Leggi il singolo intervento</a><br/>
+                        <a href="{{ speech.sitting_item.get_absolute_url }}">Leggi nel contesto</a>
+                    </td>
+                  </tr>
+              {% endfor %}
+
+        </table>
+        <p><i class="icon-play"></i> <a href="{% url 'om_speech_search' %}?q=&person={{ person.slug }}">Vedi tutti gli interventi</a></p>
+
+
+      </section>
+  {% endif %}

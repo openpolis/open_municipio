@@ -175,9 +175,6 @@ def new_tagging(**kwargs):
     # link category and tags
     category.tag_set.add( *tags )
 
-#    print "New tagging: %s[%s] ->\n" % (category,category.count)
-#    for tag in tags:
-#        print "\t%s[%s]\n" % (tag, tag.count)
 
 @receiver(post_untagging, sender=TaggedAct)
 def remove_tagging(**kwargs):

@@ -1,0 +1,19 @@
+{% extends "acts/act_detail.html" %}
+
+{% block act_tab_body %}
+    {{ block.super }}
+    {% include 'acts/act_table_supporters.html' with act_supporters=act.first_signers act_cosupporters=act.co_signers  supporter_title='Firmatari' cosupporter_title='Co-firmatari' act=act %}
+{% endblock %}
+
+{% block content_subtitle %}
+  <h4>
+    <strong>{{ act.get_type_name|capfirst }}</strong>
+    {{ act.emitting_institution.name_with_preposition }}
+      {% if public_idnum %}N° <strong>{{ public_idnum }}</strong>{% endif %} del <strong><span class="date">{{ public_date }}</span></strong>
+  </h4>
+  {% if act.act %}
+  <h4>
+    Atto emendato: <a href="{{ act.act.downcast.get_absolute_url }}"><strong>{{ act.act.adj_title|default:act.act.title }}</strong></a> (<strong>{{ act.act.get_type_name|capfirst }}</strong>)
+  </h4>
+  {% endif %}
+{% endblock content_subtitle %}

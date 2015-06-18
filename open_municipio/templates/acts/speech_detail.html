@@ -1,0 +1,38 @@
+{% extends "base_one_column.html" %}
+
+{% load om_utils %}
+{% load thumbnail %}
+{% load popover_info %}
+
+{% block title %}Consiglio{% endblock %}
+{% block content_header %}Consiglio {% endblock %}
+{% block people_class %}class="active"{% endblock %}
+{% block body_class %}politician{% endblock %}
+
+{% block content_header_city_logo %}
+    <img src="{{ STATIC_URL }}img/{{ main_city|lower }}-logo/politician.png" alt="Comune di {{ main_city }}">
+{% endblock %}
+
+{% block sub_nav %}
+    {% include 'commons/subnav.html' with active='Consiglio' %}
+{% endblock %}
+
+{% block head_css_includes %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/sitting.css" />
+{% endblock %}
+
+{% block content %}
+
+    {% if UI_SITTINGS_CALENDAR %}
+      {% include 'people/sitting_calendar_top.html' %}
+    {% endif %}
+
+    {% include 'people/sitting_detail_section.html' with sitting=speech.sitting_item.sitting %}
+    <h2>{{ speech.sitting_item }}</h2>
+    <div class="sittingitem-speeches-list">
+    {% include 'acts/speech_detail_section.html' with speech=speech %}
+    </div>
+
+{% endblock %}
+

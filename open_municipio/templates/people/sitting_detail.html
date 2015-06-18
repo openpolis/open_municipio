@@ -1,0 +1,56 @@
+{% extends "base_two_columns.html" %}
+
+{% load om_utils %}
+{% load thumbnail %}
+{% load popover_info %}
+
+{% load url from future %}
+{% block title %}Consiglio{% endblock %}
+{% block content_header %}Consiglio {% endblock %}
+{% block people_class %}class="active"{% endblock %}
+{% block body_class %}politician{% endblock %}
+
+{% block content_header_city_logo %}
+    <img src="{{ STATIC_URL }}img/{{ main_city|lower }}-logo/politician.png" alt="Comune di {{ main_city }}">
+{% endblock %}
+
+{% block sub_nav %}
+    {% include 'commons/subnav.html' with active='Consiglio' %}
+{% endblock %}
+
+{% block head_css_includes %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/sitting.css" />
+{% endblock %}
+
+{% block content %}
+    {% if UI_SITTINGS_CALENDAR %}
+       {% include 'people/sitting_calendar_top.html' %}
+    {% endif %}
+
+    {% include 'people/sitting_detail_section.html' with sitting=sitting %}
+
+  <section>
+    <table class="search-results">
+      <tbody>
+        {% for si in sitting_items %}
+          <tr>
+            <td>{{ forloop.counter|circled:"full" }}</td>
+            <td>
+              <h4><a href="{% url 'om_sittingitem_detail' pk=si.pk %}">{{ si.title }}</a></h4>
+              {% if si.num_speeches > 0 %}
+              {{ si.num_speeches }} intervent{{ si.num_speeches|pluralize:"o,i" }}
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+
+{% endblock %}
+
+{% block sidebar %}
+    <h2>I prossimi appuntamenti</h2>
+    {% include "commons/calendar.html" with events=events %}
+{% endblock %}

@@ -7,6 +7,7 @@
 {% load monitoring_tags %}
 {% load newscache_tags %}
 {% load popover_info %}
+{% load url from future %}
 
 
 {% block title %}Dettaglio {{ person }}{% endblock %}
@@ -38,7 +39,10 @@
 
 {% block content %}
 
+  <hgroup>
+
   <div class="row-fluid">
+
     <div class="span8">
 
       <header class="clearfix">
@@ -56,49 +60,48 @@
           {% endif %}
           {{ person }}
         </h1>
-        {% for c in current_charges %}
-          <p>{{ c.institution }}</p>
+        {% for inst in current_institutions %}
+          <p>{{ inst.institution__name }}</p>
         {% endfor %}
 
         <p>
-          {% if resources.EMAIL %}
-            <a href="mailto:{{ resources.EMAIL.value }}">{{ resources.EMAIL.value }}</a>
-          {% endif %}
+          {% for resource in resources.EMAIL %}
+            <a href="mailto:{{ resource.value }}">{{ resource.value }}</a>
+          {% endfor %}
           <br>
-          {% if resources.PHONE %}
-            T.{{ resources.PHONE.value }}
-          {% endif %}
-          {% if resources.FAX %}
-            F.{{ resources.FAX.value }}
-          {% endif %}
+          {% for resource in resources.PHONE %}
+            Tel. {{ resource.value }}
+          {% endfor %}
+          {% for resource in resources.FAX %}
+            Fax {{ resource.value }}
+          {% endfor %}
         </p>
       </header>
 
       {% if current_charges %}
         <ul class="list-plain">
             {% for c in current_charges %}
-                <li><strong>{{ c.denomination }}</strong> dal {{ c.start_date|date:"d.m.Y" }}{% if c.end_date %} al {{ c.end_date|date:"d.m.Y" }}{% endif %}</li>
+                <li><strong>{{ c.denomination }}</strong> dal {{ c.start_date|date:"d.m.Y" }}{% if c.end_date %} al {{ c.end_date|date:"d.m.Y" }}{% endif %} {% popover_info 'carica-attuale' %}</li>
             {% endfor %}
         </ul>
       {% endif %}
 
       {% if current_groupcharge %}
-          Gruppo <strong>{{ current_groupcharge.group }}</strong>
+          Gruppo <a href="{% url 'om_institution_group' slug=current_groupcharge.group.slug %}"><strong>{{ current_groupcharge.group }}</strong></a>
           {% if current_groupcharge.current_responsability %}
               - {% trans current_groupcharge.current_responsability.get_charge_type_display %}
               dal {{ current_groupcharge.current_responsability.start_date|date:'d.m.Y' }}
           {%  endif %}
           <br/>
-
-          {% if historical_groupcharges %}
-              le altre appartenenze
+      {% endif %}
+      {% if historical_groupcharges %}
+          Gruppi precedenti:
               <ul>
                   {% for gc in historical_groupcharges %}
-                      <li>dal {{ gc.start_date|date:'d.m.Y' }} {%  if gc.end_date %} al {{ gc.end_date|date:'d.m.Y' }}{%  endif %} - {{ gc.group.name }}</li>
+                      <li>{{ gc.group.name }} - dal {{ gc.start_date|date:'d.m.Y' }} {%  if gc.end_date %} al {{ gc.end_date|date:'d.m.Y' }}{%  endif %}</li>
                   {% endfor %}
               </ul>
           {% endif %}
-      {% endif %}
 
       {% if current_committee_charges %}
           <ul class="list-plain">
@@ -116,184 +119,65 @@
           </ul>
       {% endif %}
 
+      {% if resources.FINANCIAL %}
+        <p>
+        {% for resource in resources.FINANCIAL %}
+        <br/>
+        {% with label=resource.description|default:"Informazioni finanziarie" %}
+        {{ label }} <a href="{{ resource.value  }}" alt="{{ label }}" title="{{ label }}" target="_blank"><i class="icon-download"></i></a>
+        {% endwith %}
+        {% endfor %}
+        </p>
+      {% endif %}
+
     </div>
 
     <div class="span4">
       <table>
-	      {% if resources.URL %}
-            <tr><td><i class="res res-feed"></i></td><td><a class="website" href="{{ resources.URL.value }}">Sito web</a></td></tr>
+          {% for resource in resources.URL %}
+            <tr><td><i class="res res-feed"></i></td><td><a class="website" href="{{ resource.value }}">Sito web</a></td></tr>
+	      {% endfor %}
+          {% for resource in resources.FACEBOOK %}
+            <tr><td><i class="res res-facebook"></i></td><td><a class="facebook" href="{{ resource.value }}">Pagina Facebook</a></td></tr>
+	      {% endfor %}
+          {% for resource in resources.TWITTER %}
+            <tr><td><i class="res res-twitter"></i></td><td><a class="twitter" href="{{ resource.value }}">Profilo Twitter</a></td></tr>
+	      {% endfor %}
+	      {% if person.openpolis_link %}
+            <tr><td><i class="res res-openpolis"></i></td><td><a class="openpolis" href="{{ person.openpolis_link }}">Pagina su Openpolis</a></td></tr>
 	      {% endif %}
-	      {% if resources.FACEBOOK %}
-            <tr><td><i class="res res-facebook"></i></td><td><a class="facebook" href="{{ resources.FACEBOOK.value }}">Pagina Facebook</a></td></tr>
-	      {% endif %}
-	      {% if resources.TWITTER %}
-            <tr><td><i class="res res-twitter"></i></td><td><a class="twitter" href="{{ resources.TWITTER.value }}">Profilo Twitter</a></td></tr>
-	      {% endif %}
-	      {% if resources.OPENPOLIS %}
-            <tr><td><i class="res res-openpolis"></i></td><td><a class="openpolis" href="{{ resources.OPENPOLIS.value }}">Pagina su Openpolis</a></td></tr>
-	      {% endif %}
+          {% if person.userprofile %}
+            <tr><td><i class="res res-openmunicipio"></i></td><td><a class="openpolis" href="{{ person.userprofile.get_absolute_url }}">Pagina su Open Municipio</a></td></tr>
+          {% endif %}
       </table>
 
     </div>
 
   </div>
+  </hgroup>
 
-  <hr class="big">
+  <div class="nav-tabs-container">
+    <ul class="nav nav-tabs page-tabs">
+      {% for c in current_charges %}
+        <li {% if c == charge %}class="active" {% endif %} >
+            <a href="{{ c.get_absolute_url }}">
+            {{ c.charge_type }} dal {{ c.start_date|date:"Y" }}{% if c.end_date %} al {{ c.end_date|date:"Y" }}{% endif %}
+            </a>
+        </li>
+      {% endfor %}
+      {% for c in past_charges %}
+        <li {% if c == charge %}class="active" {% endif %} >
+            <a href="{{ c.get_absolute_url }}">
+            {{ c.charge_type }} dal {{ c.start_date|date:"Y" }}{% if c.end_date %} al {{ c.end_date|date:"Y" }}{% endif %}
+            </a>
+        </li>
+      {% endfor %}
+       
+    </ul>
+  </div>
 
-  {% if is_counselor %}
-    <section>
-      <h2>Presenze ({{ n_total_votations }} votazion{{ n_total_votations|pluralize:"e,i" }})</h2>
-      <p>
-          I dati si riferiscono alle votazioni svolte in Consiglio.<br/>
-          Non vengono calcolate le presenze alle sedute né se l'assenza abbia motivazioni politiche.
-      </p>
-      <div class="meter-bar float-container">
-        <div class="meter-bar-container">
-          <label>Presenze</label>
-          <div class="meter-label"><strong class="green">{{ percentage_present_votations }}%</strong>&nbsp;({{ current_counselor_charge.n_present_votations }})</div>
-          <div class="green-meter-bar">
-            <div style="left: {{ percentage_present_votations_average }}%;" class="meter-average"><label>valore medio: {{ percentage_present_votations_average }}%</label>&nbsp;</div>
-            <div style="width: {{ percentage_present_votations }}%;" class="meter-value">&nbsp;</div>
-          </div>
-        </div>
-        <div class="meter-bar-container">
-          <label>Assenze</label>
-          <div class="meter-label"><strong class="red">{{ percentage_absent_votations }}%</strong>&nbsp;({{ current_counselor_charge.n_absent_votations }})</div>
-          <div class="red-meter-bar">
-            <div style="left: {{ percentage_absent_votations_average }}%;" class="meter-average"><label>valore medio: {{ percentage_absent_votations_average }}%</label>&nbsp;</div>
-            <div style="width: {{ percentage_absent_votations }}%;" class="meter-value">&nbsp;</div>
-          </div>
-        </div>
-      </div>
-    </section>
+  {% include 'people/politician_charge_detail.html' %}
 
-    <hr class="big">
-
-      <section>
-        <h2>Ultimi voti chiave {% popover_info 'voti-chiave' %}</h2>
-        <table class="data">
-          <thead>
-          <tr>
-            <th>Data della seduta</th>
-            <th>Num votazione</th>
-            <th>Atto</th>
-            <th class="text-center">Voto</th>
-            <th class="text-center">Esito</th>
-          </tr>
-          </thead>
-          <tbody>
-          {% for charge_vote in current_charge_votes %}
-            <tr>
-              <td class="text-center">{{ charge_vote.votation.sitting.date }}</td>
-              <td class="text-center">
-                  <a href="{% url om_votation_detail charge_vote.votation.pk %}">
-                    {{ charge_vote.votation.idnum }}
-                  </a>
-              </td>
-              <td {% if not charge_vote.votation.act %}class="text-center"{%  endif %}>
-                  {% if charge_vote.votation.act %}
-                      <a href="{{ charge_vote.votation.act.downcast.get_absolute_url }}"><strong>{{ charge_vote.votation.act.title }}</strong></a>
-                  {%  else %}
-                      -
-                  {% endif %}
-              </td>
-              <td class="text-center"><span class="label
-                                                           {% if charge_vote.get_vote_display == "Sì" %}label-success{% else %}
-                                                           {% if charge_vote.get_vote_display == "No" %}label-important{% endif %}{% endif %}
-                                                                                                     ">{{ charge_vote.get_vote_display }}</span></td>
-              <td class="text-center"><span class="label
-                                                           {% if charge_vote.votation.get_outcome_display == "Accettato" %}label-success{% else %}
-                                                           {% if charge_vote.votation.get_outcome_display == "Respinto" %}label-important{% endif %}{% endif %}
-                                                                                                     ">{{ charge_vote.votation.get_outcome_display }}</span></td>
-            </tr>
-          {% endfor %}
-          </tbody>
-        </table>
-        {% comment %}
-        <p><i class="icon-play"></i> <a href="{% url om_votation_search %}?q=&person={{ person.slug }}&selected_facets=is_key:sì">Vedi tutti i voti chiave</a></p>
-        {% endcomment %}
-      </section>
-
-      <hr class="big">
-
-      <section>
-          <h2>Voti ribelli ({{ percentage_rebel_votations }}%) {% popover_info 'voti-ribelli' %}</h2>
-          <p>
-              Ha votato {{ current_counselor_charge.n_rebel_votations }} volte ({{ percentage_rebel_votations }}% sul totale dei voti cui era presente) <strong>diversamente dal proprio gruppo</strong> di appartenenza.
-          </p>
-      </section>
-
-      <hr class="big">
-
-  {% endif %}
-
-  {% if n_presented_acts %}
-      <section>
-          <h2>Atti su cui lavora ({{ n_presented_acts }}) {% popover_info 'atti-su-cui-lavora' %}</h2>
-
-          <table class="data">
-              <thead>
-              <tr>
-                  <th class="text-left span5">Atto</th>
-                  <th>Stato</th>
-                  <th>Voti degli utenti</th>
-                  <th>Commenti</th>
-              </tr>
-              </thead>
-              <tbody>
-              {% for act in presented_acts %}
-                  <tr>
-                      <td><a href="{{ act.downcast.get_absolute_url }}"><strong>{{ act.title }}</strong> ({{ act.idnum }})</a></td>
-                      <td class="text-center">
-
-                          {% if not act.is_final_status %}
-                              <span class="label">In esame</span>
-                          {% else %}
-                              <span class="label
-                    {% if act.status == "APPROVED" or act.status == "ANSWERED" %}label-success
-                    {% else %}{% if act.status == 'REJECTED' or act.status == "NOTANSWERED" %}label-important
-                    {% endif %}{% endif %} ">{{ act.downcast.get_status_display|title }}</span>
-                          {% endif %}
-                      </td>
-                      {% votes_for_object act as act_num_votes %}
-                      <td class="text-center">
-                          <span class="label label-success">{{ act_num_votes.upvotes }}</span>
-                          <span class="label label-important">{{ act_num_votes.downvotes }}</span>
-                      </td>
-                      {% get_comment_count for act as comment_count %}
-                      <td class="text-center"><a href="{{ act.downcast.get_absolute_url }}"><strong>{{ comment_count }}</strong></a></td>
-                  </tr>
-              {% endfor %}
-              </tbody>
-          </table>
-          <p><i class="icon-play"></i> <a href="{% url om_act_search %}?q=&person={{ person.slug }}">Vedi tutti gli atti su cui lavora</a></p>
-
-      </section>
-  {% endif %}
-  
-  {% if n_speeches %}
-      <section>
-          <h2>Ultimi interventi in Consiglio comunale {% popover_info 'interventi-politico' %}</h2>
-
-          <table class="data">
-              <thead>
-              <tr>
-                  <th class="text-left span5">Seduta</th>
-                  <th>Argomento</th>
-                  <th>Intervento</th>
-              </tr>
-              </thead>
-              <tbody>
-              {% for speech in speeches %}
-                  <tr>
-                      <td>Seduta</td>
-                      <td>{{ speech.title }}</td>
-                      <td>Link</td>
-                  </tr>
-              {% endfor %}
-
-      </section>
-  {% endif %}
 {% endblock %}
 
 {% block sidebar %}

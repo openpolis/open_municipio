@@ -1,169 +1,33 @@
-<!doctype html>
-<html lang="en" xmlns="http://www.w3.org/1999/html"><head>
-    <meta charset="utf-8">
-    <title>Open municipio - Pagina non trovata</title>
+{% extends "base_one_column.html" %}
 
-    <!-- To ensure devices display responsive pages properly, include the viewport meta tag. -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% block body_class %}error{% endblock %}
+{% block title %}Pagina non trovata{% endblock %}
 
+{%  block access %}{% endblock %}
+{%  block main_navbar %}{% endblock %}
 
+{% block content %}
+    <div class="container-fluid">
 
-    <link rel="stylesheet" href="/static/css/styles.css">
-    <link rel="stylesheet" href="/static/css/styles-responsive.css">
+        <div class="row-fluid">
+            <div class="span1">
+                <img src="{{ STATIC_URL }}img/error-bang.png" alt="Icona segnalazione errore"/>
+            </div>
 
-
-
-
-    <style type="text/css">
-
-    </style>
-
-
-    <!--[if IE]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
-    <!--[if IE]><link rel="stylesheet" href="/static/css/ui-custom-theme/jquery-ui-1.8.16.ie.css"><![endif]-->
-    <script type="text/javascript" async="" src="http://www.google-analytics.com/ga.js"></script><script type="text/javascript" src="/static/js/include.js" data-url="/static/"></script><style type="text/css"></style>
-    <script type="text/javascript" src="/static/js/jquery-1.8.3.min.js"></script>
-
-
-    <script type="text/javascript" charset="utf-8">
-
-    </script>
-
-
-
-</head>
-<body class="error">
-
-<div id="wrapper"><!-- #wrapper -->
-
-
-
-
-    <!-- TOPBAR -->
-    <div class="navbar" id="navbar-top">
-        <nav class="navbar-inner">
-            <a href="/" class="brand">
-                <img src="/static/img/logo-openmunicipio.png" alt="Openmunicipio - Informati, monitora e partecipa ai lavori del tuo municipio">
-                <!--open<strong>municipio</strong>
-                <small></small>-->
-            </a>
-
-
-        </nav>
-    </div>
-    <!-- /TOPBAR -->
-
-
-    <header>
-
-        <!-- AREA-TITLE -->
-        <hgroup class="container-fluid">
-            <div class="row-fluid">
-                <h1 class="span11" id="area-title">
-                    <a href="/" style="color: white;">Udine</a> <small></small>
-                </h1>
-                <p class="span1" id="city-logo">
-
-                    <img src="/static/img/udine-logo/all.png" alt="Comune di Udine">
-
+            <div class="span11">
+                <p>
+                    Ci dispiace, ma si è verificato un errore imprevisto sui nostri server.<br/>
+                    Abbiamo già ricevuto una notifica con i dettagli e interverremo al più presto.
                 </p>
+
+                <p>
+                    Grazie per la pazienza,<br/>
+                    lo staff di Open municipio
+                </p>
+
             </div>
-        </hgroup>
-        <!-- /AREA-TITLE -->
+        </div>
 
-        <!-- MAIN-NAVBAR -->
+    </div>
 
-        <!-- /MAIN-NAVBAR -->
-
-
-
-    </header>
-
-    <!-- MAIN-SECTION -->
-    <section id="main" class="container-fluid"><!-- #main container for content and sidebar area -->
-
-        <article class="row-fluid">
-            <!-- ONE-COL -->
-            <div class="span12" id="content">
-
-                <div class="container-fluid">
-
-                    <div class="row-fluid">
-                        <div class="span1">
-                            <img src="/static/img/error-bang.png" alt="Icona segnalazione errore"/>
-                        </div>
-
-                        <div class="span11">
-                            <p>
-                                Ci dispiace, ma si è verificato un errore imprevisto sui nostri server.<br/>
-                                Abbiamo già ricevuto una notifica con i dettagli e interverremo al più presto.
-                            </p>
-
-                            <p>
-                                Grazie per la pazienza,<br/>
-                                lo staff di Open municipio
-                            </p>
-                        </div>
-                    </div>
-
-                </div>
-
-            </div><!-- /ONE-COL -->
-        </article>
-
-    </section>
-    <!-- /MAIN-SECTION -->
-
-    <!-- FOOTER-NAV -->
-    <footer>
-        <section class="logos">
-            <div class="container-fluid">
-                <div class="row-fluid">
-                    <div class="span4"><a href="http://www.openpolis.it"><img src="/static/img/footer-logo-openpolis.png"></a></div>
-                    <div class="span4"><a href="http://www.comune.udine.it"><img src="/static/img/footer-logo-udine.png"></a></div>
-                    <div class="span4"><a href="http://www.informaetica.it"><img src="/static/img/footer-logo-informaetica.png"></a></div>
-                </div>
-            </div>
-        </section>
-    </footer>
-    <!-- /FOOTER-NAV -->
-
-</div><!-- #wrapper -->
-
-
-<script type="text/javascript" src="/static/js/bootstrap-dropdown.js"></script>
-<script type="text/javascript" src="/static/js/bootstrap-tooltip.js"></script>
-<script type="text/javascript" src="/static/js/bootstrap-popover.js"></script>
-<script type="text/javascript" src="/static/js/bootstrapx-clickover.js"></script>
-<script type="text/javascript">
-
-
-    $(function(){
-        $('a[rel=info-popover]').clickover();
-    })
-
-</script>
-
-
-
-
-
-<script type="text/javascript">
-
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', 'UA-31798244-2']);
-    _gaq.push(['_trackPageview']);
-
-    (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
-
-</script>
-
-
-
-</body></html>
-
-
+{% endblock %}

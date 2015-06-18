@@ -1,0 +1,53 @@
+{% extends "base_one_column.html" %}
+
+{% load om_utils %}
+{% load thumbnail %}
+{% load popover_info %}
+
+{% block title %}Consiglio{% endblock %}
+{% block content_header %}Consiglio {% endblock %}
+{% block people_class %}class="active"{% endblock %}
+{% block body_class %}politician{% endblock %}
+
+{% block content_header_city_logo %}
+    <img src="{{ STATIC_URL }}img/{{ main_city|lower }}-logo/politician.png" alt="Comune di {{ main_city }}">
+{% endblock %}
+
+{% block sub_nav %}
+    {% include 'commons/subnav.html' with active='Consiglio' %}
+{% endblock %}
+
+{% block head_css_includes %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/sitting.css" />
+{% endblock %}
+
+{% block content %}
+
+    {% if UI_SITTINGS_CALENDAR %}
+       {% include 'people/sitting_calendar_top.html' %}
+    {% endif %}
+
+    <div>
+    <div class="span8 sittingitem">
+    {% include 'people/sitting_detail_section.html' with sitting=sitem.sitting %}
+    <h2>{{ sitem }}</h2>
+    </div>
+    <div class="span4">
+    <h4>Atti a supporto della discussione:</h4>
+    <ul>
+    {% for act in acts %}
+        <li><a href="{{ act.get_absolute_url }}">{{ act.adj_title|default:act.title|truncatewords:10 }}</a>
+    {% endfor %}
+    </ul>
+    </div>
+    </div>
+    {% for speech in speeches %}
+        <div class="sittingitem-speeches-list {% if forloop.counter|divisibleby:2 %}speech-even-row{% else %}speech-odd-row{% endif %}">
+
+        {% include 'acts/speech_detail_section.html' with readmore=1 speech=speech %}
+        </div>
+    {% endfor %}
+
+{% endblock %}
+

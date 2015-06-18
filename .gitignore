@@ -2,11 +2,13 @@
 *~
 *.pyc
 *.sqlite
+.*.swp
 .idea
+.settings/
 open_municipio/settings_*.py
 sitestatic
 open_municipio/media
-open_municipio/*/migrations
+##open_municipio/*/migrations
 uploads/
 logfile*
 docs/_build

@@ -12,4 +12,4 @@ class ActLocationsAddForm(forms.Form):
     # the ``Act`` instance being tagged with locations
     act = forms.ModelChoiceField(queryset=Act.objects.all(), widget=forms.HiddenInput)
     # ``Location`` objects being associated to the act 
-    locations = forms.ModelMultipleChoiceField(queryset=Location.objects.all(), required=False, widget=forms.CheckboxSelectMultiple)
+    locations = forms.ModelMultipleChoiceField(queryset=Location.objects.all().order_by("name"), required=False, widget=forms.CheckboxSelectMultiple)

@@ -29,10 +29,10 @@ class Event(models.Model):
     """
 
     date = models.DateField(_("Event date"), help_text=_("The day when the event is going to be held"))
-    event_time = models.TimeField(_("Event time"), blank=True, null=True, help_text=_("The time of the event"))
+    event_time = models.TimeField(_("Event time"), blank=False, null=False, help_text=_("The time of the event"))
     institution = models.ForeignKey(Institution, verbose_name=_("Institution"), help_text=_("The institution that's going to meet during the event"))
     acts = models.ManyToManyField(Act, verbose_name=_("Acts"), blank=True, null=True, help_text=_("Acts the discussion is linked to, if any"),through="EventAct")
-    title = models.CharField(_("Title"), max_length=128, blank=True, null=True, help_text=_("A short title for this event"))
+    title = models.CharField(_("Title"), max_length=128, blank=False, null=False, help_text=_("A short title for this event"))
     description = models.TextField(_("Description"), blank=True, null=True, help_text=_("A description, containing the list of things that will be discussed during this event"))
     address = models.CharField(_("Address"), max_length=128, blank=True, null=True, help_text=_("The physical address where the meeting is going to be held") )
 

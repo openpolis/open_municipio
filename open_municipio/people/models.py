@@ -1,7 +1,9 @@
+import datetime # FIXME perhaps we should remove this, and rely only on django.utils.datetime_safe? -FS
+
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
-from django.db import models
-from django.db.models import permalink
+from django.db import models, transaction
+from django.db.models import permalink, Q
 from django.db.models.query import EmptyQuerySet
 from django.utils.datetime_safe import date
 from django.utils.translation import ugettext_lazy as _
@@ -17,10 +19,12 @@ from sorl.thumbnail import ImageField
 
 from open_municipio.monitoring.models import MonitorizedItem
 from open_municipio.newscache.models import NewsTargetMixin
-from open_municipio.people.managers import TimeFramedQuerySet
+from open_municipio.people.managers import TimeFramedQuerySet, GroupQuerySet
 from open_municipio.om_utils.models import SlugModel
 
+import open_municipio
 
+from collections import Counter
 
 #
 # Persons, charges and groups
@@ -66,6 +70,15 @@ class Person(models.Model, MonitorizedItem):
         return 'om_politician_detail', (), { 'slug': self.slug }
 
     @property
+    def openpolis_link(self):
+        link = None
+
+        if self.op_politician_id:
+            link = settings.OP_URL_TEMPLATE % { "op_id":self.op_politician_id }
+    
+        return link            
+
+    @property
     def is_om_user(self):
         """
         check whether the person is a registered om user
@@ -87,6 +100,13 @@ class Person(models.Model, MonitorizedItem):
         """
         return self.institutioncharge_set.select_related().all()
 
+
+    def get_past_institution_charges(self, moment=None):
+        return self.institutioncharge_set.select_related().past(moment=moment).exclude(
+            institution__institution_type__in=(Institution.COMMITTEE, Institution.JOINT_COMMITTEE)
+    )
+    past_institution_charges = property(get_past_institution_charges)
+
     def get_current_institution_charges(self, moment=None):
         """
         Returns the current institution charges at the given moment (no committees).
@@ -102,8 +122,9 @@ class Person(models.Model, MonitorizedItem):
         """
         return self.institutioncharge_set.select_related().current(moment=moment).filter(
             institution__institution_type__in=(Institution.COMMITTEE, Institution.JOINT_COMMITTEE)
-        ).order_by('-institutionresponsability__charge_type')
+        ).order_by('-institutionresponsability__charge_type','institution__position')
     current_committee_charges = property(get_current_committee_charges)
+
 
     def get_current_charge_in_institution(self, institution, moment=None):
         """
@@ -225,6 +246,20 @@ class Person(models.Model, MonitorizedItem):
             news |= c.related_news
         return news
 
+    @property
+    def speeches(self):
+        """
+        Speeches of a politician
+        """
+        return open_municipio.acts.models.Speech.objects.filter(author=self)
+
+    @property
+    def n_speeches(self):
+        """
+        Number of speeches of a politician
+        """
+        return self.speeches.count()
+
 
 class Resource(models.Model):
     """
@@ -246,14 +281,17 @@ class Resource(models.Model):
         ('PERSON', 'person', _('person')),
         ('TWITTER', 'twitter', _('twitter')),
         ('FACEBOOK', 'facebook', _('facebook')),
+        ('FINANCIAL', 'financial', _('financial information')),
     )
     resource_type = models.CharField(verbose_name=_('type'), max_length=10, choices=RES_TYPE)
-    value = models.CharField(verbose_name=_('value'), max_length=64)
+    # 2000 chars is the maximum length suggested for url length (see: http://stackoverflow.com/questions/417142/what-is-the-maximum-length-of-a-url-in-different-browsers )
+    value = models.CharField(verbose_name=_('value'), max_length=2000)
     description = models.CharField(verbose_name=_('description'), max_length=255, blank=True)
 
     class Meta:
         abstract = True
         verbose_name = _('Resource')
+        verbose_name_plural = ('Resources')
 
 class PersonResource(Resource):
     person = models.ForeignKey('Person', verbose_name=_('person'), related_name='resource_set')
@@ -286,6 +324,19 @@ class Charge(NewsTargetMixin, models.Model):
     def get_absolute_url(self):
         return self.person.get_absolute_url()
 
+    def is_in_charge(self, as_of):
+        
+        if not isinstance(as_of, datetime.date):
+            raise ValueError("The passed parameter is not a date")
+        
+        return as_of >= self.start_date and (not self.end_date or as_of <= self.end_date)
+
+    @property
+    def duration(self):
+
+        if not self.start_date: return None
+
+        return (self.end_date if self.end_date else datetime.datetime.now().date()) - self.start_date
 
 class ChargeResponsability(models.Model):
     """
@@ -326,8 +377,28 @@ class InstitutionCharge(Charge):
                                            related_name='committee_charge_set',
                                            verbose_name=_('original institution charge'))
     n_rebel_votations = models.IntegerField(default=0)
-    n_present_votations = models.IntegerField(default=0)
-    n_absent_votations = models.IntegerField(default=0)
+    n_present_votations = models.IntegerField(default=0, verbose_name=_("number of presences during votes"))
+    n_absent_votations = models.IntegerField(default=0, verbose_name=_("number of absences during votes"))
+    n_present_attendances = models.IntegerField(default=0, verbose_name=_("number of present attendances"))
+    n_absent_attendances = models.IntegerField(default=0, verbose_name=_("number of absent attendances"))
+
+    def get_absolute_url(self):
+
+        url = None
+
+        if self.institution.institution_type == Institution.COMMITTEE:
+            url = self.person.get_absolute_url()
+        else:
+            url = reverse("om_politician_detail", 
+                kwargs={"slug":self.person.slug, 
+                    "institution_slug": self.institution.slug,
+                    "year":self.start_date.year, "month": self.start_date.month, 
+                    "day":self.start_date.day })
+
+        return url
+
+    def is_counselor(self):
+        return self.institution.institution_type == Institution.COUNCIL
 
 
     class Meta(Charge.Meta):
@@ -339,9 +410,9 @@ class InstitutionCharge(Charge):
 
     def __unicode__(self):
         if self.denomination:
-            return "%s %s - %s" % (self.person.first_name, self.person.last_name, self.denomination)
+            return u"%s %s - %s" % (self.person.first_name, self.person.last_name, self.denomination)
         else:
-            return "%s %s" % (self.person.first_name, self.person.last_name)
+            return u"%s %s" % (self.person.first_name, self.person.last_name)
 
 
     # TODO: model validation: check that ``substitutes`` and ``substituted_by`` fields
@@ -350,7 +421,10 @@ class InstitutionCharge(Charge):
     @property
     def denomination(self):
         if self.institution.institution_type == Institution.MAYOR:
-            return _('Mayor').translate(settings.LANGUAGE_CODE)
+            denomination = _('Mayor') #.translate(settings.LANGUAGE_CODE) #-FS why?
+            if self.description != "":
+                denomination += ", %s" % self.description
+            return denomination
         elif self.institution.institution_type == Institution.CITY_GOVERNMENT:
             if self.responsabilities.count():
                 s = self.responsabilities[0].get_charge_type_display()
@@ -414,6 +488,13 @@ class InstitutionCharge(Charge):
         return self.received_act_set.all()
 
     @property
+    def n_received_acts(self):
+        """
+        The QuerySet of acts received by this charge.
+        """
+        return self.received_act_set.count()
+
+    @property
     def charge_type(self):
         """
         Returns the basic charge type translated string, according to the institution.
@@ -457,10 +538,18 @@ class InstitutionCharge(Charge):
         If moment is None, then current groupcharge is returned
         """
         if self.institution.institution_type == Institution.COUNCIL:
-            return GroupCharge.objects.select_related().current(moment=moment).get(charge__id=self.id)
-        elif self.institution.institution_type == Institution.COMMITTEE or\
+            try:
+                return GroupCharge.objects.select_related().current(moment=moment).get(charge__id=self.id)
+            except GroupCharge.DoesNotExist:
+                return None
+
+        elif self.institution.institution_type == Institution.COMMITTEE or \
              self.institution.institution_type == Institution.JOINT_COMMITTEE:
-            return GroupCharge.objects.select_related().current(moment=moment).get(charge__id=self.original_charge_id)
+            try:
+                return GroupCharge.objects.select_related().current(moment=moment).get(charge__id=self.original_charge_id)
+            except GroupCharge.DoesNotExist:
+                return None
+
         else:
             return None
 
@@ -489,13 +578,28 @@ class InstitutionCharge(Charge):
         and update the respective counters
         """
         from open_municipio.votations.models import ChargeVote
+        from open_municipio.attendances.models import ChargeAttendance
          
         absent = ChargeVote.VOTES.absent
         self.n_present_votations = self.chargevote_set.exclude(vote=absent).count()
         self.n_absent_votations = self.chargevote_set.filter(vote=absent).count()
+
+        attendance_absent = ChargeAttendance.VALUES.absent
+        self.n_present_attendances = self.chargeattendance_set.exclude(value=attendance_absent).count()
+        self.n_absent_attendances = self.chargeattendance_set.filter(value=attendance_absent).count()
         self.save()
 
+    @property
+    def taxonomy_count(self):
 
+        count = { 'categories' : Counter(), 'tags' : Counter(), 'topics' : Counter(), 'locations' : Counter() }
+
+        for act in self.presented_acts:
+            count['categories'].update(act.categories)
+            count['tags'].update(act.tags)
+            count['locations'].update(act.locations)
+
+        return count
 
 class InstitutionResponsability(ChargeResponsability):
     """
@@ -566,8 +670,8 @@ class AdministrationCharge(Charge):
     def __unicode__(self):
         # TODO: implement ``get_charge_type_display()`` method
         return u'%s - %s' % (self.get_charge_type_display(), self.office.name)
-  
-  
+ 
+
 class Group(models.Model):
     """
     This model represents a group of counselors.
@@ -579,9 +683,13 @@ class Group(models.Model):
 
     img = ImageField(upload_to="group_images", blank=True, null=True)
 
+    objects = PassThroughManager.for_queryset_class(GroupQuerySet)()
+
+
     class Meta:
         verbose_name = _('group')
         verbose_name_plural = _('groups')
+        ordering = ("name", "acronym", )
 
     def get_absolute_url(self):
         return reverse("om_institution_group", kwargs={'slug': self.slug})
@@ -631,13 +739,26 @@ class Group(models.Model):
         Current members of the group, as institution charges, leader and
         council president and vice presidents **excluded**.
         """
-        return self.institution_charges.select_related().exclude(
-            groupcharge__groupresponsability__charge_type__in=(
+## what this query does is wrong because it mixes GroupResponsability for
+## GroupCharges belonging to groups different from the current one
+## (think about someone changing groups, and having responsibilities in past
+## groups but not current one)
+##        return self.institution_charges.select_related().exclude(
+##            groupcharge__groupresponsability__charge_type__in=(
+##                GroupResponsability.CHARGE_TYPES.leader,
+##                GroupResponsability.CHARGE_TYPES.deputy
+##                ),
+##            groupcharge__groupresponsability__end_date__isnull=True
+##        )
+        group_members = self.groupcharge_set.current().exclude(
+            groupresponsability__charge_type__in=(
                 GroupResponsability.CHARGE_TYPES.leader,
                 GroupResponsability.CHARGE_TYPES.deputy
                 ),
-            groupcharge__groupresponsability__end_date__isnull=True
+            groupresponsability__end_date__isnull=True
         )
+
+        return self.institution_charges.filter(groupcharge__in=group_members)
 
         """
         President and vice-president may be excluded
@@ -660,7 +781,7 @@ class Group(models.Model):
         """
         All current institution charges in the group, leader **included**
         """
-        return self.charge_set.current(moment=moment)
+        return self.charge_set.all().current(moment=moment)
     institution_charges = property(get_institution_charges)
 
 
@@ -676,10 +797,22 @@ class Group(models.Model):
         return self.groupismajority_set.all()
 
     @property
+    def in_council_now(self):
+        today = date.today()
+
+        found = self.majority_records.filter(Q(end_date__gt=today) | Q(end_date__isnull=True))
+
+        return found.count() > 0
+
+    @property
     def is_majority_now(self):
-        # only one majority record with no ``end_date`` should exists
-        # at a time (i.e. the current one)
-        return self.majority_records.get(end_date__isnull=True).is_majority
+        # only one majority record with no ``end_date`` (or with an ``end_date``
+        # set in the future) should exists at a time (i.e. the current one)
+
+        today = date.today()
+
+        found = self.majority_records.filter(is_majority=True).exclude(end_date__lt=today)
+        return found.count() > 0
 
     @property
     def resources(self):
@@ -717,12 +850,17 @@ class GroupCharge(models.Model):
     current_responsability = property(get_current_responsability)
 
 
-
     @property
     def responsability(self):
         if self.responsabilities.count() == 1:
             r = self.responsabilities[0]
-            s = "%s: %s - %s" % (r.get_charge_type_display(), r.start_date, r.end_date)
+
+            end_date = ""
+    
+            if r.end_date:
+                end_date = " - %s" % r.end_date
+
+            s = "%s: %s%s" % (r.get_charge_type_display(), r.start_date, end_date)
             return s
         else:
             return ""
@@ -734,9 +872,9 @@ class GroupCharge(models.Model):
 
     def __unicode__(self):
         if self.responsability:
-            return "%s - %s - %s" % (self.group.acronym, self.charge.person.last_name, self.responsability)
+            return u"%s - %s - %s" % (self.group.acronym, self.charge.person, self.responsability)
         else:
-            return "%s - %s" % (self.group.acronym, self.charge.person.last_name)
+            return u"%s - %s" % (self.group.acronym, self.charge.person)
 
 class GroupResponsability(ChargeResponsability):
     """
@@ -751,7 +889,13 @@ class GroupResponsability(ChargeResponsability):
 
 
     def __unicode__(self):
-        return "%s (%s - %s)" % (self.get_charge_type_display(), self.start_date, self.end_date)
+    
+        end_date = ""
+    
+        if self.end_date:
+            end_date = " - %s" % self.end_date
+
+        return u"%s (%s%s)" % (self.get_charge_type_display(), self.start_date, end_date)
 
 
 class GroupIsMajority(models.Model):
@@ -882,7 +1026,7 @@ class Institution(Body):
         """
         The WS of all charges current at the specified moment
         """
-        return self.charge_set.current(moment)
+        return self.charge_set.all().current(moment)
 
 
     @property
@@ -973,27 +1117,54 @@ class Institution(Body):
     def resources(self):
         return self.resource_set.all()
 
+    @transaction.commit_on_success
     def _move(self, up):
-        qs = self.__class__._default_manager
-        if up:
-            qs = qs.order_by('-position').filter(position__lt=self.position)
-        else:
-            qs = qs.filter(position__gt=self.position)
-        try:
-            replacement = qs[0]
-        except IndexError:
-            all_institutions = self.__class__._default_manager.filter(position=0)
-            if len(all_institutions) > 1:
-                # initialize positions
-                for i, institution in enumerate(all_institutions):
-                    institution.position = i
-                    institution.save()
+        """
+        To move an object requires, potentially, to update all the list of objects.
+        In fact, we cannot assume that the position arguments are all consecutive.
+        Doing some insertions and deletions it is possible to create "bubbles" and
+        duplicates for the position values. The sorting algorithms goes like this:
 
-            # already first/last
-            return
-        self.position, replacement.position = replacement.position, self.position
+        - assign everyone a consecutive and unique position value
+        - detect the previous and next institution, w.r.t. self
+        - if up, switch position with previous and save previous
+        - if down, switch position with next and save next
+        - save self
+        """
+        qs = self.__class__._default_manager
+
+        qs.order_by("position")
+
+        p = 0
+        prev_inst = None
+        next_inst = None
+        found = False
+        for curr_inst in qs.all():
+ 
+            found = found or (curr_inst == self)
+
+            if curr_inst.position != p:
+                curr_inst.position = p
+                curr_inst.save()
+
+            p = p + 1
+
+            if not found:
+                prev_inst = curr_inst
+            elif next_inst is None and curr_inst != self:
+                next_inst = curr_inst
+
+        if up:
+            if prev_inst:
+                prev_inst.position,self.position = self.position,prev_inst.position
+                prev_inst.save()
+        else:
+            if next_inst:
+
+                next_inst.position,self.position = self.position,next_inst.position
+                next_inst.save()
+
         self.save()
-        replacement.save()
 
     def move_down(self):
         """
@@ -1073,8 +1244,44 @@ class Sitting(TimeStampedModel):
         verbose_name_plural = _('sittings')
     
     def __unicode__(self):
-        return u'seduta num. %s del %s (%s)' % (self.number, self.date.strftime('%d/%m/%Y'), self.institution.name)
+
+        num = ""
+        if self.number:
+            num = " num. %s " % self.number
+
+        return u'Seduta %s del %s (%s)' % (num, self.date.strftime('%d/%m/%Y'), self.institution.name)
      
+    @property
+    def sitting_items(self):
+        return SittingItem.objects.filter(sitting=self)
+
+    @property
+    def num_items(self):
+        return self.sitting_items.count()
+
+    @permalink
+    def get_absolute_url(self):
+        prefix = "%s-%s-%s" % (self.institution.slug, self.idnum, self.date, )
+        sitting_url = 'om_sitting_detail', (), { 'prefix':prefix, 'pk':self.pk, }
+        return sitting_url
+
+    @property
+    def sitting_next(self):
+        next = Sitting.objects.filter(date__gt=self.date,institution=self.institution).order_by("date")[:1]
+
+        if len(next) == 0:
+            return None
+        else:
+            return next[0]
+
+    @property
+    def sitting_prev(self):
+        prev = Sitting.objects.filter(date__lt=self.date,institution=self.institution).order_by("-date")[:1]
+        
+        if len(prev) == 0:
+            return None
+        else:
+            return prev[0]
 
 class SittingItem(models.Model):
     """
@@ -1097,7 +1304,7 @@ class SittingItem(models.Model):
     sitting = models.ForeignKey(Sitting)
     title = models.CharField(max_length=512)
     item_type = models.CharField(choices=ITEM_TYPE, max_length=4)
-    seq_order = models.IntegerField(default=0)
+    seq_order = models.IntegerField(default=0,verbose_name=_('seq_order'))
     related_act_set = models.ManyToManyField('acts.Act', blank=True, null=True)
 
     class Meta:
@@ -1107,6 +1314,15 @@ class SittingItem(models.Model):
     def __unicode__(self):
         return unicode(self.title)
 
+    @permalink
+    def get_absolute_url(self):
+        return 'om_sittingitem_detail', (), { 'pk': self.pk }
+
+    @property
+    def num_related_acts(self):
+        return self.related_act_set.count()
+
+
     @property
     def long_repr(self):
         """
@@ -1114,6 +1330,12 @@ class SittingItem(models.Model):
         """
         return u'%s - %s' % (self.sitting, self)
 
+    @property
+    def num_speeches(self): 
+        """
+        the amount of speeches that refer to this sitting item
+        """
+        return open_municipio.acts.models.Speech.objects.filter(sitting_item=self).count()
 
 ## Private DB access API
 
@@ -1127,14 +1349,32 @@ class Mayor(object):
         """
         A municipality mayor, as an *institution*.
         """
-        return Institution.objects.select_related().get(institution_type=Institution.MAYOR)
+        
+        mayor = None
+
+        try:
+            mayor = Institution.objects.select_related().get(institution_type=Institution.MAYOR)
+        except Institution.DoesNotExist:
+            # mayor does not exist, currently
+            pass
+
+        return mayor
     
     @property
     def as_charge(self):
         """
         A municipality mayor, as a *charge*.
         """
-        return InstitutionCharge.objects.select_related().get(institution__institution_type=Institution.MAYOR)
+        mayor = None
+
+        try:
+            mayor = InstitutionCharge.objects.select_related().get(institution__institution_type=Institution.MAYOR)
+
+        except InstitutionCharge.DoesNotExist:
+            # mayor has not been created
+            pass
+
+        return mayor
     
     @property
     def acts(self):
@@ -1153,7 +1393,16 @@ class CityCouncil(object):
         """
         A municipality council, as an *institution*.
         """
-        return Institution.objects.get(institution_type=Institution.COUNCIL)
+
+        city_council = None
+
+        try:
+            city_council = Institution.objects.get(institution_type=Institution.COUNCIL)
+        except Institution.DoesNotExist:
+            # the city council has not been created
+            pass
+        
+        return city_council
     
     @property
     def charges(self):
@@ -1161,7 +1410,12 @@ class CityCouncil(object):
         All current members of the municipality council (aka *counselors*), as charges.
         President and vice-presidents **included**.
         """
-        return self.as_institution.charges.select_related()
+        charges = InstitutionCharge.objects.none()
+
+        if self.as_institution:
+            charges = self.as_institution.charges.select_related()
+    
+        return charges
 
     @property
     def president(self):
@@ -1169,7 +1423,12 @@ class CityCouncil(object):
         The current president of the city council as InstitutionResponsability
         None if not found.
         """
-        return  self.as_institution.president
+        president = None
+    
+        if self.as_institution:
+            president = self.as_institution.president
+
+        return president
 
 
     @property
@@ -1179,7 +1438,13 @@ class CityCouncil(object):
 
         There can be more than one vicepresident
         """
-        return self.as_institution.vicepresidents.select_related()
+
+        vp = None
+
+        if self.as_institution:
+            vp = self.as_institution.vicepresidents.select_related()
+
+        return vp
 
     @property
     def members(self):
@@ -1187,7 +1452,12 @@ class CityCouncil(object):
         Members of the municipality council (aka *counselors*), as charges.
         Current president and vice presidents **excluded**.
         """
-        return self.as_institution.members.select_related()
+        members = InstitutionCharge.objects.none()
+
+        if self.as_institution:
+            members = self.as_institution.members.select_related()
+
+        return members
 
     @property
     def majority_members(self):
@@ -1283,6 +1553,14 @@ class CityCouncil(object):
         """
         from open_municipio.acts.models import Agenda
         return Agenda.objects.select_related().filter(emitting_institution=self.as_institution)
+    
+    @property
+    def amendments(self):
+        """
+        The QuerySet of all amendments emitted by the City Council.
+        """
+        from open_municipio.acts.models import Amendment
+        return Amendment.objects.select_related().filter(emitting_institution=self.as_institution)
 
 
 class CityGovernment(object):
@@ -1291,7 +1569,15 @@ class CityGovernment(object):
         """
         A municipality government, as an *institution*.
         """
-        return Institution.objects.get(institution_type=Institution.CITY_GOVERNMENT)
+        city_gov = None
+
+        try:
+            city_gov = Institution.objects.get(institution_type=Institution.CITY_GOVERNMENT)
+        except Institution.DoesNotExist:
+            # city gov has not been created, yet
+            pass
+
+        return city_gov
     
     @property
     def charges(self):
@@ -1305,14 +1591,25 @@ class CityGovernment(object):
         """
         Returns the first deputy mayor, if existing, None if not existing
         """
-        return  self.as_institution.firstdeputy
+        firstdeputy = None
+
+        if self.as_institution:
+            firstdeputy = self.as_institution.firstdeputy
+
+        return firstdeputy
 
     @property
     def members(self):
         """
         Members of a municipality government (mayor and first deputy excluded), as charges.
         """
-        return self.as_institution.members.select_related()
+
+        members = InstitutionCharge.objects.none()
+    
+        if self.as_institution:
+            members = self.as_institution.members.select_related()
+
+        return members
 
     @property
     def acts(self):
@@ -1363,6 +1660,14 @@ class CityGovernment(object):
         """
         from open_municipio.acts.models import Agenda
         return Agenda.objects.select_related().filter(emitting_institution=self.as_institution)
+    
+    @property
+    def amendments(self):
+        """
+        The QuerySet of all amendments emitted by the City Government.
+        """
+        from open_municipio.acts.models import Amendment
+        return Amendment.objects.select_related().filter(emitting_institution=self.as_institution)
 
 
 class Committees(object):

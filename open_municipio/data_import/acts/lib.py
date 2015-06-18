@@ -5,7 +5,7 @@ from django.core.files import File
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils import simplejson as json
 from django.db.utils import IntegrityError
-from django.db import transaction
+from django.db import transaction, models
 
 from open_municipio.data_import.lib import DataSource, BaseReader, BaseWriter, JSONWriter, XMLWriter, OMWriter
 # import OM-XML language tags
@@ -16,7 +16,8 @@ from open_municipio.data_import.utils import ChargeSeekerFromMapMixin
 
 from open_municipio.acts.models import Act as OMAct, \
     Deliberation as OMDeliberation, Motion as OMMotion, Agenda as OMAgenda, \
-    ActSupport as OMActSupport, Attach as OMAttach
+    ActSupport as OMActSupport, Attach as OMAttach, Transition as OMTransition, \
+    CGDeliberation as OMCGDeliberation
 
 from lxml import etree
 from types import NoneType
@@ -71,14 +72,32 @@ class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
     def setup(self):
         self.conf = conf
 
-    @transaction.commit_on_success
+#    @transaction.commit_on_success
     def write(self):
         self.logger.info("Acts to write: %d" % len(self.acts.values()))
+
+        amendments = []
+
         for act in self.acts.values():
+
+            if isinstance(act, Amendment):
+                amendments.append(act)
+            else:
+                try:
+                    self.write_act(act)
+                except Exception, e:
+                    self.logger.error(u"Error storing act: %s" % act)
+                    self.logger.exception(e)
+#                    self.logger.er#ror(u"Error storing act into OM (%s) : %s. Trace: %s" % (act, e, traceback.format_exc().decode('utf-8')))
+#                    transaction.rollback()
+            
+        for act in amendments:
             try:
                 self.write_act(act)
             except Exception, e:
-                self.logger.error("Error storing act into OM (%s) : %s. Trace: %s" % (act, e, traceback.format_exc()))
+                self.logger.error("Error storing amendment: %s" % act)
+                self.logger.exception(e)
+
  
     @staticmethod
     def _get_initiative(act):
@@ -97,16 +116,24 @@ class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
         return act_conf.OM_EMITTING_INSTITUTION_MAP[act_type]
 
     def _detect_act_om_type(self, act):
+        
+        assert isinstance(act, Act)
+        
         act_obj_type = act.__class__.__name__
 
         # dynamic instantiation of OM type
-        om_type = NoneType
-        if act_obj_type == "CouncilDeliberation":
-            om_type = OMDeliberation
-        elif act_obj_type == "Motion":
-            om_type = OMMotion
-        elif act_obj_type == "Agenda":
-            om_type = OMAgenda
+        
+#        om_type = NoneType
+#        if act_obj_type == "CouncilDeliberation":
+#            om_type = OMDeliberation
+#        elif act_obj_type == "Motion":
+#            om_type = OMMotion
+#        elif act_obj_type == "Agenda":
+#            om_type = OMAgenda
+#        elif act_obj_type == "CityGovernmentDeliberation":
+#            om_type = OMCGDeliberation
+        om_type = act_conf.OM_ACT_MAP.get(act_obj_type, NoneType)
+        
 
         if om_type == NoneType:
             self.logger.error("Unable to instantiate type: %s" %
@@ -117,22 +144,85 @@ class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
 
         return om_type
   
+    def _add_act_transition(self, act, om_act, symb):
+        if om_act is None:
+            raise ValueError("Cannot add act transition without act")
+
+        for date in act.transitions[symb]:
+            if not (symb in conf.XML_TO_OM_STATUS):
+                self.logger.warning("Status '%s' is not handled at the moment. Skip the transition" % symb)
+                continue
+    
+            status = conf.XML_TO_OM_STATUS[symb]
+            (om_t, created) = OMTransition.objects.get_or_create(
+                act=om_act, symbol=symb, transition_date=date, final_status=status
+            )
+            
+            if created:
+                self.logger.debug("New transition found. Act=%s,Symbol=%s,Date=%s" % (act.title,symb,date))
+                self._set_act_status(om_t)
+                om_t.save()
+    
+
+    def _add_act_transitions(self, act, om_act):
+        if om_act is None:
+            raise ValueError("Cannot add act transitions without act")
+        order_symb = ( "Presented", "Accepted", "Rejected", )
+
+        self.logger.info("Transition dates: %s" % (act.transitions, ))
+        if act.transitions == None:
+            return
+
+        for symb in order_symb:
+            if symb in act.transitions:
+                self._add_act_transition(act, om_act, symb)
+
+        # check whether transitions with other symbols are present
+        keyset_actual = set(act.transitions.keys())
+        keyset_handled = set(order_symb)
+
+        keyset_nothandled = keyset_actual.difference(keyset_handled)
+        if keyset_nothandled != set():
+            self.logger.warning("Some transitions are not handled: %s" %
+                keyset_nothandled)
+
+    def _set_act_status(self, om_trans):
+
+        om_act = om_trans.act
+
+        if om_act.is_final_status():
+            # cannot recover from a final status
+            self.logger.debug("Ignore transition status (%s). Act status is already final (%s)" % (om_trans.final_status, om_act.status))
+            return
+
+        self.logger.debug("Set act status: %s" % om_trans.final_status)
+        om_act.status = om_trans.final_status
+
 
     def _init_act_create_defaults(self, act):
+        
+        assert isinstance(act, Act)
+        
         act_obj_type = act.__class__.__name__
 
         om_emitting = OMActsWriter._get_emitting_institution(act)
 
-        self.logger.info("Presentation date: %s" % act.presentation_date)
-
         create_defaults = {
                     'idnum' : act.id,
                     'title' : act.title,
-                    'presentation_date' : act.presentation_date,
                     'text' : act.content,
                     'emitting_institution': om_emitting,
+                    'presentation_date' : None,
                     'transitions' : None,
                 }
+
+        pdate = self.load_transition_date(act.transitions, "Presented")
+        if pdate:
+            create_defaults["presentation_date"] = pdate
+
+        adate = self.load_transition_date(act.transitions, "Accepted")
+        if adate and act_obj_type in ["CouncilDeliberation","CityGovernmentDeliberation",]:
+            create_defaults["approval_date"] = adate
 
         if act_obj_type == "CouncilDeliberation":
             om_initiative = OMActsWriter._get_initiative(act)
@@ -141,6 +231,27 @@ class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
 
             create_defaults['final_idnum'] = act.final_id
             self.logger.info("Set the final_idnum: %s" % act.final_id)
+        elif act_obj_type == "Amendment":
+            
+            referred_acts = OMAct.objects.filter(idnum=act.referred_act)
+
+            if not referred_acts:
+                referred_acts = OMDeliberation.objects.filter(final_idnum=act.referred_act)
+
+
+            if referred_acts:
+                if len(referred_acts) > 1:
+                    self.logger.warning("Many referred acts (%s) found with id '%s'. The amendment '%s' is linked to the first: '%s'" % (len(referred_acts), act.referred_act, act.id, referred_acts[0]))
+
+                create_defaults["act"] = referred_acts[0]
+                    
+            else:
+                self.logger.error("Unable to find referred act (%s) for amendment (%s)" % (act.referred_act, act.id))
+
+               
+
+
+        self.logger.debug("Act presentation date: %s" % create_defaults["presentation_date"])
 
         return create_defaults
    
@@ -156,33 +267,68 @@ class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
 
         return create_defaults
 
+    def load_transition_date(self, transitions, label):
+        if label in transitions:
+            # the presentation date is unique, take the first item
+            self.logger.debug("%s dates: %s" % (label, transitions[label],))
+            date = transitions[label][0]
+            self.logger.debug("label=%s date found: %s" % (label, date, )) 
+
+            return date
+        else:
+            self.logger.debug("label=%s date not found" % label)
+            return None
+
+
+
+    @transaction.commit_on_success
     def _add_attachments(self, act, om_act):
         if act == None or om_act == None:
             raise Exception("Cannot add an attachment if you don't pass both the parsed act and the partially imported OM act.")
 
         self.logger.info("Attachments to add: %d" % len(act.attachments))
         for curr_att in act.attachments:
-            self.logger.info("Processing attachment file %s" % curr_att.path)
+            self.logger.info("Processing attachment file (%s,%s)" % (curr_att.title, curr_att.path))
             f = File(open(curr_att.path))
-            defaults = {
-                'file' : f,
-                'act' : om_act,
-                'document_type' : curr_att.type,
-                'document_size' : f.size,
-                'title' : curr_att.title,
-                'document_date' : curr_att.document_date,
-            }
-            om_attachment = OMAttach(**defaults)
-            try:
-                om_attachment.save()
-                self.logger.info("Attachment imported correctly: %s" % 
-                    curr_att.path)
-            except Exception as e:
-                self.logger.warning("Error importing attachment %s: %s" % 
-                    (curr_att.path, e))
+
+            found_att = OMAttach.objects.filter(act=om_act,
+                title=curr_att.title[:512], document_type=curr_att.type)
+
+            if found_att.count() > 0:
+                self.logger.info("Attachment already present: %s" % curr_att.path)
+            else:
+                defaults = {
+                    'file' : f,
+                    'act' : om_act,
+                    'document_type' : curr_att.type,
+                    'document_size' : f.size,
+                    'title' : curr_att.title[:512], # TODO parameterize this size
+                    'document_date' : curr_att.document_date,
+                }
+                om_attachment = OMAttach(**defaults)
+                try:
+                    om_attachment.save()
+                    self.logger.info("Attachment imported correctly: %s" % 
+                        curr_att.path)
+                except Exception as e:
+                    self.logger.warning("Error importing attachment %s: %s" % 
+                        (curr_att.path, e))
+                    transaction.rollback()
 
     def _add_subscribers(self, act, om_act):
-
+        """
+        Assign the subscribers as represented in act, to the om_act instance.
+        Remember that om_act is an instance of (a subtype of) the Act model,
+        while act is an instance of the "intermediate" representation.
+        
+        Adding the subscriber, we use the get_or_create method, so that no
+        duplicates are produced (e.g. in case the same data is first manually
+        inserted, and later automatically imported) 
+        """
+        
+        assert isinstance(act, Act)
+        assert isinstance(om_act, OMAct)
+        
         if act == None or om_act == None:
             raise Exception("Cannot add the subscribers if you don't pass both the parsed act and the partially imported OM act.")
 
@@ -194,63 +340,110 @@ class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
             self.logger.warning("In order to continue, you must set a data provider for charges in act importation")
             return
 
+        self.logger.debug("Reset subscribers of act %s ..." % (om_act, ))
+        # delete previous supporter for the act (ASSUMPTION: the imported data are complete and correct)
+        #OMActSupport.objects.filter(act = om_act).delete()
+        #om_act.presenter_set.delete()
+        #OMActSupport.objects.filter(act=om_act).delete()
+        # use get_or_create instead of delete() + recreate (so news are not
+        # replicated)
+
         for curr_sub in act.subscribers:
-            om_ch = self.lookup_charge(curr_sub.charge.id, self.conf.ACTS_PROVIDER)
+            act_date = getattr(act, "presentation_date", None)
+            
+            om_ch = self.lookup_charge(curr_sub.charge.id, self.conf.ACTS_PROVIDER, act_date)
 
             if om_ch is None:
-                raise Exception("Unable to find charge for %s" % curr_sub)
-
-            self.logger.info("Charge for subscriber: %s (was %s) ..." % (om_ch,curr_sub.charge.id))
+#                raise Exception("Unable to find charge for %s as of %s" % (curr_sub, act_date, ))
+                self.logger.warning("Unable to find charge for %s as of %s" % (curr_sub, act_date, ))
+                continue
+            else:
+                self.logger.info("Charge for subscriber: %s (was %s) as of %s ..." % (om_ch,curr_sub.charge.id, act_date,))
 
             # detect support type
             om_support_type = OMActSupport.SUPPORT_TYPE.co_signer
             if curr_sub.type == "first_subscriber":
                 om_support_type = OMActSupport.SUPPORT_TYPE.first_signer
-            self.logger.info("Mapping subscriber type: %s -> %s" % (curr_sub.type,om_support_type))
+            #self.logger.info("Mapping subscriber type: %s -> %s" % (curr_sub.type,om_support_type))
 
             create_defaults = self._init_subscriber_create_defaults(om_act, om_ch,
                 om_support_type)
 
-            (om_sub, created) = OMActSupport.objects.get_or_create(
-                act = om_act, charge = om_ch, defaults = create_defaults
-            )
+            try:
+#                om_sub = OMActSupport(**create_defaults)
+                # use get_or_create, so news are not generated if not needed
+                (om_sub, created) = OMActSupport.objects.get_or_create(
+                    act = om_act, charge = om_ch, defaults = create_defaults
+                )
 
-            if created:
-                self.logger.info("Added charge %s as subscriber ..." % om_ch)
-            else:
-                self.logger.info("Charge %s already known to be a subscriber ..."
-                    % om_ch)
+                if not created:
+                    om_sub.__dict__.update(create_defaults)
+                    om_sub.save()   
+                    self.logger.info("Updated charge %s as subscriber..." % om_ch)
+
+                else:
+                    self.logger.info("Added charge %s as subscriber..." % om_ch)
+            except Exception, e:
+                self.logger.warning("Error setting charge %s as subscriber for act %s: %s ..."
+                    % (om_act, om_ch, e))
+
+        n_subs_read = len(act.subscribers)
+        n_subs_written = om_act.presenter_set.count()
+        if n_subs_read != n_subs_written:
+            self.logger.warning("Something wrong happened importing subscribers: %s read, %s written ..."
+                    % (n_subs_read, n_subs_written, ))
+        
+
+    def update_act(self, om_act, dict_values):
+
+        if om_act is None:
+            raise ValueError("Instance you want to update should not be None")
+
+        for (k, v) in dict_values.items():
+            # don't update if the field is None (or you risk to delete data)
+            if v is not None:
+#                self.logger.debug("Update field: %s <- %s" % (k,v,))
+                setattr(om_act, k, v)
+
+        om_act.save()
 
     def write_act(self, act):
+        
+        assert isinstance(act, Act)
         
         act_obj_type = act.__class__.__name__
         self.logger.info("Writing act (id: %s, type %s)" % (act.id,act_obj_type))
 
         create_defaults = self._init_act_create_defaults(act)
 
-        self.logger.info("Piece of content: %s ..." % act.content[0:30])
+        #self.logger.info("Piece of content: %s ..." % act.content[0:30])
 #        self.logger.info("Defaults: %s ..." % create_defaults)
 
         om_type = self._detect_act_om_type(act)
         self.logger.info("Detected type %s" % om_type)
-        # TODO create the act and the subscribers as a transaction
 
+        # TODO create the act and the subscribers as a transaction
         (om_act,created) = om_type.objects.get_or_create(idnum=act.id,
             defaults = create_defaults)
 
         if created:
-            self.logger.info("OM act created %s. Let's add the subscribers ..." % om_act.idnum)
-            self._add_subscribers(act, om_act)
-
-            self.logger.info("Now let's add the attachment...")
-            self._add_attachments(act, om_act)
-
+            self.logger.info("OM act  %s created ..." % om_act.idnum)
         else:
-            self.logger.info("OM act already present %s" % om_act.idnum)
+            self.update_act(om_act, create_defaults)
+            self.logger.info("OM act  %s updated ..." % om_act.idnum)
 
+        self.logger.info("Now let's add the attachment ...")
+        self._add_attachments(act, om_act)
 
+        # set act signers *before* act transitions, in order to generate
+        # news containing the names of who signed the act
+        self.logger.info("Set the act supporters ...")
+        self._add_subscribers(act, om_act)
 
-    
+        # append transitions to acts on OM
+        self._add_act_transitions(act, om_act)
+        
+
 # python object layer for imported data
 
 # document section
@@ -260,24 +453,27 @@ class Act:
     content = ""
     title = ""
     file = None
-    presentation_date = None
+#    presentation_date = None
     subscribers = [] # list of Charges
     emitting_institution = ""
     attachments = [] # list of Attachment (usually one is enough ...)
+
+    transitions = {} # transitions are stored by their symbol. every symbol can
+                     # contain one or more transition dats
     
     
     def add_subscriber(self, charge):
         self.subscribers.append(charge)
         
     def __str__(self):
-        return "%s (%s) [%s]" % (self.title, self.id, self.content[0:20])
+        return unicode(self).encode('utf-8')
       
     def __unicode__(self):
-      return u"%s (%s) [%s]" % (self.title, self.id, self.content[0:20])
+        return u"%s" % (self.id,)
 
 class CouncilDeliberation(Act):
     final_id = None
-    execution_date = None
+#    execution_date = None
     initiative = "" # (council_member, ...)
 
 class CityGovernmentDeliberation(Act):
@@ -295,8 +491,10 @@ class Motion(Act):
 class Agenda(Act):
     pass
 
-class Emendation(Act):
-    pass
+class Amendment(Act):
+    
+    # a reference to the amended act
+    referred_act = None
 
 class Attachment:
     description = ""
@@ -330,7 +528,8 @@ class Person:
         self.ssn = ssn
         
     def __str__(self):
-        return "%s %s (%s)" % (self.name, self.surname, self.id)
+#        return "%s %s (%s)" % (self.name, self.surname, self.id)
+        return unicode(self).encode('utf-8')
     
     def __unicode__(self):
         return u"%s %s (%s)" % (self.name, self.surname, self.id)
@@ -344,6 +543,9 @@ class Charge:
     description = ""
     
     def __init__(self, id, start_date, charge, name, description):
+        # TODO not clear what the argument charge should be. we are building the 
+        # charge, so to what (existing) charge should a (new) charge be linked to?
+        # - FS
         self.id = id
         self.start_date = start_date
 #        self.person = person
@@ -353,8 +555,9 @@ class Charge:
         
     def __str__(self):
 #        return "%s as %s from %s (%s)" % (self.person, self.name, self.start_date, self.id)
-        return "%s as %s from %s (%s)" % (self.charge, self.name, \
-            self.start_date, self.id)
+#        return "%s as %s from %s (%s)" % (self.charge, self.name, \
+#            self.start_date, self.id)
+        return unicode(self).encode('utf-8')
     
     def __unicode__(self):
 #        return u"%s as %s from %s (%s)" % (self.person, self.name, self.start_date, self.id)
@@ -395,7 +598,8 @@ class Subscriber:
 
     def __str__(self):
 #        return "%s (%s)" % (self.person, self.type)
-        return "%s (%s)" % (self.charge, self.type)
+#        return "%s (%s)" % (self.charge, self.type)
+        return unicode(self).encode('utf-8')
 
     def __unicode__(self):
 #        return u"%s (%s)" % (self.person, self.type)

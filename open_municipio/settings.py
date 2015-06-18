@@ -33,6 +33,8 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
+POLITICIANS_GROUP = "politicians"
+
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
@@ -136,6 +138,7 @@ INSTALLED_APPS = (
     'open_municipio.taxonomy',
     'open_municipio.locations',
     'open_municipio.votations',
+    'open_municipio.attendances',
     'open_municipio.users',
     'open_municipio.monitoring',
     'open_municipio.web_services',
@@ -215,7 +218,8 @@ OM_BOOKMARKING_EMPTY_STAR_CLASS = 'icon-star-empty'
 SITE_INFO = {
     'main_city': u'City',
     'site_version': u'Beta',
-    'main_city_logo': 'img/city-logo/city-logo.png'
+    'main_city_logo': 'img/city-logo/city-logo.png',
+    'main_city_website': 'http://www.maincity.it', 
 }
 DEFAULT_FROM_EMAIL = "info@openmunicipio.it"
 DIGEST_DEFAULT_GROUP = "redazione"
@@ -243,6 +247,11 @@ LOGGING = {
             'class':'logging.StreamHandler',
             'formatter': 'standard'
         },
+        'console_import':{
+            'level':'WARNING',
+            'class':'logging.StreamHandler',
+            'formatter': 'standard'
+        },
         'logfile': {
             'level':'INFO',
             'class':'logging.handlers.RotatingFileHandler',
@@ -250,12 +259,20 @@ LOGGING = {
             'maxBytes': 50000,
             'backupCount': 2,
             'formatter': 'standard',
-            },
+        },
         'mail_admins': {
             'level': 'ERROR',
             'class': 'django.utils.log.AdminEmailHandler'
         },
+        'webapp': {
+            'level':'DEBUG',
+            'class':'logging.handlers.RotatingFileHandler',
+            'filename': REPO_ROOT + "/log/webapp.log",
+            'maxBytes': 50000,
+            'backupCount': 5,
+            'formatter': 'standard',
         },
+    },
     'loggers': {
         'django.request': {
             'handlers': ['mail_admins'],
@@ -263,10 +280,15 @@ LOGGING = {
             'propagate': True,
             },
         'import': {
-            'handlers': ['console', 'logfile'],
+            'handlers': ['console_import', 'logfile'],
             'level': 'DEBUG',
             'propagate': True,
-            }
+            },
+        'webapp': {
+            'handlers': [ 'webapp', ],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
     }
 }
 
@@ -297,5 +319,74 @@ STATIC_ROOT = os.path.join(PROJECT_ROOT, 'sitestatic')
 # Example: "http://media.lawrence.com/static/"
 STATIC_URL = '/static/'
 
+# override this in your local open_municipio installation
+WEB_SERVICES = {
+    'google_analytics': '',
+    'facebook' : {},
+    'twitter' : {},
+    'google_plus': {},
+}
 
+# custom TinyMCE stylesheet
+TINYMCE_DEFAULT_CONFIG = {
+    'content_css': '/static/css/tinymce-content.css',
+}
+
+
+# the UI_* configurations are passed by the default context processor
+UI_SITTINGS_CALENDAR = True
+UI_LOCATIONS = True
+UI_ALLOW_NICKNAMES = True
+
+# act search by type urls
+SEARCH_URLS = {
+    "council_deliberation": "/acts/?q=&selected_facets=act_type:delibera",
+    "cg_deliberation": "/acts/?q=&selected_facets=act_type:delibera di giunta",
+    "interrogation": "/acts/?q=&selected_facets=act_type:interrogazione",
+    "motion": "/acts/?q=&selected_facets=act_type:mozione",
+    "agenda": "/acts/?q=&selected_facets=act_type:ordine del giorno",
+    "interpellation": "/acts/?q=&selected_facets=act_type:interpellanza",
+    "interrogation": "/acts/?q=&selected_facets=act_type:interrogazione",
+    "amendment": "/acts/?q=&selected_facets=act_type:emendamento",
+}
+
+CONTACTS_EMAIL = "info@openmunicipio.it"
+
+WEBMASTER_INFO = {
+    'name': u'OpenPolis',
+    'website': u'http://www.openmunicipio.it',
+    'address': u'...',
+    'email': u'info@openmunicipio.it',
+    'phone': u'',
+}
+
+# links to social sites related to OM
+SOCIAL_SITES = {
+    'twitter': '', # e.g. 'https://twitter.com/<your_twitter_account>',
+    'facebook': '', # e.g. 'https://www.facebook.com/<your_facebook_account>',
+}
+
+OM_START_YEAR = 2008
+
+OP_URL_TEMPLATE = "http://politici.openpolis.it/politico/%(op_id)s"
+
+NL_TITLE = "Monitoraggio Open Municipio"
+NL_FROM = "Open Municipio <noreply@openmunicipio.it>"
+
+# allow to show an alert on the homepage of openmunicipio
+ALERT_POPUP = ""
+ALERT_BAR = ""
+ALERT_NAVBAR = ""
+
+# this is a default configuration for a local instance of Solr running;
+# adapt this to your production environment
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.solr_backend.SolrEngine',
+        'URL': 'http://127.0.0.1:8983/solr',
+        'TIMEOUT': 60 * 15,
+        'BATCH_SIZE': 100,
+        'SEARCH_RESULTS_PER_PAGE': 10,
+    }
+}
 

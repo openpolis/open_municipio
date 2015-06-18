@@ -1,2 +1,3 @@
-<a href="{%  url profiles_profile_detail monitoring_user.user.username %}">{{ monitoring_user.public_name }}</a>
+{% load url from future %}
+<a href="{%  url 'profiles_profile_detail' monitoring_user.user.username %}">{{ monitoring_user.public_name }}</a>
 ha iniziato a monitorare <a href="{{ monitored_object.get_absolute_url }}">{{ monitored_object|truncatewords_html:10 }}</a>

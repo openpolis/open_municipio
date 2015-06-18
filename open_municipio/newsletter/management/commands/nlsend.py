@@ -4,7 +4,7 @@ from datetime import datetime
 from django.contrib.sites.models import Site
 from django.core.management.base import LabelCommand, BaseCommand, CommandError
 from django.db.models.query import EmptyQuerySet
-
+from django.db import models
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import get_template
 from django.template import Context
@@ -42,7 +42,7 @@ class Command(LabelCommand):
 
     args = '<user_email>'
     label = 'user email'
-    logger = logging.getLogger('import')
+    logger = logging.getLogger('webapp')
 
     plaintext_tpl = get_template('email.txt')
     htmly_tpl     = get_template('email.html')
@@ -50,8 +50,7 @@ class Command(LabelCommand):
 
     def handle(self, *labels, **options):
 
-
-        translation.activate('it')
+        translation.activate(settings.LANGUAGE_CODE)
 
         # fix logger level according to verbosity
         verbosity = options['verbosity']
@@ -82,6 +81,7 @@ class Command(LabelCommand):
 
         # fetch last sent newsletter's timestamp
         nls = Newsletter.objects.filter(finished__isnull=False).order_by('-finished')
+
         if nls:
             from_date = nls[0].started
             # highjack fromdate options, if not already defined
@@ -119,9 +119,18 @@ class Command(LabelCommand):
             # filter: institutional news of highest priority, only
             user_news = EmptyQuerySet()
             for mo in mos:
+
+                # in case of deleted objects being monitored yet (needs fix?)
+                if mo == None: continue
+
                 related_news = mo.related_news.\
-                    filter(news_type=News.NEWS_TYPE.institutional).\
-                    filter(priority__lte=2)
+                    filter(
+                        models.Q(news_type=News.NEWS_TYPE.institutional, 
+                            priority__lte=2) 
+                    | 
+                        models.Q(news_type=News.NEWS_TYPE.community, 
+                            priority=1)
+                    )
 
                 # add date filter if required
                 if options['fromdate']:
@@ -141,11 +150,20 @@ class Command(LabelCommand):
             n_news = len(user_news)
             if n_news:
                 if not options['dryrun']:
-                    d = Context({ 'profile': profile,
-                                  'city': settings.SITE_INFO['main_city'],
-                                  'user_news': [{'date': rn.news_date, 'text': re.sub('href=\"\/', 'href="http://{0}/'.format(site_domain), rn.text)} for rn in user_news]})
 
-                    subject, from_email, to = 'Monitoraggio Open Municipio', 'noreply@openmunicipio.it', profile.user.email
+                    ordered_user_news = [{'date': rn.news_date, 'text': re.sub('href=\"\/', 'href="http://{0}/'.format(site_domain), rn.text)} for rn in user_news]
+
+                    # NB this can work only if k["date"] is always not None
+                    ordered_user_news = sorted(ordered_user_news, key=lambda k: k["date"], reverse=True)
+
+                    d = Context({ 'site_home': settings.SITE_INFO['home'],
+                                  'profile': profile,
+                                  'city': settings.SITE_INFO['main_city'],
+                                  'webmaster': settings.WEBMASTER_INFO,
+                                  'user_news': ordered_user_news,
+                                })
+
+                    subject, from_email, to = settings.NL_TITLE, settings.NL_FROM, profile.user.email
                     text_content = self.plaintext_tpl.render(d)
                     html_content = self.htmly_tpl.render(d)
                     msg = EmailMultiAlternatives(subject, text_content, from_email, [to])

@@ -1,11 +1,12 @@
 {% extends "base_one_column.html" %}
+{% load hidden_mail %}
 
 {% block title %}Contatti{% endblock %}
 {% block content_header %}Contatti{% endblock %}
 {% block content %}
 <p>
     Per segnalazioni, suggerimenti, richieste di collaborazione, lamentele ma anche incoraggiamenti puoi scrivere a
-    <a href="mailto:udine[chioccia]openmunicipio[punto]it" class="email-nascosta">udine[chioccia]openmunicipio[punto]it</a>
+    <a href="mailto:{{ contacts_email|hide_mail }}" class="email-nascosta">{{ contacts_email|hide_mail }}</a>
 </p>
 
 <p>

@@ -1,0 +1,235 @@
+{% extends 'base_two_columns.html' %}
+{% load highlight %}
+{% load om_utils %}
+{% load i18n %}
+{% load digg_paginator %}
+{% load url from future %}
+{% load thumbnail %}
+
+{% block title %}Politici | Cariche{% endblock title %}
+{% block content_header %}Cariche{% endblock %}
+{% block people_class %}class="active"{% endblock %}
+{% block body_class %}politician{% endblock %}
+
+{% block sub_nav %}
+    {%  include 'commons/subnav.html' with active='Cariche' %}
+{% endblock %}
+
+{% block content %}
+{% if n_results %}
+<section>
+  <h2>{% if not query %}Trovate {% endif %} {{ n_results }} cariche</h2>
+
+  <p>
+      Tra parentesi il tasso mensile, calcolato in rapporto alla durata della carica.
+  </p>
+
+    {% if person %}
+      <p>per: <a href="{{ person.get_absolute_url }}">{{ person }}</a> </p>
+    {% endif %}
+    
+    <table class="data dataTable">
+      <thead>
+        <tr>
+          <th>Carica</th>
+          <th>Giorni</th>
+          <th>Atti firmati</th>
+          <th>Atti ricevuti</th>
+          <th>Delib. Giunta</th>
+          <th>Delib. Consiglio</th>
+          <th>Mozioni</th>
+          <th>Ordini del Giorno</th>
+          <th>Emend.</th>
+          <th>Interr.</th>
+          <th>Interp.</th>
+          <th>Interventi</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tbody>
+        {% for result in page.object_list %}
+          <tr>
+          <!-- politician -->
+            <td>
+
+              <!-- thumbnail -->
+              <div class="container-fluid">
+                <div class="span3 row-fluid">
+                  <div class="span2" style="min-width: 50px">
+                    <a href="{{ result.object.person.get_absolute_url }}">
+                      {% if result.object.person.img %}
+                        {% thumbnail result.object.person.img "50x50" crop="center" as im %}
+                          <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" class="politician-picture">
+                        {% endthumbnail %}
+                      {% else %}
+                        <img src="{{ STATIC_URL }}img/placehold/face_50.png" width="50" height="50" class="politician-picture">
+                      {% endif %}
+                    </a>
+                  </div>
+
+                  <!-- name -->
+                  <div class="span8">
+                    <a href="{{ result.object.person.get_absolute_url }}">
+                      <strong class="person_name">{{ result.object.person|title }}</strong>
+                    </a>
+                    <br />
+                    {{ result.institution }} dal {{ result.start_date|date:"Y" }}
+                    {% if result.end_date %} al {{ result.end_date|date:"Y" }}{% endif %}
+                  </div>
+                </div>
+              </div>
+            </td>
+
+            <td>{{ result.object.duration.days }}</td>
+
+                <td>{% if result.n_presented_acts %}
+                	<a href="{% url 'om_act_search' %}?q=&person={{ result.object.person.slug }}">
+                	{{ result.n_presented_acts }}</a>
+                {% endif %}</td>
+
+                <td>{% if result.n_received_acts %}
+                	<a href="{% url 'om_act_search' %}?q=&recipient={{ result.object.person.slug }}">
+                    {{ result.n_received_acts }}</a>
+                {% endif %}</td>
+
+                <td>{% if result.n_cgdeliberations %}
+                	<a href="{% url 'om_act_search' %}?q=&person={{ result.object.person.slug }}&selected_facets=act_type:delibera di giunta">
+                	{{ result.n_cgdeliberations }}</a><br />({{ result.n_cgdeliberations_index|floatformat:2 }})
+                {% endif %}</td>
+
+                <td>{% if result.n_deliberations %}
+                	<a href="{% url 'om_act_search' %}?q=&person={{ result.object.person.slug }}&selected_facets=act_type:delibera">
+                	{{ result.n_deliberations }}</a><br />({{ result.n_deliberations_index|floatformat:2 }})
+                {% endif %}</td>
+
+                <td>{% if result.n_motions %}
+                	<a href="{% url 'om_act_search' %}?q=&person={{ result.object.person.slug }}&selected_facets=act_type:mozione">
+                	{{ result.n_motions }}</a><br />({{ result.n_motions_index|floatformat:2 }})
+                {% endif %}</td>
+
+                <td>{% if result.n_agendas %}
+                	<a href="{% url 'om_act_search' %}?q=&person={{ result.object.person.slug }}&selected_facets=act_type:ordine del giorno">
+                	{{ result.n_agendas }}</a><br />({{ result.n_agendas_index|floatformat:2 }})
+                {% endif %}</td>
+
+                <td>{% if result.n_amendments %}
+                	<a href="{% url 'om_act_search' %}?q=&person={{ result.object.person.slug }}&selected_facets=act_type:emendamento">
+                	{{ result.n_amendments }}</a><br />({{ result.n_amendments_index|floatformat:2 }})
+                {% endif %}</td>
+
+                <td>{% if result.n_interrogations %}
+                	<a href="{% url 'om_act_search' %}?q=&person={{ result.object.person.slug }}&selected_facets=act_type:interrogazione">
+                	{{ result.n_interrogations }}</a><br />({{ result.n_interrogations_index|floatformat:2 }})
+                {% endif %}</td>
+
+                <td>{% if result.n_interpellations %}
+                	<a href="{% url 'om_act_search' %}?q=&person={{ result.object.person.slug }}&selected_facets=act_type:interpellanza">
+                	{{ result.n_interpellations }}</a><br />({{ result.n_interpellations_index|floatformat:2 }})
+                {% endif %}</td>
+
+                <td>{% if result.n_speeches %}
+                	<a href="{% url 'om_speech_search' %}?q=&person={{ result.object.person.slug }}">
+                	{{ result.n_speeches }}</a><br />({{ result.n_speeches_index|floatformat:2 }})
+                {% endif %}</td>
+			</tr>
+        {% empty %}
+            <p>Nessuna carica trovata.</p>
+        {% endfor %}
+        </tbody>
+        </table>
+        </section>
+        {% digg_paginator %}
+    {% else %}
+        <section class="search-empty">
+            <p>
+                La ricerca di <strong>{{ form.q.value }}</strong> non è andata a buon fine.<br/>
+                Controlla che tutte le parole siano state digitate correttamente.</br>
+                oppure prova con parole diverse.
+            </p>
+            <p>
+                Grazie,<br/>
+                lo staff di Open Municipio
+            </p>
+        </section>
+    {% endif %} 
+
+{% endblock %}
+
+{% block sidebar %}
+ 
+    {% if n_results %}
+        {% if selected_facets %}
+            <h2>Modifica i filtri</h2>
+            {% for facet in selected_facets %}
+                <dt>{{ facets_labels|key:facet.field|safe }}</dt>
+                <dd>
+                    <a href="{{ facet.url }}"><i class="icon-remove"></i></a>
+                    {{ facet.r_label }}
+                </dd>
+            {% endfor %}
+    
+        {% else %}
+            <h2>Filtra</h2>
+            <p>Puoi trovare la carica che ti interessa scorrendo la lista qui a fianco.<br />
+            Puoi perfezionare la ricerca usando i filtri nella colonna qui sotto</p>
+        {% endif %}
+    
+        <!-- Begin faceting. -->
+        <div>
+            <dl>
+                {% if facets.fields.is_active and not facets.fields.is_active.is_field_selected  %}
+                    <dt>{{ facets_labels.is_active }}</dt>
+                    {% for t in facets.fields.is_active.counts %}
+                        <dd>
+                            {% if not t.2 %}
+                                <a href="{{ base_url }}&selected_facets=is_active:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
+                            {% endif %}
+                        </dd>
+                    {% endfor %}
+                {% endif %}
+            </dl>
+
+            <dl>
+                {% if facets.fields.institution and not facets.fields.institution.is_field_selected  %}
+                    <dt>{{ facets_labels.institution }}</dt>
+                    {% for t in facets.fields.institution.counts %}
+                        <dd>
+                            {% if not t.2 %}
+                                <a href="{{ base_url }}&selected_facets=institution:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
+                            {% endif %}
+                        </dd>
+                    {% endfor %}
+                {% endif %}
+            </dl>
+
+            <dl>
+                {% if not facet_queries_start_date.is_selected %}
+                    <dt>{{ facets_labels.start_date }}</dt>
+                    {% for range in facet_queries_start_date.ranges|dictsortreversed:"key"  %}
+                        <dd>
+                            <a href="{{ base_url }}&selected_facets={{ range.key }}">
+                                {{ range.label|safe }}
+                            </a> ({{ range.count }})
+                        </dd>
+                    {% endfor %}
+                {% endif %}
+            </dl>
+
+            <dl>
+                {% if not facet_queries_end_date.is_selected %}
+                    <dt>{{ facets_labels.end_date }}</dt>
+                    {% for range in facet_queries_end_date.ranges|dictsortreversed:"key"  %}
+                        <dd>
+                            <a href="{{ base_url }}&selected_facets={{ range.key }}">
+                                {{ range.label|safe }}
+                            </a> ({{ range.count }})
+                        </dd>
+                    {% endfor %}
+                {% endif %}
+            </dl>
+
+        </div>
+    
+        <!-- End faceting -->
+    {% endif %}
+{% endblock %}

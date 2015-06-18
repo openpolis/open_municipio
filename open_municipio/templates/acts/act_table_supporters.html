@@ -1,5 +1,6 @@
 {% load monitoring_tags %}
 {% load thumbnail %}
+{% load people_tags %}
 
 <div class="row-fluid">
 
@@ -24,6 +25,10 @@
               <br>
               {{ supporter.denomination }}
               <br>
+              {% with curr_group=supporter|get_current_group:act.presentation_date %}
+              {{ curr_group.acronym }} {% if supporter.person.get_current_group and supporter.person.get_current_group != curr_group %}(oggi {{ supporter.person.get_current_group.acronym }}){% endif %}
+              {% endwith %}
+              <br/>
 
               {% object_inline_monitoring supporter.person %}
             </div>

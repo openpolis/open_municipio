@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, HttpResponseBadRequest, HttpResponseNotAllowed
 from django.utils.decorators import method_decorator
@@ -10,9 +11,11 @@ from django.contrib.auth.decorators import user_passes_test
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
+from haystack.query import SearchQuerySet
+
 from voting.views import RecordVoteOnItemView
 
-from open_municipio.acts.models import Act, Agenda, CGDeliberation, Deliberation, Interpellation, Interrogation, Motion, Transition
+from open_municipio.acts.models import Act, Agenda, CGDeliberation, Deliberation, Interpellation, Interrogation, Motion, Amendment, Transition
 from open_municipio.acts.forms import ActDescriptionForm, ActTransitionForm, ActFinalTransitionForm, ActTitleForm
 from open_municipio.locations.models import Location
 
@@ -22,6 +25,7 @@ from open_municipio.om_search.forms import RangeFacetedSearchForm
 from open_municipio.om_search.mixins import FacetRangeDateIntervalsMixin
 from open_municipio.om_search.views import ExtendedFacetedSearchView
 from open_municipio.people.models import Person
+from open_municipio.acts.models import Speech
 
 from open_municipio.taxonomy.models import Tag, Category
 
@@ -42,31 +46,52 @@ class ActSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
     """
     __name__ = 'ActSearchView'
 
-    FACETS_SORTED = ['act_type', 'is_key', 'is_proposal', 'initiative', 'organ', 'pub_date']
+    FACETS_SORTED = ['act_type', 'is_key', 'is_proposal', 'initiative', 'iter_duration', 'organ', 'pub_date', 'has_locations', 'month', 'status']
     FACETS_LABELS = {
         'act_type': _('Act type'),
         'is_key': _('Is key act'),
-        'is_proposal': _('Is deliberation proposal'),
+        'is_proposal': _('Is proposal'),
         'initiative': _('Initiative'),
+        'iter_duration': _('Iter duration'),
         'organ': _('Organ'),
-        'pub_date': _('Pubblication year')
+        'pub_date': _('Pubblication year'),
+        'has_locations': _('Has locations'),
+        'month': _('Pubblication month'),
+        'status': _('Status')
     }
-    DATE_INTERVALS_RANGES = {
-        '2014':  {'qrange': '[2014-01-01T00:00:00Z TO 2015-01-01T00:00:00Z]', 'r_label': '2014'},
-        '2013':  {'qrange': '[2013-01-01T00:00:00Z TO 2014-01-01T00:00:00Z]', 'r_label': '2013'},
-        '2012':  {'qrange': '[2012-01-01T00:00:00Z TO 2013-01-01T00:00:00Z]', 'r_label': '2012'},
-        '2011':  {'qrange': '[2011-01-01T00:00:00Z TO 2012-01-01T00:00:00Z]', 'r_label': '2011'},
-        '2010':  {'qrange': '[2010-01-01T00:00:00Z TO 2011-01-01T00:00:00Z]', 'r_label': '2010'},
-        '2009':  {'qrange': '[2009-01-01T00:00:00Z TO 2010-01-01T00:00:00Z]', 'r_label': '2009'},
-        '2008':  {'qrange': '[2008-01-01T00:00:00Z TO 2009-01-01T00:00:00Z]', 'r_label': '2008'},
-    }
+    DATE_INTERVALS_RANGES = { }
 
     def __init__(self, *args, **kwargs):
+
+        # dynamically compute date ranges for faceted search
+        curr_year = datetime.today().year
+        for curr_year in xrange(settings.OM_START_YEAR, curr_year + 1):
+            date_range = self._build_date_range(curr_year)
+            self.DATE_INTERVALS_RANGES[curr_year] = date_range
+    
+        sqs = SearchQuerySet().filter(django_ct='acts.act').\
+            facet('act_type').facet('is_key').facet('is_proposal').facet('has_locations').\
+            facet('initiative').facet('organ').facet('month').facet('status').facet('iter_duration')
+
+        for (year, range) in self.DATE_INTERVALS_RANGES.items():
+            sqs = sqs.query_facet('pub_date', range['qrange'])
+
+        sqs = sqs.order_by('-pub_date').highlight()
+        kwargs['searchqueryset'] = sqs
+
         # Needed to switch out the default form class.
         if kwargs.get('form_class') is None:
             kwargs['form_class'] = RangeFacetedSearchForm
 
         super(ActSearchView, self).__init__(*args, **kwargs)
+
+    def _build_date_range(self, curr_year):
+        return { 'qrange': '[%s-01-01T00:00:00Z TO %s-12-31T00:00:00Z]' % \
+                (curr_year, curr_year), 'r_label': curr_year }
+
+    def build_page(self):
+        self.results_per_page = int(self.request.GET.get('results_per_page', settings.HAYSTACK_SEARCH_RESULTS_PER_PAGE))
+        return super(ActSearchView, self).build_page()
 
     def build_form(self, form_kwargs=None):
         if form_kwargs is None:
@@ -107,16 +132,25 @@ class ActSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
                 extra['category'] = Category.objects.get(slug=category_slug)
             except ObjectDoesNotExist:
                 pass
+
         tag_slug = self.request.GET.get('tag', None)
         if tag_slug:
             try:
                 extra['tag'] = Tag.objects.get(slug=tag_slug)
             except ObjectDoesNotExist:
                 pass
+
         location_slug = self.request.GET.get('location', None)
         if location_slug:
             try:
                 extra['location'] = Location.objects.get(slug=location_slug)
+            except ObjectDoesNotExist:
+                pass
+
+        recipient_slug = self.request.GET.get('recipient', None)
+        if recipient_slug:
+            try:
+                extra['recipient'] = Person.objects.get(slug=recipient_slug)
             except ObjectDoesNotExist:
                 pass
 
@@ -134,7 +168,7 @@ class ActSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
         if 'initiative' in extra['facets']['fields']:
             extra['show_initiative_facets'] = sum(map(lambda x: x[1], extra['facets']['fields']['initiative']['counts']))
 
-        paginator = Paginator(self.results, settings.HAYSTACK_SEARCH_RESULTS_PER_PAGE)
+        paginator = Paginator(self.results, self.results_per_page)
         page = self.request.GET.get('page', 1)
         try:
             page_obj = paginator.page(page)
@@ -150,7 +184,6 @@ class ActSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
 
 
         return extra
-
 
 
 from django.http import HttpResponse
@@ -174,6 +207,7 @@ class ActLiveEditView(FormView):
 
     def post(self, request, *args, **kwargs):
         response_data = {}
+
         try:
             if not self.request.user.is_authenticated() or not self.kwargs.get('pk') == request.POST.get('id'):
                 raise Exception('NOT_ALLOWED1')
@@ -181,7 +215,7 @@ class ActLiveEditView(FormView):
             target_act = Act.objects.get(pk=self.kwargs.get('pk'))
             target_act_field = self.request.POST.get('act_field')
 
-            if target_act_field == 'title':
+            if target_act_field == 'adj_title':
                 if not request.user.has_perm('acts.change_act'):
                     raise Exception('NOT_ALLOWED2')
                 form = ActTitleForm(self.request.POST, instance=target_act)
@@ -230,7 +264,7 @@ class ActDetailView(DetailView):
             # add a form for editing title of act
             context['title_form'] = ActTitleForm(initial = {
                 'id': act.pk,
-                'title': act.title,
+                'adj_title': act.adj_title or act.title,
                 })
  
         if self.request.user.has_perm('locations.change_taggedactbylocation'):
@@ -280,6 +314,8 @@ class ActDetailView(DetailView):
 
         context['n_documents'] = act.attachment_set.count()
         context['n_votes'] = act.votation_set.count()
+        context['n_amendments'] = act.amendment_set.count()
+        context['n_speeches'] = len(act.speeches)
 
         # retrieve a dictionary with status and its transitions
         context['act_type'] = act._meta.verbose_name
@@ -308,9 +344,9 @@ class ActDetailView(DetailView):
         """
         pass
     
-    def get_related_emendations(self):
+    def get_related_amendments(self):
         """
-        Retrieve context needed for populating the *emendations* tab.
+        Retrieve context needed for populating the *amendments* tab.
         """
         pass
 
@@ -387,6 +423,10 @@ class InterrogationDetailView(ActDetailView):
 
 class MotionDetailView(ActDetailView):
     model = Motion
+
+
+class AmendmentDetailView(ActDetailView):
+    model = Amendment
     
 
 ## tags/categories management
@@ -490,3 +530,96 @@ class ActTransitionRemoveView(ActTransitionToggleBaseView):
     
 class RecordVoteOnActView(RecordVoteOnItemView):
     model = Act   
+
+
+class SpeechSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
+    """
+    """
+    __name__ = 'SpeechSearchView'
+
+    FACETS_SORTED = [ 'date', 'month' ]
+    FACETS_LABELS = { 
+        'date': _('Year'),
+        'month': _('Month')
+    }
+
+    DATE_INTERVALS_RANGES = { } 
+
+    def __init__(self, *args, **kwargs):
+
+        # dynamically compute date ranges for faceted search
+        curr_year = datetime.today().year
+        for curr_year in xrange(settings.OM_START_YEAR, curr_year + 1):
+            date_range = self._build_date_range(curr_year)
+            self.DATE_INTERVALS_RANGES[curr_year] = date_range
+    
+        sqs = SearchQuerySet().filter(django_ct='acts.speech').facet('month')
+
+        for (year, range) in self.DATE_INTERVALS_RANGES.items():
+            sqs = sqs.query_facet('date', range['qrange'])
+
+        kwargs['searchqueryset'] = sqs.order_by('-date').highlight()
+
+        # Needed to switch out the default form class.
+        if kwargs.get('form_class') is None:
+            kwargs['form_class'] = RangeFacetedSearchForm
+
+        super(SpeechSearchView, self).__init__(*args, **kwargs)
+
+    def _build_date_range(self, curr_year):
+        return { 'qrange': '[%s-01-01T00:00:00Z TO %s-12-31T00:00:00Z]' % \
+                (curr_year, curr_year), 'r_label': curr_year }
+
+    def build_page(self):
+        self.results_per_page = int(self.request.GET.get('results_per_page', settings.HAYSTACK_SEARCH_RESULTS_PER_PAGE))
+        return super(SpeechSearchView, self).build_page()
+
+    def build_form(self, form_kwargs=None):
+        if form_kwargs is None:
+            form_kwargs = {}
+
+        # This way the form can always receive a list containing zero or more
+        # facet expressions:
+        form_kwargs['act_url'] = self.request.GET.get("act_url")
+
+        return super(SpeechSearchView, self).build_form(form_kwargs)
+
+    def extra_context(self):
+        extra = super(SpeechSearchView, self).extra_context()
+        
+        extra['base_url'] = reverse('om_speech_search') + '?' + extra['params'].urlencode()
+
+        # get data about custom date range facets
+        extra['facet_queries_date'] = self._get_custom_facet_queries_date('date')
+
+        extra['facets_sorted'] = self.FACETS_SORTED
+        extra['facets_labels'] = self.FACETS_LABELS
+
+        person_slug = self.request.GET.get('person', None)
+        if person_slug:
+            try:
+                extra['person'] = Person.objects.get(slug=person_slug)
+            except ObjectDoesNotExist:
+                pass
+
+        paginator = Paginator(self.results, self.results_per_page)
+        page = self.request.GET.get('page', 1)
+        try:
+            page_obj = paginator.page(page)
+        except PageNotAnInteger:
+            page_obj = paginator.page(1)
+        except EmptyPage:
+            page_obj = paginator.page(paginator.num_pages)
+    
+        extra['paginator'] = paginator
+        extra['page_obj'] = page_obj
+    
+        return extra
+
+class SpeechDetailView(DetailView):
+    model = Speech
+    context_object_name = 'speech'
+    template_name = "acts/speech_detail.html"
+
+
+

@@ -12,6 +12,9 @@
 {% block users_class %}class="active"{% endblock %}
 {% block body_class %}citizen{% endblock %}
 
+{% block sub_nav %}
+    {%  include 'profiles/profile_subnav.html' %}
+{% endblock %}
 
 {% block head_js_includes %}
   {{ block.super }}
@@ -86,14 +89,11 @@
   {% endcomment %}
 
   <h2>Ultimi iscritti {% popover_info 'ultimi-iscritti' 'left' %}</h2>
-  {% for obj in object_list %}
-      <a href="{{ obj.get_absolute_url }}">{{ obj.user.username }}</a>
-      {% if not forloop.last %},{% endif %}
-  {% endfor %}
+  {% latest_users users=object_list %}
 
   <hr>
 
-  {% include 'commons/news_list.html' with news_list=FILLME news_title='Ultime sui cittadini' %}
+  {% include 'commons/news_list.html' with news_list=news_community news_title='Ultime sui cittadini' %}
 
 {% endblock %}
 

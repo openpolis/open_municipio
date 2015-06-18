@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 
 # Events are shown in templates through a calendar widget. Events in
 # the past are shown up to EVENTS_DAYS_IN_THE_PAST days ago.
-EVENTS_DAYS_IN_THE_PAST = 0
+EVENTS_DAYS_IN_THE_PAST = 1
 
 
 class EventManager(models.Manager):

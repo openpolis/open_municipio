@@ -3,6 +3,7 @@
 {% load om_utils %}
 {% load i18n %}
 {% load digg_paginator %}
+{% load url from future %}
 
 {% block title %}Elenco atti {% endblock title %}
 {% block content_header %}Atti{% endblock %}
@@ -38,26 +39,43 @@ em {
               <p>per la località: <a href="{{ location.get_absolute_url }}">{{ location }}</a>  </p>
           {% endif %}
 
+          {% if recipient %}
+              <p>per il destinatario: <a href="{{ person.get_absolute_url }}">{{ recipient }}</a>  </p>
+          {% endif %}
+
           <table class="search-results">
           <tbody>
           {% for result in page.object_list %}
           <tr>
             <td>{{ result.pub_date|circled:"full" }}</td>
             <td>
+              {% if not result.object.is_final_status %}
+              <span class="pull-right label label-warning">In esame</span>
+              {% else %}
+              <span class="pull-right text-right">
+              <span class="label
+                {% if result.object.status == "APPROVED" or result.object.status == "ANSWERED" %}label-success
+                {% else %}{% if result.object.status == 'REJECTED' or result.object.status == "NOTANSWERED" %}label-important
+                {% endif %}{% endif %} ">{{ result.object.downcast.get_status_display|title }}
+              </span>{% if not result.pub_date == result.final_date %}<br /><small>in {{ result.pub_date|timesince:result.final_date }}</small>{% endif %}
+              </span>
+              {% endif %}
+
               <h4><a href="{{ result.url }}">{{ result.title }}</a></h4>
-              <strong>{{ result.act_type }}</strong>
+              <p><strong>{{ result.act_type }}</strong>
               {% if result.act_type == 'delibera' %}
                   di {{ result.organ }}
               {% endif %}
+              </p>
               {% if result.highlighted.text %}
-                {{ result.highlighted.text.0|safe }}<br/>
+                <p>{{ result.highlighted.text.0|safe }}</p>
               {% endif %}
-              {% if result.categories %}
-                <br/>Categorie: {% for cat in result.categories %}<a href="{{ cat.get_absolute_url }}">{{ cat }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}
-              {% endif %}
-              {% if result.tags %}
-                <br/>Tag: {% for tag in result.tags %}<a href="{{ tag.get_absolute_url }}">{{ tag }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}
-              {% endif %}
+              {% if result.object.categories %}<p>
+                {% for cat in result.object.categories %}<a class="badge" href="{{ cat.get_absolute_url }}">{{ cat }}</a>{% if not forloop.last %}&nbsp;{% endif %}{% endfor %}
+                {% if result.object.tags %}
+                  {% for tag in result.object.tags %}<a class="badge" href="{{ tag.get_absolute_url }}">{{ tag }}</a>{% if not forloop.last %}&nbsp;{% endif %}{% endfor %}
+                {% endif %}
+              </p>{% endif %}
               <!-- <strong>Score:</strong> {{ result.score }} -->
             </td>
           </tr>
@@ -89,7 +107,7 @@ em {
 {% block sidebar %}
 
   <h4>Cerca negli atti</h4>
-  <form method="get" action="{% url om_act_search %}" class="form-search">
+  <form method="get" action="{% url 'om_act_search' %}" class="form-search">
       <div class="control-group input-append">
           {%  spaceless %}
               <input id="query" type="text" class="input-medium search-query" name="{{ form.q.html_name }}"
@@ -111,7 +129,8 @@ em {
             {% for facet in selected_facets  %}
                 <dt>{{ facets_labels|key:facet.field|safe }}</dt>
                 <dd>
-                    <a href="{{ facet.url }}"><i class="icon-remove"></i></a>
+                    <a href="{{ facet.url }}&person={{ request.GET.person|default:"" }}">
+                    <i class="icon-remove"></i></a>
                     {{ facet.r_label }}
                 </dd>
             {% endfor %}
@@ -141,6 +160,20 @@ em {
                     {% endfor %}
                 {% endif %}
             </dl>
+            {% if facets.fields.status and facets.fields.act_type.is_field_selected and not facets.fields.status.is_field_selected %}
+            <dl>
+                <dt>{{ facets_labels.status }}</dt>
+                {% for t in facets.fields.status.counts %}
+                    {% if t.1 %}
+                    <dd>
+                        {% if not t.2 %}
+                            <a href="{{ base_url }}&selected_facets=status:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
+                        {% endif %}
+                    </dd>
+                    {%  endif %}
+                {% endfor %}
+            </dl>
+            {% endif %}
             <dl>
                 {% if facets.fields.is_key and not facets.fields.is_key.is_field_selected %}
                     <dt>{{ facets_labels.is_key }}</dt>
@@ -204,6 +237,22 @@ em {
             </dl>
 
             <dl>
+                {% if facets.fields.has_locations and not facets.fields.has_locations.is_field_selected %}
+                    <dt>{{ facets_labels.has_locations }}</dt>
+                    {# Provide both cases (true, false) #}
+                    {% for t in facets.fields.has_locations.counts %}
+                        {% if t.1 %}
+                            <dd>
+                                {% if not t.2 %}
+                                    <a href="{{ base_url }}&selected_facets=has_locations:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
+                                {% endif %}
+                            </dd>
+                        {%  endif %}
+                    {% endfor %}
+                {% endif %}
+            </dl>
+
+            <dl>
                 {% if not facet_queries_date.is_selected %}
                     <dt>{{ facets_labels.pub_date }}</dt>
                     {% for range in facet_queries_date.ranges|dictsortreversed:"key"  %}
@@ -212,6 +261,38 @@ em {
                                 {{ range.label|safe }}
                             </a> ({{ range.count }})
                         </dd>
+                    {% endfor %}
+                {% endif %}
+            </dl>
+
+            <dl>
+                {% if facets.fields.month and not facets.fields.month.is_field_selected %}
+                    <dt>{{ facets_labels.month }}</dt>
+                    {# Provide both cases (true, false) #}
+                    {% for t in facets.fields.month.counts %}
+                        {% if t.1 %}
+                            <dd>
+                                {% if not t.2 %}
+                                    <a href="{{ base_url }}&selected_facets=month:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
+                                {% endif %}
+                            </dd>
+                        {%  endif %}
+                    {% endfor %}
+                {% endif %}
+            </dl>
+
+            <dl>
+                {% if facets.fields.iter_duration and not facets.fields.iter_duration.is_field_selected %}
+                    <dt>{{ facets_labels.iter_duration }}</dt>
+                    {# Provide both cases (true, false) #}
+                    {% for t in facets.fields.iter_duration.counts %}
+                        {% if t.1 %}
+                            <dd>
+                                {% if not t.2 %}
+                                    <a href="{{ base_url }}&selected_facets=iter_duration:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
+                                {% endif %}
+                            </dd>
+                        {%  endif %}
                     {% endfor %}
                 {% endif %}
             </dl>

@@ -1,6 +1,7 @@
 {% extends 'base_two_columns.html' %}
 {% load monitoring_tags %}
 {% load thumbnail %}
+{% load popover_info %}
 
 {% block title %}Politici | {{ group.name }}{% endblock title %}
 {% block content_header %}Organi politici{% endblock %}
@@ -57,6 +58,7 @@
                     <th class="span2">Presenze</th>
                     <th class="span2">Voti ribelli</th>
                     <th class="span2">Atti</th>
+                    <th class="span2">Interventi {% popover_info 'interventi-consiglieri' %}</th>
                     <th class="span2">Monitorato</th>
                 </tr>
                 </thead>
@@ -95,33 +97,128 @@
 
 {% block footer_js_includes %}
     {{ block.super }}
-    <script src="{{ STATIC_URL }}js/jquery.submitlink.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.submitlink.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.dataTables.js"></script>
     <script type="text/javascript">
+    	fullname_extract = function(node) {
+    		name = $(".person_name", node).text();
+    		return name
+    	}
+    	
+    	function hasRole(node, role_check) {
+    		role_node = $(".person_label", node);
+    		
+    		if (role_node)
+    		{
+    			return role_node.text() == role_check;
+    		}
+    		else
+    		{
+    			return false;
+    		}
+    	}
+    	
+    	sort_fullname_asc = function(a,b) {
+    		
+    		a = $.parseHTML(a);
+    		b = $.parseHTML(b);
+    		
+    		var a_isPresident = hasRole(a, "Presidente");
+    		var a_isVicePresident = hasRole(a, "Vice presidente");
+    		var b_isPresident = (! a_isPresident) && hasRole(b, "Presidente");
+    		var b_isVicePresident = (! a_isVicePresident) && hasRole(b, "Vice presidente");
+    		
+    		var a_name = fullname_extract(a);
+    		var b_name = fullname_extract(b);
+    		
+            if (a_isPresident)
+            {
+            	return -1
+            }
+            else if (b_isPresident)
+           	{
+           		return 1;
+           	}
+           	else if (a_isVicePresident)
+         	{
+         		return -1;		
+         	}
+           	else if (b_isVicePresident)
+           	{
+           		return 1;
+           	}
+           	else if (a_name < b_name)
+           	{
+           		return -1;
+           	}
+           	else if (a_name > b_name)
+           	{
+           		return 1;
+           	}
+           	else
+           	{
+           		return 0	
+           	}
+        };
+    	
+        sort_acts_asc = function(node_a,node_b) {
+
+    		acts_a = parseInt($(node_a).text().replace(/^\s+|\s+$/g, ""));
+            acts_b = parseInt($(node_b).text().replace(/^\s+|\s+$/g, ""));
+
+            if (acts_a < acts_b)
+            {
+                res = -1;
+            }
+            else if (acts_a == acts_b)
+            {   
+                res = 0;
+            }
+            else
+            {
+                res = 1;
+            }
+
+            return res;
+        };
+
+    	$.fn.dataTableExt.oSort['fullname-asc']  = sort_fullname_asc;
+    	$.fn.dataTableExt.oSort['fullname-desc'] = function(a,b) {
+    		return sort_fullname_asc(b, a);
+    	};
+
+        $.fn.dataTableExt.oSort['acts-asc'] = sort_acts_asc;
+        $.fn.dataTableExt.oSort['acts-desc'] = function(a,b) {
+            return sort_acts_asc(b, a);
+        };
+    
         percentage_extract = function(match, $1, offset, original) { return $1; }
 
-        $.fn.dataTableExt.oSort['percentage-asc']  = function(a,b) {
-            var x = parseInt(a.replace(/\D*?(\d*)%/, percentage_extract));
-            var y = parseInt(b.replace(/\D*?(\d*)%/, percentage_extract));
-            return ((x < y) ? -1 : ((x > y) ?  1 : 0));
+       	sort_percentage_asc = function(a,b) {
+            var x_str = a.replace(/\D*?(\d*)%/, percentage_extract);
+            var y_str = b.replace(/\D*?(\d*)%/, percentage_extract);
+            var x = (!x_str || 0 === x_str.length) ? 0 : parseInt(x_str);
+            var y = (!y_str || 0 === y_str.length) ? 0 : parseInt(y_str);
+            var res = ((x < y) ? -1 : ((x > y) ?  1 : 0));
+            return res;
         };
+        
+        $.fn.dataTableExt.oSort['percentage-asc']  = sort_percentage_asc; 
 
         $.fn.dataTableExt.oSort['percentage-desc'] = function(a,b) {
-            var x = parseInt(a.replace(/\D*?(\d*)%/, percentage_extract));
-            var y = parseInt(b.replace(/\D*?(\d*)%/, percentage_extract));
-            return ((x < y) ?  1 : ((x > y) ? -1 : 0));
+        	return sort_percentage_asc(b, a);
         };
-
 
         $(document).ready(function() {
             gTable = $('#consiglieri-gruppo').dataTable({
                 bFilter: false,
                 aoColumns: [
                     null,
-                    null,
+                    { sType: "fullname", asSorting: ['desc', 'asc']},
                     { sType: "percentage", asSorting: ['desc', 'asc']},
                     {asSorting: ['desc', 'asc']},
-                    {asSorting: ['desc', 'asc']},
+                    { sType: "acts", asSorting: ['desc', 'asc']},
+                    { sType: "acts", asSorting: ['desc', 'asc']},
                     {asSorting: ['desc', 'asc']}
                 ],
                 bPaginate: false,
@@ -135,7 +232,8 @@
                 oLanguage: {
                     sSearch: "Ricerca",
                     sZeroRecords: "Nessun risultato per questa ricerca"
-                }
+                },
+                aaSorting: [[ 1, "asc" ]]
 
             });
         });

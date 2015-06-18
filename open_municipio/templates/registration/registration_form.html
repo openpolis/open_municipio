@@ -27,7 +27,9 @@
                     {% include "registration/form_element.html" with element=form.location %}
                     {% include "registration/form_element.html" with element=form.first_name %}
                     {% include "registration/form_element.html" with element=form.last_name %}
-                    {% include "registration/form_element.html" with element=form.uses_nickname checkbox=1 %}
+                    {% if UI_ALLOW_NICKNAMES %}
+                    	{% include "registration/form_element.html" with element=form.uses_nickname checkbox=1 %}
+                    {% endif %}
                     {% include "registration/form_element.html" with element=form.says_is_politician checkbox=1 %}
                     {% include "registration/form_element.html" with element=form.description %}
                     {% include "registration/form_element.html" with element=form.image %}

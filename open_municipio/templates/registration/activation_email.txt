@@ -1,8 +1,9 @@
+{% load url from future %}
 Salve :-)
 abbiamo ricevuto la tua richiesta di registrazione al sito Open municipio.
 Per attivarla basta fare click su questo link:
 
-http://{{ site.domain }}{% url registration_activate activation_key %}
+http://{{ site.domain }}{% url 'registration_activate' activation_key %}
 
 Se non riesci a cliccare sul link qui sopra, per favore, copialo e incollalo nel tuo browser.
 
