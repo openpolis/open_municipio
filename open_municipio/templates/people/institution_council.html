@@ -5,15 +5,12 @@
 {% load monitoring_tags %}
 {% load thumbnail %}
 {% load popover_info %}
+{% load url from future %}
 
 {% block title %}Organi politici | Consiglio{% endblock title %}
 {% block content_header %}Consiglio{% endblock %}
 {% block people_class %}class="active"{% endblock %}
 {% block body_class %}politician{% endblock %}
-
-{% block content_header_city_logo %}
-    <img src="{{ STATIC_URL }}img/{{ main_city|lower }}-logo/politician.png" alt="Comune di {{ main_city }}">
-{% endblock %}
 
 {% block sub_nav %}
     {%  include 'commons/subnav.html' with active='Consiglio' %}
@@ -56,6 +53,12 @@
       {% endcache %}
       </tbody>
     </table>
+
+      <p>
+        <i class="icon-play"></i>
+        <a href="{% url 'om_charge_search' %}?q=&selected_facets=is_active%3Ano&selected_facets=institution:Consigliere">
+          Vedi i consiglieri non più in carica</a>
+      </p>
 
   </section>
 

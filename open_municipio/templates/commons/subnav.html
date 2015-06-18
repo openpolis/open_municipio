@@ -1,4 +1,5 @@
 {% load url from future %}
+
 <nav class="navbar" id="sub-nav">
     <div class="navbar-inner">
         <div class="container-fluid">
@@ -18,6 +19,10 @@
                 <li {% ifequal active 'Gruppi' %}class="unpipe"{% endifequal %}>
                     <a href="{% url 'om_institution_groups' %}" {% ifequal active 'Gruppi' %}
                        class="active"{% endifequal %}>Gruppi</a>
+                </li>
+                <li {% ifequal active 'Cariche' %}class="unpipe"{% endifequal %}>
+                    <a href="{% url 'om_charge_search' %}" {% ifequal active 'Cariche' %}
+                       class="active"{% endifequal %}>Cariche</a>
                 </li>
             </ul>
         </div>

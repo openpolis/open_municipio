@@ -84,7 +84,6 @@ class VotationIndex(indexes.SearchIndex, indexes.Indexable):
         return res
         
 
-
     def prepare_act_url(self, obj):
 
         res = set([])
@@ -143,4 +142,51 @@ class VotationIndex(indexes.SearchIndex, indexes.Indexable):
             return _('yes')
         else:
             return _('no')
+        
 
+    def prepare_properties(self, obj):
+
+        count = obj.majority_vs_minority
+
+        may_presents = count['majority'].get('YES', 0) + count['majority'].get('NO', 0) + \
+            count['majority'].get('ABSTAINED', 0) + count['majority'].get('PRES', 0) + \
+            count['majority'].get('SECRET', 0)
+
+        min_presents = count['minority'].get('YES', 0) + count['minority'].get('NO', 0) + \
+            count['minority'].get('ABSTAINED', 0) + count['minority'].get('PRES', 0) + \
+            count['minority'].get('SECRET', 0)
+
+        total_presents = may_presents + min_presents
+
+        may_partecipants = count['majority'].get('YES', 0) + count['majority'].get('NO', 0)
+        min_partecipants = count['minority'].get('YES', 0) + count['minority'].get('NO', 0)
+        total_partecipants = may_partecipants + min_partecipants
+
+        quorum = (total_partecipants / 2) + 1
+
+        total_yes = count['majority'].get('YES', 0) + count['minority'].get('YES', 0)
+        total_no = count['majority'].get('NO', 0) + count['minority'].get('NO', 0)
+        total_abst = count['majority'].get('ABSTAINED', 0) + count['minority'].get('ABSTAINED', 0)
+        total_pres = count['majority'].get('PRES', 0) + count['minority'].get('PRES', 0)
+
+        if obj.outcome == 1:
+            outcome = 'YES'
+        elif obj.outcome == 2:
+            outcome = 'NO'
+
+        properties = []
+
+        # no numero legale
+        if (may_presents < 16):
+            properties.append(_("minority decisive for legal number"))
+
+        if ('SECRET' not in count['majority']):
+
+            # si e no si equivalgono: outcome NO
+            if total_yes == total_no: quorum = total_yes;
+
+            # minoranza decisiva
+            if (count['majority'][outcome] < quorum):
+                properties.append(_("minority decisive for outcome"))
+
+        return set(properties)

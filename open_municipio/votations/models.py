@@ -15,6 +15,7 @@ from model_utils.managers import QueryManager
 from open_municipio.people.models import Group, InstitutionCharge, Sitting, Institution
 from open_municipio.acts.models import Act
 
+from collections import Counter
 
 class Votation(models.Model):
     """
@@ -208,6 +209,19 @@ class Votation(models.Model):
         if len(errors) > 0:
             raise Exception(",".join(errors))
 
+    @property
+    def majority_vs_minority(self):
+
+        count = { 'majority' : Counter(), 'minority' : Counter() }
+
+        for cv in self.chargevote_set.all():
+
+            if (not cv.charge_group_at_vote_date or cv.charge_group_at_vote_date.is_majority_now):
+                count['majority'].update({ cv.vote : 1 })
+            else:
+                count['minority'].update({ cv.vote : 1 })
+
+        return dict(count)
 
 
 class GroupVote(TimeStampedModel):
