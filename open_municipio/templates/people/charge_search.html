@@ -10,6 +10,19 @@
 {% block content_header %}Cariche{% endblock %}
 {% block people_class %}class="active"{% endblock %}
 {% block body_class %}politician{% endblock %}
+{% block content_width %}span10{% endblock %}
+{% block sidebar_width %}span2{% endblock %}
+
+{% block extra_style %}
+{{ block.super }}
+body #main.two_columns {
+    background-image: -webkit-gradient(linear,left top,right top,color-stop(0, transparent),color-stop(83%, transparent),color-stop(83%, #f6f4f2),color-stop(100%, #f6f4f2));
+    background-image: -webkit-linear-gradient(left,transparent,transparent 83%,#f6f4f2 83%,#f6f4f2 100%);
+    background-image: -moz-linear-gradient(left, transparent, transparent 83%, #f6f4f2 83%, #f6f4f2 100% );
+    background-image: -ms-linear-gradient(left,transparent, transparent 83%, #f6f4f2 83%, #f6f4f2 100%);
+    background-image: -o-linear-gradient( left, transparent, transparent 83%, #f6f4f2 83%, #f6f4f2 100% );
+}
+{% endblock %}
 
 {% block sub_nav %}
     {%  include 'commons/subnav.html' with active='Cariche' %}
