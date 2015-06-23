@@ -344,8 +344,9 @@ class PoliticianDetailView(DetailView):
 
         context['current_groupcharge'] = person.current_groupcharge
 
-        historical_groupcharges = charge.historical_groupcharges #person.historical_groupcharges
-        context['historical_groupcharges'] = historical_groupcharges.order_by('start_date') if historical_groupcharges else None
+        if charge:
+            historical_groupcharges = charge.historical_groupcharges #person.historical_groupcharges
+            context['historical_groupcharges'] = historical_groupcharges.order_by('start_date') if historical_groupcharges else None
 
         # Is the current charge a counselor? If so, we show present/absent
         # graph
