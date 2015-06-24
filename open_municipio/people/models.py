@@ -324,7 +324,11 @@ class Charge(NewsTargetMixin, models.Model):
     def get_absolute_url(self):
         return self.person.get_absolute_url()
 
-    def is_in_charge(self, as_of):
+    @property
+    def is_in_charge(self, as_of=None):
+        
+        if not as_of:
+            as_of = datetime.now()
         
         if not isinstance(as_of, datetime.date):
             raise ValueError("The passed parameter is not a date")
@@ -1368,7 +1372,7 @@ class Mayor(object):
         mayor = None
 
         try:
-            mayor = InstitutionCharge.objects.select_related().get(institution__institution_type=Institution.MAYOR)
+            mayor = InstitutionCharge.objects.select_related().filter(end_date__isnull=True).get(institution__institution_type=Institution.MAYOR)
 
         except InstitutionCharge.DoesNotExist:
             # mayor has not been created
