@@ -1081,11 +1081,16 @@ class Speech(Document):
     @property
     def author_charge(self):
         politician = None
+        now_string = str(self.sitting.date.year) + '-' + str(self.sitting.date.month) + '-' + str(self.sitting.date.day)
+
         try:
-            politician = InstitutionCharge.objects.get(person=self.author,institution__institution_type=Institution.COUNCIL)
+            politician = InstitutionCharge.objects.select_related().current(now_string) \
+                .get(person=self.author, institution=self.sitting.institution)
+
         except ObjectDoesNotExist:
             try:
-                politician = InstitutionCharge.objects.get(person=self.author, institution__institution_type=Institution.CITY_GOVERNMENT)
+                politician = InstitutionCharge.objects.select_related().current(now_string) \
+                    .get(person=self.author, institution__institution_type=Institution.CITY_GOVERNMENT)
             except ObjectDoesNotExist:
                 pass    
 
