@@ -90,14 +90,6 @@ class CouncilListView(TemplateView):
         # Call the base implementation first to get a context
         context = super(CouncilListView, self).get_context_data(**kwargs)
 
-        mayor = municipality.mayor.as_charge
-        council = municipality.council        
-
-        president = None
-        if municipality.council.president is not None:
-            president = municipality.council.president.charge
-
-        vicepresidents = municipality.council.vicepresidents
         groups = municipality.council.groups.active().order_by("name")
         committees = municipality.committees.as_institution
         latest_acts = Act.objects.filter(
@@ -112,12 +104,14 @@ class CouncilListView(TemplateView):
             num_acts[act_type.__name__.lower()] = act_type.objects.filter(
                 emitting_institution__institution_type=Institution.COUNCIL
                 ).count()
+    
+        members = SearchQuerySet()\
+            .filter(django_ct = 'people.institutioncharge')\
+            .filter(institution = _("Counselor"))\
+            .filter(is_active = _("yes"))
 
         extra_context = {
-            'mayor': mayor,
-            'council': council,
-            'president': president,
-            'vicepresidents': vicepresidents,
+            'members': members,
             'groups': groups,
             'committees': committees,
             'latest_acts': latest_acts,
@@ -141,14 +135,6 @@ class CityGovernmentView(TemplateView):
         # Call the base implementation first to get a context
         context = super(CityGovernmentView, self).get_context_data(**kwargs)
 
-        mayor = municipality.mayor.as_charge
-
-        firstdeputy = None
-
-        if municipality.gov.firstdeputy is not None:
-            firstdeputy = municipality.gov.firstdeputy.charge
-
-        citygov = municipality.gov
         latest_acts = Act.objects.filter(
             emitting_institution__institution_type=Institution.CITY_GOVERNMENT
             ).order_by('-presentation_date')[:3]
@@ -161,14 +147,17 @@ class CityGovernmentView(TemplateView):
             num_acts[act_type.__name__.lower()] = act_type.objects.filter(
                 emitting_institution__institution_type=Institution.CITY_GOVERNMENT
                 ).count()
-            
+    
+        members = SearchQuerySet()\
+            .filter(django_ct = 'people.institutioncharge')\
+            .filter(Q(institution__exact = _("City Government Member")) | Q(institution = _("Mayor")))\
+            .filter(is_active = _("yes"))
+
         extra_context = {
-            'mayor': mayor,
-            'firstdeputy': firstdeputy,
-            'citygov': citygov,
             'latest_acts': latest_acts,
             'num_acts': num_acts,
             'events': events,
+            'members': members,
             }
 
         # Update context with extra values we need
@@ -665,13 +654,14 @@ class ChargeSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
     """
     __name__ = 'ChargeSearchView'
 
-    FACETS_SORTED = [ 'start_date', 'end_date', 'is_active', 'institution' ]
+    FACETS_SORTED = [ 'start_date', 'end_date', 'is_active', 'institution', 'responsability' ]
 
     FACETS_LABELS = {
         'is_active': _('Active'),
         'start_date': _('Start date'),
         'end_date': _('End date'),
-        'institution': _('Institution')
+        'institution': _('Institution'),
+        'responsability': _('Responsability')
     }
     DATE_INTERVALS_RANGES = { }
 
@@ -683,8 +673,9 @@ class ChargeSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
             date_range = self._build_date_range(curr_year)
             self.DATE_INTERVALS_RANGES[curr_year] = date_range
     
-        sqs = SearchQuerySet().filter(django_ct='people.institutioncharge').\
-            filter(institution = Raw("[* TO *]")).facet('is_active').facet('institution')
+        sqs = SearchQuerySet().filter(django_ct='people.institutioncharge')\
+            .filter(institution = Raw("[* TO *]")).facet('is_active')\
+            .facet('institution').facet('responsability')
 
         for (year, range) in self.DATE_INTERVALS_RANGES.items():
             sqs = sqs.query_facet('start_date', range['qrange'])

@@ -3,7 +3,7 @@ from haystack import indexes
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
-from open_municipio.people.models import Institution, InstitutionCharge, Person, SittingItem
+from open_municipio.people.models import Institution, InstitutionCharge, Person, SittingItem, InstitutionResponsability
 
 class InstitutionChargeIndex(indexes.SearchIndex, indexes.Indexable):
 
@@ -12,6 +12,8 @@ class InstitutionChargeIndex(indexes.SearchIndex, indexes.Indexable):
     first_name = indexes.CharField(model_attr='person__first_name')
     last_name = indexes.CharField(model_attr='person__last_name')
     institution = indexes.FacetCharField()
+    responsability = indexes.FacetCharField()
+    level = indexes.IntegerField()
 
     start_date = indexes.FacetDateField(model_attr='start_date')
     end_date = indexes.FacetDateField(model_attr='end_date')
@@ -52,6 +54,22 @@ class InstitutionChargeIndex(indexes.SearchIndex, indexes.Indexable):
     def prepare_institution(self, obj):
 
         return obj.charge_type if obj.institution.institution_type <= Institution.COUNCIL else ''
+
+    def prepare_responsability(self, obj):
+
+        if obj.responsabilities.count() >= 1:
+            return obj.responsabilities[0].get_charge_type_display()
+
+    def prepare_level(self, obj):
+
+        n = 10 * obj.institution.institution_type
+
+        if obj.responsabilities.count() >= 1:
+            n += [i[0] for i in list(InstitutionResponsability.CHARGE_TYPES)].index(obj.responsabilities[0].charge_type)
+        else:
+            n += 9
+
+        return n
 
     def prepare_is_active(self, obj):
 

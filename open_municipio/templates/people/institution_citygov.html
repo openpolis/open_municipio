@@ -39,13 +39,13 @@
           </tr>
           </thead>
           <tbody>
-          {% cache 86400 gov_members %}
-          {%  include 'people/gov_member_table_row.html' with charge=mayor  label="Sindaco" id_prefix="0" %}
-          {%  include 'people/gov_member_table_row.html' with charge=firstdeputy  label="Vice sindaco" id_prefix="1" %}
-          {% for c in citygov.members %}
-              {%  include 'people/gov_member_table_row.html' with charge=c id_prefix="2" %}
+          {% for c in members %}
+              {% if c.institution == 'Sindaco' %}
+                {%  include 'people/gov_member_table_row.html' with charge=c label=c.institution %}
+              {% else %}
+                {%  include 'people/gov_member_table_row.html' with charge=c label=c.responsability %}
+              {% endif %}
           {% endfor %}
-          {% endcache %}
           </tbody>
       </table>
 
@@ -97,49 +97,15 @@
 			return name
 		}
 		
-		function hasRole(node, role_check) {
-			role_node = $(".person_label", node);
-			
-			if (role_node)
-			{
-				return role_node.text() == role_check;
-			}
-			else
-			{
-				return false;
-			}
-		}
-		
 		sort_fullname_asc = function(a,b) {
 			
 			a = $.parseHTML(a);
 			b = $.parseHTML(b);
-			
-			var a_isPresident = hasRole(a, "Sindaco");
-			var a_isVicePresident = hasRole(a, "Vice sindaco");
-			var b_isPresident = (! a_isPresident) && hasRole(b, "Sindaco");
-			var b_isVicePresident = (! a_isVicePresident) && hasRole(b, "Vice sindaco");
-			
+
 			var a_name = fullname_extract(a);
 			var b_name = fullname_extract(b);
 			
-	        if (a_isPresident)
-	        {
-	        	return -1
-	        }
-	        else if (b_isPresident)
-	       	{
-	       		return 1;
-	       	}
-	       	else if (a_isVicePresident)
-	     	{
-	     		return -1;		
-	     	}
-	       	else if (b_isVicePresident)
-	       	{
-	       		return 1;
-	       	}
-	       	else if (a_name < b_name)
+			if (a_name < b_name)
 	       	{
 	       		return -1;
 	       	}
@@ -187,8 +153,9 @@
         $(document).ready(function() {
             gTable = $('#giunta').dataTable({
                 bFilter: false,
+                bSort: true,
                 aoColumns: [
-                    null,
+                    { bSearchable: false, bVisible: false },
                     { sType: "fullname", asSorting: ['desc', 'asc']},
                     null,
                     null,
@@ -199,17 +166,13 @@
                 ],
                 bPaginate: false,
                 bLengthChange: false,
-                bSort: true,
                 bInfo: false,
                 bAutoWidth: false,
-                aoColumnDefs:[
-                    { bSearchable: false, bVisible: false, aTargets: [0] }
-                ],
                 oLanguage: {
                     sSearch: "Ricerca",
                     sZeroRecords: "Nessun risultato per questa ricerca"
                 },
-                aaSorting: [[ 1, "asc" ]]
+                aaSorting: [[ 0, "asc" ], [ 1, "asc" ]]
             });
         });
 

@@ -5,16 +5,16 @@
 
 <tr>
     <!-- ID -->
-    <td>{{ id_prefix }}-{{ charge.id }}</td>
+    <td>{{ charge.level }}</td>
     <!-- politician -->
     <td>
         <!-- thumbnail -->
         <div class="container-fluid">
             <div class="row-fluid">
                 <div class="span2" style="min-width: 50px">
-                    <a href="{{ charge.person.get_absolute_url }}">
-                        {% if charge.person.img %}
-                            {% thumbnail charge.person.img "50x50" crop="center" as im %}
+                    <a href="{{ charge.object.person.get_absolute_url }}">
+                        {% if charge.object.person.img %}
+                            {% thumbnail charge.object.person.img "50x50" crop="center" as im %}
                                 <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" class="politician-picture">
                             {% endthumbnail %}
                         {% else %}
@@ -24,14 +24,16 @@
                 </div>
                 <!-- name -->
                 <div class="span8">
-                    <a href="{{ charge.person.get_absolute_url }}">
-                        <strong class="person_name">{{ charge.person|title }}</strong>
+                    <a href="{{ charge.object.person.get_absolute_url }}">
+                        <strong class="person_name">{{ charge.object.person|title }}</strong>
                     </a>
                     <br/>
-                    {% if label %}<span class="label person_label" style="line-height: 20px;">{{ label }}</span><br/>{% endif %}
-{% if charge != None %}
-                    in carica dal {{ charge.start_date|date:"d.m.Y" }}
-                    {% object_inline_monitoring charge.person shows_monitoring_users=False %}
+                    {% if label %}
+                    <span class="label person_label" style="line-height: 20px;">
+                    {{ label }}</span><br/>{% endif %}
+{% if charge.object != None %}
+                    in carica dal {{ charge.object.start_date|date:"d.m.Y" }}
+                    {% object_inline_monitoring charge.object.person shows_monitoring_users=False %}
 {% endif %}
                 </div>
             </div>
@@ -41,12 +43,12 @@
 
     <!-- deleghe -->
     <td>
-        {{ charge.denomination }}
+        {{ charge.object.denomination }}
     </td>
 
     <!-- presenze -->
     <td class="text-center">
-      {% if charge != None %}
+      {% if charge.object != None %}
         {% if charge.n_present_attendances %}
             {% with charge.n_present_attendances|add:charge.n_absent_attendances as tot_attendances %}
           <strong>{% widthratio charge.n_present_attendances tot_attendances 100 %}%</strong>
@@ -59,27 +61,27 @@
 
     <!-- presented acts -->
     <td class="text-center">
-        <a href="{% url 'om_act_search' %}?q=&person={{ charge.person.slug }}">
+        <a href="{% url 'om_act_search' %}?q=&person={{ charge.object.person.slug }}">
         {{ charge.n_presented_acts }}
         </a>
     </td>
 
     <!-- speeches -->
     <td class="text-center">
-        <a href="{% url 'om_speech_search' %}?q=&person={{ charge.person.slug }}">
-        {{ charge.person.n_speeches }}
+        <a href="{% url 'om_speech_search' %}?q=&person={{ charge.object.person.slug }}">
+        {{ charge.n_speeches }}
         </a>
     </td>
 
     <!-- received acts -->
     <td class="text-center">
-        <a href="{% url 'om_act_search' %}?q=&recipient={{ charge.person.slug }}">
+        <a href="{% url 'om_act_search' %}?q=&recipient={{ charge.object.person.slug }}">
         {{ charge.n_received_acts }}
         </a>
     </td>
 
     <!-- monitoring users -->
     <td class="text-center">
-        {{ charge.person.all_monitoring_count }}
+        {{ charge.object.person.all_monitoring_count }}
     </td>
 </tr>
