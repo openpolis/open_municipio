@@ -22,6 +22,7 @@ class ActIndex(indexes.SearchIndex, indexes.Indexable):
     pub_date = indexes.FacetDateField(model_attr='first_date')
     final_date = indexes.DateField(model_attr='final_date')
     person = indexes.MultiValueField(indexed=True, stored=False)
+    charge = indexes.MultiValueField(indexed=True, stored=False)
     recipient = indexes.MultiValueField(indexed=True, stored=False)
     tags_with_urls = indexes.MultiValueField(indexed=True, stored=True)
     categories_with_urls = indexes.MultiValueField(indexed=True, stored=True)
@@ -106,6 +107,12 @@ class ActIndex(indexes.SearchIndex, indexes.Indexable):
         return [p['person__slug'] for p in
                 list(obj.first_signers.values('person__slug').distinct()) +
                 list(obj.co_signers.values('person__slug').distinct())]
+
+
+    def prepare_charge(self, obj):
+        return [str(c.id) for c in
+                list(obj.first_signers) +
+                list(obj.co_signers)]
 
 
     def prepare_recipient(self, obj):

@@ -102,7 +102,7 @@ body #main.two_columns {
             <td>{{ result.object.duration.days }}</td>
 
                 <td>{% if result.n_presented_acts %}
-                	<a href="{% url 'om_act_search' %}?q=&person={{ result.object.person.slug }}">
+                	<a href="{% url 'om_act_search' %}?q=&charge={{ result.object.id }}">
                 	{{ result.n_presented_acts }}</a>
                 {% endif %}</td>
 
@@ -112,37 +112,37 @@ body #main.two_columns {
                 {% endif %}</td>
 
                 <td>{% if result.n_cgdeliberations %}
-                	<a href="{% url 'om_act_search' %}?q=&person={{ result.object.person.slug }}&selected_facets=act_type:delibera di giunta">
+                	<a href="{% url 'om_act_search' %}?q=&charge={{ result.object.id }}&selected_facets=act_type:delibera di giunta">
                 	{{ result.n_cgdeliberations }}</a><br />({{ result.n_cgdeliberations_index|floatformat:2 }})
                 {% endif %}</td>
 
                 <td>{% if result.n_deliberations %}
-                	<a href="{% url 'om_act_search' %}?q=&person={{ result.object.person.slug }}&selected_facets=act_type:delibera">
+                	<a href="{% url 'om_act_search' %}?q=&charge={{ result.object.id }}&selected_facets=act_type:delibera">
                 	{{ result.n_deliberations }}</a><br />({{ result.n_deliberations_index|floatformat:2 }})
                 {% endif %}</td>
 
                 <td>{% if result.n_motions %}
-                	<a href="{% url 'om_act_search' %}?q=&person={{ result.object.person.slug }}&selected_facets=act_type:mozione">
+                	<a href="{% url 'om_act_search' %}?q=&charge={{ result.object.id }}&selected_facets=act_type:mozione">
                 	{{ result.n_motions }}</a><br />({{ result.n_motions_index|floatformat:2 }})
                 {% endif %}</td>
 
                 <td>{% if result.n_agendas %}
-                	<a href="{% url 'om_act_search' %}?q=&person={{ result.object.person.slug }}&selected_facets=act_type:ordine del giorno">
+                	<a href="{% url 'om_act_search' %}?q=&charge={{ result.object.id }}&selected_facets=act_type:ordine del giorno">
                 	{{ result.n_agendas }}</a><br />({{ result.n_agendas_index|floatformat:2 }})
                 {% endif %}</td>
 
                 <td>{% if result.n_amendments %}
-                	<a href="{% url 'om_act_search' %}?q=&person={{ result.object.person.slug }}&selected_facets=act_type:emendamento">
+                	<a href="{% url 'om_act_search' %}?q=&charge={{ result.object.id }}&selected_facets=act_type:emendamento">
                 	{{ result.n_amendments }}</a><br />({{ result.n_amendments_index|floatformat:2 }})
                 {% endif %}</td>
 
                 <td>{% if result.n_interrogations %}
-                	<a href="{% url 'om_act_search' %}?q=&person={{ result.object.person.slug }}&selected_facets=act_type:interrogazione">
+                	<a href="{% url 'om_act_search' %}?q=&charge={{ result.object.id }}&selected_facets=act_type:interrogazione">
                 	{{ result.n_interrogations }}</a><br />({{ result.n_interrogations_index|floatformat:2 }})
                 {% endif %}</td>
 
                 <td>{% if result.n_interpellations %}
-                	<a href="{% url 'om_act_search' %}?q=&person={{ result.object.person.slug }}&selected_facets=act_type:interpellanza">
+                	<a href="{% url 'om_act_search' %}?q=&charge={{ result.object.id }}&selected_facets=act_type:interpellanza">
                 	{{ result.n_interpellations }}</a><br />({{ result.n_interpellations_index|floatformat:2 }})
                 {% endif %}</td>
 

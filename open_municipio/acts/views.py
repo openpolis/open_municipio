@@ -24,7 +24,7 @@ from open_municipio.monitoring.forms import MonitoringForm
 from open_municipio.om_search.forms import RangeFacetedSearchForm
 from open_municipio.om_search.mixins import FacetRangeDateIntervalsMixin
 from open_municipio.om_search.views import ExtendedFacetedSearchView
-from open_municipio.people.models import Person
+from open_municipio.people.models import Person, InstitutionCharge
 from open_municipio.acts.models import Speech
 
 from open_municipio.taxonomy.models import Tag, Category
@@ -123,6 +123,13 @@ class ActSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
         if person_slug:
             try:
                 extra['person'] = Person.objects.get(slug=person_slug)
+            except ObjectDoesNotExist:
+                pass
+
+        charge_id = self.request.GET.get('charge', None)
+        if charge_id:
+            try:
+                extra['charge'] = InstitutionCharge.objects.get(pk=charge_id)
             except ObjectDoesNotExist:
                 pass
 

@@ -61,7 +61,7 @@
 
     <!-- presented acts -->
     <td class="text-center">
-        <a href="{% url 'om_act_search' %}?q=&person={{ charge.object.person.slug }}">
+        <a href="{% url 'om_act_search' %}?q=&charge={{ charge.object.id }}">
         {{ charge.n_presented_acts }}
         </a>
     </td>

@@ -27,6 +27,10 @@ em {
               <p>per il politico: <a href="{{ person.get_absolute_url }}">{{ person }}</a>  </p>
           {% endif %}
 
+          {% if charge %}
+              <p>per la carica: <a href="{{ charge.get_absolute_url }}">{{ charge }}</a>  </p>
+          {% endif %}
+
           {% if category %}
               <p>per la categoria: <a href="{{ category.get_absolute_url }}">{{ category }}</a>  </p>
           {% endif %}
@@ -40,7 +44,7 @@ em {
           {% endif %}
 
           {% if recipient %}
-              <p>per il destinatario: <a href="{{ person.get_absolute_url }}">{{ recipient }}</a>  </p>
+              <p>per il destinatario: <a href="{{ recipient.get_absolute_url }}">{{ recipient }}</a>  </p>
           {% endif %}
 
           <table class="search-results">
