@@ -1,4 +1,4 @@
-import datetime # FIXME perhaps we should remove this, and rely only on django.utils.datetime_safe? -FS
+import datetime # use this only for checking types. use django.utils.datetime_safe for handling actual dates
 
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
@@ -324,11 +324,12 @@ class Charge(NewsTargetMixin, models.Model):
     def get_absolute_url(self):
         return self.person.get_absolute_url()
 
-    @property
+#    @property
     def is_in_charge(self, as_of=None):
         
         if not as_of:
-            as_of = datetime.now()
+            #as_of = datetime.now()
+            as_of = date.today()
         
         if not isinstance(as_of, datetime.date):
             raise ValueError("The passed parameter is not a date")
@@ -340,7 +341,9 @@ class Charge(NewsTargetMixin, models.Model):
 
         if not self.start_date: return None
 
-        return (self.end_date if self.end_date else datetime.datetime.now().date()) - self.start_date
+#        return (self.end_date if self.end_date else datetime.datetime.now().date()) - self.start_date
+        return (self.end_date if self.end_date else date.today()) - self.start_date
+
 
 class ChargeResponsability(models.Model):
     """
