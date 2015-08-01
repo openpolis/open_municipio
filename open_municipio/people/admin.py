@@ -18,6 +18,7 @@ from django.forms import ModelForm
 
 from open_municipio.people.forms import SittingItemFormSet, SpeechInlineForm
 from open_municipio.om.admin import LinkedTabularInline
+from .filters import FilterActiveCharge
 
 class PersonResourceInline(admin.TabularInline):
     model = PersonResource
@@ -30,10 +31,6 @@ class PersonAdminWithResources(AdminImageMixin, admin.ModelAdmin):
     search_fields = ['^first_name', '^last_name']
     prepopulated_fields = {"slug": ("first_name","last_name","birth_date", "birth_location",)}
     inlines = [PersonResourceInline, ]
-
-
-class ChargeAdmin(admin.ModelAdmin):
-    raw_id_fields = ('person', )
 
 
 class GroupResourceInline(admin.TabularInline):
@@ -211,7 +208,7 @@ class InstitutionChargeAdmin(ChargeAdmin):
     )
     list_display = ('__unicode__', 'institution', 'start_date', 'end_date')
     list_select_related = True
-    list_filter = ['institution__name']
+    list_filter = ['institution__name', FilterActiveCharge, ]
     inlines = [InstitutionResponsabilityInline]
 
 

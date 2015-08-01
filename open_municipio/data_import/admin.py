@@ -6,6 +6,7 @@ from open_municipio.data_import.models import *
 from open_municipio.data_import.models import LookupPerson, \
     LookupInstitutionCharge, LookupAdministrationCharge, LookupCompanyCharge, \
     Provider
+from .filters import FilterActiveCharge
 
 from django.contrib import admin 
 
@@ -17,7 +18,7 @@ admin.site.register(LookupCompanyCharge)
 
 class LookupInstitutionChargeAdmin(admin.ModelAdmin):
     list_display = ('person','institution','external','provider')
-    list_filter = ('provider', 'local__institution',)
+    list_filter = ('provider', 'local__institution',FilterActiveCharge)
     ordering = ['local__person__last_name','local__person__first_name',]
 
     raw_id_fields = ( 'local', )
