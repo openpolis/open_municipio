@@ -831,12 +831,12 @@ class GroupCharge(models.Model):
     
     This only makes sense for ``InstitutionCharges``.
     """
-    group = models.ForeignKey('Group')
-    charge = models.ForeignKey('InstitutionCharge')
-    charge_description = models.CharField(blank=True, max_length=255)
-    start_date = models.DateField()
-    end_date = models.DateField(blank=True, null=True)
-    end_reason = models.CharField(blank=True, max_length=255)
+    group = models.ForeignKey('Group', verbose_name=_("group"))
+    charge = models.ForeignKey('InstitutionCharge', verbose_name=_("charge"))
+    charge_description = models.CharField(blank=True, max_length=255, verbose_name=_("charge description"))
+    start_date = models.DateField(verbose_name=_("start date"))
+    end_date = models.DateField(blank=True, null=True, verbose_name=_("end date"))
+    end_reason = models.CharField(blank=True, max_length=255, verbose_name=_("end reason"))
     
     objects = PassThroughManager.for_queryset_class(TimeFramedQuerySet)()    
 
@@ -885,7 +885,7 @@ class GroupCharge(models.Model):
 
 class GroupResponsability(ChargeResponsability):
     """
-    Responsability for group charges.
+    Responsibility for group charges.
     """
     CHARGE_TYPES = Choices(
         ('LEADER', 'leader', _('Group leader')),
@@ -903,6 +903,10 @@ class GroupResponsability(ChargeResponsability):
             end_date = " - %s" % self.end_date
 
         return u"%s (%s%s)" % (self.get_charge_type_display(), self.start_date, end_date)
+
+    class Meta:
+        verbose_name = _("group responsibility")
+        verbose_name_plural = _("group responsibilities")
 
 
 class GroupIsMajority(models.Model):
