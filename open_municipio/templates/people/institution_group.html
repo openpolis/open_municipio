@@ -63,14 +63,8 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% if group.leader %}
-                    {% include 'people/counselor_table_row.html' with charge=group.leader.charge.charge is_in_group=1 label="Capogruppo" id_prefix="0" %}
-                {% endif %}
-                {% if group.deputy %}
-                    {% include 'people/counselor_table_row.html' with charge=group.deputy.charge.charge is_in_group=1 label="Vice-capogruppo" id_prefix="1" %}
-                {% endif %}
-                {% for c in group.alpha_members %}
-                    {%  include 'people/counselor_table_row.html' with charge=c is_in_group=1 id_prefix="2" %}
+                {% for c in members %}
+                	{%  include 'people/counselor_table_row.html' with charge=c %}
                 {% endfor %}
                 </tbody>
             </table>

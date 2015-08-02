@@ -970,6 +970,7 @@ class Institution(Body):
     COUNCIL = 3
     COMMITTEE = 4
     JOINT_COMMITTEE = 5
+
     INSTITUTION_TYPES = Choices(
       (MAYOR, _('Mayor')),    
       (COUNCIL, _('Council')),
