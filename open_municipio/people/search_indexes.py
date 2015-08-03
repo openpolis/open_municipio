@@ -3,7 +3,7 @@ from haystack import indexes
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
-from open_municipio.people.models import Institution, InstitutionCharge, Person, SittingItem, InstitutionResponsability
+from open_municipio.people.models import Institution, InstitutionCharge, GroupCharge, Person, SittingItem, InstitutionResponsability
 
 class InstitutionChargeIndex(indexes.SearchIndex, indexes.Indexable):
 
@@ -11,7 +11,10 @@ class InstitutionChargeIndex(indexes.SearchIndex, indexes.Indexable):
 
     first_name = indexes.CharField(model_attr='person__first_name')
     last_name = indexes.CharField(model_attr='person__last_name')
+    person = indexes.CharField(model_attr='person__slug')
     institution = indexes.FacetCharField()
+    group = indexes.MultiValueField(indexed=True, stored=False)
+    current_group = indexes.CharField(indexed=True, stored=False)
     responsability = indexes.FacetCharField()
     level = indexes.IntegerField()
 
@@ -54,6 +57,15 @@ class InstitutionChargeIndex(indexes.SearchIndex, indexes.Indexable):
     def prepare_institution(self, obj):
 
         return obj.charge_type if obj.institution.institution_type <= Institution.COUNCIL else ''
+
+    def prepare_group(self, obj):
+
+        return [p['group__slug'] for p in
+            GroupCharge.objects.select_related().filter(charge__id=obj.id).values('group__slug').distinct()]
+
+    def prepare_current_group(self, obj):
+
+        return obj.current_groupcharge.group.slug if obj.current_groupcharge else ''
 
     def prepare_responsability(self, obj):
 

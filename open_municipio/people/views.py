@@ -187,7 +187,17 @@ class GroupDetailView(DetailView):
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         extra_context = super(GroupDetailView, self).get_context_data(**kwargs)
+
         extra_context['groups'] = municipality.council.groups.filter(groupcharge__end_date__isnull=True).distinct()
+    
+        members = SearchQuerySet()\
+            .filter(django_ct = 'people.institutioncharge')\
+            .filter(institution = _("Counselor"))\
+            .filter(is_active = _("yes"))\
+            .filter(current_group = self.object.slug)
+
+        extra_context['members'] = members
+
         return extra_context
 
 
@@ -729,6 +739,20 @@ class ChargeSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
         """
         extra = super(ChargeSearchView, self).extra_context()
         extra['base_url'] = reverse('om_charge_search') + '?' + extra['params'].urlencode()
+
+        person_slug = self.request.GET.get('person', None)
+        if person_slug:
+            try:
+                extra['person'] = Person.objects.get(slug=person_slug)
+            except ObjectDoesNotExist:
+                pass
+
+        group_slug = self.request.GET.get('group', None)
+        if group_slug:
+            try:
+                extra['group'] = Group.objects.get(slug=group_slug)
+            except ObjectDoesNotExist:
+                pass
 
         # get data about custom date range facets
         extra['facet_queries_start_date'] = self._get_custom_facet_queries_date('start_date')

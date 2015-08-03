@@ -6,6 +6,7 @@ class RangeFacetedSearchForm(SearchForm):
     person = forms.CharField(required=False)
     charge = forms.IntegerField(required=False)
     recipient = forms.CharField(required=False)
+    group = forms.CharField(required=False)
     category = forms.CharField(required=False)
     tag = forms.CharField(required=False)
     location = forms.CharField(required=False)
@@ -49,6 +50,8 @@ class RangeFacetedSearchForm(SearchForm):
             sqs = sqs.filter_and(charge=self.cleaned_data['charge'])
         if self.is_valid() and self.cleaned_data.get('recipient'):
             sqs = sqs.filter_and(recipient=self.cleaned_data['recipient'])
+        if self.is_valid() and self.cleaned_data.get('group'):
+            sqs = sqs.filter_and(group=self.cleaned_data['group'])
 
         # aggiunge filtri per category, tag o location, se presenti
         if self.is_valid() and self.cleaned_data.get('category'):

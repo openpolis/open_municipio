@@ -44,9 +44,13 @@ body #main.two_columns {
   </p>
 
     {% if person %}
-      <p>per: <a href="{{ person.get_absolute_url }}">{{ person }}</a> </p>
+      <p>per: <a href="{{ person.get_absolute_url }}">{{ person }}</a></p>
     {% endif %}
-    
+
+    {% if group %}
+        <p>per il gruppo: <a href="{{ group.get_absolute_url }}">{{ group }}</a></p>
+    {% endif %}
+
     <table class="data dataTable">
       <thead style="font-size: 10px;">
         <tr>
