@@ -17,6 +17,7 @@ class FilterActiveCharge(SimpleListFilter):
             ('0', _('no')),
         )
 
+
     def queryset(self, request, queryset):
 
         value = self.value()

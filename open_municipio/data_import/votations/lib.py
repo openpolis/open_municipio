@@ -375,9 +375,9 @@ class DBVotationWriter(BaseVotationWriter):
         if not self.dry_run:
             s, sitting_created = OMSitting.objects.get_or_create(
                 idnum=sitting._id,
+                date=sitting.date,
                 defaults={
-                    'number':      sitting.sitting_n, #sitting.seq_n,
-                    'date':        sitting.date,
+                    'number':      sitting.sitting_n,
                     'call':        sitting.call,
                     'institution': inst,
                     }
@@ -399,7 +399,9 @@ class DBVotationWriter(BaseVotationWriter):
                 #raise Exception("Existing sitting number %s, date %s but ballot date is %s" % (sitting.seq_n, sitting.date, ballot_date))
                 self.logger.warning("Existing sitting number %s, date %s but ballot date is %s. Proceed with caution ..." % (sitting.seq_n, sitting.date, ballot_date))
 
-            if not self.dry_run:
+            if self.dry_run:
+                return
+            else:
                 # get or create the ballot in the DB
                 b, created = OMBallot.objects.get_or_create(
                     idnum=ballot.seq_n,
@@ -422,9 +424,6 @@ class DBVotationWriter(BaseVotationWriter):
                 else:
                     self.logger.debug("%s found in DB, not updated..." % b)
 
-
-            if self.dry_run:
-                return
 
             for vote in ballot.votes:
                 assert isinstance(vote, Vote)

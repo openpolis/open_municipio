@@ -5,6 +5,8 @@ from django.utils.translation import ugettext_lazy as _
 from open_municipio.votations.models import ChargeVote, GroupVote, Votation  
 from open_municipio.votations.filters import VotationIsLinkedToAct, VotationByYearFilterSpec, VotationByMonthFilterSpec
 
+from .filters import VoteHasActiveCharge, ChargeVoteByYearFilterSpec, ChargeVoteByMonthFilterSpec
+
 
 class GroupVoteAdmin(admin.ModelAdmin):
     list_display = ('id', 'votation', 'group', 'vote')
@@ -12,14 +14,19 @@ class GroupVoteAdmin(admin.ModelAdmin):
 
 
 class ChargeVoteAdmin(admin.ModelAdmin):
-    list_display = ('id', 'votation', 'charge', 'charge_group_at_vote_date', 'vote')
-    list_filter = ('vote',)
+    list_display = ('id', 'votation', 'charge', 'charge_group_at_vote_date', 'vote', 'sitting_date', )
+    readonly_fields = [ 'charge_group_at_vote_date', 'sitting_date', ]
+    list_filter = ('vote', 'is_rebel', VoteHasActiveCharge, ChargeVoteByYearFilterSpec, ChargeVoteByMonthFilterSpec )
     raw_id_fields = ['votation', 'charge']
     search_fields = ['charge__person__first_name', 'charge__person__last_name', ]
 
     def charge_group_at_vote_date(self, object):
         return object.charge_group_at_vote_date
     charge_group_at_vote_date.short_description = _('Charge group at vote date')
+
+    def sitting_date(self, object):
+        return object.votation.sitting.date
+    sitting_date.short_description = _("sitting date")
 
 class GroupVoteInline(admin.TabularInline):
     model = GroupVote
