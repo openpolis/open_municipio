@@ -24,27 +24,31 @@ em {
           <h2>{% if not query %}Trovati {% endif %} {{ n_results }} documenti</h2>
 
           {% if person %}
-              <p>per il politico: <a href="{{ person.get_absolute_url }}">{{ person }}</a>  </p>
+              <p>per il politico: <a href="{{ person.get_absolute_url }}">{{ person }}</a></p>
           {% endif %}
 
           {% if charge %}
-              <p>per la carica: <a href="{{ charge.get_absolute_url }}">{{ charge }}</a>  </p>
+              <p>per la carica: <a href="{{ charge.get_absolute_url }}">{{ charge }}</a></p>
+          {% endif %}
+
+          {% if group %}
+              <p>per il gruppo: <a href="{{ group.get_absolute_url }}">{{ group }}</a></p>
           {% endif %}
 
           {% if category %}
-              <p>per la categoria: <a href="{{ category.get_absolute_url }}">{{ category }}</a>  </p>
+              <p>per la categoria: <a href="{{ category.get_absolute_url }}">{{ category }}</a></p>
           {% endif %}
 
           {% if tag %}
-              <p>per l'argomento: <a href="{{ tag.get_absolute_url }}">{{ tag }}</a>  </p>
+              <p>per l'argomento: <a href="{{ tag.get_absolute_url }}">{{ tag }}</a></p>
           {% endif %}
 
           {% if location %}
-              <p>per la località: <a href="{{ location.get_absolute_url }}">{{ location }}</a>  </p>
+              <p>per la località: <a href="{{ location.get_absolute_url }}">{{ location }}</a></p>
           {% endif %}
 
           {% if recipient %}
-              <p>per il destinatario: <a href="{{ recipient.get_absolute_url }}">{{ recipient }}</a>  </p>
+              <p>per il destinatario: <a href="{{ recipient.get_absolute_url }}">{{ recipient }}</a></p>
           {% endif %}
 
           <table class="search-results">
