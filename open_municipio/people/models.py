@@ -171,6 +171,16 @@ class Person(models.Model, MonitorizedItem):
         except ObjectDoesNotExist:
             return None
 
+    def last_charge(self, moment=None):
+        """
+        last charge, if any
+        """
+        charges = self.current_institution_charges if self.has_current_charges() else self.past_institution_charges
+        if charges.count() > 0:
+            return charges[0]
+        else:
+            raise ObjectDoesNotExist
+
 
     def get_historical_groupcharges(self, moment=None):
         """
