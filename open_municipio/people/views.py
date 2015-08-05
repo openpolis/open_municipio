@@ -301,6 +301,7 @@ class PoliticianDetailView(DetailView):
             if len(all_charges) > 0:
                 charge = all_charges[0]
 
+        print "current charge: %s (%s - %s)" % (charge, charge.start_date, charge.end_date)
 
         return charge
 
@@ -394,8 +395,12 @@ class PoliticianDetailView(DetailView):
                 .order_by('-votation__sitting__date')[0:10]
 
         # last 10 presented acts
+
+#        presented_acts = Act.objects\
+#            .filter(actsupport__charge__pk__in=person.current_institution_charges)\
+#            .order_by('-presentation_date')
         presented_acts = Act.objects\
-            .filter(actsupport__charge__pk__in=person.current_institution_charges)\
+            .filter(actsupport__charge=charge)\
             .order_by('-presentation_date')
         context['n_presented_acts'] = presented_acts.count()
         context['presented_acts'] = presented_acts[0:10]
