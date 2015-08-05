@@ -2,7 +2,7 @@ import locale
 from django.utils.html import strip_tags
 from HTMLParser import HTMLParser
 from haystack import indexes
-from open_municipio.acts.models import Act, Speech
+from open_municipio.acts.models import Act, Speech, ActSupport
 from open_municipio.people.models import Institution
 from django.utils.translation import activate
 from django.conf import settings
@@ -23,6 +23,7 @@ class ActIndex(indexes.SearchIndex, indexes.Indexable):
     final_date = indexes.DateField(model_attr='final_date')
     person = indexes.MultiValueField(indexed=True, stored=False)
     charge = indexes.MultiValueField(indexed=True, stored=False)
+    group = indexes.MultiValueField(indexed=True, stored=False)
     recipient = indexes.MultiValueField(indexed=True, stored=False)
     tags_with_urls = indexes.MultiValueField(indexed=True, stored=True)
     categories_with_urls = indexes.MultiValueField(indexed=True, stored=True)
@@ -104,16 +105,25 @@ class ActIndex(indexes.SearchIndex, indexes.Indexable):
             return _('yes')
 
     def prepare_person(self, obj):
+
         return [p['person__slug'] for p in
                 list(obj.first_signers.values('person__slug').distinct()) +
                 list(obj.co_signers.values('person__slug').distinct())]
 
-
     def prepare_charge(self, obj):
-        return [str(c.id) for c in
-                list(obj.first_signers) +
-                list(obj.co_signers)]
+        return [str(c.id) for c in list(obj.presenters.distinct())]
 
+    def prepare_group(self, obj):
+
+        group_list = set()
+        date_default = obj.first_date
+
+        for supp in ActSupport.objects.filter(act__id=obj.pk):
+            d = supp.support_date if supp.support_date else date_default
+            g = supp.charge.current_at_moment_groupcharge(d.strftime("%Y-%m-%d"))
+            if (g): group_list.add(g.group)
+
+        return [g.slug for g in group_list]
 
     def prepare_recipient(self, obj):
         return [p['person__slug'] for p in

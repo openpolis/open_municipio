@@ -143,7 +143,7 @@
               <ul class="people-list">
                   {% for p in top_monitored %}
                       <li>
-                          {% include 'people/politician_list_section.html' with politician=p.object.current_institution_charges.0 %}
+                          {% include 'people/politician_list_section.html' with politician=p.object.last_charge %}
                           {% object_inline_monitoring p.object %}
                       </li>
                   {% empty %}
