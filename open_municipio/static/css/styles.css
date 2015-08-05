@@ -5754,3 +5754,8 @@ ul.typehead {
 .res.res-openmunicipio {
   background-position: -128px 0px;
 }
+
+span.search_act_status {
+    margin-left: 5px;
+    margin-bottom: 5px;
+}
