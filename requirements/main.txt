@@ -3,11 +3,10 @@ Django==1.4
 South>=0.7.3
 -e git://github.com/carljm/django-model-utils.git#egg=django-model-utils
 -e git://github.com/seldon/django-taggit.git#egg=django-taggit
--e git://github.com/toastdriven/django-haystack.git#egg=django-haystack
 django-extensions
 -e git://github.com/informaetica/django-voting.git#egg=django-voting
 django-registration
--e hg+https://bitbucket.org/ubernostrum/django-profiles#egg=django-profiles
+git+https://github.com/toastdriven/django-haystack.git@a01dc53adf8ddda4f99ae4437ad93015cf08695d
 beautifulsoup
 pysolr
 poster
