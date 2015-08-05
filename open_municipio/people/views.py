@@ -432,7 +432,9 @@ class PoliticianDetailView(DetailView):
 
         # get the person from the view
         p = person #self.object
-        for charge in p.current_institution_charges:
+
+        for charge in p.all_institution_charges:
+    
             for act in charge.presented_acts:
                 for topic in act.topics:
 
