@@ -15,6 +15,7 @@ RSYNC_EXCLUDE = (
 )
 # the name of the Django project managed by this fabfile
 PROJECT_NAME = 'open_xxx' ## CHANGEME!
+LOCALE = 'it_IT.UTF8'
 # a unique identifier for this web application instance
 # usually it's set to the primary domain from which the web application is accessed
 APP_DOMAIN = 'xxx.openmunicipio.it' ## CHANGEME!

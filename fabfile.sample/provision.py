@@ -59,6 +59,14 @@ def install_system_requirements():
     for pkg_name in required_packages:
         fastprint("* %s" % pkg_name, end='\n')
         install_package(pkg_name)       
+
+    # fix locales and LANG variable
+    run('rm -f /etc/locale.gen')
+    run('touch /etc/locale.gen && echo "%(locale)s UTF-8" >> /etc/locale.gen && /usr/sbin/locale-gen' % env)
+    run('echo export LANG=%(locale)s >> /etc/profile' % env)
+
+    run('update-locale LANG=%(locale)s' % env)
+
         
     
 @task

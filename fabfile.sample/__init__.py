@@ -37,6 +37,7 @@ def staging():
     env.environment = 'staging'
     env.server = conf.SERVER_MACHINE    
     env.project = conf.PROJECT_NAME
+    env.locale = conf.LOCALE
     env.app_domain = conf.APP_DOMAIN
     env.local_repo_root = conf.LOCAL_REPO_ROOT
     env.local_project_root = conf.LOCAL_PROJECT_ROOT
