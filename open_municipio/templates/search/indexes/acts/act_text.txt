@@ -1,3 +1,4 @@
+{{ object.adj_title }}
 {{ object.title }}
 {{ object.text }}
 {{ object.description }}

@@ -2,7 +2,7 @@ import locale
 from django.utils.html import strip_tags
 from HTMLParser import HTMLParser
 from haystack import indexes
-from open_municipio.acts.models import Act, Speech, ActSupport
+from open_municipio.acts.models import Act, Speech, ActSupport, Amendment
 from open_municipio.people.models import Institution
 from django.utils.translation import activate
 from django.conf import settings
@@ -38,6 +38,7 @@ class ActIndex(indexes.SearchIndex, indexes.Indexable):
     # while showing results
     url = indexes.CharField(indexed=False, stored=True)
     title = indexes.CharField(indexed=True, stored=True)
+    adj_title = indexes.CharField(indexed=True, stored=True)
 
     logger = logging.getLogger('import')
 
@@ -68,16 +69,34 @@ class ActIndex(indexes.SearchIndex, indexes.Indexable):
     def prepare_title(self, obj):
 
         activate(settings.LANGUAGE_CODE)
+##        d_obj = obj.downcast()
+##
+##        if d_obj.get_type_name() == u'emendamento':
+##            r_title = d_obj.act.adj_title if d_obj.act.adj_title else d_obj.act.title
+##            r_title += ' - '
+##        else:
+##            r_title = ''
+##
+##        r_title += obj.adj_title if obj.adj_title else obj.title
+##
+###        self.logger.info("act index title: %s - %s" % (r_title, obj.presentation_date))
+##        return r_title
+        return obj.title
+
+    def prepare_adj_title(self, obj):
+
+        r_title = obj.adj_title
         d_obj = obj.downcast()
 
-        if d_obj.get_type_name() == u'emendamento':
-            r_title = d_obj.act.adj_title if d_obj.act.adj_title else d_obj.act.title
-            r_title += ' - '
-        else:
-            r_title = ''
+        if isinstance(d_obj, Amendment):
+            if d_obj.act.adj_title:
+                if obj.adj_title:
+                    r_title = "%s - %s" % (d_obj.act.adj_title, obj.adj_title)
+                else:
+                    r_title = "%s - %s" % (d_obj.act.adj_title, obj.title)
 
-        r_title += obj.adj_title if obj.adj_title else obj.title
         return r_title
+
     
     def prepare_act_type(self, obj):
         activate(settings.LANGUAGE_CODE)

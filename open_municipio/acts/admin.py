@@ -82,7 +82,7 @@ class TransitionInline(admin.TabularInline):
 
 class ActAdmin(admin.ModelAdmin):
     list_display = ('idnum', 'title', 'presentation_date', 'emitting_institution', 'status')
-    search_fields = ('idnum', 'title',)
+    search_fields = ('idnum', 'title', 'adj_title', )
     list_filter = ( ActByYearFilterSpec, ActByMonthFilterSpec,)
 
     inlines_superuser = [ PresenterInline, AttachInline, TransitionInline, 
