@@ -261,7 +261,7 @@ class Person(models.Model, MonitorizedItem):
         """
         Speeches of a politician
         """
-        return open_municipio.acts.models.Speech.objects.filter(author=self)
+        return Speech.objects.filter(author=self)
 
     @property
     def n_speeches(self):
@@ -617,6 +617,25 @@ class InstitutionCharge(Charge):
             count['locations'].update(act.locations)
 
         return count
+
+    @property
+    def speeches(self):
+        """
+        Speeches of a charge
+        """
+        start_date = self.start_date;
+        end_date = self.end_date if self.end_date else datetime.datetime.now();
+
+        return open_municipio.acts.models.Speech.objects.filter(\
+            author=self.person, sitting_item__sitting__date__range=(start_date, end_date))
+
+    @property
+    def n_speeches(self):
+        """
+        Number of speeches of a charge
+        """
+        return self.speeches.count()
+
 
 class InstitutionResponsability(ChargeResponsability):
     """

@@ -616,6 +616,13 @@ class SpeechSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
             except ObjectDoesNotExist:
                 pass
 
+        charge_id = self.request.GET.get('charge', None)
+        if charge_id:
+            try:
+                extra['charge'] = InstitutionCharge.objects.get(pk=charge_id)
+            except ObjectDoesNotExist:
+                pass
+
         paginator = Paginator(self.results, self.results_per_page)
         page = self.request.GET.get('page', 1)
         try:
