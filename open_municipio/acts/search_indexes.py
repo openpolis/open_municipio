@@ -176,6 +176,7 @@ class SpeechIndex(indexes.SearchIndex, indexes.Indexable):
     url = indexes.CharField(indexed=False, stored=True)
     date = indexes.DateField(indexed=True, stored=False)
     person = indexes.MultiValueField(indexed=True, stored=False)
+    charge = indexes.MultiValueField(indexed=True, stored=False)
 
     act_url = indexes.MultiValueField(indexed=True, stored=True)
     month = indexes.FacetCharField()
@@ -211,6 +212,11 @@ class SpeechIndex(indexes.SearchIndex, indexes.Indexable):
             author = obj.author.slug
         
         return [ author, ]
+
+    def prepare_charge(self, obj):
+
+        if obj.author:
+            return [str(c.id) for c in obj.author.get_current_institution_charges(obj.date.strftime("%Y-%m-%d"))]
 
     def prepare_date(self, obj):
         return obj.date

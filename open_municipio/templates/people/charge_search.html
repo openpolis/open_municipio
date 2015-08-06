@@ -151,7 +151,7 @@ body #main.two_columns {
                 {% endif %}</td>
 
                 <td>{% if result.n_speeches %}
-                	<a href="{% url 'om_speech_search' %}?q=&person={{ result.object.person.slug }}">
+                	<a href="{% url 'om_speech_search' %}?q=&charge={{ result.object.id }}">
                 	{{ result.n_speeches }}</a><br />({{ result.n_speeches_index|floatformat:2 }})
                 {% endif %}</td>
 			</tr>
