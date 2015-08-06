@@ -349,8 +349,12 @@ class OMActsWriter(ChargeSeekerFromMapMixin, BaseActsWriter, OMWriter):
         # replicated)
 
         for curr_sub in act.subscribers:
-            act_date = getattr(act, "presentation_date", None)
-            
+
+
+#            act_date = getattr(act, "presentation_date", None) 
+            act_datetime = self.load_transition_date(act.transitions, "Presented")
+            act_date = act_datetime.date()
+           
             om_ch = self.lookup_charge(curr_sub.charge.id, self.conf.ACTS_PROVIDER, act_date)
 
             if om_ch is None:
