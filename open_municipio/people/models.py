@@ -340,7 +340,13 @@ class Charge(NewsTargetMixin, models.Model):
         if not as_of:
             #as_of = datetime.now()
             as_of = date.today()
+
+        # if a datetime, extract the date part
+        if isinstance(as_of, datetime.datetime):
+            as_of = as_of.date()
         
+        # check we receive a date (note: a datetime is also a date, but
+        # we already took care of this case in the previous lines)
         if not isinstance(as_of, datetime.date):
             raise ValueError("The passed parameter is not a date")
         
