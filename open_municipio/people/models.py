@@ -584,10 +584,11 @@ class InstitutionCharge(Charge):
             except GroupCharge.DoesNotExist:
                 return None
 
-        elif self.institution.institution_type == Institution.COMMITTEE or \
-             self.institution.institution_type == Institution.JOINT_COMMITTEE:
+        elif self.original_charge and \
+            (self.institution.institution_type == Institution.COMMITTEE or \
+             self.institution.institution_type == Institution.JOINT_COMMITTEE):
             try:
-                return GroupCharge.objects.select_related().current(moment=moment).get(charge__id=self.original_charge_id)
+                return GroupCharge.objects.select_related().current(moment=moment).get(charge=self.original_charge)
             except GroupCharge.DoesNotExist:
                 return None
 

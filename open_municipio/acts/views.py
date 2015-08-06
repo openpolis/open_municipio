@@ -46,7 +46,20 @@ class ActSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
     """
     __name__ = 'ActSearchView'
 
-    FACETS_SORTED = ['act_type', 'is_key', 'is_proposal', 'initiative', 'iter_duration', 'organ', 'pub_date', 'has_locations', 'month', 'status']
+    FACETS_SORTED = [
+        'act_type',
+        'has_locations',
+        'is_key',
+        'is_proposal',
+        'initiative',
+        'iter_duration',
+        'month',
+        'multiple_supporters',
+        'organ',
+        'pub_date',
+        'status'
+    ]
+
     FACETS_LABELS = {
         'act_type': _('Act type'),
         'is_key': _('Is key act'),
@@ -57,8 +70,10 @@ class ActSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
         'pub_date': _('Pubblication year'),
         'has_locations': _('Has locations'),
         'month': _('Pubblication month'),
-        'status': _('Status')
+        'status': _('Status'),
+        'multiple_supporters': _('Has multiple supporters')
     }
+
     DATE_INTERVALS_RANGES = { }
 
     def __init__(self, *args, **kwargs):
@@ -71,7 +86,8 @@ class ActSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
     
         sqs = SearchQuerySet().filter(django_ct='acts.act').\
             facet('act_type').facet('is_key').facet('is_proposal').facet('has_locations').\
-            facet('initiative').facet('organ').facet('month').facet('status').facet('iter_duration')
+            facet('initiative').facet('organ').facet('month').facet('status').\
+            facet('iter_duration').facet('multiple_supporters')
 
         for (year, range) in self.DATE_INTERVALS_RANGES.items():
             sqs = sqs.query_facet('pub_date', range['qrange'])

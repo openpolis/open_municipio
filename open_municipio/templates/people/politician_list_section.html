@@ -1,4 +1,5 @@
 {% load thumbnail %}
+{% load people_tags %}
 
 <a href="{{ politician.person.get_absolute_url }}">
     {% if politician.person.img %}
@@ -11,15 +12,27 @@
 </a>
 <div>
 
-  <a href="{{ politician.person.get_absolute_url }}"><strong>{{ politician.person|title }}</strong></a><br/>
-  <span class="inline-block">{% if what %}{{ value }} {{ what }}{% else %}{{ value }}{% endif %}</span>
+<a href="{{ politician.person.get_absolute_url }}"><strong>{{ politician.person|title }}</strong></a><br/>
 
-  <br>
-
-  {% with c_group=politician.council_group %}
-  {% if c_group %}
-  {{ c_group.name|truncatechars:40 }} ({{ c_group.acronym }})
-  {% endif %}
+{% if date %}
+  {% with past_group=politician|get_current_group:date curr_group=politician.person.get_current_group %}
+    {% if past_group %}
+      {{ past_group|group_name }}
+      {% if curr_group and past_group != curr_group %}
+        (oggi {{ curr_group|group_name }})
+      {% endif %}
+      <br/>
+    {% endif %}
   {% endwith %}
+{% else %}
+  {% with curr_group=politician.person.get_current_group %}
+    {% if curr_group %}
+      {{ curr_group|group_name }}
+      <br/>
+    {% endif %}
+  {% endwith %}
+{% endif %}
+
+<span class="inline-block">{% if what %}{{ value }} {{ what }}{% else %}{{ value }}{% endif %}</span>
 
 </div>

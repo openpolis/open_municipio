@@ -38,7 +38,7 @@
                 <ul class="people-list">
                 <li>
                 {% if act_speech.speech.author_charge %}
-                    {% include 'people/politician_list_section.html' with politician=act_speech.speech.author_charge %}
+                    {% include 'people/politician_list_section.html' with politician=act_speech.speech.author_charge date=act_speech.speech.date %}
                     {% object_inline_monitoring act_speech.speech.author %}
                 {% elif act_speech.speech.author_name_when_external %}
                     {{ speech.author_name_when_external }}

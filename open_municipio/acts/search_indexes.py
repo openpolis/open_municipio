@@ -33,6 +33,7 @@ class ActIndex(indexes.SearchIndex, indexes.Indexable):
     month = indexes.FacetCharField()
     status = indexes.FacetCharField()
     iter_duration = indexes.FacetCharField()
+    multiple_supporters = indexes.FacetCharField()
 
     # stored fields, used not to touch DB
     # while showing results
@@ -167,6 +168,9 @@ class ActIndex(indexes.SearchIndex, indexes.Indexable):
         elif obj.iter_duration.days <= 30: return '21 - 30'
         elif obj.iter_duration.days <= 60: return 'oltre un mese'
         else: return 'oltre due mesi'
+
+    def prepare_multiple_supporters(self, obj):
+        return _("yes") if obj.presenter_set.count() > 1 else _("no")
 
 
 class SpeechIndex(indexes.SearchIndex, indexes.Indexable):

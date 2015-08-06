@@ -1,5 +1,7 @@
 {% extends 'base_two_columns.html' %}
 
+{% load people_tags %}
+
 {% block title %}Organi politici | {{ committee.name }}{% endblock title %}
 {% block content_header %}{{ committee.name }}{% endblock %}
 {% block content_header_city_logo %}
@@ -31,10 +33,11 @@
           {% if president %}
             <a href="{{ president.charge.person.get_absolute_url }}">
               <strong>{{ president.charge.person.full_name }}</strong>
-              {% if president.group %}
-                ({{ president.group.acronym }})
-              {% endif %}
-            </a><br/>
+            </a>
+    	    {% with curr_group=president.charge.current_groupcharge.group %}{% if curr_group %}
+              ({{ curr_group|group_name }})
+            {% endif %}{% endwith %}
+            <br/>
             {{ president.get_charge_type_display }}
           {% else %}
             Presidente non definito
@@ -45,12 +48,12 @@
           <p>
             <a href="{{ vp.charge.person.get_absolute_url }}">
               <strong>{{ vp.charge.person.full_name }}</strong>
-              {% if vp.group %}
-                ({{ vp.group.acronym }})
-              {% endif %}
-            </a><br/>
+            </a>
+    	    {% with curr_group=vp.charge.current_groupcharge.group %}{% if curr_group %}
+              ({{ curr_group|group_name }})
+            {% endif %}{% endwith %}
+            <br/>
             {{ vp.get_charge_type_display }}
-
           </p>
         {% endfor %}
 
@@ -78,10 +81,11 @@
       <div class="span6">
         <ul class="unstyled">
           {% for member in members %}
-            <li><a href="{{ member.person.get_absolute_url }}"><strong>{{ member.person.full_name }}</strong>
-              {% if member.group %}
-                ({{ member.group.acronym }})
-              {% endif %}</a></li>
+            <li><a href="{{ member.person.get_absolute_url }}"><strong>{{ member.person.full_name }}</strong></a>
+    	      {% with curr_group=member.current_groupcharge.group %}{% if curr_group %}
+                ({{ curr_group|group_name }})
+              {% endif %}{% endwith %}
+            </li>
           {% endfor %}
         </ul>
       </div>

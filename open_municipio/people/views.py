@@ -236,25 +236,19 @@ class CommitteeDetailView(DetailView):
 
         # fetch charges and add group
         president = self.object.president
-        if president and president.charge.original_charge_id:
+        if president and president.charge.original_charge:
             president.group = InstitutionCharge.objects.current().select_related().\
-                                  get(pk=president.charge.original_charge_id).council_group
+                                  get(pk=president.charge.original_charge.id).council_group
         vicepresidents = self.object.vicepresidents
         for vp in vicepresidents:
-            if vp and vp.charge.original_charge_id:
+            if vp and vp.charge.original_charge:
                 vp.group = InstitutionCharge.objects.current().select_related().\
-                    get(pk=vp.charge.original_charge_id).council_group
+                    get(pk=vp.charge.original_charge.id).council_group
 
         members = self.object.members.order_by('person__last_name')
         current_i_charges = InstitutionCharge.objects.current().select_related()
         for m in members:
-            m_as_counselor = current_i_charges.filter(pk=m.original_charge_id)
-            if len(m_as_counselor) == 1:
-                m_as_counselor = m_as_counselor[0]
-                m.group = m_as_counselor.council_group
-            else:
-                m.group = None
-
+            m.group = m.original_charge.current_groupcharge.group if m.original_charge else None
 
 
         resources = dict(

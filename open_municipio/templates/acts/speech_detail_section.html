@@ -4,7 +4,7 @@
     <ul class="people-list">
     <li>
     {% if speech.author_charge %}
-        {% include 'people/politician_list_section.html' with politician=speech.author_charge value=speech.author_charge.denomination %} 
+        {% include 'people/politician_list_section.html' with politician=speech.author_charge value=speech.author_charge.denomination date=speech.date %} 
         {% object_inline_monitoring speech.author %}
     {% elif speech.author_name_when_external %}
         {{ speech.author_name_when_external }}

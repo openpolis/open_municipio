@@ -1,5 +1,6 @@
 {% load monitoring_tags %}
 {% load thumbnail %}
+{% load people_tags %}
 
 {% load url from future %}
 <tr>
@@ -28,8 +29,12 @@
                     </a>
                     <br/>
                     {% if label %}<span class="label person_label" style="line-height: 20px;">{{ label }}</span><br/>{% endif %}
-                    {{ charge.object.current_groupcharge.group.acronym }}
+
+    	            {% with curr_group=charge.object.current_groupcharge.group %}{% if curr_group %}
+                    {{ curr_group|group_name }}
                     <br/>
+                    {% endif %}{% endwith %}
+
                     in carica dal {{ charge.object.start_date|date:"d.m.Y" }}
 
                     {% object_inline_monitoring charge.object.person shows_monitoring_users=False %}

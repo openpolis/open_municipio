@@ -24,10 +24,10 @@
         <td class="text-left">
           <a href="{{ politician.get_absolute_url }}">
             <strong>{{ politician.full_name }}</strong>
-            {% with curr_group=charge_vote.charge|get_current_group:votation.sitting.date %}
-            ({{ curr_group.acronym }})
-            {% endwith %}
           </a>
+          {% with curr_group=charge_vote.charge|get_current_group:votation.sitting.date %}
+            ({{ curr_group|group_acronym }})
+          {% endwith %}
         </td>
         {% if votation.is_secret %}
         <td>

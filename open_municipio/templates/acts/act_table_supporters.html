@@ -25,10 +25,10 @@
               <br>
               {{ supporter.denomination }}
               <br>
-              {% with curr_group=supporter|get_current_group:act.presentation_date %}
-              {{ curr_group.acronym }} {% if supporter.person.get_current_group and supporter.person.get_current_group != curr_group %}(oggi {{ supporter.person.get_current_group.acronym }}){% endif %}
-              {% endwith %}
+              {% with curr_group=supporter|get_current_group:act.presentation_date %}{% if curr_group %}
+              {{ curr_group|group_name }} {% if supporter.person.get_current_group and supporter.person.get_current_group != curr_group %}(oggi {{ supporter.person.get_current_group|group_name }}){% endif %}
               <br/>
+              {% endif %}{% endwith %}
 
               {% object_inline_monitoring supporter.person %}
             </div>
