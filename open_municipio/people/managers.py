@@ -21,8 +21,9 @@ class TimeFramedQuerySet(QuerySet):
         """
         if moment is None:
             moment = datetime.now()
-        else:
+        elif isinstance(moment, basestring):
             moment = datetime.strptime(moment, "%Y-%m-%d")
+
         return self.filter(end_date__lte=moment)
     
     def future(self, moment=None):
@@ -32,21 +33,22 @@ class TimeFramedQuerySet(QuerySet):
         """
         if moment is None:
             moment = datetime.now()
-        else:
+        elif isinstance(moment, basestring):
             moment = datetime.strptime(moment, "%Y-%m-%d")
+
         return self.filter(start_date__gte=moment)
 
     def current(self, moment=None):
         """
         Return a QuerySet containing the *current* instances of the model
-        at the given moment in time, if the parameter is spcified
+        at the given moment in time, if the parameter is specified
         now if it is not
         @moment - is a datetime, expressed in the YYYY-MM-DD format
         (i.e. those for which the moment date-time lies within their associated time range).
         """
         if moment is None:
             moment = datetime.now()
-        else:
+        elif isinstance(moment, basestring):
             moment = datetime.strptime(moment, "%Y-%m-%d")
 
         return self.filter(Q(start_date__lte=moment) &
@@ -62,7 +64,7 @@ class GroupQuerySet(QuerySet):
 
         if moment is None:
             moment = datetime.now()
-        else:
+        elif isinstance(moment, basestring):
             moment = datetime.strptime(moment, "%Y-%m-%d")
 
         return self.filter(Q(groupcharge__start_date__lte=moment) &
