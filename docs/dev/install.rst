@@ -328,6 +328,11 @@ development server. Shortly, every time you update OpenMunicipio code, you shoul
 
 #. tell Solr to re-index documents (see  `here </dev/solr_haystack>`_)
 
+# rebuild localization
+
+   .. code-block:: bash
+        (open_municipio)$ readarray ARR < <(find . -name django.po | sed "s/\(.*\)locale.*/\1/")
+        (open_municipio)$ for i in ${ARR[@]}; do pushd $i; django-admin.py makemessages -l it; django-admin.py compilemessages -l it; popd; done;
 
 Enabling the debug toolbar
 --------------------------
