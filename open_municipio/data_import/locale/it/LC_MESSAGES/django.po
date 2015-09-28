@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-03 10:49+0200\n"
+"POT-Creation-Date: 2015-09-28 12:47+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,9 +18,17 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
-#: admin.py:31
+#: admin.py:33
 msgid "is in charge"
 msgstr "incarico attivo"
+
+#: admin.py:38
+msgid "charge start date"
+msgstr ""
+
+#: admin.py:42
+msgid "charge end date"
+msgstr ""
 
 #: filters.py:9
 msgid "active charges"

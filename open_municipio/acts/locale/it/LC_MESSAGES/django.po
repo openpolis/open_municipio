@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-05-25 11:33+0200\n"
+"POT-Creation-Date: 2015-09-28 12:46+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
-#: admin.py:26 views.py:60
+#: admin.py:26 views.py:73
 msgid "Status"
 msgstr "Stato"
 
@@ -34,11 +34,11 @@ msgstr "Interventi in atto"
 msgid "answer date"
 msgstr "data risposta"
 
-#: admin.py:314 models.py:68 models.py:1018
+#: admin.py:314 models.py:68 models.py:1019
 msgid "title"
 msgstr "titolo"
 
-#: admin.py:322 admin.py:364 models.py:405
+#: admin.py:322 admin.py:364 models.py:406
 msgid "act"
 msgstr "atto"
 
@@ -46,7 +46,7 @@ msgstr "atto"
 msgid "act type"
 msgstr "tipo di atto"
 
-#: forms.py:73 forms.py:143 models.py:72 models.py:979
+#: forms.py:73 forms.py:143 models.py:72 models.py:980
 msgid "text"
 msgstr "testo"
 
@@ -56,8 +56,7 @@ msgstr "Se l'autore è presente is Open Municipio, cercalo"
 
 #: forms.py:84
 msgid "Populate the full author name when not present in Open Municipio"
-msgstr ""
-"Inserisci il nome completo dell'autore se non presente in Open Municipio"
+msgstr "Inserisci il nome completo dell'autore se non presente in Open Municipio"
 
 #: forms.py:119
 msgid "The same speech cannot be referred twice by an act"
@@ -71,37 +70,37 @@ msgstr "Testo risposta"
 msgid "Text"
 msgstr "Testo"
 
-#: models.py:59 models.py:487 models.py:554 models.py:617 models.py:725
-#: models.py:833 models.py:872 models.py:912
+#: models.py:59 models.py:488 models.py:555 models.py:618 models.py:726
+#: models.py:834 models.py:873 models.py:913
 msgid "presented"
 msgstr "presentato"
 
-#: models.py:60 models.py:480 models.py:490 models.py:547 models.py:557
-#: models.py:826 models.py:835 models.py:865 models.py:874 models.py:904
-#: models.py:913
+#: models.py:60 models.py:481 models.py:491 models.py:548 models.py:558
+#: models.py:827 models.py:836 models.py:866 models.py:875 models.py:905
+#: models.py:914
 msgid "approved"
 msgstr "approvato"
 
-#: models.py:61 models.py:481 models.py:491 models.py:548 models.py:558
-#: models.py:827 models.py:836 models.py:866 models.py:875 models.py:905
-#: models.py:914
+#: models.py:61 models.py:482 models.py:492 models.py:549 models.py:559
+#: models.py:828 models.py:837 models.py:867 models.py:876 models.py:906
+#: models.py:915
 msgid "rejected"
 msgstr "rifiutato"
 
-#: models.py:62 models.py:482 models.py:492 models.py:549 models.py:559
-#: models.py:612 models.py:620 models.py:720 models.py:728 models.py:828
-#: models.py:837 models.py:867 models.py:876 models.py:906 models.py:915
+#: models.py:62 models.py:483 models.py:493 models.py:550 models.py:560
+#: models.py:613 models.py:621 models.py:721 models.py:729 models.py:829
+#: models.py:838 models.py:868 models.py:877 models.py:907 models.py:916
 msgid "retired"
 msgstr "ritirato"
 
-#: models.py:63 models.py:483 models.py:493 models.py:550 models.py:560
-#: models.py:613 models.py:621 models.py:721 models.py:729 models.py:829
-#: models.py:838 models.py:868 models.py:877 models.py:907 models.py:916
+#: models.py:63 models.py:484 models.py:494 models.py:551 models.py:561
+#: models.py:614 models.py:622 models.py:722 models.py:730 models.py:830
+#: models.py:839 models.py:869 models.py:878 models.py:908 models.py:917
 msgid "decayed"
 msgstr "decaduto"
 
-#: models.py:64 models.py:561 models.py:622 models.py:730 models.py:839
-#: models.py:878 models.py:917
+#: models.py:64 models.py:562 models.py:623 models.py:731 models.py:840
+#: models.py:879 models.py:918
 msgid "postponed"
 msgstr "posticipato"
 
@@ -160,336 +159,342 @@ msgstr "stato finale"
 msgid "Specify whether this act should be featured"
 msgstr "Specificare se questo atto è chiave"
 
-#: models.py:213 search_indexes.py:58 search_indexes.py:103
+#: models.py:213 search_indexes.py:62 search_indexes.py:125
+#: search_indexes.py:173
 msgid "yes"
 msgstr "sì"
 
-#: models.py:215 search_indexes.py:56 search_indexes.py:101
+#: models.py:215 search_indexes.py:60 search_indexes.py:123
+#: search_indexes.py:173
 msgid "no"
 msgstr "no"
 
-#: models.py:406
+#: models.py:407
 msgid "acts"
 msgstr "atti"
 
-#: models.py:441
+#: models.py:442
 msgid "first signer"
 msgstr "primo firmatario"
 
-#: models.py:442
+#: models.py:443
 msgid "co-signer"
 msgstr "co-firmatario"
 
-#: models.py:448
+#: models.py:449
 msgid "support date"
 msgstr "data della firma"
 
-#: models.py:454
+#: models.py:455
 #, python-format
 msgid "%(support)s"
 msgstr "%(support)s"
 
 # msgid "%(support)s"
 # msgstr "data della firma"
-#: models.py:473 models.py:540
+#: models.py:474 models.py:541
 msgid "President"
 msgstr "Presidente"
 
-#: models.py:474 models.py:541
+#: models.py:475 models.py:542
 msgid "City Government Member"
 msgstr "Assessore"
 
-#: models.py:475 models.py:542
+#: models.py:476 models.py:543
 msgid "City Government"
 msgstr "Giunta"
 
-#: models.py:476 models.py:543 search_indexes.py:93
+#: models.py:477 models.py:544 search_indexes.py:115
 msgid "Mayor"
 msgstr "Sindaco"
 
-#: models.py:488 models.py:555
+#: models.py:489 models.py:556
 msgid "committee"
 msgstr "commissione"
 
-#: models.py:489 models.py:556 models.py:834 models.py:873
+#: models.py:490 models.py:557 models.py:835 models.py:874
 msgid "council"
 msgstr "consiglio"
 
-#: models.py:498 models.py:566 models.py:627 models.py:735 models.py:845
-#: models.py:884 models.py:923
+#: models.py:499 models.py:567 models.py:628 models.py:736 models.py:846
+#: models.py:885 models.py:924
 msgid "status"
 msgstr "stato"
 
-#: models.py:499 models.py:567
+#: models.py:500 models.py:568
 msgid "approval date"
 msgstr "data di approvazione"
 
-#: models.py:500 models.py:568
+#: models.py:501 models.py:569
 msgid "publication date"
 msgstr "data di pubblicazione"
 
-#: models.py:501 models.py:569
+#: models.py:502 models.py:570
 msgid "Internal identification string for the deliberation, when approved"
 msgstr "Sequenza interna di identificazione della delibera, se approvata"
 
-#: models.py:502 models.py:570
+#: models.py:503 models.py:571
 msgid "execution date"
 msgstr "data di esecuzione"
 
-#: models.py:503 models.py:571
+#: models.py:504 models.py:572
 msgid "initiative"
 msgstr "iniziativa"
 
-#: models.py:507
+#: models.py:508
 msgid "city government deliberation"
 msgstr "delibera di giunta"
 
-#: models.py:508
+#: models.py:509
 msgid "city government deliberations"
 msgstr "delibera di giunta"
 
-#: models.py:539
+#: models.py:540
 msgid "Counselor"
 msgstr "Consigliere"
 
-#: models.py:575
+#: models.py:576
 msgid "deliberation"
 msgstr "delibera"
 
-#: models.py:576
+#: models.py:577
 msgid "deliberations"
 msgstr "delibere"
 
-#: models.py:605 models.py:713
+#: models.py:606 models.py:714
 msgid "Written"
 msgstr "Scritta"
 
-#: models.py:606 models.py:714
+#: models.py:607 models.py:715
 msgid "Verbal"
 msgstr "Orale"
 
-#: models.py:610 models.py:618 models.py:718 models.py:726
+#: models.py:611 models.py:619 models.py:719 models.py:727
 msgid "answered"
 msgstr "risposta"
 
-#: models.py:611 models.py:619 models.py:719 models.py:727
+#: models.py:612 models.py:620 models.py:720 models.py:728
 msgid "not answered"
 msgstr "non risposta"
 
-#: models.py:628 models.py:736
+#: models.py:629 models.py:737
 msgid "answer type"
 msgstr "risposta"
 
-#: models.py:629
+#: models.py:630
 msgid "question motivation"
 msgstr "motivazione domanda"
 
-#: models.py:630
+#: models.py:631
 msgid "answer text"
 msgstr "testo risposta"
 
-#: models.py:631
+#: models.py:632
 msgid "reply text"
 msgstr "testo replica"
 
-#: models.py:634
+#: models.py:635
 msgid "interrogation"
 msgstr "interrogazione"
 
-#: models.py:635
+#: models.py:636
 msgid "interrogations"
 msgstr "interrogazioni"
 
-#: models.py:741
+#: models.py:742
 msgid "interpellation"
 msgstr "interpellanza"
 
-#: models.py:742
+#: models.py:743
 msgid "interpellations"
 msgstr "interpellanze"
 
-#: models.py:848
+#: models.py:849
 msgid "motion"
 msgstr "mozione"
 
-#: models.py:849
+#: models.py:850
 msgid "motions"
 msgstr "mozioni"
 
-#: models.py:887 models.py:888
+#: models.py:888 models.py:889
 msgid "agenda"
 msgstr "ordine del giorno"
 
-#: models.py:929
+#: models.py:930
 msgid "amendment"
 msgstr "emendamento"
 
-#: models.py:930
+#: models.py:931
 msgid "amendments"
 msgstr "emendamenti"
 
-#: models.py:941
+#: models.py:942
 msgid "final status"
 msgstr "stato finale"
 
-#: models.py:946
+#: models.py:947
 msgid "symbol"
 msgstr "simbolo"
 
-#: models.py:947
+#: models.py:948
 msgid "note"
 msgstr "nota"
 
-#: models.py:951 models.py:952
+#: models.py:952 models.py:953
 msgid "status transition"
 msgstr "transizione di stato"
 
-#: models.py:956
+#: models.py:957
 #, python-format
 msgid "%(status)s on %(date)s"
 msgstr "%(status)s il %(date)s"
 
-#: models.py:976 models.py:1104
+#: models.py:977 models.py:1110
 msgid "date"
 msgstr "data"
 
-#: models.py:977
+#: models.py:978
 msgid "type"
 msgstr "tipo"
 
-#: models.py:978
+#: models.py:979
 msgid "size"
 msgstr "dimensione"
 
-#: models.py:999
+#: models.py:1000
 msgid "attach"
 msgstr "allegato"
 
-#: models.py:1000
+#: models.py:1001
 msgid "attaches"
 msgstr "allegati"
 
-#: models.py:1020 models.py:1111
+#: models.py:1021 models.py:1117
 msgid "author"
 msgstr "autore"
 
-#: models.py:1021
+#: models.py:1022
 msgid "author name when external"
 msgstr "nome dell'autore se esterno"
 
-#: models.py:1022
+#: models.py:1023
 msgid "votation"
 msgstr "votazione"
 
-#: models.py:1024
+#: models.py:1025
 msgid "initial_time"
 msgstr "inizio"
 
-#: models.py:1025
+#: models.py:1026
 msgid "duration"
 msgstr "durata"
 
-#: models.py:1026
+#: models.py:1027
 msgid "sequential order"
 msgstr "ordine sequenziale"
 
-#: models.py:1027
+#: models.py:1028
 msgid "initial time"
 msgstr "inizio"
 
-#: models.py:1029
+#: models.py:1030
 msgid "audio url"
 msgstr "URL audio"
 
-#: models.py:1030
+#: models.py:1031
 msgid "audio file"
 msgstr "file audio"
 
-#: models.py:1034
+#: models.py:1035
 msgid "speech"
 msgstr "intervento"
 
-#: models.py:1035
+#: models.py:1036
 msgid "speeches"
 msgstr "interventi"
 
-#: models.py:1118
+#: models.py:1124
 msgid "sitting"
 msgstr "seduta"
 
-#: models.py:1133
+#: models.py:1139
 msgid "request"
 msgstr "richiesta"
 
-#: models.py:1134
+#: models.py:1140
 msgid "response"
 msgstr "risposta"
 
-#: models.py:1135
+#: models.py:1141
 msgid "reference"
 msgstr "riferimento"
 
-#: models.py:1143
+#: models.py:1149
 msgid "act mentioned in speech"
 msgstr "atto menzionato nell'intervento"
 
-#: models.py:1144
+#: models.py:1150
 msgid "acts mentioned in speech"
 msgstr "atti menzionati nell'intervento"
 
-#: models.py:1170 models.py:1171
+#: models.py:1176 models.py:1177
 msgid "calendar"
 msgstr "calendario"
 
-#: search_indexes.py:87
+#: search_indexes.py:109
 msgid "Council"
 msgstr "Consiglio"
 
-#: search_indexes.py:90
+#: search_indexes.py:112
 msgid "Town government"
 msgstr "Giunta"
 
-#: views.py:51
+#: views.py:64
 msgid "Act type"
 msgstr "Tipologia"
 
-#: views.py:52
+#: views.py:65
 msgid "Is key act"
 msgstr "Atto in evidenza"
 
-#: views.py:53
+#: views.py:66
 msgid "Is proposal"
 msgstr "In esame"
 
-#: views.py:54
+#: views.py:67
 msgid "Initiative"
 msgstr "Iniziativa"
 
-#: views.py:55
+#: views.py:68
 msgid "Iter duration"
 msgstr "Durata dell'iter"
 
-#: views.py:56
+#: views.py:69
 msgid "Organ"
 msgstr "Organo"
 
-#: views.py:57
+#: views.py:70
 msgid "Pubblication year"
 msgstr "Anno di pubblicazione"
 
-#: views.py:58
+#: views.py:71
 msgid "Has locations"
 msgstr "Riguarda una località"
 
-#: views.py:59
+#: views.py:72
 msgid "Pubblication month"
 msgstr "Mese di pubblicazione"
 
-#: views.py:542
+#: views.py:74
+msgid "Has multiple supporters"
+msgstr "Ha più di un firmatario"
+
+#: views.py:572
 msgid "Year"
 msgstr "Anno"
 
-#: views.py:543
+#: views.py:573
 msgid "Month"
 msgstr "Mese"
 
