@@ -1,9 +1,9 @@
-docutils
+docutils==0.9.1
 Pygments
 sphinx
 -e hg+https://bitbucket.org/brodie/django-piston#egg=django-piston
 -e git://github.com/openpolis/piston_mini_client.git#egg=piston_mini_client
 django-debug-toolbar
-fabric
+fabric==1.4.3
 lorem-ipsum-generator
 -e git://github.com/openpolis/rst2pdf-patched-docutils-0.8#egg=rst2pdf

@@ -6,16 +6,16 @@ South>=0.7.3
 -e git://github.com/toastdriven/django-haystack.git#egg=django-haystack
 django-extensions
 -e git://github.com/informaetica/django-voting.git#egg=django-voting
-django-registration
+django-registration==0.8-alpha-1
 -e hg+https://bitbucket.org/ubernostrum/django-profiles#egg=django-profiles
-beautifulsoup
-pysolr
-poster
-lxml
-pil
-sorl-thumbnail
-django-social-auth
-django-tinymce
+BeautifulSoup==3.2.1
+pysolr==2.1.0-beta
+poster==0.8.1
+lxml==2.3.5
+pil==1.1.7
+sorl-thumbnail==11.12
+django-social-auth==0.7.23
+django-tinymce==1.5.1b2
 # speech report generation
 reportlab
 http://sourceforge.net/projects/pyrtf/files/latest/download
