@@ -15,13 +15,9 @@ from open_municipio.locations.views import ActTagByLocationView
 sqs = SearchQuerySet().filter(django_ct='acts.act').\
     facet('act_type').facet('is_key').facet('is_proposal').\
     facet('initiative').facet('organ').\
+    query_facet('pub_date', ActSearchView.DATE_INTERVALS_RANGES['2015']['qrange']).\
     query_facet('pub_date', ActSearchView.DATE_INTERVALS_RANGES['2014']['qrange']).\
     query_facet('pub_date', ActSearchView.DATE_INTERVALS_RANGES['2013']['qrange']).\
-    query_facet('pub_date', ActSearchView.DATE_INTERVALS_RANGES['2012']['qrange']).\
-    query_facet('pub_date', ActSearchView.DATE_INTERVALS_RANGES['2011']['qrange']).\
-    query_facet('pub_date', ActSearchView.DATE_INTERVALS_RANGES['2010']['qrange']).\
-    query_facet('pub_date', ActSearchView.DATE_INTERVALS_RANGES['2009']['qrange']).\
-    query_facet('pub_date', ActSearchView.DATE_INTERVALS_RANGES['2008']['qrange']).\
     order_by('-pub_date').\
     highlight()
 

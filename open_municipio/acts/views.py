@@ -52,7 +52,7 @@ class ActSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
         'pub_date': _('Pubblication year')
     }
     DATE_INTERVALS_RANGES = {
-        '2015':  {'qrange': '[2015-01-01T00:00:00Z TO 2014-01-01T00:00:00Z]', 'r_label': '2015'},
+        '2015':  {'qrange': '[2015-01-01T00:00:00Z TO 2016-01-01T00:00:00Z]', 'r_label': '2015'},
         '2014':  {'qrange': '[2014-01-01T00:00:00Z TO 2015-01-01T00:00:00Z]', 'r_label': '2014'},
         '2013':  {'qrange': '[2013-01-01T00:00:00Z TO 2014-01-01T00:00:00Z]', 'r_label': '2013'},
  #       '2012':  {'qrange': '[2012-01-01T00:00:00Z TO 2013-01-01T00:00:00Z]', 'r_label': '2012'},

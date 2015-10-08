@@ -36,12 +36,9 @@ class VotationSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin
     }
 
     DATE_INTERVALS_RANGES = {
+        '2015':  {'qrange': '[2015-01-01T00:00:00Z TO 2016-01-01T00:00:00Z]', 'r_label': '2015'},
+        '2014':  {'qrange': '[2014-01-01T00:00:00Z TO 2015-01-01T00:00:00Z]', 'r_label': '2014'},
         '2013':  {'qrange': '[2013-01-01T00:00:00Z TO 2014-01-01T00:00:00Z]', 'r_label': '2013'},
-        '2012':  {'qrange': '[2012-01-01T00:00:00Z TO 2013-01-01T00:00:00Z]', 'r_label': '2012'},
-        '2011':  {'qrange': '[2011-01-01T00:00:00Z TO 2012-01-01T00:00:00Z]', 'r_label': '2011'},
-        '2010':  {'qrange': '[2010-01-01T00:00:00Z TO 2011-01-01T00:00:00Z]', 'r_label': '2010'},
-        '2009':  {'qrange': '[2009-01-01T00:00:00Z TO 2010-01-01T00:00:00Z]', 'r_label': '2009'},
-        '2008':  {'qrange': '[2008-01-01T00:00:00Z TO 2009-01-01T00:00:00Z]', 'r_label': '2008'},
     }
 
 
