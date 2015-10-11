@@ -183,7 +183,7 @@ class AdministrationChargeAdmin(ChargeAdmin):
     raw_id_fields = ('person', 'office')
     fieldsets = (
         (None, {
-            'fields': (('person', 'office'),
+            'fields': (('person', 'office','charge_type',),
                  ('start_date', 'end_date', 'end_reason'), 
                  'description')
         }),

@@ -39,6 +39,7 @@ class PresenterInline(admin.TabularInline):
 
     raw_id_fields = ( 'charge', )
 
+
 class ActInline(admin.TabularInline):
     model = Act
     extra = 0
@@ -330,6 +331,7 @@ class AttachAdmin(admin.ModelAdmin):
 
     act_type.short_text_description = _("act type")
 
+
 class AgendaAdmin(ActAdmin):
     fieldsets = (
         (None, {
@@ -344,6 +346,73 @@ class AgendaAdmin(ActAdmin):
             'fields': ('is_key',)
         }),
         )
+
+
+class DecreeHasCommitmentInline(admin.TabularInline):
+
+    model = Decree.commitment_set.through
+    extra = 0
+
+    fields = ( "decree", "commitment" )
+    raw_id_fields = [ "decree", "commitment" ]
+
+
+class DecreeAdmin(ActAdmin):
+
+    fieldsets = (
+        (None, {
+            'fields': ('idnum', 'title', 'adj_title',)
+        }),
+        ('Presentazione', {
+            'classes': ('collapse',),
+            'fields': ('presentation_date', 'text', 'emitting_institution', 'status', ),
+            }),
+    )
+
+    inlines_superuser = ActAdmin.inlines_superuser + [ DecreeHasCommitmentInline, ]
+    inlines_base = ActAdmin.inlines_base + [ DecreeHasCommitmentInline, ]
+  
+
+
+class DecisionHasCommitmentInline(admin.TabularInline):
+
+    model = Decision.commitment_set.through
+    extra = 0
+
+    readonly_fields = ( "amount", )
+    fields = ( "decision", "commitment", "amount" )
+    raw_id_fields = [ "decision", "commitment" ]
+
+    def amount(self, obj):
+        if not obj or not obj.commitment:
+            return 0
+
+        return obj.commitment.amount
+
+class DecisionAdmin(ActAdmin):
+
+    fieldsets = (
+        (None, {
+            'fields': ('idnum', 'title', 'adj_title',)
+        }),
+        ('Presentazione', {
+            'classes': ('collapse',),
+            'fields': ('presentation_date', 'text', 'emitting_office','status',),
+            }),
+        ('Commitments', {
+            'classes': ('collapse',),
+            'fields': ('total_commitment',)
+        }),
+    )
+
+    inlines_superuser = ActAdmin.inlines_superuser + [ DecisionHasCommitmentInline, ]
+    inlines_base = ActAdmin.inlines_base + [ DecisionHasCommitmentInline, ]
+
+
+
+class CommitmentAdmin(admin.ModelAdmin):
+
+    raw_id_fields = [ "manager", "payee_set" ]
 
 
 class TransitionAdmin(admin.ModelAdmin):
@@ -381,3 +450,6 @@ admin.site.register(Attach, AttachAdmin)
 admin.site.register(Transition, TransitionAdmin)
 admin.site.register(Speech, SpeechAdmin)
 admin.site.register(Agenda, AgendaAdmin)
+admin.site.register(Decree, DecreeAdmin)
+admin.site.register(Decision, DecisionAdmin)
+admin.site.register(Commitment, CommitmentAdmin)

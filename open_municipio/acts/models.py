@@ -4,6 +4,7 @@ import re
 from django.template.defaultfilters import slugify
 from datetime import datetime
 from django.utils import formats
+from django.core.validators import MinValueValidator
 from django.core.exceptions import ObjectDoesNotExist
 from south.modelsinspector import add_ignored_fields
 from django.conf import settings
@@ -24,7 +25,7 @@ from model_utils.fields import StatusField
 
 from open_municipio.newscache.models import News, NewsTargetMixin
 
-from open_municipio.people.models import Institution, InstitutionCharge, Person, SittingItem
+from open_municipio.people.models import Institution, InstitutionCharge, Person, SittingItem, Office, AdministrationCharge
 from open_municipio.taxonomy.managers import TopicableManager
 from open_municipio.monitoring.models import MonitorizedItem, Monitoring
 from django.core.urlresolvers import resolve, reverse
@@ -71,8 +72,12 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
     description = models.TextField(_('description'), blank=True)
     text = models.TextField(_('text'), blank=True)
     presenter_set = models.ManyToManyField(InstitutionCharge, blank=True, null=True, through='ActSupport', related_name='presented_act_set', verbose_name=_('presenters'))
+    presenter_administrator_set = models.ManyToManyField(AdministrationCharge, blank=True, null=True, through='ActAdministratorSignature', related_name='presented_act_set', verbose_name=_('presenting administrators'))
     recipient_set = models.ManyToManyField(InstitutionCharge, blank=True, null=True, related_name='received_act_set', verbose_name=_('recipients'))
-    emitting_institution = models.ForeignKey(Institution, related_name='emitted_act_set', verbose_name=_('emitting institution'))
+    recipient_administrator_set = models.ManyToManyField(AdministrationCharge, blank=True, null=True, related_name='received_act_set', verbose_name=_('recipient administrators'))
+    
+    emitting_institution = models.ForeignKey(Institution, related_name='emitted_act_set', blank=True, null=True, default=None, verbose_name=_('emitting institution'))
+    emitting_office = models.ForeignKey(Office, related_name='emitted_act_set', blank=True, null=True, verbose_name=_('emitting office'))
     category_set = models.ManyToManyField('taxonomy.Category', verbose_name=_('categories'), blank=True, null=True)
     location_set = models.ManyToManyField('locations.Location', through='locations.TaggedActByLocation', verbose_name=_('locations'), blank=True, null=True)
     status_is_final = models.BooleanField(_('status is final'), default=False)
@@ -453,6 +458,16 @@ class ActSupport(models.Model):
 
     def __unicode__(self):
         return _(u"%(support)s") % { "support": self.support_type }
+
+class ActAdministratorSignature(models.Model):
+    """
+    A relationship describing which administration charge(s) 
+    signed a given act
+    """
+
+    charge = models.ForeignKey(AdministrationCharge)
+    act = models.ForeignKey(Act)
+    signature_date = models.DateField(_('signature date'), default=None, blank=True, null=True)
 
 
 class ActDescriptor(TimeStampedModel):
@@ -935,6 +950,100 @@ class Amendment(Act):
 ##        return ('om_amendment_detail', (), {'slug': str(self.slug)})
 
 
+class Decree(Act):
+    """
+    This act models what in Italy is known as "Ordinanza"
+    """
+
+    FINAL_STATUSES = (
+        ('PRESENTED', _('presented')),
+    )
+
+    STATUS = Choices(
+        ('PRESENTED', 'presented', _('presented')),
+    )
+
+    status = models.CharField(_('status'), choices=STATUS, default="PRESENTED", max_length=12)
+    total_commitment = models.DecimalField(max_digits=15, decimal_places=2, blank=True, null=True, verbose_name=_("total commitment"), help_text=_("specify the total amount of the related commitments"), validators=[MinValueValidator(0.0)])
+    commitment_set = models.ManyToManyField("Commitment", blank=True, null=True, verbose_name=_("commitments"))
+
+    class Meta:
+        verbose_name = _("decree")
+        verbose_name_plural = _("decrees")
+
+    def get_default_slug(self):
+        
+        slug = self.title
+
+        if self.adj_title:
+            slug = self.adj_title
+
+        if self.presentation_date:
+            slug = "%s-%s" % (slug, self.presentation_date)
+
+        return slugify(slug)
+
+    
+
+class Decision(Act):
+    """
+    This act models what in Italy is known as "Determina" (or "Determinazione")
+    """
+
+    FINAL_STATUSES = (
+        ('PRESENTED', _('presented')),
+    )
+
+    STATUS = Choices(
+        ('PRESENTED', 'presented', _('presented')),
+    )
+
+    status = models.CharField(_('status'), choices=STATUS, default="PRESENTED", max_length=12)
+
+    total_commitment = models.DecimalField(max_digits=15, decimal_places=2, blank=True, null=True, verbose_name=_("total commitment"), help_text=_("specify the total amount of the related commitments"), validators=[MinValueValidator(0.0)])
+    commitment_set = models.ManyToManyField("Commitment", blank=True, null=True, verbose_name=_("commitments"))
+ 
+    class Meta:
+        verbose_name = _("decision")
+        verbose_name_plural = _("decisions")
+
+        
+    def get_default_slug(self):
+        
+        slug = self.title
+
+        if self.adj_title:
+            slug = self.adj_title
+
+        if self.presentation_date:
+            slug = "%s-%s" % (slug, self.presentation_date)
+
+        return slugify(slug)
+
+
+   
+
+class Commitment(models.Model):
+    
+    SELECTION_TYPES = Choices(
+        ("DIRECT", "direct", _("direct")),
+        ("COMPETITION", "competition", _("competition")),
+        ("OTHER", "other", _("other")),
+    )
+    
+    manager = models.ForeignKey('people.AdministrationCharge', null=False, blank=False, verbose_name=_("manager"))
+    amount = models.DecimalField(max_digits=15, decimal_places=2, null=False, blank=False, verbose_name=_("amount"), validators=[MinValueValidator(0.0)])
+    selection_type = models.CharField(max_length=50, choices=SELECTION_TYPES, null=True, blank=False, verbose_name=_("selection type"))
+    payee_set = models.ManyToManyField('people.Company', null=True, blank=True, verbose_name=_("payees"), help_text=_("specify the list of companies that received the money"))
+
+    class Meta:
+        verbose_name = _("commitment")
+        verbose_name_plural = _("commitments")
+
+    def __unicode__(self):
+        return u"%s (%s)" % (self.manager, self.amount or "?")
+ 
+ 
 #
 # Workflows
 #

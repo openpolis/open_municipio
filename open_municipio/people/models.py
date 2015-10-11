@@ -1252,6 +1252,9 @@ class Office(Body):
     """
     Internal municipality office, playing a role in municipality's administration.
     """
+
+    parent = models.ForeignKey('Office', blank=True, null=True, default=None, verbose_name=_("the parent office, in a hierarchy"))
+
     class Meta(Body.Meta):
         verbose_name = _('office')
         verbose_name_plural = _('offices')
