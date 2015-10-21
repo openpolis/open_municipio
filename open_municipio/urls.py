@@ -107,3 +107,8 @@ urlpatterns += patterns('',
 urlpatterns += patterns('',
     url(r'^bookmark/', include('open_municipio.bookmarking.urls')),
 )
+
+# api's
+urlpatterns += patterns('',
+    url(r'^api/', include('open_municipio.api.urls')),
+)

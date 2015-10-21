@@ -126,6 +126,7 @@ INSTALLED_APPS = (
     'taggit',
     'voting',
     'haystack',
+    'tastypie',
     'open_municipio.events',
     'open_municipio.inline_edit',
     'open_municipio.autocomplete',
@@ -149,6 +150,7 @@ INSTALLED_APPS = (
     'sorl.thumbnail',
     'social_auth',
     'open_municipio.om_auth',
+    'open_municipio.api',
 #    'open_municipio.speech',
     # TinyMCE
     'tinymce',
@@ -388,5 +390,11 @@ HAYSTACK_CONNECTIONS = {
         'BATCH_SIZE': 100,
         'SEARCH_RESULTS_PER_PAGE': 10,
     }
+}
+
+SOUTH_MIGRATION_MODULES = {
+    'acts': 'open_municipio.acts.migrations',
+    'votations': 'open_municipio.votations.migrations',
+    'people': 'open_municipio.people.migrations',
 }
 
