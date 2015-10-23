@@ -126,7 +126,7 @@ INSTALLED_APPS = (
     'taggit',
     'voting',
     'haystack',
-    'tastypie',
+    'rest_framework',
     'open_municipio.events',
     'open_municipio.inline_edit',
     'open_municipio.autocomplete',
@@ -243,6 +243,11 @@ LOGGING = {
             'datefmt' : "%d/%b/%Y %H:%M:%S"
         },
         },
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        }
+    },
     'handlers': {
         'console':{
             'level':'DEBUG',
@@ -264,7 +269,8 @@ LOGGING = {
         },
         'mail_admins': {
             'level': 'ERROR',
-            'class': 'django.utils.log.AdminEmailHandler'
+            'class': 'django.utils.log.AdminEmailHandler',
+            'filters': [ 'require_debug_false', ],
         },
         'webapp': {
             'level':'DEBUG',
@@ -398,3 +404,6 @@ SOUTH_MIGRATION_MODULES = {
     'people': 'open_municipio.people.migrations',
 }
 
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'open_municipio.api.pagination.StandardPagination',   
+}

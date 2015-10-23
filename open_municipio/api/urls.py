@@ -1,35 +1,18 @@
 from django.conf.urls.defaults import *
 
-from tastypie.api import Api
+from rest_framework.routers import DefaultRouter
 
-from open_municipio.api.people import PersonResource, InstitutionResource, \
-        InstitutionChargeResource, AdministrationChargeResource, OfficeResource
-from open_municipio.api.acts import DeliberationResource, CGDeliberationResource,\
-        MotionResource, DecreeResource, DecisionResource, InterrogationResource,\
-        InterpellationResource, SpeechResource
+from open_municipio.api.acts import DeliberationViewSet, CGDeliberationViewSet
+from open_municipio.api.people import PersonViewSet
 
-
-
-api = Api(api_name='v1')
-
+router = DefaultRouter()
 # acts
-api.register(DeliberationResource())
-api.register(CGDeliberationResource())
-api.register(MotionResource())
-api.register(DecreeResource())
-api.register(DecisionResource())
-api.register(InterpellationResource())
-api.register(InterrogationResource())
-api.register(SpeechResource())
+router.register(r'deliberations', DeliberationViewSet)
+router.register(r'cgdeliberations', CGDeliberationViewSet)
 
 # people
-api.register(PersonResource())
-api.register(InstitutionResource())
-api.register(InstitutionChargeResource())
-api.register(OfficeResource())
-api.register(AdministrationChargeResource())
-
+router.register(r'people', PersonViewSet)
 
 urlpatterns = patterns('',
-    url(r'^', include(api.urls)),
+    url(r'^', include(router.urls)),
 )
