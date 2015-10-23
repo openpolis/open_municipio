@@ -82,6 +82,7 @@
       </div>
     </div>
 
+    {% if profile.show_monitored_acts %}
     <hr class="big">
 
     <h2>Atti monitorati {% popover_info 'atti-monitorati' %}</h2>
@@ -99,10 +100,14 @@
           <td>{{ monitoring.created_at|date:'d.m.Y' }}</td>
           <td><a href="{{ monitoring.content_object.get_absolute_url }}">{{ monitoring.content_object }}</a></td>
         </tr>
+      {% empty %}
+        <tr>
+            <td colspan="2"><i>Nessun atto monitorato ancora</i></td>
+        </tr>
       {% endfor %}
       </tbody>
     </table>
-
+    {% endif %}
   {% else %}  
       Non ha un profilo pubblico
   {% endif %}
@@ -110,9 +115,12 @@
 
 {% block sidebar %}
     {% if profile %}
+        {% if profile.show_monitored_politicians %}
         <h2>Politici monitorati {% popover_info 'politici-monitorati' 'left' %}</h2>
         <table id="monitoring-table">
-            <tbody><tr>
+            <tbody>
+            <tr>
+            {% if politician_monitoring_list|length > 0 %}
                 <td>
                     <div class="circle">{{ politician_monitoring_list|length }}</div>
                 </td>
@@ -122,12 +130,17 @@
                         {% if not forloop.last %}, {% endif %}
                     {% endfor %}
                 </td>
+            {% else %}
+            <td><i>Nessun politico monitorato ancora</i></td>
+            {% endif %}
             </tr>
             </tbody>
         </table>
 
         <hr>
+        {% endif %}
 
+        {% if profile.show_monitored_arguments %}
         <h2>Argomenti monitorati {% popover_info 'argomenti-monitorati' 'left' %}</h2>
         <dl class="taxonomy-cloud">
             {% for topic in topic_monitoring_list %}
@@ -135,8 +148,11 @@
                     <span class="{{ topic.content_type.name|lower }}">
                         <a href="{{ topic.object.get_absolute_url }}">{{ topic.object }}</a></span>
                 </dt>
+            {% empty %}
+            <i>Nessun argomento monitorato ancora</i>
             {% endfor %}
         </dl>
+        {% endif %}
     {% endif %}
 
 	{% if profile %}

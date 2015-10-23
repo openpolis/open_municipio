@@ -73,6 +73,8 @@ class UserProfile(NewsTargetMixin, models.Model):
     # the user wants to receive newsletters (whatever that means)
     wants_newsletter = models.BooleanField(_('i want the newsletter'), default=False,
                                            help_text="")
+    wants_newsletter_blog = models.BooleanField(_('i want the blog newsletter'), 
+                                            default=True, help_text="")
     
     location = models.ForeignKey(Location, blank=True, null=True, verbose_name=_('location'),
                                  help_text=u"Se sei cittadino di %s, scegli la zona della città in cui risiedi" % settings.SITE_INFO['main_city'])
@@ -81,8 +83,17 @@ class UserProfile(NewsTargetMixin, models.Model):
     description = models.TextField(_('Description'), blank=True,
                                    help_text=u"Una breve descrizione di te, che apparirà nel tuo profilo pubblico")
 
+    # show pieces of information in his/her profile
+    show_monitored_politicians = models.BooleanField(_("show monitored politicians"), default=True, help_text=_("set this if you want the politicians you monitor to appear in your profile"))
+    show_monitored_arguments = models.BooleanField(_("show monitored arguments"), default=True, help_text=_("set this if you want the arguments you monitor to appear in your profile"))
+    show_monitored_acts = models.BooleanField(_("show monitored acts"), default=True, help_text=_("set this if you want the acts you monitor to appear in your profile"))
+
+
+
     class Meta:
         db_table = u'users_user_profile'
+        verbose_name = _("user profile")
+        verbose_name_plural = _("user profiles")
 
     def __unicode__(self):
         return self.public_name

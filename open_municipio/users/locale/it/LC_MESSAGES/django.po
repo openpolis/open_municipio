@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-09-28 12:47+0200\n"
+"POT-Creation-Date: 2015-10-24 00:02+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -42,7 +42,7 @@ msgstr "Desidero ricevere la newsletter"
 msgid "Location, if applicable"
 msgstr "Località, se applicabile"
 
-#: forms.py:44 models.py:81
+#: forms.py:44 models.py:83
 msgid "Description"
 msgstr "Descrizione"
 
@@ -106,9 +106,53 @@ msgstr "livello di privacy"
 msgid "i want the newsletter"
 msgstr "desidero ricevere la newsletter"
 
-#: models.py:77
+#: models.py:76
+msgid "i want the blog newsletter"
+msgstr "desidero ricevere la newsletter del blog"
+
+#: models.py:79
 msgid "location"
 msgstr "località"
+
+#: models.py:87
+msgid "show monitored politicians"
+msgstr "mostra politici monitorati"
+
+#: models.py:87
+msgid ""
+"set this if you want the politicians you monitor to appear in your profile"
+msgstr ""
+"scegli quest'opzione se vuoi che i politici da te monitorati appaiano nel "
+"tuo profilo"
+
+#: models.py:88
+msgid "show monitored arguments"
+msgstr "mostra argomenti monitorati"
+
+#: models.py:88
+msgid ""
+"set this if you want the arguments you monitor to appear in your profile"
+msgstr ""
+"scegli quest'opzione se vuoi che gli argomenti da te monitorati appaiano nel "
+"tuo profilo"
+
+#: models.py:89
+msgid "show monitored acts"
+msgstr "mostra atti monitorati"
+
+#: models.py:89
+msgid "set this if you want the acts you monitor to appear in your profile"
+msgstr ""
+"scegli quest'opzione se vuoi che gli atti da te monitorati appaiano nel tuo "
+"profilo"
+
+#: models.py:95
+msgid "user profile"
+msgstr "profilo utente"
+
+#: models.py:96
+msgid "user profiles"
+msgstr "profili utente"
 
 #~ msgid "This value must contain only letters, numbers and underscores."
 #~ msgstr "Questo campo può contenere solo lettere, numeri e il carattere '_'"

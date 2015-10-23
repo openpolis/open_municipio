@@ -402,6 +402,7 @@ SOUTH_MIGRATION_MODULES = {
     'acts': 'open_municipio.acts.migrations',
     'votations': 'open_municipio.votations.migrations',
     'people': 'open_municipio.people.migrations',
+    'users': 'open_municipio.users.migrations',
 }
 
 REST_FRAMEWORK = {
