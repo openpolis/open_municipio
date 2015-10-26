@@ -1125,6 +1125,15 @@ class Speech(Document):
     in that case the ``author`` field may be left blank and the ``author_name_when_external``
     gets the name of the person
     """
+
+    SPEECH_TYPES = Choices(
+        ('ODG', 'odg', _('ordine del giorno')),
+        ('PROC', 'procedural', _('questione procedurale')),
+        ('PERS', 'personal', _('questione personale')),
+        ('INTT', 'interrogation', _('interrogazione')),
+        ('DEBATE', 'debate', _('dibattito')),
+    )
+
     title = models.CharField(max_length=255, blank=True, null=True,verbose_name=_('title'))
     sitting_item = models.ForeignKey('people.SittingItem')
     author = models.ForeignKey('people.Person', blank=True, null=True,verbose_name=_('author'))
@@ -1139,6 +1148,7 @@ class Speech(Document):
     audio_url = models.URLField(blank=True,verbose_name=_('audio url'))
     audio_file = models.FileField(upload_to="attached_audio/%Y%m%d", blank=True, max_length=255,verbose_name=_('audio file'))
     slug = models.SlugField(max_length=500, blank=True, null=True)
+    type = models.CharField(choices=SPEECH_TYPES, max_length=10, null=True, blank=True, verbose_name=_("type"))
 
     class Meta(Document.Meta):
         verbose_name = _('speech')
