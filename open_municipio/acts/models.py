@@ -1140,7 +1140,6 @@ class Speech(Document):
     author_name_when_external = models.CharField(max_length=255, blank=True, null=True,verbose_name=_('author name when external'))   
     votation = models.ForeignKey('votations.Votation', blank=True, null=True,verbose_name=_('votation'))
     related_act_set = models.ManyToManyField('Act', through='ActHasSpeech')
-    initial_time = models.TimeField(verbose_name=_('initial_time'))
     duration = models.IntegerField(blank=True, null=True,verbose_name=_('duration'))
     seq_order = models.IntegerField(default=0,verbose_name=_('sequential order'))
     initial_time = models.TimeField(blank=True, null=True,verbose_name=_('initial time'))
