@@ -5502,6 +5502,12 @@ hr.big {
   padding: 4px 0;
   color: #000000;
 }
+#cookie-alert .navbar-inner {
+  background-color: #fdf48f;
+  color: #000000;
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
 #home-alert {
   border: 4px solid #fdf48f;
 }
@@ -5765,3 +5771,5 @@ span.search_act_status {
     margin-left: 5px;
     margin-bottom: 5px;
 }
+
+
