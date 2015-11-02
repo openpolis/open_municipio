@@ -224,29 +224,12 @@
   </article>
 
 
-  {% if ALERT_POPUP|length > 0 %}
-      <div class="modal" id="home-alert">
-          <div class="modal-header">
-              <button class="close" data-dismiss="modal">×</button>
-              <img src="{% if LOGO_URL %}{{ LOGO_URL }}{% else %}{{ STATIC_URL }}img/logo-openmunicipio.png{% endif %}" alt="Open municipio">
-          </div>
-          <div class="modal-body">
-              <p>{{ ALERT_POPUP|safe }}</p>
-          </div>
-          <div class="modal-footer">
-              <a href="#" class="btn btn-primary btn-large" data-dismiss="modal">Entra nel sito</a>
-          </div>
-      </div>
-  {% endif %}
-
-
 {% endblock container %}
 
 
 {% block footer_js_includes %}
   {{ block.super }}
   <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.submitlink.js"></script>
-  <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap-modal.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap-typeahead.2.0.0.modified.js"></script>
   <script type="text/javascript">
       $(document).ready(function(){
@@ -288,21 +271,15 @@
                   window.location.href = "http://{{ current_site }}/people/" + obj.slug;
               }
           });
-          $('a.event_toggle_modal').each(function() {
-              var link = $(this);
-              link.click(function(e) {
-                  e.preventDefault();
-                  $(link.attr('href')).modal();
-              });
-          });
       });
   </script>
 
     {% if ALERT_POPUP|length > 0 %}
-      <script type="text/javascript">
-          $(document).ready(function(){
-              $('#home-alert').modal();
-          });
-      </script>
-  {% endif %}
+  <script type="text/javascript">
+    $(document).ready(function(){
+        $('#home-alert').modal();
+    });
+  </script>
+    {% endif %}
 {% endblock %}
+

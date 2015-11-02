@@ -127,6 +127,7 @@ INSTALLED_APPS = (
     'voting',
     'haystack',
     'rest_framework',
+    'cookielaw',
     'open_municipio.events',
     'open_municipio.inline_edit',
     'open_municipio.autocomplete',

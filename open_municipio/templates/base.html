@@ -36,7 +36,23 @@
         <!--[if IE]><link rel="stylesheet" href="{{ STATIC_URL }}css/ui-custom-theme/jquery-ui-1.8.16.ie.css"><![endif]-->
         <script type="text/javascript" src="{{ STATIC_URL }}js/include.js" data-url="{{ STATIC_URL }}"></script>
         <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-1.8.3.min.js"></script>
+        <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap-modal.js"></script>
+
     {% endblock head_js_includes %}
+
+{% comment %}
+    <script type="text/javascript">
+      $(document).ready(function(){
+          $('a.event_toggle_modal').each(function() {
+              var link = $(this);
+              link.click(function(e) {
+                  e.preventDefault();
+                  $(link.attr('href')).modal();
+              });
+          });
+      });
+    </script>
+{% endcomment %}
 
     <script type="text/javascript" charset="utf-8">
     {% block extra_js %}{% endblock %}
@@ -46,6 +62,23 @@
 
 </head>
 <body class="{% block body_class %}{% endblock %}">
+
+  {% if ALERT_POPUP|length > 0 %}
+      <div class="modal" id="home-alert">
+          <div class="modal-header">
+              <button class="close" data-dismiss="modal">×</button>
+              <img src="{% if LOGO_URL %}{{ LOGO_URL }}{% else %}{{ STATIC_URL }}img/logo-openmunicipio.png{% endif %}" alt="Open municipio">
+          </div>
+          <div class="modal-body">
+              <p>{{ ALERT_POPUP|safe }}</p>
+          </div>
+          <div class="modal-footer">
+              <a href="#" class="btn btn-primary btn-large" data-dismiss="modal">Entra nel sito</a>
+          </div>
+      </div>
+  {% endif %}
+
+
 
 <div id="wrapper"><!-- #wrapper -->
 

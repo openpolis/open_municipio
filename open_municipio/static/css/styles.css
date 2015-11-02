@@ -3384,6 +3384,12 @@ input[type="submit"].btn.btn-mini {
   background-color: #fff;
   cursor: default;
 }
+
+.modal {
+    /* by default it is not visible, until you invoke .modal() */
+    display: none;
+}
+
 .modal-open .dropdown-menu {
   z-index: 2050;
 }
