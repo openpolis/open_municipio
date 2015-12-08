@@ -8,19 +8,24 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding field 'Decision.commitment_set'
-        db.add_column(u'acts_decision', 'commitment_set',
-                      self.gf('django.db.models.fields.related.ForeignKey')(to=orm['acts.Commitment'], null=True, blank=True),
-                      keep_default=False)
-
         # Removing M2M table for field commitment_set on 'Decision'
         db.delete_table(db.shorten_name(u'acts_decision_commitment_set'))
 
+        # Removing M2M table for field commitment_set on 'Decree'
+        db.delete_table(db.shorten_name(u'acts_decree_commitment_set'))
+
+        # Adding field 'Commitment.decision'
+        db.add_column(u'acts_commitment', 'decision',
+                      self.gf('django.db.models.fields.related.ForeignKey')(to=orm['acts.Decision'], null=True, blank=True),
+                      keep_default=False)
+
+        # Adding field 'Commitment.decree'
+        db.add_column(u'acts_commitment', 'decree',
+                      self.gf('django.db.models.fields.related.ForeignKey')(to=orm['acts.Decree'], null=True, blank=True),
+                      keep_default=False)
+
 
     def backwards(self, orm):
-        # Deleting field 'Decision.commitment_set'
-        db.delete_column(u'acts_decision', 'commitment_set_id')
-
         # Adding M2M table for field commitment_set on 'Decision'
         m2m_table_name = db.shorten_name(u'acts_decision_commitment_set')
         db.create_table(m2m_table_name, (
@@ -29,6 +34,21 @@ class Migration(SchemaMigration):
             ('commitment', models.ForeignKey(orm[u'acts.commitment'], null=False))
         ))
         db.create_unique(m2m_table_name, ['decision_id', 'commitment_id'])
+
+        # Adding M2M table for field commitment_set on 'Decree'
+        m2m_table_name = db.shorten_name(u'acts_decree_commitment_set')
+        db.create_table(m2m_table_name, (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('decree', models.ForeignKey(orm[u'acts.decree'], null=False)),
+            ('commitment', models.ForeignKey(orm[u'acts.commitment'], null=False))
+        ))
+        db.create_unique(m2m_table_name, ['decree_id', 'commitment_id'])
+
+        # Deleting field 'Commitment.decision'
+        db.delete_column(u'acts_commitment', 'decision_id')
+
+        # Deleting field 'Commitment.decree'
+        db.delete_column(u'acts_commitment', 'decree_id')
 
 
     models = {
@@ -141,6 +161,8 @@ class Migration(SchemaMigration):
         u'acts.commitment': {
             'Meta': {'object_name': 'Commitment'},
             'amount': ('django.db.models.fields.DecimalField', [], {'max_digits': '15', 'decimal_places': '2'}),
+            'decision': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['acts.Decision']", 'null': 'True', 'blank': 'True'}),
+            'decree': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['acts.Decree']", 'null': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'manager': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['people.AdministrationCharge']"}),
             'payee_set': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'to': u"orm['people.Company']", 'null': 'True', 'blank': 'True'}),
@@ -149,14 +171,12 @@ class Migration(SchemaMigration):
         u'acts.decision': {
             'Meta': {'object_name': 'Decision', '_ormbases': [u'acts.Act']},
             u'act_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['acts.Act']", 'unique': 'True', 'primary_key': 'True'}),
-            'commitment_set': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['acts.Commitment']", 'null': 'True', 'blank': 'True'}),
             'status': ('django.db.models.fields.CharField', [], {'default': "'PRESENTED'", 'max_length': '12'}),
             'total_commitment': ('django.db.models.fields.DecimalField', [], {'null': 'True', 'max_digits': '15', 'decimal_places': '2', 'blank': 'True'})
         },
         u'acts.decree': {
             'Meta': {'object_name': 'Decree', '_ormbases': [u'acts.Act']},
             u'act_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['acts.Act']", 'unique': 'True', 'primary_key': 'True'}),
-            'commitment_set': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'to': u"orm['acts.Commitment']", 'null': 'True', 'blank': 'True'}),
             'status': ('django.db.models.fields.CharField', [], {'default': "'PRESENTED'", 'max_length': '12'}),
             'total_commitment': ('django.db.models.fields.DecimalField', [], {'null': 'True', 'max_digits': '15', 'decimal_places': '2', 'blank': 'True'})
         },
@@ -377,6 +397,7 @@ class Migration(SchemaMigration):
         },
         u'people.institutioncharge': {
             'Meta': {'ordering': "['person__first_name', 'person__last_name']", 'object_name': 'InstitutionCharge', 'db_table': "u'people_institution_charge'"},
+            'can_vote': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'description': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
             'end_date': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
             'end_reason': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),

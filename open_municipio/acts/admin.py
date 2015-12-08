@@ -350,11 +350,10 @@ class AgendaAdmin(ActAdmin):
 
 class DecreeHasCommitmentInline(admin.TabularInline):
 
-    model = Decree.commitment_set.through
+    model = Commitment
     extra = 0
 
-    fields = ( "decree", "commitment" )
-    raw_id_fields = [ "decree", "commitment" ]
+    fields = ( "decree", "manager", "amount", "selection_type", )
 
 
 class DecreeAdmin(ActAdmin):
@@ -376,18 +375,11 @@ class DecreeAdmin(ActAdmin):
 
 class DecisionHasCommitmentInline(admin.TabularInline):
 
-    model = Decision.commitment_set.through
+    model = Commitment
     extra = 0
 
-    readonly_fields = ( "amount", )
-    fields = ( "decision", "commitment", "amount" )
-    raw_id_fields = [ "decision", "commitment" ]
+    fields = ( "decision", "manager", "amount", "selection_type", )
 
-    def amount(self, obj):
-        if not obj or not obj.commitment:
-            return 0
-
-        return obj.commitment.amount
 
 class DecisionAdmin(ActAdmin):
 

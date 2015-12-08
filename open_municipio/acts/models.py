@@ -14,6 +14,7 @@ from django.template.context import Context
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
+from django.core.exceptions import ValidationError
 
 from django.db.models.signals import post_save, post_delete, pre_delete
 from django.dispatch import receiver
@@ -965,7 +966,7 @@ class Decree(Act):
 
     status = models.CharField(_('status'), choices=STATUS, default="PRESENTED", max_length=12)
     total_commitment = models.DecimalField(max_digits=15, decimal_places=2, blank=True, null=True, verbose_name=_("total commitment"), help_text=_("specify the total amount of the related commitments"), validators=[MinValueValidator(0.0)])
-    commitment_set = models.ManyToManyField("Commitment", blank=True, null=True, verbose_name=_("commitments"))
+#    commitment_set = models.ManyToManyField("Commitment", blank=True, null=True, verbose_name=_("commitments"))
 
     class Meta:
         verbose_name = _("decree")
@@ -1002,7 +1003,6 @@ class Decision(Act):
 
     total_commitment = models.DecimalField(max_digits=15, decimal_places=2, blank=True, null=True, verbose_name=_("total commitment"), help_text=_("specify the total amount of the related commitments"), validators=[MinValueValidator(0.0)])
 #    commitment_set = models.ManyToManyField("Commitment", blank=True, null=True, verbose_name=_("commitments"))
-    commitment_set = models.ForeignKey("Commitment", blank=True, null=True, verbose_name=_("commitments"))
 
  
     class Meta:
@@ -1038,12 +1038,20 @@ class Commitment(models.Model):
     selection_type = models.CharField(max_length=50, choices=SELECTION_TYPES, null=True, blank=False, verbose_name=_("selection type"))
     payee_set = models.ManyToManyField('people.Company', null=True, blank=True, verbose_name=_("payees"), help_text=_("specify the list of companies that received the money"))
 
+    decision = models.ForeignKey(Decision, null=True, blank=True, verbose_name=_("decision"))
+    decree = models.ForeignKey(Decree, null=True, blank=True, verbose_name=_("decree"))
+
     class Meta:
         verbose_name = _("commitment")
         verbose_name_plural = _("commitments")
 
     def __unicode__(self):
         return u"%s (%s)" % (self.manager, self.amount or "?")
+
+    def clean(self):
+
+        if self.decision and self.decree:
+            raise ValidationError("Cannot set both 'decision' and 'decree'")
  
  
 #
