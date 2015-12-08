@@ -38,6 +38,11 @@ class UserRegistrationForm(RegistrationFormUniqueEmail):
                                        required=False)
     says_is_politician = forms.BooleanField(required=False, label=_('I am a politician'),
                                             help_text=u"Segnala alla redazione che sei un politico del municipio, per avere accesso avanzato.")
+
+    show_monitored_acts = forms.BooleanField(required=False, label=_('Show monitored acts'))
+    show_monitored_politicians = forms.BooleanField(required=False, label=_('Show monitored acts'))
+    show_monitored_arguments = forms.BooleanField(required=False, label=_('Show monitored acts'))
+
     wants_newsletter = forms.BooleanField(required=False, label=_('Wants newsletter'),)
     wants_newsletter_blog = forms.BooleanField(required=False, label=_('Wants blog newsletter'),)
 
@@ -72,6 +77,10 @@ class SocialIntegrationForm(forms.Form):
                                        required=False)
     says_is_politician = forms.BooleanField(required=False, label=_('I am a politician'),
                                             help_text=u"Segnala alla redazione che sei un politico del municipio, per avere accesso avanzato.")
+    show_monitored_acts = forms.BooleanField(required=False, label=_('Show monitored acts'))
+    show_monitored_politicians = forms.BooleanField(required=False, label=_('Show monitored politicians'))
+    show_monitored_arguments = forms.BooleanField(required=False, label=_('Show monitored arguments'))
+
     wants_newsletter = forms.BooleanField(required=False, label=_('Wants newsletter'))
     wants_newsletter_blog = forms.BooleanField(required=False, label=_('Wants blog newsletter'))
 

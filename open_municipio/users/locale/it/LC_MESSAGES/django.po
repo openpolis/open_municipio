@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-12-08 10:36+0100\n"
+"POT-Creation-Date: 2015-12-08 10:58+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,59 +26,71 @@ msgstr "Nome"
 msgid "Last Name"
 msgstr "Cognome"
 
-#: forms.py:36 forms.py:70
+#: forms.py:36 forms.py:75
 msgid "I want only my nickname to be publicly shown"
 msgstr "Desidero che sia pubblicato solo il mio nickname"
 
-#: forms.py:39 forms.py:73
+#: forms.py:39 forms.py:78
 msgid "I am a politician"
 msgstr "Sono un politico"
 
-#: forms.py:41 forms.py:75
+#: forms.py:42 forms.py:43 forms.py:44 forms.py:80
+msgid "Show monitored acts"
+msgstr "Mostra atti monitorati"
+
+#: forms.py:46 forms.py:84
 msgid "Wants newsletter"
 msgstr "Desidero ricevere la newsletter"
 
-#: forms.py:42 forms.py:76
+#: forms.py:47 forms.py:85
 msgid "Wants blog newsletter"
 msgstr "Desidero ricevere la newsletter del blog"
 
-#: forms.py:44 forms.py:78
+#: forms.py:49 forms.py:87
 msgid "Location, if applicable"
 msgstr "Località, se applicabile"
 
-#: forms.py:46 models.py:83
+#: forms.py:51 models.py:83
 msgid "Description"
 msgstr "Descrizione"
 
-#: forms.py:48
+#: forms.py:53
 msgid "Your image"
 msgstr "La tua immagine"
 
-#: forms.py:51 forms.py:81
+#: forms.py:56 forms.py:90
 msgid "I have read and approve the Terms of Service"
 msgstr ""
 "Ho letto e condivido il <a href=\"/regolamento\">regolamento</a> e le <a "
 "href=\"/condizioni\">condizioni d'uso</a> del sito"
 
-#: forms.py:52 forms.py:82
+#: forms.py:57 forms.py:91
 msgid "You must agree to the terms to register"
 msgstr "Devi approvare i termini per accedere"
 
-#: forms.py:54 forms.py:84
+#: forms.py:59 forms.py:93
 msgid "I have read and agree to the Privacy conditions"
 msgstr ""
 "Ho letto e condivido il testo sul <a href=\"/privacy\">trattamento dei dati "
 "personali</a>"
 
-#: forms.py:55 forms.py:85
+#: forms.py:60 forms.py:94
 msgid "You must agree to the conditions to register"
 msgstr "Devi approvare le condizioni per accedete"
 
-#: forms.py:96
+#: forms.py:81
+msgid "Show monitored politicians"
+msgstr "Mostra politici monitorati"
+
+#: forms.py:82
+msgid "Show monitored arguments"
+msgstr "Mostra argomenti monitorati"
+
+#: forms.py:105
 msgid "A user with that username already exists."
 msgstr "Un utente con questo username già esiste."
 
-#: forms.py:102
+#: forms.py:111
 msgid "E-mail"
 msgstr "Email"
 
