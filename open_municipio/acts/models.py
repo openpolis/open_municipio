@@ -1001,7 +1001,9 @@ class Decision(Act):
     status = models.CharField(_('status'), choices=STATUS, default="PRESENTED", max_length=12)
 
     total_commitment = models.DecimalField(max_digits=15, decimal_places=2, blank=True, null=True, verbose_name=_("total commitment"), help_text=_("specify the total amount of the related commitments"), validators=[MinValueValidator(0.0)])
-    commitment_set = models.ManyToManyField("Commitment", blank=True, null=True, verbose_name=_("commitments"))
+#    commitment_set = models.ManyToManyField("Commitment", blank=True, null=True, verbose_name=_("commitments"))
+    commitment_set = models.ForeignKey("Commitment", blank=True, null=True, verbose_name=_("commitments"))
+
  
     class Meta:
         verbose_name = _("decision")
