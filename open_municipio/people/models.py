@@ -423,7 +423,7 @@ class InstitutionCharge(Charge):
     n_present_attendances = models.IntegerField(default=0, verbose_name=_("number of present attendances"))
     n_absent_attendances = models.IntegerField(default=0, verbose_name=_("number of absent attendances"))
 
-    can_vote = models.BooleanField(default=False, verbose_name=_("specify whether it can vote in the Council"))
+    can_vote = models.BooleanField(default=True, verbose_name=_("in case of a city council member, specifies whether he/she can vote"))
 
     def get_absolute_url(self):
 
