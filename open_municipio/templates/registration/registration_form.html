@@ -34,6 +34,7 @@
                     {% include "registration/form_element.html" with element=form.description %}
                     {% include "registration/form_element.html" with element=form.image %}
                     {% include "registration/form_element.html" with element=form.wants_newsletter checkbox=1 %}
+                    {% include "registration/form_element.html" with element=form.wants_newsletter_blog checkbox=1 %}
 
                     <div id="legal" class="alert">
                         {% include "registration/form_element.html" with element=form.tos checkbox=1 %}

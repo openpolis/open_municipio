@@ -39,6 +39,8 @@ class UserRegistrationForm(RegistrationFormUniqueEmail):
     says_is_politician = forms.BooleanField(required=False, label=_('I am a politician'),
                                             help_text=u"Segnala alla redazione che sei un politico del municipio, per avere accesso avanzato.")
     wants_newsletter = forms.BooleanField(required=False, label=_('Wants newsletter'),)
+    wants_newsletter_blog = forms.BooleanField(required=False, label=_('Wants blog newsletter'),)
+
     location = forms.ModelChoiceField(required=False, queryset=Location.objects.order_by("name"), label=_('Location, if applicable'),
                                       help_text=u"Se sei cittadino di %s, scegli la zona della città in cui risiedi" % settings.SITE_INFO['main_city'])
     description = forms.CharField(required=False, label=_('Description'), widget=forms.Textarea(),
@@ -71,6 +73,8 @@ class SocialIntegrationForm(forms.Form):
     says_is_politician = forms.BooleanField(required=False, label=_('I am a politician'),
                                             help_text=u"Segnala alla redazione che sei un politico del municipio, per avere accesso avanzato.")
     wants_newsletter = forms.BooleanField(required=False, label=_('Wants newsletter'))
+    wants_newsletter_blog = forms.BooleanField(required=False, label=_('Wants blog newsletter'))
+
     location = forms.ModelChoiceField(required=False, queryset=Location.objects.order_by("name"), label=_('Location, if applicable'),
                                       help_text=u"Se sei cittadino di %s, scegli la zona della città in cui risiedi" % settings.SITE_INFO['main_city'])
     tos = forms.BooleanField(widget=forms.CheckboxInput(attrs=attrs_dict),

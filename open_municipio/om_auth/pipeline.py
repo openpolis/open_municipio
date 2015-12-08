@@ -29,18 +29,21 @@ def extra_data(request, details, *args, **kwargs):
         email = kwargs['user'].email
         profile = kwargs['user'].get_profile()
         wants_newsletter = profile.wants_newsletter
+        wants_newsletter_blog = profile.wants_newsletter_blog
         says_is_politician = profile.says_is_politician
         uses_nickname = profile.uses_nickname
         location = profile.location
     else:
         email = request.session.get('saved_email', details['email'])
         wants_newsletter = request.session.get('saved_wants_newsletter')
+        wants_newsletter_blog = request.session.get('saved_wants_newsletter_blog')
         says_is_politician = request.session.get('saved_says_is_politician')
         uses_nickname = request.session.get('saved_uses_nickname')
         location = request.session.get('saved_location')
     return {
         'email': email,
         'wants_newsletter': wants_newsletter,
+        'wants_newsletter_blog': wants_newsletter_blog,
         'says_is_politician': says_is_politician,
         'uses_nickname': uses_nickname,
         'location': location,
@@ -55,11 +58,13 @@ def create_profile(request, user, is_new=False, *args, **kwargs):
     """
     if is_new:
         wants_newsletter = request.session.get('saved_wants_newsletter')
+        wants_newsletter_blog = request.session.get('saved_wants_newsletter_blog')
         says_is_politician = request.session.get('saved_says_is_politician')
         uses_nickname = request.session.get('saved_uses_nickname')
         location = request.session.get('saved_location')
         profile, created = UserProfile.objects.get_or_create(user=user, defaults={
                 'wants_newsletter': wants_newsletter,
+                'wants_newsletter_blog': wants_newsletter_blog,
                 'location': location,
                 'says_is_politician': says_is_politician,
                 'uses_nickname': uses_nickname,

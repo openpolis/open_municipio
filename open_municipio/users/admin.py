@@ -7,7 +7,7 @@ class ProfileAdmin(admin.ModelAdmin):
 
     list_display = [ 'user', 'user_first_name', 'user_last_name', 'user_email', 'person', 'privacy_level', 'location', 'user_date_joined' ]
 
-    list_filter = [ 'says_is_politician', 'wants_newsletter', 'location', ]
+    list_filter = [ 'says_is_politician', 'wants_newsletter', 'wants_newsletter_blog', 'location', ]
 
     search_fields = [ "user__first_name", "user__last_name", "user__email", ]
 

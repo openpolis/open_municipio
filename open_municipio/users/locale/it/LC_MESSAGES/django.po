@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-10-24 00:02+0200\n"
+"POT-Creation-Date: 2015-12-08 10:36+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,55 +26,59 @@ msgstr "Nome"
 msgid "Last Name"
 msgstr "Cognome"
 
-#: forms.py:36 forms.py:68
+#: forms.py:36 forms.py:70
 msgid "I want only my nickname to be publicly shown"
 msgstr "Desidero che sia pubblicato solo il mio nickname"
 
-#: forms.py:39 forms.py:71
+#: forms.py:39 forms.py:73
 msgid "I am a politician"
 msgstr "Sono un politico"
 
-#: forms.py:41 forms.py:73
+#: forms.py:41 forms.py:75
 msgid "Wants newsletter"
 msgstr "Desidero ricevere la newsletter"
 
-#: forms.py:42 forms.py:74
+#: forms.py:42 forms.py:76
+msgid "Wants blog newsletter"
+msgstr "Desidero ricevere la newsletter del blog"
+
+#: forms.py:44 forms.py:78
 msgid "Location, if applicable"
 msgstr "Località, se applicabile"
 
-#: forms.py:44 models.py:83
+#: forms.py:46 models.py:83
 msgid "Description"
 msgstr "Descrizione"
 
-#: forms.py:46
+#: forms.py:48
 msgid "Your image"
 msgstr "La tua immagine"
 
-#: forms.py:49 forms.py:77
+#: forms.py:51 forms.py:81
 msgid "I have read and approve the Terms of Service"
 msgstr ""
 "Ho letto e condivido il <a href=\"/regolamento\">regolamento</a> e le <a "
 "href=\"/condizioni\">condizioni d'uso</a> del sito"
 
-#: forms.py:50 forms.py:78
+#: forms.py:52 forms.py:82
 msgid "You must agree to the terms to register"
 msgstr "Devi approvare i termini per accedere"
 
-#: forms.py:52 forms.py:80
+#: forms.py:54 forms.py:84
 msgid "I have read and agree to the Privacy conditions"
 msgstr ""
 "Ho letto e condivido il testo sul <a href=\"/privacy\">trattamento dei dati "
 "personali</a>"
 
-#: forms.py:53 forms.py:81
+#: forms.py:55 forms.py:85
 msgid "You must agree to the conditions to register"
 msgstr "Devi approvare le condizioni per accedete"
 
-#: forms.py:92
+#: forms.py:96
 msgid "A user with that username already exists."
 msgstr "Un utente con questo username già esiste."
 
-#: forms.py:98
+#: forms.py:102
 msgid "E-mail"
 msgstr "Email"
 
