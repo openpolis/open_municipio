@@ -3,6 +3,7 @@ from django.template.defaultfilters import date as _date
 
 from django.utils.safestring import mark_safe
 
+import hashlib
 
 register = template.Library()
 
@@ -93,3 +94,11 @@ def circled(value, args=''):
         classes.append('circle-red')
 
     return mark_safe('<div class="%s">%s</div>' %  (' '.join(classes), value))
+
+@register.filter
+def one_way(clear_text):
+
+    if isinstance(clear_text, int):
+        clear_text = str(clear_text)
+
+    return hashlib.md5(clear_text).hexdigest()
