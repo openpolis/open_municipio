@@ -52,6 +52,7 @@ class Votation(models.Model):
     is_key = models.BooleanField(default=False, help_text=_("Specify whether this is a key votation"))    
     n_rebels = models.IntegerField(default= 0)
     slug = models.SlugField(max_length=500, blank=True, null=True)
+    datetime = models.DateTimeField(blank=True, null=True, verbose_name=_("datetime"))
 
     # default manager must be explicitly defined, when
     # at least another manager is present
