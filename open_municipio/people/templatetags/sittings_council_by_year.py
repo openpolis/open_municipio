@@ -18,13 +18,19 @@ def get_sittings_years(max_len=5):
     # FIXME find a way to show all year (even older ones, e.g. with a paginator)
     from_year = max(settings.OM_START_YEAR, curr_year - max_len)
 
-    sitting_years = list(reversed(range(from_year, curr_year + 1)))
+    sitting_years = map(lambda v: str(v), list(reversed(range(from_year, curr_year + 1))))
+
+    print "sitting years: %s" % sitting_years
 
     return sitting_years
 
 @register.simple_tag
 def print_sittings_council_list(year, month):
-    sittings = Sitting.objects.filter(institution__institution_type=Institution.COUNCIL).filter(date__year=year).filter(date__month=month).filter(~ models.Q(idnum__startswith="-")).order_by("date")
+
+    if not year or not month:
+        return ""
+
+    sittings = Sitting.objects.filter(institution__institution_type=Institution.COUNCIL).exclude(idnum__startswith="-").filter(date__year=year, date__month=month).order_by("date")
 
     if len(sittings) == 0:
         return ""

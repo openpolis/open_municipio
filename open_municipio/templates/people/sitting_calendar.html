@@ -26,54 +26,54 @@
 {% block content %}
 
     {% if UI_SITTINGS_CALENDAR %}
-      {% include 'people/sitting_calendar_top.html' %}
+      {% include 'people/_sitting_calendar_top.html' with curr_year=year %}
     {% endif %}
     
-    <h2 style="background:#72C056; padding: 10px; margin-top: 10px; margin-bottom: 10px; text-align:center; width: 60px; font-weight: bolder; color: white" >{{ params.year }}</h2>
+    <h2 style="background:#72C056; padding: 10px; margin-top: 10px; margin-bottom: 10px; text-align:center; width: 60px; font-weight: bolder; color: white" >{{ year }}</h2>
 
     <table class="sittings-year" >
         <tr>
             <td><div class="sittings-year-month">Gennaio</div>
-                {% print_sittings_council_list params.year 1 %}
+                {% print_sittings_council_list year 1 %}
             </td>
             <td><div class="sittings-year-month">Febbraio</div>
-                {% print_sittings_council_list params.year 2 %}
+                {% print_sittings_council_list year 2 %}
             </td>
             <td><div class="sittings-year-month">Marzo</div>
-                {% print_sittings_council_list params.year 3 %}
+                {% print_sittings_council_list year 3 %}
             </td>
         </tr>
         <tr>
             <td><div class="sittings-year-month">Aprile</div>
-                {% print_sittings_council_list params.year 4 %}
+                {% print_sittings_council_list year 4 %}
             </td>
             <td><div class="sittings-year-month">Maggio</div>
-                {% print_sittings_council_list params.year 5 %}
+                {% print_sittings_council_list year 5 %}
             </td>
             <td><div class="sittings-year-month">Giugno</div>
-                {% print_sittings_council_list params.year 6 %}
+                {% print_sittings_council_list year 6 %}
             </td>
         </tr>
         <tr>
             <td><div class="sittings-year-month">Luglio</div>
-                {% print_sittings_council_list params.year 7 %}
+                {% print_sittings_council_list year 7 %}
             </td>
             <td><div class="sittings-year-month">Agosto</div>
-                {% print_sittings_council_list params.year 8 %}
+                {% print_sittings_council_list year 8 %}
             </td>
             <td><div class="sittings-year-month">Settembre</div>
-                {% print_sittings_council_list params.year 9 %}
+                {% print_sittings_council_list year 9 %}
             </td>
         </tr>
         <tr>
             <td><div class="sittings-year-month">Ottobre</div>
-                {% print_sittings_council_list params.year 10 %}
+                {% print_sittings_council_list year 10 %}
             </td>
             <td><div class="sittings-year-month">Novembre</div>
-                {% print_sittings_council_list params.year 11 %}
+                {% print_sittings_council_list year 11 %}
             </td>
             <td><div class="sittings-year-month">Dicembre</div>
-                {% print_sittings_council_list params.year 12 %}
+                {% print_sittings_council_list year 12 %}
             </td>
         </tr>
     </table>

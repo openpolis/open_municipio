@@ -4,15 +4,12 @@
 {% get_sittings_years 6 as years %}
 <div class="sitting-archive">Archivio sedute di Consiglio:
 {% for y in years %}
-    {% if y != params.year %}
-        <a href="{% url 'om_sitting_calendar' year=y %}">
-    {% endif %}
+    {% if y = curr_year %}
         {{ y }}
-    {% if y != params.year %}
-        </a>
-    {% endif %}
-    |
+    {% else %}
+        <a href="{% url 'om_sitting_calendar' year=y %}">{{ y }}</a>
+    {% endif %} |
 {% empty %}
-Nessuna seduta di consiglio finora
+    Nessuna seduta di consiglio finora
 {% endfor %}
 </div>

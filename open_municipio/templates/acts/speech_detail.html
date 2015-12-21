@@ -25,7 +25,7 @@
 {% block content %}
 
     {% if UI_SITTINGS_CALENDAR %}
-      {% include 'people/sitting_calendar_top.html' %}
+      {% include 'people/_sitting_calendar_top.html' %}
     {% endif %}
 
     {% include 'people/sitting_detail_section.html' with sitting=speech.sitting_item.sitting %}

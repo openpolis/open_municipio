@@ -595,6 +595,7 @@ class SittingCalendarView(TemplateView):
         extra_context = {
             'sittings'  : sittings,
             'events'    : events,
+            'year'      : kwargs.get("year", None)
         }
 
         context.update(extra_context)
