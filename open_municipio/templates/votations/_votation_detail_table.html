@@ -26,7 +26,9 @@
             <strong>{{ politician.full_name }}</strong>
           </a>
           {% with curr_group=charge_vote.charge|get_current_group:votation.sitting.date %}
+            {% if curr_group %}
             ({{ curr_group|group_acronym }})
+            {% endif %}
           {% endwith %}
         </td>
         {% if votation.is_secret %}
