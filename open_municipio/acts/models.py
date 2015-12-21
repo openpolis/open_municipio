@@ -1053,6 +1053,9 @@ class Commitment(models.Model):
         if self.decision and self.decree:
             raise ValidationError("Cannot set both 'decision' and 'decree'")
  
+
+class Audit(Act):
+    pass
  
 #
 # Workflows
