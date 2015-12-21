@@ -109,6 +109,6 @@ urlpatterns += patterns('',
 )
 
 # api's
-urlpatterns += patterns('',
-    url(r'^api/', include('open_municipio.api.urls')),
-)
+##urlpatterns += patterns('',
+##    url(r'^api/', include('open_municipio.api.urls')),
+##)
