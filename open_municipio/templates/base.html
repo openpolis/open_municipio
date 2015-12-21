@@ -294,7 +294,7 @@
 
 
 {% if GOOGLE_ANALYTICS %}
-    {% include "commons/google_analytics.html" with GOOGLE_ANALYTICS=GOOGLE_ANALYTICS %}
+    {% include "commons/google_analytics.html" with GOOGLE_ANALYTICS=GOOGLE_ANALYTICS request=request %}
 {% endif %}
 </body>
 </html>

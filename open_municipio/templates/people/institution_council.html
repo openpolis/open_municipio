@@ -260,8 +260,7 @@
                     sSearch: "Ricerca",
                     sZeroRecords: "Nessun risultato per questa ricerca"
                 },
-                aaSorting: [[ 1, "asc" ]]
-
+                aaSorting: [[ {{ request.GET.sort|default:1 }}, "{{ request.GET.order|default:"asc" }}" ]],
             });
         });
 
