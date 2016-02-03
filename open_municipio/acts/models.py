@@ -1055,7 +1055,16 @@ class Commitment(models.Model):
  
 
 class Audit(Act):
-    pass
+
+    FINAL_STATUSES = (
+        ('PRESENTED', _('presented')),
+    )
+
+
+    class Meta:
+        verbose_name = _("Audit")
+        verbose_name_plural = _("Audits")
+
  
 #
 # Workflows
