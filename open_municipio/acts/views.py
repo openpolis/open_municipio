@@ -15,7 +15,7 @@ from haystack.query import SearchQuerySet
 
 from voting.views import RecordVoteOnItemView
 
-from open_municipio.acts.models import Act, Agenda, CGDeliberation, Deliberation, Interpellation, Interrogation, Motion, Amendment, Transition, Audit
+from open_municipio.acts.models import Act, Agenda, CGDeliberation, Deliberation, Interpellation, Interrogation, Motion, Amendment, Transition, Decision, Decree, Audit
 from open_municipio.acts.forms import ActDescriptionForm, ActTransitionForm, ActFinalTransitionForm, ActTitleForm
 from open_municipio.locations.models import Location
 
@@ -658,6 +658,14 @@ class SpeechDetailView(DetailView):
     context_object_name = 'speech'
     template_name = "acts/speech_detail.html"
 
+
+class DecisionDetailView(ActDetailView):
+
+    model = Decision
+
+class DecreeDetailView(ActDetailView):
+
+    model = Decree
 
 class AuditDetailView(ActDetailView):
 

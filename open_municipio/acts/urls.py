@@ -5,7 +5,8 @@ from open_municipio.acts.views import (ActSearchView, AgendaDetailView,
                 InterrogationDetailView, MotionDetailView, AmendmentDetailView,
                 ActTransitionAddView, ActTransitionRemoveView, ActTagEditorView, 
                 ActLiveEditView, RecordVoteOnActView, CGDeliberationDetailView,
-                SpeechSearchView, SpeechDetailView, AuditDetailView, )
+                SpeechSearchView, SpeechDetailView, 
+                DecisionDetailView, DecreeDetailView, AuditDetailView, )
 
 from open_municipio.locations.views import ActTagByLocationView
 
@@ -75,6 +76,13 @@ urlpatterns = patterns('',
     url(r'^amendments/(?P<slug>[\w\-]+)/$', AmendmentDetailView.as_view(),  name='om_amendment_detail'),
     url(r'^amendments/(?P<slug>[\w\-]+)/(?P<tab>documents)/$', AmendmentDetailView.as_view(),  name='om_amendment_detail_documents'),
     url(r'^amendments/(?P<slug>[\w\-]+)/(?P<tab>amendments)/$', AmendmentDetailView.as_view(),  name='om_amendment_detail_amendments'),
+
+
+    # decisions
+    url(r'decisions/(?P<slug>[\w\-]+)/$', DecisionDetailView.as_view(), name='om_decision_detail'),
+
+    # decrees
+    url(r'decrees/(?P<slug>[\w\-]+)/$', DecreeDetailView.as_view(), name='om_decree_detail'),
 
     # audits
     url(r'audits/(?P<slug>[\w\-]+)/$', AuditDetailView.as_view(), name='om_audit_detail'),

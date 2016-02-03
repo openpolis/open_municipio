@@ -956,6 +956,8 @@ class Decree(Act):
     This act models what in Italy is known as "Ordinanza"
     """
 
+    OM_DETAIL_VIEW_NAME = "om_decree_detail"
+
     FINAL_STATUSES = (
         ('PRESENTED', _('presented')),
     )
@@ -990,6 +992,8 @@ class Decision(Act):
     """
     This act models what in Italy is known as "Determina" (or "Determinazione")
     """
+
+    OM_DETAIL_VIEW_NAME = "om_decision_detail"
 
     FINAL_STATUSES = (
         ('PRESENTED', _('presented')),
