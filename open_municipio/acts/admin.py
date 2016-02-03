@@ -426,9 +426,9 @@ class TransitionAdmin(admin.ModelAdmin):
 
 class AuditAdmin(admin.ModelAdmin):
 
-    list_display = [ "id", "title", "presenters", "recipients", "presentation_date", "status_is_final", "is_key", ] 
+    list_display = [ "id", "title", "presenters", "recipients", "presentation_date", "status", "status_is_final", "is_key", ] 
 
-    list_filter = [ "is_key", "status_is_final", "emitting_institution", ]
+    list_filter = [ "is_key", "status", "status_is_final", "emitting_institution", ]
 
     exclude = [ "recipient_set", "emitting_office", "adj_title", ]
 
