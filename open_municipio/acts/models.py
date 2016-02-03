@@ -361,7 +361,7 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
 
         dc_act = self.downcast()
 
-        if getattr(dc_act, "OM_DETAIL_VIEW_NAME"):
+        if getattr(dc_act, "OM_DETAIL_VIEW_NAME", False):
             if getattr(dc_act, "slug", None):
 #                return (dc_act.OM_DETAIL_VIEW_NAME, (), {'slug': self.slug })
                 return reverse(dc_act.OM_DETAIL_VIEW_NAME, kwargs={'slug':self.slug})
@@ -1056,8 +1056,19 @@ class Commitment(models.Model):
 
 class Audit(Act):
 
+    OM_DETAIL_VIEW_NAME = "om_audit_detail"
+
+    STATUS = Choices(
+        ('PRESENTED', 'presented', _('presented')),
+        ('APPROVED', 'approved', _('approved')),
+        ('REJECTED', 'rejected', _('rejected')),
+        ('RETIRED', 'retired', _('retired')),
+    )
+
     FINAL_STATUSES = (
-        ('PRESENTED', _('presented')),
+        ('APPROVED', _('approved')),
+        ('REJECTED', _('rejected')),
+        ('RETIRED', _('retired')),
     )
 
 

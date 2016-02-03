@@ -424,6 +424,29 @@ class TransitionAdmin(admin.ModelAdmin):
         return text
     act_short.short_description = _("act")
 
+class AuditAdmin(admin.ModelAdmin):
+
+    list_display = [ "id", "title", "presenters", "recipients", "presentation_date", "status_is_final", "is_key", ] 
+
+    list_filter = [ "is_key", "status_is_final", "emitting_institution", ]
+
+    exclude = [ "recipient_set", "emitting_office", "adj_title", ]
+
+    inlines = [ TransitionInline, PresenterInline, AttachInline, ]
+
+    def presenters(self, obj):
+        names = map(lambda p: "%s" % p.person, obj.presenter_set.all())
+
+        return ",".join(names)
+    presenters.short_description = _("presenters")
+
+    def recipients(self, obj):
+        names = map(lambda p: "%s" % p.person, 
+                obj.recipient_administrator_set.all())
+
+        return ",".join(names)
+    recipients.short_description = _("recipients")
+
 admin.site.register(Act, ActAdmin)
 
 # The following two lines restore the default admin for the class Act
@@ -445,3 +468,5 @@ admin.site.register(Agenda, AgendaAdmin)
 admin.site.register(Decree, DecreeAdmin)
 admin.site.register(Decision, DecisionAdmin)
 admin.site.register(Commitment, CommitmentAdmin)
+
+admin.site.register(Audit, AuditAdmin)
