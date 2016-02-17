@@ -313,6 +313,8 @@ class SittingItemAdmin(admin.ModelAdmin):
 class SittingAdmin(admin.ModelAdmin):
     inlines = [SittingItemInline, VotationsInline]
 
+    raw_id_fields = [ "minute", ]
+
 
 admin.site.register(SittingItem, SittingItemAdmin)
 admin.site.register(Sitting, SittingAdmin)

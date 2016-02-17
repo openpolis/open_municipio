@@ -289,7 +289,6 @@ class ActInSpeechInline(admin.TabularInline):
     raw_id_fields = ('act', )
 
 
-
 class SpeechAdmin(admin.ModelAdmin):
 
     form = SpeechAdminForm
@@ -300,6 +299,7 @@ class SpeechAdmin(admin.ModelAdmin):
     ordering = ('-sitting_item__sitting__date','seq_order',)
 
     list_filter = ( SpeechByYearFilterSpec, SpeechByMonthFilterSpec, )
+
 
 class AttachAdmin(admin.ModelAdmin):
 
@@ -462,6 +462,12 @@ class AuditAdmin(ActAdmin):
         return ",".join(names)
     recipients.short_description = _("recipients")
 
+
+class MinuteAdmin(ActAdmin):
+ 
+    pass
+
+
 admin.site.register(Act, ActAdmin)
 
 # The following two lines restore the default admin for the class Act
@@ -485,3 +491,5 @@ admin.site.register(Decree, DecreeAdmin)
 admin.site.register(Decision, DecisionAdmin)
 admin.site.register(Commitment, CommitmentAdmin)
 admin.site.register(Audit, AuditAdmin)
+
+admin.site.register(Minute, MinuteAdmin)

@@ -1545,3 +1545,14 @@ def post_delete_transition(**kwargs):
         except ObjectDoesNotExist:
             pass
 
+
+class Minute(Act):
+
+    class Meta:
+        verbose_name = _("minute")
+        verbose_name_plural = _("minutes")
+
+    @property
+    def sittings(self):
+        self.sitting_set.all()
+

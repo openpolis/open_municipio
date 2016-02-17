@@ -1286,11 +1286,13 @@ class Sitting(TimeStampedModel):
     Each item contains Speeches, which are a very special extension of Document
     (audio attachments, with complex relations with votations, charges and acts).
     """
-    idnum = models.CharField(blank=True, max_length=64)
-    date = models.DateField()
-    number = models.IntegerField(blank=True, null=True)
-    call = models.IntegerField(blank=True, null=True)
-    institution = models.ForeignKey(Institution, on_delete=models.PROTECT)
+    idnum = models.CharField(blank=True, max_length=64, verbose_name=_("identifier"))
+    date = models.DateField(verbose_name=_("date"))
+    number = models.IntegerField(blank=True, null=True, verbose_name=_("number"))
+    call = models.IntegerField(blank=True, null=True, verbose_name=_("call"))
+    institution = models.ForeignKey(Institution, on_delete=models.PROTECT, verbose_name=_("institution"))
+
+    minute = models.ForeignKey('acts.Minute', null=True, blank=True, related_name="sitting_set", verbose_name=_("minute"))
 
     class Meta:
         verbose_name = _('sitting')
