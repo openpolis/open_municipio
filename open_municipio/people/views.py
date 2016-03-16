@@ -492,8 +492,9 @@ class PoliticianListView(TemplateView):
         today = datetime.today()
 
         context['most_acts'] = counselors.\
-                               filter(actsupport__support_type=ActSupport.SUPPORT_TYPE.first_signer).\
-                               annotate(n_acts=Count('actsupport')).order_by('-n_acts')[0:3]
+                                filter(start_date__lte=today).exclude(end_date__lte=today).\
+                                annotate(n_acts=Count('presented_act_set')).order_by('-n_acts')[0:3]
+
 
         context['most_interrogations'] = counselors.\
                                          filter(Q(actsupport__act__interrogation__isnull=False) |
