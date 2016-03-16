@@ -261,6 +261,8 @@ class Person(models.Model, MonitorizedItem):
         """
         Speeches of a politician
         """
+        from open_municipio.acts.models import Speech
+
         return Speech.objects.filter(author=self)
 
     @property

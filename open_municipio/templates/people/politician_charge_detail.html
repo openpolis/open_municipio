@@ -94,7 +94,7 @@
       <section>
           <h2>Atti su cui lavora ({{ n_presented_acts }}) {% popover_info 'atti-su-cui-lavora' %}</h2>
             {% include 'acts/act_table_detail.html' with acts_list=presented_acts %}
-          <p><i class="icon-play"></i> <a href="{% url 'om_act_search' %}?q=&person={{ person.slug }}">Vedi tutti gli atti su cui lavora</a></p>
+          <p><i class="icon-play"></i> <a href="{% url 'om_act_search' %}?q=&charge={{ charge.id }}">Vedi tutti gli atti su cui lavora</a></p>
 
       </section>
 
@@ -125,7 +125,7 @@
               {% endfor %}
 
         </table>
-        <p><i class="icon-play"></i> <a href="{% url 'om_speech_search' %}?q=&person={{ person.slug }}">Vedi tutti gli interventi</a></p>
+        <p><i class="icon-play"></i> <a href="{% url 'om_speech_search' %}?q=&charge={{ charge.id }}">Vedi tutti gli interventi</a></p>
 
 
       </section>
