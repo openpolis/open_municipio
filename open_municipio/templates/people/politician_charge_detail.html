@@ -31,11 +31,11 @@
     <hr class="big">
 
       <section>
-        <h2>Ultimi voti chiave {% popover_info 'voti-chiave' %}</h2>
+        <h2>Voti chiave {% popover_info 'voti-chiave' %}</h2>
         <table class="data">
           <thead>
           <tr>
-            <th>Data della seduta</th>
+            <th>Data seduta</th>
             <th>Num votazione</th>
             <th>Atto</th>
             <th class="text-center">Voto</th>
@@ -45,7 +45,7 @@
           <tbody>
           {% for charge_vote in current_charge_votes %}
             <tr>
-              <td class="text-center">{{ charge_vote.votation.sitting.date }}</td>
+              <td class="text-center">{{ charge_vote.votation.sitting.date|date:"d/m/Y" }}</td>
               <td class="text-center">
                   <a href="{{ charge_vote.votation.get_absolute_url }}">
                     {{ charge_vote.votation.idnum }}
@@ -103,24 +103,27 @@
   
   {% if n_speeches %}
       <section>
-          <h2>Ultimi interventi in Consiglio Comunale {% popover_info 'interventi-politico' %}</h2>
+          <h2>Interventi in Consiglio Comunale {% popover_info 'interventi-politico' %}</h2>
 
           <table class="data">
               <thead>
               <tr>
-                  <th class="text-left span5">Seduta</th>
+                  <th class="text-left span4">Seduta</th>
                   <th>Argomento</th>
-                  <th>Intervento</th>
+                  <th class="span2">Intervento</th>
               </tr>
               </thead>
               <tbody>
               {% for speech in speeches %}
                   <tr>
-                      <td>{{ speech.sitting_item.sitting }}</td>
+                    {% with sitting=speech.sitting_item.sitting %}
+                      <td>Seduta num. {{ sitting.number }} del {{ sitting.date|date:"d/m/Y" }}</td>
+                    {% endwith %}
                       <td>{{ speech.sitting_item.title }}</td>
-                      <td><a href="{{ speech.get_absolute_url }}">Leggi intervento</a><br/>
+                      <td>
+                        <a href="{{ speech.get_absolute_url }}">Leggi intervento</a><br/>
                         <a href="{{ speech.sitting_item.get_absolute_url }}">Leggi discussione</a>
-                    </td>
+                      </td>
                   </tr>
               {% endfor %}
 
