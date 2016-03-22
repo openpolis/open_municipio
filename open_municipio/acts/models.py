@@ -1064,19 +1064,21 @@ class Audit(Act):
 
     STATUS = Choices(
         ('PRESENTED', 'presented', _('presented')),
-        ('APPROVED', 'approved', _('approved')),
-        ('REJECTED', 'rejected', _('rejected')),
+        ('ANSWERED', 'answered', _('answered')),
+        ('NOTANSWERED', 'notanswered', _('not answered')),
         ('RETIRED', 'retired', _('retired')),
+        ('DECAYED', 'decayed', _('decayed')),
+        ('POSTPONED', 'postponed', _('postponed')),
     )
 
     FINAL_STATUSES = (
-        ('APPROVED', _('approved')),
-        ('REJECTED', _('rejected')),
+        ('ANSWERED', _('answered')),
+        ('NOTANSWERED', _('not answered')),
         ('RETIRED', _('retired')),
+        ('DECAYED', _('decayed')),
     )
 
     status = models.CharField(_('status'), default="presented", choices=STATUS, max_length=12)
-
 
     class Meta:
         verbose_name = _("Audit")
