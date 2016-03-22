@@ -1081,8 +1081,8 @@ class Audit(Act):
     status = models.CharField(_('status'), default="presented", choices=STATUS, max_length=12)
 
     class Meta:
-        verbose_name = _("Audit")
-        verbose_name_plural = _("Audits")
+        verbose_name = _("audit")
+        verbose_name_plural = _("audits")
 
  
 #

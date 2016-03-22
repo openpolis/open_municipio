@@ -77,15 +77,20 @@ urlpatterns = patterns('',
     url(r'^amendments/(?P<slug>[\w\-]+)/(?P<tab>documents)/$', AmendmentDetailView.as_view(),  name='om_amendment_detail_documents'),
     url(r'^amendments/(?P<slug>[\w\-]+)/(?P<tab>amendments)/$', AmendmentDetailView.as_view(),  name='om_amendment_detail_amendments'),
 
-
     # decisions
-    url(r'decisions/(?P<slug>[\w\-]+)/$', DecisionDetailView.as_view(), name='om_decision_detail'),
+    url(r'^decisions/(?P<slug>[\w\-]+)/$', DecisionDetailView.as_view(), name='om_decision_detail'),
+    url(r'^decisions/(?P<slug>[\w\-]+)/(?P<tab>documents)/$', DecisionDetailView.as_view(),  name='om_decision_detail_documents'),
+    url(r'^decisions/(?P<slug>[\w\-]+)/(?P<tab>amendments)/$', DecisionDetailView.as_view(),  name='om_decision_detail_amendments'),
 
     # decrees
-    url(r'decrees/(?P<slug>[\w\-]+)/$', DecreeDetailView.as_view(), name='om_decree_detail'),
+    url(r'^decrees/(?P<slug>[\w\-]+)/$', DecreeDetailView.as_view(), name='om_decree_detail'),
+    url(r'^decrees/(?P<slug>[\w\-]+)/(?P<tab>documents)/$', DecreeDetailView.as_view(),  name='om_decree_detail_documents'),
+    url(r'^decrees/(?P<slug>[\w\-]+)/(?P<tab>amendments)/$', DecreeDetailView.as_view(),  name='om_decree_detail_amendments'),
 
     # audits
-    url(r'audits/(?P<slug>[\w\-]+)/$', AuditDetailView.as_view(), name='om_audit_detail'),
+    url(r'^audits/(?P<slug>[\w\-]+)/$', AuditDetailView.as_view(), name='om_audit_detail'),
+    url(r'^audits/(?P<slug>[\w\-]+)/(?P<tab>documents)/$', AuditDetailView.as_view(),  name='om_audit_detail_documents'),
+    url(r'^audits/(?P<slug>[\w\-]+)/(?P<tab>amendments)/$', AuditDetailView.as_view(),  name='om_audit_detail_amendments'),
 
 )
 
