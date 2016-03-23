@@ -295,7 +295,7 @@ class SpeechAdmin(admin.ModelAdmin):
     search_fields = ('title', 'author__last_name','author__first_name','author_name_when_external',)
     inlines = [ActInSpeechInline,]
     raw_id_fields = ('author', 'sitting_item', 'votation', )
-    list_display = ( 'author_name_admin', 'seq_order', 'sitting_admin','date_admin','sitting_item')
+    list_display = ( 'author_name_admin', 'seq_order', 'type', 'sitting_admin','date_admin','sitting_item')
     ordering = ('-sitting_item__sitting__date','seq_order',)
 
     list_filter = ( SpeechByYearFilterSpec, SpeechByMonthFilterSpec, )
