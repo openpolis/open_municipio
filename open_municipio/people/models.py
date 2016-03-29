@@ -19,7 +19,8 @@ from sorl.thumbnail import ImageField
 
 from open_municipio.monitoring.models import MonitorizedItem
 from open_municipio.newscache.models import NewsTargetMixin
-from open_municipio.people.managers import TimeFramedQuerySet, GroupQuerySet
+from open_municipio.people.managers import ( TimeFramedQuerySet, GroupQuerySet,
+                                        ChargeQuerySet )
 from open_municipio.om_utils.models import SlugModel
 
 import open_municipio
@@ -328,7 +329,9 @@ class Charge(NewsTargetMixin, models.Model):
     description = models.CharField(_('description'), blank=True, max_length=255,
                                    help_text=_('Insert the complete description of the charge, if it gives more information than the charge type'))
     
-    objects = PassThroughManager.for_queryset_class(TimeFramedQuerySet)()
+#    objects = PassThroughManager.for_queryset_class(TimeFramedQuerySet)()
+    objects = PassThroughManager.for_queryset_class(ChargeQuerySet)()
+
 
     class Meta:
         abstract = True
