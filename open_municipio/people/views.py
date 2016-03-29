@@ -295,7 +295,7 @@ class PoliticianDetailView(DetailView):
             if len(all_charges) > 0:
                 charge = all_charges[0]
 
-        print "current charge: %s (%s - %s)" % (charge, charge.start_date, charge.end_date)
+#        print "current charge: %s (%s - %s)" % (charge, charge.start_date, charge.end_date)
 
         return charge
 
