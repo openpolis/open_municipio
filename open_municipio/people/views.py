@@ -488,19 +488,28 @@ class PoliticianListView(TemplateView):
         context['least_absent'] = counselors.extra(select={'perc_absences':'(n_absent_votations * 100.0) / GREATEST (n_absent_votations + n_present_votations,1)'}).order_by('perc_absences')[0:3]
         context['most_absent'] = counselors.order_by('-n_absent_votations')[0:3]
 #        context['most_speeches'] = counselors.annotate(_n_speeches=Count('person__speech')).order_by('-_n_speeches')[0:3]
-        context['most_speeches'] = InstitutionCharge.objects.raw("""
-            SELECT IC.id, count(SP.id) _n_speeches 
-            FROM %(InstitutionCharge)s IC LEFT JOIN 
-                %(Speech)s SP ON IC.person_id = SP.author_id INNER JOIN 
-                %(SittingItem)s SI ON SI.id = SP.sitting_item_id INNER JOIN 
-                %(Sitting)s ST ON ST.id = SI.sitting_id AND 
-                    IC.start_date <= ST.date AND IC.end_date IS NULL 
-            GROUP BY IC.id ORDER BY _n_speeches DESC
+
+        context['most_speeches'] = InstitutionCharge.objects.none()
+
+        if municipality.council:
+            council_id = getattr(municipality.council.as_institution, "id", None)
+
+            if council_id:
+                context['most_speeches'] = InstitutionCharge.objects.raw("""
+SELECT IC.id, count(SP.id) _n_speeches 
+FROM %(InstitutionCharge)s IC LEFT JOIN 
+    %(Speech)s SP ON IC.person_id = SP.author_id INNER JOIN 
+    %(SittingItem)s SI ON SI.id = SP.sitting_item_id INNER JOIN 
+    %(Sitting)s ST ON ST.id = SI.sitting_id AND 
+        IC.start_date <= ST.date 
+WHERE IC.end_date IS NULL AND IC.institution_id = '%(council_id)s'
+GROUP BY IC.id ORDER BY _n_speeches DESC
         """ % {
             "InstitutionCharge": InstitutionCharge._meta.db_table,
             "Speech": Speech._meta.db_table,
             "SittingItem": SittingItem._meta.db_table,
             "Sitting": Sitting._meta.db_table, 
+            "council_id": council_id,
         })[0:3]
 
         today = datetime.today()
