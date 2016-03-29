@@ -475,12 +475,15 @@ class PoliticianListView(TemplateView):
 
         # exclude mayor from council members
         # fetch most or least
-        counselors = context['counselors'] = municipality.council.charges.exclude(
-            institutionresponsability__charge_type__in=(
-                InstitutionResponsability.CHARGE_TYPES.mayor,
-            ),
-            institutionresponsability__end_date__isnull=True
-        ).select_related().exclude(n_present_votations=0).order_by('person__last_name')
+##        counselors = context['counselors'] = municipality.council.charges.exclude(
+##            institutionresponsability__charge_type__in=(
+##                InstitutionResponsability.CHARGE_TYPES.mayor,
+##            ),
+##            institutionresponsability__end_date__isnull=True
+##        ).select_related().exclude(n_present_votations=0).order_by('person__last_name')
+        counselors = municipality.council.charges.select_related().exclude(n_present_votations=0).order_by('person__last_name')
+
+        context['counselors'] = counselors
 
         # fetch most or least
         context['most_rebellious'] = counselors.extra(select={'perc_rebel':'(n_rebel_votations * 100.0) / GREATEST (n_absent_votations + n_present_votations,1)'}).order_by('-perc_rebel')[0:3]

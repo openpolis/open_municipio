@@ -1496,6 +1496,7 @@ class CityCouncil(object):
 
         return vp
 
+
     @property
     def members(self):
         """
