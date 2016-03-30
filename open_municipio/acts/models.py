@@ -1042,8 +1042,10 @@ class Commitment(models.Model):
     selection_type = models.CharField(max_length=50, choices=SELECTION_TYPES, null=True, blank=False, verbose_name=_("selection type"))
     payee_set = models.ManyToManyField('people.Company', null=True, blank=True, verbose_name=_("payees"), help_text=_("specify the list of companies that received the money"))
 
-    decision = models.ForeignKey(Decision, null=True, blank=True, verbose_name=_("decision"))
-    decree = models.ForeignKey(Decree, null=True, blank=True, verbose_name=_("decree"))
+#    decision = models.ForeignKey(Decision, null=True, blank=True, verbose_name=_("decision"))
+#    decree = models.ForeignKey(Decree, null=True, blank=True, verbose_name=_("decree"))
+    act = models.ForeignKey(Act, null=True, blank=True, verbose_name=_("act"))
+
 
     class Meta:
         verbose_name = _("commitment")
