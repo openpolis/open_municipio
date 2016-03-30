@@ -200,7 +200,8 @@ class InstitutionChargeAdmin(ChargeAdmin):
             'fields': (('person', 'op_charge_id', 'institution', 'original_charge'),
                  ('start_date', 'end_date', 'end_reason'), 
                   'description',
-                 ('substitutes', 'substituted_by'))
+                 ('substitutes', 'substituted_by'),
+                 'can_vote')
         }),
         (_("Presences"), {
             'fields': (('n_present_votations', 'n_absent_votations'), ('n_present_attendances', 'n_absent_attendances'))
