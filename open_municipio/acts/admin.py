@@ -378,7 +378,7 @@ class DecisionHasCommitmentInline(admin.TabularInline):
     model = Commitment
     extra = 0
 
-    fields = ( "decision", "manager", "amount", "selection_type", )
+    fields = ( "act", "manager", "amount", "selection_type", )
 
 
 class DecisionAdmin(ActAdmin):
@@ -404,7 +404,7 @@ class DecisionAdmin(ActAdmin):
 
 class CommitmentAdmin(admin.ModelAdmin):
 
-    raw_id_fields = [ "manager", "payee_set" ]
+    raw_id_fields = [ "manager", "payee_set", "act" ]
 
 
 class TransitionAdmin(admin.ModelAdmin):
