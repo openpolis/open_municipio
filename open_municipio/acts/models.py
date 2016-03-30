@@ -1559,6 +1559,8 @@ class Minute(Act):
         ('APPROVED', 'approved', _('approved')),
     )
 
+    OM_DETAIL_VIEW_NAME = "om_minute_detail"
+
     status = models.CharField(_('status'), default="presented", choices=STATUS, max_length=12)
 
     class Meta:

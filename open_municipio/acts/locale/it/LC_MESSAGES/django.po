@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-22 17:08+0100\n"
+"POT-Creation-Date: 2016-03-30 10:46+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -81,13 +81,13 @@ msgstr "Testo"
 
 #: models.py:61 models.py:504 models.py:571 models.py:634 models.py:742
 #: models.py:850 models.py:889 models.py:929 models.py:962 models.py:966
-#: models.py:999 models.py:1003 models.py:1066
+#: models.py:999 models.py:1003 models.py:1066 models.py:1558
 msgid "presented"
 msgstr "presentato"
 
 #: models.py:62 models.py:497 models.py:507 models.py:564 models.py:574
 #: models.py:843 models.py:852 models.py:882 models.py:891 models.py:921
-#: models.py:930
+#: models.py:930 models.py:1554 models.py:1559
 msgid "approved"
 msgstr "approvato"
 
@@ -238,6 +238,7 @@ msgstr "consiglio"
 
 #: models.py:515 models.py:583 models.py:644 models.py:752 models.py:862
 #: models.py:901 models.py:940 models.py:969 models.py:1006 models.py:1081
+#: models.py:1564
 msgid "status"
 msgstr "stato"
 
@@ -552,11 +553,11 @@ msgstr "atti menzionati nell'intervento"
 msgid "calendar"
 msgstr "calendario"
 
-#: models.py:1554
+#: models.py:1567
 msgid "minute"
 msgstr "verbale"
 
-#: models.py:1555
+#: models.py:1568
 msgid "minutes"
 msgstr "verbali"
 
