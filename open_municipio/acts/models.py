@@ -1548,6 +1548,17 @@ def post_delete_transition(**kwargs):
 
 class Minute(Act):
 
+    FINAL_STATUSES = (
+        ('APPROVED', _('approved')),
+    )
+
+    STATUS = Choices(
+        ('PRESENTED', 'presented', _('presented')),
+        ('APPROVED', 'approved', _('approved')),
+    )
+
+    status = models.CharField(_('status'), default="presented", choices=STATUS, max_length=12)
+
     class Meta:
         verbose_name = _("minute")
         verbose_name_plural = _("minutes")
