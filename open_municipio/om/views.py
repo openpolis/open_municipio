@@ -66,13 +66,10 @@ class HomeView(TemplateView):
         # fetch most or least
         try:
             counselors = municipality.council.charges.select_related().exclude(n_present_votations=0).order_by('person__last_name')
-            context['most_rebellious'] = counselors.order_by('-n_rebel_votations')[0:3]
-            context['most_trustworthy'] = counselors.order_by('n_rebel_votations')[0:3]
-            context['least_absent'] = counselors.extra(select={'perc_absences':'(n_absent_votations * 100.0)/(n_absent_votations + n_present_votations + 1)'}).order_by('perc_absences')[0:3]
-            context['most_acts'] = counselors.\
-                filter(start_date__lte=today).exclude(end_date__lte=today).\
-                annotate(n_acts=Count('presented_act_set')).order_by('-n_acts')[0:3]
-
+            context['most_rebellious'] = counselors.rank_most_rebellious()[0:3]
+            context['most_trustworthy'] = counselors.rank_most_rebellious().order_by('n_rebel_votations')[0:3]
+            context['least_absent'] = counselors.rank_least_absent()[0:3]
+            context['most_acts'] = counselors.rank_most_acts()[0:3]
 
         except ObjectDoesNotExist:
             # city council not present
