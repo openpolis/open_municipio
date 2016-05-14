@@ -7,6 +7,8 @@ from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
 from django.template.defaultfilters import slugify
 
+from django.core.validators import MinValueValidator
+
 
 from model_utils import Choices
 from model_utils.models import TimeStampedModel
@@ -259,7 +261,10 @@ class GroupVote(TimeStampedModel):
 
 class ChargeVote(TimeStampedModel):
     """
-    WRITEME
+    A ChargeVote expresses the preference of some charge at the specified votation.
+    Such preference can be weighted for the given votation. When computing the
+    result of the votation, you should take the weight into account.
+
     """  
     VOTES = Choices(
         ('YES', 'yes', _('Yes')),
@@ -276,6 +281,7 @@ class ChargeVote(TimeStampedModel):
     vote = models.CharField(choices=VOTES, max_length=12, verbose_name=_('vote'))
     charge = models.ForeignKey(InstitutionCharge, verbose_name=_('charge'))
     is_rebel = models.BooleanField(default=False, verbose_name=_('is rebel'))
+    weight = models.DecimalField(default=1.0, max_digits=5, decimal_places=2, verbose_name=_('weight'), validators=[MinValueValidator(0.01)])
 
     @property
     def original_charge(self):
