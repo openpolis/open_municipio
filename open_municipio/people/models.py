@@ -1054,6 +1054,19 @@ class Institution(Body):
             return reverse("om_institution_committee", kwargs={'slug': self.slug})
 
     @property
+    def sittings(self):
+        """
+        A Sitting is linked to an Institution trhough fields "institution" and
+        "other_institution". The related name of the former is "sitting_set",
+        while the related name of the latter is "other_sittings". If you want to 
+        know all the sittings of this Institution you must take the (distinct) 
+        union of the two
+        """
+        qs = (self.sitting_set.all() | self.other_sittings.all()).distinct()
+
+        return qs
+
+    @property
     def name_with_preposition(self):
         """
         returns name with preposition
@@ -1296,6 +1309,7 @@ class Sitting(TimeStampedModel):
     number = models.IntegerField(blank=True, null=True, verbose_name=_("number"))
     call = models.IntegerField(blank=True, null=True, verbose_name=_("call"))
     institution = models.ForeignKey(Institution, on_delete=models.PROTECT, verbose_name=_("institution"))
+    other_institution_set = models.ManyToManyField(Institution, blank=True, null=True, verbose_name=_("other institutions"), related_name="other_sittings")
 
     minute = models.ForeignKey('acts.Minute', null=True, blank=True, related_name="sitting_set", verbose_name=_("minute"))
 
@@ -1310,6 +1324,22 @@ class Sitting(TimeStampedModel):
             num = " num. %s " % self.number
 
         return u'Seduta %s del %s (%s)' % (num, self.date.strftime('%d/%m/%Y'), self.institution.name)
+
+    @property
+    def other_institutions(self):
+        return self.other_institution_set.all()
+
+    @property
+    def institutions(self):
+        qs = Institution.objects.none()
+
+        if self.institution_id != None:
+            qs = Institution.objects.filter(id=self.institution_id)
+
+        qs = (qs | self.other_institution_set.all()).distinct()
+
+        return qs
+        
      
     @property
     def sitting_items(self):
