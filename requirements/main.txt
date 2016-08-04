@@ -1,3 +1,9 @@
+# WARNING!
+# Do not create a dedicated virtual environment for OpenMunicipio
+# Create a virtualenv for om-udine, that points to this repository
+# locally (for local development), or from github (for deploymento in production)
+#
+
 #Django==1.3.1
 Django==1.4
 South>=0.7.3
