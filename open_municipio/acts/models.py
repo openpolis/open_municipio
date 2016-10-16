@@ -1098,6 +1098,8 @@ class Transition(models.Model):
     transition_date = models.DateField(default=None)
     symbol = models.CharField(_('symbol'), max_length=128, blank=True, null=True)
     note = models.CharField(_('note'), max_length=255, blank=True, null=True)
+    institution = models.ForeignKey(Institution, blank=False, null=True, default=None, verbose_name=_('institution'))
+
 
     class Meta:
         db_table = u'acts_transition'
@@ -1107,6 +1109,7 @@ class Transition(models.Model):
 
     def __unicode__(self):
         return _(u"%(status)s on %(date)s") % { "status": self.final_status, "date": formats.date_format(self.transition_date) }
+
 
 #
 # Documents
