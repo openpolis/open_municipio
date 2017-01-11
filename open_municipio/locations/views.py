@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import user_passes_test
 
 
 from open_municipio.acts.models import ( Act, Deliberation, CGDeliberation, Motion, Agenda,
-                                         Interrogation, Interpellation, Amendment )
+                                         Interrogation, Interpellation, Amendment, Audit )
 
 from open_municipio.locations.models import Location, TaggedActByLocation
 from open_municipio.locations.forms import ActLocationsAddForm
@@ -53,6 +53,8 @@ class LocationListView(ListView):
         context['n_interrogations'] = Interrogation.objects.exclude(location_set=None).count()
         context['n_interpellations_nonfinal'] = Interpellation.objects.exclude(location_set=None).filter(~ Q(status__in=(s[0] for s in Interpellation.FINAL_STATUSES))).count()
         context['n_interpellations'] = Interpellation.objects.exclude(location_set=None).count()
+        context['n_audits_nonfinal'] = Audit.objects.exclude(location_set=None).filter(~ Q(status__in=(s[0] for s in Interpellation.FINAL_STATUSES))).count()
+        context['n_audits'] = Audit.objects.exclude(location_set=None).count()
         context['n_amendments_nonfinal'] = Amendment.objects.exclude(location_set=None).filter(~ Q(status__in=(s[0] for s in Amendment.FINAL_STATUSES))).count()
         context['n_amendments'] = Amendment.objects.exclude(location_set=None).count()
 

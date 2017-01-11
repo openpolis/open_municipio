@@ -65,6 +65,7 @@ body #main.two_columns {
           <th>Emend.</th>
           <th>Interr.</th>
           <th>Interp.</th>
+          <th>Accessi</th>
           <th>Interv.</th>
         </tr>
       </thead>
@@ -148,6 +149,11 @@ body #main.two_columns {
                 <td>{% if result.n_interpellations %}
                 	<a href="{% url 'om_act_search' %}?q=&charge={{ result.object.id }}&selected_facets=act_type:interpellanza">
                 	{{ result.n_interpellations }}</a><br />({{ result.n_interpellations_index|floatformat:2 }})
+                {% endif %}</td>
+
+                <td>{% if result.n_audits %}
+                	<a href="{% url 'om_act_search' %}?q=&charge={{ result.object.id }}&selected_facets=act_type:accesso agli atti">
+                	{{ result.n_audits }}</a><br />({{ result.n_audits_index|floatformat:2 }})
                 {% endif %}</td>
 
                 <td>{% if result.n_speeches %}

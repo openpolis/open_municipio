@@ -15,7 +15,7 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 from open_municipio.people.models import Institution, InstitutionCharge, Person, municipality, InstitutionResponsability, Group
 from open_municipio.monitoring.forms import MonitoringForm
-from open_municipio.acts.models import Act, CGDeliberation, Deliberation, Interrogation, Interpellation, Motion, Agenda, Amendment, ActSupport
+from open_municipio.acts.models import Act, CGDeliberation, Deliberation, Interrogation, Interpellation, Motion, Agenda, Amendment, ActSupport, Audit
 from open_municipio.acts.models import Speech
 from open_municipio.events.models import Event
 from open_municipio.acts.models import Speech
@@ -98,7 +98,7 @@ class CouncilListView(TemplateView):
         events = Event.objects.filter(institution__institution_type=Institution.COUNCIL)
         num_acts = dict()
         act_types = [
-            Deliberation, Motion, Interrogation, Interpellation, Agenda, Amendment
+            Deliberation, Motion, Interrogation, Interpellation, Agenda, Amendment, Audit
             ]
         for act_type in act_types:
             num_acts[act_type.__name__.lower()] = act_type.objects.filter(

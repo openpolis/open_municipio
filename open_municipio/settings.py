@@ -357,6 +357,7 @@ SEARCH_URLS = {
     "interpellation": "/acts/?q=&selected_facets=act_type:interpellanza",
     "interrogation": "/acts/?q=&selected_facets=act_type:interrogazione",
     "amendment": "/acts/?q=&selected_facets=act_type:emendamento",
+    "audit": "/acts/?q=&selected_facets=act_type:accesso agli atti",
 }
 
 CONTACTS_EMAIL = "info@openmunicipio.it"

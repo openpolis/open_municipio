@@ -41,6 +41,7 @@ class InstitutionChargeIndex(indexes.SearchIndex, indexes.Indexable):
     n_amendments = indexes.IntegerField()
     n_interrogations = indexes.IntegerField()
     n_interpellations = indexes.IntegerField()
+    n_audits = indexes.IntegerField()
 
     n_deliberations_index = indexes.DecimalField()
     n_cgdeliberations_index = indexes.DecimalField()
@@ -49,6 +50,7 @@ class InstitutionChargeIndex(indexes.SearchIndex, indexes.Indexable):
     n_amendments_index = indexes.DecimalField()
     n_interrogations_index = indexes.DecimalField()
     n_interpellations_index = indexes.DecimalField()
+    n_audits_index = indexes.DecimalField()
 
     n_speeches = indexes.IntegerField()
     n_speeches_index = indexes.DecimalField()
@@ -130,6 +132,12 @@ class InstitutionChargeIndex(indexes.SearchIndex, indexes.Indexable):
 
     def prepare_n_interpellations_index(self, obj):
         return (float(self.prepare_n_interpellations(obj)) / obj.duration.days) * 30 if obj.duration.days else None
+
+    def prepare_n_audits(self, obj):
+        return obj.presented_act_set.filter(audit__isnull=False).count()
+
+    def prepare_n_audits_index(self, obj):
+        return (float(self.prepare_n_audits(obj)) / obj.duration.days) * 30 if obj.duration.days else None
 
     def prepare_n_speeches(self, obj):
         return obj.n_speeches
