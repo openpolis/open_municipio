@@ -15,7 +15,7 @@ from haystack.query import SearchQuerySet
 
 from voting.views import RecordVoteOnItemView
 
-from open_municipio.acts.models import Act, Agenda, CGDeliberation, Deliberation, Interpellation, Interrogation, Motion, Amendment, Transition, Decision, Decree, Audit
+from open_municipio.acts.models import Act, Agenda, CGDeliberation, Deliberation, Interpellation, Interrogation, Motion, Amendment, Transition, Decision, Decree, Audit, Minute
 from open_municipio.acts.forms import ActDescriptionForm, ActTransitionForm, ActFinalTransitionForm, ActTitleForm
 from open_municipio.locations.models import Location
 
@@ -670,3 +670,7 @@ class DecreeDetailView(ActDetailView):
 class AuditDetailView(ActDetailView):
 
     model = Audit
+
+class MinuteDetailView(ActDetailView):
+
+    model = Minute

@@ -6,7 +6,7 @@ from open_municipio.acts.views import (ActSearchView, AgendaDetailView,
                 ActTransitionAddView, ActTransitionRemoveView, ActTagEditorView, 
                 ActLiveEditView, RecordVoteOnActView, CGDeliberationDetailView,
                 SpeechSearchView, SpeechDetailView, 
-                DecisionDetailView, DecreeDetailView, AuditDetailView, )
+                DecisionDetailView, DecreeDetailView, AuditDetailView, MinuteDetailView, )
 
 from open_municipio.locations.views import ActTagByLocationView
 
@@ -92,6 +92,10 @@ urlpatterns = patterns('',
     url(r'^audits/(?P<slug>[\w\-]+)/(?P<tab>documents)/$', AuditDetailView.as_view(),  name='om_audit_detail_documents'),
     url(r'^audits/(?P<slug>[\w\-]+)/(?P<tab>amendments)/$', AuditDetailView.as_view(),  name='om_audit_detail_amendments'),
 
+    # minute
+    url(r'^minute/(?P<slug>[\w\-]+)/$', MinuteDetailView.as_view(), name='om_minute_detail'),
+    url(r'^minute/(?P<slug>[\w\-]+)/(?P<tab>documents)/$', MinuteDetailView.as_view(),  name='om_minute_detail_documents'),
+    url(r'^minute/(?P<slug>[\w\-]+)/(?P<tab>amendments)/$', MinuteDetailView.as_view(),  name='om_minute_detail_amendments'),
 )
 
 ## Tag management
