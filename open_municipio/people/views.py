@@ -139,9 +139,10 @@ class CityGovernmentView(TemplateView):
             emitting_institution__institution_type=Institution.CITY_GOVERNMENT
             ).order_by('-presentation_date')[:3]
         events = Event.objects.filter(institution__institution_type=Institution.CITY_GOVERNMENT)
+
         num_acts = dict()
         act_types = [
-            Deliberation, Motion, Interrogation, Interpellation, Agenda, Amendment
+            CGDeliberation
             ]
         for act_type in act_types:
             num_acts[act_type.__name__.lower()] = act_type.objects.filter(
@@ -576,7 +577,7 @@ GROUP BY IC.id ORDER BY _n_speeches DESC
         # number of different acts
         num_acts = dict()
         act_types = [
-            CGDeliberation, Deliberation, Motion, Interrogation, Interpellation, Agenda, Amendment
+            CGDeliberation, Deliberation, Motion, Interrogation, Interpellation, Agenda, Amendment, Audit
         ]
         for act_type in act_types:
 #            num_acts[act_type.__name__.lower()] = act_type.objects.filter(

@@ -78,7 +78,8 @@ class ChargeQuerySet(TimeFramedQuerySet):
             moment = datetime.strptime(moment, "%Y-%m-%d")
 
         qs = self.filter(Q(actsupport__act__interrogation__isnull=False) |
-            Q(actsupport__act__interpellation__isnull=False),
+            Q(actsupport__act__interpellation__isnull=False) |
+            Q(actsupport__act__audit__isnull=False),
             Q(actsupport__support_type=ActSupport.SUPPORT_TYPE.first_signer)).\
             exclude(start_date__gt=moment).exclude(end_date__lt=moment).\
             annotate(n_acts=Count('actsupport')).order_by('-n_acts')
