@@ -49,7 +49,7 @@
       {% if charge.object != None %}
         {% if charge.object.can_vote %}
             {% with charge.n_present_votations|add:charge.n_absent_votations as tot_votations %}
-          <strong>{% widthratio charge.n_present_votations tot_votations 100 %}%</strong>
+          <strong>{{ charge.n_present_votations_percent|floatformat }}%</strong>
           <br/>
           <span class="small">({{ charge.n_present_votations }} su {{ tot_votations }})</span>
             {% endwith %}

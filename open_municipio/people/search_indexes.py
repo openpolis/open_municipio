@@ -34,6 +34,8 @@ class InstitutionChargeIndex(indexes.SearchIndex, indexes.Indexable):
     n_present_attendances = indexes.IntegerField(indexed=False, stored=True, model_attr='n_present_attendances')
     n_absent_attendances = indexes.IntegerField(indexed=False, stored=True, model_attr='n_absent_attendances')
 
+    n_present_votations_percent = indexes.DecimalField()
+
     n_deliberations = indexes.IntegerField()
     n_cgdeliberations = indexes.IntegerField()
     n_agendas = indexes.IntegerField()
@@ -90,6 +92,10 @@ class InstitutionChargeIndex(indexes.SearchIndex, indexes.Indexable):
     def prepare_is_active(self, obj):
 
         return _("no") if obj.end_date else _("yes")
+
+    def prepare_n_present_votations_percent(self, obj):
+        n_votations = obj.n_present_votations + obj.n_absent_votations
+        return (float(obj.n_present_votations) * 100 / n_votations) if n_votations else 0
 
     def prepare_n_deliberations(self, obj):
         return obj.presented_act_set.filter(deliberation__isnull=False).count()
