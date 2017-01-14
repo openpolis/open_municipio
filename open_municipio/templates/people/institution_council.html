@@ -224,10 +224,10 @@
         percentage_extract = function(match, $1, offset, original) { return $1; }
 
        	sort_percentage_asc = function(a,b) {
-            var x_str = a.replace(/\D*?(\d*)%/, percentage_extract);
-            var y_str = b.replace(/\D*?(\d*)%/, percentage_extract);
-            var x = (!x_str || 0 === x_str.length) ? 0 : parseInt(x_str);
-            var y = (!y_str || 0 === y_str.length) ? 0 : parseInt(y_str);
+            var x_str = $(a).text().replace(/(\d*)%/, percentage_extract);
+            var y_str = $(b).text().replace(/(\d*)%/, percentage_extract);
+            var x = (!x_str || 0 === x_str.length) ? 0 : parseFloat(x_str.replace(',', '.'));
+            var y = (!y_str || 0 === y_str.length) ? 0 : parseFloat(y_str.replace(',', '.'));
             var res = ((x < y) ? -1 : ((x > y) ?  1 : 0));
             return res;
         };
