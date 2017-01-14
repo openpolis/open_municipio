@@ -47,7 +47,7 @@
     <!-- presences -->
     <td class="text-center">
       {% if charge.object != None %}
-        {% if charge.can_vote %}
+        {% if charge.object.can_vote %}
             {% with charge.n_present_votations|add:charge.n_absent_votations as tot_votations %}
           <strong>{% widthratio charge.n_present_votations tot_votations 100 %}%</strong>
           <br/>
@@ -59,7 +59,7 @@
 
     <!-- rebellions -->
     <td class="text-center">
-      {% if charge.can_vote %}
+      {% if charge.object.can_vote %}
         {{ charge.n_rebel_votations }}
       {% endif %}
     </td>
