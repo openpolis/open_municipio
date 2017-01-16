@@ -3,7 +3,7 @@ from haystack import indexes
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
-from open_municipio.votations.models import Votation
+from open_municipio.votations.models import Votation, ChargeVote
 from open_municipio.acts.models import Transition
 
 
@@ -39,8 +39,12 @@ class VotationIndex(indexes.SearchIndex, indexes.Indexable):
     is_secret = indexes.FacetCharField(stored=True, default='')
     month = indexes.FacetCharField()
 
-    # needed to filter votations by person
+    # needed to filter votations by person or charge
     person = indexes.MultiValueField(indexed=True, stored=False)
+    charge = indexes.MultiValueField(indexed=True, stored=False)
+    charge_present = indexes.MultiValueField(indexed=True, stored=False)
+    charge_absent = indexes.MultiValueField(indexed=True, stored=False)
+    charge_rebel = indexes.MultiValueField(indexed=True, stored=False)
 
     def get_model(self):
         return Votation
@@ -113,7 +117,47 @@ class VotationIndex(indexes.SearchIndex, indexes.Indexable):
             [p['person__slug'] for p in obj.charge_set.values('person__slug').distinct()]
         )
 
+    def prepare_charge(self, obj):
+        return set(
+            [p['id'] for p in obj.charge_set.values('id').distinct()]
+        ) | \
+        set(
+            [p['original_charge__id'] for p in obj.charge_set.values('original_charge__id').distinct()]
+        )
 
+    def prepare_charge_present(self, obj):
+        s = set()
+        
+        for cv in obj.chargevote_set.filter(
+            vote__in=[ChargeVote.VOTES.yes,
+                      ChargeVote.VOTES.no,
+                      ChargeVote.VOTES.abstained,
+                      ChargeVote.VOTES.pres,
+                      ChargeVote.VOTES.secret]):
+
+            s.add(cv.charge.id)
+            if cv.charge.original_charge: s.add(cv.charge.original_charge.id)
+        
+        return s
+
+    def prepare_charge_absent(self, obj):
+        s = set()
+        
+        for cv in obj.chargevote_set.filter(vote=ChargeVote.VOTES.absent):
+            s.add(cv.charge.id)
+            if cv.charge.original_charge: s.add(cv.charge.original_charge.id)
+        
+        return s
+
+    def prepare_charge_rebel(self, obj):
+        #return set(
+        #    [cv['charge__id'] for cv in obj.chargevote_set.filter(is_rebel=True).values('charge__id').distinct()]
+        #)
+        s = set()
+        for cv in obj.chargevote_set.filter(is_rebel=True):
+            s.add(cv.charge.id)
+        return s
+ 
     def prepare_n_presents_range(self, obj):
 
         if obj.n_presents <= 12: return '12-'

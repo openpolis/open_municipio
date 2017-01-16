@@ -16,6 +16,7 @@ from open_municipio.acts.models import Agenda, Deliberation, Interrogation, Inte
 
 from open_municipio.om_search.forms import RangeFacetedSearchForm
 from open_municipio.om_search.views import ExtendedFacetedSearchView
+from open_municipio.votations.forms import VotationsSearchForm
 
 
 
@@ -68,7 +69,7 @@ class VotationSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin
 
         # Needed to switch out the default form class.
         if kwargs.get('form_class') is None:
-            kwargs['form_class'] = RangeFacetedSearchForm
+            kwargs['form_class'] = VotationsSearchForm
 
         super(VotationSearchView, self).__init__(*args, **kwargs)
 
@@ -126,6 +127,16 @@ class VotationSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin
         if person_slug:
             try:
                 extra['person'] = Person.objects.get(slug=person_slug)
+            except ObjectDoesNotExist:
+                pass
+
+        charge_keys = ['charge', 'charge_present', 'charge_absent', 'charge_rebel']
+        charge_values = [self.request.GET.get(k, None) for k in charge_keys]
+        charge_values = [v for v in charge_values if v is not None]
+
+        if len(charge_values) > 0:
+            try:
+                extra['charge'] = InstitutionCharge.objects.get(pk=charge_values[0])
             except ObjectDoesNotExist:
                 pass
 

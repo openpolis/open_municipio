@@ -51,7 +51,7 @@
             {% with charge.n_present_votations|add:charge.n_absent_votations as tot_votations %}
           <strong>{{ charge.n_present_votations_percent|floatformat }}%</strong>
           <br/>
-          <span class="small">({{ charge.n_present_votations }} su {{ tot_votations }})</span>
+          <span class="small">(<a href="{% url 'om_votation_search' %}?q=&charge_present={{ charge.object.id }}">{{ charge.n_present_votations }}</a> su <a href="{% url 'om_votation_search' %}?q=&charge={{ charge.object.id }}">{{ tot_votations }}</a>)</span>
             {% endwith %}
         {% endif %}
       {% endif %}
@@ -60,7 +60,9 @@
     <!-- rebellions -->
     <td class="text-center">
       {% if charge.object.can_vote %}
+        <a href="{% url 'om_votation_search' %}?q=&charge_rebel={{ charge.object.id }}">
         {{ charge.n_rebel_votations }}
+        </a>
       {% endif %}
     </td>
 

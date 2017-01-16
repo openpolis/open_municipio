@@ -3,7 +3,7 @@
 
   {% if charge.is_counselor %}
     <section>
-      <h2>Presenze ({{ n_total_votations }} votazion{{ n_total_votations|pluralize:"e,i" }})</h2>
+      <h2>Presenze (<a href="{% url 'om_votation_search' %}?q=&charge={{ charge.id }}">{{ n_total_votations }} votazion{{ n_total_votations|pluralize:"e,i" }}</a>)</h2>
       <p>
           I dati si riferiscono alle votazioni svolte in Consiglio.<br/>
           Non vengono calcolate le presenze alle sedute né se l'assenza abbia motivazioni politiche.
@@ -11,7 +11,7 @@
       <div class="meter-bar float-container">
         <div class="meter-bar-container">
           <label>Presenze</label>
-          <div class="meter-label"><strong class="green">{{ percentage_present_votations }}%</strong>&nbsp;({{ charge.n_present_votations }})</div>
+          <div class="meter-label"><strong class="green">{{ percentage_present_votations }}%</strong>&nbsp;(<a href="{% url 'om_votation_search' %}?q=&charge_present={{ charge.id }}">{{ charge.n_present_votations }}</a>)</div>
           <div class="green-meter-bar">
             <div style="left: {{ percentage_present_votations_average }}%;" class="meter-average"><label>valore medio: {{ percentage_present_votations_average }}%</label>&nbsp;</div>
             <div style="width: {{ percentage_present_votations }}%;" class="meter-value">&nbsp;</div>
@@ -19,13 +19,16 @@
         </div>
         <div class="meter-bar-container">
           <label>Assenze</label>
-          <div class="meter-label"><strong class="red">{{ percentage_absent_votations }}%</strong>&nbsp;({{ charge.n_absent_votations }})</div>
+          <div class="meter-label"><strong class="red">{{ percentage_absent_votations }}%</strong>&nbsp;(<a href="{% url 'om_votation_search' %}?q=&charge_absent={{ charge.id }}">{{ charge.n_absent_votations }}</a>)</div>
           <div class="red-meter-bar">
             <div style="left: {{ percentage_absent_votations_average }}%;" class="meter-average"><label>valore medio: {{ percentage_absent_votations_average }}%</label>&nbsp;</div>
             <div style="width: {{ percentage_absent_votations }}%;" class="meter-value">&nbsp;</div>
           </div>
         </div>
       </div>
+
+      <p><i class="icon-play"></i> <a href="{% url 'om_votation_search' %}?q=&charge={{ charge.id }}">Vedi tutte le votazioni del suo mandato</a></p>
+
     </section>
 
     <hr class="big">
@@ -72,17 +75,17 @@
           {% endfor %}
           </tbody>
         </table>
-        {% comment %}
-        <p><i class="icon-play"></i> <a href="{% url 'om_votation_search' %}?q=&person={{ person.slug }}&selected_facets=is_key:sì">Vedi tutti i voti chiave</a></p>
-        {% endcomment %}
+
+        <p><i class="icon-play"></i> <a href="{% url 'om_votation_search' %}?q=&charge={{ charge.id }}&selected_facets=is_key:sì">Vedi tutti i voti chiave del suo mandato</a></p>
       </section>
 
       <hr class="big">
 
       <section>
-          <h2>Voti ribelli ({{ percentage_rebel_votations }}%) {% popover_info 'voti-ribelli' %}</h2>
+          <h2>Voti ribelli (<a href="{% url 'om_votation_search' %}?q=&charge_rebel={{ charge.id }}">{{ percentage_rebel_votations }}%</a>) {% popover_info 'voti-ribelli' %}</h2>
           <p>
-              Ha votato {{ charge.n_rebel_votations }} volte ({{ percentage_rebel_votations }}% sul totale dei voti cui era presente) <strong>diversamente dal proprio gruppo</strong> di appartenenza.
+              Ha votato <a href="{% url 'om_votation_search' %}?q=&charge_rebel={{ charge.id }}">
+              {{ charge.n_rebel_votations }} volte</a> ({{ percentage_rebel_votations }}% sul totale dei voti cui era presente) <strong>diversamente dal proprio gruppo</strong> di appartenenza.
           </p>
       </section>
 
@@ -92,7 +95,7 @@
 
   {% if n_presented_acts %}
       <section>
-          <h2>Atti su cui lavora ({{ n_presented_acts }}) {% popover_info 'atti-su-cui-lavora' %}</h2>
+          <h2>Atti su cui lavora (<a href="{% url 'om_act_search' %}?q=&charge={{ charge.id }}">{{ n_presented_acts }}</a>) {% popover_info 'atti-su-cui-lavora' %}</h2>
             {% include 'acts/act_table_detail.html' with acts_list=presented_acts %}
           <p><i class="icon-play"></i> <a href="{% url 'om_act_search' %}?q=&charge={{ charge.id }}">Vedi tutti gli atti su cui lavora</a></p>
 
@@ -129,7 +132,6 @@
 
         </table>
         <p><i class="icon-play"></i> <a href="{% url 'om_speech_search' %}?q=&charge={{ charge.id }}">Vedi tutti gli interventi</a></p>
-
 
       </section>
   {% endif %}

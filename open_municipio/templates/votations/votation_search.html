@@ -41,6 +41,10 @@
                 <p>per il politico: <a href="{{ person.get_absolute_url }}">{{ person }}</a>  </p>
             {% endif %}
 
+            {% if charge %}
+                <p>per la carica: <a href="{{ charge.get_absolute_url }}">{{ charge }}</a></p>
+            {% endif %}
+
             <table class="search-results">
             <tbody>
             {% for result in page.object_list %}
