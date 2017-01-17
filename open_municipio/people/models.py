@@ -393,7 +393,7 @@ class Charge(NewsTargetMixin, models.Model):
     @property
     def speeches_size(self):
         """
-        Number of speeches of a politician
+        Number of speeches of a charge
         """
         return sum([s.text_size for s in self.speeches.all()])
 

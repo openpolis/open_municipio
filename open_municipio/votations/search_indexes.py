@@ -35,7 +35,8 @@ class VotationIndex(indexes.SearchIndex, indexes.Indexable):
     votation_n_abst = indexes.IntegerField(indexed=False, stored=True, model_attr='n_abst')
     votation_n_maj = indexes.IntegerField(indexed=False, stored=True, model_attr='n_maj')
     votation_n_rebels = indexes.IntegerField(indexed=False, stored=True, model_attr='n_rebels')
-    votation_outcome = indexes.FacetCharField(stored=True, default='')
+    votation_outcome = indexes.IntegerField(indexed=False, stored=True, model_attr='outcome')
+    votation_outcome_display = indexes.FacetCharField(stored=True, default='')
     is_secret = indexes.FacetCharField(stored=True, default='')
     month = indexes.FacetCharField()
 
@@ -109,7 +110,7 @@ class VotationIndex(indexes.SearchIndex, indexes.Indexable):
     def prepare_month(self, obj):
         return obj.sitting.date.strftime("%B")
 
-    def prepare_votation_outcome(self, obj):
+    def prepare_votation_outcome_display(self, obj):
         return obj.get_outcome_display()
 
     def prepare_person(self, obj):

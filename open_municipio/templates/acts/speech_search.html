@@ -17,15 +17,16 @@ em {
 
 {% block content %}
     {% if n_results %}
-        <section>
-            <h2>{% if not query %}Trovati {% endif %} {{ n_results }} interventi in aula</h2>
+      <section>
+
+        {% if charge %}
+          {% include 'people/charge_widget.html' with charge=charge %}
+        {% endif %}
+
+        <h2>{% if not query %}Trovati {% endif %} {{ n_results }} interventi in aula</h2>
     
         {% if person %}
             <p>per: <a href="{{ person.get_absolute_url }}">{{ person }}</a> </p>
-        {% endif %}
-
-        {% if charge %}
-            <p>per la carica: <a href="{{ charge.get_absolute_url }}">{{ charge }}</a></p>
         {% endif %}
 
         {% if category %}

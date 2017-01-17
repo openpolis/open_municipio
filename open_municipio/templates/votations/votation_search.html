@@ -23,69 +23,104 @@
 
 {% block content %}
 
-    {% if UI_SITTINGS_CALENDAR %}
-       {% include 'people/_sitting_calendar_top.html' %}
+{% if UI_SITTINGS_CALENDAR %}
+ {% include 'people/_sitting_calendar_top.html' %}
+{% endif %}
+
+{% if n_results %}
+
+  <section>
+
+    {% if charge %}
+      {% include 'people/charge_widget.html' with charge=charge %}
     {% endif %}
 
-    {% if n_results %}
+    <h2>{% if not query %}Trovate {% endif %} {{ n_results }} votazioni</h2>
 
-        <section>
+    {% if act_votations %}
+      per la {{ act.get_type_name }} <a href="{{ act.get_absolute_url }}">{{ act }}</a>
+    {% endif %}
 
+    {% if person %}
+      <p>per il politico: <a href="{{ person.get_absolute_url }}">{{ person }}</a>  </p>
+    {% endif %}
 
-            <h2>{% if not query %}Trovate {% endif %} {{ n_results }} votazioni</h2>
-            {% if act_votations %}
-                per la {{ act.get_type_name }} <a href="{{ act.get_absolute_url }}">{{ act }}</a>
+    <table class="data dataTable">
+      <thead style="font-size: 10px;">
+        <tr>
+          <th>Data</th>
+          <th>Seduta</th>
+          <th>Votazione</th>
+          <th>Argomento</th>
+          <th>Presenti</th>
+          <th>Maggioranza</th>
+          <th>Favorevoli</th>
+          <th>Contrari</th>
+          <th>Astenuti</th>
+          <th>Ribelli</th>
+          <th>Esito</th>
+        </tr>
+      </thead>
+      <tbody>
+
+      {% for result in page.object_list %}
+        <tr>
+
+          <!-- date -->
+          <td><a href="{{ result.url }}">{{ result.votation_date|circled:"full" }}</a></td>
+
+          <!-- sitting -->
+          <td>
+            <a href="{{ result.object.sitting.get_absolute_url }}">{{ result.votation_sitting_num }}</a>
+          </td>
+
+          <!-- votation -->
+          <td>
+            <a href="{{ result.url }}">{{ result.votation_num }}</a>
+          </td>
+
+          <!-- argument -->
+          <td>
+            <a href="{{ result.url }}"><strong>
+              {% if result.act_descr %}{{ result.act_descr }}{% endif %}
+
+              {% if result.act_rendered %}<br/>{{ result.act_rendered|safe }}{% endif %}
+
+              {% if result.highlighted.text %}<br/>{{ result.highlighted.text.0|safe }}{% endif %}
+            </strong></a>
+          </td>
+
+          <!-- presents -->
+          <td>{{ result.votation_n_presents }}</td>
+
+          <!-- majority -->
+          <td>{{ result.votation_n_maj }}</td>
+
+          <!-- yes -->
+          <td>{{ result.votation_n_yes }}</td>
+
+          <!-- no -->
+          <td>{{ result.votation_n_no }}</td>
+
+          <!-- abstentions -->
+          <td>{{ result.votation_n_abst }}</td>
+
+          <!-- rebels -->
+          <td>{{ result.votation_n_rebels }}</td>
+
+          <!-- outcome -->
+          <td>
+            {% if result.votation_outcome == 1 %}
+              {{ '<i class="icon-thumbs-up"></i>'|safe|circled:"voteok" }}
+            {% else %}
+              {{ '<i class="icon-thumbs-down"></i>'|safe|circled:"voteko" }}
             {% endif %}
-
-            {% if person %}
-                <p>per il politico: <a href="{{ person.get_absolute_url }}">{{ person }}</a>  </p>
-            {% endif %}
-
-            {% if charge %}
-                <p>per la carica: <a href="{{ charge.get_absolute_url }}">{{ charge }}</a></p>
-            {% endif %}
-
-            <table class="search-results">
-            <tbody>
-            {% for result in page.object_list %}
-            <tr>
-              <td>{{ result.votation_date|circled:"full" }}</td>
-              <td>
-                <h4>
-                    <a href="{{ result.url }}">Votazione n. {{ result.votation_num }}</a>
-                </h4>
-                {% if result.act_descr %}
-                    <p>{% if result.act_url %}<a href="{{ result.act_url.0 }}">{% endif %}
-                        {{ result.act_descr }}
-                    {% if result.act_url %}</a>{% endif %}</p>
-                {% endif %}
-
-                {% if result.act_rendered %}
-                {{ result.act_rendered|safe }}
-                {% endif %}
-
-                {% if result.highlighted.text %}
-                  {{ result.highlighted.text.0|safe }}<br/>
-                {% endif %}
-                <a href="{{ result.object.sitting.get_absolute_url }}">Seduta n. {{ result.votation_sitting_num }}</a>,
-                Presenti: {{ result.votation_n_presents }},
-                Maggioranza: {{ result.votation_n_maj }},
-                Favorevoli: {{ result.votation_n_yes }},
-                Contrari: {{ result.votation_n_no }},
-                Astenuti: {{ result.votation_n_abst }},
-                Esito: {{ result.votation_outcome }},
-                Ribelli: {{ result.votation_n_rebels }}
-                <!-- <strong>Score:</strong> {{ result.score }} -->
-              </td>
-            </tr>
-            {% empty %}
-            <tr>
-              <td><p>Nessun risultato trovato.</p></td>
-            </tr>
-            {% endfor %}
-            </tbody>
-          </table>
-        </section>
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </section>
 
         {% digg_paginator %}
 
