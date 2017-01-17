@@ -73,6 +73,46 @@
     <div class="row-fluid">
 
         <div class="span6">
+            <h2>I consiglieri con più interventi in aula</h2>
+            <p>
+                Sono i Consiglieri che presentano più spesso interventi ed interrogazioni in aula.
+            </p>
+            <ul class="people-list">
+                {% for politician in most_speeches %}
+                    <li>
+                        {% include 'people/politician_list_section.html' with value=politician.n_speeches what="interventi" %}   
+                        {% object_inline_monitoring politician.person %}
+                    </li>
+                {% empty %}
+                Nessun consigliere
+
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="span6">
+            <h2>I consiglieri con più atti ispettivi</h2>
+            <p>
+                Sono i Consiglieri che hanno presentato più interrogazioni, interpellanze o accessi agli atti come primo firmatario.
+            </p>
+            <ul class="people-list">
+                {% for politician in most_interrogations %}
+                    <li>
+                        {% include 'people/politician_list_section.html' with value=politician.n_acts what='atti ispettivi' %}
+                        {% object_inline_monitoring politician.person %}
+                    </li>
+                {% empty %}
+                Nessun consigliere
+
+                {% endfor %}
+            </ul>
+        </div>
+
+    </div>
+
+    <div class="row-fluid">
+
+        <div class="span6">
             <h2>I consiglieri con più mozioni</h2>
             <p>
                 Sono i Consiglieri che hanno presentato più mozioni o ordini del giorno come primo firmatario.
@@ -90,28 +130,6 @@
         </div>
 
         <div class="span6">
-            <h2>I consiglieri con più interrogazioni</h2>
-            <p>
-                Sono i Consiglieri che hanno presentato più interrogazioni, interpellanze o accessi agli atti come primo firmatario.
-            </p>
-            <ul class="people-list">
-                {% for politician in most_interrogations %}
-                    <li>
-                        {% include 'people/politician_list_section.html' with value=politician.n_acts what='interrogazioni' %}
-                        {% object_inline_monitoring politician.person %}
-                    </li>
-                {% empty %}
-                Nessun consigliere
-
-                {% endfor %}
-            </ul>
-        </div>
-
-    </div>
-
-    <div class="row-fluid">
-
-        <div class="span6">
             <h2>I consiglieri più ribelli</h2>
             <p>
                 Sono i Consiglieri che votano più spesso diversamente dalla maggioranza del Gruppo di appartenenza.
@@ -122,24 +140,6 @@
                         {% with politician|get_rebel_label as label %}
                         {% include 'people/politician_list_section.html' with value=label %}   
                         {% endwith %}
-                        {% object_inline_monitoring politician.person %}
-                    </li>
-                {% empty %}
-                Nessun consigliere
-
-                {% endfor %}
-            </ul>
-        </div>
-
-        <div class="span6">
-            <h2>I consiglieri con più interventi in aula</h2>
-            <p>
-                Sono i Consiglieri che presentano più spesso interventi ed interrogazioni in aula.
-            </p>
-            <ul class="people-list">
-                {% for politician in most_speeches %}
-                    <li>
-                        {% include 'people/politician_list_section.html' with value=politician.n_speeches what="interventi" %}   
                         {% object_inline_monitoring politician.person %}
                     </li>
                 {% empty %}
