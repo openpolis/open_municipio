@@ -164,7 +164,7 @@ body #main.two_columns {
 
                 <td>{% if result.speeches_minutes %}
                 	<a href="{% url 'om_speech_search' %}?q=&charge={{ result.object.id }}">
-                	{{ result.speeches_minutes }}</a><br />({{ result.speeches_size_index|floatformat:2 }})
+                	{{ result.speeches_minutes }}</a><br />({{ result.speeches_minutes_index|floatformat:2 }})
                 {% endif %}</td>
 			</tr>
         {% empty %}
