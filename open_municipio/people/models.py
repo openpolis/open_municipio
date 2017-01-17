@@ -848,6 +848,12 @@ class Group(models.Model):
         return self.charge_set.all().current(moment=moment)
     institution_charges = property(get_institution_charges)
 
+    @property
+    def current_size(self):
+        """
+        returns number of current charges
+        """
+        return self.groupcharge_set.current().count()
 
     @property
     def is_current(self):

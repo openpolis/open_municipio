@@ -1,5 +1,7 @@
 {% extends 'base_two_columns.html' %}
 {% load popover_info %}
+{% load thumbnail %}
+
 {% block title %}Politici | Gruppi{% endblock title %}
 {% block content_header %}Politici{% endblock %}
 {% block people_class %}class="active"{% endblock %}
@@ -14,18 +16,47 @@
 {% endblock %}
 
 {% block content %}
+
+  <section class="row-fluid">
+
     <h2>Gruppi {% popover_info 'gruppi-del-consiglio' %}</h2>
-    <div class="party-people">
-        <div class="row-fluid">
-            <div class="span12">
-                <ul class="unstyled">
-                    {% for group in groups %}
-                        <li><a href="{{ group.get_absolute_url }}"><strong>{{ group.name }}</strong> ({{ group.acronym }})</a></li>
-                    {% endfor %}
-                </ul>
-            </div>
-        </div>
-    </div>
+
+    <table id="gruppi" class="data dataTable">
+      <thead>
+      <tr>
+          <th class="span1"></th>
+          <th class="span1">Acronimo</th>
+          <th>Nome</th>
+          <th>Membri attuali</th>
+      </tr>
+      </thead>
+      <tbody>
+        {% for group in groups %}
+
+        <tr>
+          <!-- thumbnail -->
+          <td>
+            {% thumbnail group.img "50x50" crop="center" as im %}
+            <a href="{{ group.get_absolute_url }}">
+              <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+            </a>
+            {% endthumbnail %}
+          </td>
+
+          <!-- acronym -->
+          <td><a href="{{ group.get_absolute_url }}">{{ group.acronym }}</a></td>
+
+          <!-- name -->
+          <td><a href="{{ group.get_absolute_url }}"><strong>{{ group.name }}</strong></a></td>
+
+          <!-- current size -->
+          <td><a href="{{ group.get_absolute_url }}">{{ group.current_size }}</a></td>
+        </tr>
+
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
 {% endblock %}
 
 {% block sidebar %}
