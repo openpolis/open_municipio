@@ -273,6 +273,13 @@ class Person(models.Model, MonitorizedItem):
         """
         return self.speeches.count()
 
+    @property
+    def speeches_size(self):
+        """
+        Number of speeches of a politician
+        """
+        return sum([s.text_size for s in self.speeches.all()])
+
 
 class Resource(models.Model):
     """
@@ -382,6 +389,13 @@ class Charge(NewsTargetMixin, models.Model):
         Number of speeches of a charge
         """
         return self.speeches.count()
+
+    @property
+    def speeches_size(self):
+        """
+        Number of speeches of a politician
+        """
+        return sum([s.text_size for s in self.speeches.all()])
 
 
 class ChargeResponsability(models.Model):

@@ -1140,6 +1140,10 @@ class Document(TimeStampedModel):
     class Meta:
         abstract = True
 
+    @property
+    def text_size(self):
+        return len(self.text)
+
 
 class Attach(Document):
     """

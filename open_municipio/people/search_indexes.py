@@ -56,6 +56,8 @@ class InstitutionChargeIndex(indexes.SearchIndex, indexes.Indexable):
 
     n_speeches = indexes.IntegerField()
     n_speeches_index = indexes.DecimalField()
+    speeches_minutes = indexes.IntegerField()
+    speeches_minutes_index = indexes.DecimalField()
 
     def get_model(self):
         return InstitutionCharge
@@ -150,3 +152,9 @@ class InstitutionChargeIndex(indexes.SearchIndex, indexes.Indexable):
 
     def prepare_n_speeches_index(self, obj):
         return (float(self.prepare_n_speeches(obj)) / obj.duration.days) * 30 if obj.duration.days else None
+
+    def prepare_speeches_minutes(self, obj):
+        return (obj.speeches_size / 750)
+
+    def prepare_speeches_minutes_index(self, obj):
+        return (float(self.prepare_speeches_minutes(obj)) / obj.duration.days) * 30 if obj.duration.days else None

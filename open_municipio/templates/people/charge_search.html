@@ -66,7 +66,8 @@ body #main.two_columns {
           <th>Interr.</th>
           <th>Interp.</th>
           <th>Accessi</th>
-          <th>Interv.</th>
+          <th>Numero interv.</th>
+          <th>Minuti interv.</th>
         </tr>
       </thead>
       <tbody>
@@ -159,6 +160,11 @@ body #main.two_columns {
                 <td>{% if result.n_speeches %}
                 	<a href="{% url 'om_speech_search' %}?q=&charge={{ result.object.id }}">
                 	{{ result.n_speeches }}</a><br />({{ result.n_speeches_index|floatformat:2 }})
+                {% endif %}</td>
+
+                <td>{% if result.speeches_minutes %}
+                	<a href="{% url 'om_speech_search' %}?q=&charge={{ result.object.id }}">
+                	{{ result.speeches_minutes }}</a><br />({{ result.speeches_size_index|floatformat:2 }})
                 {% endif %}</td>
 			</tr>
         {% empty %}
