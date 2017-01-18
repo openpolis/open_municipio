@@ -59,5 +59,53 @@
   </section>
 {% endblock %}
 
+{% block footer_js_includes %}
+    {{ block.super }}
+    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.submitlink.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.dataTables.js"></script>
+    <script type="text/javascript">
+		
+        sort_int_asc = function(node_a,node_b) {
+
+    		acts_a = parseInt($(node_a).text().replace(/^\s+|\s+$/g, ""));
+            acts_b = parseInt($(node_b).text().replace(/^\s+|\s+$/g, ""));
+
+            if (acts_a < acts_b) { res = -1; }
+            else if (acts_a == acts_b) { res = 0; }
+            else { res = 1; }
+
+            return res;
+        };
+
+        $.fn.dataTableExt.oSort['int-asc'] = sort_int_asc;
+        $.fn.dataTableExt.oSort['int-desc'] = function(a,b) {
+            return sort_int_asc(b, a);
+        };
+
+        $(document).ready(function() {
+            gTable = $('#gruppi').dataTable({
+                bFilter: false,
+                bSort: true,
+                aoColumns: [
+                    { bSortable: false },
+                    { asSorting: ['desc', 'asc'] },
+                    { asSorting: ['desc', 'asc']},
+                    { sType: "int", asSorting: ['desc', 'asc']}
+                ],
+                bPaginate: false,
+                bLengthChange: false,
+                bInfo: false,
+                bAutoWidth: false,
+                oLanguage: {
+                    sSearch: "Ricerca",
+                    sZeroRecords: "Nessun risultato per questa ricerca"
+                },
+                aaSorting: [[ 0, "asc" ], [ 1, "asc" ]]
+            });
+        });
+
+    </script>
+{% endblock %}
+
 {% block sidebar %}
 {% endblock %}
