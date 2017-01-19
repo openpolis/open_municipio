@@ -34,8 +34,11 @@ class InstitutionChargeIndex(indexes.SearchIndex, indexes.Indexable):
     n_absent_votations = indexes.IntegerField(indexed=False, stored=True, model_attr='n_absent_votations')
     n_present_attendances = indexes.IntegerField(indexed=False, stored=True, model_attr='n_present_attendances')
     n_absent_attendances = indexes.IntegerField(indexed=False, stored=True, model_attr='n_absent_attendances')
+    n_presents = indexes.IntegerField()
 
     n_present_votations_percent = indexes.DecimalField()
+    n_present_attendances_percent = indexes.DecimalField()
+    n_presents_percent = indexes.DecimalField()
 
     n_deliberations = indexes.IntegerField()
     n_cgdeliberations = indexes.IntegerField()
@@ -100,9 +103,25 @@ class InstitutionChargeIndex(indexes.SearchIndex, indexes.Indexable):
 
         return _("no") if obj.end_date else _("yes")
 
+    def prepare_n_presents(self, obj):
+        return (obj.n_present_attendances \
+            if obj.institution.institution_type < Institution.COUNCIL \
+            else obj.n_present_votations)
+
     def prepare_n_present_votations_percent(self, obj):
         n_votations = obj.n_present_votations + obj.n_absent_votations
         return (float(obj.n_present_votations) * 100 / n_votations) if n_votations else 0
+
+    def prepare_n_present_attendances_percent(self, obj):
+        n_attendances = obj.n_present_attendances + obj.n_absent_attendances
+        return (float(obj.n_present_attendances) * 100 / n_attendances) if n_attendances else 0
+
+    def prepare_n_presents_percent(self, obj):
+        n_presents = (obj.n_present_attendances + obj.n_absent_attendances) \
+            if obj.institution.institution_type < Institution.COUNCIL \
+            else (obj.n_present_votations + obj.n_absent_votations)
+
+        return (float(self.prepare_n_presents(obj)) * 100 / n_presents) if n_presents else 0
 
     def prepare_n_deliberations(self, obj):
         return obj.presented_act_set.filter(deliberation__isnull=False).count()

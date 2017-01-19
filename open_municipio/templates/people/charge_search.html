@@ -56,6 +56,7 @@ body #main.two_columns {
         <tr>
           {% include 'search/_sortable_header.html' with f=order_by.last_name f_name='last_name' f_descr='Carica' f_init='asc' %}
           <th>Giorni</th>
+          <th>Presenze</th>
           {% include 'search/_sortable_header.html' with f=order_by.n_presented_acts f_name='n_presented_acts' f_descr='Atti firmati' f_first='desc' %}
           {% include 'search/_sortable_header.html' with f=order_by.n_received_acts f_name='n_received_acts' f_descr='Atti ricevuti' f_first='desc' %}
           {% include 'search/_sortable_header.html' with f=order_by.n_cgdeliberations f_name='n_cgdeliberations' f_descr='Delib. Giunta' f_first='desc' %}
@@ -67,8 +68,8 @@ body #main.two_columns {
           {% include 'search/_sortable_header.html' with f=order_by.n_interrogations f_name='n_interrogations' f_descr='Interr.' f_first='desc' %}
           {% include 'search/_sortable_header.html' with f=order_by.n_interpellations f_name='n_interpellations' f_descr='Interp.' f_first='desc' %}
           {% include 'search/_sortable_header.html' with f=order_by.n_audits f_name='n_audits' f_descr='Accessi' f_first='desc' %}
-          {% include 'search/_sortable_header.html' with f=order_by.n_audits f_name='n_audits' f_descr='Accessi' f_first='desc' %}
           {% include 'search/_sortable_header.html' with f=order_by.n_inspection_acts f_name='n_inspection_acts' f_descr='Atti ispettivi' f_first='desc' %}
+          {% include 'search/_sortable_header.html' with f=order_by.n_speeches f_name='n_speeches' f_descr='Numero interv.' f_first='desc' %}
           {% include 'search/_sortable_header.html' with f=order_by.speeches_minutes f_name='speeches_minutes' f_descr='Minuti interv.' f_first='desc' %}
         </tr>
       </thead>
@@ -108,6 +109,10 @@ body #main.two_columns {
             </td>
 
             <td>{{ result.object.duration.days }}</td>
+
+                <td>{% if result.n_presents %}
+                	{{ result.n_presents_percent|floatformat }}%
+                {% endif %}</td>
 
                 <td>{% if result.n_presented_acts %}
                 	<a href="{% url 'om_act_search' %}?q=&charge={{ result.object.id }}">

@@ -22,7 +22,7 @@
       {% if charge.object != None %}
         {% if charge.n_present_attendances %}
             {% with charge.n_present_attendances|add:charge.n_absent_attendances as tot_attendances %}
-          <strong>{% widthratio charge.n_present_attendances tot_attendances 100 %}%</strong>
+          <strong>{{ charge.n_present_attendances_percent|floatformat }}%</strong>
           <br/>
           <span class="small">({{ charge.n_present_attendances }} su {{ tot_attendances }})</span>
             {% endwith %}
