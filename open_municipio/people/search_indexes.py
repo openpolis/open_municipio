@@ -38,7 +38,7 @@ class InstitutionChargeIndex(indexes.SearchIndex, indexes.Indexable):
 
     n_present_votations_percent = indexes.DecimalField()
     n_present_attendances_percent = indexes.DecimalField()
-    n_presents_percent = indexes.DecimalField()
+    n_presents_percent = indexes.FloatField()
 
     n_deliberations = indexes.IntegerField()
     n_cgdeliberations = indexes.IntegerField()

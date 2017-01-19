@@ -56,7 +56,7 @@ body #main.two_columns {
         <tr>
           {% include 'search/_sortable_header.html' with f=order_by.last_name f_name='last_name' f_descr='Carica' f_init='asc' %}
           <th>Giorni</th>
-          <th>Presenze</th>
+          {% include 'search/_sortable_header.html' with f=order_by.n_presents_percent f_name='n_presents_percent' f_descr='Presenze' f_first='desc' %}
           {% include 'search/_sortable_header.html' with f=order_by.n_presented_acts f_name='n_presented_acts' f_descr='Atti firmati' f_first='desc' %}
           {% include 'search/_sortable_header.html' with f=order_by.n_received_acts f_name='n_received_acts' f_descr='Atti ricevuti' f_first='desc' %}
           {% include 'search/_sortable_header.html' with f=order_by.n_cgdeliberations f_name='n_cgdeliberations' f_descr='Delib. Giunta' f_first='desc' %}
