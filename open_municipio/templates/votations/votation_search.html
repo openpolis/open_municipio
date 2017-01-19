@@ -52,12 +52,12 @@
           <th>Seduta</th>
           <th>Votazione</th>
           <th>Argomento</th>
-          <th>Presenti</th>
-          <th>Maggioranza</th>
-          <th>Favorevoli</th>
-          <th>Contrari</th>
-          <th>Astenuti</th>
-          <th>Ribelli</th>
+          {% include 'search/_sortable_header.html' with f=order_by.votation_n_presents f_name='votation_n_presents' f_descr='Presenti' %}
+          {% include 'search/_sortable_header.html' with f=order_by.votation_n_maj f_name='votation_n_maj' f_descr='Maggioranza' %}
+          {% include 'search/_sortable_header.html' with f=order_by.votation_n_yes f_name='votation_n_yes' f_descr='Favorevoli' %}
+          {% include 'search/_sortable_header.html' with f=order_by.votation_n_no f_name='votation_n_no' f_descr='Contrari' %}
+          {% include 'search/_sortable_header.html' with f=order_by.votation_n_abst f_name='votation_n_abst' f_descr='Astenuti' %}
+          {% include 'search/_sortable_header.html' with f=order_by.votation_n_rebels f_name='votation_n_rebels' f_descr='Ribelli' %}
           <th>Esito</th>
         </tr>
       </thead>
