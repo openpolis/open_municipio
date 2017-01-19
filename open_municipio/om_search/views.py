@@ -94,6 +94,7 @@ class ExtendedFacetedSearchView(SearchView):
             is_desc = f.startswith('-')
             field_name = f[1:] if is_desc else f
             extended_sorting_fields[field_name] = {
+                'name': field_name,
                 'base_url': '?' + base_dict.urlencode(),
                 'desc': is_desc,
                 'asc': not is_desc,

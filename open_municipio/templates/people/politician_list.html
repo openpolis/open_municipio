@@ -36,6 +36,7 @@
                 I dati si riferiscono alle votazioni svolte in Consiglio.<br/>
                 Non vengono calcolate le presenze alle sedute né se l'assenza
                 abbia motivazioni politiche.
+                <i class="icon-play"></i> <a href="{% url 'om_institution_council' %}?sort=2&order=desc">Vai alla classifica completa</a>
             </p>
             <ul class="people-list">
                 {% for politician in least_absent %}
@@ -55,6 +56,7 @@
             <h2>I consiglieri con più atti</h2>
             <p>
                 Sono i Consiglieri che hanno presentato più atti come primo firmatario.
+                <i class="icon-play"></i> <a href="{% url 'om_charge_search' %}?q=&selected_facets=institution:Consigliere&selected_facets=is_active:sì&order_by=-n_presented_acts">Vai alla classifica completa</a>
             </p>
             <ul class="people-list">
                 {% for p in most_acts %}
@@ -75,13 +77,14 @@
         <div class="span6">
             <h2>I consiglieri con più interventi in aula</h2>
             <p>
-                Sono i Consiglieri che presentano più spesso interventi ed interrogazioni in aula.
+                Sono i Consiglieri che presentano più spesso interventi in aula.
+                <i class="icon-play"></i> <a href="{% url 'om_charge_search' %}?q=&selected_facets=institution:Consigliere&selected_facets=is_active:sì&order_by=-speeches_minutes">Vai alla classifica completa</a>
             </p>
             <ul class="people-list">
                 {% for politician in most_speeches %}
                     <li>
-                        {% include 'people/politician_list_section.html' with value=politician.n_speeches what="interventi" %}   
-                        {% object_inline_monitoring politician.person %}
+                        {% include 'people/politician_list_section.html' with politician=politician.object value=politician.speeches_minutes what="minuti" %}   
+                        {% object_inline_monitoring politician.object.person %}
                     </li>
                 {% empty %}
                 Nessun consigliere
@@ -93,7 +96,9 @@
         <div class="span6">
             <h2>I consiglieri con più atti ispettivi</h2>
             <p>
-                Sono i Consiglieri che hanno presentato più interrogazioni, interpellanze o accessi agli atti come primo firmatario.
+                Sono i Consiglieri che hanno presentato più <a href="{% url 'om_charge_search' %}?q=&selected_facets=institution:Consigliere&selected_facets=is_active:sì&order_by=-n_interrogations">interrogazioni</a>,
+                <a href="{% url 'om_charge_search' %}?q=&selected_facets=institution:Consigliere&selected_facets=is_active:sì&order_by=-n_interpellations">interpellanze</a> o <a href="{% url 'om_charge_search' %}?q=&selected_facets=institution:Consigliere&selected_facets=is_active:sì&order_by=-n_audits">accessi agli atti</a> come primo firmatario.
+                <i class="icon-play"></i> <a href="{% url 'om_charge_search' %}?q=&selected_facets=institution:Consigliere&selected_facets=is_active:sì&order_by=-n_inspection_acts">Vai alla classifica completa</a>
             </p>
             <ul class="people-list">
                 {% for politician in most_interrogations %}
@@ -115,7 +120,9 @@
         <div class="span6">
             <h2>I consiglieri con più mozioni</h2>
             <p>
-                Sono i Consiglieri che hanno presentato più mozioni o ordini del giorno come primo firmatario.
+                Sono i Consiglieri che hanno presentato più <a href="{% url 'om_charge_search' %}?q=&selected_facets=institution:Consigliere&selected_facets=is_active:sì&order_by=-n_motions">mozioni</a>
+                o <a href="{% url 'om_charge_search' %}?q=&selected_facets=institution:Consigliere&selected_facets=is_active:sì&order_by=-n_agendas">ordini del giorno</a> come primo firmatario.
+                <i class="icon-play"></i> <a href="{% url 'om_charge_search' %}?q=&selected_facets=institution:Consigliere&selected_facets=is_active:sì&order_by=-n_motions_agendas">Vai alla classifica completa</a>
             </p>
             <ul class="people-list">
                 {% for politician in most_motions %}
@@ -132,7 +139,9 @@
         <div class="span6">
             <h2>I consiglieri più ribelli</h2>
             <p>
-                Sono i Consiglieri che votano più spesso diversamente dalla maggioranza del Gruppo di appartenenza.
+                Sono i Consiglieri che votano più spesso diversamente
+                dalla maggioranza del Gruppo di appartenenza.
+                <i class="icon-play"></i> <a href="{% url 'om_institution_council' %}?sort=3&order=desc">Vai alla classifica completa</a>
             </p>
             <ul class="people-list">
                 {% for politician in most_rebellious %}
@@ -148,8 +157,6 @@
                 {% endfor %}
             </ul>
         </div>
-
-
     </div>
 </div>
 

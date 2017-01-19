@@ -1,0 +1,13 @@
+
+{% if order_by|length = 0 %}
+  <th class="sorting{% if f_init %}_{{ f_init }}{% endif %}">
+    <a href="{{ base_url }}&order_by={% if f_init == "asc" %}-{% elif not f_init and f_first == "desc" %}-{% endif %}{{ f_name }}">
+{% elif f %}
+  <th class="sorting_{{ f.sorting }}">
+    <a href="{{ f.base_url }}&order_by={% if f.asc %}-{% endif %}{{ f_name }}">
+{% else %}
+  <th class="sorting">
+    <a href="{{ order_by_default.base_url }}&order_by={% if f_first == "desc" %}-{% endif %}{{ f_name }}">
+{% endif %}
+    {{ f_descr }}</a>
+  </th>

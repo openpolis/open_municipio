@@ -3,6 +3,7 @@ from haystack import indexes
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 from datetime import datetime
+from django.db.models import Q
 
 from open_municipio.people.models import Institution, InstitutionCharge, GroupCharge, Person, SittingItem, InstitutionResponsability
 from open_municipio.acts.models import Speech
@@ -26,7 +27,7 @@ class InstitutionChargeIndex(indexes.SearchIndex, indexes.Indexable):
     is_active = indexes.FacetCharField()
 
     n_presented_acts = indexes.IntegerField(indexed=True, stored=True, model_attr='n_presented_acts')
-    n_received_acts = indexes.IntegerField(indexed=False, stored=True, model_attr='n_received_acts')
+    n_received_acts = indexes.IntegerField(indexed=True, stored=True, model_attr='n_received_acts')
 
     n_rebel_votations = indexes.IntegerField(indexed=False, stored=True, model_attr='n_rebel_votations')
     n_present_votations = indexes.IntegerField(indexed=False, stored=True, model_attr='n_present_votations')
@@ -40,19 +41,23 @@ class InstitutionChargeIndex(indexes.SearchIndex, indexes.Indexable):
     n_cgdeliberations = indexes.IntegerField()
     n_agendas = indexes.IntegerField()
     n_motions = indexes.IntegerField()
+    n_motions_agendas = indexes.IntegerField()
     n_amendments = indexes.IntegerField()
     n_interrogations = indexes.IntegerField()
     n_interpellations = indexes.IntegerField()
     n_audits = indexes.IntegerField()
+    n_inspection_acts = indexes.IntegerField()
 
     n_deliberations_index = indexes.DecimalField()
     n_cgdeliberations_index = indexes.DecimalField()
     n_agendas_index = indexes.DecimalField()
     n_motions_index = indexes.DecimalField()
+    n_motions_agendas_index = indexes.DecimalField()
     n_amendments_index = indexes.DecimalField()
     n_interrogations_index = indexes.DecimalField()
     n_interpellations_index = indexes.DecimalField()
     n_audits_index = indexes.DecimalField()
+    n_inspection_index = indexes.DecimalField()
 
     n_speeches = indexes.IntegerField()
     n_speeches_index = indexes.DecimalField()
@@ -123,6 +128,12 @@ class InstitutionChargeIndex(indexes.SearchIndex, indexes.Indexable):
     def prepare_n_motions_index(self, obj):
         return (float(self.prepare_n_motions(obj)) / obj.duration.days) * 30 if obj.duration.days else None
 
+    def prepare_n_motions_agendas(self, obj):
+        return obj.presented_act_set.filter(Q(motion__isnull=False) | Q(agenda__isnull=False)).count()
+
+    def prepare_n_motions_agendas_index(self, obj):
+        return (float(self.prepare_n_motions_agendas(obj)) / obj.duration.days) * 30 if obj.duration.days else None
+
     def prepare_n_amendments(self, obj):
         return obj.presented_act_set.filter(amendment__isnull=False).count()
 
@@ -146,6 +157,12 @@ class InstitutionChargeIndex(indexes.SearchIndex, indexes.Indexable):
 
     def prepare_n_audits_index(self, obj):
         return (float(self.prepare_n_audits(obj)) / obj.duration.days) * 30 if obj.duration.days else None
+
+    def prepare_n_inspection_acts(self, obj):
+        return obj.presented_act_set.filter(Q(interrogation__isnull=False) | Q(interpellation__isnull=False) | Q(audit__isnull=False)).count()
+
+    def prepare_n_inspection_index(self, obj):
+        return (float(self.prepare_n_inspection_acts(obj)) / obj.duration.days) * 30 if obj.duration.days else None
 
     def prepare_n_speeches(self, obj):
         return obj.n_speeches

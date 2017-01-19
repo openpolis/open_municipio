@@ -486,41 +486,17 @@ class PoliticianListView(TemplateView):
         context['least_absent'] = counselors.rank_least_absent()[0:3]
         context['most_absent'] = counselors.rank_least_absent().order_by('-n_absent_votations')[0:3]
 
-        context['most_speeches'] = InstitutionCharge.objects.none()
-
-        if municipality.council:
-            council_id = getattr(municipality.council.as_institution, "id", None)
-
-            if council_id:
-                context['most_speeches'] = InstitutionCharge.objects.raw("""
-SELECT IC.id, count(SP.id) _n_speeches 
-FROM %(InstitutionCharge)s IC LEFT JOIN 
-    %(Speech)s SP ON IC.person_id = SP.author_id INNER JOIN 
-    %(SittingItem)s SI ON SI.id = SP.sitting_item_id INNER JOIN 
-    %(Sitting)s ST ON ST.id = SI.sitting_id AND 
-        IC.start_date <= ST.date 
-WHERE IC.end_date IS NULL AND IC.institution_id = '%(council_id)s'
-GROUP BY IC.id ORDER BY _n_speeches DESC
-        """ % {
-            "InstitutionCharge": InstitutionCharge._meta.db_table,
-            "Speech": Speech._meta.db_table,
-            "SittingItem": SittingItem._meta.db_table,
-            "Sitting": Sitting._meta.db_table, 
-            "council_id": council_id,
-        })[0:3]
+        context['most_speeches'] = SearchQuerySet()\
+            .filter(django_ct = 'people.institutioncharge')\
+            .filter(institution = _("Counselor"))\
+            .filter(is_active = _("yes"))\
+            .order_by('-speeches_minutes')[0:3]
 
         today = datetime.today()
 
         context['most_acts'] = counselors.rank_most_acts()[0:3]
         context['most_interrogations'] = counselors.rank_most_interrogations()[0:3]
         context['most_motions'] = counselors.rank_most_motions()[0:3]
-
-        # take latest group charge changes
-        """
-        context['last_group_changes'] = [gc.charge for gc in GroupCharge.objects.filter(
-            charge__in= [gc.charge.id for gc in GroupCharge.objects.filter(end_date__isnull=True)]
-        ).filter(end_date__isnull=False).order_by('-end_date')[0:3]]
-        """
 
         # statistics
         from django.utils.datastructures import SortedDict

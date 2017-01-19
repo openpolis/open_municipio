@@ -54,40 +54,22 @@ body #main.two_columns {
     <table class="data dataTable">
       <thead style="font-size: 10px;">
         <tr>
-          {% if order_by|length = 0 %}
-            <th class="sorting_asc"><a href="{{ base_url }}&order_by=-last_name">
-          {% elif order_by.last_name %}{% with order_by.last_name as f %}
-            <th class="sorting_{{ f.sorting }}"><a href="{{ f.base_url }}&order_by={% if f.asc %}-{% endif %}last_name">
-          {% endwith %}{% else %}
-            <th class="sorting"><a href="{{ order_by_default.base_url }}&order_by=last_name">
-          {% endif %}
-            Carica</a></th>
+          {% include 'search/_sortable_header.html' with f=order_by.last_name f_name='last_name' f_descr='Carica' f_init='asc' %}
           <th>Giorni</th>
-
-          {% if order_by.n_presented_acts %}{% with order_by.n_presented_acts as f %}
-            <th class="sorting_{{ f.sorting }}"><a href="{{ f.base_url }}&order_by={% if f.asc %}-{% endif %}n_presented_acts">
-          {% endwith %}{% else %}
-            <th class="sorting"><a href="{{ order_by_default.base_url }}&order_by=-n_presented_acts">
-          {% endif %}          
-            Atti firmati</a></th>
-
-          <th>Atti ricevuti</th>
-          <th>Delib. Giunta</th>
-          <th>Delib. Consiglio</th>
-          <th>Mozioni</th>
-          <th>Ordini del Giorno</th>
-          <th>Emend.</th>
-          <th>Interr.</th>
-          <th>Interp.</th>
-          <th>Accessi</th>
-          <th>Numero interv.</th>
-
-          {% if order_by.speeches_minutes %}{% with order_by.speeches_minutes as f %}
-            <th class="sorting_{{ f.sorting }}"><a href="{{ f.base_url }}&order_by={% if f.asc %}-{% endif %}speeches_minutes">
-          {% endwith %}{% else %}
-            <th class="sorting"><a href="{{ order_by_default.base_url }}&order_by=-speeches_minutes">
-          {% endif %}          
-            Minuti interv.</a></th>
+          {% include 'search/_sortable_header.html' with f=order_by.n_presented_acts f_name='n_presented_acts' f_descr='Atti firmati' f_first='desc' %}
+          {% include 'search/_sortable_header.html' with f=order_by.n_received_acts f_name='n_received_acts' f_descr='Atti ricevuti' f_first='desc' %}
+          {% include 'search/_sortable_header.html' with f=order_by.n_cgdeliberations f_name='n_cgdeliberations' f_descr='Delib. Giunta' f_first='desc' %}
+          {% include 'search/_sortable_header.html' with f=order_by.n_deliberations f_name='n_deliberations' f_descr='Delib. Consiglio' f_first='desc' %}
+          {% include 'search/_sortable_header.html' with f=order_by.n_motions f_name='n_motions' f_descr='Mozioni' f_first='desc' %}
+          {% include 'search/_sortable_header.html' with f=order_by.n_agendas f_name='n_agendas' f_descr='Ordini del Giorno' f_first='desc' %}
+          {% include 'search/_sortable_header.html' with f=order_by.n_motions_agendas f_name='n_motions_agendas' f_descr='Mozioni e OdG' f_first='desc' %}
+          {% include 'search/_sortable_header.html' with f=order_by.n_amendments f_name='n_amendments' f_descr='Emend.' f_first='desc' %}
+          {% include 'search/_sortable_header.html' with f=order_by.n_interrogations f_name='n_interrogations' f_descr='Interr.' f_first='desc' %}
+          {% include 'search/_sortable_header.html' with f=order_by.n_interpellations f_name='n_interpellations' f_descr='Interp.' f_first='desc' %}
+          {% include 'search/_sortable_header.html' with f=order_by.n_audits f_name='n_audits' f_descr='Accessi' f_first='desc' %}
+          {% include 'search/_sortable_header.html' with f=order_by.n_audits f_name='n_audits' f_descr='Accessi' f_first='desc' %}
+          {% include 'search/_sortable_header.html' with f=order_by.n_inspection_acts f_name='n_inspection_acts' f_descr='Atti ispettivi' f_first='desc' %}
+          {% include 'search/_sortable_header.html' with f=order_by.speeches_minutes f_name='speeches_minutes' f_descr='Minuti interv.' f_first='desc' %}
         </tr>
       </thead>
       <tbody>
@@ -157,6 +139,10 @@ body #main.two_columns {
                 	{{ result.n_agendas }}</a><br />({{ result.n_agendas_index|floatformat:2 }})
                 {% endif %}</td>
 
+                <td>{% if result.n_motions_agendas %}
+                	{{ result.n_motions_agendas }}<br />({{ result.n_motions_agendas_index|floatformat:2 }})
+                {% endif %}</td>
+
                 <td>{% if result.n_amendments %}
                 	<a href="{% url 'om_act_search' %}?q=&charge={{ result.object.id }}&selected_facets=act_type:emendamento">
                 	{{ result.n_amendments }}</a><br />({{ result.n_amendments_index|floatformat:2 }})
@@ -175,6 +161,10 @@ body #main.two_columns {
                 <td>{% if result.n_audits %}
                 	<a href="{% url 'om_act_search' %}?q=&charge={{ result.object.id }}&selected_facets=act_type:accesso agli atti">
                 	{{ result.n_audits }}</a><br />({{ result.n_audits_index|floatformat:2 }})
+                {% endif %}</td>
+
+                <td>{% if result.n_inspection_acts %}
+                	{{ result.n_inspection_acts }}<br />({{ result.n_inspection_index|floatformat:2 }})
                 {% endif %}</td>
 
                 <td>{% if result.n_speeches %}

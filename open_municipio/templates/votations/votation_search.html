@@ -48,14 +48,7 @@
     <table id="votations" class="data dataTable">
       <thead style="font-size: 10px;">
         <tr>
-          {% if order_by|length = 0 %}
-            <th class="sorting_desc"><a href="{{ base_url }}&order_by=votation_date">
-          {% elif order_by.votation_date %}{% with order_by.votation_date as f %}
-            <th class="sorting_{{ f.sorting }}"><a href="{{ f.base_url }}&order_by={% if f.asc %}-{% endif %}votation_date">
-          {% endwith %}{% else %}
-            <th class="sorting"><a href="{{ order_by_default.base_url }}&order_by=-votation_date">
-          {% endif %}
-            Data</a></th>
+          {% include 'search/_sortable_header.html' with f=order_by.votation_date f_name='votation_date' f_descr='Data' f_first='desc' f_init='desc' %}
           <th>Seduta</th>
           <th>Votazione</th>
           <th>Argomento</th>
