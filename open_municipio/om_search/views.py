@@ -60,12 +60,15 @@ class ExtendedFacetedSearchView(SearchView):
         selected_facets = self.request.GET.getlist('selected_facets')
 
         extended_selected_facets = []
+
         for f in selected_facets:
-            ## start building unselection url
-            url = "?q=%s" % self.query
-            for cf in selected_facets:
-                if cf != f:
-                    url += "&amp;selected_facets=%s" % cf
+
+            ## unselection url
+            base_dict = self.request.GET.copy()
+            base_dict.pop('selected_facets')
+            base_dict.setlist('selected_facets', [_f for _f in selected_facets if _f != f])
+            url = '?' + base_dict.urlencode()
+
             field, x, label = f.partition(":")
 
             r_label = label
