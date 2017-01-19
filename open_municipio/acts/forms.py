@@ -7,6 +7,8 @@ from open_municipio.acts.models import Act, Transition, ActHasSpeech, \
         Interrogation, Interpellation
 from open_municipio.people.models import Institution, InstitutionCharge
 
+from open_municipio.om_search.forms import RangeFacetedSearchForm
+
 class ActTitleForm(forms.ModelForm):
     class Meta:
         model = Act
@@ -211,3 +213,32 @@ class InterrogationAdminForm(forms.ModelForm):
     class Meta:
         model = Interrogation
 
+
+class ActSearchForm(RangeFacetedSearchForm):
+
+    def __init__(self, *args, **kwargs):
+        super(ActSearchForm, self).__init__(*args, **kwargs)
+
+    def search(self):
+        sqs = super(ActSearchForm, self).search()
+
+        # default sorting
+        if (self.is_valid() and not self.cleaned_data.get('order_by')) or not self.is_valid():
+            sqs = sqs.order_by('-pub_date')
+
+        return sqs
+
+
+class SpeechSearchForm(RangeFacetedSearchForm):
+
+    def __init__(self, *args, **kwargs):
+        super(SpeechSearchForm, self).__init__(*args, **kwargs)
+
+    def search(self):
+        sqs = super(SpeechSearchForm, self).search()
+
+        # default sorting
+        if (self.is_valid() and not self.cleaned_data.get('order_by')) or not self.is_valid():
+            sqs = sqs.order_by('-date')
+
+        return sqs

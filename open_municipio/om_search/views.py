@@ -75,6 +75,55 @@ class ExtendedFacetedSearchView(SearchView):
 
         return extended_selected_facets
 
+    def _get_sorting_fields(self):
+        """
+        Returns the sorting_fields list, in an extended dictionary,
+        in order to make it easy to write field sorting
+        """
+
+        ## original sorting facets list
+        sorting_fields = self.request.GET.getlist('order_by')
+
+        extended_sorting_fields = {}
+
+        for f in sorting_fields:
+
+            base_dict = self.request.GET.copy()
+            base_dict.pop('order_by')
+            base_dict.setlist('order_by', [_f for _f in sorting_fields if _f != f])
+            is_desc = f.startswith('-')
+            field_name = f[1:] if is_desc else f
+            extended_sorting_fields[field_name] = {
+                'base_url': '?' + base_dict.urlencode(),
+                'desc': is_desc,
+                'asc': not is_desc,
+                'sorting': 'desc' if is_desc else 'asc'
+            }
+
+        return extended_sorting_fields
+
+    def _get_sorting_default(self):
+        """
+        Returns the sorting default parameter, in an extended dictionary,
+        in order to make it easy to write default sorting
+        """
+
+        ## original sorting facets list
+        sorting_fields = self.request.GET.getlist('order_by')
+
+        base_dict = self.request.GET.copy()
+
+        try:
+            base_dict.pop('order_by')
+        except KeyError:
+            pass
+
+        extended_sorting_default = {
+            'base_url': '?' + base_dict.urlencode(),
+        }
+
+        return extended_sorting_default
+
 
     def extra_context(self):
         """
@@ -87,6 +136,8 @@ class ExtendedFacetedSearchView(SearchView):
         extra['request'] = self.request
         extra['selected_facets'] = self._get_extended_selected_facets()
         extra['facets'] = self._get_extended_facets_fields()
+        extra['order_by'] = self._get_sorting_fields()
+        extra['order_by_default'] = self._get_sorting_default()
 
         # make get array as mutable QueryDict
         params = self.request.GET.copy()

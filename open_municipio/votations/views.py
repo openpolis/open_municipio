@@ -14,11 +14,8 @@ from open_municipio.votations.models import Votation, ChargeVote
 
 from open_municipio.acts.models import Agenda, Deliberation, Interrogation, Interpellation, Motion, Act
 
-from open_municipio.om_search.forms import RangeFacetedSearchForm
 from open_municipio.om_search.views import ExtendedFacetedSearchView
 from open_municipio.votations.forms import VotationsSearchForm
-
-
 
 class VotationSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
     """
@@ -64,7 +61,6 @@ class VotationSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin
         for (year, range) in self.DATE_INTERVALS_RANGES.items():
             sqs = sqs.query_facet('votation_date', range['qrange'])
 
-        sqs = sqs.order_by('-votation_date').highlight()
         kwargs['searchqueryset'] = sqs
 
         # Needed to switch out the default form class.

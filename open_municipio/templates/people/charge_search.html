@@ -54,9 +54,23 @@ body #main.two_columns {
     <table class="data dataTable">
       <thead style="font-size: 10px;">
         <tr>
-          <th>Carica</th>
+          {% if order_by|length = 0 %}
+            <th class="sorting_asc"><a href="{{ base_url }}&order_by=-last_name">
+          {% elif order_by.last_name %}{% with order_by.last_name as f %}
+            <th class="sorting_{{ f.sorting }}"><a href="{{ f.base_url }}&order_by={% if f.asc %}-{% endif %}last_name">
+          {% endwith %}{% else %}
+            <th class="sorting"><a href="{{ order_by_default.base_url }}&order_by=last_name">
+          {% endif %}
+            Carica</a></th>
           <th>Giorni</th>
-          <th>Atti firmati</th>
+
+          {% if order_by.n_presented_acts %}{% with order_by.n_presented_acts as f %}
+            <th class="sorting_{{ f.sorting }}"><a href="{{ f.base_url }}&order_by={% if f.asc %}-{% endif %}n_presented_acts">
+          {% endwith %}{% else %}
+            <th class="sorting"><a href="{{ order_by_default.base_url }}&order_by=-n_presented_acts">
+          {% endif %}          
+            Atti firmati</a></th>
+
           <th>Atti ricevuti</th>
           <th>Delib. Giunta</th>
           <th>Delib. Consiglio</th>
@@ -67,7 +81,13 @@ body #main.two_columns {
           <th>Interp.</th>
           <th>Accessi</th>
           <th>Numero interv.</th>
-          <th>Minuti interv.</th>
+
+          {% if order_by.speeches_minutes %}{% with order_by.speeches_minutes as f %}
+            <th class="sorting_{{ f.sorting }}"><a href="{{ f.base_url }}&order_by={% if f.asc %}-{% endif %}speeches_minutes">
+          {% endwith %}{% else %}
+            <th class="sorting"><a href="{{ order_by_default.base_url }}&order_by=-speeches_minutes">
+          {% endif %}          
+            Minuti interv.</a></th>
         </tr>
       </thead>
       <tbody>

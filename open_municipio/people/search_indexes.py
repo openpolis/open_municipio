@@ -25,7 +25,7 @@ class InstitutionChargeIndex(indexes.SearchIndex, indexes.Indexable):
 
     is_active = indexes.FacetCharField()
 
-    n_presented_acts = indexes.IntegerField(indexed=False, stored=True, model_attr='n_presented_acts')
+    n_presented_acts = indexes.IntegerField(indexed=True, stored=True, model_attr='n_presented_acts')
     n_received_acts = indexes.IntegerField(indexed=False, stored=True, model_attr='n_received_acts')
 
     n_rebel_votations = indexes.IntegerField(indexed=False, stored=True, model_attr='n_rebel_votations')

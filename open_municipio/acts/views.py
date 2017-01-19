@@ -16,12 +16,12 @@ from haystack.query import SearchQuerySet
 from voting.views import RecordVoteOnItemView
 
 from open_municipio.acts.models import Act, Agenda, CGDeliberation, Deliberation, Interpellation, Interrogation, Motion, Amendment, Transition, Decision, Decree, Audit, Minute
-from open_municipio.acts.forms import ActDescriptionForm, ActTransitionForm, ActFinalTransitionForm, ActTitleForm
+from open_municipio.acts.forms import ActDescriptionForm, ActTransitionForm, \
+    ActFinalTransitionForm, ActTitleForm, ActSearchForm, SpeechSearchForm
 from open_municipio.locations.models import Location
 
 from open_municipio.monitoring.forms import MonitoringForm
 
-from open_municipio.om_search.forms import RangeFacetedSearchForm
 from open_municipio.om_search.mixins import FacetRangeDateIntervalsMixin
 from open_municipio.om_search.views import ExtendedFacetedSearchView
 from open_municipio.people.models import Person, InstitutionCharge, Group
@@ -92,12 +92,11 @@ class ActSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
         for (year, range) in self.DATE_INTERVALS_RANGES.items():
             sqs = sqs.query_facet('pub_date', range['qrange'])
 
-        sqs = sqs.order_by('-pub_date').highlight()
-        kwargs['searchqueryset'] = sqs
+        kwargs['searchqueryset'] = sqs.highlight()
 
         # Needed to switch out the default form class.
         if kwargs.get('form_class') is None:
-            kwargs['form_class'] = RangeFacetedSearchForm
+            kwargs['form_class'] = ActSearchForm
 
         super(ActSearchView, self).__init__(*args, **kwargs)
 
@@ -588,11 +587,11 @@ class SpeechSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
         for (year, range) in self.DATE_INTERVALS_RANGES.items():
             sqs = sqs.query_facet('date', range['qrange'])
 
-        kwargs['searchqueryset'] = sqs.order_by('-date').highlight()
+        kwargs['searchqueryset'] = sqs.highlight()
 
         # Needed to switch out the default form class.
         if kwargs.get('form_class') is None:
-            kwargs['form_class'] = RangeFacetedSearchForm
+            kwargs['form_class'] = SpeechSearchForm
 
         super(SpeechSearchView, self).__init__(*args, **kwargs)
 

@@ -21,9 +21,9 @@ from open_municipio.events.models import Event
 from open_municipio.acts.models import Speech
 from open_municipio.people.models import Sitting, SittingItem
 
-from open_municipio.om_search.forms import RangeFacetedSearchForm
 from open_municipio.om_search.mixins import FacetRangeDateIntervalsMixin
 from open_municipio.om_search.views import ExtendedFacetedSearchView
+from open_municipio.people.forms import ChargeSearchForm
 
 from django.core import serializers
 from haystack.query import SearchQuerySet
@@ -701,12 +701,11 @@ class ChargeSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
         for (year, range) in self.DATE_INTERVALS_RANGES.items():
             sqs = sqs.query_facet('end_date', range['qrange'])
 
-        #kwargs['searchqueryset'] = sqs.order_by('-start_date').highlight()
-        kwargs['searchqueryset'] = sqs.order_by('last_name').highlight()
+        kwargs['searchqueryset'] = sqs
 
         # Needed to switch out the default form class.
         if kwargs.get('form_class') is None:
-            kwargs['form_class'] = RangeFacetedSearchForm
+            kwargs['form_class'] = ChargeSearchForm
 
         super(ChargeSearchView, self).__init__(*args, **kwargs)
 

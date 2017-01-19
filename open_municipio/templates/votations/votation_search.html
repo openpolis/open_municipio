@@ -45,10 +45,17 @@
       <p>per il politico: <a href="{{ person.get_absolute_url }}">{{ person }}</a>  </p>
     {% endif %}
 
-    <table class="data dataTable">
+    <table id="votations" class="data dataTable">
       <thead style="font-size: 10px;">
         <tr>
-          <th>Data</th>
+          {% if order_by|length = 0 %}
+            <th class="sorting_desc"><a href="{{ base_url }}&order_by=votation_date">
+          {% elif order_by.votation_date %}{% with order_by.votation_date as f %}
+            <th class="sorting_{{ f.sorting }}"><a href="{{ f.base_url }}&order_by={% if f.asc %}-{% endif %}votation_date">
+          {% endwith %}{% else %}
+            <th class="sorting"><a href="{{ order_by_default.base_url }}&order_by=-votation_date">
+          {% endif %}
+            Data</a></th>
           <th>Seduta</th>
           <th>Votazione</th>
           <th>Argomento</th>
@@ -110,11 +117,13 @@
 
           <!-- outcome -->
           <td>
+            <a href="{{ result.url }}">
             {% if result.votation_outcome == 1 %}
               {{ '<i class="icon-thumbs-up"></i>'|safe|circled:"voteok" }}
             {% else %}
               {{ '<i class="icon-thumbs-down"></i>'|safe|circled:"voteko" }}
             {% endif %}
+            </a>
           </td>
         </tr>
       {% endfor %}
@@ -125,6 +134,17 @@
         {% digg_paginator %}
 
     {% else %}
+      <section class="search-empty">
+      <p>
+        La ricerca di <strong>{{ form.q.value }}</strong> non è andata a buon fine.<br/>
+        Controlla che tutte le parole siano state digitate correttamente.</br>
+        oppure prova con parole diverse.
+      </p>
+      <p>
+        Grazie,<br/>
+        lo staff di Open Municipio
+      </p>
+    </section>
         {# Show some example queries to run, maybe query syntax, something else? #}
     {% endif %}
 

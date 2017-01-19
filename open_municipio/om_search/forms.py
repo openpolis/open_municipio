@@ -11,6 +11,8 @@ class RangeFacetedSearchForm(SearchForm):
     tag = forms.CharField(required=False)
     location = forms.CharField(required=False)
 
+    order_by = forms.CharField(required=False)
+
     def __init__(self, *args, **kwargs):
         self.selected_facets = kwargs.pop("selected_facets", [])
         self.act_url = kwargs.pop("act_url", [])
@@ -60,5 +62,11 @@ class RangeFacetedSearchForm(SearchForm):
             sqs = sqs.filter_and(tags_with_urls=self.cleaned_data['tag'])
         if self.is_valid() and self.cleaned_data.get('location'):
             sqs = sqs.filter_and(locations_with_urls=self.cleaned_data['location'])
+
+        # custom sorting
+        if self.is_valid():
+            if self.cleaned_data.get('order_by'):
+                order_by = self.cleaned_data['order_by']
+                sqs = sqs.order_by(order_by)
 
         return sqs

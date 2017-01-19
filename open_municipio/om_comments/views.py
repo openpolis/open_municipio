@@ -16,9 +16,9 @@ from haystack.query import SearchQuerySet
 from django.contrib import comments
 from django.contrib.auth.decorators import login_required
 
-from open_municipio.om_search.forms import RangeFacetedSearchForm
 from open_municipio.om_search.mixins import FacetRangeDateIntervalsMixin
 from open_municipio.om_search.views import ExtendedFacetedSearchView
+from open_municipio.om_comments.forms import CommentSearchForm
 
 from voting.views import RecordVoteOnItemView
 
@@ -98,11 +98,11 @@ class CommentSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin)
         for (year, range) in self.DATE_INTERVALS_RANGES.items():
             sqs = sqs.query_facet('date', range['qrange'])
 
-        kwargs['searchqueryset'] = sqs.order_by('-date').highlight()
+        kwargs['searchqueryset'] = sqs.highlight()
 
         # Needed to switch out the default form class.
         if kwargs.get('form_class') is None:
-            kwargs['form_class'] = RangeFacetedSearchForm
+            kwargs['form_class'] = CommentSearchForm
 
         super(CommentSearchView, self).__init__(*args, **kwargs)
 

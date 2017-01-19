@@ -23,4 +23,8 @@ class VotationsSearchForm(RangeFacetedSearchForm):
             if self.cleaned_data.get('charge_rebel'):
                 sqs = sqs.filter_and(charge_rebel=self.cleaned_data['charge_rebel'])
 
+        # default sorting
+        if (self.is_valid() and not self.cleaned_data.get('order_by')) or not self.is_valid():
+            sqs = sqs.order_by('-votation_date')
+
         return sqs
