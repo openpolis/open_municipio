@@ -31,6 +31,7 @@
     {% include 'people/sitting_detail_section.html' with sitting=sitting %}
 
   <section>
+    <h2>Argomenti ({{ sitting_items.count }})</h2>
     <table class="search-results">
       <tbody>
         {% for si in sitting_items %}
@@ -46,6 +47,13 @@
         {% endfor %}
       </tbody>
     </table>
+  </section>
+
+  <hr class="big">
+
+  <section>
+    <h2>Votazioni ({{ votations.count }})</h2>
+    {% include 'people/sitting_votation_list.html' with votations=votations %}
   </section>
 
 {% endblock %}

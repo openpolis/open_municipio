@@ -1,0 +1,70 @@
+{% load om_utils %}
+{% load i18n %}
+{% load url from future %}
+
+<table id="votations" class="data dataTable">
+  <thead style="font-size: 10px;">
+    <tr>
+      <th>Votazione</th>
+      <th>Argomento</th>
+      <th>Presenti</th>
+      <th>Maggioranza</th>
+      <th>Favorevoli</th>
+      <th>Contrari</th>
+      <th>Astenuti</th>
+      <th>Ribelli</th>
+      <th>Esito</th>
+    </tr>
+  </thead>
+  <tbody>
+
+  {% for votation in votations %}
+    <tr>
+      <!-- id -->
+      <td>
+        <a href="{{ votation.get_absolute_url }}">{{ votation.idnum }}</a>
+      </td>
+
+      <!-- argument -->
+      <td>
+        <a href="{{ votation.get_absolute_url }}"><strong>
+          {% if votation.act %}
+            {{ votation.act.adj_title|default:votation.act.title }}
+          {% else %}
+            {{ votation.act_descr }}
+          {% endif %}
+        </strong></a>
+      </td>
+
+      <!-- presents -->
+      <td>{{ votation.n_presents }}</td>
+
+      <!-- majority -->
+      <td>{{ votation.n_maj }}</td>
+
+      <!-- yes -->
+      <td>{{ votation.n_yes }}</td>
+
+      <!-- no -->
+      <td>{{ votation.n_no }}</td>
+
+      <!-- abstentions -->
+      <td>{{ votation.n_abst }}</td>
+
+      <!-- rebels -->
+      <td>{{ votation.n_rebels }}</td>
+
+      <!-- outcome -->
+      <td>
+        <a href="{{ votation.get_absolute_url }}">
+        {% if votation.outcome == 1 %}
+          {{ '<i class="icon-thumbs-up"></i>'|safe|circled:"voteok" }}
+        {% else %}
+          {{ '<i class="icon-thumbs-down"></i>'|safe|circled:"voteko" }}
+        {% endif %}
+        </a>
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>

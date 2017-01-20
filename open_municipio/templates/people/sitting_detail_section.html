@@ -1,5 +1,8 @@
-    <h2>Seduta {% if sitting.number != None %} num. {{ sitting.number }} {% endif %} del 
-        <a href="{{ sitting.get_absolute_url }}">{{ sitting.date }}</a></h2>
+  <h2>
+    Seduta {{ sitting.institution.name_with_preposition }}
+      {% if sitting.number != None %} num. {{ sitting.number }} {% endif %} del 
+      <a href="{{ sitting.get_absolute_url }}"><strong>{{ sitting.date }}</strong></a>
+  </h2>
 
     <div class="sitting-nav">
         {% if sitting.sitting_prev != None %}

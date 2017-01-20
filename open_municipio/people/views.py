@@ -20,6 +20,7 @@ from open_municipio.acts.models import Speech
 from open_municipio.events.models import Event
 from open_municipio.acts.models import Speech
 from open_municipio.people.models import Sitting, SittingItem
+from open_municipio.votations.models import Votation
 
 from open_municipio.om_search.mixins import FacetRangeDateIntervalsMixin
 from open_municipio.om_search.views import ExtendedFacetedSearchView
@@ -625,9 +626,12 @@ class SittingDetailView(DetailView):
 
         sitting_items = curr.sitting_items.order_by("seq_order")
 
+        votations = Votation.objects.filter(sitting=curr)
+
         extra = {
-            "events"    : events,
+            "events" : events,
             "sitting_items" : sitting_items,
+            "votations" : votations,
         }
 
         context.update(extra)
