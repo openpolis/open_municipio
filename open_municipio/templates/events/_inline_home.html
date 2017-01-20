@@ -9,19 +9,15 @@
             </div>
         </td>
         <td>
-            <h3>
-                {% if event.acts.count or event.description %}
-                    <a href="#event_{{ event.id }}_description" class="event_toggle_modal">{{ event.title }}</a>
-                {% else %}
-                    {{ event.title }}
-                {% endif %}
-            </h3>
+          <h3>
+            <a href="{{ event.get_absolute_url }}">{{ event.title }}</a>
+          </h3>
 
-            {{ event.event_time|time:"H:i" }} - {{ event.address }}
-            {%  include 'events/_modal.html' %}
-        </td>
+          {{ event.event_time|time:"H:i" }} - {{ event.address }}
+          {%  include 'events/_modal.html' %}
+      </td>
     </tr>
-    </tbody>
+  </tbody>
 </table>
 {% if event.acts.count %}
     <div class="event-acts">
@@ -37,6 +33,6 @@
         </ul>
     </div>
     <div class="see-all">
-        <a href="#event_{{ event.id }}_description" class="event_toggle_modal">Mostra l'ordine del giorno completo</a>
+        <a href="{{ event.get_absolute_url }}">Mostra l'ordine del giorno completo</a>
     </div>
 {% endif %}

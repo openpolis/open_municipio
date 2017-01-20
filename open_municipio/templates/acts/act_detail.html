@@ -31,8 +31,7 @@
                   {{ act.next_event.date|circled:"full,colored" }}
               </td>
               <td>
-                  <p><a href="#event_{{ act.next_event.id }}_description"
-                        class="event_toggle_modal">Prossima <br>discussione</a></p>
+                  <p><a href="{{ act.next_event.get_absolute_url }}">Prossima <br>discussione</a></p>
               </td>
           </tr>
       </table>

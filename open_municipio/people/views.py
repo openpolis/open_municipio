@@ -95,7 +95,13 @@ class CouncilListView(TemplateView):
         latest_acts = Act.objects.filter(
             emitting_institution__institution_type=Institution.COUNCIL
             ).order_by('-presentation_date')[:3]
-        events = Event.objects.filter(institution__institution_type=Institution.COUNCIL)
+
+        # first day of current month
+        filter_since = datetime.today().replace(day=1)
+
+        events = Event.objects.filter(
+            institution__institution_type=Institution.COUNCIL, date__gte=filter_since)
+
         num_acts = dict()
         act_types = [
             Deliberation, Motion, Interrogation, Interpellation, Agenda, Amendment, Audit
@@ -138,7 +144,12 @@ class CityGovernmentView(TemplateView):
         latest_acts = Act.objects.filter(
             emitting_institution__institution_type=Institution.CITY_GOVERNMENT
             ).order_by('-presentation_date')[:3]
-        events = Event.objects.filter(institution__institution_type=Institution.CITY_GOVERNMENT)
+
+        # first day of current month
+        filter_since = datetime.today().replace(day=1)
+
+        events = Event.objects.filter(
+            institution__institution_type=Institution.CITY_GOVERNMENT, date__gte=filter_since)
 
         num_acts = dict()
         act_types = [
@@ -212,7 +223,12 @@ class CommitteeListView(ListView):
 
 
         extra_context['committees'] = municipality.committees.as_institution()
-        extra_context['events'] = Event.objects.filter(institution__in=municipality.committees.as_institution())
+
+        # first day of current month
+        filter_since = datetime.today().replace(day=1)
+
+        extra_context['events'] = Event.objects.filter(
+            institution__in=municipality.committees.as_institution(), date__gte=filter_since)
 
         return extra_context
 
@@ -257,8 +273,10 @@ class CommitteeDetailView(DetailView):
                 for r in self.object.resources.values('resource_type', 'value', 'description')
         )
 
+        # first day of current month
+        filter_since = datetime.today().replace(day=1)
 
-        events = Event.objects.filter(institution=self.object)
+        events = Event.objects.filter(institution=self.object, date__gte=filter_since)
 
         extra_context = {
             'committees': committee_list,
@@ -572,7 +590,12 @@ class SittingCalendarView(TemplateView):
         context = super(SittingCalendarView, self).get_context_data(**kwargs)
 
         sittings = Sitting.objects.filter(institution__institution_type=Institution.COUNCIL)
-        events = Event.objects.filter(institution__institution_type=Institution.COUNCIL)
+
+        # first day of current month
+        filter_since = datetime.today().replace(day=1)
+
+        events = Event.objects.filter(
+            institution__institution_type=Institution.COUNCIL, date__gte=filter_since)
 
         extra_context = {
             'sittings'  : sittings,
@@ -594,7 +617,11 @@ class SittingDetailView(DetailView):
 
         curr = context['sitting']
 
-        events = Event.objects.filter(institution__institution_type=Institution.COUNCIL)
+        # first day of current month
+        filter_since = datetime.today().replace(day=1)
+
+        events = Event.objects.filter(
+            institution__institution_type=Institution.COUNCIL, date__gte=filter_since)
 
         sitting_items = curr.sitting_items.order_by("seq_order")
 

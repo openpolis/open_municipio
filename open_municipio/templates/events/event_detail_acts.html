@@ -1,0 +1,10 @@
+{% extends "events/event_detail.html"  %}
+
+{% block event_tab_status_class %}{% endblock %}
+{% block event_tab_acts_class %}class="active"{% endblock %}
+
+{% block event_text %}{% endblock %}
+
+{% block event_tab_body %}
+  {% include 'acts/act_table_detail.html' with acts_list=event.acts.all %}
+{% endblock event_tab_body %}

@@ -1,0 +1,74 @@
+{% extends "base_two_columns.html" %}
+
+{% load i18n %}
+{% load voting_tags %}
+{% load popover_info %}
+{% load url from future %}
+{% load om_utils %}
+{% load bookmarking_tags %}
+
+{% comment %}WebServices tags: share{% endcomment %}
+{% load web_services_tags %}
+
+{% block title %}Evento: {{ event.title }}{% endblock title %}
+{% block content_header %}Evento{% endblock %}
+{% block events_class %}class="active"{% endblock %}
+{% block body_class %}acts{% endblock %}
+
+{% block head_css_includes %}
+    {{ block.super }}
+    <link href="{{ STATIC_URL }}css/voting.css" rel="stylesheet">
+{% endblock head_css_includes %}
+
+{% block content %}
+
+  {% block content_title %}
+  <hgroup>
+    <h2 id="event_title">
+      <strong class="input-append">{{ event.title }}</strong>
+    </h2>
+    {% block content_subtitle %}
+    <h4>
+      Evento <strong>{{ event.institution.name_with_preposition }}</strong>
+        del <strong><span class="date">{{ event.date }}</span></strong>
+        {% if event.address|length > 0 %}<br />{{ event.address }}{% endif %}
+    </h4>
+    {% endblock content_subtitle %}
+  </hgroup>
+  {% endblock content_title %}
+
+  <div class="nav-tabs-container">
+    <ul class="nav nav-tabs page-tabs">
+      <li {% block event_tab_status_class %}class="active"{% endblock %}><a href="{{ event.get_absolute_url }}">Stato</a></li>
+      {% if n_acts %}
+        <li {% block event_tab_acts_class %}{% endblock %}><a href="{{ event.get_absolute_url }}acts">{{ n_acts }} Att{{ n_acts|pluralize:"o,i" }}</a></li>
+      {% endif %}
+    </ul>
+  </div>
+
+  {% block event_tab_body %}
+  {% endblock event_tab_body %}
+
+  {% block event_text %}
+    <div>
+      {% if event.description|length > 0 %}
+          <p id="event_text">{{ event.description|safe }}</p>
+      {% endif %}
+    </div>
+  {%  endblock event_text %}
+
+{% endblock content %}
+
+{% block sidebar %}
+
+    <section class="share-tools clearfix">
+        {% load web_services_tags %}
+        {% share event %}
+    </section>
+
+    <section>
+        <h3>Prossimi appuntamenti</h3>
+        {% include 'commons/calendar.html' with events=future_events %}
+    </section>
+
+{% endblock %}

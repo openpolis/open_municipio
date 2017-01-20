@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from django.core.urlresolvers import resolve, reverse
 
 from open_municipio.acts.models import Act
 from open_municipio.events.managers import EventManager
@@ -49,6 +50,9 @@ class Event(models.Model):
     def __unicode__(self):
         uc = u'%s %s - %s' % (self.date, self.event_time, self.title)
         return uc
+
+    def get_absolute_url(self):
+        return reverse('om_event_detail', kwargs={'pk': self.pk})
 
     @property
     def is_past_due(self):

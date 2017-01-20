@@ -1,0 +1,149 @@
+{% extends 'base_two_columns.html' %}
+{% load highlight %}
+{% load om_utils %}
+{% load i18n %}
+{% load digg_paginator %}
+{% load url from future %}
+
+
+{% block title %}Elenco eventi {% endblock title %}
+{% block content_header %}Eventi{% endblock %}
+{% block events_class %}class="active"{% endblock %}
+{% block body_class %}acts{% endblock %}
+
+{% block content_header_city_logo %}
+    <img src="{{ STATIC_URL }}img/{{ main_city|lower }}-logo/votation.png" alt="Comune di {{ main_city }}">
+{% endblock %}
+
+{% block extra_style %}
+  em {
+    background-color: yellow;
+  }
+{% endblock %}
+
+{% block content %}
+
+{% if UI_SITTINGS_CALENDAR %}
+ {% include 'people/_sitting_calendar_top.html' %}
+{% endif %}
+
+{% if n_results %}
+
+  <section>
+
+    <h2>{% if not query %}Trovati {% endif %} {{ n_results }} eventi</h2>
+
+    <table id="events" class="search-results">
+      <thead style="font-size: 12px;">
+        <tr>
+          {% include 'search/_sortable_header.html' with f=order_by.date f_name='date' f_descr='Data' f_first='desc' f_init='desc' %}
+          <th>Istituzione</th>
+          <th>Descrizione</th>
+        </tr>
+      </thead>
+      <tbody>
+
+      {% for result in page.object_list %}
+        <tr>
+
+          <!-- date -->
+          <td><a href="{{ result.url }}">{{ result.date|circled:"full" }}</a></td>
+
+          <!-- institution -->
+          <td>
+            {{ result.institution }}
+          </td>
+
+          <!-- description -->
+          <td>
+            <a href="{{ result.url }}">{{ result.title }}</a>
+            <br />{{ result.address }}
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </section>
+
+        {% digg_paginator %}
+
+    {% else %}
+      <section class="search-empty">
+      <p>
+        La ricerca di <strong>{{ form.q.value }}</strong> non è andata a buon fine.<br/>
+        Controlla che tutte le parole siano state digitate correttamente.</br>
+        oppure prova con parole diverse.
+      </p>
+      <p>
+        Grazie,<br/>
+        lo staff di Open Municipio
+      </p>
+    </section>
+        {# Show some example queries to run, maybe query syntax, something else? #}
+    {% endif %}
+
+{% endblock %}
+
+{% block sidebar %}
+
+  <h4>Cerca negli eventi</h4>
+  <form method="get" action="{% url 'om_event_search' %}" id="search-form"  class="form-search">
+    <input type="text" class="input-medium search-query" name="{{ form.q.html_name }}" value="{% if form.q.value %}{{ form.q.value }}{% endif %}" placeholder="Testo della ricerca" />
+    <button type="submit" class="btn">Cerca</button>
+  </form>
+
+    {% if n_results %}
+
+        {% if selected_facets %}
+            <h2>Modifica i filtri</h2>
+            {% for facet in selected_facets  %}
+                <dt>{{ facets_labels|key:facet.field|safe }}</dt>
+                <dd>
+                    <a href="{{ facet.url }}"><i class="icon-remove"></i></a>
+                    {{ facet.r_label }}
+                </dd>
+            {% endfor %}
+        {% else %}
+            <h2>Filtra</h2>
+            <p>Puoi trovare la votazione che ti interessa scorrendo la lista delle ultime pubblicate, qui a fianco.
+                Puoi perfezionare la ricerca usando i filtri nella colonna qui sotto, oppure puoi usare il form di
+                ricerca con una parola che pensi sia contenuta nella votazione o nell'atto che la riguarda,
+                in cima alla colonna qui a destra</p>
+        {% endif %}
+
+
+        <!-- Begin faceting. -->
+        <div>
+            <dl>
+                {% if facets.fields.institution and not facets.fields.institution.is_field_selected %}
+                    <dt>{{ facets_labels.institution }}</dt>
+                    {# Provide both cases (true, false) #}
+                    {% for t in facets.fields.institution.counts %}
+                        {% if t.1 %}
+                            <dd>
+                                {% if not t.2 %}
+                                    <a href="{{ base_url }}&selected_facets=institution:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
+                                {% endif %}
+                            </dd>
+                        {%  endif %}
+                    {% endfor %}
+                {% endif %}
+            </dl>
+            <dl>
+                {% if not facet_queries_date.is_selected %}
+                    <dt>{{ facets_labels.date }}</dt>
+                    {% for range in facet_queries_date.ranges|dictsortreversed:"key"  %}
+                        <dd>
+                            <a href="{{ base_url }}&selected_facets={{ range.key }}">
+                                {{ range.label|safe }}
+                            </a> ({{ range.count }})
+                        </dd>
+                    {% endfor %}
+                {% endif %}
+            </dl>
+        </div>
+        <!-- End faceting -->
+
+    {% endif %}
+
+{% endblock %}
