@@ -194,7 +194,10 @@
           </li>
           <li>
             <p class="text-center">
-              <b>{% trans act.get_status_display %} </b>
+              <b>{% trans act.get_status_display %}</b>
+              {% if act.iter_duration %}
+                  <br/>(in {{ act.iter_duration.days }} giorni)
+              {% endif %}
               {% if transition.votation %}
                   <br/>
                   <a href="{{ transition.votation.get_absolute_url }}">{% trans "votation" %}</a>
