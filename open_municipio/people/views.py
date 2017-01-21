@@ -404,8 +404,13 @@ class PoliticianDetailView(DetailView):
         # last 10 are passed to template
 #        charge = context['current_counselor_charge']
         if charge and charge.is_counselor:
+
             context['current_charge_votes'] = charge.chargevote_set \
                 .filter(votation__is_key=True) \
+                .order_by('-votation__sitting__date')[0:10]
+
+            context['current_charge_rebel_votes'] = charge.chargevote_set \
+                .filter(is_rebel=True) \
                 .order_by('-votation__sitting__date')[0:10]
 
         # last 10 presented acts

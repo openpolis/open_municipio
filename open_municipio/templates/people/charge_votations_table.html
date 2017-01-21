@@ -1,0 +1,41 @@
+
+<table class="data">
+  <thead>
+    <tr>
+      <th>Data seduta</th>
+      <th>Num votazione</th>
+      <th>Atto</th>
+      <th class="text-center">Voto</th>
+      <th class="text-center">Esito</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for charge_vote in charge_vote_list %}
+    <tr>
+      <td class="text-center">{{ charge_vote.votation.sitting.date|date:"d/m/Y" }}</td>
+      <td class="text-center">
+        <a href="{{ charge_vote.votation.get_absolute_url }}">
+          {{ charge_vote.votation.idnum }}
+        </a>
+      </td>
+        {% with curr_act=charge_vote.votation.ref_act %}
+      <td {% if not curr_act %}class="text-center"{% endif %}>
+        {% if curr_act %}
+          <a href="{{ curr_act.downcast.get_absolute_url }}"><strong>{{ curr_act.adj_title|default:curr_act.title }}</strong></a>
+        {% else %}
+          -
+        {% endif %}
+      </td>
+      {% endwith %}
+      <td class="text-center"><span class="label
+        {% if charge_vote.get_vote_display == "Sì" %}label-success
+        {% elif charge_vote.get_vote_display == "No" %}label-important
+        {% endif %}">{{ charge_vote.get_vote_display }}</span></td>
+      <td class="text-center"><span class="label
+        {% if charge_vote.votation.get_outcome_display == "Accettato" %}label-success
+        {% elif charge_vote.votation.get_outcome_display == "Respinto" %}label-important
+        {% endif %}">{{ charge_vote.votation.get_outcome_display }}</span></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
