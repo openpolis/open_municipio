@@ -103,9 +103,10 @@ class Person(models.Model, MonitorizedItem):
 
 
     def get_past_institution_charges(self, moment=None):
-        return self.institutioncharge_set.select_related().past(moment=moment).exclude(
-            institution__institution_type__in=(Institution.COMMITTEE, Institution.JOINT_COMMITTEE)
-    )
+        return self.institutioncharge_set.select_related().past(moment=moment)\
+            .exclude(institution__institution_type__in=(Institution.COMMITTEE, Institution.JOINT_COMMITTEE))\
+            .order_by('-start_date')
+
     past_institution_charges = property(get_past_institution_charges)
 
     def get_current_institution_charges(self, moment=None):

@@ -45,7 +45,7 @@
           <h2>Voti ribelli (<a href="{% url 'om_votation_search' %}?q=&charge_rebel={{ charge.id }}">{{ percentage_rebel_votations }}%</a>) {% popover_info 'voti-ribelli' %}</h2>
           <p>
               Ha votato <a href="{% url 'om_votation_search' %}?q=&charge_rebel={{ charge.id }}">
-              {{ charge.n_rebel_votations }} volte</a> ({{ percentage_rebel_votations }}% sul totale dei voti cui era presente) <strong>diversamente dal proprio gruppo</strong> di appartenenza.
+              {{ charge.n_rebel_votations }} volt{{ charge.n_rebel_votations|pluralize:"a,e" }}</a> ({{ percentage_rebel_votations }}% sul totale dei voti cui era presente) <strong>diversamente dal proprio gruppo</strong> di appartenenza.
           </p>
 
       {% if charge.n_rebel_votations > 0 %}
