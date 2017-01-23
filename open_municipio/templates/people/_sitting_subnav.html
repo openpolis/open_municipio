@@ -1,0 +1,22 @@
+{% load url from future %}
+
+<nav class="navbar" id="sub-nav">
+    <div class="navbar-inner">
+        <div class="container-fluid">
+            <ul class="nav">
+                <li {% ifequal active 'Calendario' %}class="unpipe"{% endifequal %}>
+                    <a href="{% url 'om_sitting_calendar' %}"
+                       {% ifequal active 'Calendario' %} class="active"{% endifequal %}>Calendario</a>
+                </li>
+                <li {% ifequal active 'Interventi' %}class="unpipe"{% endifequal %}>
+                    <a href="{% url 'om_speech_search' %}" {% ifequal active 'Interventi' %}
+                       class="active"{% endifequal %}>Interventi</a>
+                </li>
+                <li {% ifequal active 'Votazioni' %}class="unpipe"{% endifequal %}>
+                    <a href="{% url 'om_votation_search' %}" {% ifequal active 'Votazioni' %}
+                       class="active"{% endifequal %}>Votazioni</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

@@ -158,8 +158,7 @@
                     <ul class="nav">
                         <li {% block people_class %}{% endblock %}><a href="{% url "om_politician_list" %}">Politici</a></li>
                         <li class="{% block acts_class %}{% endblock %}"><a href="{% url "om_act_search" %}">Atti</a></li>
-                        <li class="{% block speech_class %}{% endblock %}"><a href="{% url "om_speech_search" %}">Dibattiti</a></li>
-                        <li class="{% block votations_class %}{% endblock %}"><a href="{% url "om_votation_search" %}">Votazioni</a></li>
+                        <li {% block sitting_class %}{% endblock %}"><a href="{% url "om_sitting_calendar" %}">Sedute</a></li>
                         <li {% block tags_class %}{% endblock %}><a href="{% url "om_topic_list" %}">Argomenti</a></li>
                         <li {% block users_class %}{% endblock %}><a href="/users/">Cittadini</a></li>
                         <li {% block events_class %}{% endblock %}><a href="{% url "om_event_search" %}">Eventi</a></li>

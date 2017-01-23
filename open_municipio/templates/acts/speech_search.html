@@ -6,8 +6,12 @@
 
 {% block title %}Elenco interventi {% endblock title %}
 {% block content_header %}Interventi{% endblock %}
-{% block speech_class %}active{% endblock %}
-{% block body_class %}acts{% endblock %}
+{% block sitting_class %}class="active"{% endblock %}
+{% block body_class %}votations{% endblock %}
+
+{% block sub_nav %}
+    {% include 'people/_sitting_subnav.html' with active='Interventi' %}
+{% endblock %}
 
 {% block extra_style %}
 em {
