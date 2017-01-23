@@ -18,9 +18,9 @@ em {
 
 {% block content %}
 
-    {% if n_results %}
-
       <section>
+
+          {% include 'search/_related_search.html' %}
 
           {% if charge %}
             {% include 'people/charge_widget.html' with charge=charge %}
@@ -53,34 +53,18 @@ em {
           {% endif %}
 
           <table class="search-results">
+          <thead style="font-size: 12px;">
+            <tr>
+              {% include 'search/_sortable_header.html' with f=order_by.pub_date f_name='pub_date' f_descr='Data' f_first='desc' f_init='desc' %}
+              <th>Descrizione</th>
+              <th>Stato</th>
+            </tr>
+          </thead>
           <tbody>
           {% for result in page.object_list %}
           <tr>
             <td>{{ result.pub_date|circled:"full" }}</td>
             <td>
-              {% if not result.object.is_final_status %}
-              <span class="pull-right text-right search_act_status">
-              <span class="label label-warning">In esame</span>
-              </span>
-              {% else %}
-              {% if result.object.get_last_transition.votation %}
-              <a href="{{ result.object.get_last_transition.votation.get_absolute_url }}">
-              {% elif result.object.get_last_transition.attendance %}
-              <a href="{{ result.object.get_last_transition.attendance.get_absolute_url }}">
-               
-              {% endif %}
-              <span class="pull-right text-right search_act_status">
-              <span class="label
-                {% if result.object.status == "APPROVED" or result.object.status == "ANSWERED" %}label-success
-                {% else %}{% if result.object.status == 'REJECTED' or result.object.status == "NOTANSWERED" %}label-important
-                {% endif %}{% endif %} ">{{ result.object.downcast.get_status_display|title }}
-              </span>{% if not result.pub_date == result.final_date %}<br /><small>in {{ result.pub_date|timesince:result.final_date }}</small>{% endif %}
-              </span>
-              {% if result.object.get_last_transition.votation or result.object.get_last_transition.attendance %}
-              </a>
-              {% endif %}
-              {% endif %}
-
               <h4><a href="{{ result.url }}">{{ result.adj_title|default:result.title }}</a></h4>
               <p><strong>{{ result.act_type }}</strong>
               {% if result.act_type == 'delibera' %}
@@ -96,6 +80,31 @@ em {
                   {% for tag in result.object.tags %}<a class="badge" href="{{ tag.get_absolute_url }}">{{ tag }}</a>{% if not forloop.last %}&nbsp;{% endif %}{% endfor %}
                 {% endif %}
               </p>{% endif %}
+            </td>
+            <td>
+              {% if not result.object.is_final_status %}
+                <span class="pull-right text-right search_act_status">
+                  <span class="label label-warning">In esame</span>
+                </span>
+              {% else %}
+                {% if result.object.get_last_transition.votation %}
+                  <a href="{{ result.object.get_last_transition.votation.get_absolute_url }}">
+                {% elif result.object.get_last_transition.attendance %}
+                  <a href="{{ result.object.get_last_transition.attendance.get_absolute_url }}">
+                {% endif %}
+                <span class="pull-right text-right search_act_status">
+                <span class="label
+                  {% if result.object.status == "APPROVED" or result.object.status == "ANSWERED" %}label-success
+                  {% elif result.object.status == 'REJECTED' or result.object.status == "NOTANSWERED" %}label-important
+                  {% endif %} ">{{ result.object.downcast.get_status_display|title }}
+                </span>
+                {% if not result.pub_date == result.final_date %}<br /><small>in {{ result.pub_date|timesince:result.final_date }}</small>{% endif %}
+                </span>
+                {% if result.object.get_last_transition.votation or result.object.get_last_transition.attendance %}
+                  </a>
+                {% endif %}
+              {% endif %}
+
               <!-- <strong>Score:</strong> {{ result.score }} -->
             </td>
           </tr>
@@ -108,7 +117,7 @@ em {
 
       {% digg_paginator %}
 
-    {% else %}
+    {% if not n_results %}
         <section class="search-empty">
             <p>
                 La ricerca di <strong>{{ form.q.value }}</strong> non è andata a buon fine.<br/>

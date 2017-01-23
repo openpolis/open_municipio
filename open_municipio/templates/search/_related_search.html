@@ -1,0 +1,7 @@
+{% if related_search %}
+  <span class="related-search pull-right"> Cerca in:
+  {% for r_search in related_search %}
+    <a href="{{ r_search.url }}" class="btn">{{ r_search.label }}</a>
+  {% endfor %}
+  </span>
+{% endif %}

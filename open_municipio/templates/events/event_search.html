@@ -23,9 +23,9 @@
 
 {% block content %}
 
-{% if n_results %}
-
   <section>
+
+    {% include 'search/_related_search.html' %}
 
     <h2>{% if not query %}Trovati {% endif %} {{ n_results }} eventi</h2>
 
@@ -63,7 +63,7 @@
 
         {% digg_paginator %}
 
-    {% else %}
+    {% if not n_results %}
       <section class="search-empty">
       <p>
         La ricerca di <strong>{{ form.q.value }}</strong> non è andata a buon fine.<br/>

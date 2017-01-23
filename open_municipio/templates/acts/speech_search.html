@@ -20,8 +20,10 @@ em {
 {% endblock %}
 
 {% block content %}
-    {% if n_results %}
+
       <section>
+
+        {% include 'search/_related_search.html' %}
 
         {% if charge %}
           {% include 'people/charge_widget.html' with charge=charge %}
@@ -42,6 +44,12 @@ em {
         {% endif %}
     
         <table class="search-results">
+          <thead style="font-size: 12px;">
+            <tr>
+              {% include 'search/_sortable_header.html' with f=order_by.date f_name='date' f_descr='Data' f_first='desc' f_init='desc' %}
+              <th></th>
+            </tr>
+          </thead>
         <tbody>
         {% for result in page.object_list %}
             <tr>
@@ -65,7 +73,8 @@ em {
         </table>
         </section>
         {% digg_paginator %}
-    {% else %}
+
+      {% if not n_results %}
         <section class="search-empty">
             <p>
                 La ricerca di <strong>{{ form.q.value }}</strong> non è andata a buon fine.<br/>

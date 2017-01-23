@@ -27,9 +27,9 @@
 
 {% block content %}
 
-{% if n_results %}
-
   <section>
+
+    {% include 'search/_related_search.html' %}
 
     {% if charge %}
       {% include 'people/charge_widget.html' with charge=charge %}
@@ -126,7 +126,7 @@
 
         {% digg_paginator %}
 
-    {% else %}
+    {% if not n_results %}
       <section class="search-empty">
       <p>
         La ricerca di <strong>{{ form.q.value }}</strong> non è andata a buon fine.<br/>
