@@ -77,10 +77,9 @@
     <div class="row-fluid">
 
         <div class="span6">
-            <h2>I consiglieri con più interventi in aula</h2>
+            <h2>Chi interviene in aula per più tempo</h2>
             <p>
-                Sono i Consiglieri che presentano più spesso interventi in aula.
-                La durata viene stimata sulla base dei resoconti stenografici {% popover_info 'durata-interventi' %}
+                La durata degli interventi viene stimata sulla base dei resoconti stenografici {% popover_info 'durata-interventi' %}
                 <i class="icon-play"></i> <a href="{% url 'om_charge_search' %}?q=&selected_facets=institution:Consigliere&selected_facets=is_active:sì&order_by=-speeches_minutes">Vai alla classifica completa</a>
             </p>
             <ul class="people-list">

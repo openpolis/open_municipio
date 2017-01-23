@@ -3,6 +3,7 @@
 {% load om_utils %}
 {% load i18n %}
 {% load digg_paginator %}
+{% load popover_info %}
 
 {% block title %}Elenco interventi {% endblock title %}
 {% block content_header %}Interventi{% endblock %}
@@ -29,8 +30,8 @@ em {
           {% include 'people/charge_widget.html' with charge=charge %}
         {% endif %}
 
-        <h2>{% if not query %}Trovati {% endif %} {{ n_results }} interventi in aula</h2>
-    
+        <h2>{% if not query %}Trovati {% endif %} {{ n_results }} interventi in aula {% popover_info 'interventi-politico' %}</h2>
+
         {% if person %}
             <p>per: <a href="{{ person.get_absolute_url }}">{{ person }}</a> </p>
         {% endif %}
