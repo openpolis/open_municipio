@@ -24,37 +24,31 @@
 {% endblock %}
 
 {% block content %}
-    {% if UI_SITTINGS_CALENDAR %}
-       {% include 'people/_sitting_calendar_top.html' %}
-    {% endif %}
 
-    {% include 'people/sitting_detail_section.html' with sitting=sitting %}
+  {% include 'people/sitting_detail_section.html' with sitting=sitting %}
 
+  {% if sitting_items.count > 0 %}
   <section>
     <h2>Argomenti ({{ sitting_items.count }})</h2>
-    <table class="search-results">
-      <tbody>
-        {% for si in sitting_items %}
-          <tr>
-            <td>{{ forloop.counter|circled:"full" }}</td>
-            <td>
-              <h4><a href="{% url 'om_sittingitem_detail' pk=si.pk %}">{{ si.title }}</a></h4>
-              {% if si.num_speeches > 0 %}
-              {{ si.num_speeches }} intervent{{ si.num_speeches|pluralize:"o,i" }}
-              {% endif %}
-            </td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+    {% include 'people/sittingitem_list.html' with sitting_items=sitting_items %}
   </section>
 
   <hr class="big">
+  {% endif %}
 
+  {% if votations.count > 0 %}
   <section>
     <h2>Votazioni ({{ votations.count }})</h2>
     {% include 'people/sitting_votation_list.html' with votations=votations %}
   </section>
+  {% endif %}
+
+  {% if attendances.count > 0 %}
+  <section>
+    <h2>Argomenti ({{ attendances.count }})</h2>
+    {% include 'people/sitting_attendance_list.html' with attendances=attendances %}
+  </section>
+  {% endif %}
 
 {% endblock %}
 

@@ -21,6 +21,7 @@ from open_municipio.events.models import Event
 from open_municipio.acts.models import Speech
 from open_municipio.people.models import Sitting, SittingItem
 from open_municipio.votations.models import Votation
+from open_municipio.attendances.models import Attendance
 
 from open_municipio.om_search.mixins import FacetRangeDateIntervalsMixin
 from open_municipio.om_search.views import ExtendedFacetedSearchView
@@ -595,18 +596,28 @@ class SittingCalendarView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(SittingCalendarView, self).get_context_data(**kwargs)
 
-        sittings = Sitting.objects.filter(institution__institution_type=Institution.COUNCIL)
+        curr_year = datetime.today().year
+        year = kwargs.get("year", str(curr_year))
+
+        # list of years
+        from_year = max(settings.OM_START_YEAR, curr_year - 11)
+        sitting_years = map(lambda v: str(v), list(reversed(range(from_year, curr_year + 1))))
 
         # first day of current month
         filter_since = datetime.today().replace(day=1)
 
-        events = Event.objects.filter(
-            institution__institution_type=Institution.COUNCIL, date__gte=filter_since)
+        events = Event.objects.filter(date__gte=filter_since)
+
+        sittings = {}
+
+        for i in range(12):
+            sittings[i] = Sitting.objects.filter(date__year=year, date__month=i).order_by("date")
 
         extra_context = {
-            'sittings'  : sittings,
-            'events'    : events,
-            'year'      : kwargs.get("year", datetime.today().year)
+            'sittings' : sittings,
+            'sitting_years' : sitting_years,
+            'events' : events,
+            'year' : year
         }
 
         context.update(extra_context)
@@ -626,17 +637,19 @@ class SittingDetailView(DetailView):
         # first day of current month
         filter_since = datetime.today().replace(day=1)
 
-        events = Event.objects.filter(
-            institution__institution_type=Institution.COUNCIL, date__gte=filter_since)
+        events = Event.objects.filter(date__gte=filter_since)
 
         sitting_items = curr.sitting_items.order_by("seq_order")
 
         votations = Votation.objects.filter(sitting=curr)
 
+        attendances = Attendance.objects.filter(sitting=curr)
+
         extra = {
             "events" : events,
             "sitting_items" : sitting_items,
             "votations" : votations,
+            "attendances" : attendances,
         }
 
         context.update(extra)

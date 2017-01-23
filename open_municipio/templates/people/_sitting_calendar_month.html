@@ -1,0 +1,17 @@
+{% load url from future %}
+
+<div class="sittings-year-month">{{ month }}</div>
+  <div class='sitting-dates'>
+  {% for s in sittings %}
+    <a href='{{ s.get_absolute_url }}'>
+      <div class='sitting-date 
+      {% ifequal s.institution.name "Giunta Comunale" %}
+        sitting-future
+      {%  else  %}
+        sitting-past
+      {% endifequal %}  
+      '>{{ s.date.day }}
+      </div>
+    </a>
+  {% endfor %}
+</div>

@@ -24,10 +24,6 @@
 
 {% block content %}
 
-    {% if UI_SITTINGS_CALENDAR %}
-      {% include 'people/_sitting_calendar_top.html' %}
-    {% endif %}
-
     {% include 'people/sitting_detail_section.html' with sitting=speech.sitting_item.sitting %}
     <h2>{{ speech.sitting_item }}</h2>
     <div class="sittingitem-speeches-list">

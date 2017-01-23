@@ -1,0 +1,46 @@
+{% load om_utils %}
+{% load i18n %}
+{% load url from future %}
+
+<table id="attendances" class="data dataTable">
+  <thead style="font-size: 10px;">
+    <tr>
+      <th></th>
+      <th>Argomento</th>
+      <th>Numero legale</th>
+      <th>Presenti</th>
+      <th>Assenti</th>
+    </tr>
+  </thead>
+  <tbody>
+
+  {% for attendance in attendances %}
+    <tr>
+      <!-- id -->
+      <td>
+        <a href="{{ attendance.get_absolute_url }}">{{ attendance.idnum }}</a>
+      </td>
+
+      <!-- argument -->
+      <td>
+        <a href="{{ attendance.get_absolute_url }}"><strong>
+          {% if attendance.act %}
+            {{ attendance.act.adj_title|default:attendance.act.title }}
+          {% else %}
+            {{ attendance.act_descr }}
+          {% endif %}
+        </strong></a>
+      </td>
+
+      <!-- legal number -->
+      <td>{{ attendance.n_legal }}</td>
+
+      <!-- presents -->
+      <td><span class="label label-success">{{ attendance.n_presents }}</span></td>
+
+      <!-- absents -->
+      <td><span class="label label-important">{{ attendance.n_absents }}</span></td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>

@@ -1,11 +1,11 @@
-{% load sittings_council_by_year %}
 {% load url from future %}
 
-{% get_sittings_years 10 as years %}
-<div class="sitting-archive">Archivio sedute di Consiglio:
-{% for y in years %}
+<div class="sitting-archive">Anno:
+{% for y in sitting_years %}
     {% if y = curr_year %}
+      <span style="background:#72C056; padding: 10px; margin-top: 10px; margin-bottom: 10px; text-align:center; width: 60px; font-weight: bolder; color: white" >
         {{ y }}
+      </span>
     {% else %}
         <a href="{% url 'om_sitting_calendar' year=y %}">{{ y }}</a>
     {% endif %} |
