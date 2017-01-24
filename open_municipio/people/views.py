@@ -223,8 +223,12 @@ class CommitteeListView(ListView):
         # Call the base implementation first to get a context
         extra_context = super(CommitteeListView, self).get_context_data(**kwargs)
 
+        committees = municipality.committees.as_institution()
 
-        extra_context['committees'] = municipality.committees.as_institution()
+        for c in committees:
+            c.short_name = c.name.split(' ', 1)[0]
+
+        extra_context['committees'] = committees
 
         # first day of current month
         filter_since = datetime.today().replace(day=1)

@@ -1,6 +1,8 @@
 {% extends 'base_two_columns.html' %}
 
 {% load popover_info %}
+{% load url from future %}
+{% load om_utils %}
 
 {% block title %}Organi politici | Commissioni{% endblock title %}
 {% block content_header %}Organi politici{% endblock %}
@@ -19,19 +21,28 @@
 
 {% block content %}
     <h2>Commissioni {% popover_info 'commissioni-del-consiglio' %}</h2>
-    <div class="party-people">
-        <div class="row-fluid">
-            <div class="span12">
-                <ul class="unstyled">
-                    {% for committee in committees %}
-                        <li><a href="{{ committee.get_absolute_url }}">{{ committee.name }}:</a>
-                            <a href="{{ committee.get_absolute_url }}"><strong>{{ committee.description }}</strong></a>
-                        </li>
-                    {% endfor %}
-                </ul>
-            </div>
-        </div>
-    </div>
+
+    <table id="commissioni" class="data dataTable">
+      <thead>
+      <tr>
+          <th class="span1">Commissione</th>
+          <th>Descrizione</th>
+      </tr>
+      </thead>
+      <tbody>
+        {% for committee in committees %}
+
+        <tr>
+          <!-- number -->
+          <td><a href="{{ committee.get_absolute_url }}">{{ committee.short_name|circled:"full" }}</a></td>
+
+          <!-- description -->
+          <td><a href="{{ committee.get_absolute_url }}"><strong>{{ committee.description }}</strong></a></td>
+        </tr>
+
+        {% endfor %}
+      </tbody>
+    </table>
 {% endblock %}
 
 {% block sidebar %}
