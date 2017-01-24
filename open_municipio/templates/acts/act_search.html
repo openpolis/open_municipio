@@ -93,11 +93,11 @@ em {
                   <a href="{{ result.object.get_last_transition.attendance.get_absolute_url }}">
                 {% endif %}
                 <span class="pull-right text-right search_act_status">
-                <span class="label
+                  <span class="label
                   {% if result.object.status == "APPROVED" or result.object.status == "ANSWERED" %}label-success
                   {% elif result.object.status == 'REJECTED' or result.object.status == "NOTANSWERED" %}label-important
                   {% endif %} ">{{ result.object.downcast.get_status_display|title }}
-                </span>
+                  </span>
                 {% if not result.pub_date == result.final_date %}<br /><small>in {{ result.pub_date|timesince:result.final_date }}</small>{% endif %}
                 </span>
                 {% if result.object.get_last_transition.votation or result.object.get_last_transition.attendance %}
@@ -120,7 +120,7 @@ em {
     {% if not n_results %}
         <section class="search-empty">
             <p>
-                La ricerca di <strong>{{ form.q.value }}</strong> non è andata a buon fine.<br/>
+                La ricerca{% if form.q.value %} di <strong>{{ form.q.value }}</strong>{% endif %} non è andata a buon fine.<br/>
                 Controlla che tutte le parole siano state digitate correttamente.<br/>
                 oppure prova con parole diverse.
             </p>

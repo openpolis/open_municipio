@@ -141,10 +141,13 @@ class ActSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
             except ObjectDoesNotExist:
                 pass
 
-        charge_id = self.request.GET.get('charge', None)
-        if charge_id:
+        charge_keys = ['charge', 'charge_supporting', 'charge_not_supporting']
+        charge_values = [self.request.GET.get(k, None) for k in charge_keys]
+        charge_values = [v for v in charge_values if v is not None]
+
+        if len(charge_values) > 0:
             try:
-                extra['charge'] = InstitutionCharge.objects.get(pk=charge_id)
+                extra['charge'] = InstitutionCharge.objects.get(pk=charge_values[0])
             except ObjectDoesNotExist:
                 pass
 

@@ -648,9 +648,8 @@ class InstitutionCharge(Charge):
         self.n_present_votations = self.chargevote_set.exclude(vote=absent).count()
         self.n_absent_votations = self.chargevote_set.filter(vote=absent).count()
 
-        attendance_absent = ChargeAttendance.VALUES.absent
-        self.n_present_attendances = self.chargeattendance_set.exclude(value=attendance_absent).count()
-        self.n_absent_attendances = self.chargeattendance_set.filter(value=attendance_absent).count()
+        self.n_present_attendances = self.chargeattendance_set.filter(value=ChargeAttendance.VALUES.pres).count()
+        self.n_absent_attendances = self.chargeattendance_set.exclude(value=ChargeAttendance.VALUES.pres).count()
         self.save()
 
     @property

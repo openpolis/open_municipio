@@ -215,12 +215,21 @@ class InterrogationAdminForm(forms.ModelForm):
 
 
 class ActSearchForm(RangeFacetedSearchForm):
+    charge_supporting = forms.IntegerField(required=False)
+    charge_not_supporting = forms.IntegerField(required=False)
 
     def __init__(self, *args, **kwargs):
         super(ActSearchForm, self).__init__(*args, **kwargs)
 
     def search(self):
         sqs = super(ActSearchForm, self).search()
+
+        # add filters for charges
+        if self.is_valid():
+            if self.cleaned_data.get('charge_supporting'):
+                sqs = sqs.filter_and(charge_supporting=self.cleaned_data['charge_supporting'])
+            if self.cleaned_data.get('charge_not_supporting'):
+                sqs = sqs.filter_and(charge_not_supporting=self.cleaned_data['charge_not_supporting'])
 
         # default sorting
         if (self.is_valid() and not self.cleaned_data.get('order_by')) or not self.is_valid():

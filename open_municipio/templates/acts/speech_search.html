@@ -78,7 +78,7 @@ em {
       {% if not n_results %}
         <section class="search-empty">
             <p>
-                La ricerca di <strong>{{ form.q.value }}</strong> non è andata a buon fine.<br/>
+                La ricerca{% if form.q.value %} di <strong>{{ form.q.value }}</strong>{% endif %} non è andata a buon fine.<br/>
                 Controlla che tutte le parole siano state digitate correttamente.</br>
                 oppure prova con parole diverse.
             </p>

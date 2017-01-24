@@ -4,6 +4,8 @@ from HTMLParser import HTMLParser
 from haystack import indexes
 from open_municipio.acts.models import Act, Speech, ActSupport, Amendment
 from open_municipio.people.models import Institution
+from open_municipio.votations.models import Votation, ChargeVote
+from open_municipio.attendances.models import Attendance, ChargeAttendance
 from django.utils.translation import activate
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
@@ -40,6 +42,9 @@ class ActIndex(indexes.SearchIndex, indexes.Indexable):
     url = indexes.CharField(indexed=False, stored=True)
     title = indexes.CharField(indexed=True, stored=True)
     adj_title = indexes.CharField(indexed=True, stored=True)
+
+    charge_supporting = indexes.MultiValueField(indexed=True, stored=False)
+    charge_not_supporting = indexes.MultiValueField(indexed=True, stored=False)
 
     logger = logging.getLogger('import')
 
@@ -172,6 +177,65 @@ class ActIndex(indexes.SearchIndex, indexes.Indexable):
     def prepare_multiple_supporters(self, obj):
         return _("yes") if obj.presenter_set.count() > 1 else _("no")
 
+    def prepare_charge_supporting(self, obj):
+        s = set()
+
+        last_transition = obj.downcast().get_last_final_transitions()
+
+        #if not last_transition:
+        #    self.logger.warning("no last transition for '%s'" % obj.title)
+
+        if last_transition:
+
+            #if not last_transition.votation and not last_transition.attendance:
+            #    self.logger.warning("no votation nor attendance for %s %s '%s'" % (obj.emitting_institution, obj.presentation_date, obj.title))
+
+            # find by votation
+            try:
+                for cv in last_transition.votation.chargevote_set.filter(
+                    vote=ChargeVote.VOTES.yes):
+                    s.add(cv.charge.id)
+                    if cv.charge.original_charge: s.add(cv.charge.original_charge.id)
+            except Exception, e:
+                pass
+
+            # find by attendance
+            try:
+                for ca in last_transition.attendance.chargeattendance_set.filter(
+                    value=ChargeAttendance.VALUES.pres):
+                    s.add(ca.charge.id)
+                    if ca.charge.original_charge: s.add(ca.charge.original_charge.id)
+            except Exception, e:
+                pass
+
+        return s
+
+    def prepare_charge_not_supporting(self, obj):
+        s = set()
+
+        last_transition = obj.downcast().get_last_final_transitions()
+        if last_transition:
+
+            # find by votation
+            try:
+                for cv in last_transition.votation.chargevote_set.exclude(
+                    vote=ChargeVote.VOTES.yes):
+                    s.add(cv.charge.id)
+                    if cv.charge.original_charge: s.add(cv.charge.original_charge.id)
+            except Exception, e:
+                pass
+
+            # find by attendance
+            try:
+                for ca in last_transition.attendance.chargeattendance_set.exclude(
+                    value=ChargeAttendance.VALUES.pres):
+                    s.add(ca.charge.id)
+                    if ca.charge.original_charge: s.add(ca.charge.original_charge.id)
+            except Exception, e:
+                pass
+
+        return s
+
 
 class SpeechIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)   
@@ -233,6 +297,5 @@ class SpeechIndex(indexes.SearchIndex, indexes.Indexable):
         res = [act.get_absolute_url() for act in obj.ref_acts]
 
         return res
-
 
 locale.setlocale(locale.LC_ALL, '')
