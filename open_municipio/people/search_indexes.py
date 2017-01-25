@@ -5,7 +5,7 @@ from django.utils.translation import ugettext_lazy as _
 from datetime import datetime
 from django.db.models import Q
 
-from open_municipio.people.models import Institution, InstitutionCharge, GroupCharge, Person, SittingItem, InstitutionResponsability
+from open_municipio.people.models import Institution, InstitutionCharge, Group, GroupCharge, Person, SittingItem, InstitutionResponsability
 from open_municipio.acts.models import Speech
 
 class InstitutionChargeIndex(indexes.SearchIndex, indexes.Indexable):
@@ -194,3 +194,30 @@ class InstitutionChargeIndex(indexes.SearchIndex, indexes.Indexable):
 
     def prepare_speeches_minutes_index(self, obj):
         return (float(self.prepare_speeches_minutes(obj)) / obj.duration.days) * 30 if obj.duration.days else None
+
+
+class GroupIndex(indexes.SearchIndex, indexes.Indexable):
+
+    text = indexes.CharField(document=True, use_template=True)
+
+    name = indexes.CharField(indexed=True, model_attr='name')
+    acronym = indexes.CharField(indexed=True, model_attr='acronym')
+
+    url = indexes.CharField(indexed=False, stored=True)
+
+    is_active = indexes.FacetCharField()
+
+    n_members = indexes.IntegerField()
+
+    def get_model(self):
+        return Group
+
+    def prepare_url(self, obj):
+        return obj.get_absolute_url()
+
+    def prepare_is_active(self, obj):
+
+        return _("yes") if obj.is_current else _("no")
+
+    def prepare_n_members(self, obj):
+        return obj.current_size

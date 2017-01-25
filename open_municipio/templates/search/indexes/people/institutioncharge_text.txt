@@ -1,2 +1,6 @@
-{{ object.text }}
+{{ object.description }}
 {{ object.start_date }}
+{% if object.person %}
+    {{ object.person.first_name }}
+    {{ object.person.last_name }}
+{% endif %}

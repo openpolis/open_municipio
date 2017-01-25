@@ -18,6 +18,20 @@ class ChargeSearchForm(RangeFacetedSearchForm):
 
         return sqs
 
+class GroupSearchForm(RangeFacetedSearchForm):
+
+    def __init__(self, *args, **kwargs):
+        super(GroupSearchForm, self).__init__(*args, **kwargs)
+
+    def search(self):
+        sqs = super(GroupSearchForm, self).search()
+
+        # default sorting
+        if (self.is_valid() and not self.cleaned_data.get('order_by')) or not self.is_valid():
+            sqs = sqs.order_by('acronym')
+
+        return sqs
+
 class SittingItemFormSet(forms.ModelForm):
     class Meta:
         widgets = {

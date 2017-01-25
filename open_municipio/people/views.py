@@ -25,7 +25,7 @@ from open_municipio.attendances.models import Attendance
 
 from open_municipio.om_search.mixins import FacetRangeDateIntervalsMixin
 from open_municipio.om_search.views import ExtendedFacetedSearchView
-from open_municipio.people.forms import ChargeSearchForm
+from .forms import ChargeSearchForm, GroupSearchForm
 
 from django.core import serializers
 from haystack.query import SearchQuerySet
@@ -808,6 +808,93 @@ class ChargeSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
         # get data about custom date range facets
         extra['facet_queries_start_date'] = self._get_custom_facet_queries_date('start_date')
         extra['facet_queries_end_date'] = self._get_custom_facet_queries_date('end_date')
+
+        extra['facets_sorted'] = self.FACETS_SORTED
+        extra['facets_labels'] = self.FACETS_LABELS
+
+        paginator = Paginator(self.results, self.results_per_page)
+        page = self.request.GET.get('page', 1)
+        try:
+            page_obj = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            page_obj = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            page_obj = paginator.page(paginator.num_pages)
+
+        extra['paginator'] = paginator
+        extra['page_obj'] = page_obj
+
+        return extra
+
+
+class GroupSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
+    """
+
+    This view allows faceted search and navigation of the comments.
+
+    It extends an extended version of the basic FacetedSearchView,
+    and can be customized
+
+    """
+    __name__ = 'GroupSearchView'
+
+    FACETS_SORTED = [ 'is_active', ]
+
+    FACETS_LABELS = {
+        'is_active': _('Active'),
+    }
+
+    DATE_INTERVALS_RANGES = { }
+
+    def __init__(self, *args, **kwargs):
+
+        sqs = SearchQuerySet().filter(django_ct='people.group')\
+            .facet('is_active')
+
+        kwargs['searchqueryset'] = sqs
+
+        # Needed to switch out the default form class.
+        if kwargs.get('form_class') is None:
+            kwargs['form_class'] = GroupSearchForm
+
+        super(GroupSearchView, self).__init__(*args, **kwargs)
+
+    def build_page(self):
+        self.results_per_page = int(self.request.GET.get('results_per_page', settings.HAYSTACK_SEARCH_RESULTS_PER_PAGE))
+        return super(GroupSearchView, self).build_page()
+
+    def build_form(self, form_kwargs=None):
+        if form_kwargs is None:
+            form_kwargs = {}
+
+        # This way the form can always receive a list containing zero or more
+        # facet expressions:
+        #form_kwargs['act_url'] = self.request.GET.get("act_url")
+
+        return super(GroupSearchView, self).build_form(form_kwargs)
+
+    def extra_context(self):
+        """
+        Add extra content here, when needed
+        """
+        extra = super(GroupSearchView, self).extra_context()
+        extra['base_url'] = reverse('om_group_search') + '?' + extra['params'].urlencode()
+
+        person_slug = self.request.GET.get('person', None)
+        if person_slug:
+            try:
+                extra['person'] = Person.objects.get(slug=person_slug)
+            except ObjectDoesNotExist:
+                pass
+
+        charge_slug = self.request.GET.get('charge', None)
+        if charge_slug:
+            try:
+                extra['charge'] = InstitutionCharge.objects.get(slug=charge_slug)
+            except ObjectDoesNotExist:
+                pass
 
         extra['facets_sorted'] = self.FACETS_SORTED
         extra['facets_labels'] = self.FACETS_LABELS

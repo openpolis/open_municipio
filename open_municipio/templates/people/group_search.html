@@ -1,0 +1,147 @@
+{% extends 'base_two_columns.html' %}
+{% load highlight %}
+{% load om_utils %}
+{% load i18n %}
+{% load digg_paginator %}
+{% load url from future %}
+{% load thumbnail %}
+
+{% block title %}Politici | Gruppi{% endblock title %}
+{% block content_header %}Gruppi{% endblock %}
+{% block people_class %}class="active"{% endblock %}
+{% block body_class %}politician{% endblock %}
+{% block content_width %}span10{% endblock %}
+{% block sidebar_width %}span2{% endblock %}
+
+{% block extra_style %}
+{{ block.super }}
+body #main.two_columns {
+    background-image: -webkit-gradient(linear,left top,right top,color-stop(0, transparent),color-stop(83%, transparent),color-stop(83%, #f6f4f2),color-stop(100%, #f6f4f2));
+    background-image: -webkit-linear-gradient(left,transparent,transparent 83%,#f6f4f2 83%,#f6f4f2 100%);
+    background-image: -moz-linear-gradient(left, transparent, transparent 83%, #f6f4f2 83%, #f6f4f2 100% );
+    background-image: -ms-linear-gradient(left,transparent, transparent 83%, #f6f4f2 83%, #f6f4f2 100%);
+    background-image: -o-linear-gradient( left, transparent, transparent 83%, #f6f4f2 83%, #f6f4f2 100% );
+}
+
+.dataTable td, .dataTable th {
+	padding-left: 2px;
+	padding-right: 2px;
+}
+{% endblock %}
+
+{% block sub_nav %}
+    {%  include 'people/_subnav.html' with active='Gruppi' %}
+{% endblock %}
+
+{% block content %}
+
+<section>
+
+  {% if charge %}
+    {% include 'people/charge_widget.html' with charge=charge %}
+  {% endif %}
+
+  <h2>{% if not query %}Trovati {% endif %} {{ n_results }} gruppi</h2>
+
+    {% if person %}
+      <p>per: <a href="{{ person.get_absolute_url }}">{{ person }}</a></p>
+    {% endif %}
+
+    <table class="data dataTable">
+      <thead style="font-size: 10px;">
+        <tr>
+          <th class="span1"></th>
+          {% include 'search/_sortable_header.html' with f=order_by.acronym f_name='acronym' f_descr='Acronimo' f_init='asc' f_first='asc' %}
+          {% include 'search/_sortable_header.html' with f=order_by.name f_name='name' f_descr='Nome' %}
+          {% include 'search/_sortable_header.html' with f=order_by.n_members f_name='n_members' f_descr='Membri attuali' f_first='desc' %}
+          <th>Attivo</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tbody>
+        {% for result in page.object_list %}
+          <tr>
+            <!-- thumbnail -->
+            <td>
+              {% thumbnail result.object.img "50x50" crop="center" as im %}
+              <a href="{{ result.url }}">
+                <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+              </a>
+              {% endthumbnail %}
+            </td>
+
+            <!-- acronym -->
+            <td><a href="{{ result.url }}">{{ result.acronym }}</a></td>
+
+            <!-- name -->
+            <td><a href="{{ result.url }}"><strong>{{ result.name }}</strong></a></td>
+
+            <!-- current size -->
+            <td><a href="{{ result.url }}">{{ result.n_members }}</a></td>
+
+            <!-- is_active -->
+            <td><a href="{{ result.url }}">{{ result.is_active }}</a></td>
+          </tr>
+        {% empty %}
+            <p>Nessun gruppo trovato.</p>
+        {% endfor %}
+        </tbody>
+      </table>
+    </section>
+
+        {% digg_paginator %}
+
+    {% if not n_results %}
+        <section class="search-empty">
+            <p>
+                La ricerca{% if form.q.value %} di <strong>{{ form.q.value }}</strong>{% endif %} non è andata a buon fine.<br/>
+                Controlla che tutte le parole siano state digitate correttamente.</br>
+                oppure prova con parole diverse.
+            </p>
+            <p>
+                Grazie,<br/>
+                lo staff di Open Municipio
+            </p>
+        </section>
+    {% endif %} 
+
+{% endblock %}
+
+{% block sidebar %}
+ 
+    {% if n_results %}
+        {% if selected_facets %}
+            <h2>Modifica i filtri</h2>
+            {% for facet in selected_facets %}
+                <dt>{{ facets_labels|key:facet.field|safe }}</dt>
+                <dd>
+                    <a href="{{ facet.url }}"><i class="icon-remove"></i></a>
+                    {{ facet.r_label }}
+                </dd>
+            {% endfor %}
+    
+        {% else %}
+            <h2>Filtra</h2>
+            <p>Puoi trovare la carica che ti interessa scorrendo la lista qui a fianco.<br />
+            Puoi perfezionare la ricerca usando i filtri nella colonna qui sotto</p>
+        {% endif %}
+    
+        <!-- Begin faceting. -->
+        <div>
+            <dl>
+                {% if facets.fields.is_active and not facets.fields.is_active.is_field_selected  %}
+                    <dt>{{ facets_labels.is_active }}</dt>
+                    {% for t in facets.fields.is_active.counts %}
+                        <dd>
+                            {% if not t.2 %}
+                                <a href="{{ base_url }}&selected_facets=is_active:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
+                            {% endif %}
+                        </dd>
+                    {% endfor %}
+                {% endif %}
+            </dl>
+        </div>
+    
+        <!-- End faceting -->
+    {% endif %}
+{% endblock %}
