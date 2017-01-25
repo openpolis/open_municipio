@@ -61,13 +61,17 @@
       <section>
           <h2>Atti su cui lavora (<a href="{% url 'om_act_search' %}?q=&charge={{ charge.id }}">{{ n_presented_acts }}</a>) {% popover_info 'atti-su-cui-lavora' %}</h2>
             {% include 'acts/act_table_detail.html' with acts_list=presented_acts %}
-          <p><i class="icon-play"></i> <a href="{% url 'om_act_search' %}?q=&charge={{ charge.id }}">Vedi tutti gli atti su cui lavora</a></p>
-
       </section>
 
       <hr class="big">
+
+      <section>
+        {% include 'people/_politician_acts_table.html' with act_types=act_types %}
+
+        <p><i class="icon-play"></i> <a href="{% url 'om_act_search' %}?q=&charge={{ charge.id }}">Vedi tutti gli atti su cui lavora</a></p>
+      </section>
   {% endif %}
-  
+
   {% if n_speeches %}
       <section>
           <h2>Interventi in Consiglio Comunale {% popover_info 'interventi-politico' %}</h2>

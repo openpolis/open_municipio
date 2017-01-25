@@ -1,0 +1,32 @@
+{% load url from future %}
+
+<table class="data">
+  <thead>
+    <tr>
+      <th class="text-left">Atti</th>
+      <th><span class="label label-info">Conclusi</span></th></th>
+      <th><span class="label label-warning">In esame</span></th>
+    </tr>
+  </thead>
+  <tbody class="text-center">
+    {% for act_type in act_types %}{% if act_type.total %}
+    <tr>
+      <td class="text-left">{{ act_type.verbose_name }}</td>
+      <td>
+        {% if act_type.total %}
+          <a href="{% url 'om_act_search' %}?q=&charge={{ charge.id }}&selected_facets=act_type:{{ act_type.verbose_name }}">
+            {{ act_type.total }}
+          </a>
+        {% endif %}
+      </td>
+      <td>
+        {% if act_type.non_final %}
+          <a href="{% url 'om_act_search' %}?q=&charge={{ charge.id }}&selected_facets=act_type:{{ act_type.verbose_name }}&selected_facets=is_proposal:sì">
+            {{ act_type.non_final }}
+          </a>
+        {% endif %}
+      </td>
+    </tr>
+    {% endif %}{% endfor %}
+  </tbody>
+</table>

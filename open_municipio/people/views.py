@@ -429,6 +429,21 @@ class PoliticianDetailView(DetailView):
         context['n_presented_acts'] = presented_acts.count()
         context['presented_acts'] = presented_acts[0:10]
 
+        act_types = [Deliberation, CGDeliberation, Motion, Agenda, \
+            Interrogation, Interpellation, Audit, Amendment]
+
+        context['act_types'] = []
+
+        for act_type in act_types:
+            context['act_types'].append({
+                'name' : act_type.__name__.lower(),
+                'verbose_name' : act_type._meta.verbose_name,
+                'total' : act_type.objects.filter(actsupport__charge=charge).count(),
+                'non_final' : act_type.objects.filter(actsupport__charge=charge)\
+                                  .filter(~ Q(status__in=(s[0] for s in act_type.FINAL_STATUSES)))\
+                                  .count(),
+            })
+
         # last 5 speeches
         speeches = Speech.objects\
             .filter(author=person)
