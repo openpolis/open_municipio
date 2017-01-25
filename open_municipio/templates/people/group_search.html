@@ -55,6 +55,17 @@ body #main.two_columns {
           {% include 'search/_sortable_header.html' with f=order_by.name f_name='name' f_descr='Nome' %}
           {% include 'search/_sortable_header.html' with f=order_by.n_members f_name='n_members' f_descr='Membri attuali' f_first='desc' %}
           <th>Attivo</th>
+          {% include 'search/_sortable_header.html' with f=order_by.aggregate_charge_duration_days f_name='aggregate_charge_duration_days' f_descr='Durata' f_first='desc' %}
+          {% include 'search/_sortable_header.html' with f=order_by.n_presented_acts f_name='n_presented_acts' f_descr='Atti firmati' f_first='desc' %}
+        </tr>
+        <tr>
+          <th class="span1"></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          {% include 'search/_sortable_header.html' with f=order_by.n_presented_acts_index f_name='n_presented_acts_index' f_descr='(/mese)' f_first='desc' %}
         </tr>
       </thead>
       <tbody>
@@ -80,7 +91,18 @@ body #main.two_columns {
             <td><a href="{{ result.url }}">{{ result.n_members }}</a></td>
 
             <!-- is_active -->
-            <td><a href="{{ result.url }}">{{ result.is_active }}</a></td>
+            <td>{{ result.is_active }}</td>
+
+            <!-- days -->
+            <td>{{ result.aggregate_charge_duration_days }}</td>
+
+            <!-- acts -->
+            <td>
+              {{ result.n_presented_acts }}
+              {% if result.n_presented_acts %}
+                <br />({{ result.n_presented_acts_index|floatformat:2 }})
+              {% endif %}
+              </td>
           </tr>
         {% empty %}
             <p>Nessun gruppo trovato.</p>

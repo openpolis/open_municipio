@@ -72,6 +72,25 @@ body #main.two_columns {
           {% include 'search/_sortable_header.html' with f=order_by.n_speeches f_name='n_speeches' f_descr='Numero interv.' f_first='desc' %}
           {% include 'search/_sortable_header.html' with f=order_by.speeches_minutes f_name='speeches_minutes' f_descr='Minuti interv.' f_first='desc' %}
         </tr>
+        <tr>
+          <th></th>
+          <th></th>
+          <th></th>
+          {% include 'search/_sortable_header.html' with f=order_by.n_presented_acts_index f_name='n_presented_acts_index' f_descr='(/mese)' f_first='desc' %}
+          {% include 'search/_sortable_header.html' with f=order_by.n_received_acts_index f_name='n_received_acts_index' f_descr='(/mese)' f_first='desc' %}
+          {% include 'search/_sortable_header.html' with f=order_by.n_cgdeliberations_index f_name='n_cgdeliberations_index' f_descr='(/mese)' f_first='desc' %}
+          {% include 'search/_sortable_header.html' with f=order_by.n_deliberations_index f_name='n_deliberations_index' f_descr='(/mese)' f_first='desc' %}
+          {% include 'search/_sortable_header.html' with f=order_by.n_motions_index f_name='n_motions_index' f_descr='(/mese)' f_first='desc' %}
+          {% include 'search/_sortable_header.html' with f=order_by.n_agendas_index f_name='n_agendas_index' f_descr='(/mese)' f_first='desc' %}
+          {% include 'search/_sortable_header.html' with f=order_by.n_motions_agendas_index f_name='n_motions_agendas_index' f_descr='(/mese)' f_first='desc' %}
+          {% include 'search/_sortable_header.html' with f=order_by.n_amendments_index f_name='n_amendments_index' f_descr='(/mese)' f_first='desc' %}
+          {% include 'search/_sortable_header.html' with f=order_by.n_interrogations_index f_name='n_interrogations_index' f_descr='(/mese)' f_first='desc' %}
+          {% include 'search/_sortable_header.html' with f=order_by.n_interpellations_index f_name='n_interpellations_index' f_descr='(/mese)' f_first='desc' %}
+          {% include 'search/_sortable_header.html' with f=order_by.n_audits_index f_name='n_audits_index' f_descr='(/mese)' f_first='desc' %}
+          {% include 'search/_sortable_header.html' with f=order_by.n_inspection_acts_index f_name='n_inspection_acts_index' f_descr='(/mese)' f_first='desc' %}
+          {% include 'search/_sortable_header.html' with f=order_by.n_speeches_index f_name='n_speeches_index' f_descr='(/mese)' f_first='desc' %}
+          {% include 'search/_sortable_header.html' with f=order_by.speeches_minutes_index f_name='speeches_minutes_index' f_descr='(/mese)' f_first='desc' %}
+        </tr>
       </thead>
       <tbody>
         <tbody>
@@ -116,12 +135,12 @@ body #main.two_columns {
 
                 <td>{% if result.n_presented_acts %}
                 	<a href="{% url 'om_act_search' %}?q=&charge={{ result.object.id }}">
-                	{{ result.n_presented_acts }}</a>
+                	{{ result.n_presented_acts }}</a><br />({{ result.n_presented_acts_index|floatformat:2 }})
                 {% endif %}</td>
 
                 <td>{% if result.n_received_acts %}
                 	<a href="{% url 'om_act_search' %}?q=&recipient={{ result.object.person.slug }}">
-                    {{ result.n_received_acts }}</a>
+                    {{ result.n_received_acts }}</a><br />({{ result.n_received_acts_index|floatformat:2 }})
                 {% endif %}</td>
 
                 <td>{% if result.n_cgdeliberations %}

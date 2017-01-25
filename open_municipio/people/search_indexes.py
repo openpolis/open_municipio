@@ -4,6 +4,7 @@ from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 from datetime import datetime
 from django.db.models import Q
+import logging
 
 from open_municipio.people.models import Institution, InstitutionCharge, Group, GroupCharge, Person, SittingItem, InstitutionResponsability
 from open_municipio.acts.models import Speech
@@ -29,6 +30,9 @@ class InstitutionChargeIndex(indexes.SearchIndex, indexes.Indexable):
     n_presented_acts = indexes.IntegerField(indexed=True, stored=True, model_attr='n_presented_acts')
     n_received_acts = indexes.IntegerField(indexed=True, stored=True, model_attr='n_received_acts')
 
+    n_presented_acts_index = indexes.FloatField()
+    n_received_acts_index = indexes.FloatField()
+
     n_rebel_votations = indexes.IntegerField(indexed=False, stored=True, model_attr='n_rebel_votations')
     n_present_votations = indexes.IntegerField(indexed=False, stored=True, model_attr='n_present_votations')
     n_absent_votations = indexes.IntegerField(indexed=False, stored=True, model_attr='n_absent_votations')
@@ -36,8 +40,8 @@ class InstitutionChargeIndex(indexes.SearchIndex, indexes.Indexable):
     n_absent_attendances = indexes.IntegerField(indexed=False, stored=True, model_attr='n_absent_attendances')
     n_presents = indexes.IntegerField()
 
-    n_present_votations_percent = indexes.DecimalField()
-    n_present_attendances_percent = indexes.DecimalField()
+    n_present_votations_percent = indexes.FloatField()
+    n_present_attendances_percent = indexes.FloatField()
     n_presents_percent = indexes.FloatField()
 
     n_deliberations = indexes.IntegerField()
@@ -51,21 +55,23 @@ class InstitutionChargeIndex(indexes.SearchIndex, indexes.Indexable):
     n_audits = indexes.IntegerField()
     n_inspection_acts = indexes.IntegerField()
 
-    n_deliberations_index = indexes.DecimalField()
-    n_cgdeliberations_index = indexes.DecimalField()
-    n_agendas_index = indexes.DecimalField()
-    n_motions_index = indexes.DecimalField()
-    n_motions_agendas_index = indexes.DecimalField()
-    n_amendments_index = indexes.DecimalField()
-    n_interrogations_index = indexes.DecimalField()
-    n_interpellations_index = indexes.DecimalField()
-    n_audits_index = indexes.DecimalField()
-    n_inspection_index = indexes.DecimalField()
+    n_deliberations_index = indexes.FloatField()
+    n_cgdeliberations_index = indexes.FloatField()
+    n_agendas_index = indexes.FloatField()
+    n_motions_index = indexes.FloatField()
+    n_motions_agendas_index = indexes.FloatField()
+    n_amendments_index = indexes.FloatField()
+    n_interrogations_index = indexes.FloatField()
+    n_interpellations_index = indexes.FloatField()
+    n_audits_index = indexes.FloatField()
+    n_inspection_index = indexes.FloatField()
 
     n_speeches = indexes.IntegerField()
-    n_speeches_index = indexes.DecimalField()
+    n_speeches_index = indexes.FloatField()
     speeches_minutes = indexes.IntegerField()
-    speeches_minutes_index = indexes.DecimalField()
+    speeches_minutes_index = indexes.FloatField()
+
+    logger = logging.getLogger('import')
 
     def get_model(self):
         return InstitutionCharge
@@ -102,6 +108,12 @@ class InstitutionChargeIndex(indexes.SearchIndex, indexes.Indexable):
     def prepare_is_active(self, obj):
 
         return _("no") if obj.end_date else _("yes")
+
+    def prepare_n_presented_acts_index(self, obj):
+        return (float(obj.n_presented_acts) / obj.duration.days) * 30 if obj.duration.days else None
+
+    def prepare_n_received_acts_index(self, obj):
+        return (float(obj.n_received_acts) / obj.duration.days) * 30 if obj.duration.days else None
 
     def prepare_n_presents(self, obj):
         return (obj.n_present_attendances \
@@ -208,6 +220,10 @@ class GroupIndex(indexes.SearchIndex, indexes.Indexable):
     is_active = indexes.FacetCharField()
 
     n_members = indexes.IntegerField()
+    aggregate_charge_duration_days = indexes.IntegerField()
+
+    n_presented_acts = indexes.IntegerField()
+    n_presented_acts_index = indexes.FloatField()
 
     def get_model(self):
         return Group
@@ -221,3 +237,35 @@ class GroupIndex(indexes.SearchIndex, indexes.Indexable):
 
     def prepare_n_members(self, obj):
         return obj.current_size
+
+    def prepare_aggregate_charge_duration_days(self, obj):
+        days = 0
+        now = datetime.now().date()
+
+        for gc in obj.groupcharge_set.all():
+            start_date = gc.start_date
+            end_date = gc.end_date if gc.end_date else now
+
+            if not start_date or start_date > end_date:
+                self.logger.warning("invalid start date")
+                continue
+
+            days += (end_date - start_date).days
+
+        return days
+
+    def prepare_n_presented_acts(self, obj):
+        counter = 0
+        now = datetime.now().date()
+
+        for gc in obj.groupcharge_set.all():
+            start_date = gc.start_date
+            end_date = gc.end_date if gc.end_date else now
+            counter += gc.charge.presented_act_set.filter(
+                presentation_date__gte=start_date, presentation_date__lte=end_date).count()
+
+        return counter
+
+    def prepare_n_presented_acts_index(self, obj):
+        days = self.prepare_aggregate_charge_duration_days(obj)
+        return (float(self.prepare_n_presented_acts(obj)) / days) * 30 if days else None
