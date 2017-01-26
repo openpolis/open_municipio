@@ -159,8 +159,10 @@ class VotationSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin
         extra['related_search'] = [
             { 'label' : _('acts'), 'url' : reverse('om_act_search') + '?q=' + self.query },
             { 'label' : _('speeches'), 'url' : reverse('om_speech_search') + '?q=' + self.query },
+            { 'label' : _('votations'), 'url' : reverse('om_votation_search') + '?q=' + self.query, 'active': True },
             { 'label' : _('events'), 'url' : reverse('om_event_search') + '?q=' + self.query },
         ]
+
 
         return extra
 
