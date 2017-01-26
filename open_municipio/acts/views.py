@@ -215,6 +215,7 @@ class ActSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
         extra['page_obj'] = page_obj
 
         extra['related_search'] = [
+            { 'label' : _('acts'), 'url' : reverse('om_act_search') + '?q=' + self.query, 'active': true },
             { 'label' : _('speeches'), 'url' : reverse('om_speech_search') + '?q=' + self.query },
             { 'label' : _('votations'), 'url' : reverse('om_votation_search') + '?q=' + self.query },
             { 'label' : _('events'), 'url' : reverse('om_event_search') + '?q=' + self.query },
@@ -659,10 +660,12 @@ class SpeechSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
         extra['page_obj'] = page_obj
     
         extra['related_search'] = [
-            { 'label' : _('acts'), 'url' : reverse('om_act_search') + '?q=' + self.query },
+            { 'label' : _('acts'), 'url' : reverse('om_act_search') + '?q=' + self.query, },
+            { 'label' : _('speeches'), 'url' : reverse('om_speech_search') + '?q=' + self.query, 'active': true },
             { 'label' : _('votations'), 'url' : reverse('om_votation_search') + '?q=' + self.query },
             { 'label' : _('events'), 'url' : reverse('om_event_search') + '?q=' + self.query },
         ]
+
 
         return extra
 
