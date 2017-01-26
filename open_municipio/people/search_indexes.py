@@ -7,7 +7,10 @@ from django.db.models import Q
 import logging
 
 from open_municipio.people.models import Institution, InstitutionCharge, Group, GroupCharge, Person, SittingItem, InstitutionResponsability
-from open_municipio.acts.models import Speech
+from open_municipio.acts.models import Act, Agenda,\
+    CGDeliberation, Deliberation, Interpellation,\
+    Interrogation, Motion, Amendment, Transition,\
+    Decision, Decree, Audit, Minute, Speech
 
 class InstitutionChargeIndex(indexes.SearchIndex, indexes.Indexable):
 
@@ -225,6 +228,35 @@ class GroupIndex(indexes.SearchIndex, indexes.Indexable):
     n_presented_acts = indexes.IntegerField()
     n_presented_acts_index = indexes.FloatField()
 
+    n_presented_deliberations = indexes.IntegerField()
+    n_presented_deliberations_index = indexes.FloatField()
+
+    n_presented_agendas = indexes.IntegerField()
+    n_presented_agendas_index = indexes.FloatField()
+
+    n_presented_motions = indexes.IntegerField()
+    n_presented_motions_index = indexes.FloatField()
+
+    n_presented_motions_agendas = indexes.IntegerField()
+    n_presented_motions_agendas_index = indexes.FloatField()
+
+    n_presented_amendments = indexes.IntegerField()
+    n_presented_amendments_index = indexes.FloatField()
+
+    n_presented_interrogations = indexes.IntegerField()
+    n_presented_interrogations_index = indexes.FloatField()
+
+    n_presented_interpellations = indexes.IntegerField()
+    n_presented_interpellations_index = indexes.FloatField()
+
+    n_presented_audits = indexes.IntegerField()
+    n_presented_audits_index = indexes.FloatField()
+
+    n_presented_inspection_acts = indexes.IntegerField()
+    n_presented_inspection_acts_index = indexes.FloatField()
+
+    logger = logging.getLogger('import')
+
     def get_model(self):
         return Group
 
@@ -254,18 +286,90 @@ class GroupIndex(indexes.SearchIndex, indexes.Indexable):
 
         return days
 
-    def prepare_n_presented_acts(self, obj):
-        counter = 0
+    def prepare_n_presented_acts_generic(self, obj, act_types=[]):
+
         now = datetime.now().date()
+        query_act_types = Q()
+        query_act_support = Q()
+
+        for act_type in act_types:
+            query_act_types |= Q(**{ act_type.__name__.lower() + '__isnull' : False })
 
         for gc in obj.groupcharge_set.all():
             start_date = gc.start_date
             end_date = gc.end_date if gc.end_date else now
-            counter += gc.charge.presented_act_set.filter(
-                presentation_date__gte=start_date, presentation_date__lte=end_date).count()
+            query_act_support |= (Q(actsupport__charge=gc.charge) &
+                Q(presentation_date__gte=start_date) &
+                Q(presentation_date__lte=end_date))
 
-        return counter
+        return Act.objects.filter(query_act_types & query_act_support).distinct().count()
+
+    def prepare_n_presented_acts(self, obj):
+        return self.prepare_n_presented_acts_generic(obj)
 
     def prepare_n_presented_acts_index(self, obj):
         days = self.prepare_aggregate_charge_duration_days(obj)
         return (float(self.prepare_n_presented_acts(obj)) / days) * 30 if days else None
+
+    def prepare_n_presented_deliberations(self, obj):
+        return self.prepare_n_presented_acts_generic(obj, [Deliberation, ])
+
+    def prepare_n_presented_deliberations_index(self, obj):
+        days = self.prepare_aggregate_charge_duration_days(obj)
+        return (float(self.prepare_n_presented_deliberations(obj)) / days) * 30 if days else None
+
+    def prepare_n_presented_agendas(self, obj):
+        return self.prepare_n_presented_acts_generic(obj, [Agenda, ])
+
+    def prepare_n_presented_agendas_index(self, obj):
+        days = self.prepare_aggregate_charge_duration_days(obj)
+        return (float(self.prepare_n_presented_agendas(obj)) / days) * 30 if days else None
+
+    def prepare_n_presented_motions(self, obj):
+        return self.prepare_n_presented_acts_generic(obj, [Motion, ])
+
+    def prepare_n_presented_motions_index(self, obj):
+        days = self.prepare_aggregate_charge_duration_days(obj)
+        return (float(self.prepare_n_presented_motions(obj)) / days) * 30 if days else None
+
+    def prepare_n_presented_motions_agendas(self, obj):
+        return self.prepare_n_presented_acts_generic(obj, [Agenda, Motion])
+
+    def prepare_n_presented_motions_agendas_index(self, obj):
+        days = self.prepare_aggregate_charge_duration_days(obj)
+        return (float(self.prepare_n_presented_motions_agendas(obj)) / days) * 30 if days else None
+
+    def prepare_n_presented_amendments(self, obj):
+        return self.prepare_n_presented_acts_generic(obj, [Amendment, ])
+
+    def prepare_n_presented_amendments_index(self, obj):
+        days = self.prepare_aggregate_charge_duration_days(obj)
+        return (float(self.prepare_n_presented_amendments(obj)) / days) * 30 if days else None
+
+    def prepare_n_presented_interrogations(self, obj):
+        return self.prepare_n_presented_acts_generic(obj, [Interrogation, ])
+
+    def prepare_n_presented_interrogations_index(self, obj):
+        days = self.prepare_aggregate_charge_duration_days(obj)
+        return (float(self.prepare_n_presented_interrogations(obj)) / days) * 30 if days else None
+
+    def prepare_n_presented_interpellations(self, obj):
+        return self.prepare_n_presented_acts_generic(obj, [Interpellation, ])
+
+    def prepare_n_presented_interpellations_index(self, obj):
+        days = self.prepare_aggregate_charge_duration_days(obj)
+        return (float(self.prepare_n_presented_interpellations(obj)) / days) * 30 if days else None
+
+    def prepare_n_presented_audits(self, obj):
+        return self.prepare_n_presented_acts_generic(obj, [Audit, ])
+
+    def prepare_n_presented_audits_index(self, obj):
+        days = self.prepare_aggregate_charge_duration_days(obj)
+        return (float(self.prepare_n_presented_audits(obj)) / days) * 30 if days else None
+
+    def prepare_n_presented_inspection_acts(self, obj):
+        return self.prepare_n_presented_acts_generic(obj, [Interrogation, Interpellation, Audit])
+
+    def prepare_n_presented_inspection_acts_index(self, obj):
+        days = self.prepare_aggregate_charge_duration_days(obj)
+        return (float(self.prepare_n_presented_inspection_acts(obj)) / days) * 30 if days else None

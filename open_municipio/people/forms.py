@@ -28,7 +28,7 @@ class GroupSearchForm(RangeFacetedSearchForm):
 
         # default sorting
         if (self.is_valid() and not self.cleaned_data.get('order_by')) or not self.is_valid():
-            sqs = sqs.order_by('acronym')
+            sqs = sqs.order_by('name')
 
         return sqs
 

@@ -43,6 +43,11 @@ body #main.two_columns {
 
   <h2>{% if not query %}Trovati {% endif %} {{ n_results }} gruppi</h2>
 
+  <p>
+      Tra parentesi il tasso mensile, calcolato in rapporto alla durata aggregata del gruppo,
+      espressa come somma dei giorni di appartenenza al gruppo delle diverse cariche.
+  </p>
+
     {% if person %}
       <p>per: <a href="{{ person.get_absolute_url }}">{{ person }}</a></p>
     {% endif %}
@@ -51,12 +56,20 @@ body #main.two_columns {
       <thead style="font-size: 10px;">
         <tr>
           <th class="span1"></th>
-          {% include 'search/_sortable_header.html' with f=order_by.acronym f_name='acronym' f_descr='Acronimo' f_init='asc' f_first='asc' %}
-          {% include 'search/_sortable_header.html' with f=order_by.name f_name='name' f_descr='Nome' %}
+          {% include 'search/_sortable_header.html' with f=order_by.name f_name='name' f_descr='Nome' f_init='asc' f_first='asc' %}
           {% include 'search/_sortable_header.html' with f=order_by.n_members f_name='n_members' f_descr='Membri attuali' f_first='desc' %}
           <th>Attivo</th>
-          {% include 'search/_sortable_header.html' with f=order_by.aggregate_charge_duration_days f_name='aggregate_charge_duration_days' f_descr='Durata' f_first='desc' %}
-          {% include 'search/_sortable_header.html' with f=order_by.n_presented_acts f_name='n_presented_acts' f_descr='Atti firmati' f_first='desc' %}
+          {% include 'search/_sortable_header.html' with f=order_by.aggregate_charge_duration_days f_name='aggregate_charge_duration_days' f_descr='Durata aggregata' f_first='desc' %}
+          {% include 'search/_sortable_header.html' with f=order_by.n_presented_acts f_name='n_presented_acts' f_descr='Atti presentati' f_first='desc' %}
+          {% include 'search/_sortable_header.html' with f=order_by.n_presented_deliberations f_name='n_presented_deliberations' f_descr='Delibere di Consiglio' f_first='desc' %}
+          {% include 'search/_sortable_header.html' with f=order_by.n_presented_motions f_name='n_presented_motions' f_descr='Mozioni' f_first='desc' %}
+          {% include 'search/_sortable_header.html' with f=order_by.n_presented_agendas f_name='n_presented_agendas' f_descr='Ordini del Giorno' f_first='desc' %}
+          {% include 'search/_sortable_header.html' with f=order_by.n_presented_motions_agendas f_name='n_presented_motions_agendas' f_descr='Mozioni e OdG' f_first='desc' %}
+          {% include 'search/_sortable_header.html' with f=order_by.n_presented_amendments f_name='n_presented_amendments' f_descr='Emendamenti' f_first='desc' %}
+          {% include 'search/_sortable_header.html' with f=order_by.n_presented_interrogations f_name='n_presented_interrogations' f_descr='Interrogazioni' f_first='desc' %}
+          {% include 'search/_sortable_header.html' with f=order_by.n_presented_interpellations f_name='n_presented_interpellations' f_descr='Interpellanze' f_first='desc' %}
+          {% include 'search/_sortable_header.html' with f=order_by.n_presented_audits f_name='n_presented_audits' f_descr='Accessi agli atti' f_first='desc' %}
+          {% include 'search/_sortable_header.html' with f=order_by.n_presented_inspection_acts f_name='n_presented_inspection_acts' f_descr='Atti ispettivi' f_first='desc' %}
         </tr>
         <tr>
           <th class="span1"></th>
@@ -64,8 +77,16 @@ body #main.two_columns {
           <th></th>
           <th></th>
           <th></th>
-          <th></th>
-          {% include 'search/_sortable_header.html' with f=order_by.n_presented_acts_index f_name='n_presented_acts_index' f_descr='(/mese)' f_first='desc' %}
+          {% include 'search/_sortable_header.html' with f=order_by.n_presented_acts_index f_name='n_presented_acts_index' f_descr='(/mese carica)' f_first='desc' %}
+          {% include 'search/_sortable_header.html' with f=order_by.n_presented_deliberations_index f_name='n_presented_deliberations_index' f_descr='(/mese carica)' f_first='desc' %}
+          {% include 'search/_sortable_header.html' with f=order_by.n_presented_motions_index f_name='n_presented_motions_index' f_descr='(/mese carica)' f_first='desc' %}
+          {% include 'search/_sortable_header.html' with f=order_by.n_presented_agendas_index f_name='n_presented_agendas_index' f_descr='(/mese carica)' f_first='desc' %}
+          {% include 'search/_sortable_header.html' with f=order_by.n_presented_motions_agendas_index f_name='n_presented_motions_agendas_index' f_descr='(/mese carica)' f_first='desc' %}
+          {% include 'search/_sortable_header.html' with f=order_by.n_presented_amendments_index f_name='n_presented_amendments_index' f_descr='(/mese carica)' f_first='desc' %}
+          {% include 'search/_sortable_header.html' with f=order_by.n_presented_interrogations_index f_name='n_presented_interrogations_index' f_descr='(/mese carica)' f_first='desc' %}
+          {% include 'search/_sortable_header.html' with f=order_by.n_presented_interpellations_index f_name='n_presented_interpellations_index' f_descr='(/mese carica)' f_first='desc' %}
+          {% include 'search/_sortable_header.html' with f=order_by.n_presented_audits_index f_name='n_presented_audits_index' f_descr='(/mese carica)' f_first='desc' %}
+          {% include 'search/_sortable_header.html' with f=order_by.n_presented_inspection_acts_index f_name='n_presented_inspection_acts_index' f_descr='(/mese carica)' f_first='desc' %}
         </tr>
       </thead>
       <tbody>
@@ -81,11 +102,11 @@ body #main.two_columns {
               {% endthumbnail %}
             </td>
 
-            <!-- acronym -->
-            <td><a href="{{ result.url }}">{{ result.acronym }}</a></td>
-
-            <!-- name -->
-            <td><a href="{{ result.url }}"><strong>{{ result.name }}</strong></a></td>
+            <!-- name and acronym -->
+            <td>
+              <a href="{{ result.url }}"><strong>{{ result.name }}</strong></a>
+              <br />({{ result.acronym }})
+            </td>
 
             <!-- current size -->
             <td><a href="{{ result.url }}">{{ result.n_members }}</a></td>
@@ -98,11 +119,99 @@ body #main.two_columns {
 
             <!-- acts -->
             <td>
-              {{ result.n_presented_acts }}
+              <a href="{% url 'om_act_search' %}?q=&group={{ result.object.slug }}">
+                {{ result.n_presented_acts }}
+              </a>
               {% if result.n_presented_acts %}
                 <br />({{ result.n_presented_acts_index|floatformat:2 }})
               {% endif %}
-              </td>
+            </td>
+
+            <!-- deliberations -->
+            <td>
+              <a href="{% url 'om_act_search' %}?q=&group={{ result.object.slug }}&selected_facets=act_type:delibera">
+                {{ result.n_presented_deliberations }}
+              </a>
+              {% if result.n_presented_deliberations %}
+                <br />({{ result.n_presented_deliberations_index|floatformat:2 }})
+              {% endif %}
+            </td>
+
+            <!-- motions -->
+            <td>
+              <a href="{% url 'om_act_search' %}?q=&group={{ result.object.slug }}&selected_facets=act_type:mozione">
+                {{ result.n_presented_motions }}
+              </a>
+              {% if result.n_presented_motions %}
+                <br />({{ result.n_presented_motions_index|floatformat:2 }})
+              {% endif %}
+            </td>
+
+            <!-- agendas -->
+            <td>
+              <a href="{% url 'om_act_search' %}?q=&group={{ result.object.slug }}&selected_facets=act_type:ordine del giorno">
+                {{ result.n_presented_agendas }}
+              </a>
+              {% if result.n_presented_agendas %}
+                <br />({{ result.n_presented_agendas_index|floatformat:2 }})
+              {% endif %}
+            </td>
+
+            <!-- motions and agendas -->
+            <td>
+              {{ result.n_presented_motions_agendas }}
+              {% if result.n_presented_motions_agendas %}
+                <br />({{ result.n_presented_motions_agendas_index|floatformat:2 }})
+              {% endif %}
+            </td>
+
+            <!-- amendments -->
+            <td>
+              <a href="{% url 'om_act_search' %}?q=&group={{ result.object.slug }}&selected_facets=act_type:emendamento">
+                {{ result.n_presented_amendments }}
+              </a>
+              {% if result.n_presented_amendments %}
+                <br />({{ result.n_presented_amendments_index|floatformat:2 }})
+              {% endif %}
+            </td>
+
+            <!-- interrogations -->
+            <td>
+              <a href="{% url 'om_act_search' %}?q=&group={{ result.object.slug }}&selected_facets=act_type:interrogazione">
+                {{ result.n_presented_interrogations }}
+              </a>
+              {% if result.n_presented_interrogations %}
+                <br />({{ result.n_presented_interrogations_index|floatformat:2 }})
+              {% endif %}
+            </td>
+
+            <!-- interpellations -->
+            <td>
+              <a href="{% url 'om_act_search' %}?q=&group={{ result.object.slug }}&selected_facets=act_type:interpellanza">
+                {{ result.n_presented_interpellations }}
+              </a>
+              {% if result.n_presented_interpellations %}
+                <br />({{ result.n_presented_interpellations_index|floatformat:2 }})
+              {% endif %}
+            </td>
+
+            <!-- audits -->
+            <td>
+              <a href="{% url 'om_act_search' %}?q=&group={{ result.object.slug }}&selected_facets=act_type:accesso agli atti">
+                {{ result.n_presented_audits }}
+              </a>
+              {% if result.n_presented_deliberations %}
+                <br />({{ result.n_presented_audits_index|floatformat:2 }})
+              {% endif %}
+            </td>
+
+            <!-- inspection_acts -->
+            <td>
+              {{ result.n_presented_inspection_acts }}
+              {% if result.n_presented_inspection_acts %}
+                <br />({{ result.n_presented_inspection_acts_index|floatformat:2 }})
+              {% endif %}
+            </td>
           </tr>
         {% empty %}
             <p>Nessun gruppo trovato.</p>
@@ -144,7 +253,7 @@ body #main.two_columns {
     
         {% else %}
             <h2>Filtra</h2>
-            <p>Puoi trovare la carica che ti interessa scorrendo la lista qui a fianco.<br />
+            <p>Puoi trovare il gruppo che ti interessa scorrendo la lista qui a fianco.<br />
             Puoi perfezionare la ricerca usando i filtri nella colonna qui sotto</p>
         {% endif %}
     
