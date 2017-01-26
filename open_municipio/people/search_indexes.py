@@ -218,7 +218,7 @@ class GroupIndex(indexes.SearchIndex, indexes.Indexable):
     name = indexes.CharField(indexed=True, model_attr='name')
     acronym = indexes.CharField(indexed=True, model_attr='acronym')
 
-    url = indexes.CharField(indexed=False, stored=True)
+    url = indexes.CharField(indexed=True, stored=True)
 
     is_active = indexes.FacetCharField()
 

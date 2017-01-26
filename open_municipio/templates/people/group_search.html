@@ -44,8 +44,8 @@ body #main.two_columns {
   <h2>{% if not query %}Trovati {% endif %} {{ n_results }} gruppi</h2>
 
   <p>
-      Tra parentesi il tasso mensile, calcolato in rapporto alla durata aggregata del gruppo,
-      espressa come somma dei giorni di appartenenza al gruppo delle diverse cariche.
+      La durata aggregata è la somma dei giorni di appartenenza al gruppo delle diverse cariche.<br />
+      Tra parentesi il tasso mensile, calcolato in rapporto alla durata aggregata del gruppo.
   </p>
 
     {% if person %}
@@ -95,11 +95,15 @@ body #main.two_columns {
           <tr>
             <!-- thumbnail -->
             <td>
-              {% thumbnail result.object.img "50x50" crop="center" as im %}
-              <a href="{{ result.url }}">
-                <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
-              </a>
-              {% endthumbnail %}
+              {% if result.object.img %}
+                {% thumbnail result.object.img "50x50" crop="center" as im %}
+                <a href="{{ result.url }}">
+                  <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+                </a>
+                {% endthumbnail %}
+              {% else %}
+                <img src="{{ STATIC_URL }}img/placehold/group_50.png" width="50" height="50" class="group-picture">
+              {% endif %}
             </td>
 
             <!-- name and acronym -->

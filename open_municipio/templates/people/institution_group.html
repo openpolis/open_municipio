@@ -2,6 +2,7 @@
 {% load monitoring_tags %}
 {% load thumbnail %}
 {% load popover_info %}
+{% load om_utils %}
 
 {% block title %}Politici | {{ group.name }}{% endblock title %}
 {% block content_header %}Organi politici{% endblock %}
@@ -20,13 +21,17 @@
 
     <section>
         <h2 class="group-name-and-logo">
+          {% if group.img %}
             {% thumbnail group.img "50x50" crop="center" as im %}
                 <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
             {% endthumbnail %}
+          {% else %}
+            <img src="{{ STATIC_URL }}img/placehold/group_50.png" width="50" height="50" class="group-picture">
+          {% endif %}
             {{ group.name }} ({{ group.acronym }})
         </h2>
         <p>
-            I dati si riferiscono alle votazioni svolte in Consiglio.<br/>
+            I dati sulle presenze si riferiscono alle votazioni svolte in Consiglio.<br/>
             Non vengono calcolate le presenze alle sedute né se l'assenza abbia motivazioni politiche.
         </p>
         {% if group.resources|length > 0 %}
@@ -75,6 +80,37 @@
 {% endblock %}
 
 {% block sidebar %}
+
+  {% if num_acts|length > 0 %}
+    <h2>Atti firmati da membri del gruppo</h2>
+    <table class="stats">
+      <tr>
+        <td>{{ group_result.n_presented_deliberations|circled:"colored" }}</td>
+        <th class="span6">
+          <a href="{% url 'om_act_search' %}?q=&group={{ group_result.object.slug }}&selected_facets=act_type:delibera">
+            Delibere
+          </a>
+        </th>
+        <td>{{ group_result.n_presented_interrogations|circled:"colored" }}</td>
+        <th class="span6"><a href="{% url 'om_act_search' %}?q=&group={{ group_result.object.slug }}&selected_facets=act_type:interrogazione">Interrogazioni</a></th>
+      </tr>
+      <tr>
+        <td>{{ group_result.n_presented_motions|circled:"colored" }}</td>
+        <th class="span6"><a href="{% url 'om_act_search' %}?q=&group={{ group_result.object.slug }}&selected_facets=act_type:mozione">Mozioni</a></th>
+        <td>{{ group_result.n_presented_agendas|circled:"colored" }}</td>
+        <th class="span6"><a href="{% url 'om_act_search' %}?q=&group={{ group_result.object.slug }}&selected_facets=act_type:ordine del giorno">Ordini del giorno</a></th>
+      </tr>
+      <tr>
+        <td>{{ group_result.n_presented_interpellations|circled:"colored" }}</td>
+        <th class="span6"><a href="{% url 'om_act_search' %}?q=&group={{ group_result.object.slug }}&selected_facets=act_type:interpellanza">Interpellanze</a></th>
+        <td>{{ group_result.n_presented_audits|circled:"colored" }}</td>
+        <th class="span6"><a href="{% url 'om_act_search' %}?q=&group={{ group_result.object.slug }}&selected_facets=act_type:accesso agli atti">Accessi agli atti</a></th>
+      </tr>
+    </table>
+  {% endif %}
+
+  <hr>
+
     <h2>Tutti i gruppi</h2>
     <ul class="list-plain">
         {% for g in groups %}

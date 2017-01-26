@@ -210,6 +210,16 @@ class GroupDetailView(DetailView):
             .filter(is_active = _("yes"))\
             .filter(current_group = self.object.slug)
 
+        try:
+            extra_context['group_result'] = num_acts = SearchQuerySet()\
+                .filter(django_ct = 'people.group')\
+                .filter(url = self.object.get_absolute_url())[0]
+
+        except Exception, e:
+            logger.warning("group not found for url '%s'" % self.object.get_absolute_url())
+            logger.warning(e)
+            pass
+
         extra_context['members'] = members
 
         return extra_context
