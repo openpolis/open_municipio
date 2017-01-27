@@ -763,7 +763,10 @@ class Group(models.Model):
         return reverse("om_institution_group", kwargs={'slug': self.slug})
 
     def __unicode__(self):
-        return u'%s (%s)' % (self.name, self.acronym)
+        if self.start_date:
+            return u'%s (%s, %s)' % (self.name, self.acronym, self.start_date)
+        else:
+            return u'%s (%s)' % (self.name, self.acronym)
 
     @property
     def leader(self):
