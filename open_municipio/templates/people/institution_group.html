@@ -3,9 +3,10 @@
 {% load thumbnail %}
 {% load popover_info %}
 {% load om_utils %}
+{% load url from future %}
 
 {% block title %}Politici | {{ group.name }}{% endblock title %}
-{% block content_header %}Organi politici{% endblock %}
+{% block content_header %}Gruppi{% endblock %}
 {% block people_class %}class="active"{% endblock %}
 {% block body_class %}politician{% endblock %}
 
@@ -30,10 +31,13 @@
           {% endif %}
             {{ group.name }} ({{ group.acronym }})
         </h2>
-        <p>
-            I dati sulle presenze si riferiscono alle votazioni svolte in Consiglio.<br/>
-            Non vengono calcolate le presenze alle sedute né se l'assenza abbia motivazioni politiche.
-        </p>
+        {% if group.start_date %}
+          dal {{ group.start_date|date:"Y" }}
+          {% if group.end_date %}
+            al {{ group.end_date|date:"Y" }}
+          {% endif %}
+        {% endif %}
+
         {% if group.resources|length > 0 %}
             <address>
                 {% for r in group.resources %}

@@ -268,7 +268,7 @@ class GroupIndex(indexes.SearchIndex, indexes.Indexable):
         return _("yes") if obj.is_current else _("no")
 
     def prepare_n_members(self, obj):
-        return obj.current_size
+        return obj.charge_set.count()
 
     def prepare_aggregate_charge_duration_days(self, obj):
         days = 0

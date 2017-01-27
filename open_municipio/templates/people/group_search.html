@@ -57,7 +57,7 @@ body #main.two_columns {
         <tr>
           <th class="span1"></th>
           {% include 'search/_sortable_header.html' with f=order_by.name f_name='name' f_descr='Nome' f_init='asc' f_first='asc' %}
-          {% include 'search/_sortable_header.html' with f=order_by.n_members f_name='n_members' f_descr='Membri attuali' f_first='desc' %}
+          {% include 'search/_sortable_header.html' with f=order_by.n_members f_name='n_members' f_descr='Membri' f_first='desc' %}
           <th>Attivo</th>
           {% include 'search/_sortable_header.html' with f=order_by.aggregate_charge_duration_days f_name='aggregate_charge_duration_days' f_descr='Durata aggregata' f_first='desc' %}
           {% include 'search/_sortable_header.html' with f=order_by.n_presented_acts f_name='n_presented_acts' f_descr='Atti presentati' f_first='desc' %}
@@ -108,8 +108,13 @@ body #main.two_columns {
 
             <!-- name and acronym -->
             <td>
-              <a href="{{ result.url }}"><strong>{{ result.name }}</strong></a>
-              <br />({{ result.acronym }})
+              <a href="{{ result.url }}"><strong>{{ result.name }}</strong></a> ({{ result.acronym }})
+              {% if result.object.start_date %}
+                <br />dal {{ result.object.start_date|date:"Y" }}
+                {% if result.object.end_date %}
+                  al {{ result.object.end_date|date:"Y" }}
+                {% endif %}
+              {% endif %}
             </td>
 
             <!-- current size -->
