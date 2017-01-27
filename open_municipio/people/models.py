@@ -747,6 +747,10 @@ class Group(models.Model):
 
     img = ImageField(upload_to="group_images", blank=True, null=True)
 
+    start_date = models.DateField(blank=True, null=True, verbose_name=_("start date"))
+    end_date = models.DateField(blank=True, null=True, verbose_name=_("end date"))
+
+
     objects = PassThroughManager.for_queryset_class(GroupQuerySet)()
 
 
