@@ -61,7 +61,7 @@ body #main.two_columns {
           <th>Attivo</th>
           {% include 'search/_sortable_header.html' with f=order_by.aggregate_charge_duration_days f_name='aggregate_charge_duration_days' f_descr='Durata aggregata' f_first='desc' %}
           {% include 'search/_sortable_header.html' with f=order_by.n_presented_acts f_name='n_presented_acts' f_descr='Atti presentati' f_first='desc' %}
-          {% include 'search/_sortable_header.html' with f=order_by.n_presented_deliberations f_name='n_presented_deliberations' f_descr='Delibere di Consiglio' f_first='desc' %}
+          {% include 'search/_sortable_header.html' with f=order_by.n_presented_deliberations f_name='n_presented_deliberations' f_descr='Delibere' f_first='desc' %}
           {% include 'search/_sortable_header.html' with f=order_by.n_presented_motions f_name='n_presented_motions' f_descr='Mozioni' f_first='desc' %}
           {% include 'search/_sortable_header.html' with f=order_by.n_presented_agendas f_name='n_presented_agendas' f_descr='Ordini del Giorno' f_first='desc' %}
           {% include 'search/_sortable_header.html' with f=order_by.n_presented_motions_agendas f_name='n_presented_motions_agendas' f_descr='Mozioni e OdG' f_first='desc' %}

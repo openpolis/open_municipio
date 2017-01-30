@@ -64,11 +64,11 @@
                 <tr>
                     <th></th>
                     <th class="text-left span4">Politico</th>
-                    <th class="span2">Presenze</th>
-                    <th class="span2">Voti ribelli</th>
+                    <th class="span2">Presenze al voto {% popover_info 'presenze-al-voto' %}</th>
+                    <th class="span2">Voti ribelli {% popover_info 'voti-ribelli' %}</th>
                     <th class="span2">Atti</th>
-                    <th class="span2">Interventi {% popover_info 'interventi-consiglieri' %}</th>
-                    <th class="span2">Monitorato</th>
+                    <th class="span2">Interventi (minuti) {% popover_info 'durata-interventi' %}</th>
+                    <th class="span2">Monitorato da</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -229,10 +229,10 @@
         percentage_extract = function(match, $1, offset, original) { return $1; }
 
        	sort_percentage_asc = function(a,b) {
-            var x_str = a.replace(/\D*?(\d*)%/, percentage_extract);
-            var y_str = b.replace(/\D*?(\d*)%/, percentage_extract);
-            var x = (!x_str || 0 === x_str.length) ? 0 : parseInt(x_str);
-            var y = (!y_str || 0 === y_str.length) ? 0 : parseInt(y_str);
+            var x_str = $(a).text().replace(/(\d*)%/, percentage_extract);
+            var y_str = $(b).text().replace(/(\d*)%/, percentage_extract);
+            var x = (!x_str || 0 === x_str.length) ? 0 : parseFloat(x_str.replace(',', '.'));
+            var y = (!y_str || 0 === y_str.length) ? 0 : parseFloat(y_str.replace(',', '.'));
             var res = ((x < y) ? -1 : ((x > y) ?  1 : 0));
             return res;
         };
@@ -250,7 +250,7 @@
                     null,
                     { sType: "fullname", asSorting: ['desc', 'asc']},
                     { sType: "percentage", asSorting: ['desc', 'asc']},
-                    {asSorting: ['desc', 'asc']},
+                    { sType: "acts", asSorting: ['desc', 'asc']},
                     { sType: "acts", asSorting: ['desc', 'asc']},
                     { sType: "acts", asSorting: ['desc', 'asc']},
                     {asSorting: ['desc', 'asc']}
@@ -267,8 +267,7 @@
                     sSearch: "Ricerca",
                     sZeroRecords: "Nessun risultato per questa ricerca"
                 },
-                aaSorting: [[ 1, "asc" ]]
-
+                aaSorting: [[ {{ request.GET.sort|default:1 }}, "{{ request.GET.order|default:"asc" }}" ]],
             });
         });
 
