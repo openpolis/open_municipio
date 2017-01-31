@@ -764,7 +764,7 @@ class Group(models.Model):
 
     def __unicode__(self):
         if self.start_date:
-            return u'%s (%s, %s)' % (self.name, self.acronym, self.start_date)
+            return u'%s (%s, %s)' % (self.name, self.acronym, self.start_date.year)
         else:
             return u'%s (%s)' % (self.name, self.acronym)
 
