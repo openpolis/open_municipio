@@ -2,6 +2,8 @@
 {% load url from future %}
 
   {% if charge.is_counselor %}
+
+    {% if charge.can_vote %}
     <section>
       <h2>Presenze (<a href="{% url 'om_votation_search' %}?q=&charge={{ charge.id }}">{{ n_total_votations }} votazion{{ n_total_votations|pluralize:"e,i" }}</a>)</h2>
       <p>
@@ -55,6 +57,11 @@
 
       <hr class="big">
 
+    {% else %}
+      <p>
+          Consigliere senza diritto di voto
+      </p>
+    {% endif %}
   {% endif %}
 
   {% if n_presented_acts %}

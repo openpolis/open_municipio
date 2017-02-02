@@ -35,48 +35,6 @@
               </td>
           </tr>
       </table>
-
-      <div class="modal large hide" id="event_{{ act.next_event.id }}_description" >
-          <div class="modal-header">
-              <a class="close" data-dismiss="modal">×</a>
-              {% ifequal act.next_event.institution.name "Consiglio comunale" %}
-                  Il
-              {%  else  %}
-                  La
-              {% endifequal %}
-              <b>{{ act.next_event.institution }}</b> si riunisce
-              in {{ act.next_event.address }} <br/>
-              il {{ act.next_event.date|date:"d.m.Y" }}
-              alle {{ act.next_event.event_time|time:"H:i" }}<br/>
-              per discutere di <b>{{ act.next_event.title }}</b>
-          </div>
-          <div class="modal-body">
-              <h4>Ordine del giorno:</h4>
-              <p>
-                  {{ act.next_event.description|safe }}
-              </p>
-          </div>
-          <div class="modal-footer">
-              <h3>Atti in discussione</h3>
-              {% for a in act.next_event.acts.all %}
-                  <a href="{{ a.downcast.get_absolute_url }}" title="{{ a.title }}">{{ a.idnum }} - {{ a.title|truncatewords:10 }}</a><br/>
-              {% endfor %}
-
-          </div>
-      </div>
-      <script type="text/javascript">
-          include(["js/bootstrap-modal.js"], function() {
-              $('a.event_toggle_modal').each(function() {
-                  var link = $(this);
-                  link.click(function(e) {
-                      e.preventDefault();
-                      $(link.attr('href')).modal();
-                  });
-              });
-          });
-
-      </script>
-
   {% endif %}
 
   {% block content_title %}
@@ -172,7 +130,7 @@
                 <i class="icon-edit icon-white"></i> Edit
             </a>
         {% endif %}
-        </h3>
+        </h2>
 
     <dl class="taxonomy-cloud">
       {% regroup act.topics by category as categorized_topics %}

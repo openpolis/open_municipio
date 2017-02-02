@@ -20,6 +20,7 @@
   <tbody>
   {% for charge_vote in charge_votes %}
     {% with charge_vote.charge.person as politician %}
+      {% if charge_vote.charge.can_vote %}
       <tr>
         <td class="text-left">
           <a href="{{ politician.get_absolute_url }}">
@@ -62,6 +63,7 @@
           {% endif %}
         </td>
       </tr>
+      {% endif %}
     {% endwith %}
   {% endfor %}
   </tbody>
