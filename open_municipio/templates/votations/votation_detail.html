@@ -43,19 +43,66 @@
 
     <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.dataTables.js"></script>
     <script type="text/javascript">
-        $(document).ready(function() {
-            var gTable = $('.tablesorter').dataTable({
-                bFilter: false,
-                bPaginate: false,
-                bLengthChange: false,
-                bSort: true,
-                bInfo: false,
-                bAutoWidth: false,
-                oLanguage: {
-                    sSearch: "Ricerca",
-                    sZeroRecords: "Nessun risultato per questa ricerca"
+        var allowFilter = ['charge_votation'];
+
+    	$.fn.dataTableExt.afnFiltering.push(
+    	    function( oSettings, aData, iDataIndex ) {
+
+    	        // check if current table is part of the allow list
+                if ( $.inArray( oSettings.nTable.getAttribute('id'), allowFilter ) == -1 )
+                {
+                    // if not table should be ignored
+                    return true;
                 }
 
+		        if ( oSettings.event === "tab_yes" ) {
+		            return (String(aData[1]).trim());
+		        }
+		        else if ( oSettings.event === "tab_no" ) {
+		            return (String(aData[2]).trim());
+		        }
+		        else if ( oSettings.event === "tab_abst" ) {
+		            return (String(aData[3]).trim());
+		        }
+		        else if ( oSettings.event === "tab_abs" ) {
+		            return (String(aData[4]).trim());
+		        }
+		        else if ( oSettings.event === "tab_rebel" ) {
+		            return (String(aData[5]).trim());
+		        }
+		        else {
+		            return true;
+		        }
+		    }
+		);
+
+        $(document).ready(function() {
+
+            var gTable = $('#votation_results').dataTable({
+                bFilter: false,
+                bSort: true,
+                bSearchable: false,
+                bPaginate: false,
+                bLengthChange: false,
+                bInfo: false,
+                bAutoWidth: false
+            });
+
+            var cTable = $('#charge_votation').dataTable({
+                bFilter: true,
+                bSort: true,
+                bSearchable: false,
+                bPaginate: false,
+                bLengthChange: false,
+                bInfo: false,
+                bAutoWidth: false,
+                "sDom": 'lrtip'
+            });
+
+            $('#tab_all,#tab_yes,#tab_no,#tab_abst,#tab_abs,#tab_rebel').click( function(event) {
+                 var settings = cTable.fnSettings();
+                 settings.event=event.target.id;
+                 cTable.fnDraw();
             });
         });
     </script>
@@ -115,20 +162,18 @@
   <section>
     <ul class="nav nav-tabs page-tabs">
       <li class="active">
-        <a href="#all_votes_tab" data-toggle="tab">Tutti</a>
+        <a id="tab_all" href="#" data-toggle="tab">Tutti</a>
       </li>
-      <li><a href="#rebels_votes_tab" data-toggle="tab">Ribelli</a></li>
+      <li><a id="tab_yes" href="#" data-toggle="tab">Favorevoli</a></li>
+      <li><a id="tab_no" href="#" data-toggle="tab">Contrari</a></li>
+      <li><a id="tab_abst" href="#" data-toggle="tab">Astenuti</a></li>
+      <li><a id="tab_abs" href="#" data-toggle="tab">Assenti</a></li>
+      <li><a id="tab_rebel" href="#" data-toggle="tab">Ribelli</a></li>
     </ul>
     <div class="tab-content">
-
       <div class="tab-pane active" id="all_votes_tab">
         {% include 'votations/_votation_detail_table.html' with votation=votation charge_votes=votation.charge_votes %}
       </div>
-
-      <div class="tab-pane" id="rebels_votes_tab">
-        {% include 'votations/_votation_detail_table.html' with votation=votation charge_votes=votation.charge_rebel_votes %}
-      </div>
-
     </div>
   </section>
 {% endblock content %}
