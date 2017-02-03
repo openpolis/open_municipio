@@ -44,6 +44,13 @@
     <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.dataTables.js"></script>
     <script type="text/javascript">
         var allowFilter = ['charge_votation'];
+        {% if votation.is_secret %}
+        var tabs_list = ['tab_all','tab_voters','tab_abst','tab_abs','tab_rebel'];
+        {% else %}
+        var tabs_list = ['tab_all','tab_yes','tab_no','tab_abst','tab_abs','tab_rebel'];
+        {% endif %}
+
+        var tabs_selector = tabs_list.map(function(el) { return '#' + el; }).join();
 
     	$.fn.dataTableExt.afnFiltering.push(
     	    function( oSettings, aData, iDataIndex ) {
@@ -55,24 +62,13 @@
                     return true;
                 }
 
-		        if ( oSettings.event === "tab_yes" ) {
-		            return (String(aData[1]).trim());
-		        }
-		        else if ( oSettings.event === "tab_no" ) {
-		            return (String(aData[2]).trim());
-		        }
-		        else if ( oSettings.event === "tab_abst" ) {
-		            return (String(aData[3]).trim());
-		        }
-		        else if ( oSettings.event === "tab_abs" ) {
-		            return (String(aData[4]).trim());
-		        }
-		        else if ( oSettings.event === "tab_rebel" ) {
-		            return (String(aData[5]).trim());
-		        }
-		        else {
-		            return true;
-		        }
+                for (i = 1; i < tabs_list.length; i++) { 
+		            if ( oSettings.event === tabs_list[i] ) {
+		                return (String(aData[i]).trim());
+		            }
+                }
+
+		        return true;
 		    }
 		);
 
@@ -85,7 +81,11 @@
                 bPaginate: false,
                 bLengthChange: false,
                 bInfo: false,
-                bAutoWidth: false
+                bAutoWidth: false,
+                oLanguage: {
+                    sSearch: "Ricerca",
+                    sZeroRecords: "Nessun risultato per questa ricerca"
+                }
             });
 
             var cTable = $('#charge_votation').dataTable({
@@ -96,10 +96,14 @@
                 bLengthChange: false,
                 bInfo: false,
                 bAutoWidth: false,
+                oLanguage: {
+                    sSearch: "Ricerca",
+                    sZeroRecords: "Nessun risultato per questa ricerca"
+                },
                 "sDom": 'lrtip'
             });
 
-            $('#tab_all,#tab_yes,#tab_no,#tab_abst,#tab_abs,#tab_rebel').click( function(event) {
+            $(tabs_selector).click( function(event) {
                  var settings = cTable.fnSettings();
                  settings.event=event.target.id;
                  cTable.fnDraw();
@@ -164,8 +168,12 @@
       <li class="active">
         <a id="tab_all" href="#" data-toggle="tab">Tutti</a>
       </li>
+      {% if votation.is_secret %}
+      <li><a id="tab_voters" href="#" data-toggle="tab">Votanti</a></li>
+      {% else %}
       <li><a id="tab_yes" href="#" data-toggle="tab">Favorevoli</a></li>
       <li><a id="tab_no" href="#" data-toggle="tab">Contrari</a></li>
+      {% endif %}
       <li><a id="tab_abst" href="#" data-toggle="tab">Astenuti</a></li>
       <li><a id="tab_abs" href="#" data-toggle="tab">Assenti</a></li>
       <li><a id="tab_rebel" href="#" data-toggle="tab">Ribelli</a></li>
