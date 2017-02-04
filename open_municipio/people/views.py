@@ -665,6 +665,13 @@ class SittingDetailView(DetailView):
         filter_since = datetime.today().replace(day=1)
 
         events = Event.objects.filter(date__gte=filter_since)
+        sitting_event = None
+
+        try:
+            sitting_event = Event.objects.filter(
+                institution=curr.institution, date=curr.date)[0]
+        except IndexError:
+            pass
 
         sitting_items = curr.sitting_items.order_by("seq_order")
 
@@ -677,6 +684,7 @@ class SittingDetailView(DetailView):
             "sitting_items" : sitting_items,
             "votations" : votations,
             "attendances" : attendances,
+            "sitting_event" : sitting_event,
         }
 
         context.update(extra)

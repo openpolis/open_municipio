@@ -21,6 +21,18 @@
 {% endblock head_css_includes %}
 
 {% block content %}
+  {% if sitting %}
+      <table id="votation_outcome">
+          <tr>
+              <td>
+                  {{ sitting.date|circled:"full,colored" }}
+              </td>
+              <td>
+                  <p><a href="{{ sitting.get_absolute_url }}">Vai alla<br>seduta</a></p>
+              </td>
+          </tr>
+      </table>
+  {% endif %}
 
   {% block content_title %}
   <hgroup>

@@ -23,32 +23,63 @@
     <link rel="stylesheet" href="{{ STATIC_URL }}css/sitting.css" />
 {% endblock %}
 
+{% block footer_js_includes %}
+    {{ block.super }}
+    <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap-tab.js"></script>
+{% endblock footer_js_includes %}
+
 {% block content %}
 
   {% include 'people/sitting_detail_section.html' with sitting=sitting %}
 
-  {% if sitting_items.count > 0 %}
+  <hr />
   <section>
-    <h2>Argomenti ({{ sitting_items.count }})</h2>
-    {% include 'people/sittingitem_list.html' with sitting_items=sitting_items %}
+    <ul class="nav nav-tabs page-tabs">
+      {% if sitting_items.count > 0 or attendances.count > 0 %}
+        <li class="active"><a data-toggle="tab" href="#sitting_items_tab">
+          Argomenti ({{ sitting_items.count|add:attendances.count }})
+        </a></li>
+      {% endif %}
+      {% if votations.count > 0 %}
+        <li><a data-toggle="tab" href="#votations_tab">
+          Votazioni ({{ votations.count }})
+        </a></li>
+      {% endif %}
+      {% if sitting_event and sitting_event.description|length > 0 %}
+        <li><a data-toggle="tab" href="#sitting_event_tab">
+          Convocazione
+        </a></li>
+      {% endif %}
+    </ul>
+    <div class="tab-content">
+      {% if sitting_items.count > 0 or attendances.count > 0 %}
+        <div class="tab-pane active" id="sitting_items_tab">
+          {% if sitting_items.count > 0 %}
+            {% include 'people/sittingitem_list.html' with sitting_items=sitting_items %}
+          {% elif attendances.count > 0 %}
+            {% include 'people/sitting_attendance_list.html' with attendances=attendances %}
+          {% endif %}
+        </div>
+      {% endif %}
+      {% if votations.count > 0 %}
+        <div class="tab-pane" id="votations_tab">
+          {% include 'people/sitting_votation_list.html' with votations=votations %}
+        </div>
+      {% endif %}
+      {% if sitting_event and sitting_event.description|length > 0 %}
+        <div class="tab-pane" id="sitting_event_tab">
+          <h4>
+            <a href="{{ sitting_event.get_absolute_url }}">
+              Evento {{ sitting_event.institution.name_with_preposition }}
+              del <strong><span class="date">{{ sitting_event.date }}</span></strong>
+            </a>
+          </h4>
+          <p>{% if sitting_event.address|length > 0 %}{{ sitting_event.address }}{% endif %}</p>
+          <p id="event_text">{{ sitting_event.description|safe }}</p>
+        </div>
+      {% endif %}
+    </div>
   </section>
-
-  <hr class="big">
-  {% endif %}
-
-  {% if votations.count > 0 %}
-  <section>
-    <h2>Votazioni ({{ votations.count }})</h2>
-    {% include 'people/sitting_votation_list.html' with votations=votations %}
-  </section>
-  {% endif %}
-
-  {% if attendances.count > 0 %}
-  <section>
-    <h2>Argomenti ({{ attendances.count }})</h2>
-    {% include 'people/sitting_attendance_list.html' with attendances=attendances %}
-  </section>
-  {% endif %}
 
 {% endblock %}
 

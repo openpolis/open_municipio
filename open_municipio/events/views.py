@@ -8,7 +8,7 @@ from haystack.query import SearchQuerySet
 from django.utils.translation import ugettext_lazy as _
 
 from .models import Event
-from open_municipio.people.models import Institution
+from open_municipio.people.models import Sitting, Institution
 from open_municipio.acts.models import Act
 from open_municipio.acts.models import Speech
 from open_municipio.om_search.views import ExtendedFacetedSearchView
@@ -71,6 +71,12 @@ class EventDetailView(DetailView):
         # first day of current month
         filter_since = datetime.today().replace(day=1)
         context['future_events'] = Event.objects.filter(date__gte=filter_since)
+
+        try:
+            context['sitting'] = Sitting.objects.filter(
+                institution=event.institution, date=event.date)[0]
+        except IndexError:
+            pass
 
         return context
 
