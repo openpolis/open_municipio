@@ -120,8 +120,12 @@ body #main.two_columns {
                       <strong class="person_name">{{ result.object.person|title }}</strong>
                     </a>
                     <br />
-                    {{ result.institution }} dal {{ result.start_date|date:"Y" }}
-                    {% if result.end_date %} al {{ result.end_date|date:"Y" }}{% endif %}
+                    {{ result.institution }}
+                    {% if result.start_date.year == result.end_date.year %}
+                      nel {{ result.start_date|date:"Y" }}
+                    {% else %}
+                      dal {{ result.start_date|date:"Y" }}{% if result.end_date %} al {{ result.end_date|date:"Y" }}{% endif %}
+                    {% endif %}
                   </div>
                 </div>
               </div>

@@ -161,14 +161,24 @@
       {% for c in current_charges %}
         <li {% if c == charge %}class="active" {% endif %} >
             <a href="{{ c.get_absolute_url }}">
-            {{ c.charge_type }} dal {{ c.start_date|date:"Y" }}{% if c.end_date %} al {{ c.end_date|date:"Y" }}{% endif %}
+              {{ c.charge_type }}
+              {% if c.start_date.year == c.end_date.year %}
+                nel {{ c.start_date|date:"Y" }}
+              {% else %}
+                dal {{ c.start_date|date:"Y" }}{% if c.end_date %} al {{ c.end_date|date:"Y" }}{% endif %}
+              {% endif %}
             </a>
         </li>
       {% endfor %}
       {% for c in past_charges %}
         <li {% if c == charge %}class="active" {% endif %} >
             <a href="{{ c.get_absolute_url }}">
-            {{ c.charge_type }} dal {{ c.start_date|date:"Y" }}{% if c.end_date %} al {{ c.end_date|date:"Y" }}{% endif %}
+              {{ c.charge_type }}
+              {% if c.start_date.year == c.end_date.year %}
+                nel {{ c.start_date|date:"Y" }}
+              {% else %}
+                dal {{ c.start_date|date:"Y" }}{% if c.end_date %} al {{ c.end_date|date:"Y" }}{% endif %}
+              {% endif %}
             </a>
         </li>
       {% endfor %}
