@@ -240,6 +240,7 @@ class ActIndex(indexes.SearchIndex, indexes.Indexable):
 class SpeechIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)   
     title = indexes.CharField(indexed=True, stored=True)
+    seq_order = indexes.IntegerField(model_attr='seq_order')
 
     url = indexes.CharField(indexed=False, stored=True)
     date = indexes.DateField(indexed=True, stored=False)
@@ -247,6 +248,9 @@ class SpeechIndex(indexes.SearchIndex, indexes.Indexable):
     charge = indexes.MultiValueField(indexed=True, stored=False)
 
     act_url = indexes.MultiValueField(indexed=True, stored=True)
+    sitting_number = indexes.IntegerField(indexed=False, stored=True)
+    sitting_url = indexes.CharField(indexed=False, stored=True)
+    sitting_item_url = indexes.CharField(indexed=False, stored=True)
     month = indexes.FacetCharField()
 
     htmlparser = HTMLParser()
@@ -262,7 +266,7 @@ class SpeechIndex(indexes.SearchIndex, indexes.Indexable):
 
         activate(settings.LANGUAGE_CODE)
 
-        return obj.title
+        return obj.title if obj.title else obj.sitting_item.title
 
     def get_model(self):
         return Speech
@@ -285,6 +289,15 @@ class SpeechIndex(indexes.SearchIndex, indexes.Indexable):
 
         if obj.author:
             return [str(c.id) for c in obj.author.get_current_institution_charges(obj.date.strftime("%Y-%m-%d"))]
+
+    def prepare_sitting_number(self, obj):
+        return obj.sitting_item.sitting.number
+
+    def prepare_sitting_url(self, obj):
+        return obj.sitting_item.sitting.get_absolute_url()
+
+    def prepare_sitting_item_url(self, obj):
+        return obj.sitting_item.get_absolute_url()
 
     def prepare_date(self, obj):
         return obj.date

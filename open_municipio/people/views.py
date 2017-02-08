@@ -452,9 +452,11 @@ class PoliticianDetailView(DetailView):
                                   .count(),
             })
 
-        # last 5 speeches
-        speeches = Speech.objects\
-            .filter(author=person)
+        # charge speeches
+        speeches = SearchQuerySet().filter(django_ct='acts.speech')\
+            .filter(charge = charge.id)\
+            .order_by('-date')
+
         context['n_speeches'] = speeches.count()
         context['speeches'] = speeches[0:5]
 

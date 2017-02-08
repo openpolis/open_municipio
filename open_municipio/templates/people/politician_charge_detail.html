@@ -81,27 +81,24 @@
 
   {% if n_speeches %}
       <section>
-          <h2>Interventi in Consiglio Comunale {% popover_info 'interventi-politico' %}</h2>
+          <h2>Interventi in Consiglio Comunale (<a href="{% url 'om_speech_search' %}?q=&charge={{ charge.id }}">{{ n_speeches }}</a>) {% popover_info 'interventi-politico' %}</h2>
 
           <table class="data">
               <thead>
               <tr>
-                  <th class="text-left span4">Seduta</th>
+                  <th>Seduta</th>
+                  <th>Intervento</th>
                   <th>Argomento</th>
-                  <th class="span2">Intervento</th>
+                  <th class="span2"></th>
               </tr>
               </thead>
               <tbody>
               {% for speech in speeches %}
                   <tr>
-                    {% with sitting=speech.sitting_item.sitting %}
-                      <td>Seduta num. {{ sitting.number }} del {{ sitting.date|date:"d/m/Y" }}</td>
-                    {% endwith %}
-                      <td>{{ speech.sitting_item.title }}</td>
-                      <td>
-                        <a href="{{ speech.get_absolute_url }}">Leggi intervento</a><br/>
-                        <a href="{{ speech.sitting_item.get_absolute_url }}">Leggi discussione</a>
-                      </td>
+                      <td><a href="{{ speech.sitting_url }}">{{ speech.date|date:"d/m/Y" }}</a></td>
+                      <td>{{ speech.sitting_number }}/{{ speech.seq_order }}</td>
+                      <td><a href="{{ speech.url }}">{{ speech.title }}</a></td>
+                      <td><a href="{{ speech.sitting_item_url }}">Leggi discussione</a></td>
                   </tr>
               {% endfor %}
 
