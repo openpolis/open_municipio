@@ -2107,9 +2107,10 @@ li[class*=" icon-"].icon-large:before {
   font-size: 20px;
   font-weight: bold;
   line-height: 17px;
-  color: #000000;
-  text-shadow: 0 1px 0 #ffffff;
-  opacity: 0.2;
+/*  color: #000000; */
+  color: #ffffff;
+  text-shadow: 0 1px 0 #0000;
+/*   opacity: 0.2; */
   filter: alpha(opacity=20);
 }
 .close:hover {
@@ -3387,7 +3388,7 @@ input[type="submit"].btn.btn-mini {
 
 .modal {
     /* by default it is not visible, until you invoke .modal() */
-    display: none;
+    display: block; /* was: none; */
 }
 
 .modal-open .dropdown-menu {
@@ -3421,7 +3422,7 @@ input[type="submit"].btn.btn-mini {
 }
 .modal {
   position: fixed;
-  top: 50%;
+/*  top: 50%; */
   left: 50%;
   z-index: 1050;
   overflow: auto;
@@ -3457,6 +3458,8 @@ input[type="submit"].btn.btn-mini {
 .modal-header {
   padding: 9px 15px;
   border-bottom: 1px solid #eee;
+  background-color: #4788c2;
+  color: #ffffff;
 }
 .modal-header .close {
   margin-top: 2px;
@@ -4180,7 +4183,7 @@ body #sidebar h2 {
 }
 body #sidebar h3 {
   font-size: 16px;
-  margin-bottom: 10px;
+  /* margin-bottom: 10px; */
 }
 body #sidebar ul.list-simple {
   list-style: none;
@@ -5772,4 +5775,19 @@ span.search_act_status {
     margin-bottom: 5px;
 }
 
+ul.textboxlist-bits {
+    border-radius: 5px;
+}
 
+li.textboxlist-bit {
+    line-height: 24px;
+}
+
+select#category_list {
+    width: 80%;
+}
+
+a#category_add {
+    line-height: 24px;
+    width: 15%;
+}
