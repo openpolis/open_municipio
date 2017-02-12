@@ -639,7 +639,7 @@ class SittingCalendarView(TemplateView):
 
         sittings = {}
 
-        for i in range(12):
+        for i in range(1,13):
             sittings[i] = Sitting.objects.filter(date__year=year, date__month=i).order_by("date")
 
         extra_context = {
