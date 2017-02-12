@@ -13,12 +13,7 @@
                     <fieldset>
                         <div class="control-group">
                             <label class="control-label" for="category_{{ grouped_tags.grouper.id }}">
-<!--
-                                <a href="#"><i class="icon-remove"></i></a> 
-                                  <span class="label">{{ grouped_tags.grouper.name }}</span>
-            -->
-                              <span class="label">{{ grouped_tags.grouper.name }}<a href="#"><i class="icon-remove"></i></a></span>
-
+                                <span class="label">{{ grouped_tags.grouper.name }}<a href="#" class="icon-remove"></a></span>
                             </label>
 
                             <div class="controls">
@@ -37,7 +32,11 @@
                     <fieldset class="hide" id="category_skeleton">
                         <div class="control-group">
                             <label class="control-label" for="category_{{ category.id }}">
+<!--
                                 <a href="#"><i class="icon-remove"></i></a> <span class="label"></span>
+-->
+                                <span class="label"><a href="#" class="icon-remove"></a></span>
+
                             </label>
 
                             <div class="controls">
@@ -108,7 +107,7 @@
         };
 
         var initialize_editor = function() {
-						// build initial textlistboxes
+			// build initial textlistboxes
             $('#category_skeleton').prevAll('fieldset').each(function() {
                 var fieldset = $(this),
                         select = $('select',fieldset),
@@ -142,7 +141,11 @@
                 fieldset.removeClass('hide').attr({'id' : '' });
 
                 // setting label with category name
-                $('label span', fieldset).text(new_cat.text());
+                var label_span = $('label span', fieldset);
+                var children = label_span.children();
+                label_span.text(new_cat.text());
+                label_span.append(children);
+                
 
                 // setting select field with category id
                 $('select', fieldset).attr({
