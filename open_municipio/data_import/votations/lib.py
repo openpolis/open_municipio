@@ -420,12 +420,6 @@ class DBVotationWriter(BaseVotationWriter):
                     }
                 )
 
-                # to run once, remove me ASAP
-                #if not created and not b.datetime:
-                #    self.logger.warning("votation %s, time is null, set to %s" % (b, ballot.time))
-                #    b.datetime = ballot.time
-                #    b.save()
-
                 if created:
                     self.logger.debug("%s created in DB..." % b)
                 else:
