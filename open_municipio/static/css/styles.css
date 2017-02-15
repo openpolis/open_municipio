@@ -5419,11 +5419,17 @@ body.politician .page-tabs li.active a {
   background-color: #4788C2;
   padding: 0 15px;
 }
+
 .page-tabs li {
   position: relative;
   border: 0;
   border-left: 1px solid white;
 }
+
+.page-tabs li.pull-right {
+  float: right;
+}
+
 .page-tabs li.active {
   border: 0;
 }
