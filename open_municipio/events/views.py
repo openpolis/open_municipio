@@ -115,7 +115,7 @@ class EventSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
 
     FACETS_LABELS = {
         'institution': _('Institution'),
-        'date': _('Data'),
+        'date': _('Date'),
     }
     DATE_INTERVALS_RANGES = { }
 

@@ -96,7 +96,9 @@
   </div>
 
   {% block act_tab_body %}
-    {% include 'acts/act_table_transitions.html' %}
+    {% if not act.status == "UNDEFINED" %}
+      {% include 'acts/act_table_transitions.html' %}
+    {% endif %}
   {% endblock act_tab_body %}
 
   {%  block act_text %}

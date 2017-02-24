@@ -90,7 +90,7 @@ class ActAdmin(admin.ModelAdmin):
                           AmendmentInline ]
     inlines_base = [ TransitionInline]    
 
-    readonly_fields_superuser = ['status']
+    readonly_fields_superuser = []
     readonly_fields_base = ['idnum', 'title', 'status', 'presentation_date', 
                             'text', 'emitting_institution']
 

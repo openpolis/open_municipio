@@ -86,7 +86,7 @@ em {
                 <span class="pull-right text-right search_act_status">
                   <span class="label label-warning">In esame</span>
                 </span>
-              {% else %}
+              {% elif not result.object.status == "UNDEFINED" %}
                 {% if result.object.get_last_transition.votation %}
                   <a href="{{ result.object.get_last_transition.votation.get_absolute_url }}">
                 {% elif result.object.get_last_transition.attendance %}

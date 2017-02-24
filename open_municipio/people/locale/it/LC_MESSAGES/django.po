@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-17 10:30+0100\n"
+"POT-Creation-Date: 2017-02-24 15:49+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -37,11 +37,11 @@ msgstr "Attualmente in maggioranza"
 msgid "Advanced options"
 msgstr "Opzioni avanzate"
 
-#: admin.py:205
+#: admin.py:206
 msgid "Presences"
 msgstr "Presenze"
 
-#: admin.py:280
+#: admin.py:281
 msgid "Move"
 msgstr "Sposta"
 
@@ -49,431 +49,436 @@ msgstr "Sposta"
 msgid "active charges"
 msgstr "incarichi attivi"
 
-#: filters.py:16 search_indexes.py:90 views.py:111 views.py:154 views.py:196
+#: filters.py:16 search_indexes.py:113 search_indexes.py:268 views.py:119
+#: views.py:168 views.py:546
 msgid "yes"
 msgstr "sì"
 
-#: filters.py:17 search_indexes.py:90
+#: filters.py:17 search_indexes.py:113 search_indexes.py:268
 msgid "no"
 msgstr "no"
 
-#: models.py:40
+#: models.py:41
 msgid "Male"
 msgstr "Uomo"
 
-#: models.py:41
+#: models.py:42
 msgid "Female"
 msgstr "Donna"
 
-#: models.py:43
+#: models.py:44
 msgid "first name"
 msgstr "nome"
 
-#: models.py:44
+#: models.py:45
 msgid "last name"
 msgstr "cognome"
 
-#: models.py:45
+#: models.py:46
 msgid "birth date"
 msgstr "data di nascita"
 
-#: models.py:46
+#: models.py:47
 msgid "birth location"
 msgstr "luogo di nascita"
 
-#: models.py:48
+#: models.py:49
 msgid "sex"
 msgstr "genere"
 
-#: models.py:49
+#: models.py:50
 msgid "openpolis politician ID"
 msgstr "ID politico openpolis"
 
-#: models.py:57 models.py:291 models.py:307 models.py:322
+#: models.py:58 models.py:302 models.py:318 models.py:333
 msgid "person"
 msgstr "persona"
 
-#: models.py:58
+#: models.py:59
 msgid "people"
 msgstr "persone"
 
-#: models.py:152
+#: models.py:154
 msgid "Current"
 msgstr "Corrente"
 
-#: models.py:286
+#: models.py:297
 msgid "email"
 msgstr "email"
 
-#: models.py:287
+#: models.py:298
 msgid "url"
 msgstr "url"
 
-#: models.py:288
+#: models.py:299
 msgid "phone"
 msgstr "telefono"
 
-#: models.py:289
+#: models.py:300
 msgid "fax"
 msgstr "fax"
 
-#: models.py:290
+#: models.py:301
 msgid "snail mail"
 msgstr "posta tradizionale"
 
-#: models.py:292
+#: models.py:303
 msgid "twitter"
 msgstr "twitter"
 
-#: models.py:293
+#: models.py:304
 msgid "facebook"
 msgstr "facebook"
 
-#: models.py:294
+#: models.py:305
 msgid "financial information"
 msgstr "informazioni finanziarie"
 
-#: models.py:296
+#: models.py:307
 msgid "type"
 msgstr "tipo"
 
-#: models.py:298
+#: models.py:309
 msgid "value"
 msgstr "valore"
 
-#: models.py:299 models.py:326 models.py:394 models.py:986
+#: models.py:310 models.py:337 models.py:414 models.py:1018
 msgid "description"
 msgstr "descrizione"
 
-#: models.py:303
+#: models.py:314
 msgid "Resource"
 msgstr "Risorsa"
 
-#: models.py:310 models.py:415 models.py:1025 models.py:1293
+#: models.py:321 models.py:435 models.py:1057 models.py:1338
 msgid "institution"
 msgstr "istituzione"
 
-#: models.py:313 models.py:735 models.py:872
+#: models.py:324 models.py:758 models.py:904
 msgid "group"
 msgstr "gruppo"
 
-#: models.py:323 models.py:392 models.py:875
+#: models.py:334 models.py:412 models.py:750 models.py:907
 msgid "start date"
 msgstr "data di inizio"
 
-#: models.py:324 models.py:393 models.py:876
+#: models.py:335 models.py:413 models.py:751 models.py:908
 msgid "end date"
 msgstr "data di fine"
 
-#: models.py:325 models.py:877
+#: models.py:336 models.py:909
 msgid "end reason"
 msgstr "causa fine"
 
-#: models.py:327
+#: models.py:338
 msgid ""
 "Insert the complete description of the charge, if it gives more information "
 "than the charge type"
 msgstr ""
-"Specifica la descrizione completa dell'incarico, se ciò dà maggiori informazioni "
-"rispetto al mero tipo di incarico"
+"Specifica la descrizione completa dell'incarico, se ciò dà maggiori "
+"informazioni rispetto al mero tipo di incarico"
 
-#: models.py:395
+#: models.py:415
 msgid "Insert an extended description of the responsability"
 msgstr "Inserisci una descrizione estesa della responsabilità"
 
-#: models.py:410
+#: models.py:430
 msgid "in substitution of"
 msgstr "in sostituzione di"
 
-#: models.py:414
+#: models.py:434
 msgid "substituted by"
 msgstr "sostituito da"
 
-#: models.py:416
+#: models.py:436
 msgid "openpolis institution charge ID"
 msgstr "ID incarico istituzionale in open polis"
 
-#: models.py:419
+#: models.py:439
 msgid "original institution charge"
 msgstr "incarico istituzionale originale"
 
-#: models.py:421
+#: models.py:441
 msgid "number of presences during votes"
 msgstr "presenze alle votazioni"
 
-#: models.py:422
+#: models.py:442
 msgid "number of absences during votes"
 msgstr "assenze alle votazioni"
 
-#: models.py:423
+#: models.py:443
 msgid "number of present attendances"
 msgstr "presenze in approvazione di atti"
 
-#: models.py:424
+#: models.py:444
 msgid "number of absent attendances"
 msgstr "assenze in approvazione di atti"
 
-#: models.py:426
+#: models.py:446
 msgid "in case of a city council member, specifies whether he/she can vote"
 msgstr "nel caso di consigliere, specifica se è abilitato/a al voto"
 
-#: models.py:449
+#: models.py:469
 msgid "institution charge"
 msgstr "incarico istituzionale"
 
-#: models.py:450
+#: models.py:470
 msgid "institution charges"
 msgstr "incarichi istituzionali"
 
-#: models.py:467 models.py:548 models.py:654 models.py:1013 views.py:153
+#: models.py:487 models.py:568 models.py:673 models.py:1045 views.py:167
 msgid "Mayor"
 msgstr "Sindaco"
 
-#: models.py:483 models.py:552 views.py:110 views.py:195
+#: models.py:503 models.py:572 views.py:118 views.py:545
 msgid "Counselor"
 msgstr "Consigliere"
 
-#: models.py:488
+#: models.py:508
 msgid "Member"
 msgstr "Membro"
 
-#: models.py:550
+#: models.py:570
 msgid "City government member"
 msgstr "Assessore"
 
-#: models.py:554
+#: models.py:574
 msgid "Committee member"
 msgstr "Membro di commissione"
 
-#: models.py:655
+#: models.py:674
 msgid "First deputy mayor"
 msgstr "Vice sindaco"
 
-#: models.py:656 models.py:678
+#: models.py:675 models.py:697
 msgid "President"
 msgstr "Presidente"
 
-#: models.py:657 models.py:679
+#: models.py:676 models.py:698
 msgid "Vice president"
 msgstr "Vice presidente"
 
-#: models.py:658
+#: models.py:677
 msgid "Vice vice president"
 msgstr "Vice vice presidente"
 
-#: models.py:661 models.py:873 models.py:933
+#: models.py:680 models.py:905 models.py:965
 msgid "charge"
 msgstr "incarico"
 
-#: models.py:662 models.py:684 models.py:708 models.py:932
+#: models.py:681 models.py:703 models.py:727 models.py:964
 msgid "charge type"
 msgstr "tipo di incarico"
 
-#: models.py:664
+#: models.py:683
 msgid "institutional responsability"
 msgstr "responsabilità istituzionale"
 
-#: models.py:665
+#: models.py:684
 msgid "institutional responsabilities"
 msgstr "responsabilità istituzionali"
 
-#: models.py:677
+#: models.py:696
 msgid "Chief Executive Officer"
 msgstr "Amministratore delegato"
 
-#: models.py:680
+#: models.py:699
 msgid "Member of the board"
 msgstr "Membro del consiglio"
 
-#: models.py:683 models.py:1237
+#: models.py:702 models.py:1282
 msgid "company"
 msgstr "azienda"
 
-#: models.py:688
+#: models.py:707
 msgid "organization charge"
 msgstr "incarico organizzativo"
 
-#: models.py:689
+#: models.py:708
 msgid "organization charges"
 msgstr "incarichi organizzativi"
 
-#: models.py:703
+#: models.py:722
 msgid "Director"
 msgstr "Direttore"
 
-#: models.py:704
+#: models.py:723
 msgid "Executive"
 msgstr "Esecutivo"
 
-#: models.py:707 models.py:1261
+#: models.py:726 models.py:1306
 msgid "office"
 msgstr "ufficio"
 
-#: models.py:712
+#: models.py:731
 msgid "administration charge"
 msgstr "incarico amministrativo"
 
-#: models.py:713
+#: models.py:732
 msgid "administration charges"
 msgstr "incarichi amministrativi"
 
-#: models.py:727 models.py:985
+#: models.py:746 models.py:1017
 msgid "Suggested value automatically generated from name, must be unique"
 msgstr "Valore suggerito automaticamente dal nome, deve essere univoco"
 
-#: models.py:736
+#: models.py:759
 msgid "groups"
 msgstr "gruppi"
 
-#: models.py:874
+#: models.py:906
 msgid "charge description"
 msgstr "descrizione incarico"
 
-#: models.py:915
+#: models.py:947
 msgid "group charge"
 msgstr "incarico in gruppo"
 
-#: models.py:916
+#: models.py:948
 msgid "group charges"
 msgstr "incarichi in gruppo"
 
-#: models.py:929
+#: models.py:961
 msgid "Group leader"
 msgstr "Capogruppo"
 
-#: models.py:930
+#: models.py:962
 msgid "Group deputy leader"
 msgstr "Vice capo gruppo"
 
-#: models.py:946
+#: models.py:978
 msgid "group responsibility"
 msgstr "responsabilità in gruppo"
 
-#: models.py:947
+#: models.py:979
 msgid "group responsibilities"
 msgstr "responsabilità in gruppi"
 
-#: models.py:955
+#: models.py:987
 msgid "Is majority"
 msgstr "Maggioranza"
 
-#: models.py:956 views.py:673
+#: models.py:988 views.py:741
 msgid "Start date"
 msgstr "Inizio"
 
-#: models.py:957 views.py:674
+#: models.py:989 views.py:742
 msgid "End date"
 msgstr "Fine"
 
-#: models.py:962
+#: models.py:994
 msgid "group majority"
 msgstr "gruppo di maggioranza"
 
-#: models.py:963
+#: models.py:995
 msgid "group majorities"
 msgstr "gruppi di maggioranza"
 
-#: models.py:984
+#: models.py:1016
 msgid "name"
 msgstr "cognome"
 
-#: models.py:1014
+#: models.py:1046
 msgid "Council"
 msgstr "Consiglio"
 
-#: models.py:1015
+#: models.py:1047
 msgid "Town government"
 msgstr "Giunta"
 
-#: models.py:1016
+#: models.py:1048
 msgid "Committee"
 msgstr "Commissione"
 
-#: models.py:1017
+#: models.py:1049
 msgid "Joint committee"
 msgstr "Commissione congiunta"
 
-#: models.py:1026
+#: models.py:1058
 msgid "institutions"
 msgstr "istituzioni"
 
-#: models.py:1238
+#: models.py:1283
 msgid "companies"
 msgstr "aziende"
 
-#: models.py:1258
+#: models.py:1303
 msgid "the parent office, in a hierarchy"
 msgstr "l'ufficio superiore, in una gerarchia"
 
-#: models.py:1262
+#: models.py:1307
 msgid "offices"
 msgstr "uffici"
 
-#: models.py:1289
+#: models.py:1334
 msgid "identifier"
 msgstr "identificativo"
 
-#: models.py:1290
+#: models.py:1335
 msgid "date"
 msgstr "data"
 
-#: models.py:1291
+#: models.py:1336
 msgid "number"
 msgstr "numero"
 
-#: models.py:1292
+#: models.py:1337
 msgid "call"
 msgstr "convocazione"
 
-#: models.py:1295
+#: models.py:1339
+msgid "other institutions"
+msgstr "altre istituzioni"
+
+#: models.py:1341
 msgid "minute"
 msgstr "verbale"
 
-#: models.py:1298
+#: models.py:1344
 msgid "sitting"
 msgstr "seduta"
 
-#: models.py:1299
+#: models.py:1345
 msgid "sittings"
 msgstr "sedute"
 
-#: models.py:1354
+#: models.py:1416
 msgid "ordine del giorno"
 msgstr ""
 
-#: models.py:1355
+#: models.py:1417
 msgid "questione procedurale"
 msgstr ""
 
-#: models.py:1356
+#: models.py:1418
 msgid "interrogation"
 msgstr "interrogazione"
 
-#: models.py:1362
+#: models.py:1424
 msgid "seq_order"
 msgstr "ordine"
 
-#: models.py:1366
+#: models.py:1428
 msgid "sitting item"
 msgstr "punto odg seduta"
 
-#: models.py:1367
+#: models.py:1429
 msgid "sitting items"
 msgstr "punti odg seduta"
 
-#: views.py:153
+#: views.py:167
 msgid "City Government Member"
 msgstr "Assessore"
 
-#: views.py:672
+#: views.py:740 views.py:864
 msgid "Active"
 msgstr "Attivo"
 
-#: views.py:675
+#: views.py:743
 msgid "Institution"
 msgstr "Istituzione"
 
-#: views.py:676
+#: views.py:744
 msgid "Responsability"
 msgstr "Responsabilità"
 
