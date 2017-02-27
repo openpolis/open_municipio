@@ -73,7 +73,7 @@
                 </thead>
                 <tbody>
                 {% for c in members %}
-                	{%  include 'people/counselor_table_row.html' with charge=c %}
+                	{%  include 'people/counselor_table_row.html' with charge=c label=c.group_responsability %}
                 {% endfor %}
                 </tbody>
             </table>

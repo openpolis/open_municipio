@@ -276,12 +276,25 @@ body #main.two_columns {
             </dl>
 
             <dl>
-                {% if facets.fields.responsability and not facets.fields.responsability.is_field_selected and facets.fields.institution.is_field_selected  %}
+                {% if facets.fields.responsability and not facets.fields.responsability.is_field_selected %}
                     <dt>{{ facets_labels.responsability }}</dt>
                     {% for t in facets.fields.responsability.counts %}
                         <dd>
                             {% if not t.2 and t.1 %}
                                 <a href="{{ base_url }}&selected_facets=responsability:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
+                            {% endif %}
+                        </dd>
+                    {% endfor %}
+                {% endif %}
+            </dl>
+
+            <dl>
+                {% if facets.fields.group_responsability and not facets.fields.group_responsability.is_field_selected %}
+                    <dt>{{ facets_labels.group_responsability }}</dt>
+                    {% for t in facets.fields.group_responsability.counts %}
+                        <dd>
+                            {% if not t.2 and t.1 %}
+                                <a href="{{ base_url }}&selected_facets=group_responsability:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
                             {% endif %}
                         </dd>
                     {% endfor %}

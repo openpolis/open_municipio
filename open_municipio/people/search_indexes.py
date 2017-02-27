@@ -23,6 +23,7 @@ class InstitutionChargeIndex(indexes.SearchIndex, indexes.Indexable):
     group = indexes.MultiValueField(indexed=True, stored=False)
     current_group = indexes.CharField(indexed=True, stored=False)
     responsability = indexes.FacetCharField()
+    group_responsability = indexes.FacetCharField()
     level = indexes.IntegerField()
 
     start_date = indexes.FacetDateField(model_attr='start_date')
@@ -96,6 +97,13 @@ class InstitutionChargeIndex(indexes.SearchIndex, indexes.Indexable):
 
         if obj.responsabilities.count() >= 1:
             return obj.responsabilities[0].get_charge_type_display()
+
+    def prepare_group_responsability(self, obj):
+        
+        try:
+            return obj.current_groupcharge.current_responsability.get_charge_type_display()
+        except Exception, e:
+            return ''
 
     def prepare_level(self, obj):
 

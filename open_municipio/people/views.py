@@ -209,7 +209,7 @@ class GroupDetailView(DetailView):
             .filter(group=self.object.slug)
 
         try:
-            extra_context['group_result'] = num_acts = SearchQuerySet()\
+            extra_context['group_result'] = SearchQuerySet()\
                 .filter(django_ct = 'people.group')\
                 .filter(url = self.object.get_absolute_url())[0]
 
@@ -734,14 +734,16 @@ class ChargeSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
     """
     __name__ = 'ChargeSearchView'
 
-    FACETS_SORTED = [ 'start_date', 'end_date', 'is_active', 'institution', 'responsability' ]
+    FACETS_SORTED = [ 'end_date', 'group_responsability', 'institution', 'is_active',
+                     'responsability', 'start_date' ]
 
     FACETS_LABELS = {
         'is_active': _('Active'),
         'start_date': _('Start date'),
         'end_date': _('End date'),
         'institution': _('Institution'),
-        'responsability': _('Responsability')
+        'responsability': _('Institution responsability'),
+        'group_responsability': _('Group responsability')
     }
     DATE_INTERVALS_RANGES = { }
 
@@ -755,7 +757,7 @@ class ChargeSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
     
         sqs = SearchQuerySet().filter(django_ct='people.institutioncharge')\
             .filter(institution = Raw("[* TO *]")).facet('is_active')\
-            .facet('institution').facet('responsability')
+            .facet('institution').facet('responsability').facet('group_responsability')
 
         for (year, range) in self.DATE_INTERVALS_RANGES.items():
             sqs = sqs.query_facet('start_date', range['qrange'])

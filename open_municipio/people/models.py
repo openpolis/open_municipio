@@ -810,17 +810,6 @@ class Group(models.Model):
         Current members of the group, as institution charges, leader and
         council president and vice presidents **excluded**.
         """
-## what this query does is wrong because it mixes GroupResponsability for
-## GroupCharges belonging to groups different from the current one
-## (think about someone changing groups, and having responsibilities in past
-## groups but not current one)
-##        return self.institution_charges.select_related().exclude(
-##            groupcharge__groupresponsability__charge_type__in=(
-##                GroupResponsability.CHARGE_TYPES.leader,
-##                GroupResponsability.CHARGE_TYPES.deputy
-##                ),
-##            groupcharge__groupresponsability__end_date__isnull=True
-##        )
         group_members = self.groupcharge_set.current().exclude(
             groupresponsability__charge_type__in=(
                 GroupResponsability.CHARGE_TYPES.leader,
