@@ -463,6 +463,11 @@ class InstitutionCharge(Charge):
     def is_counselor(self):
         return self.institution.institution_type == Institution.COUNCIL
 
+    @property
+    def is_in_city_government(self):
+        return (self.institution.institution_type == Institution.CITY_GOVERNMENT or \
+            self.institution.institution_type == Institution.MAYOR)
+
 
     class Meta(Charge.Meta):
         db_table = u'people_institution_charge'

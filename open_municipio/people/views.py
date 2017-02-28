@@ -375,8 +375,7 @@ class PoliticianDetailView(DetailView):
             historical_groupcharges = charge.historical_groupcharges #person.historical_groupcharges
             context['historical_groupcharges'] = historical_groupcharges.order_by('start_date') if historical_groupcharges else None
 
-        # Is the current charge a counselor? If so, we show present/absent
-        # graph
+        # Is the current charge a counselor? If so, we show present/absent graph
         if charge and charge.is_counselor:
             # Calculate average present/absent for counselors
             percentage_present = 0
@@ -398,7 +397,6 @@ class PoliticianDetailView(DetailView):
                 "%.1f" % (float(percentage_absent) / n_counselors * 100)
 
             # Calculate present/absent for current counselor
-#            charge = context['current_counselor_charge']
             charge.percentage_present_votations = charge.percentage_absent_votations = 0.0
 
             if charge.n_present_votations + charge.n_absent_votations > 0:
@@ -413,11 +411,8 @@ class PoliticianDetailView(DetailView):
             if charge.n_present_votations > 0:
                 context['percentage_rebel_votations'] = "%.1f" % (float(100 * charge.n_rebel_votations / charge.n_present_votations))
 
-        # Current politician's charge votes for key votations
-        # last 10 are passed to template
-#        charge = context['current_counselor_charge']
-        if charge and charge.is_counselor:
-
+            # Current politician's charge votes for key votations
+            # last 10 are passed to template
             context['current_charge_votes'] = charge.chargevote_set \
                 .filter(votation__is_key=True) \
                 .order_by('-votation__sitting__date')[0:10]
@@ -426,11 +421,40 @@ class PoliticianDetailView(DetailView):
                 .filter(is_rebel=True) \
                 .order_by('-votation__sitting__date')[0:10]
 
-        # last 10 presented acts
+        # Is the current charge a counselor? If so, we show present/absent
+        # graph
+        if charge and charge.is_in_city_government:
 
-#        presented_acts = Act.objects\
-#            .filter(actsupport__charge__pk__in=person.current_institution_charges)\
-#            .order_by('-presentation_date')
+            # Calculate average present/absent for counselors
+            percentage_present = 0
+            percentage_absent = 0
+            n_gov_charges = len(municipality.gov.charges)
+            for gov_charge in municipality.gov.charges:
+                n_attendances = gov_charge.n_present_attendances \
+                    + gov_charge.n_absent_attendances
+                if n_attendances > 0:
+                    percentage_present += \
+                        float(gov_charge.n_present_attendances) / n_attendances
+                    percentage_absent += \
+                        float(gov_charge.n_absent_attendances) / n_attendances
+            # Empty city council? That can't be the case!
+            # n_counselors is supposed to be > 0
+            context['percentage_present_attendances_average'] = \
+                "%.1f" % (float(percentage_present) / n_gov_charges * 100)
+            context['percentage_absent_attendances_average'] = \
+                "%.1f" % (float(percentage_absent) / n_gov_charges * 100)
+
+            # Calculate present/absent for current charge
+            charge.percentage_present_attendances = charge.percentage_absent_attendances = 0.0
+
+            if charge.n_present_attendances + charge.n_absent_attendances > 0:
+                context['n_total_attendances'] = charge.n_present_attendances + charge.n_absent_attendances
+                context['percentage_present_attendances'] = \
+                    "%.1f" % (float(charge.n_present_attendances) * 100 / context['n_total_attendances'])
+                context['percentage_absent_attendances'] = \
+                    "%.1f" % (float(charge.n_absent_attendances) * 100 / context['n_total_attendances'])
+
+        # last 10 presented acts
         presented_acts = Act.objects\
             .filter(actsupport__charge=charge)\
             .order_by('-presentation_date')
