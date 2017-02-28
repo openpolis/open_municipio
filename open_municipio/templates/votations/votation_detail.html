@@ -137,7 +137,8 @@
       {% else %}
       Seduta <strong>n.{{ votation.sitting.number }}</strong>
       del <strong>{{ votation.sitting.date|date:"d/m/Y" }}</strong>
-      {% endif %}, Votazione n.{{ votation.idnum }}<br/>
+      {% endif %}, Votazione n.{{ votation.idnum }}
+      {% if votation.datetime %} delle ore {{ votation.datetime|time:"H:i" }}{% endif %}<br/>
       {% if votation.ref_act %}
       <h3>
       {{ votation.ref_act.adj_title|default:votation.ref_act.title }}
