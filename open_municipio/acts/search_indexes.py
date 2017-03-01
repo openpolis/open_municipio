@@ -27,9 +27,9 @@ class ActIndex(indexes.SearchIndex, indexes.Indexable):
     charge = indexes.MultiValueField(indexed=True, stored=False)
     group = indexes.MultiValueField(indexed=True, stored=False)
     recipient = indexes.MultiValueField(indexed=True, stored=False)
-    tags_with_urls = indexes.MultiValueField(indexed=True, stored=True)
-    categories_with_urls = indexes.MultiValueField(indexed=True, stored=True)
-    locations_with_urls = indexes.MultiValueField(indexed=True, stored=True)
+    tag = indexes.MultiValueField(indexed=True, stored=True, faceted=True)
+    category = indexes.MultiValueField(indexed=True, stored=True, faceted=True)
+    location = indexes.MultiValueField(indexed=True, stored=True, faceted=True)
     has_locations = indexes.FacetCharField()
     idnum = indexes.CharField(indexed=True, stored=False, model_attr='idnum')
     month = indexes.FacetCharField()
@@ -51,13 +51,17 @@ class ActIndex(indexes.SearchIndex, indexes.Indexable):
     def get_model(self):
         return Act
 
-    def prepare_tags_with_urls(self, obj):
+    def prepare_tag(self, obj):
         d_obj = obj.downcast()
-        return ["%s|%s" % (t.name, t.get_absolute_url()) for t in list(d_obj.tags)] if d_obj else None
+        return [t.name for t in list(d_obj.tags)] if d_obj else None
 
-    def prepare_categories_with_urls(self, obj):
+    def prepare_category(self, obj):
         d_obj = obj.downcast()
-        return ["%s|%s" % (t.name, t.get_absolute_url()) for t in list(d_obj.categories)] if d_obj else None
+        return [t.name for t in list(d_obj.categories)] if d_obj else None
+
+    def prepare_location(self, obj):
+        d_obj = obj.downcast()
+        return [t.name for t in list(d_obj.locations)] if d_obj else None
 
     def prepare_has_locations(self, obj):
         d_obj = obj.downcast()
@@ -67,26 +71,10 @@ class ActIndex(indexes.SearchIndex, indexes.Indexable):
             value = _("yes")
 
         return value
-
-    def prepare_locations_with_urls(self, obj):
-        d_obj = obj.downcast()
-        return ["%s|%s" % (t.name, t.get_absolute_url()) for t in list(d_obj.locations)] if d_obj else None
     
     def prepare_title(self, obj):
 
         activate(settings.LANGUAGE_CODE)
-##        d_obj = obj.downcast()
-##
-##        if d_obj.get_type_name() == u'emendamento':
-##            r_title = d_obj.act.adj_title if d_obj.act.adj_title else d_obj.act.title
-##            r_title += ' - '
-##        else:
-##            r_title = ''
-##
-##        r_title += obj.adj_title if obj.adj_title else obj.title
-##
-###        self.logger.info("act index title: %s - %s" % (r_title, obj.presentation_date))
-##        return r_title
         return obj.title
 
     def prepare_adj_title(self, obj):

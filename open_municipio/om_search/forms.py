@@ -60,8 +60,6 @@ class RangeFacetedSearchForm(SearchForm):
             sqs = sqs.filter_and(categories_with_urls=self.cleaned_data['category'])
         if self.is_valid() and self.cleaned_data.get('tag'):
             sqs = sqs.filter_and(tags_with_urls=self.cleaned_data['tag'])
-        if self.is_valid() and self.cleaned_data.get('location'):
-            sqs = sqs.filter_and(locations_with_urls=self.cleaned_data['location'])
 
         # custom sorting
         if self.is_valid():
