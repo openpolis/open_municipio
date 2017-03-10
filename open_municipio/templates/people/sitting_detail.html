@@ -41,14 +41,14 @@
         </a></li>
       {% endif %}
       {% if votations.count > 0 %}
-        <li><a data-toggle="tab" href="#votations_tab">
-          Votazioni ({{ votations.count }})
-        </a></li>
+        <li{% if not sitting_items.count and not attendances.count %} class="active"{% endif %}>
+          <a data-toggle="tab" href="#votations_tab">Votazioni ({{ votations.count }})</a>
+        </li>
       {% endif %}
       {% if sitting_event and sitting_event.description|length > 0 %}
-        <li><a data-toggle="tab" href="#sitting_event_tab">
-          Convocazione
-        </a></li>
+        <li{% if not sitting_items.count and not attendances.count and not votations.count %} class="active"{% endif %}>
+          <a data-toggle="tab" href="#sitting_event_tab">Convocazione</a>
+        </li>
       {% endif %}
     </ul>
     <div class="tab-content">
@@ -62,12 +62,12 @@
         </div>
       {% endif %}
       {% if votations.count > 0 %}
-        <div class="tab-pane" id="votations_tab">
+        <div class="tab-pane{% if not sitting_items.count and not attendances.count %} active{% endif %}" id="votations_tab">
           {% include 'people/sitting_votation_list.html' with votations=votations %}
         </div>
       {% endif %}
       {% if sitting_event and sitting_event.description|length > 0 %}
-        <div class="tab-pane" id="sitting_event_tab">
+        <div class="tab-pane{% if not sitting_items.count and not attendances.count and not votations.count %} active{% endif %}" id="sitting_event_tab">
           <h4>
             <a href="{{ sitting_event.get_absolute_url }}">
               Evento {{ sitting_event.institution.name_with_preposition }}
