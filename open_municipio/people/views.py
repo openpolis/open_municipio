@@ -1,5 +1,7 @@
 from datetime import datetime, date
 import logging
+from operator import attrgetter
+from itertools import chain
 
 from django.shortcuts import get_object_or_404
 
@@ -661,13 +663,36 @@ class SittingCalendarView(TemplateView):
 
         events = Event.objects.filter(date__gte=filter_since)
 
-        sittings = {}
+        sittings_citygov = {}
+        sittings_council = {}
 
         for i in range(1,13):
-            sittings[i] = Sitting.objects.filter(date__year=year, date__month=i).order_by("date")
+            month_sittings_citygov = Sitting.objects.filter(date__year=year, date__month=i,
+                institution__institution_type__lte=Institution.CITY_GOVERNMENT)
+
+            month_sittings_council = Sitting.objects.filter(date__year=year, date__month=i,
+                institution__institution_type__gte=Institution.COUNCIL)
+
+            month_sittings_citygov_days = set([s.date.day for s in month_sittings_citygov])
+            month_sittings_council_days = set([s.date.day for s in month_sittings_council])
+
+            month_events_citygov = [e for e in Event.objects.filter(date__year=year, date__month=i,
+                institution__institution_type__lte=Institution.CITY_GOVERNMENT) \
+                if e.date.day not in month_sittings_citygov_days]
+
+            month_events_council = [e for e in Event.objects.filter(date__year=year, date__month=i,
+                institution__institution_type__gte=Institution.COUNCIL) \
+                if e.date.day not in month_sittings_council_days]
+
+            for e in month_events_citygov: e.is_event = True
+            for e in month_events_council: e.is_event = True
+
+            sittings_citygov[i] = sorted(chain(month_sittings_citygov, month_events_citygov), key=attrgetter('date'))
+            sittings_council[i] = sorted(chain(month_sittings_council, month_events_council), key=attrgetter('date'))
 
         extra_context = {
-            'sittings' : sittings,
+            'sittings_citygov' : sittings_citygov,
+            'sittings_council' : sittings_council,
             'sitting_years' : sitting_years,
             'events' : events,
             'year' : year
