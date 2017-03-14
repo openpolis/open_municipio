@@ -148,22 +148,22 @@ body #main.two_columns {
                 {% endif %}</td>
 
                 <td>{% if result.n_cgdeliberations %}
-                	<a href="{% url 'om_act_search' %}?q=&charge={{ result.object.id }}&selected_facets=act_type:delibera di giunta">
+                	<a href="{% url 'om_act_search' %}?q=&charge={{ result.object.id }}&f=act_type:delibera di giunta">
                 	{{ result.n_cgdeliberations }}</a><br />({{ result.n_cgdeliberations_index|floatformat:2 }})
                 {% endif %}</td>
 
                 <td>{% if result.n_deliberations %}
-                	<a href="{% url 'om_act_search' %}?q=&charge={{ result.object.id }}&selected_facets=act_type:delibera">
+                	<a href="{% url 'om_act_search' %}?q=&charge={{ result.object.id }}&f=act_type:delibera">
                 	{{ result.n_deliberations }}</a><br />({{ result.n_deliberations_index|floatformat:2 }})
                 {% endif %}</td>
 
                 <td>{% if result.n_motions %}
-                	<a href="{% url 'om_act_search' %}?q=&charge={{ result.object.id }}&selected_facets=act_type:mozione">
+                	<a href="{% url 'om_act_search' %}?q=&charge={{ result.object.id }}&f=act_type:mozione">
                 	{{ result.n_motions }}</a><br />({{ result.n_motions_index|floatformat:2 }})
                 {% endif %}</td>
 
                 <td>{% if result.n_agendas %}
-                	<a href="{% url 'om_act_search' %}?q=&charge={{ result.object.id }}&selected_facets=act_type:ordine del giorno">
+                	<a href="{% url 'om_act_search' %}?q=&charge={{ result.object.id }}&f=act_type:ordine del giorno">
                 	{{ result.n_agendas }}</a><br />({{ result.n_agendas_index|floatformat:2 }})
                 {% endif %}</td>
 
@@ -172,22 +172,22 @@ body #main.two_columns {
                 {% endif %}</td>
 
                 <td>{% if result.n_amendments %}
-                	<a href="{% url 'om_act_search' %}?q=&charge={{ result.object.id }}&selected_facets=act_type:emendamento">
+                	<a href="{% url 'om_act_search' %}?q=&charge={{ result.object.id }}&f=act_type:emendamento">
                 	{{ result.n_amendments }}</a><br />({{ result.n_amendments_index|floatformat:2 }})
                 {% endif %}</td>
 
                 <td>{% if result.n_interrogations %}
-                	<a href="{% url 'om_act_search' %}?q=&charge={{ result.object.id }}&selected_facets=act_type:interrogazione">
+                	<a href="{% url 'om_act_search' %}?q=&charge={{ result.object.id }}&f=act_type:interrogazione">
                 	{{ result.n_interrogations }}</a><br />({{ result.n_interrogations_index|floatformat:2 }})
                 {% endif %}</td>
 
                 <td>{% if result.n_interpellations %}
-                	<a href="{% url 'om_act_search' %}?q=&charge={{ result.object.id }}&selected_facets=act_type:interpellanza">
+                	<a href="{% url 'om_act_search' %}?q=&charge={{ result.object.id }}&f=act_type:interpellanza">
                 	{{ result.n_interpellations }}</a><br />({{ result.n_interpellations_index|floatformat:2 }})
                 {% endif %}</td>
 
                 <td>{% if result.n_audits %}
-                	<a href="{% url 'om_act_search' %}?q=&charge={{ result.object.id }}&selected_facets=act_type:accesso agli atti">
+                	<a href="{% url 'om_act_search' %}?q=&charge={{ result.object.id }}&f=act_type:accesso agli atti">
                 	{{ result.n_audits }}</a><br />({{ result.n_audits_index|floatformat:2 }})
                 {% endif %}</td>
 
@@ -255,7 +255,7 @@ body #main.two_columns {
                     {% for t in facets.fields.is_active.counts %}
                         <dd>
                             {% if not t.2 %}
-                                <a href="{{ base_url }}&selected_facets=is_active:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
+                                <a href="{{ base_url }}&f=is_active:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
                             {% endif %}
                         </dd>
                     {% endfor %}
@@ -268,7 +268,7 @@ body #main.two_columns {
                     {% for t in facets.fields.institution.counts %}
                         <dd>
                             {% if not t.2 %}
-                                <a href="{{ base_url }}&selected_facets=institution:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
+                                <a href="{{ base_url }}&f=institution:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
                             {% endif %}
                         </dd>
                     {% endfor %}
@@ -281,7 +281,7 @@ body #main.two_columns {
                     {% for t in facets.fields.responsability.counts %}
                         <dd>
                             {% if not t.2 and t.1 %}
-                                <a href="{{ base_url }}&selected_facets=responsability:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
+                                <a href="{{ base_url }}&f=responsability:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
                             {% endif %}
                         </dd>
                     {% endfor %}
@@ -294,7 +294,7 @@ body #main.two_columns {
                     {% for t in facets.fields.group_responsability.counts %}
                         <dd>
                             {% if not t.2 and t.1 %}
-                                <a href="{{ base_url }}&selected_facets=group_responsability:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
+                                <a href="{{ base_url }}&f=group_responsability:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
                             {% endif %}
                         </dd>
                     {% endfor %}
@@ -306,7 +306,7 @@ body #main.two_columns {
                     <dt>{{ facets_labels.start_date }}</dt>
                     {% for range in facet_queries_start_date.ranges|dictsortreversed:"key"  %}
                         <dd>
-                            <a href="{{ base_url }}&selected_facets={{ range.key }}">
+                            <a href="{{ base_url }}&f={{ range.key }}">
                                 {{ range.label|safe }}
                             </a> ({{ range.count }})
                         </dd>
@@ -319,7 +319,7 @@ body #main.two_columns {
                     <dt>{{ facets_labels.end_date }}</dt>
                     {% for range in facet_queries_end_date.ranges|dictsortreversed:"key"  %}
                         <dd>
-                            <a href="{{ base_url }}&selected_facets={{ range.key }}">
+                            <a href="{{ base_url }}&f={{ range.key }}">
                                 {{ range.label|safe }}
                             </a> ({{ range.count }})
                         </dd>

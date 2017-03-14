@@ -6,7 +6,8 @@
     <div>
       <ul class="calendar_events events">
         {% for event in events %}
-            <li data-day="{{ event.date|date:"m/d/Y" }}"><strong>{{ event.date|date:"d.m.Y" }}</strong> alle {{ event.event_time|time:"H:i" }}
+            <li data-day="{{ event.date|date:"m/d/Y" }}">
+              <strong>{{ event.date|date:"d.m.Y" }}</strong>{% if event.event_time %} alle {{ event.event_time|time:"H:i" }}{% endif %}
                 <a href="#event_{{ event.id }}_description" class="event_toggle_modal">{{ event.title }}</a>
                 {%  include 'events/_modal.html' %}
             </li>

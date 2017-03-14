@@ -58,7 +58,7 @@
             <h2>I consiglieri con più atti</h2>
             <p>
                 Sono i Consiglieri che hanno presentato più atti come primo firmatario.
-                <i class="icon-play"></i> <a href="{% url 'om_charge_search' %}?q=&selected_facets=institution:Consigliere&selected_facets=is_active:sì&order_by=-n_presented_acts">Vai alla classifica completa</a>
+                <i class="icon-play"></i> <a href="{% url 'om_charge_search' %}?q=&f=institution:Consigliere&f=is_active:sì&order_by=-n_presented_acts">Vai alla classifica completa</a>
             </p>
             <ul class="people-list">
                 {% for p in most_acts %}
@@ -80,7 +80,7 @@
             <h2>Chi interviene in aula per più tempo</h2>
             <p>
                 La durata degli interventi viene stimata sulla base dei resoconti stenografici {% popover_info 'durata-interventi' %}
-                <i class="icon-play"></i> <a href="{% url 'om_charge_search' %}?q=&selected_facets=institution:Consigliere&selected_facets=is_active:sì&order_by=-speeches_minutes">Vai alla classifica completa</a>
+                <i class="icon-play"></i> <a href="{% url 'om_charge_search' %}?q=&f=institution:Consigliere&f=is_active:sì&order_by=-speeches_minutes">Vai alla classifica completa</a>
             </p>
             <ul class="people-list">
                 {% for politician in most_speeches %}
@@ -98,9 +98,9 @@
         <div class="span6">
             <h2>I consiglieri con più atti ispettivi</h2>
             <p>
-                Sono i Consiglieri che hanno presentato più <a href="{% url 'om_charge_search' %}?q=&selected_facets=institution:Consigliere&selected_facets=is_active:sì&order_by=-n_interrogations">interrogazioni</a>,
-                <a href="{% url 'om_charge_search' %}?q=&selected_facets=institution:Consigliere&selected_facets=is_active:sì&order_by=-n_interpellations">interpellanze</a> o <a href="{% url 'om_charge_search' %}?q=&selected_facets=institution:Consigliere&selected_facets=is_active:sì&order_by=-n_audits">accessi agli atti</a> come primo firmatario.
-                <i class="icon-play"></i> <a href="{% url 'om_charge_search' %}?q=&selected_facets=institution:Consigliere&selected_facets=is_active:sì&order_by=-n_inspection_acts">Vai alla classifica completa</a>
+                Sono i Consiglieri che hanno presentato più <a href="{% url 'om_charge_search' %}?q=&f=institution:Consigliere&f=is_active:sì&order_by=-n_interrogations">interrogazioni</a>,
+                <a href="{% url 'om_charge_search' %}?q=&f=institution:Consigliere&f=is_active:sì&order_by=-n_interpellations">interpellanze</a> o <a href="{% url 'om_charge_search' %}?q=&f=institution:Consigliere&f=is_active:sì&order_by=-n_audits">accessi agli atti</a> come primo firmatario.
+                <i class="icon-play"></i> <a href="{% url 'om_charge_search' %}?q=&f=institution:Consigliere&f=is_active:sì&order_by=-n_inspection_acts">Vai alla classifica completa</a>
             </p>
             <ul class="people-list">
                 {% for politician in most_interrogations %}
@@ -122,9 +122,9 @@
         <div class="span6">
             <h2>I consiglieri con più mozioni</h2>
             <p>
-                Sono i Consiglieri che hanno presentato più <a href="{% url 'om_charge_search' %}?q=&selected_facets=institution:Consigliere&selected_facets=is_active:sì&order_by=-n_motions">mozioni</a>
-                o <a href="{% url 'om_charge_search' %}?q=&selected_facets=institution:Consigliere&selected_facets=is_active:sì&order_by=-n_agendas">ordini del giorno</a> come primo firmatario.
-                <i class="icon-play"></i> <a href="{% url 'om_charge_search' %}?q=&selected_facets=institution:Consigliere&selected_facets=is_active:sì&order_by=-n_motions_agendas">Vai alla classifica completa</a>
+                Sono i Consiglieri che hanno presentato più <a href="{% url 'om_charge_search' %}?q=&f=institution:Consigliere&f=is_active:sì&order_by=-n_motions">mozioni</a>
+                o <a href="{% url 'om_charge_search' %}?q=&f=institution:Consigliere&f=is_active:sì&order_by=-n_agendas">ordini del giorno</a> come primo firmatario.
+                <i class="icon-play"></i> <a href="{% url 'om_charge_search' %}?q=&f=institution:Consigliere&f=is_active:sì&order_by=-n_motions_agendas">Vai alla classifica completa</a>
             </p>
             <ul class="people-list">
                 {% for politician in most_motions %}

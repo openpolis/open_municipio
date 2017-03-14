@@ -12,7 +12,9 @@ class FacetRangeDateIntervalsMixin:
         """
 
         """
-        selected_facets = self.request.GET.getlist('selected_facets')
+        selected_facets = self.request.GET.getlist('selected_facets') + \
+            self.request.GET.getlist('f')
+
         facet_counts_queries = self.results.facet_counts().get('queries', {})
 
         facets = {'is_selected': False, 'ranges': []}

@@ -91,24 +91,24 @@
       <tr>
         <td>{{ group_result.n_presented_deliberations|circled:"colored" }}</td>
         <th class="span6">
-          <a href="{% url 'om_act_search' %}?q=&group={{ group_result.object.slug }}&selected_facets=act_type:delibera">
+          <a href="{% url 'om_act_search' %}?q=&group={{ group_result.object.slug }}&f=act_type:delibera">
             Delibere
           </a>
         </th>
         <td>{{ group_result.n_presented_interrogations|circled:"colored" }}</td>
-        <th class="span6"><a href="{% url 'om_act_search' %}?q=&group={{ group_result.object.slug }}&selected_facets=act_type:interrogazione">Interrogazioni</a></th>
+        <th class="span6"><a href="{% url 'om_act_search' %}?q=&group={{ group_result.object.slug }}&f=act_type:interrogazione">Interrogazioni</a></th>
       </tr>
       <tr>
         <td>{{ group_result.n_presented_motions|circled:"colored" }}</td>
-        <th class="span6"><a href="{% url 'om_act_search' %}?q=&group={{ group_result.object.slug }}&selected_facets=act_type:mozione">Mozioni</a></th>
+        <th class="span6"><a href="{% url 'om_act_search' %}?q=&group={{ group_result.object.slug }}&f=act_type:mozione">Mozioni</a></th>
         <td>{{ group_result.n_presented_agendas|circled:"colored" }}</td>
-        <th class="span6"><a href="{% url 'om_act_search' %}?q=&group={{ group_result.object.slug }}&selected_facets=act_type:ordine del giorno">Ordini del giorno</a></th>
+        <th class="span6"><a href="{% url 'om_act_search' %}?q=&group={{ group_result.object.slug }}&f=act_type:ordine del giorno">Ordini del giorno</a></th>
       </tr>
       <tr>
         <td>{{ group_result.n_presented_interpellations|circled:"colored" }}</td>
-        <th class="span6"><a href="{% url 'om_act_search' %}?q=&group={{ group_result.object.slug }}&selected_facets=act_type:interpellanza">Interpellanze</a></th>
+        <th class="span6"><a href="{% url 'om_act_search' %}?q=&group={{ group_result.object.slug }}&f=act_type:interpellanza">Interpellanze</a></th>
         <td>{{ group_result.n_presented_audits|circled:"colored" }}</td>
-        <th class="span6"><a href="{% url 'om_act_search' %}?q=&group={{ group_result.object.slug }}&selected_facets=act_type:accesso agli atti">Accessi agli atti</a></th>
+        <th class="span6"><a href="{% url 'om_act_search' %}?q=&group={{ group_result.object.slug }}&f=act_type:accesso agli atti">Accessi agli atti</a></th>
       </tr>
     </table>
   {% endif %}

@@ -94,7 +94,7 @@ em {
                     <dt>{{ facets_labels.date }}</dt>
                     {% for range in facet_queries_date.ranges|dictsortreversed:"key"  %}
                         <dd>
-                            <a href="{{ base_url }}&selected_facets={{ range.key }}">
+                            <a href="{{ base_url }}&f={{ range.key }}">
                                 {{ range.label|safe }}
                             </a> ({{ range.count }})
                         </dd>
@@ -110,7 +110,7 @@ em {
                         {% if t.1 %}
                             <dd>
                                 {% if not t.2 %}
-                                    <a href="{{ base_url }}&selected_facets=month:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
+                                    <a href="{{ base_url }}&f=month:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
                                 {% endif %}
                             </dd>
                         {%  endif %}

@@ -38,7 +38,7 @@
       <section>
         <h2>Voti chiave {% popover_info 'voti-chiave' %}</h2>
         {% include 'people/charge_votations_table.html' with charge_vote_list=current_charge_votes %}
-        <p><i class="icon-play"></i> <a href="{% url 'om_votation_search' %}?q=&charge={{ charge.id }}&selected_facets=is_key:sì">Vedi tutti i voti chiave del suo mandato</a></p>
+        <p><i class="icon-play"></i> <a href="{% url 'om_votation_search' %}?q=&charge={{ charge.id }}&f=is_key:sì">Vedi tutti i voti chiave del suo mandato</a></p>
       </section>
 
       <hr class="big">

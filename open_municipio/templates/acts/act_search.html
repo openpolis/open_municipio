@@ -165,7 +165,7 @@ em {
                         {% if t.1 %}
                             <dd>
                                 {% if not t.2 %}
-                                    <a href="{{ base_url }}&selected_facets=act_type:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
+                                    <a href="{{ base_url }}&f=act_type:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
                                 {% endif %}
                             </dd>
                         {% endif %}
@@ -179,7 +179,7 @@ em {
                     {% if t.1 %}
                     <dd>
                         {% if not t.2 %}
-                            <a href="{{ base_url }}&selected_facets=status:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
+                            <a href="{{ base_url }}&f=status:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
                         {% endif %}
                     </dd>
                     {%  endif %}
@@ -193,7 +193,7 @@ em {
                         {% if t.1 %}
                         <dd>
                             {% if not t.2 %}
-                                <a href="{{ base_url }}&selected_facets=is_key:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
+                                <a href="{{ base_url }}&f=is_key:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
                             {% endif %}
                         </dd>
                         {%  endif %}
@@ -208,7 +208,7 @@ em {
                         {% if t.1 %}
                             <dd>
                                 {% if not t.2 %}
-                                    <a href="{{ base_url }}&selected_facets=is_proposal:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
+                                    <a href="{{ base_url }}&f=is_proposal:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
                                 {% endif %}
                             </dd>
                         {%  endif %}
@@ -223,7 +223,7 @@ em {
                     {% for t in facets.fields.initiative.counts %}
                         <dd>
                             {% if not t.2 %}
-                                <a href="{{ base_url }}&selected_facets=initiative:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
+                                <a href="{{ base_url }}&f=initiative:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
                             {% endif %}
                         </dd>
                     {% endfor %}
@@ -237,7 +237,7 @@ em {
                         {% if t.1 %}
                             <dd>
                                 {% if not t.2 %}
-                                    <a href="{{ base_url }}&selected_facets=multiple_supporters:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
+                                    <a href="{{ base_url }}&f=multiple_supporters:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
                                 {% endif %}
                             </dd>
                         {%  endif %}
@@ -251,7 +251,7 @@ em {
                         {% if t.1 %}
                             <dd>
                                 {% if not t.2 %}
-                                    <a href="{{ base_url }}&selected_facets=organ:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
+                                    <a href="{{ base_url }}&f=organ:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
                                 {% endif %}
                             </dd>
                         {%  endif %}
@@ -266,7 +266,7 @@ em {
                         {% if t.1 %}
                             <dd>
                                 {% if not t.2 %}
-                                    <a href="{{ base_url }}&selected_facets=has_locations:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
+                                    <a href="{{ base_url }}&f=has_locations:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
                                 {% endif %}
                             </dd>
                         {%  endif %}
@@ -279,7 +279,7 @@ em {
                     <dt>{{ facets_labels.pub_date }}</dt>
                     {% for range in facet_queries_date.ranges|dictsortreversed:"key"  %}
                         <dd>
-                            <a href="{{ base_url }}&selected_facets={{ range.key }}">
+                            <a href="{{ base_url }}&f={{ range.key }}">
                                 {{ range.label|safe }}
                             </a> ({{ range.count }})
                         </dd>
@@ -294,7 +294,7 @@ em {
                         {% if t.1 %}
                             <dd>
                                 {% if not t.2 %}
-                                    <a href="{{ base_url }}&selected_facets=month:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
+                                    <a href="{{ base_url }}&f=month:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
                                 {% endif %}
                             </dd>
                         {%  endif %}
@@ -309,7 +309,7 @@ em {
                         {% if t.1 %}
                             <dd>
                                 {% if not t.2 %}
-                                    <a href="{{ base_url }}&selected_facets=iter_duration:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
+                                    <a href="{{ base_url }}&f=iter_duration:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
                                 {% endif %}
                             </dd>
                         {%  endif %}
@@ -324,7 +324,7 @@ em {
                         {% if t.1 %}
                             <dd>
                                 {% if not t.2 %}
-                                    <a href="{{ base_url }}&selected_facets=location:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
+                                    <a href="{{ base_url }}&f=location:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
                                 {% endif %}
                             </dd>
                         {%  endif %}

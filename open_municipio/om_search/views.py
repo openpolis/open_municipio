@@ -21,7 +21,8 @@ class ExtendedFacetedSearchView(SearchView):
 
         # This way the form can always receive a list containing zero or more
         # facet expressions:
-        form_kwargs['selected_facets'] = self.request.GET.getlist('selected_facets')
+        form_kwargs['selected_facets'] = self.request.GET.getlist('selected_facets') + \
+            self.request.GET.getlist('f')
 
         return super(ExtendedFacetedSearchView, self).build_form(form_kwargs)
 
@@ -31,7 +32,9 @@ class ExtendedFacetedSearchView(SearchView):
         field, that allows easy filtering of the selected facets in the
         navigation filters
         """
-        selected_facets = self.request.GET.getlist('selected_facets')
+        selected_facets = self.request.GET.getlist('selected_facets') + \
+            self.request.GET.getlist('f')
+
         facet_counts_fields = self.results.facet_counts().get('fields', {})
 
         facets = {'fields': {}, 'dates': {}, 'queries': {}}
@@ -57,7 +60,8 @@ class ExtendedFacetedSearchView(SearchView):
         """
 
         ## original selected facets list
-        selected_facets = self.request.GET.getlist('selected_facets')
+        selected_facets = self.request.GET.getlist('selected_facets') + \
+            self.request.GET.getlist('f')
 
         extended_selected_facets = []
 
@@ -65,8 +69,9 @@ class ExtendedFacetedSearchView(SearchView):
 
             ## unselection url
             base_dict = self.request.GET.copy()
-            base_dict.pop('selected_facets')
-            base_dict.setlist('selected_facets', [_f for _f in selected_facets if _f != f])
+            base_dict.pop('selected_facets', None)
+            base_dict.pop('f', None)
+            base_dict.setlist('f', [_f for _f in selected_facets if _f != f])
             url = '?' + base_dict.urlencode()
 
             field, x, label = f.partition(":")
