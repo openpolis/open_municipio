@@ -228,6 +228,26 @@ class ActSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
             { 'label' : _('events'), 'url' : reverse('om_event_search') + '?q=' + self.query },
         ]
 
+        graphs = {}
+
+        # fill data for graphs
+        for f_name, f_params in extra['facets']['fields'].iteritems():
+            counts = f_params['counts']
+            if len(counts) > 1:
+                graphs[f_name] = {
+                    'x': [ v[0] for v in counts ],
+                    'y': [ v[1] for v in counts ]
+                }
+
+        ranges = extra['facet_queries_date']['ranges']
+        if len(ranges) > 1:
+            graphs['pub_date'] = {
+                'x': [ v['label'] for v in ranges ],
+                'y': [ v['count'] for v in ranges ]
+            }
+
+        extra['graphs'] = graphs
+
         return extra
 
 

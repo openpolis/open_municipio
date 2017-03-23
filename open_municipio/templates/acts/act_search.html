@@ -16,17 +16,97 @@ em {
 }
 {% endblock %}
 
+{% block head_js_includes %}
+    {{ block.super }}
+    <script type="text/javascript" src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+{% endblock head_js_includes %}
+
+{% block footer_js_includes %}
+  {{ block.super }}
+  <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap-tab.js"></script>
+
+  <script type="text/javascript">
+
+    {% if graphs.category  %}
+      graph_category_elem = document.getElementById('graph_category');
+	  Plotly.plot( graph_category_elem, [{
+	    y: ['{{ graphs.category.x | join:"', '" }}'],
+	    x: [{{ graphs.category.y | join:", " }}],
+	    type: 'bar',
+	    orientation: 'h'
+	  }]);
+    {% endif %}
+
+    {% if graphs.location  %}
+      graph_location_elem = document.getElementById('graph_location');
+	  Plotly.plot( graph_location_elem, [{
+	    y: ['{{ graphs.location.x | join:"', '" }}'],
+	    x: [{{ graphs.location.y | join:", " }}],
+	    type: 'bar',
+	    orientation: 'h'
+	  }]);
+    {% endif %}
+
+    {% if graphs.act_type  %}
+      graph_act_type_elem = document.getElementById('graph_act_type');
+	  Plotly.plot( graph_act_type_elem, [{
+	    x: ['{{ graphs.act_type.x | join:"', '" }}'],
+	    y: [{{ graphs.act_type.y | join:", " }}],
+	    type: 'bar'
+	  }]);
+    {% endif %}
+
+    {% if graphs.pub_date  %}
+      graph_pub_date_elem = document.getElementById('graph_pub_date');
+	  Plotly.plot( graph_pub_date_elem, [{
+	    x: ['{{ graphs.pub_date.x | join:"', '" }}'],
+	    y: [{{ graphs.pub_date.y | join:", " }}],
+	    type: 'scatter'
+	  }]);
+    {% endif %}
+
+    $(window).resize(function() {
+      var _width = $("#tab-content-id").width() - 50;
+      var _height = 500;
+      var _width4 = _width/2;
+      var _width8 = _width;
+
+      {% if graphs.category  %}
+        Plotly.relayout(graph_category_elem, { width:_width8, height:_height });
+      {% endif %}
+
+      {% if graphs.location  %}
+        Plotly.relayout(graph_location_elem, { width:_width8, height:_height });
+      {% endif %}
+
+      {% if graphs.act_type  %}
+        Plotly.relayout(graph_act_type_elem, { width:_width8, height:_height });
+      {% endif %}
+
+      {% if graphs.pub_date  %}
+        Plotly.relayout(graph_pub_date_elem, { width:_width8, height:_height });
+      {% endif %}
+
+    }).resize();
+
+    </script>
+});
+{% endblock footer_js_includes %}
+
 {% block content %}
 
-      <section>
-
-          {% include 'search/_related_search.html' %}
+  <section>
+    <ul class="nav nav-tabs page-tabs">
+      <li class="active"><a data-toggle="tab" href="#search_acts_tab">{{ n_results }} att{{ n_results|pluralize:"o,i" }}</a></li>
+      <li><a data-toggle="tab" href="#search_topics_tab">Argomenti</a></li>
+      <li><a data-toggle="tab" href="#search_stats_tab">Statistiche</a></li>
+    </ul>
+    <div class="tab-content" id="tab-content-id">
+      <div class="tab-pane active" id="search_acts_tab">
 
           {% if charge %}
             {% include 'people/charge_widget.html' with charge=charge %}
           {% endif %}
-
-          <h2>{% if not query %}Trovati {% endif %} {{ n_results }} documenti</h2>
 
           {% if person %}
               <p>per il politico: <a href="{{ person.get_absolute_url }}">{{ person }}</a></p>
@@ -101,24 +181,21 @@ em {
           {% endfor %}
           </tbody>
         </table>
-      </section>
 
-      {% digg_paginator %}
+        {% digg_paginator %}
+      </div>
 
-    {% if not n_results %}
-        <section class="search-empty">
-            <p>
-                La ricerca{% if form.q.value %} di <strong>{{ form.q.value }}</strong>{% endif %} non è andata a buon fine.<br/>
-                Controlla che tutte le parole siano state digitate correttamente.<br/>
-                oppure prova con parole diverse.
-            </p>
-            <p>
-                Grazie,<br/>
-                lo staff di Open municipio
-            </p>
-        </section>
-    {% endif %}
+      <div class="tab-pane" id="search_topics_tab">
+        {% if graphs.category  %}<div id="graph_category" class="span8"></div>{% endif %}
+        {% if graphs.location  %}<div id="graph_location" class="span8"></div>{% endif %}
+      </div>
 
+      <div class="tab-pane" id="search_stats_tab">
+        {% if graphs.act_type  %}<div id="graph_act_type" class="span8"></div>{% endif %}
+        {% if graphs.pub_date  %}<div id="graph_pub_date" class="span8"></div>{% endif %}
+      </div>
+    </div>
+  </section>
 {% endblock %}
 
 {% block sidebar %}
@@ -288,7 +365,7 @@ em {
             </dl>
 
             <dl>
-                {% if facets.fields.month and not facets.fields.month.is_field_selected %}
+                {% if facets.fields.month and facet_queries_date.is_selected and not facets.fields.month.is_field_selected %}
                     <dt>{{ facets_labels.month }}</dt>
                     {% for t in facets.fields.month.counts %}
                         {% if t.1 %}
