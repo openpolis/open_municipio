@@ -25,8 +25,6 @@
 
   <section>
 
-    {% include 'search/_related_search.html' %}
-
     <h2>{% if not query %}Trovati {% endif %} {{ n_results }} eventi</h2>
 
     <table id="events" class="search-results">
@@ -141,5 +139,7 @@
         <!-- End faceting -->
 
     {% endif %}
+
+    {% include 'search/_related_search.html' %}
 
 {% endblock %}

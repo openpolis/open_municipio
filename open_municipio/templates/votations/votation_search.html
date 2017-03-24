@@ -25,25 +25,59 @@
     }
 {% endblock %}
 
+{% block head_js_includes %}
+    {{ block.super }}
+    <script type="text/javascript" src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+{% endblock head_js_includes %}
+
+{% block footer_js_includes %}
+  {{ block.super }}
+  <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap-tab.js"></script>
+
+  <script type="text/javascript">
+
+    {% if graphs.votation_date  %}
+      graph_votation_date_elem = document.getElementById('graph_votation_date');
+	  Plotly.plot( graph_votation_date_elem, [{
+	    x: ['{{ graphs.votation_date.x | join:"', '" }}'],
+	    y: [{{ graphs.votation_date.y | join:", " }}],
+	    type: 'scatter'
+	  }], {
+	    title: 'Anno della votazione',
+        xaxis: { fixedrange: true },
+        yaxis: { fixedrange: true }
+      }, {
+	    displaylogo: false,
+	    displayModeBar: true,
+	    modeBarButtonsToRemove: [ 'hoverClosestCartesian', 'hoverCompareCartesian' ]
+	  });
+    {% endif %}
+
+    $(window).resize(function() {
+      var _width = $("#tab-content-id").width() - 50;
+      var _width4 = _width/2;
+      var _width8 = _width;
+
+      {% if graphs.votation_date  %}
+        Plotly.relayout(graph_votation_date_elem, { width:_width8, height:500 });
+      {% endif %}
+
+    }).resize();
+
+    </script>
+});
+{% endblock footer_js_includes %}
+
 {% block content %}
 
   <section>
 
-    {% include 'search/_related_search.html' %}
-
-    {% if charge %}
-      {% include 'people/charge_widget.html' with charge=charge %}
-    {% endif %}
-
-    <h2>{% if not query %}Trovate {% endif %} {{ n_results }} votazioni</h2>
-
-    {% if act_votations %}
-      per la {{ act.get_type_name }} <a href="{{ act.get_absolute_url }}">{{ act }}</a>
-    {% endif %}
-
-    {% if person %}
-      <p>per il politico: <a href="{{ person.get_absolute_url }}">{{ person }}</a>  </p>
-    {% endif %}
+    <ul class="nav nav-tabs page-tabs">
+      <li class="active"><a data-toggle="tab" href="#search_votations_tab">{{ n_results }} votazion{{ n_results|pluralize:"e,i" }}</a></li>
+      <li><a data-toggle="tab" href="#search_stats_tab">Statistiche</a></li>
+    </ul>
+    <div class="tab-content" id="tab-content-id">
+      <div class="tab-pane active" id="search_votations_tab">
 
     <table id="votations" class="data dataTable">
       <thead style="font-size: 10px;">
@@ -122,28 +156,38 @@
       {% endfor %}
       </tbody>
     </table>
-  </section>
 
         {% digg_paginator %}
+      </div>
 
-    {% if not n_results %}
-      <section class="search-empty">
-      <p>
-        La ricerca{% if form.q.value %} di <strong>{{ form.q.value }}</strong>{% endif %} non è andata a buon fine.<br/>
-        Controlla che tutte le parole siano state digitate correttamente.</br>
-        oppure prova con parole diverse.
-      </p>
-      <p>
-        Grazie,<br/>
-        lo staff di Open Municipio
-      </p>
-    </section>
-        {# Show some example queries to run, maybe query syntax, something else? #}
-    {% endif %}
+      <div class="tab-pane" id="search_stats_tab">
+        {% if graphs.votation_date  %}<div id="graph_votation_date" class="span8"></div>{% endif %}
+      </div>
+    </div>
+  </section>
 
 {% endblock %}
 
 {% block sidebar %}
+
+    {% if charge or person %}<dl><dt>Politico{% if charge_label %} {{ charge_label }}{% endif %}</dt></dl>{% endif %}
+
+    {% if charge %}
+      {% include 'people/charge_widget.html' with charge=charge %}
+    {% endif %}
+
+    {% if person %}
+      {% include 'people/_person_widget.html' with person=person %}
+    {% endif %}
+
+    {% if act_votations %}
+      <dl>
+        <dt>Atto</dt>
+        <dd>{{ act.get_type_name }} <a href="{{ act.get_absolute_url }}">{{ act }}</a></dd>
+      </dl>
+    {% endif %}
+
+    {% if charge or person or act_votations %}<hr />{% endif %}
 
   <h4>Cerca nelle votazioni</h4>
   <form method="get" action="{% url 'om_votation_search' %}" id="search-form"  class="form-search">
@@ -216,7 +260,6 @@
             <dl>
                 {% if facets.fields.organ and not facets.fields.organ.is_field_selected %}
                     <dt>{{ facets_labels.organ }}</dt>
-                    {# Provide both cases (true, false) #}
                     {% for t in facets.fields.organ.counts %}
                         {% if t.1 %}
                             <dd>
@@ -229,14 +272,13 @@
                 {% endif %}
             </dl>
             <dl>
-                {% if facets.fields.votation_outcome and not facets.fields.votation_outcome.is_field_selected %}
-                    <dt>{{ facets_labels.votation_outcome }}</dt>
-                    {# Provide both cases (true, false) #}
-                    {% for t in facets.fields.votation_outcome.counts %}
+                {% if facets.fields.votation_outcome_display and not facets.fields.votation_outcome_display.is_field_selected %}
+                    <dt>{{ facets_labels.votation_outcome_display }}</dt>
+                    {% for t in facets.fields.votation_outcome_display.counts %}
                         {% if t.1 %}
                             <dd>
                                 {% if not t.2 %}
-                                    <a href="{{ base_url }}&f=votation_outcome:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
+                                    <a href="{{ base_url }}&f=votation_outcome_display:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
                                 {% endif %}
                             </dd>
                         {%  endif %}
@@ -246,7 +288,6 @@
             <dl>
                 {% if facets.fields.n_presents_range and not facets.fields.n_presents_range.is_field_selected %}
                     <dt>{{ facets_labels.n_presents_range }}</dt>
-                    {# Provide both cases (true, false) #}
                     {% for t in facets.fields.n_presents_range.counts %}
                         {% if t.1 %}
                             <dd>
@@ -261,7 +302,6 @@
             <dl>
                 {% if facets.fields.n_rebels_range and not facets.fields.n_rebels_range.is_field_selected %}
                     <dt>{{ facets_labels.n_rebels_range }}</dt>
-                    {# Provide both cases (true, false) #}
                     {% for t in facets.fields.n_rebels_range.counts %}
                         {% if t.1 %}
                             <dd>
@@ -276,7 +316,6 @@
             <dl>
                 {% if facets.fields.n_variance and not facets.fields.n_variance.is_field_selected %}
                     <dt>{{ facets_labels.n_variance }}</dt>
-                    {# Provide both cases (true, false) #}
                     {% for t in facets.fields.n_variance.counts %}
                         {% if t.1 %}
                             <dd>
@@ -302,9 +341,8 @@
             </dl>
 
             <dl>
-                {% if facets.fields.month and not facets.fields.month.is_field_selected %}
+                {% if facets.fields.month and facet_queries_date.is_selected and not facets.fields.month.is_field_selected %}
                     <dt>{{ facets_labels.month }}</dt>
-                    {# Provide both cases (true, false) #}
                     {% for t in facets.fields.month.counts %}
                         {% if t.1 %}
                             <dd>
@@ -319,6 +357,8 @@
 
         </div>
         <!-- End faceting -->
+
+      {% include 'search/_related_search.html' %}
 
     {% endif %}
 

@@ -28,7 +28,7 @@ class VotationSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin
     """
     __name__ = 'VotationSearchView'
 
-    FACETS_SORTED = ['act_type', 'is_key', 'is_secret', 'organ', 'votation_outcome',
+    FACETS_SORTED = ['act_type', 'is_key', 'is_secret', 'organ', 'votation_outcome_display',
         'n_presents_range', 'n_rebels_range', 'n_variance', 'votation_date', 'month']
 
     FACETS_LABELS = {
@@ -36,7 +36,7 @@ class VotationSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin
         'is_key': _('Is key'),
         'is_secret': _('Is secret'),
         'organ': _('Organ'),
-        'votation_outcome': _('Outcome'),
+        'votation_outcome_display': _('Outcome'),
         'n_presents_range': _('Presents'),
         'n_rebels_range': _('Rebels'),
         'n_variance': _('Votation variance'),
@@ -56,7 +56,7 @@ class VotationSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin
         sqs = SearchQuerySet().filter(django_ct='votations.votation').\
             facet('act_type').facet('is_key').facet('is_secret').facet('organ').\
             facet('n_presents_range').facet('n_rebels_range').\
-            facet('n_variance').facet('votation_outcome').facet('month')
+            facet('n_variance').facet('votation_outcome_display').facet('month')
 
         for (year, range) in self.DATE_INTERVALS_RANGES.items():
             sqs = sqs.query_facet('votation_date', range['qrange'])
@@ -133,6 +133,12 @@ class VotationSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin
         if len(charge_values) > 0:
             try:
                 extra['charge'] = InstitutionCharge.objects.get(pk=charge_values[0])
+
+                if self.request.GET.get('charge_present', None):
+                    extra['charge_label'] = _('present')
+                elif self.request.GET.get('charge_absent', None):
+                    extra['charge_label'] = _('absent')
+
             except ObjectDoesNotExist:
                 pass
 
@@ -163,6 +169,25 @@ class VotationSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin
             { 'label' : _('events'), 'url' : reverse('om_event_search') + '?q=' + self.query },
         ]
 
+        graphs = {}
+
+        # fill data for graphs
+        for f_name, f_params in extra['facets']['fields'].iteritems():
+            counts = f_params['counts']
+            if len(counts) > 1:
+                graphs[f_name] = {
+                    'x': [ v[0] for v in counts ],
+                    'y': [ v[1] for v in counts ]
+                }
+
+        ranges = extra['facet_queries_date']['ranges']
+        if len(ranges) > 1:
+            graphs['votation_date'] = {
+                'x': [ v['label'] for v in ranges ],
+                'y': [ v['count'] for v in ranges ]
+            }
+
+        extra['graphs'] = graphs
 
         return extra
 

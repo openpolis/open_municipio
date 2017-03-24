@@ -24,8 +24,6 @@ em {
 
       <section>
 
-        {% include 'search/_related_search.html' %}
-
         {% if charge %}
           {% include 'people/charge_widget.html' with charge=charge %}
         {% endif %}
@@ -149,4 +147,6 @@ em {
     
         <!-- End faceting -->
     {% endif %}
+
+    {% include 'search/_related_search.html' %}
 {% endblock %}
