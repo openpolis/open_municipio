@@ -30,21 +30,39 @@ em {
     {% if graphs.category  %}
       graph_category_elem = document.getElementById('graph_category');
 	  Plotly.plot( graph_category_elem, [{
-	    y: ['{{ graphs.category.x | join:"', '" }}'],
 	    x: [{{ graphs.category.y | join:", " }}],
+	    y: ['{{ graphs.category.x | join:"', '" }}'],
 	    type: 'bar',
 	    orientation: 'h'
-	  }]);
+	  }], {
+	    title: 'Categorie di argomento',
+	    margin: { l: 150 },
+        xaxis: { fixedrange: true, side: 'top' },
+        yaxis: { fixedrange: true, autorange: 'reversed' }
+      }, {
+	    displaylogo: false,
+	    displayModeBar: true,
+	    modeBarButtonsToRemove: [ 'hoverClosestCartesian', 'hoverCompareCartesian' ]
+	  });
     {% endif %}
 
     {% if graphs.location  %}
       graph_location_elem = document.getElementById('graph_location');
 	  Plotly.plot( graph_location_elem, [{
-	    y: ['{{ graphs.location.x | join:"', '" }}'],
 	    x: [{{ graphs.location.y | join:", " }}],
+	    y: ['{{ graphs.location.x | join:"', '" }}'],
 	    type: 'bar',
 	    orientation: 'h'
-	  }]);
+	  }], {
+	    title: 'Territori',
+	    margin: { l: 150 },
+        xaxis: { fixedrange: true, side: 'top' },
+        yaxis: { fixedrange: true, autorange: 'reversed' }
+      }, {
+	    displaylogo: false,
+	    displayModeBar: true,
+	    modeBarButtonsToRemove: [ 'hoverClosestCartesian', 'hoverCompareCartesian' ]
+	  });
     {% endif %}
 
     {% if graphs.act_type  %}
@@ -53,7 +71,16 @@ em {
 	    x: ['{{ graphs.act_type.x | join:"', '" }}'],
 	    y: [{{ graphs.act_type.y | join:", " }}],
 	    type: 'bar'
-	  }]);
+	    }], {
+	    title: 'Tipologie di atto',
+	    hovermode: 'x',
+        xaxis: { fixedrange: true },
+        yaxis: { fixedrange: true }
+      }, {
+	    displaylogo: false,
+	    displayModeBar: true,
+	    modeBarButtonsToRemove: [ 'hoverClosestCartesian', 'hoverCompareCartesian' ]
+	  });
     {% endif %}
 
     {% if graphs.pub_date  %}
@@ -62,29 +89,36 @@ em {
 	    x: ['{{ graphs.pub_date.x | join:"', '" }}'],
 	    y: [{{ graphs.pub_date.y | join:", " }}],
 	    type: 'scatter'
-	  }]);
+	  }], {
+	    title: 'Anno di pubblicazione',
+        xaxis: { fixedrange: true },
+        yaxis: { fixedrange: true }
+      }, {
+	    displaylogo: false,
+	    displayModeBar: true,
+	    modeBarButtonsToRemove: [ 'hoverClosestCartesian', 'hoverCompareCartesian' ]
+	  });
     {% endif %}
 
     $(window).resize(function() {
       var _width = $("#tab-content-id").width() - 50;
-      var _height = 500;
       var _width4 = _width/2;
       var _width8 = _width;
 
       {% if graphs.category  %}
-        Plotly.relayout(graph_category_elem, { width:_width8, height:_height });
+        Plotly.relayout(graph_category_elem, { width:_width8, height:400 });
       {% endif %}
 
       {% if graphs.location  %}
-        Plotly.relayout(graph_location_elem, { width:_width8, height:_height });
+        Plotly.relayout(graph_location_elem, { width:_width8, height:600 });
       {% endif %}
 
       {% if graphs.act_type  %}
-        Plotly.relayout(graph_act_type_elem, { width:_width8, height:_height });
+        Plotly.relayout(graph_act_type_elem, { width:_width8, height:500 });
       {% endif %}
 
       {% if graphs.pub_date  %}
-        Plotly.relayout(graph_pub_date_elem, { width:_width8, height:_height });
+        Plotly.relayout(graph_pub_date_elem, { width:_width8, height:500 });
       {% endif %}
 
     }).resize();
@@ -96,6 +130,7 @@ em {
 {% block content %}
 
   <section>
+
     <ul class="nav nav-tabs page-tabs">
       <li class="active"><a data-toggle="tab" href="#search_acts_tab">{{ n_results }} att{{ n_results|pluralize:"o,i" }}</a></li>
       <li><a data-toggle="tab" href="#search_topics_tab">Argomenti</a></li>
@@ -103,22 +138,6 @@ em {
     </ul>
     <div class="tab-content" id="tab-content-id">
       <div class="tab-pane active" id="search_acts_tab">
-
-          {% if charge %}
-            {% include 'people/charge_widget.html' with charge=charge %}
-          {% endif %}
-
-          {% if person %}
-              <p>per il politico: <a href="{{ person.get_absolute_url }}">{{ person }}</a></p>
-          {% endif %}
-
-          {% if group %}
-              <p>per il gruppo: <a href="{{ group.get_absolute_url }}">{{ group }}</a></p>
-          {% endif %}
-
-          {% if recipient %}
-              <p>per il destinatario: <a href="{{ recipient.get_absolute_url }}">{{ recipient }}</a></p>
-          {% endif %}
 
           <table class="search-results">
           <thead style="font-size: 12px;">
@@ -199,6 +218,28 @@ em {
 {% endblock %}
 
 {% block sidebar %}
+
+    {% if charge or person %}<dl><dt>Firmatario</dt></dl>{% endif %}
+
+    {% if charge %}
+      {% include 'people/charge_widget.html' with charge=charge %}
+    {% endif %}
+
+    {% if person %}
+      {% include 'people/_person_widget.html' with person=person %}
+    {% endif %}
+
+    {% if group %}
+      <dl><dt>Gruppo</dt></dl>
+      {% include 'people/_group_widget.html' with group=group %}
+    {% endif %}
+
+    {% if recipient %}
+      <dl><dt>Destinatario</dt></dl>
+      {% include 'people/_person_widget.html' with person=recipient %}
+    {% endif %}
+
+    {% if charge or person or group or recipient %}<hr />{% endif %}
 
   <h4>Cerca negli atti</h4>
   <form method="get" action="{% url 'om_act_search' %}" class="form-search">
