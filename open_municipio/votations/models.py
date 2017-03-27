@@ -170,6 +170,10 @@ class Votation(models.Model):
         for vote in self.charge_votes:
             return vote.vote == ChargeVote.VOTES.secret
 
+    @property
+    def charges_count(self):
+        return self.chargevote_set.filter(charge__can_vote=True).count()
+
     def update_presence_caches(self):
         """
         update presence caches for each voting charge of this votation

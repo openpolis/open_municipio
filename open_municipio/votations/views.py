@@ -29,7 +29,7 @@ class VotationSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin
     __name__ = 'VotationSearchView'
 
     FACETS_SORTED = ['act_type', 'is_key', 'is_secret', 'organ', 'votation_outcome_display',
-        'n_presents_range', 'votation_n_rebels', 'gap_yes_no', 'gap_yes_no_range', 'votation_date', 'month']
+        'n_presents_range', 'votation_n_presents', 'votation_n_rebels', 'gap_yes_no', 'gap_yes_no_range', 'votation_date', 'month']
 
     FACETS_LABELS = {
         'act_type': _('Related act type'),
@@ -38,6 +38,7 @@ class VotationSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin
         'organ': _('Organ'),
         'votation_outcome_display': _('Outcome'),
         'n_presents_range': _('Presents'),
+        'votation_n_presents': _('Presents'),
         'votation_n_rebels': _('Rebels'),
         'gap_yes_no': _('Votation variance'),
         'gap_yes_no_range': _('Votation variance'),
@@ -56,7 +57,7 @@ class VotationSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin
     
         sqs = SearchQuerySet().filter(django_ct='votations.votation').\
             facet('act_type').facet('is_key').facet('is_secret').facet('organ').\
-            facet('n_presents_range').facet('votation_n_rebels').\
+            facet('n_presents_range').facet('votation_n_presents').facet('votation_n_rebels').\
             facet('gap_yes_no').facet('gap_yes_no_range').facet('votation_outcome_display').\
             facet('month')
 

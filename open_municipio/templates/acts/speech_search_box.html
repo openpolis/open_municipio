@@ -13,6 +13,4 @@
     </form>
 
 {% url 'om_speech_search' as search_speech_url %}
-{% ifnotequal request.get_full_path search_speech_url %}
-Leggi <a href="{{ search_speech_url }}">tutti gli interventi</a>.
-{% endifnotequal %}
+

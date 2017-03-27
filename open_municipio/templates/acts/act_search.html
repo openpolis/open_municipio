@@ -65,7 +65,7 @@ em {
 	  });
     {% endif %}
 
-    {% if graphs.act_type %}
+    {% if graphs.act_type and not facets.fields.act_type.is_field_selected %}
       graph_act_type_elem = document.getElementById('graph_act_type');
 	  Plotly.plot( graph_act_type_elem, [{
 	    x: ['{{ graphs.act_type.x | join:"', '" }}'],
@@ -75,7 +75,25 @@ em {
 	    title: 'Tipologie di atto',
 	    hovermode: 'x',
         xaxis: { fixedrange: true },
-        yaxis: { fixedrange: true }
+        yaxis: { fixedrange: true, title: 'numero di atti' }
+      }, {
+	    displaylogo: false,
+	    displayModeBar: true,
+	    modeBarButtonsToRemove: [ 'hoverClosestCartesian', 'hoverCompareCartesian' ]
+	  });
+    {% endif %}
+
+    {% if graphs.iter_duration %}
+      graph_iter_duration_elem = document.getElementById('graph_iter_duration');
+	  Plotly.plot( graph_iter_duration_elem, [{
+	    x: ['{{ graphs.iter_duration.x | join:"', '" }}'],
+	    y: [{{ graphs.iter_duration.y | join:", " }}],
+	    type: 'bar'
+	    }], {
+	    title: 'Durata dell\'iter',
+	    hovermode: 'x',
+        xaxis: { fixedrange: true, title: 'giorni' },
+        yaxis: { fixedrange: true, title: 'numero di atti', type: 'log' }
       }, {
 	    displaylogo: false,
 	    displayModeBar: true,
@@ -91,8 +109,8 @@ em {
 	    type: 'scatter'
 	  }], {
 	    title: 'Anno di pubblicazione',
-        xaxis: { fixedrange: true },
-        yaxis: { fixedrange: true }
+        xaxis: { fixedrange: true, title: 'anno' },
+        yaxis: { fixedrange: true, title: 'numero di atti' }
       }, {
 	    displaylogo: false,
 	    displayModeBar: true,
@@ -115,6 +133,10 @@ em {
 
       {% if graphs.act_type %}
         Plotly.relayout(graph_act_type_elem, { width:_width8, height:500 });
+      {% endif %}
+
+      {% if graphs.iter_duration %}
+        Plotly.relayout(graph_iter_duration_elem, { width:_width8, height:500 });
       {% endif %}
 
       {% if graphs.pub_date and not facet_queries_date.is_selected %}
@@ -213,6 +235,10 @@ em {
 
         {% if graphs.act_type  %}
           <div id="graph_act_type" class="span8"></div>
+        {% endif %}
+
+        {% if graphs.iter_duration  %}
+          <div id="graph_iter_duration" class="span8"></div>
         {% endif %}
 
         {% if graphs.pub_date and not facet_queries_date.is_selected %}
@@ -427,13 +453,13 @@ em {
             </dl>
 
             <dl>
-                {% if facets.fields.iter_duration and not facets.fields.iter_duration.is_field_selected %}
-                    <dt>{{ facets_labels.iter_duration }}</dt>
-                    {% for t in facets.fields.iter_duration.counts %}
+                {% if facets.fields.iter_duration_bin and not facets.fields.iter_duration_bin.is_field_selected %}
+                    <dt>{{ facets_labels.iter_duration_bin }}</dt>
+                    {% for t in facets.fields.iter_duration_bin.counts %}
                         {% if t.1 %}
                             <dd>
                                 {% if not t.2 %}
-                                    <a href="{{ base_url }}&f=iter_duration:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
+                                    <a href="{{ base_url }}&f=iter_duration_bin:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
                                 {% endif %}
                             </dd>
                         {%  endif %}
@@ -441,6 +467,20 @@ em {
                 {% endif %}
             </dl>
 
+            <dl>
+                {% if facets.fields.category.counts %}
+                    <dt>{{ facets_labels.category }}</dt>
+                    {% for t in facets.fields.category.counts %}
+                        {% if t.1 %}
+                            <dd>
+                                {% if not t.2 %}
+                                    <a href="{{ base_url }}&f=category:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
+                                {% endif %}
+                            </dd>
+                        {%  endif %}
+                    {% endfor %}
+                {% endif %}
+            </dl>
             <dl>
                 {% if facets.fields.location.counts %}
                     <dt>{{ facets_labels.location }}</dt>

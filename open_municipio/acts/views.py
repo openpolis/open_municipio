@@ -54,6 +54,7 @@ class ActSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
         'is_key',
         'is_proposal',
         'iter_duration',
+        'iter_duration_bin',
         'location',
         'month',
         'multiple_supporters',
@@ -69,6 +70,7 @@ class ActSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
         'is_proposal': _('Is proposal'),
         'initiative': _('Initiative'),
         'iter_duration': _('Iter duration'),
+        'iter_duration_bin': _('Iter duration'),
         'organ': _('Organ'),
         'pub_date': _('Pubblication year'),
         'has_locations': _('Has locations'),
@@ -93,7 +95,7 @@ class ActSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
         sqs = SearchQuerySet().filter(django_ct='acts.act')\
             .facet('act_type').facet('is_key').facet('is_proposal').facet('has_locations')\
             .facet('initiative').facet('organ').facet('month').facet('status')\
-            .facet('iter_duration').facet('multiple_supporters')\
+            .facet('iter_duration').facet('iter_duration_bin').facet('multiple_supporters')\
             .facet('category').facet('tag').facet('location')
 
         for (year, range) in self.DATE_INTERVALS_RANGES.items():
@@ -245,6 +247,14 @@ class ActSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
                 'x': [ v['label'] for v in ranges ],
                 'y': [ v['count'] for v in ranges ]
             }
+
+        # further processing on graphs data
+        if graphs['iter_duration']:
+            for i,v in enumerate(graphs['iter_duration']['x']):
+                if v == '0':
+                    del(graphs['iter_duration']['x'][i])
+                    del(graphs['iter_duration']['y'][i])
+                    break
 
         extra['graphs'] = graphs
 
@@ -693,6 +703,25 @@ class SpeechSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
             { 'label' : _('events'), 'url' : reverse('om_event_search') + '?q=' + self.query },
         ]
 
+        graphs = {}
+
+        # fill data for graphs
+        for f_name, f_params in extra['facets']['fields'].iteritems():
+            counts = f_params['counts']
+            if len(counts) > 1:
+                graphs[f_name] = {
+                    'x': [ v[0] for v in counts ],
+                    'y': [ v[1] for v in counts ]
+                }
+
+        ranges = extra['facet_queries_date']['ranges']
+        if len(ranges) > 1:
+            graphs['date'] = {
+                'x': [ v['label'] for v in ranges ],
+                'y': [ v['count'] for v in ranges ]
+            }
+
+        extra['graphs'] = graphs
 
         return extra
 

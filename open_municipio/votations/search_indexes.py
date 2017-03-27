@@ -161,11 +161,11 @@ class VotationIndex(indexes.SearchIndex, indexes.Indexable):
  
     def prepare_n_presents_range(self, obj):
 
-        if obj.n_presents <= 12: return '12-'
-        elif 13 <= obj.n_presents <= 15: return '13 - 15'
-        elif 16 <= obj.n_presents <= 17: return '16 - 17'
-        elif 18 <= obj.n_presents <= 22: return '18 - 22'
-        else: return '23+'
+        charges_count = obj.charges_count
+        if charges_count > 0:
+            decimal = 10 * obj.n_presents / charges_count
+            return str(10 * decimal) + '% - ' + str(10 * (decimal + 1) - 1) + '%' \
+                if decimal < 10 else '100%'
 
     def prepare_gap_yes_no(self, obj):
 

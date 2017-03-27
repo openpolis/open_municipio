@@ -34,7 +34,8 @@ class ActIndex(indexes.SearchIndex, indexes.Indexable):
     idnum = indexes.CharField(indexed=True, stored=False, model_attr='idnum')
     month = indexes.FacetCharField()
     status = indexes.FacetCharField()
-    iter_duration = indexes.FacetCharField()
+    iter_duration = indexes.FacetIntegerField()
+    iter_duration_bin = indexes.FacetCharField()
     multiple_supporters = indexes.FacetCharField()
 
     # stored fields, used not to touch DB
@@ -153,6 +154,9 @@ class ActIndex(indexes.SearchIndex, indexes.Indexable):
         return obj.downcast().get_status_display()
 
     def prepare_iter_duration(self, obj):
+        return obj.iter_duration.days
+
+    def prepare_iter_duration_bin(self, obj):
 
         if not obj.iter_duration.days: return '0'
         elif obj.iter_duration.days <= 7: return '1 - 7'
