@@ -16,8 +16,8 @@ class VotationIndex(indexes.SearchIndex, indexes.Indexable):
     organ = indexes.FacetCharField(model_attr='sitting__institution__lowername')
     votation_date = indexes.FacetDateField(model_attr='sitting__date')
     n_presents_range = indexes.FacetCharField()
-    n_rebels_range = indexes.FacetCharField()
-    n_variance = indexes.FacetCharField()
+    gap_yes_no = indexes.FacetIntegerField()
+    gap_yes_no_range = indexes.FacetCharField()
 
     # stored fields, used not to touch DB
     # while showing results
@@ -34,7 +34,7 @@ class VotationIndex(indexes.SearchIndex, indexes.Indexable):
     votation_n_no = indexes.IntegerField(indexed=True, stored=True, model_attr='n_no')
     votation_n_abst = indexes.IntegerField(indexed=True, stored=True, model_attr='n_abst')
     votation_n_maj = indexes.IntegerField(indexed=True, stored=True, model_attr='n_maj')
-    votation_n_rebels = indexes.IntegerField(indexed=True, stored=True, model_attr='n_rebels')
+    votation_n_rebels = indexes.IntegerField(indexed=True, stored=True, model_attr='n_rebels', faceted=True)
     votation_outcome = indexes.IntegerField(indexed=False, stored=True, model_attr='outcome')
     votation_outcome_display = indexes.FacetCharField(stored=True, default='')
     is_secret = indexes.FacetCharField(stored=True, default='')
@@ -167,11 +167,11 @@ class VotationIndex(indexes.SearchIndex, indexes.Indexable):
         elif 18 <= obj.n_presents <= 22: return '18 - 22'
         else: return '23+'
 
-    def prepare_n_rebels_range(self, obj):
+    def prepare_gap_yes_no(self, obj):
 
-        return str(obj.n_rebels)
+        return abs(obj.n_yes - obj.n_no)
 
-    def prepare_n_variance(self, obj):
+    def prepare_gap_yes_no_range(self, obj):
 
         v = abs(obj.n_yes - obj.n_no)
 

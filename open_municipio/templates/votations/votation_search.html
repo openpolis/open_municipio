@@ -36,7 +36,77 @@
 
   <script type="text/javascript">
 
-    {% if graphs.votation_date  %}
+    {% if graphs.gap_yes_no %}
+      graph_gap_yes_no_elem = document.getElementById('graph_gap_yes_no');
+	  Plotly.plot( graph_gap_yes_no_elem, [{
+	    x: ['{{ graphs.gap_yes_no.x | join:"', '" }}'],
+	    y: [{{ graphs.gap_yes_no.y | join:", " }}],
+	    type: 'bar'
+	    }], {
+	    title: 'Scarto tra Sì e No',
+	    hovermode: 'x',
+        xaxis: { fixedrange: true },
+        yaxis: { fixedrange: true }
+      }, {
+	    displaylogo: false,
+	    displayModeBar: true,
+	    modeBarButtonsToRemove: [ 'hoverClosestCartesian', 'hoverCompareCartesian' ]
+	  });
+    {% endif %}
+
+    {% if graphs.votation_n_rebels and not facets.fields.votation_n_rebels.is_field_selected %}
+      graph_votation_n_rebels_elem = document.getElementById('graph_votation_n_rebels');
+	  Plotly.plot( graph_votation_n_rebels_elem, [{
+	    x: ['{{ graphs.votation_n_rebels.x | join:"', '" }}'],
+	    y: [{{ graphs.votation_n_rebels.y | join:", " }}],
+	    type: 'bar'
+	    }], {
+	    title: 'Numero di ribelli',
+	    hovermode: 'x',
+        xaxis: { fixedrange: true },
+        yaxis: { fixedrange: true, type: 'log' }
+      }, {
+	    displaylogo: false,
+	    displayModeBar: true,
+	    modeBarButtonsToRemove: [ 'hoverClosestCartesian', 'hoverCompareCartesian' ]
+	  });
+    {% endif %}
+
+    {% if graphs.votation_outcome_display and not facets.fields.votation_outcome_display.is_field_selected %}
+      graph_votation_outcome_display_elem = document.getElementById('graph_votation_outcome_display');
+	  Plotly.plot( graph_votation_outcome_display_elem, [{
+	    labels: ['{{ graphs.votation_outcome_display.x | join:"', '" }}'],
+	    values: [{{ graphs.votation_outcome_display.y | join:", " }}],
+	    type: 'pie'
+	  }], {
+	    title: 'Esito della votazione',
+        xaxis: { fixedrange: true },
+        yaxis: { fixedrange: true }
+      }, {
+	    displaylogo: false,
+	    displayModeBar: true,
+	    modeBarButtonsToRemove: [ 'hoverClosestCartesian', 'hoverCompareCartesian' ]
+	  });
+    {% endif %}
+
+    {% if graphs.is_secret and not facets.fields.is_secret.is_field_selected %}
+      graph_is_secret_elem = document.getElementById('graph_is_secret');
+	  Plotly.plot( graph_is_secret_elem, [{
+	    labels: ['{{ graphs.is_secret.x | join:"', '" }}'],
+	    values: [{{ graphs.is_secret.y | join:", " }}],
+	    type: 'pie'
+	  }], {
+	    title: 'Votazioni segrete',
+        xaxis: { fixedrange: true },
+        yaxis: { fixedrange: true }
+      }, {
+	    displaylogo: false,
+	    displayModeBar: true,
+	    modeBarButtonsToRemove: [ 'hoverClosestCartesian', 'hoverCompareCartesian' ]
+	  });
+    {% endif %}
+
+    {% if graphs.votation_date and not facet_queries_date.is_selected %}
       graph_votation_date_elem = document.getElementById('graph_votation_date');
 	  Plotly.plot( graph_votation_date_elem, [{
 	    x: ['{{ graphs.votation_date.x | join:"', '" }}'],
@@ -58,8 +128,24 @@
       var _width4 = _width/2;
       var _width8 = _width;
 
-      {% if graphs.votation_date  %}
-        Plotly.relayout(graph_votation_date_elem, { width:_width8, height:500 });
+      {% if graphs.gap_yes_no %}
+        Plotly.relayout(graph_gap_yes_no_elem, { width:_width8, height:400 });
+      {% endif %}
+
+      {% if graphs.votation_n_rebels and not facets.fields.votation_n_rebels.is_field_selected %}
+        Plotly.relayout(graph_votation_n_rebels_elem, { width:_width8, height:400 });
+      {% endif %}
+
+      {% if graphs.votation_outcome_display and not facets.fields.votation_outcome_display.is_field_selected %}
+        Plotly.relayout(graph_votation_outcome_display_elem, { width:_width4, height:400 });
+      {% endif %}
+
+      {% if graphs.is_secret and not facets.fields.is_secret.is_field_selected %}
+        Plotly.relayout(graph_is_secret_elem, { width:_width4, height:400 });
+      {% endif %}
+
+      {% if graphs.votation_date and not facet_queries_date.is_selected %}
+        Plotly.relayout(graph_votation_date_elem, { width:_width8, height:400 });
       {% endif %}
 
     }).resize();
@@ -74,6 +160,7 @@
 
     <ul class="nav nav-tabs page-tabs">
       <li class="active"><a data-toggle="tab" href="#search_votations_tab">{{ n_results }} votazion{{ n_results|pluralize:"e,i" }}</a></li>
+      <li><a data-toggle="tab" href="#search_presence_tab">Presenze e voti</a></li>
       <li><a data-toggle="tab" href="#search_stats_tab">Statistiche</a></li>
     </ul>
     <div class="tab-content" id="tab-content-id">
@@ -160,8 +247,30 @@
         {% digg_paginator %}
       </div>
 
+      <div class="tab-pane" id="search_presence_tab">
+
+        {% if graphs.gap_yes_no %}
+          <div id="graph_gap_yes_no" class="span8"></div>
+        {% endif %}
+
+        {% if graphs.votation_n_rebels and not facets.fields.votation_n_rebels.is_field_selected %}
+          <div id="graph_votation_n_rebels" class="span8"></div>
+        {% endif %}
+      </div>
+
       <div class="tab-pane" id="search_stats_tab">
-        {% if graphs.votation_date  %}<div id="graph_votation_date" class="span8"></div>{% endif %}
+
+        {% if graphs.votation_outcome_display and not facets.fields.votation_outcome_display.is_field_selected %}
+          <div id="graph_votation_outcome_display" class="span4"></div>
+        {% endif %}
+
+        {% if graphs.is_secret and not facets.fields.is_secret.is_field_selected %}
+          <div id="graph_is_secret" class="span4"></div>
+        {% endif %}
+
+        {% if graphs.votation_date and not facet_queries_date.is_selected %}
+          <div id="graph_votation_date" class="span8"></div>
+        {% endif %}
       </div>
     </div>
   </section>
@@ -300,13 +409,13 @@
                 {% endif %}
             </dl>
             <dl>
-                {% if facets.fields.n_rebels_range and not facets.fields.n_rebels_range.is_field_selected %}
-                    <dt>{{ facets_labels.n_rebels_range }}</dt>
-                    {% for t in facets.fields.n_rebels_range.counts %}
+                {% if facets.fields.votation_n_rebels and not facets.fields.votation_n_rebels.is_field_selected %}
+                    <dt>{{ facets_labels.votation_n_rebels }}</dt>
+                    {% for t in facets.fields.votation_n_rebels.counts %}
                         {% if t.1 %}
                             <dd>
                                 {% if not t.2 %}
-                                    <a href="{{ base_url }}&f=n_rebels_range:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
+                                    <a href="{{ base_url }}&f=votation_n_rebels:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
                                 {% endif %}
                             </dd>
                         {%  endif %}
@@ -314,13 +423,13 @@
                 {% endif %}
             </dl>
             <dl>
-                {% if facets.fields.n_variance and not facets.fields.n_variance.is_field_selected %}
-                    <dt>{{ facets_labels.n_variance }}</dt>
-                    {% for t in facets.fields.n_variance.counts %}
+                {% if facets.fields.gap_yes_no_range and not facets.fields.gap_yes_no_range.is_field_selected %}
+                    <dt>{{ facets_labels.gap_yes_no_range }}</dt>
+                    {% for t in facets.fields.gap_yes_no_range.counts %}
                         {% if t.1 %}
                             <dd>
                                 {% if not t.2 %}
-                                    <a href="{{ base_url }}&f=n_variance:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
+                                    <a href="{{ base_url }}&f=gap_yes_no_range:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
                                 {% endif %}
                             </dd>
                         {%  endif %}

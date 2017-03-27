@@ -27,7 +27,7 @@ em {
 
   <script type="text/javascript">
 
-    {% if graphs.category  %}
+    {% if graphs.category %}
       graph_category_elem = document.getElementById('graph_category');
 	  Plotly.plot( graph_category_elem, [{
 	    x: [{{ graphs.category.y | join:", " }}],
@@ -46,7 +46,7 @@ em {
 	  });
     {% endif %}
 
-    {% if graphs.location  %}
+    {% if graphs.location %}
       graph_location_elem = document.getElementById('graph_location');
 	  Plotly.plot( graph_location_elem, [{
 	    x: [{{ graphs.location.y | join:", " }}],
@@ -65,7 +65,7 @@ em {
 	  });
     {% endif %}
 
-    {% if graphs.act_type  %}
+    {% if graphs.act_type %}
       graph_act_type_elem = document.getElementById('graph_act_type');
 	  Plotly.plot( graph_act_type_elem, [{
 	    x: ['{{ graphs.act_type.x | join:"', '" }}'],
@@ -83,7 +83,7 @@ em {
 	  });
     {% endif %}
 
-    {% if graphs.pub_date  %}
+    {% if graphs.pub_date and not facet_queries_date.is_selected %}
       graph_pub_date_elem = document.getElementById('graph_pub_date');
 	  Plotly.plot( graph_pub_date_elem, [{
 	    x: ['{{ graphs.pub_date.x | join:"', '" }}'],
@@ -105,19 +105,19 @@ em {
       var _width4 = _width/2;
       var _width8 = _width;
 
-      {% if graphs.category  %}
+      {% if graphs.category %}
         Plotly.relayout(graph_category_elem, { width:_width8, height:400 });
       {% endif %}
 
-      {% if graphs.location  %}
+      {% if graphs.location %}
         Plotly.relayout(graph_location_elem, { width:_width8, height:600 });
       {% endif %}
 
-      {% if graphs.act_type  %}
+      {% if graphs.act_type %}
         Plotly.relayout(graph_act_type_elem, { width:_width8, height:500 });
       {% endif %}
 
-      {% if graphs.pub_date  %}
+      {% if graphs.pub_date and not facet_queries_date.is_selected %}
         Plotly.relayout(graph_pub_date_elem, { width:_width8, height:500 });
       {% endif %}
 
@@ -210,8 +210,14 @@ em {
       </div>
 
       <div class="tab-pane" id="search_stats_tab">
-        {% if graphs.act_type  %}<div id="graph_act_type" class="span8"></div>{% endif %}
-        {% if graphs.pub_date  %}<div id="graph_pub_date" class="span8"></div>{% endif %}
+
+        {% if graphs.act_type  %}
+          <div id="graph_act_type" class="span8"></div>
+        {% endif %}
+
+        {% if graphs.pub_date and not facet_queries_date.is_selected %}
+          <div id="graph_pub_date" class="span8"></div>
+        {% endif %}
       </div>
     </div>
   </section>
