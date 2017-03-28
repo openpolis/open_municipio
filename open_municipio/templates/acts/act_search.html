@@ -65,6 +65,40 @@ em {
 	  });
     {% endif %}
 
+    {% if graphs.initiative and not facets.fields.initiative.is_field_selected %}
+      graph_initiative_elem = document.getElementById('graph_initiative');
+	  Plotly.plot( graph_initiative_elem, [{
+	    labels: ['{{ graphs.initiative.x | join:"', '" }}'],
+	    values: [{{ graphs.initiative.y | join:", " }}],
+	    type: 'pie'
+	  }], {
+	    title: 'Iniziativa',
+        xaxis: { fixedrange: true },
+        yaxis: { fixedrange: true }
+      }, {
+	    displaylogo: false,
+	    displayModeBar: true,
+	    modeBarButtonsToRemove: [ 'hoverClosestCartesian', 'hoverCompareCartesian', 'toggleHover' ]
+	  });
+    {% endif %}
+
+    {% if graphs.multiple_supporters and not facets.fields.multiple_supporters.is_field_selected %}
+      graph_multiple_supporters_elem = document.getElementById('graph_multiple_supporters');
+	  Plotly.plot( graph_multiple_supporters_elem, [{
+	    labels: ['{{ graphs.multiple_supporters.x | join:"', '" }}'],
+	    values: [{{ graphs.multiple_supporters.y | join:", " }}],
+	    type: 'pie'
+	  }], {
+	    title: 'Firmatari multipli',
+        xaxis: { fixedrange: true },
+        yaxis: { fixedrange: true }
+      }, {
+	    displaylogo: false,
+	    displayModeBar: true,
+	    modeBarButtonsToRemove: [ 'hoverClosestCartesian', 'hoverCompareCartesian', 'toggleHover' ]
+	  });
+    {% endif %}
+
     {% if graphs.act_type and not facets.fields.act_type.is_field_selected %}
       graph_act_type_elem = document.getElementById('graph_act_type');
 	  Plotly.plot( graph_act_type_elem, [{
@@ -131,6 +165,14 @@ em {
         Plotly.relayout(graph_location_elem, { width:_width8, height:600 });
       {% endif %}
 
+      {% if graphs.initiative %}
+        Plotly.relayout(graph_initiative_elem, { width:_width4, height:400 });
+      {% endif %}
+
+      {% if graphs.multiple_supporters %}
+        Plotly.relayout(graph_multiple_supporters_elem, { width:_width4, height:400 });
+      {% endif %}
+
       {% if graphs.act_type %}
         Plotly.relayout(graph_act_type_elem, { width:_width8, height:500 });
       {% endif %}
@@ -156,6 +198,7 @@ em {
     <ul class="nav nav-tabs page-tabs">
       <li class="active"><a data-toggle="tab" href="#search_acts_tab">{{ n_results }} att{{ n_results|pluralize:"o,i" }}</a></li>
       <li><a data-toggle="tab" href="#search_topics_tab">Argomenti</a></li>
+      <li><a data-toggle="tab" href="#search_people_tab">Politici</a></li>
       <li><a data-toggle="tab" href="#search_stats_tab">Statistiche</a></li>
     </ul>
     <div class="tab-content" id="tab-content-id">
@@ -229,6 +272,11 @@ em {
       <div class="tab-pane" id="search_topics_tab">
         {% if graphs.category  %}<div id="graph_category" class="span8"></div>{% endif %}
         {% if graphs.location  %}<div id="graph_location" class="span8"></div>{% endif %}
+      </div>
+
+      <div class="tab-pane" id="search_people_tab">
+        {% if graphs.initiative  %}<div id="graph_initiative" class="span4"></div>{% endif %}
+        {% if graphs.multiple_supporters  %}<div id="graph_multiple_supporters" class="span4"></div>{% endif %}
       </div>
 
       <div class="tab-pane" id="search_stats_tab">
