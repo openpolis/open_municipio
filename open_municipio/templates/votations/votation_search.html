@@ -52,6 +52,12 @@
 	    displayModeBar: true,
 	    modeBarButtonsToRemove: [ 'hoverClosestCartesian', 'hoverCompareCartesian' ]
 	  });
+
+      graph_n_presents_range_elem.on('plotly_click', function(data){
+        var url = '{{ base_url }}' + '&f=n_presents_range:' + data.points[0].x
+        window.open(url, '_self');
+      });
+
     {% endif %}
 
     {% if graphs.gap_yes_no %}
@@ -70,6 +76,12 @@
 	    displayModeBar: true,
 	    modeBarButtonsToRemove: [ 'hoverClosestCartesian', 'hoverCompareCartesian' ]
 	  });
+
+      graph_gap_yes_no_elem.on('plotly_click', function(data){
+        var url = '{{ base_url }}' + '&f=gap_yes_no:' + data.points[0].x
+        window.open(url, '_self');
+      });
+
     {% endif %}
 
     {% if graphs.votation_n_rebels and not facets.fields.votation_n_rebels.is_field_selected %}
@@ -88,6 +100,12 @@
 	    displayModeBar: true,
 	    modeBarButtonsToRemove: [ 'hoverClosestCartesian', 'hoverCompareCartesian' ]
 	  });
+
+      graph_votation_n_rebels_elem.on('plotly_click', function(data){
+        var url = '{{ base_url }}' + '&f=votation_n_rebels:' + data.points[0].x
+        window.open(url, '_self');
+      });
+
     {% endif %}
 
     {% if graphs.votation_outcome_display and not facets.fields.votation_outcome_display.is_field_selected %}

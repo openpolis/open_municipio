@@ -44,6 +44,12 @@ em {
 	    displayModeBar: true,
 	    modeBarButtonsToRemove: [ 'hoverClosestCartesian', 'hoverCompareCartesian' ]
 	  });
+
+      graph_category_elem.on('plotly_click', function(data){
+        var url = '{{ base_url }}' + '&f=category:' + data.points[0].y
+        window.open(url, '_self');
+      });
+
     {% endif %}
 
     {% if graphs.location %}
@@ -63,6 +69,12 @@ em {
 	    displayModeBar: true,
 	    modeBarButtonsToRemove: [ 'hoverClosestCartesian', 'hoverCompareCartesian' ]
 	  });
+
+      graph_location_elem.on('plotly_click', function(data){
+        var url = '{{ base_url }}' + '&f=location:' + data.points[0].y
+        window.open(url, '_self');
+      });
+
     {% endif %}
 
     {% if graphs.initiative and not facets.fields.initiative.is_field_selected %}
@@ -115,6 +127,12 @@ em {
 	    displayModeBar: true,
 	    modeBarButtonsToRemove: [ 'hoverClosestCartesian', 'hoverCompareCartesian' ]
 	  });
+
+      graph_act_type_elem.on('plotly_click', function(data){
+        var url = '{{ base_url }}' + '&f=act_type:' + data.points[0].x
+        window.open(url, '_self');
+      });
+
     {% endif %}
 
     {% if graphs.iter_duration %}
@@ -133,6 +151,12 @@ em {
 	    displayModeBar: true,
 	    modeBarButtonsToRemove: [ 'hoverClosestCartesian', 'hoverCompareCartesian' ]
 	  });
+
+      graph_iter_duration_elem.on('plotly_click', function(data){
+        var url = '{{ base_url }}' + '&f=iter_duration:' + data.points[0].x
+        window.open(url, '_self');
+      });
+
     {% endif %}
 
     {% if graphs.pub_date and not facet_queries_date.is_selected %}
