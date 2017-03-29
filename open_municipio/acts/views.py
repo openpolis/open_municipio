@@ -251,7 +251,7 @@ class ActSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
         # further processing on graphs data
         if graphs['iter_duration']:
             for i,v in enumerate(graphs['iter_duration']['x']):
-                if v == '0':
+                if v == '0' or graphs['iter_duration']['y'][i] == 0:
                     del(graphs['iter_duration']['x'][i])
                     del(graphs['iter_duration']['y'][i])
                     break
