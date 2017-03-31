@@ -2,6 +2,7 @@ from datetime import datetime, date
 import logging
 from operator import attrgetter
 from itertools import chain
+from operator import itemgetter
 
 from django.shortcuts import get_object_or_404
 
@@ -784,7 +785,7 @@ class ChargeSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
     __name__ = 'ChargeSearchView'
 
     FACETS_SORTED = [ 'end_date', 'group_responsability', 'institution', 'is_active',
-                     'responsability', 'start_date' ]
+                     'responsability', 'start_date', 'n_presents_bin' ]
 
     FACETS_LABELS = {
         'is_active': _('Active'),
@@ -792,7 +793,8 @@ class ChargeSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
         'end_date': _('End date'),
         'institution': _('Institution'),
         'responsability': _('Institution responsability'),
-        'group_responsability': _('Group responsability')
+        'group_responsability': _('Group responsability'),
+        'n_presents_bin': _('Presenze al voto')
     }
     DATE_INTERVALS_RANGES = { }
 
@@ -806,7 +808,8 @@ class ChargeSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
     
         sqs = SearchQuerySet().filter(django_ct='people.institutioncharge')\
             .filter(institution = Raw("[* TO *]")).facet('is_active')\
-            .facet('institution').facet('responsability').facet('group_responsability')
+            .facet('institution').facet('responsability').facet('group_responsability')\
+            .facet('n_presents_bin')
 
         for (year, range) in self.DATE_INTERVALS_RANGES.items():
             sqs = sqs.query_facet('start_date', range['qrange'])
@@ -894,6 +897,36 @@ class ChargeSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
 
         extra['paginator'] = paginator
         extra['page_obj'] = page_obj
+
+        graphs = {}
+
+        # fill data for graphs
+        for f_name, f_params in extra['facets']['fields'].iteritems():
+            counts = f_params['counts']
+            if len(counts) > 1:
+                if f_name == 'n_presents_bin':
+                    counts = sorted(counts, key=itemgetter(0))
+
+                graphs[f_name] = {
+                    'x': [ v[0] for v in counts ],
+                    'y': [ v[1] for v in counts ]
+                }
+
+        ranges = extra['facet_queries_start_date']['ranges']
+        if len(ranges) > 1:
+            graphs['start_date'] = {
+                'x': [ v['label'] for v in ranges ],
+                'y': [ v['count'] for v in ranges ]
+            }
+
+        ranges = extra['facet_queries_end_date']['ranges']
+        if len(ranges) > 1:
+            graphs['end_date'] = {
+                'x': [ v['label'] for v in ranges ],
+                'y': [ v['count'] for v in ranges ]
+            }
+
+        extra['graphs'] = graphs
 
         return extra
 

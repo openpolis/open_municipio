@@ -30,26 +30,26 @@ body #main.two_columns {
 }
 {% endblock %}
 
+{% block head_js_includes %}
+    {{ block.super }}
+    <script type="text/javascript" src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+{% endblock head_js_includes %}
+
 {% block sub_nav %}
     {%  include 'people/_subnav.html' with active='Cariche' %}
 {% endblock %}
 
 {% block content %}
-{% if n_results %}
 <section>
-  <h2>{% if not query %}Trovate {% endif %} {{ n_results }} cariche</h2>
 
-  <p>
-      Tra parentesi il tasso mensile, calcolato in rapporto alla durata della carica.
-  </p>
+    <ul class="nav nav-tabs page-tabs">
+      <li class="active"><a data-toggle="tab" href="#search_charges_tab">{{ n_results }} caric{{ n_results|pluralize:"a,he" }}</a></li>
+      <li><a data-toggle="tab" href="#search_presence_tab">Presenze</a></li>
+    </ul>
+    <div class="tab-content" id="tab-content-id">
+      <div class="tab-pane active" id="search_charges_tab">
 
-    {% if person %}
-      <p>per: <a href="{{ person.get_absolute_url }}">{{ person }}</a></p>
-    {% endif %}
-
-    {% if group %}
-        <p>per il gruppo: <a href="{{ group.get_absolute_url }}">{{ group }}</a></p>
-    {% endif %}
+  <p>Tra parentesi il tasso mensile, calcolato in rapporto alla durata della carica.</p>
 
     <table class="data dataTable">
       <thead style="font-size: 10px;">
@@ -210,25 +210,34 @@ body #main.two_columns {
         {% endfor %}
         </tbody>
         </table>
-        </section>
-        {% digg_paginator %}
-    {% else %}
-        <section class="search-empty">
-            <p>
-                La ricerca{% if form.q.value %} di <strong>{{ form.q.value }}</strong>{% endif %} non è andata a buon fine.<br/>
-                Controlla che tutte le parole siano state digitate correttamente.</br>
-                oppure prova con parole diverse.
-            </p>
-            <p>
-                Grazie,<br/>
-                lo staff di Open Municipio
-            </p>
-        </section>
-    {% endif %} 
 
+        {% digg_paginator %}
+      </div>
+
+      <div class="tab-pane" id="search_presence_tab">
+
+        {% if graphs.n_presents_bin  %}
+          <div id="graph_n_presents_bin" class="span8"></div>
+        {% endif %}
+
+      </div>
+    </div>
+  </section>
 {% endblock %}
 
 {% block sidebar %}
+
+    {% if person %}
+      <dl><dt>Politico</dt></dl>
+      {% include 'people/_person_widget.html' with person=person %}
+    {% endif %}
+
+    {% if group %}
+      <dl><dt>Gruppo</dt></dl>
+      {% include 'people/_group_widget.html' with group=group %}
+    {% endif %}
+
+    {% if person or group %}<hr />{% endif %}
  
     {% if n_results %}
         {% if selected_facets %}
@@ -243,8 +252,6 @@ body #main.two_columns {
     
         {% else %}
             <h2>Filtra</h2>
-            <p>Puoi trovare la carica che ti interessa scorrendo la lista qui a fianco.<br />
-            Puoi perfezionare la ricerca usando i filtri nella colonna qui sotto</p>
         {% endif %}
     
         <!-- Begin faceting. -->
@@ -332,3 +339,49 @@ body #main.two_columns {
         <!-- End faceting -->
     {% endif %}
 {% endblock %}
+
+
+{% block footer_js_includes %}
+  {{ block.super }}
+  <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap-tab.js"></script>
+
+  <script type="text/javascript">
+
+    {% if graphs.n_presents_bin and not facets.fields.n_presents_bin.is_field_selected %}
+      graph_n_presents_bin_elem = document.getElementById('graph_n_presents_bin');
+	  Plotly.plot( graph_n_presents_bin_elem, [{
+	    x: ['{{ graphs.n_presents_bin.x | join:"', '" }}'],
+	    y: [{{ graphs.n_presents_bin.y | join:", " }}],
+	    type: 'bar'
+	    }], {
+	    title: 'Presenze al voto',
+	    hovermode: 'x',
+        xaxis: { fixedrange: true, title: 'percentuale' },
+        yaxis: { fixedrange: true, title: 'numero di cariche' }
+      }, {
+	    displaylogo: false,
+	    displayModeBar: true,
+	    modeBarButtonsToRemove: [ 'hoverClosestCartesian', 'hoverCompareCartesian' ]
+	  });
+
+      graph_n_presents_bin_elem.on('plotly_click', function(data){
+        var url = '{{ base_url }}' + '&f=n_presents_bin:' + data.points[0].x
+        window.open(url, '_self');
+      });
+
+    {% endif %}
+
+    $(window).resize(function() {
+      var _width = $("#tab-content-id").width() - 50;
+      var _width4 = _width/2;
+      var _width8 = _width;
+
+      {% if graphs.n_presents_bin %}
+        Plotly.relayout(graph_n_presents_bin_elem, { width:_width8, height:500 });
+      {% endif %}
+
+    }).resize();
+
+    </script>
+});
+{% endblock footer_js_includes %}

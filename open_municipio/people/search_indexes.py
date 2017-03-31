@@ -47,6 +47,7 @@ class InstitutionChargeIndex(indexes.SearchIndex, indexes.Indexable):
     n_present_votations_percent = indexes.FloatField()
     n_present_attendances_percent = indexes.FloatField()
     n_presents_percent = indexes.FloatField()
+    n_presents_bin = indexes.FacetCharField()
 
     n_deliberations = indexes.IntegerField()
     n_cgdeliberations = indexes.IntegerField()
@@ -145,6 +146,17 @@ class InstitutionChargeIndex(indexes.SearchIndex, indexes.Indexable):
             else (obj.n_present_votations + obj.n_absent_votations)
 
         return (float(self.prepare_n_presents(obj)) * 100 / n_presents) if n_presents else 0
+
+    def prepare_n_presents_bin(self, obj):
+
+        edges = range(0, 101, 10)
+        value = self.prepare_n_presents_percent(obj)
+
+        if not value: return
+
+        for i in range(len(edges) - 1):
+            if edges[i] <= value < edges[i + 1]:
+                return str(edges[i]) + '% - ' + str(edges[i + 1]) + '%'
 
     def prepare_n_deliberations(self, obj):
         return obj.presented_act_set.filter(deliberation__isnull=False).count()
