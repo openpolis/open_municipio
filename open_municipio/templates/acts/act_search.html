@@ -21,200 +21,6 @@ em {
     <script type="text/javascript" src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 {% endblock head_js_includes %}
 
-{% block footer_js_includes %}
-  {{ block.super }}
-  <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap-tab.js"></script>
-
-  <script type="text/javascript">
-
-    {% if graphs.category %}
-      graph_category_elem = document.getElementById('graph_category');
-	  Plotly.plot( graph_category_elem, [{
-	    x: [{{ graphs.category.y | join:", " }}],
-	    y: ['{{ graphs.category.x | join:"', '" }}'],
-	    type: 'bar',
-	    orientation: 'h'
-	  }], {
-	    title: 'Categorie di argomento',
-	    margin: { l: 150 },
-        xaxis: { fixedrange: true, side: 'top' },
-        yaxis: { fixedrange: true, autorange: 'reversed' }
-      }, {
-	    displaylogo: false,
-	    displayModeBar: true,
-	    modeBarButtonsToRemove: [ 'hoverClosestCartesian', 'hoverCompareCartesian' ]
-	  });
-
-      graph_category_elem.on('plotly_click', function(data){
-        var url = '{{ base_url }}' + '&f=category:' + data.points[0].y
-        window.open(url, '_self');
-      });
-
-    {% endif %}
-
-    {% if graphs.location %}
-      graph_location_elem = document.getElementById('graph_location');
-	  Plotly.plot( graph_location_elem, [{
-	    x: [{{ graphs.location.y | join:", " }}],
-	    y: ['{{ graphs.location.x | join:"', '" }}'],
-	    type: 'bar',
-	    orientation: 'h'
-	  }], {
-	    title: 'Territori',
-	    margin: { l: 150 },
-        xaxis: { fixedrange: true, side: 'top' },
-        yaxis: { fixedrange: true, autorange: 'reversed' }
-      }, {
-	    displaylogo: false,
-	    displayModeBar: true,
-	    modeBarButtonsToRemove: [ 'hoverClosestCartesian', 'hoverCompareCartesian' ]
-	  });
-
-      graph_location_elem.on('plotly_click', function(data){
-        var url = '{{ base_url }}' + '&f=location:' + data.points[0].y
-        window.open(url, '_self');
-      });
-
-    {% endif %}
-
-    {% if graphs.initiative and not facets.fields.initiative.is_field_selected %}
-      graph_initiative_elem = document.getElementById('graph_initiative');
-	  Plotly.plot( graph_initiative_elem, [{
-	    labels: ['{{ graphs.initiative.x | join:"', '" }}'],
-	    values: [{{ graphs.initiative.y | join:", " }}],
-	    type: 'pie'
-	  }], {
-	    title: 'Iniziativa',
-        xaxis: { fixedrange: true, showgrid: false, showticklabels: false, zeroline: false },
-        yaxis: { fixedrange: true, showgrid: false, showticklabels: false, zeroline: false }
-      }, {
-	    displaylogo: false,
-	    displayModeBar: true,
-	    modeBarButtonsToRemove: [ 'hoverClosestCartesian', 'hoverCompareCartesian', 'toggleHover' ]
-	  });
-    {% endif %}
-
-    {% if graphs.multiple_supporters and not facets.fields.multiple_supporters.is_field_selected %}
-      graph_multiple_supporters_elem = document.getElementById('graph_multiple_supporters');
-	  Plotly.plot( graph_multiple_supporters_elem, [{
-	    labels: ['{{ graphs.multiple_supporters.x | join:"', '" }}'],
-	    values: [{{ graphs.multiple_supporters.y | join:", " }}],
-	    type: 'pie'
-	  }], {
-	    title: 'Firmatari multipli',
-        xaxis: { fixedrange: true, showgrid: false, showticklabels: false, zeroline: false },
-        yaxis: { fixedrange: true, showgrid: false, showticklabels: false, zeroline: false }
-      }, {
-	    displaylogo: false,
-	    displayModeBar: true,
-	    modeBarButtonsToRemove: [ 'hoverClosestCartesian', 'hoverCompareCartesian', 'toggleHover' ]
-	  });
-    {% endif %}
-
-    {% if graphs.act_type and not facets.fields.act_type.is_field_selected %}
-      graph_act_type_elem = document.getElementById('graph_act_type');
-	  Plotly.plot( graph_act_type_elem, [{
-	    x: ['{{ graphs.act_type.x | join:"', '" }}'],
-	    y: [{{ graphs.act_type.y | join:", " }}],
-	    type: 'bar'
-	    }], {
-	    title: 'Tipologie di atto',
-	    hovermode: 'x',
-        xaxis: { fixedrange: true },
-        yaxis: { fixedrange: true, title: 'numero di atti' }
-      }, {
-	    displaylogo: false,
-	    displayModeBar: true,
-	    modeBarButtonsToRemove: [ 'hoverClosestCartesian', 'hoverCompareCartesian' ]
-	  });
-
-      graph_act_type_elem.on('plotly_click', function(data){
-        var url = '{{ base_url }}' + '&f=act_type:' + data.points[0].x
-        window.open(url, '_self');
-      });
-
-    {% endif %}
-
-    {% if graphs.iter_duration %}
-      graph_iter_duration_elem = document.getElementById('graph_iter_duration');
-	  Plotly.plot( graph_iter_duration_elem, [{
-	    x: ['{{ graphs.iter_duration.x | join:"', '" }}'],
-	    y: [{{ graphs.iter_duration.y | join:", " }}],
-	    type: 'bar'
-	    }], {
-	    title: 'Durata dell\'iter',
-	    hovermode: 'x',
-        xaxis: { fixedrange: true, title: 'giorni' },
-        yaxis: { fixedrange: true, title: 'numero di atti', type: 'log' }
-      }, {
-	    displaylogo: false,
-	    displayModeBar: true,
-	    modeBarButtonsToRemove: [ 'hoverClosestCartesian', 'hoverCompareCartesian' ]
-	  });
-
-      graph_iter_duration_elem.on('plotly_click', function(data){
-        var url = '{{ base_url }}' + '&f=iter_duration:' + data.points[0].x
-        window.open(url, '_self');
-      });
-
-    {% endif %}
-
-    {% if graphs.pub_date and not facet_queries_date.is_selected %}
-      graph_pub_date_elem = document.getElementById('graph_pub_date');
-	  Plotly.plot( graph_pub_date_elem, [{
-	    x: ['{{ graphs.pub_date.x | join:"', '" }}'],
-	    y: [{{ graphs.pub_date.y | join:", " }}],
-	    type: 'scatter'
-	  }], {
-	    title: 'Anno di pubblicazione',
-        xaxis: { fixedrange: true, title: 'anno' },
-        yaxis: { fixedrange: true, title: 'numero di atti' }
-      }, {
-	    displaylogo: false,
-	    displayModeBar: true,
-	    modeBarButtonsToRemove: [ 'hoverClosestCartesian', 'hoverCompareCartesian' ]
-	  });
-    {% endif %}
-
-    $(window).resize(function() {
-      var _width = $("#tab-content-id").width() - 50;
-      var _width4 = _width/2;
-      var _width8 = _width;
-
-      {% if graphs.category %}
-        Plotly.relayout(graph_category_elem, { width:_width8, height:400 });
-      {% endif %}
-
-      {% if graphs.location %}
-        Plotly.relayout(graph_location_elem, { width:_width8, height:600 });
-      {% endif %}
-
-      {% if graphs.initiative %}
-        Plotly.relayout(graph_initiative_elem, { width:_width4, height:400 });
-      {% endif %}
-
-      {% if graphs.multiple_supporters %}
-        Plotly.relayout(graph_multiple_supporters_elem, { width:_width4, height:400 });
-      {% endif %}
-
-      {% if graphs.act_type %}
-        Plotly.relayout(graph_act_type_elem, { width:_width8, height:500 });
-      {% endif %}
-
-      {% if graphs.iter_duration %}
-        Plotly.relayout(graph_iter_duration_elem, { width:_width8, height:500 });
-      {% endif %}
-
-      {% if graphs.pub_date and not facet_queries_date.is_selected %}
-        Plotly.relayout(graph_pub_date_elem, { width:_width8, height:500 });
-      {% endif %}
-
-    }).resize();
-
-    </script>
-});
-{% endblock footer_js_includes %}
-
 {% block content %}
 
   <section>
@@ -575,3 +381,198 @@ em {
     {% include 'search/_related_search.html' %}
 
 {% endblock %}
+
+
+{% block footer_js_includes %}
+  {{ block.super }}
+  <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap-tab.js"></script>
+
+  <script type="text/javascript">
+
+    {% if graphs.category %}
+      graph_category_elem = document.getElementById('graph_category');
+	  Plotly.plot( graph_category_elem, [{
+	    x: [{{ graphs.category.y | join:", " }}],
+	    y: ['{{ graphs.category.x | join:"', '" }}'],
+	    type: 'bar',
+	    orientation: 'h'
+	  }], {
+	    title: 'Categorie di argomento',
+	    margin: { l: 150 },
+        xaxis: { fixedrange: true, side: 'top' },
+        yaxis: { fixedrange: true, autorange: 'reversed' }
+      }, {
+	    displaylogo: false,
+	    displayModeBar: true,
+	    modeBarButtonsToRemove: [ 'hoverClosestCartesian', 'hoverCompareCartesian' ]
+	  });
+
+      graph_category_elem.on('plotly_click', function(data){
+        var url = '{{ base_url }}' + '&f=category:' + data.points[0].y
+        window.open(url, '_self');
+      });
+
+    {% endif %}
+
+    {% if graphs.location %}
+      graph_location_elem = document.getElementById('graph_location');
+	  Plotly.plot( graph_location_elem, [{
+	    x: [{{ graphs.location.y | join:", " }}],
+	    y: ['{{ graphs.location.x | join:"', '" }}'],
+	    type: 'bar',
+	    orientation: 'h'
+	  }], {
+	    title: 'Territori',
+	    margin: { l: 150 },
+        xaxis: { fixedrange: true, side: 'top' },
+        yaxis: { fixedrange: true, autorange: 'reversed' }
+      }, {
+	    displaylogo: false,
+	    displayModeBar: true,
+	    modeBarButtonsToRemove: [ 'hoverClosestCartesian', 'hoverCompareCartesian' ]
+	  });
+
+      graph_location_elem.on('plotly_click', function(data){
+        var url = '{{ base_url }}' + '&f=location:' + data.points[0].y
+        window.open(url, '_self');
+      });
+
+    {% endif %}
+
+    {% if graphs.initiative and not facets.fields.initiative.is_field_selected %}
+      graph_initiative_elem = document.getElementById('graph_initiative');
+	  Plotly.plot( graph_initiative_elem, [{
+	    labels: ['{{ graphs.initiative.x | join:"', '" }}'],
+	    values: [{{ graphs.initiative.y | join:", " }}],
+	    type: 'pie'
+	  }], {
+	    title: 'Iniziativa',
+        xaxis: { fixedrange: true, showgrid: false, showticklabels: false, zeroline: false },
+        yaxis: { fixedrange: true, showgrid: false, showticklabels: false, zeroline: false }
+      }, {
+	    displaylogo: false,
+	    displayModeBar: true,
+	    modeBarButtonsToRemove: [ 'hoverClosestCartesian', 'hoverCompareCartesian', 'toggleHover' ]
+	  });
+    {% endif %}
+
+    {% if graphs.multiple_supporters and not facets.fields.multiple_supporters.is_field_selected %}
+      graph_multiple_supporters_elem = document.getElementById('graph_multiple_supporters');
+	  Plotly.plot( graph_multiple_supporters_elem, [{
+	    labels: ['{{ graphs.multiple_supporters.x | join:"', '" }}'],
+	    values: [{{ graphs.multiple_supporters.y | join:", " }}],
+	    type: 'pie'
+	  }], {
+	    title: 'Firmatari multipli',
+        xaxis: { fixedrange: true, showgrid: false, showticklabels: false, zeroline: false },
+        yaxis: { fixedrange: true, showgrid: false, showticklabels: false, zeroline: false }
+      }, {
+	    displaylogo: false,
+	    displayModeBar: true,
+	    modeBarButtonsToRemove: [ 'hoverClosestCartesian', 'hoverCompareCartesian', 'toggleHover' ]
+	  });
+    {% endif %}
+
+    {% if graphs.act_type and not facets.fields.act_type.is_field_selected %}
+      graph_act_type_elem = document.getElementById('graph_act_type');
+	  Plotly.plot( graph_act_type_elem, [{
+	    x: ['{{ graphs.act_type.x | join:"', '" }}'],
+	    y: [{{ graphs.act_type.y | join:", " }}],
+	    type: 'bar'
+	    }], {
+	    title: 'Tipologie di atto',
+	    hovermode: 'x',
+        xaxis: { fixedrange: true },
+        yaxis: { fixedrange: true, title: 'numero di atti' }
+      }, {
+	    displaylogo: false,
+	    displayModeBar: true,
+	    modeBarButtonsToRemove: [ 'hoverClosestCartesian', 'hoverCompareCartesian' ]
+	  });
+
+      graph_act_type_elem.on('plotly_click', function(data){
+        var url = '{{ base_url }}' + '&f=act_type:' + data.points[0].x
+        window.open(url, '_self');
+      });
+
+    {% endif %}
+
+    {% if graphs.iter_duration %}
+      graph_iter_duration_elem = document.getElementById('graph_iter_duration');
+	  Plotly.plot( graph_iter_duration_elem, [{
+	    x: ['{{ graphs.iter_duration.x | join:"', '" }}'],
+	    y: [{{ graphs.iter_duration.y | join:", " }}],
+	    type: 'bar'
+	    }], {
+	    title: 'Durata dell\'iter',
+	    hovermode: 'x',
+        xaxis: { fixedrange: true, title: 'giorni' },
+        yaxis: { fixedrange: true, title: 'numero di atti', type: 'log' }
+      }, {
+	    displaylogo: false,
+	    displayModeBar: true,
+	    modeBarButtonsToRemove: [ 'hoverClosestCartesian', 'hoverCompareCartesian' ]
+	  });
+
+      graph_iter_duration_elem.on('plotly_click', function(data){
+        var url = '{{ base_url }}' + '&f=iter_duration:' + data.points[0].x
+        window.open(url, '_self');
+      });
+
+    {% endif %}
+
+    {% if graphs.pub_date and not facet_queries_date.is_selected %}
+      graph_pub_date_elem = document.getElementById('graph_pub_date');
+	  Plotly.plot( graph_pub_date_elem, [{
+	    x: ['{{ graphs.pub_date.x | join:"', '" }}'],
+	    y: [{{ graphs.pub_date.y | join:", " }}],
+	    type: 'scatter'
+	  }], {
+	    title: 'Anno di pubblicazione',
+        xaxis: { fixedrange: true, title: 'anno' },
+        yaxis: { fixedrange: true, title: 'numero di atti' }
+      }, {
+	    displaylogo: false,
+	    displayModeBar: true,
+	    modeBarButtonsToRemove: [ 'hoverClosestCartesian', 'hoverCompareCartesian' ]
+	  });
+    {% endif %}
+
+    $(window).resize(function() {
+      var _width = $("#tab-content-id").width() - 50;
+      var _width4 = _width/2;
+      var _width8 = _width;
+
+      {% if graphs.category %}
+        Plotly.relayout(graph_category_elem, { width:_width8, height:400 });
+      {% endif %}
+
+      {% if graphs.location %}
+        Plotly.relayout(graph_location_elem, { width:_width8, height:600 });
+      {% endif %}
+
+      {% if graphs.initiative %}
+        Plotly.relayout(graph_initiative_elem, { width:_width4, height:400 });
+      {% endif %}
+
+      {% if graphs.multiple_supporters %}
+        Plotly.relayout(graph_multiple_supporters_elem, { width:_width4, height:400 });
+      {% endif %}
+
+      {% if graphs.act_type %}
+        Plotly.relayout(graph_act_type_elem, { width:_width8, height:500 });
+      {% endif %}
+
+      {% if graphs.iter_duration %}
+        Plotly.relayout(graph_iter_duration_elem, { width:_width8, height:500 });
+      {% endif %}
+
+      {% if graphs.pub_date and not facet_queries_date.is_selected %}
+        Plotly.relayout(graph_pub_date_elem, { width:_width8, height:500 });
+      {% endif %}
+
+    }).resize();
+
+    </script>
+});
+{% endblock footer_js_includes %}

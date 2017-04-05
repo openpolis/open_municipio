@@ -926,6 +926,10 @@ class ChargeSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
                 'y': [ v['count'] for v in ranges ]
             }
 
+        graphs['results'] = {
+            'height': self.results_per_page * 60 if self.results_per_page > 5 else 300
+        }
+
         extra['graphs'] = graphs
 
         return extra

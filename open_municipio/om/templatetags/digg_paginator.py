@@ -8,6 +8,7 @@ Recreated by Haisheng HU <hanson2010@gmail.com> on Jun 3, 2012
 '''
 
 from django import template
+from django.conf import settings
 
 register = template.Library()
 
@@ -26,6 +27,7 @@ def digg_paginator(context):
     '''
     paginator = context['paginator']
     page_obj = context['page_obj']
+    n_results = context['n_results']
     pages = paginator.num_pages
     page = page_obj.number
     in_leading_range = in_trailing_range = False
@@ -52,7 +54,20 @@ def digg_paginator(context):
     params = request.GET.copy()
     if 'page' in params:
         del(params['page'])
+    if 'results_per_page' in params:
+        del(params['results_per_page'])
     get_params = params.urlencode()
+
+    results_per_page = int(request.GET.get('results_per_page', settings.HAYSTACK_SEARCH_RESULTS_PER_PAGE))
+    results_per_page_list = [ ]
+
+    for r in [settings.HAYSTACK_SEARCH_RESULTS_PER_PAGE, \
+        3 * settings.HAYSTACK_SEARCH_RESULTS_PER_PAGE, \
+        10 * settings.HAYSTACK_SEARCH_RESULTS_PER_PAGE]:
+
+        if r != results_per_page:
+            if n_results >= r: results_per_page_list.append(r)
+            else: break
 
     return {
         'pages': pages,
@@ -67,6 +82,8 @@ def digg_paginator(context):
         'pages_outside_leading_range': pages_outside_leading_range,
         'pages_outside_trailing_range': pages_outside_trailing_range,
         'get_params': get_params,
+        'results_per_page': results_per_page,
+        'results_per_page_list': results_per_page_list
         }
 
 register.inclusion_tag("commons/digg_paginator.html", takes_context=True)(digg_paginator)
