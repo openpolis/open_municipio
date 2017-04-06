@@ -75,6 +75,7 @@ class InstitutionChargeIndex(indexes.SearchIndex, indexes.Indexable):
     n_speeches_index = indexes.FloatField()
     speeches_minutes = indexes.IntegerField()
     speeches_minutes_index = indexes.FloatField()
+    speeches_minutes_index_bin = indexes.FacetCharField()
 
     logger = logging.getLogger('import')
 
@@ -156,7 +157,7 @@ class InstitutionChargeIndex(indexes.SearchIndex, indexes.Indexable):
 
         for i in range(len(edges) - 1):
             if edges[i] <= value < edges[i + 1]:
-                return str(edges[i]) + '% - ' + str(edges[i + 1]) + '%'
+                return str(edges[i]) + '%-' + str(edges[i + 1]) + '%'
 
     def prepare_n_deliberations(self, obj):
         return obj.presented_act_set.filter(deliberation__isnull=False).count()
@@ -229,6 +230,19 @@ class InstitutionChargeIndex(indexes.SearchIndex, indexes.Indexable):
 
     def prepare_speeches_minutes_index(self, obj):
         return (float(self.prepare_speeches_minutes(obj)) / obj.duration.days) * 30 if obj.duration.days else None
+
+    def prepare_speeches_minutes_index_bin(self, obj):
+
+        edges = [ 0, 1, 5, 10, 20, 30, 40, 60 ]
+        value = self.prepare_speeches_minutes_index(obj)
+
+        if not value: return
+
+        for i in range(len(edges) - 1):
+            if edges[i] <= value < edges[i + 1]:
+                return str(edges[i]) + '-' + str(edges[i + 1])
+
+        return str(edges[-1]) + ' e oltre'
 
 
 class GroupIndex(indexes.SearchIndex, indexes.Indexable):

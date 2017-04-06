@@ -47,6 +47,7 @@ body #main.two_columns {
       <li class="active"><a data-toggle="tab" href="#search_charges_tab">{{ n_results }} caric{{ n_results|pluralize:"a,he" }}</a></li>
       <li><a data-toggle="tab" href="#search_acts_tab">Atti</a></li>
       <li><a data-toggle="tab" href="#search_presence_tab">Presenze</a></li>
+      <li><a data-toggle="tab" href="#search_speeches_tab">Interventi</a></li>
     </ul>
     <div class="tab-content" id="tab-content-id">
       <div class="tab-pane active" id="search_charges_tab">
@@ -222,6 +223,14 @@ body #main.two_columns {
 
         {% if graphs.n_presents_bin  %}
           <div id="graph_n_presents_bin" class="span8"></div>
+        {% endif %}
+
+      </div>
+
+      <div class="tab-pane" id="search_speeches_tab">
+
+        {% if graphs.speeches_minutes_index_bin  %}
+          <div id="graph_speeches_minutes_index_bin" class="span8"></div>
         {% endif %}
 
       </div>
@@ -463,6 +472,30 @@ body #main.two_columns {
 
     {% endif %}
 
+    {% if graphs.speeches_minutes_index_bin and not facets.fields.speeches_minutes_index_bin.is_field_selected %}
+      graph_speeches_minutes_index_bin_elem = document.getElementById('graph_speeches_minutes_index_bin');
+	  Plotly.plot( graph_speeches_minutes_index_bin_elem, [{
+	    x: ['{{ graphs.speeches_minutes_index_bin.x | join:"', '" }}'],
+	    y: [{{ graphs.speeches_minutes_index_bin.y | join:", " }}],
+	    type: 'bar'
+	    }], {
+	    title: 'Minuti di intervento al mese',
+	    hovermode: 'x',
+        xaxis: { fixedrange: true, title: 'minuti di intervento al mese' },
+        yaxis: { fixedrange: true, title: 'numero di cariche' }
+      }, {
+	    displaylogo: false,
+	    displayModeBar: true,
+	    modeBarButtonsToRemove: [ 'hoverClosestCartesian', 'hoverCompareCartesian' ]
+	  });
+
+      graph_speeches_minutes_index_bin_elem.on('plotly_click', function(data){
+        var url = '{{ base_url }}' + '&f=speeches_minutes_index_bin:' + data.points[0].x
+        window.open(url, '_self');
+      });
+
+    {% endif %}
+
     $(window).resize(function() {
       var _width = $("#tab-content-id").width() - 50;
       var _width4 = _width/2;
@@ -474,6 +507,10 @@ body #main.two_columns {
 
       {% if graphs.n_presents_bin %}
         Plotly.relayout(graph_n_presents_bin_elem, { width:_width8, height:500 });
+      {% endif %}
+
+      {% if graphs.speeches_minutes_index_bin %}
+        Plotly.relayout(graph_speeches_minutes_index_bin_elem, { width:_width8, height:500 });
       {% endif %}
 
     }).resize();
