@@ -2,6 +2,7 @@
 {% load highlight %}
 {% load om_utils %}
 {% load i18n %}
+{% load l10n %}
 {% load digg_paginator %}
 {% load url from future %}
 {% load thumbnail %}
@@ -29,6 +30,11 @@ body #main.two_columns {
 }
 {% endblock %}
 
+{% block head_js_includes %}
+    {{ block.super }}
+    <script type="text/javascript" src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+{% endblock head_js_includes %}
+
 {% block sub_nav %}
     {%  include 'people/_subnav.html' with active='Gruppi' %}
 {% endblock %}
@@ -37,16 +43,17 @@ body #main.two_columns {
 
 <section>
 
-  {% if charge %}
-    {% include 'people/charge_widget.html' with charge=charge %}
-  {% endif %}
+    <ul class="nav nav-tabs page-tabs">
+      <li class="active"><a data-toggle="tab" href="#search_charges_tab">{{ n_results }} caric{{ n_results|pluralize:"a,he" }}</a></li>
+      <li><a data-toggle="tab" href="#search_acts_tab">Atti</a></li>
+    </ul>
+    <div class="tab-content" id="tab-content-id">
+      <div class="tab-pane active" id="search_charges_tab">
 
-  <h2>{% if not query %}Trovati {% endif %} {{ n_results }} gruppi</h2>
-
-  <p>
-      La durata aggregata è la somma dei giorni di appartenenza al gruppo dei diversi consiglieri.<br />
-      Tra parentesi il tasso mensile, calcolato in rapporto alla durata aggregata del gruppo.
-  </p>
+        <p>
+          La durata aggregata è la somma dei giorni di appartenenza al gruppo dei diversi consiglieri.<br />
+          Tra parentesi il tasso mensile, calcolato in rapporto alla durata aggregata del gruppo.
+        </p>
 
     {% if person %}
       <p>per: <a href="{{ person.get_absolute_url }}">{{ person }}</a></p>
@@ -227,24 +234,19 @@ body #main.two_columns {
         {% endfor %}
         </tbody>
       </table>
-    </section>
 
         {% digg_paginator %}
+      </div>
 
-    {% if not n_results %}
-        <section class="search-empty">
-            <p>
-                La ricerca{% if form.q.value %} di <strong>{{ form.q.value }}</strong>{% endif %} non è andata a buon fine.<br/>
-                Controlla che tutte le parole siano state digitate correttamente.</br>
-                oppure prova con parole diverse.
-            </p>
-            <p>
-                Grazie,<br/>
-                lo staff di Open Municipio
-            </p>
-        </section>
-    {% endif %} 
+      <div class="tab-pane" id="search_acts_tab">
 
+        {% if n_results %}
+          <div id="graph_acts" class="span8"></div>
+        {% endif %}
+
+      </div>
+    </div>
+  </section>
 {% endblock %}
 
 {% block sidebar %}
@@ -262,8 +264,6 @@ body #main.two_columns {
     
         {% else %}
             <h2>Filtra</h2>
-            <p>Puoi trovare il gruppo che ti interessa scorrendo la lista qui a fianco.<br />
-            Puoi perfezionare la ricerca usando i filtri nella colonna qui sotto</p>
         {% endif %}
     
         <!-- Begin faceting. -->
@@ -285,3 +285,103 @@ body #main.two_columns {
         <!-- End faceting -->
     {% endif %}
 {% endblock %}
+
+
+{% block footer_js_includes %}
+  {{ block.super }}
+  <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap-tab.js"></script>
+
+  <script type="text/javascript">
+
+    {% if n_results %}
+      graph_acts_elem = document.getElementById('graph_acts');
+	  Plotly.plot( graph_acts_elem, [
+	  {
+	    {% language 'en' %}{% localize off %}
+	      x: [{% for result in page.object_list %} {{ result.n_presented_deliberations_index|floatformat:2 }},{% endfor %} ],
+	    {% endlocalize %}{% endlanguage %}
+	    y: [ {% for result in page.object_list %}'<a href="{{ result.object.get_absolute_url }}">{{ result.name }}</a><br />({{ result.object.start_date.year }})',{% endfor %} ],
+	    type: 'bar',
+	    orientation: 'h',
+	    name: 'Delibere di Consiglio'
+	  },
+	  {
+	    {% language 'en' %}{% localize off %}
+	      x: [{% for result in page.object_list %} {{ result.n_presented_motions_index|floatformat:2 }},{% endfor %} ],
+	    {% endlocalize %}{% endlanguage %}
+	    y: [ {% for result in page.object_list %}'<a href="{{ result.object.get_absolute_url }}">{{ result.name }}</a><br />({{ result.object.start_date.year }})',{% endfor %} ],
+	    type: 'bar',
+	    orientation: 'h',
+	    name: 'Mozioni'
+	  },
+	  {
+	    {% language 'en' %}{% localize off %}
+	      x: [{% for result in page.object_list %} {{ result.n_presented_agendas_index|floatformat:2 }},{% endfor %} ],
+	    {% endlocalize %}{% endlanguage %}
+	    y: [ {% for result in page.object_list %}'<a href="{{ result.object.get_absolute_url }}">{{ result.name }}</a><br />({{ result.object.start_date.year }})',{% endfor %} ],
+	    type: 'bar',
+	    orientation: 'h',
+	    name: 'Ordini del giorno'
+	  },
+	  {
+	    {% language 'en' %}{% localize off %}
+	      x: [{% for result in page.object_list %} {{ result.n_presented_amendments_index|floatformat:2 }},{% endfor %} ],
+	    {% endlocalize %}{% endlanguage %}
+	    y: [ {% for result in page.object_list %}'<a href="{{ result.object.get_absolute_url }}">{{ result.name }}</a><br />({{ result.object.start_date.year }})',{% endfor %} ],
+	    type: 'bar',
+	    orientation: 'h',
+	    name: 'Emendamenti'
+	  },
+	  {
+	    {% language 'en' %}{% localize off %}
+	      x: [{% for result in page.object_list %} {{ result.n_presented_interrogations_index|floatformat:2 }},{% endfor %} ],
+	    {% endlocalize %}{% endlanguage %}
+	    y: [ {% for result in page.object_list %}'<a href="{{ result.object.get_absolute_url }}">{{ result.name }}</a><br />({{ result.object.start_date.year }})',{% endfor %} ],
+	    type: 'bar',
+	    orientation: 'h',
+	    name: 'Interrogazioni'
+	  },
+	  {
+	    {% language 'en' %}{% localize off %}
+	      x: [{% for result in page.object_list %} {{ result.n_presented_interpellations_index|floatformat:2 }},{% endfor %} ],
+	    {% endlocalize %}{% endlanguage %}
+	    y: [ {% for result in page.object_list %}'<a href="{{ result.object.get_absolute_url }}">{{ result.name }}</a><br />({{ result.object.start_date.year }})',{% endfor %} ],
+	    type: 'bar',
+	    orientation: 'h',
+	    name: 'Interpellanze'
+	  },
+	  {
+	    {% language 'en' %}{% localize off %}
+          x: [{% for result in page.object_list %} {{ result.n_presented_audits_index|floatformat:2 }},{% endfor %} ],
+	    {% endlocalize %}{% endlanguage %}
+	    y: [ {% for result in page.object_list %}'<a href="{{ result.object.get_absolute_url }}">{{ result.name }}</a><br />({{ result.object.start_date.year }})',{% endfor %} ],
+	    type: 'bar',
+	    orientation: 'h',
+	    name: 'Accessi agli atti'
+	  }
+	  ], {
+	    title: 'Atti presentati',
+	    barmode: 'stack',
+	    margin: { l: 180 },
+        xaxis: { fixedrange: true, title: 'atti presentati mediamente ogni mese' },
+        yaxis: { fixedrange: true, autorange: 'reversed' }
+      }, {
+	    displaylogo: false,
+	    displayModeBar: true,
+	    modeBarButtonsToRemove: [ 'hoverClosestCartesian', 'hoverCompareCartesian' ]
+	  });
+    {% endif %}
+
+    $(window).resize(function() {
+      var _width = $("#tab-content-id").width() - 50;
+      var _width4 = _width/2;
+      var _width8 = _width;
+
+      {% if n_results %}
+        Plotly.relayout(graph_acts_elem, { width:_width8, height:{{ graphs.results.height }} });
+      {% endif %}
+
+    }).resize();
+
+    </script>
+{% endblock footer_js_includes %}

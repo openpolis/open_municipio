@@ -1020,4 +1020,21 @@ class GroupSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
         extra['paginator'] = paginator
         extra['page_obj'] = page_obj
 
+        graphs = {}
+
+        # fill data for graphs
+        for f_name, f_params in extra['facets']['fields'].iteritems():
+            counts = f_params['counts']
+            if len(counts) > 1:
+                graphs[f_name] = {
+                    'x': [ v[0] for v in counts ],
+                    'y': [ v[1] for v in counts ]
+                }
+
+        graphs['results'] = {
+            'height': 200 + self.results_per_page * 40
+        }
+
+        extra['graphs'] = graphs
+
         return extra
