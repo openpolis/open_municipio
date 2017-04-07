@@ -48,6 +48,7 @@ body #main.two_columns {
       <li><a data-toggle="tab" href="#search_acts_tab">Atti</a></li>
       <li><a data-toggle="tab" href="#search_presence_tab">Presenze</a></li>
       <li><a data-toggle="tab" href="#search_speeches_tab">Interventi</a></li>
+      <li><a data-toggle="tab" href="#search_stats_tab">Statistiche</a></li>
     </ul>
     <div class="tab-content" id="tab-content-id">
       <div class="tab-pane active" id="search_charges_tab">
@@ -232,6 +233,12 @@ body #main.two_columns {
         {% if graphs.speeches_minutes_index_bin  %}
           <div id="graph_speeches_minutes_index_bin" class="span8"></div>
         {% endif %}
+
+      </div>
+
+      <div class="tab-pane" id="search_stats_tab">
+
+        <div id="graph_duration" class="span8"></div>
 
       </div>
     </div>
@@ -496,6 +503,30 @@ body #main.two_columns {
 
     {% endif %}
 
+    {% if n_results %}
+      graph_duration_elem = document.getElementById('graph_duration');
+	  Plotly.plot( graph_duration_elem, [{
+        x: [{% for result in page.object_list %} {{ result.object.duration.days }},{% endfor %} ],
+        autobinx: false, 
+        histnorm: "count",
+	    type: 'histogram',
+        xbins: {
+          end: 2000, 
+          size: 100, 
+          start: 1
+          }
+	    }], {
+	    title: 'Durata della carica in giorni',
+        xaxis: { fixedrange: true },
+        yaxis: { fixedrange: true, title: 'numero di cariche' },
+	    hovermode: false,
+	    bargap: 0.05
+      }, {
+	    displaylogo: false,
+	    displayModeBar: false
+	  });
+    {% endif %}
+
     $(window).resize(function() {
       var _width = $("#tab-content-id").width() - 50;
       var _width4 = _width/2;
@@ -511,6 +542,10 @@ body #main.two_columns {
 
       {% if graphs.speeches_minutes_index_bin %}
         Plotly.relayout(graph_speeches_minutes_index_bin_elem, { width:_width8, height:500 });
+      {% endif %}
+
+      {% if n_results %}
+        Plotly.relayout(graph_duration_elem, { width:_width8, height:500 });
       {% endif %}
 
     }).resize();

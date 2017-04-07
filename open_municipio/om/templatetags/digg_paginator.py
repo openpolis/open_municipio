@@ -61,13 +61,17 @@ def digg_paginator(context):
     results_per_page = int(request.GET.get('results_per_page', settings.HAYSTACK_SEARCH_RESULTS_PER_PAGE))
     results_per_page_list = [ ]
 
-    for r in [settings.HAYSTACK_SEARCH_RESULTS_PER_PAGE, \
+    results_bins = [settings.HAYSTACK_SEARCH_RESULTS_PER_PAGE, \
         3 * settings.HAYSTACK_SEARCH_RESULTS_PER_PAGE, \
-        10 * settings.HAYSTACK_SEARCH_RESULTS_PER_PAGE]:
+        10 * settings.HAYSTACK_SEARCH_RESULTS_PER_PAGE,
+        30 * settings.HAYSTACK_SEARCH_RESULTS_PER_PAGE]
 
+    for r in results_bins:
         if r != results_per_page:
-            if n_results >= r: results_per_page_list.append(r)
+            if n_results > r: results_per_page_list.append(r)
             else: break
+
+    if n_results < (3 * results_bins[-1]): results_per_page_list.append(n_results)
 
     return {
         'pages': pages,

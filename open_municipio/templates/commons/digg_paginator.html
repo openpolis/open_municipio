@@ -1,5 +1,4 @@
-{% if page_range|length > 1 %}
-  {% if results_per_page_list %}
+{% if results_per_page_list %}
     <div class="dropdown pull-right">
       <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
         {{ results_per_page }} per pagina
@@ -12,6 +11,7 @@
       </ul>
     </div>
 {% endif %}
+{% if page_range|length > 1 %}
     <div class="pagination pagination-right pull-right" style="margin:0 5px 10px 0;">
         <ul id="pagination-digg">
             {% spaceless %}
