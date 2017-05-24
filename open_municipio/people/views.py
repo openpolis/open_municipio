@@ -1,7 +1,7 @@
 from datetime import datetime, date
 import logging
 from operator import attrgetter
-from itertools import chain
+from itertools import chain, takewhile
 from operator import itemgetter
 
 from django.shortcuts import get_object_or_404
@@ -785,7 +785,7 @@ class ChargeSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
     __name__ = 'ChargeSearchView'
 
     FACETS_SORTED = [ 'end_date', 'group_responsability', 'institution', 'is_active',
-                     'responsability', 'start_date', 'n_presents_bin' ]
+                     'responsability', 'start_date', 'n_presents_bin', 'speeches_minutes_index_bin' ]
 
     FACETS_LABELS = {
         'is_active': _('Active'),
@@ -794,7 +794,8 @@ class ChargeSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
         'institution': _('Institution'),
         'responsability': _('Institution responsability'),
         'group_responsability': _('Group responsability'),
-        'n_presents_bin': _('Presenze al voto')
+        'n_presents_bin': _('Presenze al voto'),
+        'speeches_minutes_index_bin': _('Durata interventi')
     }
     DATE_INTERVALS_RANGES = { }
 
@@ -809,7 +810,7 @@ class ChargeSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
         sqs = SearchQuerySet().filter(django_ct='people.institutioncharge')\
             .filter(institution = Raw("[* TO *]")).facet('is_active')\
             .facet('institution').facet('responsability').facet('group_responsability')\
-            .facet('n_presents_bin')
+            .facet('n_presents_bin').facet('speeches_minutes_index_bin')
 
         for (year, range) in self.DATE_INTERVALS_RANGES.items():
             sqs = sqs.query_facet('start_date', range['qrange'])
@@ -904,8 +905,8 @@ class ChargeSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
         for f_name, f_params in extra['facets']['fields'].iteritems():
             counts = f_params['counts']
             if len(counts) > 1:
-                if f_name == 'n_presents_bin':
-                    counts = sorted(counts, key=itemgetter(0))
+                if f_name in ['n_presents_bin', 'speeches_minutes_index_bin']:
+                    counts = sorted(counts, key=lambda x: int(''.join(takewhile(unicode.isdigit, itemgetter(0)(x)))))
 
                 graphs[f_name] = {
                     'x': [ v[0] for v in counts ],
@@ -925,6 +926,10 @@ class ChargeSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
                 'x': [ v['label'] for v in ranges ],
                 'y': [ v['count'] for v in ranges ]
             }
+
+        graphs['results'] = {
+            'height': 200 + self.results_per_page * 40
+        }
 
         extra['graphs'] = graphs
 
@@ -1014,5 +1019,22 @@ class GroupSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
 
         extra['paginator'] = paginator
         extra['page_obj'] = page_obj
+
+        graphs = {}
+
+        # fill data for graphs
+        for f_name, f_params in extra['facets']['fields'].iteritems():
+            counts = f_params['counts']
+            if len(counts) > 1:
+                graphs[f_name] = {
+                    'x': [ v[0] for v in counts ],
+                    'y': [ v[1] for v in counts ]
+                }
+
+        graphs['results'] = {
+            'height': 200 + self.results_per_page * 40
+        }
+
+        extra['graphs'] = graphs
 
         return extra

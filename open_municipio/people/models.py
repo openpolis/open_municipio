@@ -581,6 +581,24 @@ class InstitutionCharge(Charge):
             return 'Unknown charge type!'
 
     @property
+    def charge_type_verbose(self):
+        """
+        """
+        s = self.charge_type
+
+        if self.start_date:
+
+            if self.end_date and self.start_date.year == self.end_date.year:
+                s += ' nel ' + str(self.start_date.year)
+            else:
+                s += ' dal ' + str(self.start_date.year)
+
+                if self.end_date:
+                    s += ' al ' + str(self.end_date.year)
+
+        return s
+
+    @property
     def council_group(self):
         """
         DEPRECATED: use `self.current_groupcharge.group`

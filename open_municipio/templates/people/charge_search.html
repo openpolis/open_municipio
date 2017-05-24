@@ -2,6 +2,7 @@
 {% load highlight %}
 {% load om_utils %}
 {% load i18n %}
+{% load l10n %}
 {% load digg_paginator %}
 {% load url from future %}
 {% load thumbnail %}
@@ -44,7 +45,10 @@ body #main.two_columns {
 
     <ul class="nav nav-tabs page-tabs">
       <li class="active"><a data-toggle="tab" href="#search_charges_tab">{{ n_results }} caric{{ n_results|pluralize:"a,he" }}</a></li>
+      <li><a data-toggle="tab" href="#search_acts_tab">Atti</a></li>
       <li><a data-toggle="tab" href="#search_presence_tab">Presenze</a></li>
+      <li><a data-toggle="tab" href="#search_speeches_tab">Interventi</a></li>
+      <li><a data-toggle="tab" href="#search_stats_tab">Statistiche</a></li>
     </ul>
     <div class="tab-content" id="tab-content-id">
       <div class="tab-pane active" id="search_charges_tab">
@@ -119,13 +123,7 @@ body #main.two_columns {
                     <a href="{{ result.object.person.get_absolute_url }}">
                       <strong class="person_name">{{ result.object.person|title }}</strong>
                     </a>
-                    <br />
-                    {{ result.institution }}
-                    {% if result.start_date.year == result.end_date.year %}
-                      nel {{ result.start_date|date:"Y" }}
-                    {% else %}
-                      dal {{ result.start_date|date:"Y" }}{% if result.end_date %} al {{ result.end_date|date:"Y" }}{% endif %}
-                    {% endif %}
+                    <br />{{ result.object.charge_type_verbose }}
                   </div>
                 </div>
               </div>
@@ -214,11 +212,33 @@ body #main.two_columns {
         {% digg_paginator %}
       </div>
 
+      <div class="tab-pane" id="search_acts_tab">
+
+        {% if n_results %}
+          <div id="graph_acts" class="span8"></div>
+        {% endif %}
+
+      </div>
+
       <div class="tab-pane" id="search_presence_tab">
 
         {% if graphs.n_presents_bin  %}
           <div id="graph_n_presents_bin" class="span8"></div>
         {% endif %}
+
+      </div>
+
+      <div class="tab-pane" id="search_speeches_tab">
+
+        {% if graphs.speeches_minutes_index_bin  %}
+          <div id="graph_speeches_minutes_index_bin" class="span8"></div>
+        {% endif %}
+
+      </div>
+
+      <div class="tab-pane" id="search_stats_tab">
+
+        <div id="graph_duration" class="span8"></div>
 
       </div>
     </div>
@@ -347,6 +367,94 @@ body #main.two_columns {
 
   <script type="text/javascript">
 
+    {% if n_results %}
+      graph_acts_elem = document.getElementById('graph_acts');
+	  Plotly.plot( graph_acts_elem, [
+	  {
+	    {% language 'en' %}{% localize off %}
+	      x: [{% for result in page.object_list %} {{ result.n_cgdeliberations_index|floatformat:2 }},{% endfor %} ],
+	    {% endlocalize %}{% endlanguage %}
+	    y: [ {% for result in page.object_list %}'<a href="{{ result.object.person.get_absolute_url }}">{{ result.object.person|title }}</a><br>{{ result.object.charge_type_verbose }}',{% endfor %} ],
+	    type: 'bar',
+	    orientation: 'h',
+	    name: 'Delibere di Giunta'
+	  },
+	  {
+	    {% language 'en' %}{% localize off %}
+	      x: [{% for result in page.object_list %} {{ result.n_deliberations_index|floatformat:2 }},{% endfor %} ],
+	    {% endlocalize %}{% endlanguage %}
+	    y: [ {% for result in page.object_list %}'<a href="{{ result.object.person.get_absolute_url }}">{{ result.object.person|title }}</a><br>{{ result.object.charge_type_verbose }}',{% endfor %} ],
+	    type: 'bar',
+	    orientation: 'h',
+	    name: 'Delibere di Consiglio'
+	  },
+	  {
+	    {% language 'en' %}{% localize off %}
+	      x: [{% for result in page.object_list %} {{ result.n_motions_index|floatformat:2 }},{% endfor %} ],
+	    {% endlocalize %}{% endlanguage %}
+	    y: [ {% for result in page.object_list %}'<a href="{{ result.object.person.get_absolute_url }}">{{ result.object.person|title }}</a><br>{{ result.object.charge_type_verbose }}',{% endfor %} ],
+	    type: 'bar',
+	    orientation: 'h',
+	    name: 'Mozioni'
+	  },
+	  {
+	    {% language 'en' %}{% localize off %}
+	      x: [{% for result in page.object_list %} {{ result.n_agendas_index|floatformat:2 }},{% endfor %} ],
+	    {% endlocalize %}{% endlanguage %}
+	    y: [ {% for result in page.object_list %}'<a href="{{ result.object.person.get_absolute_url }}">{{ result.object.person|title }}</a><br>{{ result.object.charge_type_verbose }}',{% endfor %} ],
+	    type: 'bar',
+	    orientation: 'h',
+	    name: 'Ordini del giorno'
+	  },
+	  {
+	    {% language 'en' %}{% localize off %}
+	      x: [{% for result in page.object_list %} {{ result.n_amendments_index|floatformat:2 }},{% endfor %} ],
+	    {% endlocalize %}{% endlanguage %}
+	    y: [ {% for result in page.object_list %}'<a href="{{ result.object.person.get_absolute_url }}">{{ result.object.person|title }}</a><br>{{ result.object.charge_type_verbose }}',{% endfor %} ],
+	    type: 'bar',
+	    orientation: 'h',
+	    name: 'Emendamenti'
+	  },
+	  {
+	    {% language 'en' %}{% localize off %}
+	      x: [{% for result in page.object_list %} {{ result.n_interrogations_index|floatformat:2 }},{% endfor %} ],
+	    {% endlocalize %}{% endlanguage %}
+	    y: [ {% for result in page.object_list %}'<a href="{{ result.object.person.get_absolute_url }}">{{ result.object.person|title }}</a><br>{{ result.object.charge_type_verbose }}',{% endfor %} ],
+	    type: 'bar',
+	    orientation: 'h',
+	    name: 'Interrogazioni'
+	  },
+	  {
+	    {% language 'en' %}{% localize off %}
+	      x: [{% for result in page.object_list %} {{ result.n_interpellations_index|floatformat:2 }},{% endfor %} ],
+	    {% endlocalize %}{% endlanguage %}
+	    y: [ {% for result in page.object_list %}'<a href="{{ result.object.person.get_absolute_url }}">{{ result.object.person|title }}</a><br>{{ result.object.charge_type_verbose }}',{% endfor %} ],
+	    type: 'bar',
+	    orientation: 'h',
+	    name: 'Interpellanze'
+	  },
+	  {
+	    {% language 'en' %}{% localize off %}
+          x: [{% for result in page.object_list %} {{ result.n_audits_index|floatformat:2 }},{% endfor %} ],
+	    {% endlocalize %}{% endlanguage %}
+	    y: [ {% for result in page.object_list %}'<a href="{{ result.object.person.get_absolute_url }}">{{ result.object.person|title }}</a><br>{{ result.object.charge_type_verbose }}',{% endfor %} ],
+	    type: 'bar',
+	    orientation: 'h',
+	    name: 'Accessi agli atti'
+	  }
+	  ], {
+	    title: 'Atti presentati',
+	    barmode: 'stack',
+	    margin: { l: 180 },
+        xaxis: { fixedrange: true, title: 'atti presentati mediamente ogni mese' },
+        yaxis: { fixedrange: true, autorange: 'reversed' }
+      }, {
+	    displaylogo: false,
+	    displayModeBar: true,
+	    modeBarButtonsToRemove: [ 'hoverClosestCartesian', 'hoverCompareCartesian' ]
+	  });
+    {% endif %}
+
     {% if graphs.n_presents_bin and not facets.fields.n_presents_bin.is_field_selected %}
       graph_n_presents_bin_elem = document.getElementById('graph_n_presents_bin');
 	  Plotly.plot( graph_n_presents_bin_elem, [{
@@ -356,7 +464,7 @@ body #main.two_columns {
 	    }], {
 	    title: 'Presenze al voto',
 	    hovermode: 'x',
-        xaxis: { fixedrange: true, title: 'percentuale' },
+        xaxis: { fixedrange: true, title: 'percentuale di presenze al voto' },
         yaxis: { fixedrange: true, title: 'numero di cariche' }
       }, {
 	    displaylogo: false,
@@ -371,17 +479,76 @@ body #main.two_columns {
 
     {% endif %}
 
+    {% if graphs.speeches_minutes_index_bin and not facets.fields.speeches_minutes_index_bin.is_field_selected %}
+      graph_speeches_minutes_index_bin_elem = document.getElementById('graph_speeches_minutes_index_bin');
+	  Plotly.plot( graph_speeches_minutes_index_bin_elem, [{
+	    x: ['{{ graphs.speeches_minutes_index_bin.x | join:"', '" }}'],
+	    y: [{{ graphs.speeches_minutes_index_bin.y | join:", " }}],
+	    type: 'bar'
+	    }], {
+	    title: 'Minuti di intervento al mese',
+	    hovermode: 'x',
+        xaxis: { fixedrange: true, title: 'minuti di intervento al mese' },
+        yaxis: { fixedrange: true, title: 'numero di cariche' }
+      }, {
+	    displaylogo: false,
+	    displayModeBar: true,
+	    modeBarButtonsToRemove: [ 'hoverClosestCartesian', 'hoverCompareCartesian' ]
+	  });
+
+      graph_speeches_minutes_index_bin_elem.on('plotly_click', function(data){
+        var url = '{{ base_url }}' + '&f=speeches_minutes_index_bin:' + data.points[0].x
+        window.open(url, '_self');
+      });
+
+    {% endif %}
+
+    {% if n_results %}
+      graph_duration_elem = document.getElementById('graph_duration');
+	  Plotly.plot( graph_duration_elem, [{
+        x: [{% for result in page.object_list %} {{ result.object.duration.days }},{% endfor %} ],
+        autobinx: false, 
+        histnorm: "count",
+	    type: 'histogram',
+        xbins: {
+          end: 2000, 
+          size: 100, 
+          start: 1
+          }
+	    }], {
+	    title: 'Durata della carica in giorni',
+        xaxis: { fixedrange: true },
+        yaxis: { fixedrange: true, title: 'numero di cariche' },
+	    hovermode: false,
+	    bargap: 0.05
+      }, {
+	    displaylogo: false,
+	    displayModeBar: false
+	  });
+    {% endif %}
+
     $(window).resize(function() {
       var _width = $("#tab-content-id").width() - 50;
       var _width4 = _width/2;
       var _width8 = _width;
 
+      {% if n_results %}
+        Plotly.relayout(graph_acts_elem, { width:_width8, height:{{ graphs.results.height }} });
+      {% endif %}
+
       {% if graphs.n_presents_bin %}
         Plotly.relayout(graph_n_presents_bin_elem, { width:_width8, height:500 });
+      {% endif %}
+
+      {% if graphs.speeches_minutes_index_bin %}
+        Plotly.relayout(graph_speeches_minutes_index_bin_elem, { width:_width8, height:500 });
+      {% endif %}
+
+      {% if n_results %}
+        Plotly.relayout(graph_duration_elem, { width:_width8, height:500 });
       {% endif %}
 
     }).resize();
 
     </script>
-});
 {% endblock footer_js_includes %}

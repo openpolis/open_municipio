@@ -25,43 +25,6 @@ em {
     <script type="text/javascript" src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 {% endblock head_js_includes %}
 
-{% block footer_js_includes %}
-  {{ block.super }}
-  <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap-tab.js"></script>
-
-  <script type="text/javascript">
-
-    {% if graphs.date and not facet_queries_date.is_selected %}
-      graph_date_elem = document.getElementById('graph_date');
-	  Plotly.plot( graph_date_elem, [{
-	    x: ['{{ graphs.date.x | join:"', '" }}'],
-	    y: [{{ graphs.date.y | join:", " }}],
-	    type: 'scatter'
-	  }], {
-	    title: 'Anno',
-        xaxis: { fixedrange: true, title: 'anno' },
-        yaxis: { fixedrange: true, title: 'interventi' }
-      }, {
-	    displaylogo: false,
-	    displayModeBar: true,
-	    modeBarButtonsToRemove: [ 'hoverClosestCartesian', 'hoverCompareCartesian' ]
-	  });
-    {% endif %}
-
-    $(window).resize(function() {
-      var _width = $("#tab-content-id").width() - 50;
-      var _width4 = _width/2;
-      var _width8 = _width;
-
-      {% if graphs.date and not facet_queries_date.is_selected %}
-        Plotly.relayout(graph_pub_date_elem, { width:_width8, height:500 });
-      {% endif %}
-
-    }).resize();
-
-    </script>
-});
-{% endblock footer_js_includes %}
 
 {% block content %}
 
@@ -185,3 +148,41 @@ em {
 
     {% include 'search/_related_search.html' %}
 {% endblock %}
+
+
+{% block footer_js_includes %}
+  {{ block.super }}
+  <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap-tab.js"></script>
+
+  <script type="text/javascript">
+
+    {% if graphs.date and not facet_queries_date.is_selected %}
+      graph_date_elem = document.getElementById('graph_date');
+	  Plotly.plot( graph_date_elem, [{
+	    x: ['{{ graphs.date.x | join:"', '" }}'],
+	    y: [{{ graphs.date.y | join:", " }}],
+	    type: 'scatter'
+	  }], {
+	    title: 'Anno',
+        xaxis: { fixedrange: true, title: 'anno' },
+        yaxis: { fixedrange: true, title: 'interventi' }
+      }, {
+	    displaylogo: false,
+	    displayModeBar: true,
+	    modeBarButtonsToRemove: [ 'hoverClosestCartesian', 'hoverCompareCartesian' ]
+	  });
+    {% endif %}
+
+    $(window).resize(function() {
+      var _width = $("#tab-content-id").width() - 50;
+      var _width4 = _width/2;
+      var _width8 = _width;
+
+      {% if graphs.date and not facet_queries_date.is_selected %}
+        Plotly.relayout(graph_pub_date_elem, { width:_width8, height:500 });
+      {% endif %}
+
+    }).resize();
+
+    </script>
+{% endblock footer_js_includes %}

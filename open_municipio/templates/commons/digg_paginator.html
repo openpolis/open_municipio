@@ -1,3 +1,16 @@
+{% if results_per_page_list %}
+    <div class="dropdown pull-right">
+      <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+        {{ results_per_page }} per pagina
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu">
+        {% for r in results_per_page_list %}
+          <li><a href="{% if get_params %}?{{ get_params }}&{% else %}?{% endif %}results_per_page={{ r }}">{{ r }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+{% endif %}
 {% if page_range|length > 1 %}
     <div class="pagination pagination-right pull-right" style="margin:0 5px 10px 0;">
         <ul id="pagination-digg">
@@ -25,4 +38,3 @@
         </ul>
     </div>
 {% endif %}
-
