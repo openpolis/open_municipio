@@ -41,6 +41,22 @@
     {% endblock head_js_includes %}
 
     <script type="text/javascript" charset="utf-8">
+        // this code adds anchors to page URLs when tab is clicked; if an anchor
+        // is on the URL, select the right tab on load
+        //
+        // credits: https://stackoverflow.com/a/12138756/374430
+        $(function(){
+          var hash = window.location.hash;
+          hash && $('ul.nav a[href="' + hash + '"]').tab('show');
+        
+          $('.nav-tabs a').click(function (e) {
+            $(this).tab('show');
+            var scrollmem = $('body').scrollTop() || $('html').scrollTop();
+            window.location.hash = this.hash;
+            $('html,body').scrollTop(scrollmem);
+          });
+        });
+        
     {% block extra_js %}{% endblock %}
     </script>
 

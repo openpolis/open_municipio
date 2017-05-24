@@ -167,7 +167,16 @@ class Votation(models.Model):
 
     @property
     def is_secret(self):
+        """
+        A votation is secret if there is at least one voter with a secret
+        vote (there could be voters that casted differnt types of votes, 
+        e.g. absent or abstained)
+        """
         return self.charge_votes.filter(vote=ChargeVote.VOTES.secret).count() > 0
+
+    @property
+    def charges_count(self):
+        return self.chargevote_set.filter(charge__can_vote=True).count()
 
     def update_presence_caches(self):
         """

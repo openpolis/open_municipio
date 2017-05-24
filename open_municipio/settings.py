@@ -349,15 +349,15 @@ UI_ALLOW_NICKNAMES = True
 
 # act search by type urls
 SEARCH_URLS = {
-    "council_deliberation": "/acts/?q=&selected_facets=act_type:delibera",
-    "cg_deliberation": "/acts/?q=&selected_facets=act_type:delibera di giunta",
-    "interrogation": "/acts/?q=&selected_facets=act_type:interrogazione",
-    "motion": "/acts/?q=&selected_facets=act_type:mozione",
-    "agenda": "/acts/?q=&selected_facets=act_type:ordine del giorno",
-    "interpellation": "/acts/?q=&selected_facets=act_type:interpellanza",
-    "interrogation": "/acts/?q=&selected_facets=act_type:interrogazione",
-    "amendment": "/acts/?q=&selected_facets=act_type:emendamento",
-    "audit": "/acts/?q=&selected_facets=act_type:accesso agli atti",
+    "council_deliberation": "/acts/?q=&f=act_type:delibera",
+    "cg_deliberation": "/acts/?q=&f=act_type:delibera di giunta",
+    "interrogation": "/acts/?q=&f=act_type:interrogazione",
+    "motion": "/acts/?q=&f=act_type:mozione",
+    "agenda": "/acts/?q=&f=act_type:ordine del giorno",
+    "interpellation": "/acts/?q=&f=act_type:interpellanza",
+    "interrogation": "/acts/?q=&f=act_type:interrogazione",
+    "amendment": "/acts/?q=&f=act_type:emendamento",
+    "audit": "/acts/?q=&f=act_type:accesso agli atti",
 }
 
 CONTACTS_EMAIL = "info@openmunicipio.it"

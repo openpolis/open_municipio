@@ -5,11 +5,11 @@
   {% for s in sittings %}
     <a href='{{ s.get_absolute_url }}'>
       <div class='sitting-date 
-      {% ifequal s.institution.name "Giunta Comunale" %}
+      {% if s.is_event %}
         sitting-future
       {%  else  %}
         sitting-past
-      {% endifequal %}  
+      {% endif %}  
       '>{{ s.date.day }}
       </div>
     </a>

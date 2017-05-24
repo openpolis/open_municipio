@@ -416,14 +416,18 @@ class DBVotationWriter(BaseVotationWriter):
                         'n_no': int(ballot.n_no),
                         'n_abst': int(ballot.n_abst),
                         'outcome': int(ballot.outcome),
+                        'datetime': ballot.time,
                     }
                 )
 
                 if created:
                     self.logger.debug("%s created in DB..." % b)
                 else:
-                    self.logger.debug("%s found in DB, not updated..." % b)
-
+                    self.logger.debug("%s found in DB, %s votes to import" % (b, len(ballot.votes)))
+                    if b.chargevote_set.count():
+                        self.logger.warning("votation %s: %s votes already present, skip import" \
+                            % (b, b.chargevote_set.count()))
+                        continue
 
             for vote in ballot.votes:
                 assert isinstance(vote, Vote)

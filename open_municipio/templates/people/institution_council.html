@@ -21,20 +21,16 @@
   <section class="row-fluid">
 
     <h2>Consiglio {% popover_info 'consiglio-comunale' %}</h2>
-    <p>
-        I dati si riferiscono alle votazioni svolte in Consiglio.<br/>
-        Non vengono calcolate le presenze alle sedute né se l'assenza abbia motivazioni politiche.
-    </p>
     <table id="consiglio" class="data dataTable">
       <thead>
       <tr>
           <th></th>
           <th class="text-left span4">Politico</th>
-          <th class="span2">Presenze</th>
+          <th class="span2">Presenze al voto {% popover_info 'presenze-al-voto' %}</th>
           <th class="span2">Voti ribelli {% popover_info 'voti-ribelli' %}</th>
           <th class="span2">Atti</th>
-          <th class="span2">Interventi {% popover_info 'durata-interventi' %}</th>
-          <th class="span2">Monitorato</th>
+          <th class="span2">Interventi (minuti) {% popover_info 'durata-interventi' %}</th>
+          <th class="span2">Monitorato da</th>
       </tr>
       </thead>
       <tbody>
@@ -46,7 +42,7 @@
 
       <p>
         <i class="icon-play"></i>
-        <a href="{% url 'om_charge_search' %}?q=&selected_facets=is_active%3Ano&selected_facets=institution:Consigliere">
+        <a href="{% url 'om_charge_search' %}?q=&f=is_active:no&f=institution:Consigliere">
           Vedi i consiglieri non più in carica</a>
       </p>
 
@@ -241,7 +237,7 @@
                     null,
                     { sType: "fullname", asSorting: ['desc', 'asc']},
                     { sType: "percentage", asSorting: ['desc', 'asc']},
-                    {asSorting: ['desc', 'asc']},
+                    { sType: "acts", asSorting: ['desc', 'asc']},
                     { sType: "acts", asSorting: ['desc', 'asc']},
                     { sType: "acts", asSorting: ['desc', 'asc']},
                     {asSorting: ['desc', 'asc']}

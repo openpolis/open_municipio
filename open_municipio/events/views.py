@@ -8,7 +8,7 @@ from haystack.query import SearchQuerySet
 from django.utils.translation import ugettext_lazy as _
 
 from .models import Event
-from open_municipio.people.models import Institution
+from open_municipio.people.models import Sitting, Institution
 from open_municipio.acts.models import Act
 from open_municipio.acts.models import Speech
 from open_municipio.om_search.views import ExtendedFacetedSearchView
@@ -72,6 +72,12 @@ class EventDetailView(DetailView):
         filter_since = datetime.today().replace(day=1)
         context['future_events'] = Event.objects.filter(date__gte=filter_since)
 
+        try:
+            context['sitting'] = Sitting.objects.filter(
+                institution=event.institution, date=event.date)[0]
+        except IndexError:
+            pass
+
         return context
 
     def get_related_default(self):
@@ -109,7 +115,7 @@ class EventSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
 
     FACETS_LABELS = {
         'institution': _('Institution'),
-        'date': _('Data'),
+        'date': _('Date'),
     }
     DATE_INTERVALS_RANGES = { }
 
@@ -196,6 +202,28 @@ class EventSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
             { 'label' : _('events'), 'url' : reverse('om_event_search') + '?q=' + self.query, 'active': True },
         ]
 
+        graphs = {}
 
+        # fill data for graphs
+        for f_name, f_params in extra['facets']['fields'].iteritems():
+            counts = f_params['counts']
+            if len(counts) > 1:
+                graphs[f_name] = {
+                    'x': [ v[0] for v in counts ],
+                    'y': [ v[1] for v in counts ]
+                }
+
+        ranges = extra['facet_queries_date']['ranges']
+        if len(ranges) > 1:
+            graphs['date'] = {
+                'x': [ v['label'] for v in ranges ],
+                'y': [ v['count'] for v in ranges ]
+            }
+
+        graphs['results'] = {
+            'height': 200 + self.results_per_page * 40
+        }
+
+        extra['graphs'] = graphs
 
         return extra

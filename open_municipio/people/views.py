@@ -1,5 +1,8 @@
 from datetime import datetime, date
 import logging
+from operator import attrgetter
+from itertools import chain, takewhile
+from operator import itemgetter
 
 from django.shortcuts import get_object_or_404
 
@@ -206,12 +209,10 @@ class GroupDetailView(DetailView):
     
         members = SearchQuerySet()\
             .filter(django_ct = 'people.institutioncharge')\
-            .filter(institution = _("Counselor"))\
-            .filter(is_active = _("yes"))\
-            .filter(current_group = self.object.slug)
+            .filter(group=self.object.slug)
 
         try:
-            extra_context['group_result'] = num_acts = SearchQuerySet()\
+            extra_context['group_result'] = SearchQuerySet()\
                 .filter(django_ct = 'people.group')\
                 .filter(url = self.object.get_absolute_url())[0]
 
@@ -377,8 +378,7 @@ class PoliticianDetailView(DetailView):
             historical_groupcharges = charge.historical_groupcharges #person.historical_groupcharges
             context['historical_groupcharges'] = historical_groupcharges.order_by('start_date') if historical_groupcharges else None
 
-        # Is the current charge a counselor? If so, we show present/absent
-        # graph
+        # Is the current charge a counselor? If so, we show present/absent graph
         if charge and charge.is_counselor:
             # Calculate average present/absent for counselors
             percentage_present = 0
@@ -400,7 +400,6 @@ class PoliticianDetailView(DetailView):
                 "%.1f" % (float(percentage_absent) / n_counselors * 100)
 
             # Calculate present/absent for current counselor
-#            charge = context['current_counselor_charge']
             charge.percentage_present_votations = charge.percentage_absent_votations = 0.0
 
             if charge.n_present_votations + charge.n_absent_votations > 0:
@@ -415,11 +414,8 @@ class PoliticianDetailView(DetailView):
             if charge.n_present_votations > 0:
                 context['percentage_rebel_votations'] = "%.1f" % (float(100 * charge.n_rebel_votations / charge.n_present_votations))
 
-        # Current politician's charge votes for key votations
-        # last 10 are passed to template
-#        charge = context['current_counselor_charge']
-        if charge and charge.is_counselor:
-
+            # Current politician's charge votes for key votations
+            # last 10 are passed to template
             context['current_charge_votes'] = charge.chargevote_set \
                 .filter(votation__is_key=True) \
                 .order_by('-votation__sitting__date')[0:10]
@@ -428,11 +424,40 @@ class PoliticianDetailView(DetailView):
                 .filter(is_rebel=True) \
                 .order_by('-votation__sitting__date')[0:10]
 
-        # last 10 presented acts
+        # Is the current charge a counselor? If so, we show present/absent
+        # graph
+        if charge and charge.is_in_city_government:
 
-#        presented_acts = Act.objects\
-#            .filter(actsupport__charge__pk__in=person.current_institution_charges)\
-#            .order_by('-presentation_date')
+            # Calculate average present/absent for counselors
+            percentage_present = 0
+            percentage_absent = 0
+            n_gov_charges = len(municipality.gov.charges)
+            for gov_charge in municipality.gov.charges:
+                n_attendances = gov_charge.n_present_attendances \
+                    + gov_charge.n_absent_attendances
+                if n_attendances > 0:
+                    percentage_present += \
+                        float(gov_charge.n_present_attendances) / n_attendances
+                    percentage_absent += \
+                        float(gov_charge.n_absent_attendances) / n_attendances
+            # Empty city council? That can't be the case!
+            # n_counselors is supposed to be > 0
+            context['percentage_present_attendances_average'] = \
+                "%.1f" % (float(percentage_present) / n_gov_charges * 100)
+            context['percentage_absent_attendances_average'] = \
+                "%.1f" % (float(percentage_absent) / n_gov_charges * 100)
+
+            # Calculate present/absent for current charge
+            charge.percentage_present_attendances = charge.percentage_absent_attendances = 0.0
+
+            if charge.n_present_attendances + charge.n_absent_attendances > 0:
+                context['n_total_attendances'] = charge.n_present_attendances + charge.n_absent_attendances
+                context['percentage_present_attendances'] = \
+                    "%.1f" % (float(charge.n_present_attendances) * 100 / context['n_total_attendances'])
+                context['percentage_absent_attendances'] = \
+                    "%.1f" % (float(charge.n_absent_attendances) * 100 / context['n_total_attendances'])
+
+        # last 10 presented acts
         presented_acts = Act.objects\
             .filter(actsupport__charge=charge)\
             .order_by('-presentation_date')
@@ -454,9 +479,11 @@ class PoliticianDetailView(DetailView):
                                   .count(),
             })
 
-        # last 5 speeches
-        speeches = Speech.objects\
-            .filter(author=person)
+        # charge speeches
+        speeches = SearchQuerySet().filter(django_ct='acts.speech')\
+            .filter(charge = charge.id)\
+            .order_by('-date')
+
         context['n_speeches'] = speeches.count()
         context['speeches'] = speeches[0:5]
 
@@ -637,13 +664,36 @@ class SittingCalendarView(TemplateView):
 
         events = Event.objects.filter(date__gte=filter_since)
 
-        sittings = {}
+        sittings_citygov = {}
+        sittings_council = {}
 
-        for i in range(12):
-            sittings[i] = Sitting.objects.filter(date__year=year, date__month=i).order_by("date")
+        for i in range(1,13):
+            month_sittings_citygov = Sitting.objects.filter(date__year=year, date__month=i,
+                institution__institution_type__lte=Institution.CITY_GOVERNMENT)
+
+            month_sittings_council = Sitting.objects.filter(date__year=year, date__month=i,
+                institution__institution_type__gte=Institution.COUNCIL)
+
+            month_sittings_citygov_days = set([s.date.day for s in month_sittings_citygov])
+            month_sittings_council_days = set([s.date.day for s in month_sittings_council])
+
+            month_events_citygov = [e for e in Event.objects.filter(date__year=year, date__month=i,
+                institution__institution_type__lte=Institution.CITY_GOVERNMENT) \
+                if e.date.day not in month_sittings_citygov_days]
+
+            month_events_council = [e for e in Event.objects.filter(date__year=year, date__month=i,
+                institution__institution_type__gte=Institution.COUNCIL) \
+                if e.date.day not in month_sittings_council_days]
+
+            for e in month_events_citygov: e.is_event = True
+            for e in month_events_council: e.is_event = True
+
+            sittings_citygov[i] = sorted(chain(month_sittings_citygov, month_events_citygov), key=attrgetter('date'))
+            sittings_council[i] = sorted(chain(month_sittings_council, month_events_council), key=attrgetter('date'))
 
         extra_context = {
-            'sittings' : sittings,
+            'sittings_citygov' : sittings_citygov,
+            'sittings_council' : sittings_council,
             'sitting_years' : sitting_years,
             'events' : events,
             'year' : year
@@ -667,6 +717,13 @@ class SittingDetailView(DetailView):
         filter_since = datetime.today().replace(day=1)
 
         events = Event.objects.filter(date__gte=filter_since)
+        sitting_event = None
+
+        try:
+            sitting_event = Event.objects.filter(
+                institution=curr.institution, date=curr.date)[0]
+        except IndexError:
+            pass
 
         sitting_items = curr.sitting_items.order_by("seq_order")
 
@@ -679,6 +736,7 @@ class SittingDetailView(DetailView):
             "sitting_items" : sitting_items,
             "votations" : votations,
             "attendances" : attendances,
+            "sitting_event" : sitting_event,
         }
 
         context.update(extra)
@@ -726,14 +784,18 @@ class ChargeSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
     """
     __name__ = 'ChargeSearchView'
 
-    FACETS_SORTED = [ 'start_date', 'end_date', 'is_active', 'institution', 'responsability' ]
+    FACETS_SORTED = [ 'end_date', 'group_responsability', 'institution', 'is_active',
+                     'responsability', 'start_date', 'n_presents_bin', 'speeches_minutes_index_bin' ]
 
     FACETS_LABELS = {
         'is_active': _('Active'),
         'start_date': _('Start date'),
         'end_date': _('End date'),
         'institution': _('Institution'),
-        'responsability': _('Responsability')
+        'responsability': _('Institution responsability'),
+        'group_responsability': _('Group responsability'),
+        'n_presents_bin': _('Presenze al voto'),
+        'speeches_minutes_index_bin': _('Durata interventi')
     }
     DATE_INTERVALS_RANGES = { }
 
@@ -747,7 +809,8 @@ class ChargeSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
     
         sqs = SearchQuerySet().filter(django_ct='people.institutioncharge')\
             .filter(institution = Raw("[* TO *]")).facet('is_active')\
-            .facet('institution').facet('responsability')
+            .facet('institution').facet('responsability').facet('group_responsability')\
+            .facet('n_presents_bin').facet('speeches_minutes_index_bin')
 
         for (year, range) in self.DATE_INTERVALS_RANGES.items():
             sqs = sqs.query_facet('start_date', range['qrange'])
@@ -836,6 +899,40 @@ class ChargeSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
         extra['paginator'] = paginator
         extra['page_obj'] = page_obj
 
+        graphs = {}
+
+        # fill data for graphs
+        for f_name, f_params in extra['facets']['fields'].iteritems():
+            counts = f_params['counts']
+            if len(counts) > 1:
+                if f_name in ['n_presents_bin', 'speeches_minutes_index_bin']:
+                    counts = sorted(counts, key=lambda x: int(''.join(takewhile(unicode.isdigit, itemgetter(0)(x)))))
+
+                graphs[f_name] = {
+                    'x': [ v[0] for v in counts ],
+                    'y': [ v[1] for v in counts ]
+                }
+
+        ranges = extra['facet_queries_start_date']['ranges']
+        if len(ranges) > 1:
+            graphs['start_date'] = {
+                'x': [ v['label'] for v in ranges ],
+                'y': [ v['count'] for v in ranges ]
+            }
+
+        ranges = extra['facet_queries_end_date']['ranges']
+        if len(ranges) > 1:
+            graphs['end_date'] = {
+                'x': [ v['label'] for v in ranges ],
+                'y': [ v['count'] for v in ranges ]
+            }
+
+        graphs['results'] = {
+            'height': 200 + self.results_per_page * 40
+        }
+
+        extra['graphs'] = graphs
+
         return extra
 
 
@@ -922,5 +1019,22 @@ class GroupSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin):
 
         extra['paginator'] = paginator
         extra['page_obj'] = page_obj
+
+        graphs = {}
+
+        # fill data for graphs
+        for f_name, f_params in extra['facets']['fields'].iteritems():
+            counts = f_params['counts']
+            if len(counts) > 1:
+                graphs[f_name] = {
+                    'x': [ v[0] for v in counts ],
+                    'y': [ v[1] for v in counts ]
+                }
+
+        graphs['results'] = {
+            'height': 200 + self.results_per_page * 40
+        }
+
+        extra['graphs'] = graphs
 
         return extra

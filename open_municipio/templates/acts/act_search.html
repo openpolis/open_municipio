@@ -16,41 +16,23 @@ em {
 }
 {% endblock %}
 
+{% block head_js_includes %}
+    {{ block.super }}
+    <script type="text/javascript" src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+{% endblock head_js_includes %}
+
 {% block content %}
 
-      <section>
+  <section>
 
-          {% include 'search/_related_search.html' %}
-
-          {% if charge %}
-            {% include 'people/charge_widget.html' with charge=charge %}
-          {% endif %}
-
-          <h2>{% if not query %}Trovati {% endif %} {{ n_results }} documenti</h2>
-
-          {% if person %}
-              <p>per il politico: <a href="{{ person.get_absolute_url }}">{{ person }}</a></p>
-          {% endif %}
-
-          {% if group %}
-              <p>per il gruppo: <a href="{{ group.get_absolute_url }}">{{ group }}</a></p>
-          {% endif %}
-
-          {% if category %}
-              <p>per la categoria: <a href="{{ category.get_absolute_url }}">{{ category }}</a></p>
-          {% endif %}
-
-          {% if tag %}
-              <p>per l'argomento: <a href="{{ tag.get_absolute_url }}">{{ tag }}</a></p>
-          {% endif %}
-
-          {% if location %}
-              <p>per la località: <a href="{{ location.get_absolute_url }}">{{ location }}</a></p>
-          {% endif %}
-
-          {% if recipient %}
-              <p>per il destinatario: <a href="{{ recipient.get_absolute_url }}">{{ recipient }}</a></p>
-          {% endif %}
+    <ul class="nav nav-tabs page-tabs">
+      <li class="active"><a data-toggle="tab" href="#search_acts_tab">{{ n_results }} att{{ n_results|pluralize:"o,i" }}</a></li>
+      <li><a data-toggle="tab" href="#search_topics_tab">Argomenti</a></li>
+      <li><a data-toggle="tab" href="#search_people_tab">Politici</a></li>
+      <li><a data-toggle="tab" href="#search_stats_tab">Statistiche</a></li>
+    </ul>
+    <div class="tab-content" id="tab-content-id">
+      <div class="tab-pane active" id="search_acts_tab">
 
           <table class="search-results">
           <thead style="font-size: 12px;">
@@ -86,7 +68,7 @@ em {
                 <span class="pull-right text-right search_act_status">
                   <span class="label label-warning">In esame</span>
                 </span>
-              {% else %}
+              {% elif not result.object.status == "UNDEFINED" %}
                 {% if result.object.get_last_transition.votation %}
                   <a href="{{ result.object.get_last_transition.votation.get_absolute_url }}">
                 {% elif result.object.get_last_transition.attendance %}
@@ -113,27 +95,61 @@ em {
           {% endfor %}
           </tbody>
         </table>
-      </section>
 
-      {% digg_paginator %}
+        {% digg_paginator %}
+      </div>
 
-    {% if not n_results %}
-        <section class="search-empty">
-            <p>
-                La ricerca{% if form.q.value %} di <strong>{{ form.q.value }}</strong>{% endif %} non è andata a buon fine.<br/>
-                Controlla che tutte le parole siano state digitate correttamente.<br/>
-                oppure prova con parole diverse.
-            </p>
-            <p>
-                Grazie,<br/>
-                lo staff di Open municipio
-            </p>
-        </section>
-    {% endif %}
+      <div class="tab-pane" id="search_topics_tab">
+        {% if graphs.category  %}<div id="graph_category" class="span8"></div>{% endif %}
+        {% if graphs.location  %}<div id="graph_location" class="span8"></div>{% endif %}
+      </div>
 
+      <div class="tab-pane" id="search_people_tab">
+        {% if graphs.initiative  %}<div id="graph_initiative" class="span4"></div>{% endif %}
+        {% if graphs.multiple_supporters  %}<div id="graph_multiple_supporters" class="span4"></div>{% endif %}
+      </div>
+
+      <div class="tab-pane" id="search_stats_tab">
+
+        {% if graphs.act_type  %}
+          <div id="graph_act_type" class="span8"></div>
+        {% endif %}
+
+        {% if graphs.iter_duration  %}
+          <div id="graph_iter_duration" class="span8"></div>
+        {% endif %}
+
+        {% if graphs.pub_date and not facet_queries_date.is_selected %}
+          <div id="graph_pub_date" class="span8"></div>
+        {% endif %}
+      </div>
+    </div>
+  </section>
 {% endblock %}
 
 {% block sidebar %}
+
+    {% if charge or person %}<dl><dt>Firmatario</dt></dl>{% endif %}
+
+    {% if charge %}
+      {% include 'people/charge_widget.html' with charge=charge %}
+    {% endif %}
+
+    {% if person %}
+      {% include 'people/_person_widget.html' with person=person %}
+    {% endif %}
+
+    {% if group %}
+      <dl><dt>Gruppo</dt></dl>
+      {% include 'people/_group_widget.html' with group=group %}
+    {% endif %}
+
+    {% if recipient %}
+      <dl><dt>Destinatario</dt></dl>
+      {% include 'people/_person_widget.html' with person=recipient %}
+    {% endif %}
+
+    {% if charge or person or group or recipient %}<hr />{% endif %}
 
   <h4>Cerca negli atti</h4>
   <form method="get" action="{% url 'om_act_search' %}" class="form-search">
@@ -158,17 +174,12 @@ em {
             {% for facet in selected_facets  %}
                 <dt>{{ facets_labels|key:facet.field|safe }}</dt>
                 <dd>
-                    <a href="{{ facet.url }}&person={{ request.GET.person|default:"" }}">
-                    <i class="icon-remove"></i></a>
+                    <a href="{{ facet.url }}"><i class="icon-remove"></i></a>
                     {{ facet.r_label }}
                 </dd>
             {% endfor %}
         {% else %}
             <h2>Filtra</h2>
-            <p>Puoi trovare l'atto che ti interessa scorrendo la lista degli ultimi pubblicati, qui a fianco.
-                Puoi perfezionare la ricerca usando i filtri nella colonna qui sotto, oppure puoi usare il form di
-                ricerca con una parola che pensi sia contenuta nell'atto ,
-                in cima alla colonna qui a destra</p>
         {% endif %}
 
         <!-- Begin faceting. -->
@@ -182,7 +193,7 @@ em {
                         {% if t.1 %}
                             <dd>
                                 {% if not t.2 %}
-                                    <a href="{{ base_url }}&selected_facets=act_type:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
+                                    <a href="{{ base_url }}&f=act_type:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
                                 {% endif %}
                             </dd>
                         {% endif %}
@@ -196,7 +207,7 @@ em {
                     {% if t.1 %}
                     <dd>
                         {% if not t.2 %}
-                            <a href="{{ base_url }}&selected_facets=status:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
+                            <a href="{{ base_url }}&f=status:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
                         {% endif %}
                     </dd>
                     {%  endif %}
@@ -206,12 +217,11 @@ em {
             <dl>
                 {% if facets.fields.is_key and not facets.fields.is_key.is_field_selected %}
                     <dt>{{ facets_labels.is_key }}</dt>
-                    {# Provide both cases (true, false) #}
                     {% for t in facets.fields.is_key.counts %}
                         {% if t.1 %}
                         <dd>
                             {% if not t.2 %}
-                                <a href="{{ base_url }}&selected_facets=is_key:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
+                                <a href="{{ base_url }}&f=is_key:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
                             {% endif %}
                         </dd>
                         {%  endif %}
@@ -222,12 +232,11 @@ em {
             <dl>
                 {% if facets.fields.is_proposal and not facets.fields.is_proposal.is_field_selected %}
                     <dt>{{ facets_labels.is_proposal }}</dt>
-                    {# Provide both cases (true, false) #}
                     {% for t in facets.fields.is_proposal.counts %}
                         {% if t.1 %}
                             <dd>
                                 {% if not t.2 %}
-                                    <a href="{{ base_url }}&selected_facets=is_proposal:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
+                                    <a href="{{ base_url }}&f=is_proposal:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
                                 {% endif %}
                             </dd>
                         {%  endif %}
@@ -242,7 +251,7 @@ em {
                     {% for t in facets.fields.initiative.counts %}
                         <dd>
                             {% if not t.2 %}
-                                <a href="{{ base_url }}&selected_facets=initiative:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
+                                <a href="{{ base_url }}&f=initiative:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
                             {% endif %}
                         </dd>
                     {% endfor %}
@@ -252,12 +261,11 @@ em {
             <dl>
                 {% if facets.fields.multiple_supporters and not facets.fields.multiple_supporters.is_field_selected %}
                     <dt>{{ facets_labels.multiple_supporters }}</dt>
-                    {# Provide both cases (true, false) #}
                     {% for t in facets.fields.multiple_supporters.counts %}
                         {% if t.1 %}
                             <dd>
                                 {% if not t.2 %}
-                                    <a href="{{ base_url }}&selected_facets=multiple_supporters:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
+                                    <a href="{{ base_url }}&f=multiple_supporters:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
                                 {% endif %}
                             </dd>
                         {%  endif %}
@@ -267,12 +275,11 @@ em {
             <dl>
                 {% if facets.fields.organ and not facets.fields.organ.is_field_selected %}
                     <dt>{{ facets_labels.organ }}</dt>
-                    {# Provide both cases (true, false) #}
                     {% for t in facets.fields.organ.counts %}
                         {% if t.1 %}
                             <dd>
                                 {% if not t.2 %}
-                                    <a href="{{ base_url }}&selected_facets=organ:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
+                                    <a href="{{ base_url }}&f=organ:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
                                 {% endif %}
                             </dd>
                         {%  endif %}
@@ -283,12 +290,11 @@ em {
             <dl>
                 {% if facets.fields.has_locations and not facets.fields.has_locations.is_field_selected %}
                     <dt>{{ facets_labels.has_locations }}</dt>
-                    {# Provide both cases (true, false) #}
                     {% for t in facets.fields.has_locations.counts %}
                         {% if t.1 %}
                             <dd>
                                 {% if not t.2 %}
-                                    <a href="{{ base_url }}&selected_facets=has_locations:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
+                                    <a href="{{ base_url }}&f=has_locations:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
                                 {% endif %}
                             </dd>
                         {%  endif %}
@@ -301,7 +307,7 @@ em {
                     <dt>{{ facets_labels.pub_date }}</dt>
                     {% for range in facet_queries_date.ranges|dictsortreversed:"key"  %}
                         <dd>
-                            <a href="{{ base_url }}&selected_facets={{ range.key }}">
+                            <a href="{{ base_url }}&f={{ range.key }}">
                                 {{ range.label|safe }}
                             </a> ({{ range.count }})
                         </dd>
@@ -310,14 +316,13 @@ em {
             </dl>
 
             <dl>
-                {% if facets.fields.month and not facets.fields.month.is_field_selected %}
+                {% if facets.fields.month and facet_queries_date.is_selected and not facets.fields.month.is_field_selected %}
                     <dt>{{ facets_labels.month }}</dt>
-                    {# Provide both cases (true, false) #}
                     {% for t in facets.fields.month.counts %}
                         {% if t.1 %}
                             <dd>
                                 {% if not t.2 %}
-                                    <a href="{{ base_url }}&selected_facets=month:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
+                                    <a href="{{ base_url }}&f=month:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
                                 {% endif %}
                             </dd>
                         {%  endif %}
@@ -326,14 +331,42 @@ em {
             </dl>
 
             <dl>
-                {% if facets.fields.iter_duration and not facets.fields.iter_duration.is_field_selected %}
-                    <dt>{{ facets_labels.iter_duration }}</dt>
-                    {# Provide both cases (true, false) #}
-                    {% for t in facets.fields.iter_duration.counts %}
+                {% if facets.fields.iter_duration_bin and not facets.fields.iter_duration_bin.is_field_selected %}
+                    <dt>{{ facets_labels.iter_duration_bin }}</dt>
+                    {% for t in facets.fields.iter_duration_bin.counts %}
                         {% if t.1 %}
                             <dd>
                                 {% if not t.2 %}
-                                    <a href="{{ base_url }}&selected_facets=iter_duration:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
+                                    <a href="{{ base_url }}&f=iter_duration_bin:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
+                                {% endif %}
+                            </dd>
+                        {%  endif %}
+                    {% endfor %}
+                {% endif %}
+            </dl>
+
+            <dl>
+                {% if facets.fields.category.counts %}
+                    <dt>{{ facets_labels.category }}</dt>
+                    {% for t in facets.fields.category.counts %}
+                        {% if t.1 %}
+                            <dd>
+                                {% if not t.2 %}
+                                    <a href="{{ base_url }}&f=category:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
+                                {% endif %}
+                            </dd>
+                        {%  endif %}
+                    {% endfor %}
+                {% endif %}
+            </dl>
+            <dl>
+                {% if facets.fields.location.counts %}
+                    <dt>{{ facets_labels.location }}</dt>
+                    {% for t in facets.fields.location.counts %}
+                        {% if t.1 %}
+                            <dd>
+                                {% if not t.2 %}
+                                    <a href="{{ base_url }}&f=location:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
                                 {% endif %}
                             </dd>
                         {%  endif %}
@@ -345,5 +378,200 @@ em {
 
     {% endif %}
 
+    {% include 'search/_related_search.html' %}
 
 {% endblock %}
+
+
+{% block footer_js_includes %}
+  {{ block.super }}
+  <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap-tab.js"></script>
+
+  <script type="text/javascript">
+
+    {% if graphs.category %}
+      graph_category_elem = document.getElementById('graph_category');
+	  Plotly.plot( graph_category_elem, [{
+	    x: [{{ graphs.category.y | join:", " }}],
+	    y: ['{{ graphs.category.x | join:"', '" }}'],
+	    type: 'bar',
+	    orientation: 'h'
+	  }], {
+	    title: 'Categorie di argomento',
+	    margin: { l: 150 },
+        xaxis: { fixedrange: true, side: 'top' },
+        yaxis: { fixedrange: true, autorange: 'reversed' }
+      }, {
+	    displaylogo: false,
+	    displayModeBar: true,
+	    modeBarButtonsToRemove: [ 'hoverClosestCartesian', 'hoverCompareCartesian' ]
+	  });
+
+      graph_category_elem.on('plotly_click', function(data){
+        var url = '{{ base_url }}' + '&f=category:' + data.points[0].y
+        window.open(url, '_self');
+      });
+
+    {% endif %}
+
+    {% if graphs.location %}
+      graph_location_elem = document.getElementById('graph_location');
+	  Plotly.plot( graph_location_elem, [{
+	    x: [{{ graphs.location.y | join:", " }}],
+	    y: ['{{ graphs.location.x | join:"', '" }}'],
+	    type: 'bar',
+	    orientation: 'h'
+	  }], {
+	    title: 'Territori',
+	    margin: { l: 150 },
+        xaxis: { fixedrange: true, side: 'top' },
+        yaxis: { fixedrange: true, autorange: 'reversed' }
+      }, {
+	    displaylogo: false,
+	    displayModeBar: true,
+	    modeBarButtonsToRemove: [ 'hoverClosestCartesian', 'hoverCompareCartesian' ]
+	  });
+
+      graph_location_elem.on('plotly_click', function(data){
+        var url = '{{ base_url }}' + '&f=location:' + data.points[0].y
+        window.open(url, '_self');
+      });
+
+    {% endif %}
+
+    {% if graphs.initiative and not facets.fields.initiative.is_field_selected %}
+      graph_initiative_elem = document.getElementById('graph_initiative');
+	  Plotly.plot( graph_initiative_elem, [{
+	    labels: ['{{ graphs.initiative.x | join:"', '" }}'],
+	    values: [{{ graphs.initiative.y | join:", " }}],
+	    type: 'pie'
+	  }], {
+	    title: 'Iniziativa',
+        xaxis: { fixedrange: true, showgrid: false, showticklabels: false, zeroline: false },
+        yaxis: { fixedrange: true, showgrid: false, showticklabels: false, zeroline: false }
+      }, {
+	    displaylogo: false,
+	    displayModeBar: true,
+	    modeBarButtonsToRemove: [ 'hoverClosestCartesian', 'hoverCompareCartesian', 'toggleHover' ]
+	  });
+    {% endif %}
+
+    {% if graphs.multiple_supporters and not facets.fields.multiple_supporters.is_field_selected %}
+      graph_multiple_supporters_elem = document.getElementById('graph_multiple_supporters');
+	  Plotly.plot( graph_multiple_supporters_elem, [{
+	    labels: ['{{ graphs.multiple_supporters.x | join:"', '" }}'],
+	    values: [{{ graphs.multiple_supporters.y | join:", " }}],
+	    type: 'pie'
+	  }], {
+	    title: 'Firmatari multipli',
+        xaxis: { fixedrange: true, showgrid: false, showticklabels: false, zeroline: false },
+        yaxis: { fixedrange: true, showgrid: false, showticklabels: false, zeroline: false }
+      }, {
+	    displaylogo: false,
+	    displayModeBar: true,
+	    modeBarButtonsToRemove: [ 'hoverClosestCartesian', 'hoverCompareCartesian', 'toggleHover' ]
+	  });
+    {% endif %}
+
+    {% if graphs.act_type and not facets.fields.act_type.is_field_selected %}
+      graph_act_type_elem = document.getElementById('graph_act_type');
+	  Plotly.plot( graph_act_type_elem, [{
+	    x: ['{{ graphs.act_type.x | join:"', '" }}'],
+	    y: [{{ graphs.act_type.y | join:", " }}],
+	    type: 'bar'
+	    }], {
+	    title: 'Tipologie di atto',
+	    hovermode: 'x',
+        xaxis: { fixedrange: true },
+        yaxis: { fixedrange: true, title: 'numero di atti' }
+      }, {
+	    displaylogo: false,
+	    displayModeBar: true,
+	    modeBarButtonsToRemove: [ 'hoverClosestCartesian', 'hoverCompareCartesian' ]
+	  });
+
+      graph_act_type_elem.on('plotly_click', function(data){
+        var url = '{{ base_url }}' + '&f=act_type:' + data.points[0].x
+        window.open(url, '_self');
+      });
+
+    {% endif %}
+
+    {% if graphs.iter_duration %}
+      graph_iter_duration_elem = document.getElementById('graph_iter_duration');
+	  Plotly.plot( graph_iter_duration_elem, [{
+	    x: ['{{ graphs.iter_duration.x | join:"', '" }}'],
+	    y: [{{ graphs.iter_duration.y | join:", " }}],
+	    type: 'bar'
+	    }], {
+	    title: 'Durata dell\'iter',
+	    hovermode: 'x',
+        xaxis: { fixedrange: true, title: 'giorni' },
+        yaxis: { fixedrange: true, title: 'numero di atti', type: 'log' }
+      }, {
+	    displaylogo: false,
+	    displayModeBar: true,
+	    modeBarButtonsToRemove: [ 'hoverClosestCartesian', 'hoverCompareCartesian' ]
+	  });
+
+      graph_iter_duration_elem.on('plotly_click', function(data){
+        var url = '{{ base_url }}' + '&f=iter_duration:' + data.points[0].x
+        window.open(url, '_self');
+      });
+
+    {% endif %}
+
+    {% if graphs.pub_date and not facet_queries_date.is_selected %}
+      graph_pub_date_elem = document.getElementById('graph_pub_date');
+	  Plotly.plot( graph_pub_date_elem, [{
+	    x: ['{{ graphs.pub_date.x | join:"', '" }}'],
+	    y: [{{ graphs.pub_date.y | join:", " }}],
+	    type: 'scatter'
+	  }], {
+	    title: 'Anno di pubblicazione',
+        xaxis: { fixedrange: true, title: 'anno' },
+        yaxis: { fixedrange: true, title: 'numero di atti' }
+      }, {
+	    displaylogo: false,
+	    displayModeBar: true,
+	    modeBarButtonsToRemove: [ 'hoverClosestCartesian', 'hoverCompareCartesian' ]
+	  });
+    {% endif %}
+
+    $(window).resize(function() {
+      var _width = $("#tab-content-id").width() - 50;
+      var _width4 = _width/2;
+      var _width8 = _width;
+
+      {% if graphs.category %}
+        Plotly.relayout(graph_category_elem, { width:_width8, height:400 });
+      {% endif %}
+
+      {% if graphs.location %}
+        Plotly.relayout(graph_location_elem, { width:_width8, height:600 });
+      {% endif %}
+
+      {% if graphs.initiative %}
+        Plotly.relayout(graph_initiative_elem, { width:_width4, height:400 });
+      {% endif %}
+
+      {% if graphs.multiple_supporters %}
+        Plotly.relayout(graph_multiple_supporters_elem, { width:_width4, height:400 });
+      {% endif %}
+
+      {% if graphs.act_type %}
+        Plotly.relayout(graph_act_type_elem, { width:_width8, height:500 });
+      {% endif %}
+
+      {% if graphs.iter_duration %}
+        Plotly.relayout(graph_iter_duration_elem, { width:_width8, height:500 });
+      {% endif %}
+
+      {% if graphs.pub_date and not facet_queries_date.is_selected %}
+        Plotly.relayout(graph_pub_date_elem, { width:_width8, height:500 });
+      {% endif %}
+
+    }).resize();
+
+    </script>
+{% endblock footer_js_includes %}

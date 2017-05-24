@@ -50,7 +50,7 @@ class LocationListView(ListView):
             context[key_nonfinal] = act_type.objects.exclude(location_set=None).filter(~ Q(status__in=(s[0] for s in act_type.FINAL_STATUSES))).count()
             context[key] = act_type.objects.exclude(location_set=None).count()
 
-        context['facets'] = '&selected_facets=has_locations:sì'
+        context['facets'] = '&f=has_locations:sì'
 
         return context
 

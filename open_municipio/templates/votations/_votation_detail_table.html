@@ -3,7 +3,7 @@
 {% load people_tags %}
 {% load url from future %}
 
-<table class="data text-right tablesorter">
+<table id="charge_votation" class="data text-right tablesorter">
   <thead>
   <tr>
     <th class="sorter-left text-left span4">Politico</th>
@@ -15,11 +15,13 @@
     {% endif %}
     <th>Astenuto</th>
     <th>Assente</th>
+    <th>Ribelle</th>
   </tr>
   </thead>
   <tbody>
   {% for charge_vote in charge_votes %}
     {% with charge_vote.charge.person as politician %}
+      {% if charge_vote.charge.can_vote %}
       <tr>
         <td class="text-left">
           <a href="{{ politician.get_absolute_url }}">
@@ -61,7 +63,13 @@
             <span class="label label-text">Assente</span>
           {% endif %}
         </td>
+        <td>
+          {% if charge_vote.is_rebel %}
+            <span class="label">Ribelle</span>
+          {% endif %}
+        </td>
       </tr>
+      {% endif %}
     {% endwith %}
   {% endfor %}
   </tbody>

@@ -23,6 +23,7 @@ class InstitutionChargeIndex(indexes.SearchIndex, indexes.Indexable):
     group = indexes.MultiValueField(indexed=True, stored=False)
     current_group = indexes.CharField(indexed=True, stored=False)
     responsability = indexes.FacetCharField()
+    group_responsability = indexes.FacetCharField()
     level = indexes.IntegerField()
 
     start_date = indexes.FacetDateField(model_attr='start_date')
@@ -46,6 +47,7 @@ class InstitutionChargeIndex(indexes.SearchIndex, indexes.Indexable):
     n_present_votations_percent = indexes.FloatField()
     n_present_attendances_percent = indexes.FloatField()
     n_presents_percent = indexes.FloatField()
+    n_presents_bin = indexes.FacetCharField()
 
     n_deliberations = indexes.IntegerField()
     n_cgdeliberations = indexes.IntegerField()
@@ -73,6 +75,7 @@ class InstitutionChargeIndex(indexes.SearchIndex, indexes.Indexable):
     n_speeches_index = indexes.FloatField()
     speeches_minutes = indexes.IntegerField()
     speeches_minutes_index = indexes.FloatField()
+    speeches_minutes_index_bin = indexes.FacetCharField()
 
     logger = logging.getLogger('import')
 
@@ -96,6 +99,13 @@ class InstitutionChargeIndex(indexes.SearchIndex, indexes.Indexable):
 
         if obj.responsabilities.count() >= 1:
             return obj.responsabilities[0].get_charge_type_display()
+
+    def prepare_group_responsability(self, obj):
+        
+        try:
+            return obj.current_groupcharge.current_responsability.get_charge_type_display()
+        except Exception, e:
+            return ''
 
     def prepare_level(self, obj):
 
@@ -137,6 +147,17 @@ class InstitutionChargeIndex(indexes.SearchIndex, indexes.Indexable):
             else (obj.n_present_votations + obj.n_absent_votations)
 
         return (float(self.prepare_n_presents(obj)) * 100 / n_presents) if n_presents else 0
+
+    def prepare_n_presents_bin(self, obj):
+
+        edges = range(0, 101, 10)
+        value = self.prepare_n_presents_percent(obj)
+
+        if not value: return
+
+        for i in range(len(edges) - 1):
+            if edges[i] <= value < edges[i + 1]:
+                return str(edges[i]) + '%-' + str(edges[i + 1]) + '%'
 
     def prepare_n_deliberations(self, obj):
         return obj.presented_act_set.filter(deliberation__isnull=False).count()
@@ -210,6 +231,19 @@ class InstitutionChargeIndex(indexes.SearchIndex, indexes.Indexable):
     def prepare_speeches_minutes_index(self, obj):
         return (float(self.prepare_speeches_minutes(obj)) / obj.duration.days) * 30 if obj.duration.days else None
 
+    def prepare_speeches_minutes_index_bin(self, obj):
+
+        edges = [ 0, 1, 5, 10, 20, 30, 40, 60 ]
+        value = self.prepare_speeches_minutes_index(obj)
+
+        if not value: return
+
+        for i in range(len(edges) - 1):
+            if edges[i] <= value < edges[i + 1]:
+                return str(edges[i]) + '-' + str(edges[i + 1])
+
+        return str(edges[-1]) + ' e oltre'
+
 
 class GroupIndex(indexes.SearchIndex, indexes.Indexable):
 
@@ -268,7 +302,7 @@ class GroupIndex(indexes.SearchIndex, indexes.Indexable):
         return _("yes") if obj.is_current else _("no")
 
     def prepare_n_members(self, obj):
-        return obj.current_size
+        return obj.charge_set.count()
 
     def prepare_aggregate_charge_duration_days(self, obj):
         days = 0

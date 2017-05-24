@@ -27,7 +27,7 @@
 
             {% if not act.is_final_status %}
               <span class="label label-warning">In esame</span>
-            {% else %}
+            {% elif not act.status == "UNDEFINED" %}
               <span class="label
                 {% if act.status == "APPROVED" or act.status == "ANSWERED" %}label-success
                 {% else %}{% if act.status == 'REJECTED' or act.status == "NOTANSWERED" %}label-important

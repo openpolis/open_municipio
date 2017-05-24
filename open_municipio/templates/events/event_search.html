@@ -21,13 +21,21 @@
   }
 {% endblock %}
 
+{% block head_js_includes %}
+    {{ block.super }}
+    <script type="text/javascript" src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+{% endblock head_js_includes %}
+
 {% block content %}
 
   <section>
 
-    {% include 'search/_related_search.html' %}
-
-    <h2>{% if not query %}Trovati {% endif %} {{ n_results }} eventi</h2>
+    <ul class="nav nav-tabs page-tabs">
+      <li class="active"><a data-toggle="tab" href="#search_results_tab">{{ n_results }} event{{ n_results|pluralize:"o,i" }}</a></li>
+      <li><a data-toggle="tab" href="#search_stats_tab">Statistiche</a></li>
+    </ul>
+    <div class="tab-content" id="tab-content-id">
+      <div class="tab-pane active" id="search_results_tab">
 
     <table id="events" class="search-results">
       <thead style="font-size: 12px;">
@@ -59,25 +67,17 @@
       {% endfor %}
       </tbody>
     </table>
-  </section>
 
         {% digg_paginator %}
+      </div>
 
-    {% if not n_results %}
-      <section class="search-empty">
-      <p>
-        La ricerca{% if form.q.value %} di <strong>{{ form.q.value }}</strong>{% endif %} non è andata a buon fine.<br/>
-        Controlla che tutte le parole siano state digitate correttamente.</br>
-        oppure prova con parole diverse.
-      </p>
-      <p>
-        Grazie,<br/>
-        lo staff di Open Municipio
-      </p>
-    </section>
-        {# Show some example queries to run, maybe query syntax, something else? #}
-    {% endif %}
+      <div class="tab-pane" id="search_stats_tab">
+        <div id="graph_institution" class="span8"></div>
+        <div id="graph_date" class="span8"></div>
+      </div>
 
+    </div>
+  </section>
 {% endblock %}
 
 {% block sidebar %}
@@ -118,7 +118,7 @@
                         {% if t.1 %}
                             <dd>
                                 {% if not t.2 %}
-                                    <a href="{{ base_url }}&selected_facets=institution:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
+                                    <a href="{{ base_url }}&f=institution:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
                                 {% endif %}
                             </dd>
                         {%  endif %}
@@ -130,7 +130,7 @@
                     <dt>{{ facets_labels.date }}</dt>
                     {% for range in facet_queries_date.ranges|dictsortreversed:"key"  %}
                         <dd>
-                            <a href="{{ base_url }}&selected_facets={{ range.key }}">
+                            <a href="{{ base_url }}&f={{ range.key }}">
                                 {{ range.label|safe }}
                             </a> ({{ range.count }})
                         </dd>
@@ -142,4 +142,66 @@
 
     {% endif %}
 
+    {% include 'search/_related_search.html' %}
+
 {% endblock %}
+
+
+{% block footer_js_includes %}
+  {{ block.super }}
+  <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap-tab.js"></script>
+
+  <script type="text/javascript">
+
+    {% if graphs.institution and not facets.fields.institution.is_field_selected %}
+      graph_institution_elem = document.getElementById('graph_institution');
+	  Plotly.plot( graph_institution_elem, [{
+	    labels: ['{{ graphs.institution.x | join:"', '" }}'],
+	    values: [{{ graphs.institution.y | join:", " }}],
+	    type: 'pie'
+	  }], {
+	    title: 'Istituzione',
+        xaxis: { fixedrange: true, showgrid: false, showticklabels: false, zeroline: false },
+        yaxis: { fixedrange: true, showgrid: false, showticklabels: false, zeroline: false }
+      }, {
+	    displaylogo: false,
+	    displayModeBar: true,
+	    modeBarButtonsToRemove: [ 'hoverClosestCartesian', 'hoverCompareCartesian', 'toggleHover' ]
+	  });
+    {% endif %}
+
+    {% if graphs.date and not facet_queries_date.is_selected %}
+      graph_date_elem = document.getElementById('graph_date');
+	  Plotly.plot( graph_date_elem, [{
+	    x: ['{{ graphs.date.x | join:"', '" }}'],
+	    y: [{{ graphs.date.y | join:", " }}],
+	    type: 'bar'
+	    }], {
+	    title: 'Eventi ogni anno',
+	    hovermode: 'x',
+        xaxis: { fixedrange: true },
+        yaxis: { fixedrange: true, title: 'numero di eventi' }
+      }, {
+	    displaylogo: false,
+	    displayModeBar: true,
+	    modeBarButtonsToRemove: [ 'hoverClosestCartesian', 'hoverCompareCartesian' ]
+	  });
+    {% endif %}
+
+    $(window).resize(function() {
+      var _width = $("#tab-content-id").width() - 50;
+      var _width4 = _width/2;
+      var _width8 = _width;
+
+      {% if graphs.institution %}
+        Plotly.relayout(graph_institution_elem, { width:_width8, height:500 });
+      {% endif %}
+
+      {% if graphs.date %}
+        Plotly.relayout(graph_date_elem, { width:_width8, height:500 });
+      {% endif %}
+
+    }).resize();
+
+    </script>
+{% endblock footer_js_includes %}

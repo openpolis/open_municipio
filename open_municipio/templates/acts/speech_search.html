@@ -20,29 +20,24 @@ em {
 }
 {% endblock %}
 
+{% block head_js_includes %}
+    {{ block.super }}
+    <script type="text/javascript" src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+{% endblock head_js_includes %}
+
+
 {% block content %}
 
-      <section>
+  <section>
 
-        {% include 'search/_related_search.html' %}
-
-        {% if charge %}
-          {% include 'people/charge_widget.html' with charge=charge %}
-        {% endif %}
-
-        <h2>{% if not query %}Trovati {% endif %} {{ n_results }} interventi in aula {% popover_info 'interventi-politico' %}</h2>
-
-        {% if person %}
-            <p>per: <a href="{{ person.get_absolute_url }}">{{ person }}</a> </p>
-        {% endif %}
-
-        {% if category %}
-            <p>per la categoria: <a href="{{ category.get_absolute_url }}">{{ category }}</a>  </p>
-        {% endif %}
-    
-        {% if tag %}
-            <p>per l'argomento: <a href="{{ tag.get_absolute_url }}">{{ tag }}</a>  </p>
-        {% endif %}
+    <ul class="nav nav-tabs page-tabs">
+      <li class="active"><a data-toggle="tab" href="#search_speeches_tab">
+        {{ n_results }} intervent{{ n_results|pluralize:"o,i" }}</a>
+      </li>
+      <li><a data-toggle="tab" href="#search_stats_tab">Statistiche</a></li>
+    </ul>
+    <div class="tab-content" id="tab-content-id">
+      <div class="tab-pane active" id="search_speeches_tab">
     
         <table class="search-results">
           <thead style="font-size: 12px;">
@@ -72,26 +67,32 @@ em {
         {% endfor %}
         </tbody>
         </table>
-        </section>
         {% digg_paginator %}
+      </div>
 
-      {% if not n_results %}
-        <section class="search-empty">
-            <p>
-                La ricerca{% if form.q.value %} di <strong>{{ form.q.value }}</strong>{% endif %} non è andata a buon fine.<br/>
-                Controlla che tutte le parole siano state digitate correttamente.</br>
-                oppure prova con parole diverse.
-            </p>
-            <p>
-                Grazie,<br/>
-                lo staff di Open Municipio
-            </p>
-        </section>
-    {% endif %} 
+      <div class="tab-pane" id="search_stats_tab">
 
+        {% if graphs.date and not facet_queries_date.is_selected %}
+          <div id="graph_date" class="span8"></div>
+        {% endif %}
+      </div>
+    </div>
+  </section>
 {% endblock %}
 
 {% block sidebar %}
+ 
+    {% if charge or person %}<dl><dt>Autore</dt></dl>{% endif %}
+
+    {% if charge %}
+      {% include 'people/charge_widget.html' with charge=charge %}
+    {% endif %}
+
+    {% if person %}
+      {% include 'people/_person_widget.html' with person=person %}
+    {% endif %}
+
+    {% if charge or person %}<hr />{% endif %}
  
     {% include "acts/speech_search_box.html" %}
    
@@ -108,11 +109,6 @@ em {
     
         {% else %}
             <h2>Filtra</h2>
-            <p>Puoi trovare l'intervento in aula che ti interessa scorrendo la lista 
-            degli ultimi pubblicati, qui a fianco.
-            Puoi perfezionare la ricerca usando i filtri nella colonna qui sotto, 
-            oppure puoi usare il form di ricerca con una parola che pensi sia 
-            contenuta nell'intervento, in cima alla colonna qui a destra</p>
         {% endif %}
     
         <!-- Begin faceting. -->
@@ -122,7 +118,7 @@ em {
                     <dt>{{ facets_labels.date }}</dt>
                     {% for range in facet_queries_date.ranges|dictsortreversed:"key"  %}
                         <dd>
-                            <a href="{{ base_url }}&selected_facets={{ range.key }}">
+                            <a href="{{ base_url }}&f={{ range.key }}">
                                 {{ range.label|safe }}
                             </a> ({{ range.count }})
                         </dd>
@@ -131,14 +127,14 @@ em {
             </dl>
 
             <dl>
-                {% if facets.fields.month and not facets.fields.month.is_field_selected %}
+                {% if facets.fields.month and facet_queries_date.is_selected and not facets.fields.month.is_field_selected %}
                     <dt>{{ facets_labels.month }}</dt>
                     {# Provide both cases (true, false) #}
                     {% for t in facets.fields.month.counts %}
                         {% if t.1 %}
                             <dd>
                                 {% if not t.2 %}
-                                    <a href="{{ base_url }}&selected_facets=month:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
+                                    <a href="{{ base_url }}&f=month:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
                                 {% endif %}
                             </dd>
                         {%  endif %}
@@ -149,4 +145,44 @@ em {
     
         <!-- End faceting -->
     {% endif %}
+
+    {% include 'search/_related_search.html' %}
 {% endblock %}
+
+
+{% block footer_js_includes %}
+  {{ block.super }}
+  <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap-tab.js"></script>
+
+  <script type="text/javascript">
+
+    {% if graphs.date and not facet_queries_date.is_selected %}
+      graph_date_elem = document.getElementById('graph_date');
+	  Plotly.plot( graph_date_elem, [{
+	    x: ['{{ graphs.date.x | join:"', '" }}'],
+	    y: [{{ graphs.date.y | join:", " }}],
+	    type: 'scatter'
+	  }], {
+	    title: 'Anno',
+        xaxis: { fixedrange: true, title: 'anno' },
+        yaxis: { fixedrange: true, title: 'interventi' }
+      }, {
+	    displaylogo: false,
+	    displayModeBar: true,
+	    modeBarButtonsToRemove: [ 'hoverClosestCartesian', 'hoverCompareCartesian' ]
+	  });
+    {% endif %}
+
+    $(window).resize(function() {
+      var _width = $("#tab-content-id").width() - 50;
+      var _width4 = _width/2;
+      var _width8 = _width;
+
+      {% if graphs.date and not facet_queries_date.is_selected %}
+        Plotly.relayout(graph_pub_date_elem, { width:_width8, height:500 });
+      {% endif %}
+
+    }).resize();
+
+    </script>
+{% endblock footer_js_includes %}

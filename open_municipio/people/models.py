@@ -463,6 +463,11 @@ class InstitutionCharge(Charge):
     def is_counselor(self):
         return self.institution.institution_type == Institution.COUNCIL
 
+    @property
+    def is_in_city_government(self):
+        return (self.institution.institution_type == Institution.CITY_GOVERNMENT or \
+            self.institution.institution_type == Institution.MAYOR)
+
 
     class Meta(Charge.Meta):
         db_table = u'people_institution_charge'
@@ -574,6 +579,24 @@ class InstitutionCharge(Charge):
             return _('Committee member')
         else:
             return 'Unknown charge type!'
+
+    @property
+    def charge_type_verbose(self):
+        """
+        """
+        s = self.charge_type
+
+        if self.start_date:
+
+            if self.end_date and self.start_date.year == self.end_date.year:
+                s += ' nel ' + str(self.start_date.year)
+            else:
+                s += ' dal ' + str(self.start_date.year)
+
+                if self.end_date:
+                    s += ' al ' + str(self.end_date.year)
+
+        return s
 
     @property
     def council_group(self):
@@ -747,6 +770,10 @@ class Group(models.Model):
 
     img = ImageField(upload_to="group_images", blank=True, null=True)
 
+    start_date = models.DateField(blank=True, null=True, verbose_name=_("start date"))
+    end_date = models.DateField(blank=True, null=True, verbose_name=_("end date"))
+
+
     objects = PassThroughManager.for_queryset_class(GroupQuerySet)()
 
 
@@ -759,7 +786,10 @@ class Group(models.Model):
         return reverse("om_institution_group", kwargs={'slug': self.slug})
 
     def __unicode__(self):
-        return u'%s (%s)' % (self.name, self.acronym)
+        if self.start_date:
+            return u'%s (%s, %s)' % (self.name, self.acronym, self.start_date.year)
+        else:
+            return u'%s (%s)' % (self.name, self.acronym)
 
     @property
     def leader(self):
@@ -803,17 +833,6 @@ class Group(models.Model):
         Current members of the group, as institution charges, leader and
         council president and vice presidents **excluded**.
         """
-## what this query does is wrong because it mixes GroupResponsability for
-## GroupCharges belonging to groups different from the current one
-## (think about someone changing groups, and having responsibilities in past
-## groups but not current one)
-##        return self.institution_charges.select_related().exclude(
-##            groupcharge__groupresponsability__charge_type__in=(
-##                GroupResponsability.CHARGE_TYPES.leader,
-##                GroupResponsability.CHARGE_TYPES.deputy
-##                ),
-##            groupcharge__groupresponsability__end_date__isnull=True
-##        )
         group_members = self.groupcharge_set.current().exclude(
             groupresponsability__charge_type__in=(
                 GroupResponsability.CHARGE_TYPES.leader,

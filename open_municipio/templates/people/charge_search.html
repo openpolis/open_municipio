@@ -2,6 +2,7 @@
 {% load highlight %}
 {% load om_utils %}
 {% load i18n %}
+{% load l10n %}
 {% load digg_paginator %}
 {% load url from future %}
 {% load thumbnail %}
@@ -30,26 +31,29 @@ body #main.two_columns {
 }
 {% endblock %}
 
+{% block head_js_includes %}
+    {{ block.super }}
+    <script type="text/javascript" src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+{% endblock head_js_includes %}
+
 {% block sub_nav %}
     {%  include 'people/_subnav.html' with active='Cariche' %}
 {% endblock %}
 
 {% block content %}
-{% if n_results %}
 <section>
-  <h2>{% if not query %}Trovate {% endif %} {{ n_results }} cariche</h2>
 
-  <p>
-      Tra parentesi il tasso mensile, calcolato in rapporto alla durata della carica.
-  </p>
+    <ul class="nav nav-tabs page-tabs">
+      <li class="active"><a data-toggle="tab" href="#search_charges_tab">{{ n_results }} caric{{ n_results|pluralize:"a,he" }}</a></li>
+      <li><a data-toggle="tab" href="#search_acts_tab">Atti</a></li>
+      <li><a data-toggle="tab" href="#search_presence_tab">Presenze</a></li>
+      <li><a data-toggle="tab" href="#search_speeches_tab">Interventi</a></li>
+      <li><a data-toggle="tab" href="#search_stats_tab">Statistiche</a></li>
+    </ul>
+    <div class="tab-content" id="tab-content-id">
+      <div class="tab-pane active" id="search_charges_tab">
 
-    {% if person %}
-      <p>per: <a href="{{ person.get_absolute_url }}">{{ person }}</a></p>
-    {% endif %}
-
-    {% if group %}
-        <p>per il gruppo: <a href="{{ group.get_absolute_url }}">{{ group }}</a></p>
-    {% endif %}
+  <p>Tra parentesi il tasso mensile, calcolato in rapporto alla durata della carica.</p>
 
     <table class="data dataTable">
       <thead style="font-size: 10px;">
@@ -119,9 +123,7 @@ body #main.two_columns {
                     <a href="{{ result.object.person.get_absolute_url }}">
                       <strong class="person_name">{{ result.object.person|title }}</strong>
                     </a>
-                    <br />
-                    {{ result.institution }} dal {{ result.start_date|date:"Y" }}
-                    {% if result.end_date %} al {{ result.end_date|date:"Y" }}{% endif %}
+                    <br />{{ result.object.charge_type_verbose }}
                   </div>
                 </div>
               </div>
@@ -144,22 +146,22 @@ body #main.two_columns {
                 {% endif %}</td>
 
                 <td>{% if result.n_cgdeliberations %}
-                	<a href="{% url 'om_act_search' %}?q=&charge={{ result.object.id }}&selected_facets=act_type:delibera di giunta">
+                	<a href="{% url 'om_act_search' %}?q=&charge={{ result.object.id }}&f=act_type:delibera di giunta">
                 	{{ result.n_cgdeliberations }}</a><br />({{ result.n_cgdeliberations_index|floatformat:2 }})
                 {% endif %}</td>
 
                 <td>{% if result.n_deliberations %}
-                	<a href="{% url 'om_act_search' %}?q=&charge={{ result.object.id }}&selected_facets=act_type:delibera">
+                	<a href="{% url 'om_act_search' %}?q=&charge={{ result.object.id }}&f=act_type:delibera">
                 	{{ result.n_deliberations }}</a><br />({{ result.n_deliberations_index|floatformat:2 }})
                 {% endif %}</td>
 
                 <td>{% if result.n_motions %}
-                	<a href="{% url 'om_act_search' %}?q=&charge={{ result.object.id }}&selected_facets=act_type:mozione">
+                	<a href="{% url 'om_act_search' %}?q=&charge={{ result.object.id }}&f=act_type:mozione">
                 	{{ result.n_motions }}</a><br />({{ result.n_motions_index|floatformat:2 }})
                 {% endif %}</td>
 
                 <td>{% if result.n_agendas %}
-                	<a href="{% url 'om_act_search' %}?q=&charge={{ result.object.id }}&selected_facets=act_type:ordine del giorno">
+                	<a href="{% url 'om_act_search' %}?q=&charge={{ result.object.id }}&f=act_type:ordine del giorno">
                 	{{ result.n_agendas }}</a><br />({{ result.n_agendas_index|floatformat:2 }})
                 {% endif %}</td>
 
@@ -168,22 +170,22 @@ body #main.two_columns {
                 {% endif %}</td>
 
                 <td>{% if result.n_amendments %}
-                	<a href="{% url 'om_act_search' %}?q=&charge={{ result.object.id }}&selected_facets=act_type:emendamento">
+                	<a href="{% url 'om_act_search' %}?q=&charge={{ result.object.id }}&f=act_type:emendamento">
                 	{{ result.n_amendments }}</a><br />({{ result.n_amendments_index|floatformat:2 }})
                 {% endif %}</td>
 
                 <td>{% if result.n_interrogations %}
-                	<a href="{% url 'om_act_search' %}?q=&charge={{ result.object.id }}&selected_facets=act_type:interrogazione">
+                	<a href="{% url 'om_act_search' %}?q=&charge={{ result.object.id }}&f=act_type:interrogazione">
                 	{{ result.n_interrogations }}</a><br />({{ result.n_interrogations_index|floatformat:2 }})
                 {% endif %}</td>
 
                 <td>{% if result.n_interpellations %}
-                	<a href="{% url 'om_act_search' %}?q=&charge={{ result.object.id }}&selected_facets=act_type:interpellanza">
+                	<a href="{% url 'om_act_search' %}?q=&charge={{ result.object.id }}&f=act_type:interpellanza">
                 	{{ result.n_interpellations }}</a><br />({{ result.n_interpellations_index|floatformat:2 }})
                 {% endif %}</td>
 
                 <td>{% if result.n_audits %}
-                	<a href="{% url 'om_act_search' %}?q=&charge={{ result.object.id }}&selected_facets=act_type:accesso agli atti">
+                	<a href="{% url 'om_act_search' %}?q=&charge={{ result.object.id }}&f=act_type:accesso agli atti">
                 	{{ result.n_audits }}</a><br />({{ result.n_audits_index|floatformat:2 }})
                 {% endif %}</td>
 
@@ -206,25 +208,56 @@ body #main.two_columns {
         {% endfor %}
         </tbody>
         </table>
-        </section>
-        {% digg_paginator %}
-    {% else %}
-        <section class="search-empty">
-            <p>
-                La ricerca{% if form.q.value %} di <strong>{{ form.q.value }}</strong>{% endif %} non è andata a buon fine.<br/>
-                Controlla che tutte le parole siano state digitate correttamente.</br>
-                oppure prova con parole diverse.
-            </p>
-            <p>
-                Grazie,<br/>
-                lo staff di Open Municipio
-            </p>
-        </section>
-    {% endif %} 
 
+        {% digg_paginator %}
+      </div>
+
+      <div class="tab-pane" id="search_acts_tab">
+
+        {% if n_results %}
+          <div id="graph_acts" class="span8"></div>
+        {% endif %}
+
+      </div>
+
+      <div class="tab-pane" id="search_presence_tab">
+
+        {% if graphs.n_presents_bin  %}
+          <div id="graph_n_presents_bin" class="span8"></div>
+        {% endif %}
+
+      </div>
+
+      <div class="tab-pane" id="search_speeches_tab">
+
+        {% if graphs.speeches_minutes_index_bin  %}
+          <div id="graph_speeches_minutes_index_bin" class="span8"></div>
+        {% endif %}
+
+      </div>
+
+      <div class="tab-pane" id="search_stats_tab">
+
+        <div id="graph_duration" class="span8"></div>
+
+      </div>
+    </div>
+  </section>
 {% endblock %}
 
 {% block sidebar %}
+
+    {% if person %}
+      <dl><dt>Politico</dt></dl>
+      {% include 'people/_person_widget.html' with person=person %}
+    {% endif %}
+
+    {% if group %}
+      <dl><dt>Gruppo</dt></dl>
+      {% include 'people/_group_widget.html' with group=group %}
+    {% endif %}
+
+    {% if person or group %}<hr />{% endif %}
  
     {% if n_results %}
         {% if selected_facets %}
@@ -239,8 +272,6 @@ body #main.two_columns {
     
         {% else %}
             <h2>Filtra</h2>
-            <p>Puoi trovare la carica che ti interessa scorrendo la lista qui a fianco.<br />
-            Puoi perfezionare la ricerca usando i filtri nella colonna qui sotto</p>
         {% endif %}
     
         <!-- Begin faceting. -->
@@ -251,7 +282,7 @@ body #main.two_columns {
                     {% for t in facets.fields.is_active.counts %}
                         <dd>
                             {% if not t.2 %}
-                                <a href="{{ base_url }}&selected_facets=is_active:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
+                                <a href="{{ base_url }}&f=is_active:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
                             {% endif %}
                         </dd>
                     {% endfor %}
@@ -264,7 +295,7 @@ body #main.two_columns {
                     {% for t in facets.fields.institution.counts %}
                         <dd>
                             {% if not t.2 %}
-                                <a href="{{ base_url }}&selected_facets=institution:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
+                                <a href="{{ base_url }}&f=institution:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
                             {% endif %}
                         </dd>
                     {% endfor %}
@@ -272,12 +303,25 @@ body #main.two_columns {
             </dl>
 
             <dl>
-                {% if facets.fields.responsability and not facets.fields.responsability.is_field_selected and facets.fields.institution.is_field_selected  %}
+                {% if facets.fields.responsability and not facets.fields.responsability.is_field_selected %}
                     <dt>{{ facets_labels.responsability }}</dt>
                     {% for t in facets.fields.responsability.counts %}
                         <dd>
                             {% if not t.2 and t.1 %}
-                                <a href="{{ base_url }}&selected_facets=responsability:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
+                                <a href="{{ base_url }}&f=responsability:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
+                            {% endif %}
+                        </dd>
+                    {% endfor %}
+                {% endif %}
+            </dl>
+
+            <dl>
+                {% if facets.fields.group_responsability and not facets.fields.group_responsability.is_field_selected %}
+                    <dt>{{ facets_labels.group_responsability }}</dt>
+                    {% for t in facets.fields.group_responsability.counts %}
+                        <dd>
+                            {% if not t.2 and t.1 %}
+                                <a href="{{ base_url }}&f=group_responsability:{{ t.0|urlencode }}">{{ t.0 }}</a> ({{ t.1 }})
                             {% endif %}
                         </dd>
                     {% endfor %}
@@ -289,7 +333,7 @@ body #main.two_columns {
                     <dt>{{ facets_labels.start_date }}</dt>
                     {% for range in facet_queries_start_date.ranges|dictsortreversed:"key"  %}
                         <dd>
-                            <a href="{{ base_url }}&selected_facets={{ range.key }}">
+                            <a href="{{ base_url }}&f={{ range.key }}">
                                 {{ range.label|safe }}
                             </a> ({{ range.count }})
                         </dd>
@@ -302,7 +346,7 @@ body #main.two_columns {
                     <dt>{{ facets_labels.end_date }}</dt>
                     {% for range in facet_queries_end_date.ranges|dictsortreversed:"key"  %}
                         <dd>
-                            <a href="{{ base_url }}&selected_facets={{ range.key }}">
+                            <a href="{{ base_url }}&f={{ range.key }}">
                                 {{ range.label|safe }}
                             </a> ({{ range.count }})
                         </dd>
@@ -315,3 +359,196 @@ body #main.two_columns {
         <!-- End faceting -->
     {% endif %}
 {% endblock %}
+
+
+{% block footer_js_includes %}
+  {{ block.super }}
+  <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap-tab.js"></script>
+
+  <script type="text/javascript">
+
+    {% if n_results %}
+      graph_acts_elem = document.getElementById('graph_acts');
+	  Plotly.plot( graph_acts_elem, [
+	  {
+	    {% language 'en' %}{% localize off %}
+	      x: [{% for result in page.object_list %} {{ result.n_cgdeliberations_index|floatformat:2 }},{% endfor %} ],
+	    {% endlocalize %}{% endlanguage %}
+	    y: [ {% for result in page.object_list %}'<a href="{{ result.object.person.get_absolute_url }}">{{ result.object.person|title }}</a><br>{{ result.object.charge_type_verbose }}',{% endfor %} ],
+	    type: 'bar',
+	    orientation: 'h',
+	    name: 'Delibere di Giunta'
+	  },
+	  {
+	    {% language 'en' %}{% localize off %}
+	      x: [{% for result in page.object_list %} {{ result.n_deliberations_index|floatformat:2 }},{% endfor %} ],
+	    {% endlocalize %}{% endlanguage %}
+	    y: [ {% for result in page.object_list %}'<a href="{{ result.object.person.get_absolute_url }}">{{ result.object.person|title }}</a><br>{{ result.object.charge_type_verbose }}',{% endfor %} ],
+	    type: 'bar',
+	    orientation: 'h',
+	    name: 'Delibere di Consiglio'
+	  },
+	  {
+	    {% language 'en' %}{% localize off %}
+	      x: [{% for result in page.object_list %} {{ result.n_motions_index|floatformat:2 }},{% endfor %} ],
+	    {% endlocalize %}{% endlanguage %}
+	    y: [ {% for result in page.object_list %}'<a href="{{ result.object.person.get_absolute_url }}">{{ result.object.person|title }}</a><br>{{ result.object.charge_type_verbose }}',{% endfor %} ],
+	    type: 'bar',
+	    orientation: 'h',
+	    name: 'Mozioni'
+	  },
+	  {
+	    {% language 'en' %}{% localize off %}
+	      x: [{% for result in page.object_list %} {{ result.n_agendas_index|floatformat:2 }},{% endfor %} ],
+	    {% endlocalize %}{% endlanguage %}
+	    y: [ {% for result in page.object_list %}'<a href="{{ result.object.person.get_absolute_url }}">{{ result.object.person|title }}</a><br>{{ result.object.charge_type_verbose }}',{% endfor %} ],
+	    type: 'bar',
+	    orientation: 'h',
+	    name: 'Ordini del giorno'
+	  },
+	  {
+	    {% language 'en' %}{% localize off %}
+	      x: [{% for result in page.object_list %} {{ result.n_amendments_index|floatformat:2 }},{% endfor %} ],
+	    {% endlocalize %}{% endlanguage %}
+	    y: [ {% for result in page.object_list %}'<a href="{{ result.object.person.get_absolute_url }}">{{ result.object.person|title }}</a><br>{{ result.object.charge_type_verbose }}',{% endfor %} ],
+	    type: 'bar',
+	    orientation: 'h',
+	    name: 'Emendamenti'
+	  },
+	  {
+	    {% language 'en' %}{% localize off %}
+	      x: [{% for result in page.object_list %} {{ result.n_interrogations_index|floatformat:2 }},{% endfor %} ],
+	    {% endlocalize %}{% endlanguage %}
+	    y: [ {% for result in page.object_list %}'<a href="{{ result.object.person.get_absolute_url }}">{{ result.object.person|title }}</a><br>{{ result.object.charge_type_verbose }}',{% endfor %} ],
+	    type: 'bar',
+	    orientation: 'h',
+	    name: 'Interrogazioni'
+	  },
+	  {
+	    {% language 'en' %}{% localize off %}
+	      x: [{% for result in page.object_list %} {{ result.n_interpellations_index|floatformat:2 }},{% endfor %} ],
+	    {% endlocalize %}{% endlanguage %}
+	    y: [ {% for result in page.object_list %}'<a href="{{ result.object.person.get_absolute_url }}">{{ result.object.person|title }}</a><br>{{ result.object.charge_type_verbose }}',{% endfor %} ],
+	    type: 'bar',
+	    orientation: 'h',
+	    name: 'Interpellanze'
+	  },
+	  {
+	    {% language 'en' %}{% localize off %}
+          x: [{% for result in page.object_list %} {{ result.n_audits_index|floatformat:2 }},{% endfor %} ],
+	    {% endlocalize %}{% endlanguage %}
+	    y: [ {% for result in page.object_list %}'<a href="{{ result.object.person.get_absolute_url }}">{{ result.object.person|title }}</a><br>{{ result.object.charge_type_verbose }}',{% endfor %} ],
+	    type: 'bar',
+	    orientation: 'h',
+	    name: 'Accessi agli atti'
+	  }
+	  ], {
+	    title: 'Atti presentati',
+	    barmode: 'stack',
+	    margin: { l: 180 },
+        xaxis: { fixedrange: true, title: 'atti presentati mediamente ogni mese' },
+        yaxis: { fixedrange: true, autorange: 'reversed' }
+      }, {
+	    displaylogo: false,
+	    displayModeBar: true,
+	    modeBarButtonsToRemove: [ 'hoverClosestCartesian', 'hoverCompareCartesian' ]
+	  });
+    {% endif %}
+
+    {% if graphs.n_presents_bin and not facets.fields.n_presents_bin.is_field_selected %}
+      graph_n_presents_bin_elem = document.getElementById('graph_n_presents_bin');
+	  Plotly.plot( graph_n_presents_bin_elem, [{
+	    x: ['{{ graphs.n_presents_bin.x | join:"', '" }}'],
+	    y: [{{ graphs.n_presents_bin.y | join:", " }}],
+	    type: 'bar'
+	    }], {
+	    title: 'Presenze al voto',
+	    hovermode: 'x',
+        xaxis: { fixedrange: true, title: 'percentuale di presenze al voto' },
+        yaxis: { fixedrange: true, title: 'numero di cariche' }
+      }, {
+	    displaylogo: false,
+	    displayModeBar: true,
+	    modeBarButtonsToRemove: [ 'hoverClosestCartesian', 'hoverCompareCartesian' ]
+	  });
+
+      graph_n_presents_bin_elem.on('plotly_click', function(data){
+        var url = '{{ base_url }}' + '&f=n_presents_bin:' + data.points[0].x
+        window.open(url, '_self');
+      });
+
+    {% endif %}
+
+    {% if graphs.speeches_minutes_index_bin and not facets.fields.speeches_minutes_index_bin.is_field_selected %}
+      graph_speeches_minutes_index_bin_elem = document.getElementById('graph_speeches_minutes_index_bin');
+	  Plotly.plot( graph_speeches_minutes_index_bin_elem, [{
+	    x: ['{{ graphs.speeches_minutes_index_bin.x | join:"', '" }}'],
+	    y: [{{ graphs.speeches_minutes_index_bin.y | join:", " }}],
+	    type: 'bar'
+	    }], {
+	    title: 'Minuti di intervento al mese',
+	    hovermode: 'x',
+        xaxis: { fixedrange: true, title: 'minuti di intervento al mese' },
+        yaxis: { fixedrange: true, title: 'numero di cariche' }
+      }, {
+	    displaylogo: false,
+	    displayModeBar: true,
+	    modeBarButtonsToRemove: [ 'hoverClosestCartesian', 'hoverCompareCartesian' ]
+	  });
+
+      graph_speeches_minutes_index_bin_elem.on('plotly_click', function(data){
+        var url = '{{ base_url }}' + '&f=speeches_minutes_index_bin:' + data.points[0].x
+        window.open(url, '_self');
+      });
+
+    {% endif %}
+
+    {% if n_results %}
+      graph_duration_elem = document.getElementById('graph_duration');
+	  Plotly.plot( graph_duration_elem, [{
+        x: [{% for result in page.object_list %} {{ result.object.duration.days }},{% endfor %} ],
+        autobinx: false, 
+        histnorm: "count",
+	    type: 'histogram',
+        xbins: {
+          end: 2000, 
+          size: 100, 
+          start: 1
+          }
+	    }], {
+	    title: 'Durata della carica in giorni',
+        xaxis: { fixedrange: true },
+        yaxis: { fixedrange: true, title: 'numero di cariche' },
+	    hovermode: false,
+	    bargap: 0.05
+      }, {
+	    displaylogo: false,
+	    displayModeBar: false
+	  });
+    {% endif %}
+
+    $(window).resize(function() {
+      var _width = $("#tab-content-id").width() - 50;
+      var _width4 = _width/2;
+      var _width8 = _width;
+
+      {% if n_results %}
+        Plotly.relayout(graph_acts_elem, { width:_width8, height:{{ graphs.results.height }} });
+      {% endif %}
+
+      {% if graphs.n_presents_bin %}
+        Plotly.relayout(graph_n_presents_bin_elem, { width:_width8, height:500 });
+      {% endif %}
+
+      {% if graphs.speeches_minutes_index_bin %}
+        Plotly.relayout(graph_speeches_minutes_index_bin_elem, { width:_width8, height:500 });
+      {% endif %}
+
+      {% if n_results %}
+        Plotly.relayout(graph_duration_elem, { width:_width8, height:500 });
+      {% endif %}
+
+    }).resize();
+
+    </script>
+{% endblock footer_js_includes %}

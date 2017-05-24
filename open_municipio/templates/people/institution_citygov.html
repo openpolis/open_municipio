@@ -32,10 +32,10 @@
               <th></th>
               <th class="text-left span4">Politico</th>
               <th class="span3">Deleghe</th>
-              <th class="span2">Presenze</th>
-              <th class="span1">Atti</th>
-              <th class="span1">Interventi</th>
-              <th class="span1">Ricevuti</th>
+              <th class="span2">Presenze {% popover_info 'presenze-in-giunta' %}</th>
+              <th class="span1">Atti firmati</th>
+              <th class="span1">Interventi (minuti) {% popover_info 'durata-interventi' %}</th>
+              <th class="span1">Atti ricevuti</th>
               <th class="span2">Monitorato da</th>
           </tr>
           </thead>
@@ -52,8 +52,8 @@
 
       <p>
         <i class="icon-play"></i>
-        Vedi i <a href="{% url 'om_charge_search' %}?q=&selected_facets=is_active%3Ano&selected_facets=institution:Sindaco">sindaci</a>
-        e gli <a href="{% url 'om_charge_search' %}?q=&selected_facets=is_active%3Ano&selected_facets=institution:Assessore">assessori</a>
+        Vedi i <a href="{% url 'om_charge_search' %}?q=&f=is_active:no&f=institution:Sindaco">sindaci</a>
+        e gli <a href="{% url 'om_charge_search' %}?q=&f=is_active:no&f=institution:Assessore">assessori</a>
         non più in carica
       </p>
 

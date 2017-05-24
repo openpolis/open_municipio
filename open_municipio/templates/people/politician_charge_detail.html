@@ -2,6 +2,8 @@
 {% load url from future %}
 
   {% if charge.is_counselor %}
+
+    {% if charge.can_vote %}
     <section>
       <h2>Presenze (<a href="{% url 'om_votation_search' %}?q=&charge={{ charge.id }}">{{ n_total_votations }} votazion{{ n_total_votations|pluralize:"e,i" }}</a>)</h2>
       <p>
@@ -36,7 +38,7 @@
       <section>
         <h2>Voti chiave {% popover_info 'voti-chiave' %}</h2>
         {% include 'people/charge_votations_table.html' with charge_vote_list=current_charge_votes %}
-        <p><i class="icon-play"></i> <a href="{% url 'om_votation_search' %}?q=&charge={{ charge.id }}&selected_facets=is_key:sì">Vedi tutti i voti chiave del suo mandato</a></p>
+        <p><i class="icon-play"></i> <a href="{% url 'om_votation_search' %}?q=&charge={{ charge.id }}&f=is_key:sì">Vedi tutti i voti chiave del suo mandato</a></p>
       </section>
 
       <hr class="big">
@@ -55,6 +57,38 @@
 
       <hr class="big">
 
+    {% else %}
+      <p>
+          Consigliere senza diritto di voto
+      </p>
+    {% endif %}
+  {% endif %}
+
+  {% if charge.is_in_city_government %}
+    <section>
+      <h2>Presenze ({{ n_total_attendances }} att{{ n_total_attendances|pluralize:"o,i" }})</h2>
+      <p>
+          I dati si riferiscono alle presenze attestate nelle delibere di Giunta.<br/>
+          Non vengono calcolate le presenze alle sedute né se l'assenza abbia motivazioni politiche.
+      </p>
+      <div class="meter-bar float-container">
+        <div class="meter-bar-container">
+          <label>Presenze</label>
+          <div class="meter-label"><strong class="green">{{ percentage_present_attendances }}%</strong>&nbsp;({{ charge.n_present_attendances }})</div>
+          <div class="green-meter-bar">
+            <div style="left: {{ percentage_present_attendances_average }}%;" class="meter-average"><label>valore medio: {{ percentage_present_attendances_average }}%</label>&nbsp;</div>
+            <div style="width: {{ percentage_present_attendances }}%;" class="meter-value">&nbsp;</div>
+          </div>
+        </div>
+        <div class="meter-bar-container">
+          <label>Assenze</label>
+          <div class="meter-label"><strong class="red">{{ percentage_absent_attendances }}%</strong>&nbsp;({{ charge.n_absent_attendances }})</div>
+          <div class="red-meter-bar">
+            <div style="left: {{ percentage_absent_attendances_average }}%;" class="meter-average"><label>valore medio: {{ percentage_absent_attendances_average }}%</label>&nbsp;</div>
+            <div style="width: {{ percentage_absent_attendances }}%;" class="meter-value">&nbsp;</div>
+          </div>
+        </div>
+      </div>
   {% endif %}
 
   {% if n_presented_acts %}
@@ -74,27 +108,24 @@
 
   {% if n_speeches %}
       <section>
-          <h2>Interventi in Consiglio Comunale {% popover_info 'interventi-politico' %}</h2>
+          <h2>Interventi in Consiglio Comunale (<a href="{% url 'om_speech_search' %}?q=&charge={{ charge.id }}">{{ n_speeches }}</a>) {% popover_info 'interventi-politico' %}</h2>
 
           <table class="data">
               <thead>
               <tr>
-                  <th class="text-left span4">Seduta</th>
+                  <th>Seduta</th>
+                  <th>Intervento</th>
                   <th>Argomento</th>
-                  <th class="span2">Intervento</th>
+                  <th class="span2"></th>
               </tr>
               </thead>
               <tbody>
               {% for speech in speeches %}
                   <tr>
-                    {% with sitting=speech.sitting_item.sitting %}
-                      <td>Seduta num. {{ sitting.number }} del {{ sitting.date|date:"d/m/Y" }}</td>
-                    {% endwith %}
-                      <td>{{ speech.sitting_item.title }}</td>
-                      <td>
-                        <a href="{{ speech.get_absolute_url }}">Leggi intervento</a><br/>
-                        <a href="{{ speech.sitting_item.get_absolute_url }}">Leggi discussione</a>
-                      </td>
+                      <td><a href="{{ speech.sitting_url }}">{{ speech.date|date:"d/m/Y" }}</a></td>
+                      <td>{{ speech.sitting_number }}/{{ speech.seq_order }}</td>
+                      <td><a href="{{ speech.url }}">{{ speech.title }}</a></td>
+                      <td><a href="{{ speech.sitting_item_url }}">Leggi discussione</a></td>
                   </tr>
               {% endfor %}
 

@@ -1,0 +1,30 @@
+{% load monitoring_tags %}
+{% load thumbnail %}
+{% load people_tags %}
+
+{% load url from future %}
+
+<div class="container-fluid">
+  <div class="row-fluid">
+
+    <!-- thumbnail -->
+    <div class="span1" style="min-width: 50px">
+      <a href="{{ group.get_absolute_url }}">
+        {% if group.img %}
+        {% thumbnail group.img "50x50" crop="center" as im %}
+        <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" class="politician-picture">
+        {% endthumbnail %}
+        {% else %}
+        <img src="{{ STATIC_URL }}img/placehold/group_50.png" width="50" height="50" class="group-picture">
+        {% endif %}
+      </a>
+    </div>
+
+    <!-- name -->
+    <div class="span8">
+      <a href="{{ group.get_absolute_url }}">
+        <strong class="group_name">{{ group.name }}</strong> ({{ group.acronym }})
+      </a>
+    </div>
+  </div>
+</div>

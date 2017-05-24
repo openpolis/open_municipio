@@ -1065,6 +1065,7 @@ class Audit(Act):
     OM_DETAIL_VIEW_NAME = "om_audit_detail"
 
     STATUS = Choices(
+        ('UNDEFINED', 'undefined', _('undefined')),
         ('PRESENTED', 'presented', _('presented')),
         ('ANSWERED', 'answered', _('answered')),
         ('NOTANSWERED', 'notanswered', _('not answered')),
@@ -1078,9 +1079,10 @@ class Audit(Act):
         ('NOTANSWERED', _('not answered')),
         ('RETIRED', _('retired')),
         ('DECAYED', _('decayed')),
+        ('UNDEFINED', _('undefined')),
     )
 
-    status = models.CharField(_('status'), default="presented", choices=STATUS, max_length=12)
+    status = models.CharField(_('status'), default="undefined", choices=STATUS, max_length=12)
 
     class Meta:
         verbose_name = _("audit")
