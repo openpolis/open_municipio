@@ -167,8 +167,7 @@ class Votation(models.Model):
 
     @property
     def is_secret(self):
-        for vote in self.charge_votes:
-            return vote.vote == ChargeVote.VOTES.secret
+        return self.charge_votes.filter(vote=ChargeVote.VOTES.secret).count() > 0
 
     def update_presence_caches(self):
         """
