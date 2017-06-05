@@ -44,3 +44,16 @@
       </td>
     </tr>
   </table>
+
+{% if label_past and label_future %}
+<div class="container-fluid">
+<div class="row-fluid">
+<div class="span6">
+    <div class='sitting-date sitting-past'>&nbsp;</div><span class="label-calendar">{{ label_past }}</span>
+</div>
+<div class="span6">
+    <div class='sitting-date sitting-future'>&nbsp;</div><span class="label-calendar">{{ label_future }}</span>
+</div>
+</div>
+</div>
+{% endif %}

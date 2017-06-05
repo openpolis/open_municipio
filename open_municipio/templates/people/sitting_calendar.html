@@ -38,10 +38,10 @@
     </ul>
     <div class="tab-content">
       <div class="tab-pane active" id="sittings_council_tab">
-        {% include 'people/_sitting_calendar_table.html' with sittings=sittings_council %}
+        {% include 'people/_sitting_calendar_table.html' with sittings=sittings_council label_past="Sedute di Consiglio" label_future="Eventi" %}
       </div>
       <div class="tab-pane" id="sittings_citygov_tab">
-        {% include 'people/_sitting_calendar_table.html' with sittings=sittings_citygov %}
+        {% include 'people/_sitting_calendar_table.html' with sittings=sittings_citygov label_past="Sedute di Giunta" label_future="Eventi" %}
       </div>
     </div>
   </section>

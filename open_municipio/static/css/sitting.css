@@ -96,3 +96,8 @@ div.sitting-dates {
 .sittingitem {
     margin-left: 0px;
 }
+
+span.label-calendar {
+    display: block;
+    margin: 12px;
+}
