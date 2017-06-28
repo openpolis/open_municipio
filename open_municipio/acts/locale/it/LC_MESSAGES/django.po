@@ -3,12 +3,11 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-02-24 15:48+0100\n"
+"POT-Creation-Date: 2017-06-28 16:23+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
-#: admin.py:26 views.py:73
+#: admin.py:26 views.py:78
 msgid "Status"
 msgstr "Stato"
 
@@ -175,17 +174,17 @@ msgstr "stato finale"
 msgid "Specify whether this act should be featured"
 msgstr "Specificare se questo atto è chiave"
 
-#: models.py:219 search_indexes.py:67 search_indexes.py:130
-#: search_indexes.py:178
+#: models.py:219 search_indexes.py:72 search_indexes.py:119
+#: search_indexes.py:170
 msgid "yes"
 msgstr "sì"
 
-#: models.py:221 search_indexes.py:65 search_indexes.py:128
-#: search_indexes.py:178
+#: models.py:221 search_indexes.py:70 search_indexes.py:117
+#: search_indexes.py:170
 msgid "no"
 msgstr "no"
 
-#: models.py:413 views.py:218 views.py:663
+#: models.py:413 views.py:227 views.py:699
 msgid "acts"
 msgstr "atti"
 
@@ -224,7 +223,7 @@ msgstr "Assessore"
 msgid "City Government"
 msgstr "Giunta"
 
-#: models.py:493 models.py:560 search_indexes.py:120
+#: models.py:493 models.py:560 search_indexes.py:109
 msgid "Mayor"
 msgstr "Sindaco"
 
@@ -529,7 +528,7 @@ msgstr "file audio"
 msgid "speech"
 msgstr "intervento"
 
-#: models.py:1206 views.py:219 views.py:664
+#: models.py:1206 views.py:228 views.py:700
 msgid "speeches"
 msgstr "interventi"
 
@@ -569,67 +568,79 @@ msgstr "verbale"
 msgid "minutes"
 msgstr "verbali"
 
-#: search_indexes.py:114
+#: search_indexes.py:103
 msgid "Council"
 msgstr "Consiglio"
 
-#: search_indexes.py:117
+#: search_indexes.py:106
 msgid "Town government"
 msgstr "Giunta"
 
-#: views.py:64
+#: views.py:68
 msgid "Act type"
 msgstr "Tipologia"
 
-#: views.py:65
+#: views.py:69
 msgid "Is key act"
 msgstr "Atto in evidenza"
 
-#: views.py:66
+#: views.py:70
 msgid "Is proposal"
 msgstr "In esame"
 
-#: views.py:67
+#: views.py:71
 msgid "Initiative"
 msgstr "Iniziativa"
 
-#: views.py:68
+#: views.py:72 views.py:73
 msgid "Iter duration"
 msgstr "Durata dell'iter"
 
-#: views.py:69
+#: views.py:74
 msgid "Organ"
 msgstr "Organo"
 
-#: views.py:70
+#: views.py:75
 msgid "Pubblication year"
 msgstr "Anno di pubblicazione"
 
-#: views.py:71
+#: views.py:76
 msgid "Has locations"
 msgstr "Riguarda una località"
 
-#: views.py:72
+#: views.py:77
 msgid "Pubblication month"
 msgstr "Mese di pubblicazione"
 
-#: views.py:74
+#: views.py:79
 msgid "Has multiple supporters"
 msgstr "Ha più di un firmatario"
 
-#: views.py:220 views.py:665
+#: views.py:80
+msgid "Category"
+msgstr "Categoria"
+
+#: views.py:81
+msgid "Tag"
+msgstr "Argomento"
+
+#: views.py:82
+msgid "Location"
+msgstr "Località"
+
+#: views.py:229 views.py:701
 msgid "votations"
 msgstr "votazioni"
 
-#: views.py:221 views.py:666
+#: views.py:230 views.py:702
 msgid "events"
 msgstr "eventi"
 
-#: views.py:580
+#: views.py:616
 msgid "Year"
 msgstr "Anno"
 
-#: views.py:581
+#: views.py:617
 msgid "Month"
 msgstr "Mese"
 
