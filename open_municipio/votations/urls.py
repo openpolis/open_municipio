@@ -9,6 +9,8 @@ sqs = SearchQuerySet().\
     filter(django_ct='votations.votation').\
     facet('act_type').facet('is_key').\
     facet('organ').\
+    query_facet('votation_date', VotationSearchView.DATE_INTERVALS_RANGES['2017']['qrange']).\
+    query_facet('votation_date', VotationSearchView.DATE_INTERVALS_RANGES['2016']['qrange']).\
     query_facet('votation_date', VotationSearchView.DATE_INTERVALS_RANGES['2015']['qrange']).\
     query_facet('votation_date', VotationSearchView.DATE_INTERVALS_RANGES['2014']['qrange']).\
     query_facet('votation_date', VotationSearchView.DATE_INTERVALS_RANGES['2013']['qrange']).\
