@@ -209,7 +209,7 @@ class GroupDetailView(DetailView):
     
         members = SearchQuerySet()\
             .filter(django_ct = 'people.institutioncharge')\
-            .filter(group=self.object.slug)
+            .filter(current_group=self.object.slug)
 
         try:
             extra_context['group_result'] = SearchQuerySet()\
