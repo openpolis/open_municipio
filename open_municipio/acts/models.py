@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import logging
 import re
+import os
 from django.template.defaultfilters import slugify
 from datetime import datetime
 from django.utils import formats
@@ -1164,6 +1165,15 @@ class Attach(Document):
     def __unicode__(self):
         return u'%s' % self.title
 
+    def save(self, *args, **kwargs):
+
+        if self.file and not self.document_size:
+            try:
+                self.document_size = os.path.getsize(self.file.path)
+            except OSError, e:
+                logger.warning("Cannot determine size of attachment: %s" % self.title)
+
+        super(Attach, self).save(*args, **kwargs)
 
 #
 # Speech
