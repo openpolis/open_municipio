@@ -32,7 +32,7 @@
 
 {% block content %}
 
-  <section>
+  <section class="row-fluid">
 
     <ul class="nav nav-tabs page-tabs">
       <li class="active"><a data-toggle="tab" href="#search_votations_tab">{{ n_results }} votazion{{ n_results|pluralize:"e,i" }}</a></li>
@@ -41,12 +41,12 @@
       <li><a data-toggle="tab" href="#search_stats_tab">Statistiche</a></li>
 -->
     </ul>
-    <div class="tab-content" id="tab-content-id">
-      <div class="tab-pane active" id="search_votations_tab">
+    <div class="tab-content" id="tab-content-id" role="grid">
+      <div class="tab-pane active" id="search_votations_tab" role="grid">
 
     <table id="votations" class="data dataTable">
       <thead style="font-size: 10px;">
-        <tr>
+        <tr role="row">
           {% include 'search/_sortable_header.html' with f=order_by.votation_date f_name='votation_date' f_descr='Data' f_first='desc' f_init='desc' %}
           <th>Seduta</th>
           <th>Votazione</th>
