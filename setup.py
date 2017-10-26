@@ -1,6 +1,11 @@
 #!/usr/bin/env python 
 
-from distutils.core import setup 
+try:
+    from setuptools import setup, find_packages
+except ImportError:
+    raise ImportError("Install setup tools")
+
+#from distutils.core import setup 
 import os 
 
 
@@ -18,9 +23,9 @@ setup(
     author='OpenPolis & InformaEtica',
     author_email='info@openmunicipio.it',
     url='http://openpolis.github.com/open_municipio/',
-    packages=['open_municipio'],
+    packages=find_packages(),
     install_requires=[
-        "Django == 1.4.5",
+        "Django == 1.5.12",
         "South >= 0.7.3",
         "django-extensions==0.9",
         "poster==0.8.1",
