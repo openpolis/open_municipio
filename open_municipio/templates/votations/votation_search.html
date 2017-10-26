@@ -47,27 +47,16 @@
     <table id="votations" class="data dataTable">
       <thead style="font-size: 10px;">
         <tr role="row">
-{% comment %}
           {% include 'search/_sortable_header.html' with f=order_by.votation_date f_name='votation_date' f_descr='Data' f_first='desc' f_init='desc' %}
-{% endcomment %}
-          <th span="1">Data</th>
           <th span="1">Seduta</th>
           <th span="1">Votazione</th>
           <th span="3">Argomento</th>
-          <th span="1">Presenti</th>
-          <th span="1">Maggioranza</th>
-          <th span="1">Si</th>
-          <th span="1">No</th>
-          <th span="1">Astenuti</th>
-          <th span="1">Ribelli</th>
-{% comment %}
           {% include 'search/_sortable_header.html' with f=order_by.votation_n_presents f_name='votation_n_presents' f_descr='Presenti' %}
           {% include 'search/_sortable_header.html' with f=order_by.votation_n_maj f_name='votation_n_maj' f_descr='Maggioranza' %}
           {% include 'search/_sortable_header.html' with f=order_by.votation_n_yes f_name='votation_n_yes' f_descr='Si' %}
           {% include 'search/_sortable_header.html' with f=order_by.votation_n_no f_name='votation_n_no' f_descr='No' %}
           {% include 'search/_sortable_header.html' with f=order_by.votation_n_abst f_name='votation_n_abst' f_descr='Astenuti' %}
           {% include 'search/_sortable_header.html' with f=order_by.votation_n_rebels f_name='votation_n_rebels' f_descr='Ribelli' %}
-{% endcomment %}
           <th>Esito</th>
         </tr>
       </thead>
