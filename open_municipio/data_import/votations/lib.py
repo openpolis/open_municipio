@@ -425,7 +425,7 @@ class DBVotationWriter(BaseVotationWriter):
                 else:
                     self.logger.debug("%s found in DB, %s votes to import" % (b, len(ballot.votes)))
                     if b.chargevote_set.count():
-                        self.logger.warning("votation %s: %s votes already present, skip import" \
+                        self.logger.info("votation %s: %s votes already present, skip import" \
                             % (b, b.chargevote_set.count()))
                         continue
 
