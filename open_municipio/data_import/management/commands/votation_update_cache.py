@@ -54,7 +54,7 @@ class Command(BaseCommand):
 
         prev_value = getattr(v,key)
         if prev_value != value:
-            logger.warning("Update %s to %s (was: %s)" % (key, value, prev_value))
+            logger.warning("Votation: %s. Date: %s. Update %s to %s (was: %s)" % (v.id, v.date, key, value, prev_value))
             setattr(v, key, value)
            
               
