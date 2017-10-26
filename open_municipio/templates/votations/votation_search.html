@@ -50,16 +50,16 @@
 {% comment %}
           {% include 'search/_sortable_header.html' with f=order_by.votation_date f_name='votation_date' f_descr='Data' f_first='desc' f_init='desc' %}
 {% endcomment %}
-          <th>Data</th>
-          <th>Seduta</th>
-          <th>Votazione</th>
-          <th>Argomento</th>
-          <th>Presenti</th>
-          <th>Maggioranza</th>
-          <th>Si</th>
-          <th>No</th>
-          <th>Astenuti</th>
-          <th>Ribelli</th>
+          <th span="1">Data</th>
+          <th span="1">Seduta</th>
+          <th span="1">Votazione</th>
+          <th span="3">Argomento</th>
+          <th span="1">Presenti</th>
+          <th span="1">Maggioranza</th>
+          <th span="1">Si</th>
+          <th span="1">No</th>
+          <th span="1">Astenuti</th>
+          <th span="1">Ribelli</th>
 {% comment %}
           {% include 'search/_sortable_header.html' with f=order_by.votation_n_presents f_name='votation_n_presents' f_descr='Presenti' %}
           {% include 'search/_sortable_header.html' with f=order_by.votation_n_maj f_name='votation_n_maj' f_descr='Maggioranza' %}
