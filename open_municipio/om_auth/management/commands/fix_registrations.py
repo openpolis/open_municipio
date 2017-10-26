@@ -35,7 +35,7 @@ class Command(BaseCommand):
         users = User.objects.filter(userprofile=None)
  
         for u in users:
-            self.logger.warning("User '%s' without user profile found.")
+            self.logger.warning("User '%s' without user profile found." % u.username)
     
             if not dryrun:
                 up = UserProfile.objects.create(user=u)
