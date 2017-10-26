@@ -26,7 +26,7 @@ class Command(BaseCommand):
         n_pres = ChargeVote.objects.filter(votation=v, vote=ChargeVote.VOTES.pres).count()
         n_untracked = ChargeVote.objects.filter(votation=v, vote=ChargeVote.VOTES.untracked).count()
         n_absent = ChargeVote.objects.filter(votation=v, vote=ChargeVote.VOTES.absent).count()
-
+        n_rebels = ChargeVote.objects.filter(votation=v, is_rebel=True).count()
 
         cache_n_presents = n_yes + n_no + n_pres + n_abstained + n_secrets
         cache_n_partecipants = n_yes + n_no + n_secrets
@@ -43,6 +43,7 @@ class Command(BaseCommand):
         self.update_cache_key("n_yes", cache_n_yes, v)
         self.update_cache_key("n_no", cache_n_no, v)
         self.update_cache_key("n_abst", cache_n_abst, v)
+        self.update_cache_key("n_rebels", n_rebels, v)
 
         v.save()
            
