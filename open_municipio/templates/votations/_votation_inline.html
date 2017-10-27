@@ -19,7 +19,7 @@
         Favorevoli: {{ votation.n_yes }},
         Contrari: {{ votation.n_no }},
         Astenuti: {{ votation.n_abst }},
-        Esito: {{ votation.outcome }},
+        Esito: {% if votation.outcome == 1 %}approvato{% else %}rifiutato{% endif %},
         Ribelli: {{ votation.n_rebels }}
     </td>
 </tr>
