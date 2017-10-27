@@ -3973,11 +3973,11 @@ a.thumbnail:hover {
 .progress-info.progress-striped .bar {
   background-color: #5bc0de;
   background-image: -webkit-gradient(linear, 0 100%, 100% 0, color-stop(0.25, rgba(255, 255, 255, 0.15)), color-stop(0.25, transparent), color-stop(0.5, transparent), color-stop(0.5, rgba(255, 255, 255, 0.15)), color-stop(0.75, rgba(255, 255, 255, 0.15)), color-stop(0.75, transparent), to(transparent));
-  background-image: -webkit-linear-gradient(-45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 66%, transparent 66%, transparent);
-  background-image: -moz-linear-gradient(-45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 66%, transparent 66%, transparent);
-  background-image: -ms-linear-gradient(-45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 66%, transparent 66%, transparent);
-  background-image: -o-linear-gradient(-45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 66%, transparent 66%, transparent);
-  background-image: linear-gradient(-45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 66%, transparent 66%, transparent);
+  background-image: -webkit-linear-gradient(-45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+  background-image: -moz-linear-gradient(-45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+  background-image: -ms-linear-gradient(-45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+  background-image: -o-linear-gradient(-45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+  background-image: linear-gradient(-45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
 }
 .progress-warning .bar {
   background-color: #faa732;
@@ -4215,11 +4215,11 @@ body #sidebar .tab-content {
   border-top: 0;
 }
 body #main.two_columns {
-  background-image: -webkit-gradient(linear, left top, right top, color-stop(0, transparent), color-stop(75%, transparent), color-stop(75%, #f7f6f1), color-stop(100%, #f7f6f1));
-  background-image: -webkit-linear-gradient(left, transparent, transparent 75%, #f7f6f1 75%, #f7f6f1 100%);
-  background-image: -moz-linear-gradient(left, transparent, transparent 75%, #f7f6f1 75%, #f7f6f1 100%);
-  background-image: -ms-linear-gradient(left, transparent, transparent 75%, #f7f6f1 75%, #f7f6f1 100%);
-  background-image: -o-linear-gradient(left, transparent, transparent 75%, #f7f6f1 75%, #f7f6f1 100%);
+  background-image: -webkit-gradient(linear, left top, right top, color-stop(0, transparent), color-stop(66%, transparent), color-stop(66%, #f7f6f1), color-stop(100%, #f7f6f1));
+  background-image: -webkit-linear-gradient(left, transparent, transparent 66%, #f7f6f1 66%, #f7f6f1 100%);
+  background-image: -moz-linear-gradient(left, transparent, transparent 66%, #f7f6f1 66%, #f7f6f1 100%);
+  background-image: -ms-linear-gradient(left, transparent, transparent 66%, #f7f6f1 66%, #f7f6f1 100%);
+  background-image: -o-linear-gradient(left, transparent, transparent 66%, #f7f6f1 66%, #f7f6f1 100%);
 }
 body .navbar.navbar-fixed-bottom form.navbar-search input {
   height: 13px;
