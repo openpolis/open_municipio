@@ -10,6 +10,7 @@ from open_municipio.acts.forms import SpeechAdminForm, SpeechInActInlineFormSet,
     InterpellationAdminForm, InterrogationAdminForm
 from open_municipio.acts.filters import ActByYearFilterSpec, ActByMonthFilterSpec, SpeechByYearFilterSpec,SpeechByMonthFilterSpec
 from open_municipio.taxonomy.models import TaggedAct
+from open_municipio.people.models import CityCouncil
 
 def transition_form_factory(act_model):
     """
@@ -461,6 +462,12 @@ class AuditAdmin(ActAdmin):
 
         return ",".join(names)
     recipients.short_description = _("recipients")
+
+    def save_model(self, request, obj, form, change):
+
+        obj.emitting_institution = CityCouncil().as_institution
+
+        super(AuditAdmin, self).save_model(request, obj, form, change)
 
 
 class MinuteAdmin(ActAdmin):
