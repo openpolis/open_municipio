@@ -25,6 +25,7 @@ setup(
     url='http://openpolis.github.com/open_municipio/',
     packages=find_packages(),
     package_data={'open_municipio': ['VERSION']},
+    include_package_data=True,
     install_requires=[
         "Django == 1.5.12",
         "South >= 0.7.3",
