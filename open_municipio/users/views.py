@@ -72,6 +72,7 @@ class UserProfileListView(ListView):
         context = super(UserProfileListView, self).get_context_data(**kwargs)
 
         top_mon_politicians = extract_top_monitored_objects(Person,qnt=3)
+
         top_mon_topics = extract_top_monitored_objects(Tag,Category,Location,
                                                         qnt=5)
         top_mon_acts = extract_top_monitored_objects(Deliberation, Motion, 
@@ -103,6 +104,12 @@ def extract_top_monitored_objects(*models, **kwargs):
     query = dict(content_type__in=ContentType.objects.get_for_models(*models).values())
     if kwargs.get('user'):
         query['user'] = kwargs.get('user')
+
+    filter_pk = kwargs.get('filter_pk', None)
+    if filter_pk:   
+        if len(models) != 1:
+            raise ValueError("You can only use 'filter_pk' parameter when passing a single model to check")
+        query["object_pk__in"] = filter_pk.all()
 
     # what TOP means
     limit = kwargs.get('qnt', 10)
