@@ -39,7 +39,7 @@
             <span class="label label-success">{{ amendment_num_votes.upvotes }}</span>
             <span class="label label-important">{{ amendment_num_votes.downvotes }}</span>
           </td>
-          {% get_comment_count for act as comment_count %}
+          {% get_comment_count for act.downcast as comment_count %}
           <td class="text-center"><a href="{{ act.downcast.get_absolute_url }}"><strong>{{ comment_count }}</strong></a></td>
         </tr>
       {% endfor %}
