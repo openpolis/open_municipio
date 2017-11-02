@@ -71,7 +71,8 @@ class UserProfileListView(ListView):
         # call the base implementation first to get a context
         context = super(UserProfileListView, self).get_context_data(**kwargs)
 
-        top_mon_politicians = extract_top_monitored_objects(Person,qnt=3)
+        top_mon_politicians = extract_top_monitored_objects(Person,qnt=3, filter_pk=Person.objects.filter(institutioncharge__end_date=None))
+
 
         top_mon_topics = extract_top_monitored_objects(Tag,Category,Location,
                                                         qnt=5)
