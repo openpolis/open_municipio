@@ -2,6 +2,5 @@ include LICENSE.txt
 include open_municipio/VERSION
 recursive-include open_municipio/static *
 recursive-include open_municipio/templates *
-recursive-include open_municipio/monitoring/templates *
-recursive-include open_municipio/newsletter/templates *
-recursive-include open_municipio/web_services/templates *
+recursive-include open_municipio/*/templates *
+recursive-include open_municipio/*/locale *
