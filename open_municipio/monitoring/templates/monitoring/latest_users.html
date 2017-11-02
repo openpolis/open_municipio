@@ -3,7 +3,7 @@
     {% if u.userprofile.uses_nickname and UI_ALLOW_NICKNAMES %}
     	{{ u.user.username }}
     {% else %}
-    	{{ u.user.first_name }} {{ u.user.last_name }}
+        {% if u.user.first_name or u.user.last_name %}{{ u.user.first_name }} {{ u.user.last_name }}{% endif %}
     {% endif %}
     </a>
     {% if not forloop.last %},{% endif %}
