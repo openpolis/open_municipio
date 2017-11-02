@@ -4,6 +4,9 @@ from django.http import HttpResponseRedirect
 from open_municipio.users.models import UserProfile
 from social_auth.utils import setting
 
+import logging
+
+logger = logging.getLogger("webapp")
 
 """
 Functions listed below are used in ``django-social-auth``
@@ -56,6 +59,9 @@ def create_profile(request, user, is_new=False, *args, **kwargs):
     too. (User accounts are Django built-in. Profile is the place we
     store additional information.)
     """
+
+    logger.debug("Create profile. User: %s. Is new: %s" % (user, is_new))
+    
     if is_new:
         wants_newsletter = request.session.get('saved_wants_newsletter')
         wants_newsletter_blog = request.session.get('saved_wants_newsletter_blog')

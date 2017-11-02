@@ -9,11 +9,14 @@ from registration.signals import user_registered
 from registration.signals import user_activated
 from django.dispatch import receiver
 
+import logging
+
 """
 Functions listed below act as receivers and are used along the
 registration workflow.
 """
 
+logger = logging.getLogger("webapp")
 
 @receiver(user_registered)
 def user_created(sender, user, request, **kwargs):
@@ -23,6 +26,7 @@ def user_created(sender, user, request, **kwargs):
     supposed to be found in POST data.
     """
     form = UserRegistrationForm(request.POST)
+    logger.debug("User created. Data: %s" % form.data)
     user.first_name = form.data['first_name']
     user.last_name = form.data['last_name']
     user.save()
