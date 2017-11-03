@@ -53,7 +53,7 @@ class HomeView(TemplateView):
 
 
         news = News.objects.filter(news_type=News.NEWS_TYPE.community, priority=1)
-        context['last_community_news'] = sorted(news, key=lambda n: (n.news_date, n.created), reverse=True)[0:3]
+        context['last_community_news'] = news.order_by("-created")[0:3]
 
         context['key_acts'] = Act.objects.filter(is_key=True).order_by('-presentation_date')[0:3]
         context['key_votations'] = Votation.objects.filter(is_key=True).order_by('-sitting__date')[0:3]
