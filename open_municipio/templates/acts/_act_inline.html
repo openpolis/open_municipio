@@ -1,4 +1,8 @@
 <a href="{{ act.get_absolute_url }}">{% if act.adj_title %}{{ act.adj_title }}{% else %}{{ act.title }}{% endif %}</a><br/>
 {{ act.get_type_name|title }} -
-<a href="{{ act.presenters.0.person.get_absolute_url }}">{{ act.presenters.0.person }}</a>
-{% if act.presenters|length > 1 %}e altri{% endif %}
+{% with act.presenters|length as num_presenters %}
+{% with act_presenters.0.person as first_signer %}
+<a href="{{ first_signer.get_absolute_url }}">{{ first_signer }}</a>
+{% if num_presenters > 1 %}e altri{% endif %}
+{% endwith %}
+{% endwith %}

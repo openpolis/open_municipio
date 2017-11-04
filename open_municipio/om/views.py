@@ -8,7 +8,7 @@ from open_municipio.acts.models import Calendar, Act, ActSupport
 from open_municipio.events.models import Event
 from open_municipio.locations.models import Location
 from open_municipio.newscache.models import News
-from open_municipio.people.models import municipality, InstitutionResponsability, Person, CityGovernment, CityCouncil
+from open_municipio.people.models import municipality, InstitutionResponsability, Person
 from open_municipio.taxonomy.models import Category, Tag
 from open_municipio.users.views import extract_top_monitored_objects
 
@@ -59,7 +59,7 @@ class HomeView(TemplateView):
         context['key_votations'] = Votation.objects.filter(is_key=True).order_by('-sitting__date')[0:3]
 
 
-        context['top_monitored'] = extract_top_monitored_objects(Person, qnt=5, filter_pk=Person.objects.filter(institutioncharge__end_date=None))
+        context['top_monitored'] = extract_top_monitored_objects(Person, qnt=5)
 
         today = datetime.today()
 
