@@ -1,7 +1,9 @@
 {% load url from future %}
 <div>
   {% if shows_monitoring_users %}
-      <span class="monitoring">Monitorato da {{ object.all_monitoring_count }} cittadin{{ object.all_monitoring_count|pluralize:"o,i" }}</span>
+    {% with object.all_monitoring_count as num_monitoring %}
+      <span class="monitoring">Monitorato da {{ num_monitoring }} cittadin{{ num_monitoring|pluralize:"o,i" }}</span>
+    {% endwith %}
   {% endif %}
 
   {% if user.is_authenticated %}
