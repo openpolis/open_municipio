@@ -119,10 +119,10 @@
                     </strong><b class="caret" style="margin-top:6px"></b></a>
                   <ul class="dropdown-menu" role="menu" aria-labelledby="dropsignin">
 
-                  {% if request.user.is_superuser %}
+                  {% if user.is_superuser %}
                       <li><a tabindex="-1" href="{% url "admin:index" %}">amministrazione</a></li>
                   {% endif %}
-                  {% if request.user.userprofile %}
+                  {% if user_profile %}
                       <li><a tabindex="-1" href="{% url "profiles_edit_profile" %}">impostazioni</a></li>
                       <li><a tabindex="-1" href="{%  url "profiles_profile_detail" user.username %}">profilo</a></li>
                       <li class="divider"></li>

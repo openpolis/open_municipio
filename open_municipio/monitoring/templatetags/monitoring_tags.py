@@ -23,23 +23,26 @@ def object_monitoring(context, object, show_politicians=True):
     args = {
         'object': object,
         'object_type': object_type,
-        'user': context['user'],
+#        'user': context['user'],
+        'user_profile': context['user_profile'],
         'is_user_monitoring': False,
         'show_politicians': show_politicians,
         'login_url_with_redirect': context['login_url'],
     }
     # is the user monitoring the act?
     try:
-        if args['user'].is_authenticated():
+        if args['user_profile']: #.is_authenticated():
             # add a monitoring form, to context,
             # to switch monitoring on and off
             args['monitoring_form'] = MonitoringForm(data = {
                 'content_type_id': object.content_type_id,
                 'object_pk': object.id,
-                'user_id': args['user'].id
+                'user_id': args['user_profile'].user_pk #id
             })
 
-            if object in args['user'].get_profile().monitored_objects:
+#            if object in args['user'].get_profile().monitored_objects:
+            if object in args['user_profile'].monitored_objects:
+
                 args['is_user_monitoring'] = True
     except ObjectDoesNotExist:
         args['is_user_monitoring'] = False
@@ -52,22 +55,24 @@ def object_inline_monitoring(context, object, shows_monitoring_users=True):
     args = {
         'object': object,
         'shows_monitoring_users': shows_monitoring_users,
-        'user': context['user'],
+#        'user': context['user'],
+        'user_profile': context['user_profile'],
         'is_user_monitoring': False,
         'login_url_with_redirect': context['login_url'],
     }
     # is the user monitoring the act?
     try:
-        if args['user'].is_authenticated():
+        if args['user_profile']: #.is_authenticated():
             # add a monitoring form, to context,
             # to switch monitoring on and off
             args['monitoring_form'] = MonitoringForm(data = {
                 'content_type_id': object.content_type_id,
                 'object_pk': object.id,
-                'user_id': args['user'].id
+                'user_id': args['user_profile'].user_pk #id
             })
 
-            if object in args['user'].get_profile().monitored_objects:
+#            if object in args['user'].get_profile().monitored_objects:
+            if object in args['user_profile'].monitored_objects:
                 args['is_user_monitoring'] = True
     except ObjectDoesNotExist:
         args['is_user_monitoring'] = False

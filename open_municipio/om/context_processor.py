@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.utils.http import urlquote
 from django.contrib.auth import REDIRECT_FIELD_NAME
+from django.core.exceptions import ObjectDoesNotExist
 
 def defaults(request):
     '''
@@ -9,6 +10,14 @@ def defaults(request):
 
     path = urlquote(request.get_full_path())
     url = '%s?%s=%s' % (settings.LOGIN_URL, REDIRECT_FIELD_NAME, path)
+
+    user_profile = None
+    try:
+        if not request.user.is_anonymous:
+            user_profile = request.user.get_profile()
+    except ObjectDoesNotExist:
+        # the user is not anonymous but has not an associated profile
+        pass
 
     return {
         'main_city': settings.SITE_INFO['main_city'],
@@ -26,6 +35,6 @@ def defaults(request):
         'UI_ALLOW_NICKNAMES': settings.UI_ALLOW_NICKNAMES,
         'SEARCH_URLS': settings.SEARCH_URLS,
         'SOCIAL_SITES': settings.SOCIAL_SITES,       
-        'LOGO_URL': getattr(settings, 'LOGO_URL', None)
-
+        'LOGO_URL': getattr(settings, 'LOGO_URL', None),
+        'user_profile': user_profile,
     }

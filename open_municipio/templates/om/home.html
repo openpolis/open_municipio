@@ -72,8 +72,10 @@
                       <tr>
                           <td>{{ a.presentation_date|circled:"full" }}</td>
                           <td>
-                              {% include 'acts/_act_inline.html' with act=a.downcast only %}
-                              {% object_inline_monitoring a.downcast %}
+                              {% with a.downcast as act_casted %}
+                              {% include 'acts/_act_inline.html' with act=act_casted only %}
+                              {% object_inline_monitoring act_casted %}
+                              {% endwith %}
                           </td>
                       </tr>
                   {% empty %}
@@ -182,8 +184,10 @@
                   <tbody>
                   {% for a in key_acts %}
                       <tr><td>
-                          {% include 'acts/_act_inline.html' with act=a.downcast only %}
-                          {% object_inline_monitoring a.downcast %}
+                          {% with a.downcast as act_casted %}
+                          {% include 'acts/_act_inline.html' with act=act_casted only %}
+                          {% object_inline_monitoring act_casted %}
+                          {% endwith %}
                       </td></tr>
                   {% empty %}
                       <tr>
