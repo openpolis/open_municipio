@@ -218,10 +218,16 @@ class Person(models.Model, MonitorizedItem):
         Group is computed from GroupCharge where Charge is the IntstitutionalCharge in the council
         Returns None if there is no current group.
         """
-        gc = self.get_current_groupcharge(moment)
-        if gc is None:
-            return None
-        return gc.group
+        group = None
+        try:
+            group = self.get_current_groupcharge(moment).group
+        except AttributeError:
+            pass
+#        if gc is None:
+#            return None
+#        return gc.group
+
+        return group
     current_group = property(get_current_group)
 
 
