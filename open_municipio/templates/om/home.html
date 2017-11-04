@@ -198,7 +198,7 @@
               <h2>Ultimi voti chiave {% popover_info 'voti-chiave' %}</h2>
               <table class="items-list">
                   <tbody>
-                  {% for v in key_votations %}
+                  {% for v in key_votations.select_realated %}
                       {% include 'votations/_votation_inline.html' with votation=v only %}
                   {% empty %}
                       <tr>
