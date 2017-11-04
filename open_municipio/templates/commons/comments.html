@@ -16,7 +16,7 @@
 
   <ul class="comments-list">
     {% for comment in comment_list %}
-      <li{% if user.is_authenticated and user.get_profile.person %} class="bg-highlight"{% endif %}>
+      <li{% if user.is_authenticated and user_profile.person %} class="bg-highlight"{% endif %}>
         <a href="{% url 'profiles_profile_detail' comment.user.username %}">
           {% with comment.user|get_profile_image as curr_image %}
           {% if curr_image %}
