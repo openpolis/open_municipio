@@ -2,7 +2,7 @@
 
 <div class="sittings-year-month">{{ month }}</div>
   <div class='sitting-dates'>
-  {% for s in sittings %}
+  {% for s in sittings.select_related %}
     <a href='{{ s.get_absolute_url }}'>
       <div class='sitting-date 
       {% if s.is_event %}
