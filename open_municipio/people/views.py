@@ -517,7 +517,7 @@ class PoliticianDetailView(DetailView):
         for charge in p.all_institution_charges:
     
             for act in charge.presented_acts:
-                for topic in act.topics:
+                for topic in act.topics.select_related():
 
                     # avoid repetitions, by skipping categories and tags already appended
                     if topic.category in [t.category for t in context['person_topics']]:
