@@ -154,12 +154,18 @@ class Votation(models.Model):
 
     @property
     def ref_act(self):
+        act = None
         if self.act:
-            return self.act
-        elif self.transitions.count() > 0:
-            return self.transitions[0].act
+            act = self.act
+#        elif self.transitions.count() > 0:
         else:
-            return None
+            try:
+                act = self.transitions[0].act
+            except IndexError:
+                # self.transitions is empty
+                pass
+
+        return act
 
     @property
     def is_linked(self):
@@ -173,6 +179,7 @@ class Votation(models.Model):
         e.g. absent or abstained)
         """
         return self.charge_votes.filter(vote=ChargeVote.VOTES.secret).count() > 0
+
     @property
     def charges_count(self):
         return self.chargevote_set.filter(charge__can_vote=True).count()

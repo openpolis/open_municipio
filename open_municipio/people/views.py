@@ -470,6 +470,7 @@ class PoliticianDetailView(DetailView):
         context['act_types'] = []
 
         for act_type in act_types:
+
             context['act_types'].append({
                 'name' : act_type.__name__.lower(),
                 'verbose_name' : act_type._meta.verbose_name,
@@ -518,7 +519,7 @@ class PoliticianDetailView(DetailView):
 
         for charge in p.all_institution_charges:
     
-            for act in charge.presented_acts:
+            for act in charge.presented_acts.select_related().order_by("-presentation_date")[0:50]:
                 for topic in act.topics.select_related():
 
                     # avoid repetitions, by skipping categories and tags already appended
