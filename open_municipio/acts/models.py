@@ -70,7 +70,7 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
     idnum = models.CharField(max_length=64, blank=True, help_text=_("A string representing the identification or sequence number for this act, used internally by the municipality's administration."))
     title = models.CharField(_('title'), max_length=1024, blank=True)
     adj_title = models.CharField(_('adjoint title'), max_length=1024, blank=True, help_text=_("An adjoint title, added to further explain an otherwise cryptic title"))
-    presentation_date = models.DateField(_('presentation date'), null=True, help_text=_("Date of presentation, as stated in the act"))
+    presentation_date = models.DateField(_('presentation date'), null=True, db_index=True, help_text=_("Date of presentation, as stated in the act"))
     description = models.TextField(_('description'), blank=True)
     text = models.TextField(_('text'), blank=True)
     presenter_set = models.ManyToManyField(InstitutionCharge, blank=True, null=True, through='ActSupport', related_name='presented_act_set', verbose_name=_('presenters'))

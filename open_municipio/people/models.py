@@ -42,7 +42,7 @@ class Person(models.Model, MonitorizedItem):
         (FEMALE_SEX, _('Female')),
         )
     first_name = models.CharField(_('first name'), max_length=128)
-    last_name = models.CharField(_('last name'), max_length=128)
+    last_name = models.CharField(_('last name'), db_index=True, max_length=128)
     birth_date = models.DateField(_('birth date'))
     birth_location = models.CharField(_('birth location'), blank=True, max_length=128)
     slug = models.SlugField(unique=True, blank=True, null=True, max_length=128)
@@ -136,13 +136,21 @@ class Person(models.Model, MonitorizedItem):
         charges = self.institutioncharge_set.select_related().current(moment=moment).filter(
             institution=institution
         )
-        if charges.count() == 1:
-            return charges[0]
-        elif charges.count() == 0:
-            raise ObjectDoesNotExist
-        else:
-            raise MultipleObjectsReturned
 
+        curr_charge = None
+        try:
+            curr_charge = charges[0]
+        except IndexError:
+            raise ObjectDoesNotExist
+
+##
+##        if charges.count() == 1:
+##            return charges[0]
+##        elif charges.count() == 0:
+##            raise ObjectDoesNotExist
+##        else:
+##            raise MultipleObjectsReturned
+##
     def has_current_charges(self, moment=None):
         """
         Used for admin interface
@@ -166,7 +174,8 @@ class Person(models.Model, MonitorizedItem):
         """
         fetch the current charge in Council, if any
         """
-        i = Institution.objects.get(institution_type=Institution.COUNCIL)
+#        i = Institution.objects.get(institution_type=Institution.COUNCIL)
+        i = CityCouncil().as_institution
         try:
             ic = self.get_current_charge_in_institution(i, moment)
             return ic
@@ -188,7 +197,8 @@ class Person(models.Model, MonitorizedItem):
         """
         Returns all groupcharges for the person
         """
-        i = Institution.objects.get(institution_type=Institution.COUNCIL)
+#        i = Institution.objects.get(institution_type=Institution.COUNCIL)  
+        i = CityCouncil().as_institution
         try:
             ic = self.get_current_charge_in_institution(i, moment)
             gc = GroupCharge.objects.select_related().past(moment).filter(charge=ic)
@@ -203,7 +213,8 @@ class Person(models.Model, MonitorizedItem):
         Returns GroupCharge at given moment in time (now if moment is None)
         Charge is the IntstitutionalCharge in the council
         """
-        i = Institution.objects.get(institution_type=Institution.COUNCIL)
+#        i = Institution.objects.get(institution_type=Institution.COUNCIL)
+        i = CityCouncil().as_institution
         try:
             ic = self.get_current_charge_in_institution(i, moment)
             gc = GroupCharge.objects.select_related().current(moment).get(charge=ic)
@@ -443,11 +454,11 @@ class InstitutionCharge(Charge):
     original_charge = models.ForeignKey('InstitutionCharge', blank=True, null=True,
                                            related_name='committee_charge_set',
                                            verbose_name=_('original institution charge'))
-    n_rebel_votations = models.IntegerField(default=0)
-    n_present_votations = models.IntegerField(default=0, verbose_name=_("number of presences during votes"))
-    n_absent_votations = models.IntegerField(default=0, verbose_name=_("number of absences during votes"))
-    n_present_attendances = models.IntegerField(default=0, verbose_name=_("number of present attendances"))
-    n_absent_attendances = models.IntegerField(default=0, verbose_name=_("number of absent attendances"))
+    n_rebel_votations = models.IntegerField(default=0, db_index=True)
+    n_present_votations = models.IntegerField(default=0, db_index=True, verbose_name=_("number of presences during votes"))
+    n_absent_votations = models.IntegerField(default=0, db_index=True, verbose_name=_("number of absences during votes"))
+    n_present_attendances = models.IntegerField(default=0, db_index=True, verbose_name=_("number of present attendances"))
+    n_absent_attendances = models.IntegerField(default=0, db_index=True, verbose_name=_("number of absent attendances"))
 
     can_vote = models.BooleanField(default=True, verbose_name=_("in case of a city council member, specifies whether he/she can vote"))
 
@@ -1479,21 +1490,23 @@ class Mayor(object):
     A municipality mayor (both as a charge and an institution).
     """
      
+    _my_institution = None
+    
     @property
     def as_institution(self):
         """
         A municipality mayor, as an *institution*.
         """
-        
-        mayor = None
+ 
+        if Mayor._my_institution is None:       
 
-        try:
-            mayor = Institution.objects.select_related().get(institution_type=Institution.MAYOR)
-        except Institution.DoesNotExist:
-            # mayor does not exist, currently
-            pass
+            try:
+                Mayor._my_institution = Institution.objects.select_related().get(institution_type=Institution.MAYOR)
+            except Institution.DoesNotExist:
+                # mayor does not exist, currently
+                pass
 
-        return mayor
+        return Mayor._my_institution
     
     @property
     def as_charge(self):
@@ -1523,21 +1536,24 @@ class Mayor(object):
     
 
 class CityCouncil(object):
+
+    _my_institution = None
+
     @property
     def as_institution(self):
         """
         A municipality council, as an *institution*.
         """
 
-        city_council = None
+        if CityCouncil._my_institution is None:
 
-        try:
-            city_council = Institution.objects.get(institution_type=Institution.COUNCIL)
-        except Institution.DoesNotExist:
-            # the city council has not been created
-            pass
+            try:
+                CityCouncil._my_institution = Institution.objects.get(institution_type=Institution.COUNCIL)
+            except Institution.DoesNotExist:
+                # the city council has not been created
+                pass
         
-        return city_council
+        return CityCouncil._my_institution
     
     @property
     def charges(self):
@@ -1700,20 +1716,24 @@ class CityCouncil(object):
 
 
 class CityGovernment(object):
+
+    _my_institution = None
+
     @property
     def as_institution(self):
         """
         A municipality government, as an *institution*.
         """
-        city_gov = None
 
-        try:
-            city_gov = Institution.objects.get(institution_type=Institution.CITY_GOVERNMENT)
-        except Institution.DoesNotExist:
-            # city gov has not been created, yet
-            pass
+        if CityGovernment._my_institution is None:
 
-        return city_gov
+            try:
+                CityGovernment._my_institution = Institution.objects.get(institution_type=Institution.CITY_GOVERNMENT)
+            except Institution.DoesNotExist:
+                # city gov has not been created, yet
+                pass
+
+        return CityGovernment._my_institution
     
     @property
     def charges(self):
@@ -1807,6 +1827,7 @@ class CityGovernment(object):
 
 
 class Committees(object):
+
     def as_institution(self):
         """
         Municipality committees, as *institutions*.
