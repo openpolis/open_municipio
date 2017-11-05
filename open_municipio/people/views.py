@@ -504,15 +504,17 @@ class PoliticianDetailView(DetailView):
         except ObjectDoesNotExist:
             context['is_user_monitoring'] = False
 
-        context['person_topics'] = []
-
-
         #
-        # extract all the topics of the acts presented by the person in the view
+        # extract all the topics of the acts presented 
+        # by the person in the view
         #
 
         # get the person from the view
         p = person #self.object
+
+        person_topics = []
+        person_topic_tag_ids = set([])
+        person_topic_category_ids = set([])
 
         for charge in p.all_institution_charges:
     
@@ -520,12 +522,17 @@ class PoliticianDetailView(DetailView):
                 for topic in act.topics.select_related():
 
                     # avoid repetitions, by skipping categories and tags already appended
-                    if topic.category in [t.category for t in context['person_topics']]:
-                        if topic.tag in [t.tag for t in context['person_topics']]:
-                            continue
+                    if topic.category_id in person_topic_category_ids \
+                            and topic.tag_id in person_topic_tag_ids:
+                        continue
 
                     # append topic
-                    context['person_topics'].append(topic)
+#                    context['person_topics'].append(topic)
+                    person_topics.append(topic)
+                    person_topic_tag_ids.add(topic.tag_id)
+                    person_topic_category_ids.add(topic.category_id)
+
+        context['person_topics'] = person_topics
 
 
         """
