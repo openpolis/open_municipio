@@ -143,14 +143,6 @@ class Person(models.Model, MonitorizedItem):
         except IndexError:
             raise ObjectDoesNotExist
 
-##
-##        if charges.count() == 1:
-##            return charges[0]
-##        elif charges.count() == 0:
-##            raise ObjectDoesNotExist
-##        else:
-##            raise MultipleObjectsReturned
-##
     def has_current_charges(self, moment=None):
         """
         Used for admin interface
@@ -187,9 +179,9 @@ class Person(models.Model, MonitorizedItem):
         last charge, if any
         """
         charges = self.current_institution_charges if self.has_current_charges() else self.past_institution_charges
-        if charges.count() > 0:
+        try:
             return charges[0]
-        else:
+        except IndexError:
             raise ObjectDoesNotExist
 
 
@@ -511,12 +503,16 @@ class InstitutionCharge(Charge):
                 denomination += ", %s" % self.description
             return denomination
         elif self.institution.institution_type == Institution.CITY_GOVERNMENT:
-            if self.responsabilities.count():
-                s = self.responsabilities[0].get_charge_type_display()
-                if self.responsabilities[0].charge_type == InstitutionResponsability.CHARGE_TYPES.firstdeputymayor:
+
+            try:
+#            if self.responsabilities.count():
+                responsibility = self.responsabilities[0]
+                s = responsibility.get_charge_type_display()
+                if responsibility.charge_type == InstitutionResponsability.CHARGE_TYPES.firstdeputymayor:
                     s += ", %s" % self.description
                 return "%s" % (s, )
-            else:
+#            else:
+            except IndexError:
                 return " %s" % self.description
         elif self.institution.institution_type == Institution.COUNCIL:
             if self.responsabilities.count():
@@ -524,9 +520,12 @@ class InstitutionCharge(Charge):
             else:
                 return _('Counselor')
         elif self.institution.institution_type == Institution.COMMITTEE:
-            if self.responsabilities.count():
-                return "%s" % (self.responsabilities[0].get_charge_type_display())
-            else:
+#            if self.responsabilities.count():
+            try:
+                responsibility = self.responsabilities[0]
+                return "%s" % (responsibility.get_charge_type_display())
+#            else:
+            except IndexError:
                 return _('Member').translate(settings.LANGUAGE_CODE)
         else:
             return ''
