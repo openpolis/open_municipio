@@ -54,7 +54,8 @@ class NewsForObjectNode(template.Node):
             news = news.filter(news_type=self.news_type)
 
         # sort news by news_date, descending order
-        context[self.context_var] = sorted(news, key=lambda n: n.news_date or datetime.date(datetime.MINYEAR,1,1), reverse=True)[0:15]
+#        context[self.context_var] = sorted(news, key=lambda n: n.news_date or datetime.date(datetime.MINYEAR,1,1), reverse=True)[0:15]
+        context[self.context_var] = news.order_by("-created")[0:15]
 
         return ''
 
