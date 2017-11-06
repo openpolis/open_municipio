@@ -505,26 +505,22 @@ class InstitutionCharge(Charge):
         elif self.institution.institution_type == Institution.CITY_GOVERNMENT:
 
             try:
-#            if self.responsabilities.count():
                 responsibility = self.responsabilities[0]
                 s = responsibility.get_charge_type_display()
                 if responsibility.charge_type == InstitutionResponsability.CHARGE_TYPES.firstdeputymayor:
                     s += ", %s" % self.description
                 return "%s" % (s, )
-#            else:
             except IndexError:
                 return " %s" % self.description
         elif self.institution.institution_type == Institution.COUNCIL:
-            if self.responsabilities.count():
+            try:
                 return "%s Consiglio Comunale" % (self.responsabilities[0].get_charge_type_display(),)
-            else:
+            except IndexError:
                 return _('Counselor')
         elif self.institution.institution_type == Institution.COMMITTEE:
-#            if self.responsabilities.count():
             try:
                 responsibility = self.responsabilities[0]
                 return "%s" % (responsibility.get_charge_type_display())
-#            else:
             except IndexError:
                 return _('Member').translate(settings.LANGUAGE_CODE)
         else:
@@ -542,11 +538,13 @@ class InstitutionCharge(Charge):
         """
         Returns the current group responsability, if any
         """
-        if self.responsabilities.current(moment=moment).count() == 0:
-            return None
-        if self.responsabilities.current(moment=moment).count() == 1:
-            return self.responsabilities.current(moment=moment)[0]
-        raise MultipleObjectsReturned
+        responsibility = None
+        try:
+            responsibility = self.responsabilities.current(moment=moment)[0]
+        except IndexError:  
+            pass
+    
+        return responsibility
     current_responsability = property(get_current_responsability)
 
 
@@ -947,17 +945,21 @@ class GroupCharge(models.Model):
         """
         Returns the current group responsability, if any
         """
-        if self.responsabilities.current(moment=moment).count() == 0:
-            return None
-        if self.responsabilities.current(moment=moment).count() == 1:
-            return self.responsabilities.current(moment=moment)[0]
-        raise MultipleObjectsReturned
+        responsibility = None
+        try:
+            responsibility = self.responsabilities.current(moment=moment)[0]
+        except IndexError:
+            # no responsibility, nothing to do
+            pass
+
+        return responsibility
     current_responsability = property(get_current_responsability)
 
 
     @property
     def responsability(self):
-        if self.responsabilities.count() == 1:
+        s = ""
+        try:
             r = self.responsabilities[0]
 
             end_date = ""
@@ -966,9 +968,11 @@ class GroupCharge(models.Model):
                 end_date = " - %s" % r.end_date
 
             s = "%s: %s%s" % (r.get_charge_type_display(), r.start_date, end_date)
-            return s
-        else:
-            return ""
+        except IndexError:
+            # no responsibility
+            pass
+
+        return s
 
     class Meta:
         db_table = u'people_group_charge'
