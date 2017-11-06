@@ -39,6 +39,7 @@ setup(
         "sorl-thumbnail==11.12",
         "docutils==0.9.1",
         "django-tinymce==1.5.1b2",
+        "python-dateutil==2.6.1",
     ],
     classifiers=['Development Status :: 4 - Beta',
                  'Environment :: Web Environment',
