@@ -696,8 +696,8 @@ class SittingCalendarView(TemplateView):
             for e in month_events_citygov: e.is_event = True
             for e in month_events_council: e.is_event = True
 
-            sittings_citygov[i] = sorted(chain(month_sittings_citygov, month_events_citygov), key=attrgetter('date'))
-            sittings_council[i] = sorted(chain(month_sittings_council, month_events_council), key=attrgetter('date'))
+#            sittings_citygov[i] = sorted(chain(month_sittings_citygov, month_events_citygov), key=attrgetter('date'))
+#            sittings_council[i] = sorted(chain(month_sittings_council, month_events_council), key=attrgetter('date'))
 
         extra_context = {
             'sittings_citygov' : sittings_citygov,
