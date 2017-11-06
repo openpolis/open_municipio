@@ -205,13 +205,14 @@ class Person(models.Model, MonitorizedItem):
         Returns GroupCharge at given moment in time (now if moment is None)
         Charge is the IntstitutionalCharge in the council
         """
-#        i = Institution.objects.get(institution_type=Institution.COUNCIL)
-        i = CityCouncil().as_institution
+        gc = None
+
         try:
-            ic = self.get_current_charge_in_institution(i, moment)
-            gc = GroupCharge.objects.select_related().current(moment).get(charge=ic)
-        except ObjectDoesNotExist:
-            gc = None
+            gc = GroupCharge.objects.current(moment).get(charge__person=self,charge__institution=CityCouncil().as_institution)
+        except ObjectDoesNotExist:  
+            # no group charge
+            pass
+    
         return gc
     current_groupcharge = property(get_current_groupcharge)
 

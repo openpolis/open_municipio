@@ -1,4 +1,5 @@
 from datetime import datetime, date
+from dateutil.relativedelta import relativedelta
 import logging
 from operator import attrgetter
 from itertools import chain, takewhile
@@ -331,7 +332,6 @@ class PoliticianDetailView(DetailView):
             if len(all_charges) > 0:
                 charge = all_charges[0]
 
-#        print "current charge: %s (%s - %s)" % (charge, charge.start_date, charge.end_date)
 
         return charge
 
@@ -602,52 +602,36 @@ class PoliticianListView(TemplateView):
         context['age_stats']['sessantenni'] = 0
         context['age_stats']['seniores'] = 0
 
-#        all_members = set(list(municipality.council.members) + list(municipality.gov.members) + [municipality.mayor.as_charge,])
+        all_people = Person.objects.filter(institutioncharge__end_date=None).distinct().values("sex","birth_date")
 
-        list_members = []
-        
-        if municipality.council:
-            list_members.extend(municipality.council.members)
+        for p in all_people:
 
-        if municipality.gov:
-            list_members.extend(municipality.gov.members)
-
-        if municipality.mayor and municipality.mayor.as_charge:
-            list_members.append(municipality.mayor.as_charge)
-
-        all_members = set(list_members)
-
-        for charge in all_members:
-            if charge.person.sex == Person.MALE_SEX:
+            if p["sex"] == Person.MALE_SEX:
                 context['gender_stats']['Uomini'] += 1
-            elif charge.person.sex == Person.FEMALE_SEX:
+            else:
                 context['gender_stats']['Donne'] += 1
 
-            if charge.person.age <= 25:
+            age = relativedelta(date.today(), p["birth_date"]).years
+
+            if age <= 25:
                 context['age_stats']['ventenni'] += 1
-            if 25 < charge.person.age <= 35:
+            elif age <= 35:
                 context['age_stats']['trentenni'] += 1
-            if 35 < charge.person.age <= 45:
+            elif age <= 45:
                 context['age_stats']['quarantenni'] += 1
-            if 45 < charge.person.age <= 55:
+            elif age <= 55:
                 context['age_stats']['cinquantenni'] += 1
-            if 55 < charge.person.age <= 65:
+            elif age <= 65:
                 context['age_stats']['sessantenni'] += 1
-            if 65 < charge.person.age:
+            else:
                 context['age_stats']['seniores'] += 1
-
-        context['gender_stats'] = context['gender_stats']
-        context['age_stats'] = context['age_stats']
-
+    
         # number of different acts
         num_acts = dict()
         act_types = [
             CGDeliberation, Deliberation, Motion, Interrogation, Interpellation, Agenda, Amendment, Audit
         ]
         for act_type in act_types:
-#            num_acts[act_type.__name__.lower()] = act_type.objects.filter(
-#                emitting_institution__institution_type=Institution.COUNCIL
-#            ).count()
             num_acts[act_type.__name__.lower()] = act_type.objects.all().count()
 
         context['num_acts'] = num_acts
