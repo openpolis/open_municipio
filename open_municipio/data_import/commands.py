@@ -396,21 +396,24 @@ class ImportActsCommand(LabelCommand):
                 )
                 continue
 
-            # add or read transition status for this act
-            trans, created = om_act.transition_set.get_or_create(
-                act=om_act.act_ptr,
-                final_status=transition_status,
-                defaults={
-                    'transition_date': transition_date,
-                }
-            )
+            if not om_act.status_is_final:
+                # update transitions of acts that are not "final"
 
-            # overwrite date and status of an existing transition
-            if not created:
-                trans.transition_date = transition_date
-                trans.final_status = transition_status
-                trans.save()
-
+                # add or read transition status for this act
+                trans, created = om_act.transition_set.get_or_create(
+                    act=om_act.act_ptr,
+                    final_status=transition_status,
+                    defaults={
+                        'transition_date': transition_date,
+                    }
+                )
+    
+                # overwrite date and status of an existing transition
+                if not created:
+                    trans.transition_date = transition_date
+                    trans.final_status = transition_status
+                    trans.save()
+    
 
     def remove_news(self, act):
         """
