@@ -58,7 +58,7 @@ class HomeView(TemplateView):
         context['key_votations'] = Votation.objects.filter(is_key=True).order_by('-sitting__date')[0:3]
 
 
-        context['top_monitored'] = extract_top_monitored_objects(Person, qnt=3, filter_pk=Person.objects.filter(institutioncharge__end_date=None))
+        context['top_monitored'] = extract_top_monitored_objects(Person, qnt=5, filter_pk=Person.objects.filter(institutioncharge__end_date=None))
 
         today = datetime.today()
 
