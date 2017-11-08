@@ -85,6 +85,7 @@ class Act(NewsTargetMixin, MonitorizedItem, TimeStampedModel):
     status_is_final = models.BooleanField(_('status is final'), default=False)
     is_key = models.BooleanField(default=False, help_text=_("Specify whether this act should be featured"))
     slug = models.SlugField(max_length=500, blank=True, null=True)
+    source_url = models.URLField(max_length=500, blank=True, null=True, help_text=_("If the object has been imported from a public URL, report it here"))
 
     objects = InheritanceManager()
     # use this manager to retrieve only key acts
@@ -1210,6 +1211,7 @@ class Speech(Document):
     audio_file = models.FileField(upload_to="attached_audio/%Y%m%d", blank=True, max_length=255,verbose_name=_('audio file'))
     slug = models.SlugField(max_length=500, blank=True, null=True)
     type = models.CharField(choices=SPEECH_TYPES, max_length=10, null=True, blank=True, verbose_name=_("type"))
+    source_url = models.URLField(max_length=500, blank=True, null=True, help_text=_("If the object has been imported from a public URL, report it here"))
 
     class Meta(Document.Meta):
         verbose_name = _('speech')

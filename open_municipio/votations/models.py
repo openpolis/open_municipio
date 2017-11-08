@@ -21,7 +21,10 @@ from collections import Counter
 
 class Votation(models.Model):
     """
-    WRITEME
+    This model stores information about a single ballot. A ballot has
+    an outcome determined by the sum of the votes of the participants
+    and the legal number of the ballot itself. The latter depend on
+    the type of ballot.
     """
     OUTCOMES = Choices(
         (0, 'No Esito'),
@@ -55,6 +58,8 @@ class Votation(models.Model):
     n_rebels = models.IntegerField(default= 0)
     slug = models.SlugField(max_length=500, blank=True, null=True)
     datetime = models.DateTimeField(blank=True, null=True, verbose_name=_("datetime"))
+    source_url = models.URLField(max_length=500, blank=True, null=True, help_text=_("If the object has been imported from a public URL, report it here"))
+
 
     # default manager must be explicitly defined, when
     # at least another manager is present
