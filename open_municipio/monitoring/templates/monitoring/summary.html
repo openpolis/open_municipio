@@ -6,7 +6,7 @@
       {{ object.monitoring_users_count|default:'0'|circled }}
     </td>
     <td>
-      {% if not user.get_profile.person %}
+      {% if not user_profile.person %}
         {% if is_user_monitoring %}
           <h4>Cittadini che monitorano {{ object_type }}, <br/> incluso te</h4>
           <form action="{% url 'om_monitoring_stop' %}" method="post">{% csrf_token %}
@@ -16,7 +16,7 @@
         {% else %}
           <h4>Cittadini che monitorano {{ object_type }}</h4>
           <i class="icon-plus-sign"></i>
-            {% if user.is_authenticated %}
+            {% if user_profile %}
                 <form action="{% url 'om_monitoring_start' %}" method="post">{% csrf_token %}
                     {{ monitoring_form }}
                     <button type="submit" class="btn btn-info btn-mini">Monitora</button>
@@ -36,7 +36,7 @@
         {{ object.monitoring_politicians|length|circled }}
       </td>
       <td>
-        {% if user.get_profile.person %}
+        {% if user_profile.person %}
           {% if is_user_monitoring %}
             <h4>Politici che monitorano {{ object_type }}, <br/> incluso te</h4>
             <form action="{% url 'om_monitoring_stop' %}" method="post">{% csrf_token %}
@@ -46,7 +46,7 @@
           {% else %}
             <h4>Politici che monitorano {{ object_type }}</h4>
             <i class="icon-plus-sign"></i>
-            {% if user.is_authenticated %}
+            {% if user_profile %}
                 <form action="{% url 'om_monitoring_start' %}" method="post">{% csrf_token %}
                     {{ monitoring_form }}
                     <button type="submit" class="btn btn-info btn-mini">Monitora</button>
