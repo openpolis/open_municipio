@@ -641,6 +641,45 @@ class PoliticianListView(TemplateView):
 class SittingCalendarView(TemplateView):
     template_name = "people/sitting_calendar.html"
 
+
+    def get_calendar(self, institution, year):
+
+        calendar = {}
+
+        # fetch citygov data
+        sittings_qs = Sitting.objects.filter(date__year=year,
+            institution=institution)
+        events_qs = Event.objects.filter(date__year=year,
+            institution=institution) 
+
+        # append sittings
+        calendar_sittings_dates = set([])
+        for s in sittings_qs:
+            if s.date.month not in calendar:
+                calendar[s.date.month] = []
+
+            s.is_event = False
+            calendar[s.date.month].append(s)
+
+            calendar_sittings_dates.add(s.date)
+
+        # append citygov events
+        for e in events_qs:
+
+            if e.date in calendar_sittings_dates: 
+                # if there is a sitting with same date, don't add the
+                # event (because it is the announce of the sitting itself)
+                continue
+
+            if e.date.month not in calendar:
+                calendar[e.date.month] = []
+
+            e.is_event = True
+            calendar[e.date.month].append(e)
+
+        return calendar
+
+
     def get_context_data(self, **kwargs):
         context = super(SittingCalendarView, self).get_context_data(**kwargs)
 
@@ -649,45 +688,25 @@ class SittingCalendarView(TemplateView):
 
         # list of years
         from_year = max(settings.OM_START_YEAR, curr_year - 11)
-        sitting_years = map(lambda v: str(v), list(reversed(range(from_year, curr_year + 1))))
+        sitting_years = map(str, range(curr_year,from_year-1,-1))
 
-        # first day of current month
-        filter_since = datetime.today().replace(day=1)
+        council_calendar = self.get_calendar(municipality.council.as_institution, year)
+        gov_calendar = self.get_calendar(municipality.gov.as_institution, year)
 
-        events = Event.objects.filter(date__gte=filter_since)
-
-        sittings_citygov = {}
-        sittings_council = {}
-
+        # sort sittings and events 
         for i in range(1,13):
-            month_sittings_citygov = Sitting.objects.filter(date__year=year, date__month=i,
-                institution__institution_type__lte=Institution.CITY_GOVERNMENT)
+            if i not in council_calendar:
+                council_calendar[i] = []
+            if i not in gov_calendar:
+                gov_calendar[i] = []
 
-            month_sittings_council = Sitting.objects.filter(date__year=year, date__month=i,
-                institution__institution_type__gte=Institution.COUNCIL)
-
-            month_sittings_citygov_days = set([s.date.day for s in month_sittings_citygov])
-            month_sittings_council_days = set([s.date.day for s in month_sittings_council])
-
-            month_events_citygov = [e for e in Event.objects.filter(date__year=year, date__month=i,
-                institution__institution_type__lte=Institution.CITY_GOVERNMENT) \
-                if e.date.day not in month_sittings_citygov_days]
-
-            month_events_council = [e for e in Event.objects.filter(date__year=year, date__month=i,
-                institution__institution_type__gte=Institution.COUNCIL) \
-                if e.date.day not in month_sittings_council_days]
-
-            for e in month_events_citygov: e.is_event = True
-            for e in month_events_council: e.is_event = True
-
-#            sittings_citygov[i] = sorted(chain(month_sittings_citygov, month_events_citygov), key=attrgetter('date'))
-#            sittings_council[i] = sorted(chain(month_sittings_council, month_events_council), key=attrgetter('date'))
+            council_calendar[i].sort(key=lambda s: s.date.day)
+            gov_calendar[i].sort(key=lambda s: s.date.day)
 
         extra_context = {
-            'sittings_citygov' : sittings_citygov,
-            'sittings_council' : sittings_council,
+            'sittings_citygov' : gov_calendar,
+            'sittings_council' : council_calendar,
             'sitting_years' : sitting_years,
-            'events' : events,
             'year' : year
         }
 
