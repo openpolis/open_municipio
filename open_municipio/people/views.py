@@ -642,15 +642,15 @@ class SittingCalendarView(TemplateView):
     template_name = "people/sitting_calendar.html"
 
 
-    def get_calendar(self, institution, year):
+    def get_calendar(self, institutions, year):
 
         calendar = {}
 
         # fetch citygov data
         sittings_qs = Sitting.objects.filter(date__year=year,
-            institution=institution)
+            institution__in=institutions)
         events_qs = Event.objects.filter(date__year=year,
-            institution=institution) 
+            institution__in=institutions) 
 
         # append sittings
         calendar_sittings_dates = set([])
@@ -689,9 +689,10 @@ class SittingCalendarView(TemplateView):
         # list of years
         from_year = max(settings.OM_START_YEAR, curr_year - 11)
         sitting_years = map(str, range(curr_year,from_year-1,-1))
-
-        council_calendar = self.get_calendar(municipality.council.as_institution, year)
-        gov_calendar = self.get_calendar(municipality.gov.as_institution, year)
+    
+        council_institutions = list(municipality.committees.as_institution()) + [ municipality.council.as_institution,]
+        council_calendar = self.get_calendar(council_institutions, year)
+        gov_calendar = self.get_calendar([municipality.gov.as_institution,], year)
 
         # sort sittings and events 
         for i in range(1,13):
