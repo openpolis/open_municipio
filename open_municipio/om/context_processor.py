@@ -28,4 +28,5 @@ def defaults(request):
         'SEARCH_URLS': settings.SEARCH_URLS,
         'SOCIAL_SITES': settings.SOCIAL_SITES,       
         'LOGO_URL': getattr(settings, 'LOGO_URL', None),
+        'SHOW_ADVANCED_GRAPHS': getattr(settings, 'SHOW_ADVANCED_GRAPHS', False)
     }

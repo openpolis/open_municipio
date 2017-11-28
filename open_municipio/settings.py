@@ -410,3 +410,5 @@ SOUTH_MIGRATION_MODULES = {
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'open_municipio.api.pagination.StandardPagination',   
 }
+
+SHOW_ADVANCED_GRAPH = False
