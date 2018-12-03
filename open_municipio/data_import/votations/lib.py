@@ -399,6 +399,11 @@ class DBVotationWriter(BaseVotationWriter):
                 #raise Exception("Existing sitting number %s, date %s but ballot date is %s" % (sitting.seq_n, sitting.date, ballot_date))
                 self.logger.warning("Existing sitting number %s, date %s but ballot date is %s. Proceed with caution ..." % (sitting.seq_n, sitting.date, ballot_date))
 
+            if ballot.n_presents == 0:
+                self.logger.warning("Skip importing ballot %s in sitting %s because the number of presents is zero ..." % (ballot, sitting))
+                continue
+                
+
             if self.dry_run:
                 return
             else:
