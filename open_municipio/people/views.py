@@ -739,7 +739,7 @@ class SittingDetailView(DetailView):
 
         sitting_items = curr.sitting_items.order_by("seq_order")
 
-        votations = Votation.objects.filter(sitting=curr)
+        votations = Votation.objects.filter(sitting=curr).order_by("idnum")
 
         attendances = Attendance.objects.filter(sitting=curr)
 
