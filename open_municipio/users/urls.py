@@ -1,4 +1,4 @@
-from django.conf.urls.defaults import *
+from django.conf.urls import *
 from open_municipio.users.forms import UserProfileForm
 from open_municipio.users.views import UserDetailView, UserProfileListView, UserProfileDetailView
 from django.contrib.auth.models import User

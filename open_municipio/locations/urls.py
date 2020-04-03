@@ -1,4 +1,4 @@
-from django.conf.urls.defaults import *
+from django.conf.urls import *
 
 from open_municipio.locations.views import LocationDetailView, LocationListView
 

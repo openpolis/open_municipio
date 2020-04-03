@@ -1,4 +1,4 @@
-from django.conf.urls.defaults import *
+from django.conf.urls import *
 
 from open_municipio.autocomplete.views import TagAutoCompleteView
 
