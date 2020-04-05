@@ -183,6 +183,8 @@ class VotationIndex(indexes.SearchIndex, indexes.Indexable):
 
     def prepare_is_secret(self, obj):
 
+        activate(settings.LANGUAGE_CODE)
+
         if obj.is_secret:
             return _('yes')
         else:
@@ -190,6 +192,8 @@ class VotationIndex(indexes.SearchIndex, indexes.Indexable):
         
 
     def prepare_properties(self, obj):
+
+        activate(settings.LANGUAGE_CODE)
 
         count = obj.majority_vs_minority
 

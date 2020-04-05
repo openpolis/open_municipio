@@ -65,6 +65,8 @@ class ActIndex(indexes.SearchIndex, indexes.Indexable):
         return [t.name for t in list(d_obj.locations)] if d_obj else None
 
     def prepare_has_locations(self, obj):
+
+        activate(settings.LANGUAGE_CODE)
         d_obj = obj.downcast()
 
         value = _("no")
@@ -99,6 +101,7 @@ class ActIndex(indexes.SearchIndex, indexes.Indexable):
 
     def prepare_initiative(self, obj):
 
+        activate(settings.LANGUAGE_CODE)
         if obj.downcast().presenter_set.filter(actsupport__charge__institution__institution_type=Institution.COUNCIL).count():
             return _("Council")
 
@@ -113,6 +116,7 @@ class ActIndex(indexes.SearchIndex, indexes.Indexable):
 
     def prepare_is_proposal(self, obj):
 
+        activate(settings.LANGUAGE_CODE)
         if obj.downcast().is_final_status(obj.downcast().status):
             return _('no')
         else:
@@ -167,6 +171,8 @@ class ActIndex(indexes.SearchIndex, indexes.Indexable):
         else: return 'oltre due mesi'
 
     def prepare_multiple_supporters(self, obj):
+
+        activate(settings.LANGUAGE_CODE)
         return _("yes") if obj.presenter_set.count() > 1 else _("no")
 
     def prepare_charge_supporting(self, obj):

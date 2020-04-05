@@ -84,6 +84,7 @@ class InstitutionChargeIndex(indexes.SearchIndex, indexes.Indexable):
 
     def prepare_institution(self, obj):
 
+        activate(settings.LANGUAGE_CODE)
         return obj.charge_type if obj.institution.institution_type <= Institution.COUNCIL else ''
 
     def prepare_group(self, obj):
@@ -120,6 +121,7 @@ class InstitutionChargeIndex(indexes.SearchIndex, indexes.Indexable):
 
     def prepare_is_active(self, obj):
 
+        activate(settings.LANGUAGE_CODE)
         return _("no") if obj.end_date else _("yes")
 
     def prepare_n_presented_acts_index(self, obj):
@@ -299,6 +301,7 @@ class GroupIndex(indexes.SearchIndex, indexes.Indexable):
 
     def prepare_is_active(self, obj):
 
+        activate(settings.LANGUAGE_CODE)
         return _("yes") if obj.is_current else _("no")
 
     def prepare_n_members(self, obj):
