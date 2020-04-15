@@ -418,11 +418,11 @@ class PoliticianDetailView(DetailView):
             # last 10 are passed to template
             context['current_charge_votes'] = charge.chargevote_set \
                 .filter(votation__is_key=True) \
-                .order_by('-votation__sitting__date')[0:10]
+                .order_by('-votation__sitting__date','votation__idnum')[0:10]
 
             context['current_charge_rebel_votes'] = charge.chargevote_set \
                 .filter(is_rebel=True) \
-                .order_by('-votation__sitting__date')[0:10]
+                .order_by('-votation__sitting__date','votation__idnum')[0:10]
 
         # Is the current charge a counselor? If so, we show present/absent
         # graph
