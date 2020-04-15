@@ -412,7 +412,7 @@ class PoliticianDetailView(DetailView):
                               context['n_total_votations'] * 100.00)
 
             if charge.n_present_votations > 0:
-                context['percentage_rebel_votations'] = "%.1f" % (float(100 * charge.n_rebel_votations / charge.n_present_votations))
+                context['percentage_rebel_votations'] = "%.1f" % (float(100 * charge.n_rebel_votations) / charge.n_present_votations)
 
             # Current politician's charge votes for key votations
             # last 10 are passed to template
