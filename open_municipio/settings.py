@@ -390,13 +390,15 @@ ALERT_NAVBAR = ""
 
 # this is a default configuration for a local instance of Solr running;
 # adapt this to your production environment
+HAYSTACK_SEARCH_RESULTS_PER_PAGE = 10
+
 HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': 'haystack.backends.solr_backend.SolrEngine',
         'URL': 'http://127.0.0.1:8983/solr',
         'TIMEOUT': 60 * 15,
         'BATCH_SIZE': 100,
-        'SEARCH_RESULTS_PER_PAGE': 10,
+        'SEARCH_RESULTS_PER_PAGE': HAYSTACK_SEARCH_RESULTS_PER_PAGE,
     }
 }
 

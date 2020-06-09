@@ -77,7 +77,13 @@ class VotationSearchView(ExtendedFacetedSearchView, FacetRangeDateIntervalsMixin
                 (curr_year, curr_year), 'r_label': curr_year }
 
     def build_page(self):
-        self.results_per_page = int(self.request.GET.get('results_per_page', settings.HAYSTACK_SEARCH_RESULTS_PER_PAGE))
+        results_per_page = int(self.request.GET.get('results_per_page', 0)) 
+
+        if results_per_page <= 0:
+            results_per_page = getattr(settings, "HAYSTACK_SEARCH_RESULTS_PER_PAGE", 10)
+    
+        self.results_per_page = results_per_page
+
         return super(VotationSearchView, self).build_page()
 
     def build_form(self, form_kwargs=None):
