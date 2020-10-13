@@ -394,10 +394,14 @@ class PoliticianDetailView(DetailView):
                         float(counselor.n_absent_votations) / n_votations
             # Empty city council? That can't be the case!
             # n_counselors is supposed to be > 0
-            context['percentage_present_votations_average'] = \
-                "%.1f" % (float(percentage_present) / n_counselors * 100)
-            context['percentage_absent_votations_average'] = \
-                "%.1f" % (float(percentage_absent) / n_counselors * 100)
+            if n_counselors > 0:
+                context['percentage_present_votations_average'] = \
+                    "%.1f" % (float(percentage_present) / n_counselors * 100)
+                context['percentage_absent_votations_average'] = \
+                    "%.1f" % (float(percentage_absent) / n_counselors * 100)
+            else:
+                context['percentage_present_votations_average'] = 0
+                context['percentage_absent_votations_average'] = 0
 
             # Calculate present/absent for current counselor
             charge.percentage_present_votations = charge.percentage_absent_votations = 0.0
@@ -442,10 +446,15 @@ class PoliticianDetailView(DetailView):
                         float(gov_charge.n_absent_attendances) / n_attendances
             # Empty city council? That can't be the case!
             # n_counselors is supposed to be > 0
-            context['percentage_present_attendances_average'] = \
-                "%.1f" % (float(percentage_present) / n_gov_charges * 100)
-            context['percentage_absent_attendances_average'] = \
-                "%.1f" % (float(percentage_absent) / n_gov_charges * 100)
+            if n_gov_charges > 0:
+                context['percentage_present_attendances_average'] = \
+                    "%.1f" % (float(percentage_present) / n_gov_charges * 100)
+                context['percentage_absent_attendances_average'] = \
+                    "%.1f" % (float(percentage_absent) / n_gov_charges * 100)
+            else:
+                context['percentage_present_attendances_average'] = 0
+                context['percentage_absent_attendances_average'] = 0
+
 
             # Calculate present/absent for current charge
             charge.percentage_present_attendances = charge.percentage_absent_attendances = 0.0
